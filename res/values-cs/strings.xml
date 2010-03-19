@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"Chat"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"Zrušit přihlašování"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"Přidat kontakt"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"Smazat kontakt"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"Blokovat kontakt"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"Blokovaní uživatelé"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"Seznam účtů"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"Nastavení"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"Začít chat"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"Odhlásit se"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"Zobrazit profil"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"Ukončit chat"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"Seznam kontaktů"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Pozvat..."</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"Přepnout chat"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"Vložit smajlík"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Menu+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"Vstup"</string>
+    <string name="confirm" msgid="3229086014444547636">"Potvrdit"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"Kontakt <xliff:g id="USER">%1$s</xliff:g> bude smazán."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"Kontakt <xliff:g id="USER">%1$s</xliff:g> bude blokován."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"Kontakt <xliff:g id="USER">%1$s</xliff:g> bude odblokován."</string>
+    <string name="ok" msgid="1521940081498188645">"OK"</string>
+    <string name="cancel" msgid="5115511021657936211">"Zrušit"</string>
+    <string name="yes" msgid="4042588907115698888">"OK"</string>
+    <string name="no" msgid="1791024164361629713">"Zrušit"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"Byli jste odhlášeni ze služby <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"Byli jste odhlášeni ze služby <xliff:g id="ACCOUNT">%1$s</xliff:g>, protože došlo k chybě <xliff:g id="REASON">%2$s</xliff:g>."</string>
+    <string name="add_account" msgid="3402105687785864337">"Přidat účet <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="label_username" msgid="8704597829337399952">"Uživatelské jméno:"</string>
+    <string name="label_password" msgid="7809879599377131899">"Heslo:"</string>
+    <string name="remember_password" msgid="4090719436666073946">"Zapamatovat heslo."</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"Přihlašovat automaticky."</string>
+    <string name="sign_up" msgid="7071654280992136839">"Nemáte účet?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"Pokud povolíte tuto možnost, budete automaticky přihlášeni pokaždé, když spustíte tuto aplikaci. Chcete-li tuto možnost zakázat, odhlaste se a zrušte zaškrtnutí políčka Přihlašovat automaticky."</string>
+    <string name="sign_in" msgid="6204326200860136567">"Přihlásit se"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"Přihlašování k účtu <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Přihlašování..."</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Přenos dat na pozadí je zakázán"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"Poskytovatel <xliff:g id="PROVIDER">%1$s</xliff:g> vyžaduje povolení přenosu dat na pozadí."</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Povolit"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Ukončit"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"Probíhající chaty: <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="online_count" msgid="5007781327712739543">"Kontakty online: <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"Nabídky přátelství"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Neznámý uživatel"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"Žádné kontakty"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"Skupina je prázdná"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"Vyberte kontakty, které chcete pozvat"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"Zadejte hledaný kontakt"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"Nebyly nalezeny žádné kontakty."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"Blokované kontakty – <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"Žádné kontakty nejsou blokovány."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"Profil kontaktu"</string>
+    <string name="label_status" msgid="3228165483618856922">"Stav:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"Typ klienta:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"počítač"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"Mobil"</string>
+    <string name="presence_available" msgid="7514162178730233803">"Online"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"Zaneprázdněn"</string>
+    <string name="presence_away" msgid="2893687249265559744">"Pryč"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"Nečinný"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"Offline"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"Zobrazit jako offline"</string>
+    <string name="chat_with" msgid="8562954189958846831">"Chat s uživatelem <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="me" msgid="8421609599685404593">"Já"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"Sem zadejte zprávu"</string>
+    <string name="contact_online" msgid="4241843267436748586">"uživatel <xliff:g id="USER">%1$s</xliff:g> je online"</string>
+    <string name="contact_away" msgid="2333627320542883164">"uživatel <xliff:g id="USER">%1$s</xliff:g> je pryč"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> je zaneprázdněn"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"uživatel <xliff:g id="USER">%1$s</xliff:g> je offline"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"Uživatel <xliff:g id="USER">%1$s</xliff:g> se připojil"</string>
+    <string name="contact_left" msgid="3020686291216941829">"uživatel <xliff:g id="USER">%1$s</xliff:g> odešel"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Odesláno v '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>' dne '<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"Odeslat"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"Zprávu nelze odeslat."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"Spojení se serverem bylo ztraceno. Zpráva bude odeslána, jakmile se jej podaří obnovit."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> je offline. Odeslané zprávy budou doručeny, jakmile se <xliff:g id="USER_1">%1$s</xliff:g> přihlásí online."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g> není ve vašem seznamu kontaktů."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"Zvolit odkaz"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"Neprobíhá žádný chat."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"Přidat kontakt"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"E-mailová adresa osoby, kterou chcete pozvat:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"Zvolte seznam:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"Zadejte jméno uživatele, kterého chcete přidat z Kontaktů."</string>
+    <string name="invite_label" msgid="6229798754682424899">"Odeslat pozvánku"</string>
+    <string name="setting_title" msgid="6676157178613673420">"Obecné nastavení"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"Skrýt kontakty offline"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"Nastavení oznámení"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"Oznamování chatových zpráv"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"Příchod chatové zprávy oznamovat na stavovém panelu."</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"Vibrace"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"Oznámit příchozí chatovou zprávu také vibracemi"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"Zvuk"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"Oznámit příchozí chatovou zprávu také vyzváněním"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"Vybrat vyzváněcí tón"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"Uživatel <xliff:g id="USER">%1$s</xliff:g> vás pozval k hromadnému chatu."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"Uživateli <xliff:g id="USER">%1$s</xliff:g> byla zaslána pozvánka."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"Přijmout"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"Odmítnout"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g> si vás chce přidat do svého seznamu kontaktů."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"Přijmout"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"Odmítnout"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"Přihlášení k odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nepodařilo schválit. Zkuste to prosím znovu později."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"Odmítnutí odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nezdařilo. Zkuste to prosím znovu později."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"Nové zprávy od poskytovatele <xliff:g id="PROVIDER">%1$s</xliff:g>"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"Nové zprávy: <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"Nová nabídka přátelství od uživatele <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"Pozvánka k hromadnému chatu"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"Nová pozvánka k hromadnému chatu od uživatele <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"Kontakt <xliff:g id="USER">%1$s</xliff:g> byl přidán."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"Kontakt <xliff:g id="USER">%1$s</xliff:g> byl smazán."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"Kontakt <xliff:g id="USER">%1$s</xliff:g> je blokován."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"Kontakt <xliff:g id="USER">%1$s</xliff:g> je odblokován."</string>
+    <string name="perm_label" msgid="203411797893865789">"spustit službu Chat"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"Povoluje aplikacím spustit Chat přes službu intent."</string>
+    <string name="error" msgid="4778856523246532623">"Upozornění"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"Nepodařilo se přihlásit ke službě <xliff:g id="SERVICE">%1$s</xliff:g>. Zkuste to prosím znovu později."\n"(Podrobnosti: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"Seznam se nepodařilo přidat."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"Blokování kontaktu se nezdařilo."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"Odblokování kontaktu se nezdařilo."</string>
+    <string name="select_contact" msgid="5804415466346460387">"Nejprve zvolte kontakt."</string>
+    <string name="disconnected" msgid="7731840958629349414">"Odpojeno"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"Chyba služby."</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"Seznam kontaktů se nepodařilo načíst."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"K serveru se nelze připojit. Zkontrolujte své připojení."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g> již je ve vašem seznamu kontaktů."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"Kontakt <xliff:g id="USER">%1$s</xliff:g> byl zablokován."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"Počkejte, než se seznam kontaktů načte."</string>
+    <string name="network_error" msgid="1971556432619053394">"Došlo k chybě sítě."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"Server tuto funkci nepodporuje."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"Zadané heslo není platné."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"Na serveru došlo k chybě."</string>
+    <string name="not_implemented" msgid="845369556603815808">"Server tuto funkci nepodporuje."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"Server je momentálně nedostupný."</string>
+    <string name="timeout" msgid="8160218318070765661">"Vypršel časový limit serveru."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"Server nepodporuje aktuální verzi."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"Fronta zpráv je plná."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"Server nepodporuje předávání této doméně."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"Zadané uživatelské jméno nebylo rozpoznáno."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"Tento uživatel vás blokuje."</string>
+    <string name="session_expired" msgid="1999103420742299764">"Této relaci již vypršela platnost, přihlaste se znovu."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"jste přihlášeni z jiného klienta."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"již jste přihlášeni z jiného klienta."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"Z karty SIM nelze číst vaše telefonní číslo. Požádejte o pomoc operátora."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"Momentálně nejste přihlášeni."</string>
+    <string name="general_error" msgid="2784900425265121080">"Kód chyby: <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"Happy"</item>
+    <item msgid="4535010061202018372">"Smutný"</item>
+    <item msgid="9126439186030536335">"Mrkající"</item>
+    <item msgid="850866187116359823">"Vypláznutý jazyk"</item>
+    <item msgid="394905071090547502">"Překvapený"</item>
+    <item msgid="154223719974718360">"Pusa"</item>
+    <item msgid="7922997411177141520">"Hej!"</item>
+    <item msgid="2507841103887006866">"Cool"</item>
+    <item msgid="7305800612774038776">"Cinkání zlaťáků"</item>
+    <item msgid="8019801991256267534">"Šlápota v úsměvu"</item>
+    <item msgid="6054214980935551183">"V rozpacích"</item>
+    <item msgid="6425740366789820735">"Andílek"</item>
+    <item msgid="6790879686860830930">"Nerozhodný"</item>
+    <item msgid="8487432187298106600">"Rozplakaný"</item>
+    <item msgid="1697327406585784541">"Ani muk"</item>
+    <item msgid="4623875498872672218">"Smějící se"</item>
+    <item msgid="6044435333460205962">"Zmatený"</item>
+  </string-array>
+</resources>

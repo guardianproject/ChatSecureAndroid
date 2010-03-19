@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"IM"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"Oturum açmayı iptal et"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"Kişi ekle"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"Kişiyi sil"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"Kişiyi engelle"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"Engellenenler"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"Hesap listesi"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"Ayarlar"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"Sohbeti başlat"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"Çıkış"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"Profili görüntüle"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"Sohbeti sonlandır"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"Kişi listesi"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Davet et..."</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"Sohbetler arasında geçiş yap"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"İfade ekle"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Menü+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"Giriş"</string>
+    <string name="confirm" msgid="3229086014444547636">"Doğrula"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silinecek."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenecek."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırılacak."</string>
+    <string name="ok" msgid="1521940081498188645">"Tamam"</string>
+    <string name="cancel" msgid="5115511021657936211">"İptal"</string>
+    <string name="yes" msgid="4042588907115698888">"Tamam"</string>
+    <string name="no" msgid="1791024164361629713">"İptal"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"<xliff:g id="ACCOUNT">%1$s</xliff:g> oturumunuz  kapatıldı."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"<xliff:g id="ACCOUNT">%1$s</xliff:g> oturumunuz <xliff:g id="REASON">%2$s</xliff:g> nedeniyle kapatıldı."</string>
+    <string name="add_account" msgid="3402105687785864337">"<xliff:g id="ACCOUNT">%1$s</xliff:g> hesabını ekle"</string>
+    <string name="label_username" msgid="8704597829337399952">"Kullanıcı adı:"</string>
+    <string name="label_password" msgid="7809879599377131899">"Şifre:"</string>
+    <string name="remember_password" msgid="4090719436666073946">"Şifremi hatırla."</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"Oturumumu otomatik olarak aç."</string>
+    <string name="sign_up" msgid="7071654280992136839">"Hesabınız yok mu?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \"Oturumumu otomatik olarak aç\" onay kutusunun işaretini kaldırın."</string>
+    <string name="sign_in" msgid="6204326200860136567">"Oturum aç"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"<xliff:g id="ACCOUNT">%1$s</xliff:g> oturumu açılıyor"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Oturum açılıyor..."</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Arka plan verileri devre dışı"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> arka plan verilerinin etkinleştirilmesine gereksinim duyuyor."</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Etkinleştir"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Çık"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"Devam eden sohbetler (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string name="online_count" msgid="5007781327712739543">"<xliff:g id="NUMBER">%1$d</xliff:g> çevrimiçi"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"Arkadaş davetiyeleri"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Bilinmiyor"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"Boş"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"Konuşma yok"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"Davet edilecek kişileri seç"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"Kişiyi bulmak üzere yazın"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"Hiçbir kişi bulunamadı."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"Engellenmiş kişiler - <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"Engellenmiş kişi yok."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"Kişi profili"</string>
+    <string name="label_status" msgid="3228165483618856922">"Durum:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"İstemci türü:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"Bilgisayar"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"Mobil"</string>
+    <string name="presence_available" msgid="7514162178730233803">"Çevrimiçi"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"Meşgul"</string>
+    <string name="presence_away" msgid="2893687249265559744">"Dışarıda"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"Boşta"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"Çevrimdışı"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"Çevrimdışı göster"</string>
+    <string name="chat_with" msgid="8562954189958846831">"<xliff:g id="USER">%1$s</xliff:g> ile sohbet et"</string>
+    <string name="me" msgid="8421609599685404593">"Ben"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"Oluşturmak için yazın"</string>
+    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g> çevrimiçi"</string>
+    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g> dışarıda"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> meşgul"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> çevrimdışı"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> katıldı"</string>
+    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> ayrıldı"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Şu tarih ve saatte gönderildi: '<xliff:g id="DATE">EEEE</xliff:g>' '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"Gönder"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"Bu ileti gönderilemedi."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"Sunucu bağlantısı kesildi. İletiler çevrimiçi olunduğunda gönderilecek."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> çevrimdışı. Gönderdiğiniz iletiler <xliff:g id="USER_1">%1$s</xliff:g> çevrimiçi olduğunda teslim edilecek."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g> Kişi listenizde yok."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"Bağlantıyı seç"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"Etkin sohbet yok."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"Kişi ekle"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"Davet etmek istediğiniz kullanıcının e-posta adresi:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"Liste seçin:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"Kişiler\'den eklemek için bir ad yazın."</string>
+    <string name="invite_label" msgid="6229798754682424899">"Davetiye gönder"</string>
+    <string name="setting_title" msgid="6676157178613673420">"Genel ayarlar"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"Çevrimdışı kişileri gizle"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"Bildirim ayarları"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"IM bildirimleri"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"IM geldiğinde durum çubuğunda bildir"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"Titreşim"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"IM geldiğinde aynı zamanda titret"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"Ses"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"IM geldiğinde aynı zamanda zil sesi çal"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"Zil sesini seç"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g> sizi bir grup sohbetine katılmaya davet etti."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"<xliff:g id="USER">%1$s</xliff:g> kullanıcısına davetiye gönderildi."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"Kabul Et"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"Reddet"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g> sizi kendi Kişi listesinde olmaya davet etti."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"Kabul Et"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"Reddet"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"<xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik onaylanamıyor. Lütfen daha sonra tekrar deneyin."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"<xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik reddedilemiyor. Lütfen daha sonra tekrar deneyin."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"Yeni <xliff:g id="PROVIDER">%1$s</xliff:g> iletileri"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"<xliff:g id="NUMBER">%1$d</xliff:g> okunmamış sohbet"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"<xliff:g id="USER">%s</xliff:g> kullanıcısından yeni arkadaş davetiyesi"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"Grup sohbeti davetiyeleri"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"<xliff:g id="USER">%s</xliff:g> kullanıcısından gelen yeni grup sohbeti daveti"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi eklendi."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silindi."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellendi."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırıldı."</string>
+    <string name="perm_label" msgid="203411797893865789">"IM hizmetini başlat"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"Amacını bildirerek uygulamaların IM hizmetini başlatmasına izin verir."</string>
+    <string name="error" msgid="4778856523246532623">"Dikkat"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"<xliff:g id="SERVICE">%1$s</xliff:g> hizmetinde oturum açılamıyor. Lütfen daha sonra tekrar deneyin."\n"(Ayrıntılı bilgi: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"Liste eklenmedi."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"Kişi engellenmedi."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"Kişinin engellemesi kaldırılmadı."</string>
+    <string name="select_contact" msgid="5804415466346460387">"Lütfen önce bir kişi seçin."</string>
+    <string name="disconnected" msgid="7731840958629349414">"Bağlantı kesildi!"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"Hizmet hatası!"</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"Kişi listesi yüklenmedi."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"Sunucuya bağlanılamıyor. Lütfen bağlantınızı kontrol edin."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g> zaten Kişi listenizde var."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenmiş."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"Kişi listeniz yüklenirken lütfen bekleyin."</string>
+    <string name="network_error" msgid="1971556432619053394">"Bir ağ hatası oluştu."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"Sunucu bu işlevi desteklemiyor."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"Girdiğiniz şifre geçerli değil."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"Sunucu bir hata ile karşılaştı."</string>
+    <string name="not_implemented" msgid="845369556603815808">"Sunucu bu işlevi desteklemiyor."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"Sunucu şu an kullanılamıyor."</string>
+    <string name="timeout" msgid="8160218318070765661">"Sunucu zaman aşımına uğradı."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"Sunucu geçerli sürümü desteklemiyor."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"İleti kuyruğu dolu."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"Sunucu alan adına yönlendirmeyi desteklemiyor."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"Girdiğiniz kullanıcı adı tanınmıyor."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"Maalesef, kullanıcı tarafından engellenmişsiniz."</string>
+    <string name="session_expired" msgid="1999103420742299764">"Oturum zaman aşımına uğradı, lütfen tekrar oturum açın."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"başka bir istemciden oturum açtınız."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"başka bir istemciden zaten oturum açtınız."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"Maalesef, telefon numarası SIM kartınızdan okunamıyor. Lütfen yardım için operatörünüze başvurun."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"Şu anda oturumunuz açık değil."</string>
+    <string name="general_error" msgid="2784900425265121080">"Hata kodu <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"Mutlu"</item>
+    <item msgid="4535010061202018372">"Üzgün"</item>
+    <item msgid="9126439186030536335">"Göz kırpma"</item>
+    <item msgid="850866187116359823">"Dil çıkarmış"</item>
+    <item msgid="394905071090547502">"Şaşırmış"</item>
+    <item msgid="154223719974718360">"Öpücük"</item>
+    <item msgid="7922997411177141520">"Bağırma"</item>
+    <item msgid="2507841103887006866">"Sakin"</item>
+    <item msgid="7305800612774038776">"Para ağızlı"</item>
+    <item msgid="8019801991256267534">"Ayak ağızda"</item>
+    <item msgid="6054214980935551183">"Utanmış"</item>
+    <item msgid="6425740366789820735">"Melek"</item>
+    <item msgid="6790879686860830930">"Kararsız"</item>
+    <item msgid="8487432187298106600">"Ağlama"</item>
+    <item msgid="1697327406585784541">"Dudakları mühürlü"</item>
+    <item msgid="4623875498872672218">"Gülme"</item>
+    <item msgid="6044435333460205962">"Kafası karışmış"</item>
+  </string-array>
+</resources>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"Nettprat"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"Avbryt pålogging"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"Legg til kontakt"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"Fjern kontakt"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"Blokker kontakt"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"Blokkert"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"Kontoliste"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"Innstillinger"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"Start samtale"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"Logg av"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"Vis profil"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"Avslutt samtale"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"Kontaktliste"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Inviter…"</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"Bytt mellom samtaler"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"Sett inn smilefjes"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Meny+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"Inndata"</string>
+    <string name="confirm" msgid="3229086014444547636">"Bekreft"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli slettet."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli blokkert."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli avblokkert."</string>
+    <string name="ok" msgid="1521940081498188645">"OK"</string>
+    <string name="cancel" msgid="5115511021657936211">"Avbryt"</string>
+    <string name="yes" msgid="4042588907115698888">"OK"</string>
+    <string name="no" msgid="1791024164361629713">"Avbryt"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"De er blitt logget av <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"Du er blitt logget av <xliff:g id="ACCOUNT">%1$s</xliff:g> fordi <xliff:g id="REASON">%2$s</xliff:g>."</string>
+    <string name="add_account" msgid="3402105687785864337">"Legg til <xliff:g id="ACCOUNT">%1$s</xliff:g>-konto"</string>
+    <string name="label_username" msgid="8704597829337399952">"Brukernavn:"</string>
+    <string name="label_password" msgid="7809879599377131899">"Passord:"</string>
+    <string name="remember_password" msgid="4090719436666073946">"Husk passord."</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"Logg på automatisk."</string>
+    <string name="sign_up" msgid="7071654280992136839">"Mangler du konto?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"Dette valget logger deg automatisk på hver gang du åpner applikasjonen. For å avmerke valget, logg av og fjern så haken ved «Logg på automatisk»."</string>
+    <string name="sign_in" msgid="6204326200860136567">"Logg på"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"Logger på <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Logger på…"</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Bakgrunnsdata deaktivert"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> trenger at bakgrunnsdata er aktivert."</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Aktiver"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Avslutt"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"Pågående samtaler (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string name="online_count" msgid="5007781327712739543">"<xliff:g id="NUMBER">%1$d</xliff:g> tilgjengelig"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"Venneinvitasjoner"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Ukjent"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"Tom"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"Ingen samtaler"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"Velg kontakt(er) som skal inviteres"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"Skriv for å finne kontakter"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"Fant ingen kontakter."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"Blokkerte kontakter - <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"Ingen blokkerte kontakter."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"Kontaktprofil"</string>
+    <string name="label_status" msgid="3228165483618856922">"Status:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"Klienttype:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"Datamaskin"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"Mobil"</string>
+    <string name="presence_available" msgid="7514162178730233803">"Tilgjengelig"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"Opptatt"</string>
+    <string name="presence_away" msgid="2893687249265559744">"Borte"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"Inaktiv"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"Frakoblet"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"Usynlig"</string>
+    <string name="chat_with" msgid="8562954189958846831">"Samtale med <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="me" msgid="8421609599685404593">"Meg"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"Skriv her"</string>
+    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g> er tilgjengelig"</string>
+    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g> er borte"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> er opptatt"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> er frakoblet"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> har blitt med i samtalen"</string>
+    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> har forlatt samtalen"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Sendt '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>', '<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"Send"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"Kunne ikke sende meldingen."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"Mistet tilkoblingen til tjeneren. Meldingen vil bli sendt ved tilkobling."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> er frakoblet. Meldinger du sender vil bli levert når <xliff:g id="USER_1">%1$s</xliff:g> kobler til."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g> er ikke i kontaktlisten."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"Velg kobling"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"Ingen aktive samtaler."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"Legg til kontakt"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"E-postadresse til den du ønsker å invitere:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"Velg en liste:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"Skriv inn et navn som skal legges til fra kontaktene."</string>
+    <string name="invite_label" msgid="6229798754682424899">"Send invitasjon"</string>
+    <string name="setting_title" msgid="6676157178613673420">"Generelle innstillinger"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"Skjul avloggede kontakter"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"Varslingsinnstillinger"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"Varsel om lynmeldinger"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"Varsle i statusveltet når det kommer lynmeldinger"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"Vibrer"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"Vibrer når det kommer lynmeldinger"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"Lyd"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"Spill ringetone når det kommer lynmeldinger"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"Velg ringetone"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g> har invitert deg til en gruppesamtale."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"Invitasjonen er blitt sendt til <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"Godta"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"Avslå"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g> har invitert deg til å være på kontaktlisten sin."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"Godta"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"Avslå"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"Kunne ikke godta abonnement fra <xliff:g id="USER">%1$s</xliff:g>. Prøv igjen senere."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"Kunne ikke avslå abonnement fra <xliff:g id="USER">%1$s</xliff:g>. Prøv igjen senere."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"Nye <xliff:g id="PROVIDER">%1$s</xliff:g>-meldinger"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"<xliff:g id="NUMBER">%1$d</xliff:g> uleste samtaler"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"Ny venneinvitasjon fra <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"Invitasjon til gruppesamtale"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"Ny invitasjon til gruppesamtale fra <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble lagt til."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble slettet."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble blokkert."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble avblokkert."</string>
+    <string name="perm_label" msgid="203411797893865789">"start lynmeldingstjeneste"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"Tillater applikasjoner å starte lynmeldingstjenesten."</string>
+    <string name="error" msgid="4778856523246532623">"NB"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"Kunne ikke logge på <xliff:g id="SERVICE">%1$s</xliff:g>. Prøv igjen senere."\n"(Detaljer: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"Listen ble ikke lagt til."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"Kontakten ble ikke blokkert."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"Kontakten ble ikke avblokkert."</string>
+    <string name="select_contact" msgid="5804415466346460387">"Velg en kontakt først."</string>
+    <string name="disconnected" msgid="7731840958629349414">"Frakoblet!"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"Tjenestefeil!"</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"Kontaktlisten ble ikke lastet."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"Kan ikke koble til tjeneren. Sjekk tilkoblingen."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g> finnes allerede i kontaktlisten."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"Kontakten «<xliff:g id="USER">%1$s</xliff:g>» er nå blokkert."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"Vent mens kontaktlisten lastes."</string>
+    <string name="network_error" msgid="1971556432619053394">"Det oppsto en nettfeil."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"Tjeneren støtter ikke denne funksjonen."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"Passordet er ikke gyldig."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"Det oppsto en feil på tjeneren."</string>
+    <string name="not_implemented" msgid="845369556603815808">"Tjeneren støtter ikke denne funksjonen."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"Tjeneren er utilgjengelig."</string>
+    <string name="timeout" msgid="8160218318070765661">"Det oppsto et tidsavbrudd på tjeneren."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"Tjeneren støtter ikke denne versjonen."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"Meldingskøen er full."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"Tjeneren støtter ikke videresending til domenet."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"Brukernavnet du skrev inn ble ikke gjenkjent."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"Beklager, du er blokkert av brukeren."</string>
+    <string name="session_expired" msgid="1999103420742299764">"Sesjonen har gått ut, logg på på nytt."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"du er pålogget med en annen klient."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"du allerede er pålogget med en annen klient."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"Beklager, kan ikke lese telefonnummeret fra SIM-kortet. Kontakt operatøren for hjelp."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"Du er ikke pålogget."</string>
+    <string name="general_error" msgid="2784900425265121080">"Feilkode <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"Glad"</item>
+    <item msgid="4535010061202018372">"Trist"</item>
+    <item msgid="9126439186030536335">"Blunker"</item>
+    <item msgid="850866187116359823">"Rekker tunge"</item>
+    <item msgid="394905071090547502">"Overrasket"</item>
+    <item msgid="154223719974718360">"Kyss"</item>
+    <item msgid="7922997411177141520">"Roper"</item>
+    <item msgid="2507841103887006866">"Kul"</item>
+    <item msgid="7305800612774038776">"Pengemunn"</item>
+    <item msgid="8019801991256267534">"Fot i munnen"</item>
+    <item msgid="6054214980935551183">"Flau"</item>
+    <item msgid="6425740366789820735">"Engel"</item>
+    <item msgid="6790879686860830930">"Usikker"</item>
+    <item msgid="8487432187298106600">"Gråter"</item>
+    <item msgid="1697327406585784541">"Stille som graven"</item>
+    <item msgid="4623875498872672218">"Ler"</item>
+    <item msgid="6044435333460205962">"Forvirret"</item>
+  </string-array>
+</resources>

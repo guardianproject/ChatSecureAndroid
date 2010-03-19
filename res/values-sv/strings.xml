@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"Chatt"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"Avbryt inloggning"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"Lägg till kontakt"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"Ta bort kontakt"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"Blockera kontakt"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"Blockerad"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"Kontolista"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"Inställningar"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"Öppna chatt"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"Logga ut"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"Visa profil"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"Avsluta chatt"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"Kontaktlista"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Bjud in…"</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"Byt chatt"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"Infoga känsloikon"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Meny+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"Indata"</string>
+    <string name="confirm" msgid="3229086014444547636">"Bekräfta"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"Kontakten <xliff:g id="USER">%1$s</xliff:g> tas bort."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"Kontakten <xliff:g id="USER">%1$s</xliff:g> blockeras."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"Blockering hävs för kontakten <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string name="ok" msgid="1521940081498188645">"OK"</string>
+    <string name="cancel" msgid="5115511021657936211">"Avbryt"</string>
+    <string name="yes" msgid="4042588907115698888">"OK"</string>
+    <string name="no" msgid="1791024164361629713">"Avbryt"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"Du har loggats ut från <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"Du har loggats ut från <xliff:g id="ACCOUNT">%1$s</xliff:g> eftersom <xliff:g id="REASON">%2$s</xliff:g>."</string>
+    <string name="add_account" msgid="3402105687785864337">"Lägg till kontot <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="label_username" msgid="8704597829337399952">"Användarnamn:"</string>
+    <string name="label_password" msgid="7809879599377131899">"Lösenord"</string>
+    <string name="remember_password" msgid="4090719436666073946">"Kom ihåg mitt lösenord."</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"Logga in mig automatiskt."</string>
+    <string name="sign_up" msgid="7071654280992136839">"Har du inget konto?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"Det här alternativet loggar in dig automatiskt varje gång du öppnar programmet. Om du vill inaktivera alternativet loggar du ut och avmarkerar kryssrutan Logga in mig automatiskt."</string>
+    <string name="sign_in" msgid="6204326200860136567">"Logga in"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"Loggar in på <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Loggar in…"</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Bakgrundsdata inaktiverat"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> fungerar bara om bakgrundsdata är aktiverat."</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Aktivera"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Avsluta"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"Pågående chattar (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string name="online_count" msgid="5007781327712739543">"<xliff:g id="NUMBER">%1$d</xliff:g> online"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"Kompisinbjudningar"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Okänd"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"Logga ut"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"Inga konversationer"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"Välj vilka kontakter du vill bjuda in"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"Skriv för att hitta kontakt"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"Hittade inga kontakter."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"Blockerade kontakter – <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"Inga blockerade kontakter."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"Kontaktprofil"</string>
+    <string name="label_status" msgid="3228165483618856922">"Status:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"Klienttyp:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"Dator"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"Mobil"</string>
+    <string name="presence_available" msgid="7514162178730233803">"Online"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"Upptagen"</string>
+    <string name="presence_away" msgid="2893687249265559744">"Borta"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"Inaktiv"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"Offline"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"Visa som offline"</string>
+    <string name="chat_with" msgid="8562954189958846831">"Chatt med <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="me" msgid="8421609599685404593">"Jag"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"Börja skriva"</string>
+    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g> är online"</string>
+    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g> är borta"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> är upptagen"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> är offline"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> är med"</string>
+    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> har lämnat chatten"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Skickades '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>' den '<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"Skicka"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"Det gick inte att skicka meddelandet."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"Anslutningen till servern bröts. Meddelandena skickas när du är online igen."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> är offline. Meddelanden som du skickar levereras när <xliff:g id="USER_1">%1$s</xliff:g> är online igen."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g> är inte med i din Kontaktlista."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"Välj länk"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"Ingen aktiv chatt."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"Lägg till kontakt"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"E-postadress till den du vill bjuda in:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"Välj en lista:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"Ange ett namn som du vill lägga till från Kontakter."</string>
+    <string name="invite_label" msgid="6229798754682424899">"Skicka inbjudan"</string>
+    <string name="setting_title" msgid="6676157178613673420">"Allmänna inställningar"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"Dölj kontakter som är offline"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"Aviseringsinställningar"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"Chattavisering"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"Avisering i statusfältet när jag får chattmeddelanden"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"Vibrera"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"Vibrera även när jag får chattmeddelanden"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"Ljud"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"Spela ringsignalen även när jag får chattmeddelande"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"Välj ringsignal"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g> har bjudit in dig till en gruppchatt."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"Inbjudan har skickats till <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"Acceptera"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"Avvisa"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g> har bjudit in dig till sin Kontaktlista."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"Acceptera"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"Avvisa"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"Det gick inte att godkänna prenumeration från <xliff:g id="USER">%1$s</xliff:g>. Försök igen lite senare."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"Det gick inte att avvisa prenumeration från <xliff:g id="USER">%1$s</xliff:g>. Försök igen senare."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"Nya meddelanden från <xliff:g id="PROVIDER">%1$s</xliff:g>"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"<xliff:g id="NUMBER">%1$d</xliff:g> olästa chattar"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"Ny kompisinbjudan från <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"Inbjudan till gruppchatt"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"Ny inbjudan till gruppchatt från <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"Kontakten <xliff:g id="USER">%1$s</xliff:g> har lagts till."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"Kontakten <xliff:g id="USER">%1$s</xliff:g> har tagits bort."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"Kontakten <xliff:g id="USER">%1$s</xliff:g> är blockerad."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"Blockering hävs för kontakten <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string name="perm_label" msgid="203411797893865789">"öppna chattjänsten"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"Tillåter att ett program avsiktligen öppnar chattjänsten."</string>
+    <string name="error" msgid="4778856523246532623">"Obs!"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"Det gick inte att logga in till tjänsten <xliff:g id="SERVICE">%1$s</xliff:g>. Försök igen senare."\n"(Information: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"Det gick inte att lägga till listan."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"Kontakten blockerades inte."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"Blockeringen hävdes inte för kontakten."</string>
+    <string name="select_contact" msgid="5804415466346460387">"Du måste välja en kontakt först."</string>
+    <string name="disconnected" msgid="7731840958629349414">"Frånkopplad!"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"Fel på tjänsten!"</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"Det gick inte att hämta kontaktlistan."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"Det går inte att ansluta till servern. Kontrollera anslutningen."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g> finns redan i din Kontaktlista."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"Kontakten <xliff:g id="USER">%1$s</xliff:g> har blockerats."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"Vänta medan vi hämtar din Kontaktlista."</string>
+    <string name="network_error" msgid="1971556432619053394">"Ett nätverksfel har inträffat."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"Servern stöder inte den här funktionen."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"Lösenordet som du angav är ogiltigt."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"Servern upptäckte ett fel."</string>
+    <string name="not_implemented" msgid="845369556603815808">"Servern stöder inte den här funktionen."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"Servern är inte tillgänglig för tillfället."</string>
+    <string name="timeout" msgid="8160218318070765661">"Tidsgränsen för servern har överskridits."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"Servern stöder inte den aktuella versionen."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"Meddelandekön är full."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"Servern stöder inte vidarebefordran till domänen."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"Användarnamnet som du angav är okänt."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"Du har tyvärr blockerats av användaren."</string>
+    <string name="session_expired" msgid="1999103420742299764">"Besöket har upphört att gälla. Logga in igen."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"du har loggat in från en annan klient."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"du redan har loggat in från en annan klient."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"Det går tyvärr inte att läsa telefonnumret från ditt SIM-kort. Kontakta din operatör."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"Du är inte inloggad för närvarande."</string>
+    <string name="general_error" msgid="2784900425265121080">"Felkod <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"Glad"</item>
+    <item msgid="4535010061202018372">"Ledsen"</item>
+    <item msgid="9126439186030536335">"Blinkar"</item>
+    <item msgid="850866187116359823">"Lipar"</item>
+    <item msgid="394905071090547502">"Förvånad"</item>
+    <item msgid="154223719974718360">"Pussar"</item>
+    <item msgid="7922997411177141520">"Skriker"</item>
+    <item msgid="2507841103887006866">"Cool"</item>
+    <item msgid="7305800612774038776">"Dollarmun"</item>
+    <item msgid="8019801991256267534">"Bortgjord"</item>
+    <item msgid="6054214980935551183">"Generad"</item>
+    <item msgid="6425740366789820735">"Ängel"</item>
+    <item msgid="6790879686860830930">"Tveksam"</item>
+    <item msgid="8487432187298106600">"Gråter"</item>
+    <item msgid="1697327406585784541">"Hemlis"</item>
+    <item msgid="4623875498872672218">"Skrattar"</item>
+    <item msgid="6044435333460205962">"Förvirrad"</item>
+  </string-array>
+</resources>

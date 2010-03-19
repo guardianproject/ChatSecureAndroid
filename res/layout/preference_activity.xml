@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2007-2008 Esmertec AG.
+ * Copyright (C) 2007-2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView android:id="@+id/tvDataChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_channel_label"
+            android:textStyle="bold" />
+
+        <RadioGroup android:id="@+id/rgDataChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_below="@id/tvDataChannel"
+            android:checkedButton="@+id/HTTP" >
+
+            <RadioButton android:id="@+id/DATA_HTTP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/http" />
+
+            <RadioButton android:id="@+id/DATA_SMS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:focusable="false"
+                android:text="@string/sms" />
+
+        </RadioGroup>
+
+       <TextView android:id="@+id/tvDataEncoding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rgDataChannel"
+            android:text="@string/data_encoding_label"
+            android:textStyle="bold" />
+
+        <RadioGroup android:id="@+id/rgDataEncoding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_below="@id/tvDataEncoding"
+            android:checkedButton="@+id/ENC_WBXML" >
+
+            <RadioButton android:id="@+id/ENC_XML"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/xml" />
+
+            <RadioButton android:id="@+id/ENC_WBXML"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/wbxml" />
+
+            <RadioButton android:id="@+id/ENC_SMS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:focusable="false"
+                android:text="@string/sms" />
+
+        </RadioGroup>
+
+        <TextView android:id="@+id/tvCirChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rgDataEncoding"
+            android:text="@string/cir_channel_label"
+            android:textStyle="bold" />
+
+        <RadioGroup android:id="@+id/rgCirChannel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_below="@id/tvCirChannel"
+            android:layout_marginBottom="3dip"
+            android:checkedButton="@+id/STCP" >
+
+            <RadioButton android:id="@+id/CIR_STCP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/tcp" />
+
+            <RadioButton android:id="@+id/CIR_SHTTP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/http" />
+
+            <RadioButton android:id="@+id/CIR_SSMS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorTertiary"
+                android:focusable="false"
+                android:text="@string/sms" />
+
+        </RadioGroup>
+
+        <LinearLayout android:id="@+id/host"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/rgCirChannel"
+            android:layout_marginBottom="3dip" >
+
+            <TextView android:id="@+id/tvHost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dip"
+                android:text="@string/host_label"
+                android:textStyle="bold" />
+
+            <EditText android:id="@+id/etHost"
+                android:autoText="false"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:scrollHorizontally="true" />
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/msisdn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/host"
+            android:layout_marginBottom="3dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dip"
+                android:text="@string/msisdn_label"
+                android:textStyle="bold" />
+
+            <EditText android:id="@+id/etMsisdn"
+                android:autoText="false"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:scrollHorizontally="true" />
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/msisdn"
+            android:layout_alignParentRight="true"
+            android:text="@string/save" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"Чат"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"Отмена входа"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"Добавить контакт"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"Удалить контакт"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"Заблокировать контакт"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"Заблокированные"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"Список аккаунтов"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"Настройки"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"Начать чат"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"Выход"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"Просмотреть профиль"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"Закончить чат"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"Список контактов"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Пригласить пользователя..."</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"Сменить чат"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"Вставить смайлик"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Мenu+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"Ввод"</string>
+    <string name="confirm" msgid="3229086014444547636">"Подтвердить"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" будет удален."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" будет заблокирован."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" будет разблокирован."</string>
+    <string name="ok" msgid="1521940081498188645">"ОК"</string>
+    <string name="cancel" msgid="5115511021657936211">"Отмена"</string>
+    <string name="yes" msgid="4042588907115698888">"ОК"</string>
+    <string name="no" msgid="1791024164361629713">"Отмена"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"Вы вышли из службы: <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"Вы вышли из службы: <xliff:g id="ACCOUNT">%1$s</xliff:g>. Причина: <xliff:g id="REASON">%2$s</xliff:g>."</string>
+    <string name="add_account" msgid="3402105687785864337">"Добавить аккаунт <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="label_username" msgid="8704597829337399952">"Имя пользователя:"</string>
+    <string name="label_password" msgid="7809879599377131899">"Пароль:"</string>
+    <string name="remember_password" msgid="4090719436666073946">"Запомнить пароль."</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"Входить автоматически."</string>
+    <string name="sign_up" msgid="7071654280992136839">"У вас нет аккаунта?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"Этот параметр позволяет пользователю автоматически входить в систему при каждом запуске приложения. Чтобы отключить этот параметр, выйдите из системы, а затем снимите флажок \"Входить автоматически\"."</string>
+    <string name="sign_in" msgid="6204326200860136567">"Вход"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"Вход в <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Выполняется вход..."</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Исходные данные отключены"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> требует, чтобы использование фоновых данных было разрешено"</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Включить"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Выйти"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"Текущих чатов: (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string name="online_count" msgid="5007781327712739543">"Пользователей в сети: <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"Приглашения от друзей"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Неизвестный"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"Пусто"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"Нет разговоров"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"Выберите контакты людей, которых нужно пригласить"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"Введите текст для поиска контакта"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"Контакты не найдены."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"Заблокированные контакты – <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"Нет заблокированных контактов."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"Профиль контакта"</string>
+    <string name="label_status" msgid="3228165483618856922">"Статус:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"Тип клиента:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"Компьютер"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"Клиент для мобильных устройств"</string>
+    <string name="presence_available" msgid="7514162178730233803">"В сети"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"Не беспокоить"</string>
+    <string name="presence_away" msgid="2893687249265559744">"Отсутствует"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"Нет на месте"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"Не в сети"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"Невидимый"</string>
+    <string name="chat_with" msgid="8562954189958846831">"Чат с пользователем <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="me" msgid="8421609599685404593">"Я"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"Введите текст"</string>
+    <string name="contact_online" msgid="4241843267436748586">"Пользователь <xliff:g id="USER">%1$s</xliff:g> в сети"</string>
+    <string name="contact_away" msgid="2333627320542883164">"Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"Пользователь <xliff:g id="USER">%1$s</xliff:g> занят"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"Пользователь <xliff:g id="USER">%1$s</xliff:g> не в сети"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"Пользователь <xliff:g id="USER">%1$s</xliff:g> присоединился к чату"</string>
+    <string name="contact_left" msgid="3020686291216941829">"Пользователь <xliff:g id="USER">%1$s</xliff:g> покинул чат"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Отправлено в '<xliff:g id="HOUR">hh</xliff:g><xliff:g id="MINUTE">mm</xliff:g><xliff:g id="AMPM">a</xliff:g>', '<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"Отправить"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"Не удалось отправить сообщение."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"Соединение с сервером потеряно. Сообщения будут отправлены после входа в сеть."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"Пользователь <xliff:g id="USER_0">%1$s</xliff:g> не в сети. Отправленные сообщения будут доставлены, когда пользователь <xliff:g id="USER_1">%1$s</xliff:g> выйдет в сеть."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует в списке контактов."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"Выберите ссылку"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"Нет активных чатов."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"Добавить контакт"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"Адрес электронной почты человека, которого вы хотите пригласить:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"Выберите список:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"Чтобы добавить абонента из списка контактов, укажите его имя."</string>
+    <string name="invite_label" msgid="6229798754682424899">"Отправить приглашение"</string>
+    <string name="setting_title" msgid="6676157178613673420">"Общие настройки"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"Скрыть контакты, отсутствующие в сети"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"Настройки уведомлений"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"Уведомления чата"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"Уведомлять о получении сообщения чата в строке состояния"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"Вибрация"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"Сигнал вибрации при получении сообщения чата"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"Звуковой сигнал"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"Воспроизводить мелодию звонка при получении сообщения чата"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"Выбрать мелодию звонка"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"Пользователь <xliff:g id="USER">%1$s</xliff:g> приглашает вас в групповой чат."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"Приглашение отправлено пользователю <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"Принять"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"Отклонить"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"Пользователь <xliff:g id="USER">%1$s</xliff:g> хочет добавить вас в свой список контактов."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"Принять"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"Отклонить"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"Не удалось одобрить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"Не удалось отклонить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"Новые сообщения пользователя: <xliff:g id="PROVIDER">%1$s</xliff:g>"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"Непрочитанных чатов: <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"Новое приглашение от пользователя <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"Приглашение в групповой чат"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"Новое приглашение в групповой чат от пользователя <xliff:g id="USER">%s</xliff:g>"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" добавлен."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" удален."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" заблокирован."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" разблокирован."</string>
+    <string name="perm_label" msgid="203411797893865789">"Включить чат"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"Разрешает приложениям включать чат через Intent."</string>
+    <string name="error" msgid="4778856523246532623">"Внимание"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"Не удается выполнить вход в службу: <xliff:g id="SERVICE">%1$s</xliff:g>. Повторите попытку позже."\n"(Подробности: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"Список не был добавлен."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"Не удалось заблокировать контакт."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"Не удалось разблокировать контакт."</string>
+    <string name="select_contact" msgid="5804415466346460387">"Сначала выберите контакт."</string>
+    <string name="disconnected" msgid="7731840958629349414">"Соединение потеряно! "\n</string>
+    <string name="service_error" msgid="4578570332742070464">"Ошибка чата."</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"Список контактов не был загружен."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"Не удается подключиться к серверу. Проверьте соединение."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"Пользователь <xliff:g id="USER">%1$s</xliff:g> уже внесен в список контактов."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"Контакт \"<xliff:g id="USER">%1$s</xliff:g>\" заблокирован."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"Дождитесь окончания загрузки списка контактов."</string>
+    <string name="network_error" msgid="1971556432619053394">"Произошла ошибка сети."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"Эта функция не поддерживается сервером."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"Указанный пароль недействителен."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"Произошла ошибка сервера."</string>
+    <string name="not_implemented" msgid="845369556603815808">"Эта функция не поддерживается сервером."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"В настоящий момент сервер недоступен."</string>
+    <string name="timeout" msgid="8160218318070765661">"Время ожидания сервера истекло."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"Текущая версия не поддерживается сервером."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"Очередь сообщений переполнена."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"Сервер не поддерживает переадресацию на домен."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"Указанное имя пользователя не опознано."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"К сожалению, пользователь вас заблокировал."</string>
+    <string name="session_expired" msgid="1999103420742299764">"Сеанс завершен, войдите в систему еще раз."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"вы вошли с использованием другого клиента."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"вы уже вошли с использованием другого клиента."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"Не удается получить номер телефона с SIM-карты. Обратитесь к своему оператору."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"В настоящий момент вход в систему не выполнен."</string>
+    <string name="general_error" msgid="2784900425265121080">"Код ошибки: <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"Радость"</item>
+    <item msgid="4535010061202018372">"Грусть"</item>
+    <item msgid="9126439186030536335">"Подмигивает"</item>
+    <item msgid="850866187116359823">"Показывает язык"</item>
+    <item msgid="394905071090547502">"Удивление"</item>
+    <item msgid="154223719974718360">"Поцелуй"</item>
+    <item msgid="7922997411177141520">"Кричит"</item>
+    <item msgid="2507841103887006866">"Крутой"</item>
+    <item msgid="7305800612774038776">"Молчание – золото"</item>
+    <item msgid="8019801991256267534">"В замешательстве"</item>
+    <item msgid="6054214980935551183">"Смущение"</item>
+    <item msgid="6425740366789820735">"Ангел"</item>
+    <item msgid="6790879686860830930">"Нерешительный"</item>
+    <item msgid="8487432187298106600">"Плачет"</item>
+    <item msgid="1697327406585784541">"Не скажу"</item>
+    <item msgid="4623875498872672218">"Смех"</item>
+    <item msgid="6044435333460205962">"Озадаченный"</item>
+  </string-array>
+</resources>

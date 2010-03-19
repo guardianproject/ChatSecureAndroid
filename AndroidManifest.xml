@@ -1,0 +1,220 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.gitian.android.im" 
+    android:sharedUserLabel="@string/perm_label">
+
+    <uses-permission android:name="org.gitian.android.providers.imps.permission.READ_ONLY" />
+    <uses-permission android:name="org.gitian.android.providers.imps.permission.WRITE_ONLY" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="org.gitian.android.im.permission.IM_SERVICE" />
+
+    <permission android:name="org.gitian.android.im.permission.IM_SERVICE"
+            android:permissionGroup="android.permission-group.MESSAGES"
+            android:protectionLevel="dangerous"
+            android:label="@string/perm_label"
+            android:description="@string/perm_desc" />
+
+    <permission android:name="org.gitian.android.providers.imps.permission.READ_ONLY"
+        android:permissionGroup="android.permission-group.MESSAGES"
+        android:protectionLevel="dangerous"
+        android:label="@string/ro_perm_label"
+        android:description="@string/ro_perm_desc" />
+
+    <permission android:name="org.gitian.android.providers.imps.permission.WRITE_ONLY"
+        android:permissionGroup="android.permission-group.MESSAGES"
+        android:protectionLevel="dangerous"
+        android:label="@string/wo_perm_label"
+        android:description="@string/wo_perm_desc" />
+
+    <application android:name=".app.ImApp"
+             android:label="@string/im_label"
+             android:icon="@drawable/ic_launcher_im"
+             android:taskAffinity="android.task.im">
+
+        <service android:name=".service.RemoteImService"
+            android:process="android.process.im"
+            android:exported="true"
+            android:permission="org.gitian.android.im.permission.IM_SERVICE">
+            <intent-filter>
+                <action android:name="org.gitian.android.im.IRemoteImService" />
+                <action android:name="org.gitian.android.im.SERVICE" />
+            </intent-filter>
+        </service>
+
+        <provider android:name=".provider.ImpsProvider"
+            android:authorities="imps"
+            android:process="android.process.im"
+            android:multiprocess="false"
+            android:readPermission="org.gitian.android.providers.imps.permission.READ_ONLY"
+            android:writePermission="org.gitian.android.providers.imps.permission.WRITE_ONLY"
+            android:grantUriPermissions="true" />
+
+        <activity android:name=".app.ChooseAccountActivity"
+                android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.ImUrlActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="org.gitian.android.im.category.AIM" />
+                <category android:name="org.gitian.android.im.category.MSN" />
+                <category android:name="org.gitian.android.im.category.YAHOO" />
+                <data android:scheme="im" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="imto" android:host="aim"/>
+                <data android:scheme="imto" android:host="yahoo"/>
+                <data android:scheme="imto" android:host="msn"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.LandingPage">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.AccountActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateUnchanged">
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <data android:mimeType="vnd.android.cursor.item/imps-accounts" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <data android:mimeType="vnd.android.cursor.item/imps-providers" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.SigningInActivity"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.SignoutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.ContactListActivity" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-contacts"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.AddContactActivity"
+            android:label="@string/add_contact_title"/>
+
+        <activity android:name=".app.NewChatActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:windowSoftInputMode="stateUnchanged">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <data android:mimeType="vnd.android.cursor.item/imps-chats" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/imps-invitations" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.IM_MANAGE_SUBSCRIPTION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="vnd.android.cursor.item/imps-contacts"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.ContactsPickerActivity" android:label="@string/contacts_picker_title">
+            <intent-filter>
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-contacts" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.BlockedContactsActivity" android:label="@string/blocked_list_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-blockedList" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.ContactPresenceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/imps-contacts" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.PreferenceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.SettingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android-dir/imps-providerSettings" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".app.SimpleInputActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+<!--        <receiver android:name=".receiver.ImServiceAutoStarter"
+            android:process="android.process.im">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+-->
+    </application>
+	<uses-sdk android:targetSdkVersion="4" android:minSdkVersion="4"></uses-sdk>
+
+</manifest>

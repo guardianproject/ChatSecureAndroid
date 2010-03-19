@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"即時訊息"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"取消登入"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"新增聯絡人"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"刪除聯絡人"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"封鎖聯絡人"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"封鎖"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"帳戶清單"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"設定"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"開始即時通訊"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"登出"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"觀看個人檔案"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"結束即時通訊"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"聯絡人清單"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"邀請…"</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"切換即時通訊"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"插入表情符號"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"[Menu] +"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"輸入"</string>
+    <string name="confirm" msgid="3229086014444547636">"確認"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"刪除「<xliff:g id="USER">%1$s</xliff:g>」？"</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"封鎖「<xliff:g id="USER">%1$s</xliff:g>」。"</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"「<xliff:g id="USER">%1$s</xliff:g>」會被解除封鎖。"</string>
+    <string name="ok" msgid="1521940081498188645">"確定"</string>
+    <string name="cancel" msgid="5115511021657936211">"取消"</string>
+    <string name="yes" msgid="4042588907115698888">"確定"</string>
+    <string name="no" msgid="1791024164361629713">"取消"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"您已登出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。"</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"由於 <xliff:g id="REASON">%2$s</xliff:g>，您已登出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。"</string>
+    <string name="add_account" msgid="3402105687785864337">"新增 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帳戶"</string>
+    <string name="label_username" msgid="8704597829337399952">"使用者名稱："</string>
+    <string name="label_password" msgid="7809879599377131899">"密碼："</string>
+    <string name="remember_password" msgid="4090719436666073946">"記住我的密碼。"</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"自動登入"</string>
+    <string name="sign_up" msgid="7071654280992136839">"您有帳戶嗎？"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"此選項可讓您開啟應用程式時自動登入。如要停用，請登出並清除 [自動登入] 核取方塊。"</string>
+    <string name="sign_in" msgid="6204326200860136567">"登入"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"登入 <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"登入中…"</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"已停用背景資料"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> 需要啟用背景資料。"</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"啟用"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"結束"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"進行中的即時通訊 (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string name="online_count" msgid="5007781327712739543">"線上人數 <xliff:g id="NUMBER">%1$d</xliff:g>"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"邀請朋友"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>" 未知的 "</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"沒有聯絡人"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"沒有對話"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"選取要邀請的聯絡人"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"輸入關鍵字尋找聯絡人"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"找不到聯絡人。"</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"已封鎖聯絡人 - <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"沒有封鎖的聯絡人。"</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"聯絡人檔案"</string>
+    <string name="label_status" msgid="3228165483618856922">"狀態："</string>
+    <string name="label_client_type" msgid="2498423521352545451">"用戶端類型："</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"電腦"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"行動裝置"</string>
+    <string name="presence_available" msgid="7514162178730233803">"線上"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"忙碌"</string>
+    <string name="presence_away" msgid="2893687249265559744">"外出"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"閒置"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"離線"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"顯示離線"</string>
+    <string name="chat_with" msgid="8562954189958846831">"與<xliff:g id="USER">%1$s</xliff:g>進行即時通訊"</string>
+    <string name="me" msgid="8421609599685404593">"我"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"請在此輸入文字"</string>
+    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g> 在線上"</string>
+    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g> 顯示離開"</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> 目前忙碌"</string>
+    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> 顯示離線"</string>
+    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> 已加入"</string>
+    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> 已離開"</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"'傳送時間：'<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>'，'<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string name="send" msgid="2726588254020771734">"傳送"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"訊息無法傳送。"</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"與伺服器連線中斷。您的訊息將在下次登入時傳送。"</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> 顯示離線。您的訊息將在 <xliff:g id="USER_1">%1$s</xliff:g> 登入時傳送。"</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g>不在您的聯絡人清單。"</string>
+    <string name="select_link_title" msgid="5020179468567358399">"選取連結"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"沒有進行中的即時通訊"</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"新增聯絡人"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"您要邀請的對象電子郵件地址："</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"選擇一個清單："</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"輸入聯絡人姓名。"</string>
+    <string name="invite_label" msgid="6229798754682424899">"傳送邀請"</string>
+    <string name="setting_title" msgid="6676157178613673420">"一般設定"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"隱藏離線聯絡人"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"通知設定"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"即時訊息通知"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"收到即時訊息時，在狀態列中顯示通知"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"震動"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"收到即時訊息時振動提醒"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"音效"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"收到即時訊息時播放鈴聲"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"選取鈴聲"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g>邀請您加入群組即時通訊。"</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"已傳送邀請給 <xliff:g id="USER">%1$s</xliff:g>。"</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"接受"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"拒絕"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g>想要將您新增到聯絡人清單。"</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"接受"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"拒絕"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。"</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"拒絕訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。"</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"來自 <xliff:g id="PROVIDER">%1$s</xliff:g> 的新訊息"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"<xliff:g id="NUMBER">%1$d</xliff:g> 個未讀即時訊息"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"<xliff:g id="USER">%s</xliff:g>傳送朋友邀請給您"</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"群組即時通訊邀請"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"來自<xliff:g id="USER">%s</xliff:g>的群組即時通訊邀請"</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"「<xliff:g id="USER">%1$s</xliff:g>」已新增。"</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"「<xliff:g id="USER">%1$s</xliff:g>」已刪除。"</string>
+    <string name="block_contact_success" msgid="301279568695040166">"「<xliff:g id="USER">%1$s</xliff:g>」已封鎖。"</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"「<xliff:g id="USER">%1$s</xliff:g>」已解除封鎖。"</string>
+    <string name="perm_label" msgid="203411797893865789">"開始即時訊息服務"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"允許應用程式透過網際網路啟動即時訊息服務"</string>
+    <string name="error" msgid="4778856523246532623">"注意"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"無法登入 <xliff:g id="SERVICE">%1$s</xliff:g> 服務。請稍候再試一次。"\n" (詳細內容：<xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"清單未增加"</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"聯絡人未封鎖。"</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"聯絡人未解除封鎖。"</string>
+    <string name="select_contact" msgid="5804415466346460387">"請先選取聯絡人。"</string>
+    <string name="disconnected" msgid="7731840958629349414">"已中斷連線！"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"服務錯誤！"</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"聯絡人清單未載入。"</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"無法連線到伺服器。請檢查連線狀態。"</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g>已在您的聯絡人清單。"</string>
+    <string name="contact_blocked" msgid="11602144969098173">"「<xliff:g id="USER">%1$s</xliff:g>」已封鎖。"</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"請等待聯絡人清單載入完成。"</string>
+    <string name="network_error" msgid="1971556432619053394">"網路發生問題。"</string>
+    <string name="service_not_support" msgid="6552484838382542900">"伺服器不支援此功能。"</string>
+    <string name="invalid_password" msgid="4406190708977805393">"您輸入的密碼無效。"</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"伺服器發生問題。"</string>
+    <string name="not_implemented" msgid="845369556603815808">"伺服器不支援此功能。"</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"目前無法存取伺服器。"</string>
+    <string name="timeout" msgid="8160218318070765661">"伺服器連線逾時。"</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"伺服器不支援目前版本。"</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"訊息佇列已滿。"</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"伺服器不支援網域名稱轉址。"</string>
+    <string name="unknown_user" msgid="6680215792586778118">"您輸入的使用者名稱無法辨識。"</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"很抱歉，您被此使用者封鎖。"</string>
+    <string name="session_expired" msgid="1999103420742299764">"登入時限已到，請重新登入。"</string>
+    <string name="forced_logout" msgid="4914497176506037105">"您已在其他用戶端登入。"</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"您已在其他用戶端登入。"</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"很抱歉，無法從 SIM 卡讀取電話號碼。請向您的電信業者尋求協助。"</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"您尚未登入。"</string>
+    <string name="general_error" msgid="2784900425265121080">"錯誤代碼 <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"開心"</item>
+    <item msgid="4535010061202018372">"傷心"</item>
+    <item msgid="9126439186030536335">"眨眼"</item>
+    <item msgid="850866187116359823">"吐舌頭"</item>
+    <item msgid="394905071090547502">"驚訝"</item>
+    <item msgid="154223719974718360">"紅唇"</item>
+    <item msgid="7922997411177141520">"大喊"</item>
+    <item msgid="2507841103887006866">"酷"</item>
+    <item msgid="7305800612774038776">"滿嘴錢"</item>
+    <item msgid="8019801991256267534">"說錯話"</item>
+    <item msgid="6054214980935551183">"害羞"</item>
+    <item msgid="6425740366789820735">"天使"</item>
+    <item msgid="6790879686860830930">"還沒決定"</item>
+    <item msgid="8487432187298106600">"嚎啕大哭"</item>
+    <item msgid="1697327406585784541">"不要告訴別人"</item>
+    <item msgid="4623875498872672218">"開懷大笑"</item>
+    <item msgid="6044435333460205962">"疑惑"</item>
+  </string-array>
+</resources>

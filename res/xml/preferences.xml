@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2008 Esmertec AG.
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/setting_title">
+        <CheckBoxPreference
+                android:key="hide-offline-contacts"
+                android:title="@string/hide_offline_contacts"
+                android:defaultValue="false"
+                android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notification_group_title">
+
+        <CheckBoxPreference
+                android:key="enable-notifications"
+                android:title="@string/notification_enabled_title"
+                android:summary="@string/notification_enabled_summary"
+                android:defaultValue="true"
+                android:persistent="false" />
+
+        <CheckBoxPreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="enable-notifications"
+                android:key="notification-vibrate"
+                android:defaultValue="false"
+                android:persistent="false"
+                android:title="@string/notification_vibrate_title"
+                android:summary="@string/notification_vibrate_summary" />
+
+        <CheckBoxPreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="enable-notifications"
+                android:defaultValue="true"
+                android:persistent="false"
+                android:key="notification-sound"
+                android:title="@string/notification_sound_title"
+                android:summary="@string/notification_sound_summary" />
+
+        <org.gitian.android.im.app.ImRingtonePreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="notification-sound"
+                android:key="notification-ringtone"
+                android:persistent="false"
+                android:title="@string/notification_ringtone_title"
+                android:ringtoneType="notification" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

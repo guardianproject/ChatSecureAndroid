@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="im_label" msgid="6289028202073124911">"메신저"</string>
+    <string name="menu_cancel_signin" msgid="146078926243968887">"로그인 취소"</string>
+    <string name="menu_add_contact" msgid="6315091944808434095">"연락처 추가"</string>
+    <string name="menu_remove_contact" msgid="3306468526492774925">"연락처 삭제"</string>
+    <string name="menu_block_contact" msgid="727204732836017804">"연락처 차단"</string>
+    <string name="menu_view_blocked" msgid="7567355003496935631">"차단 목록"</string>
+    <string name="menu_view_accounts" msgid="2876518557188672305">"계정 목록"</string>
+    <string name="menu_settings" msgid="4609084900756093288">"설정"</string>
+    <string name="menu_start_chat" msgid="6188262479212139863">"채팅 시작"</string>
+    <string name="menu_sign_out" msgid="2456603636849489202">"로그아웃"</string>
+    <string name="menu_view_profile" msgid="5883288134525529119">"프로필 보기"</string>
+    <string name="menu_end_conversation" msgid="3556567768336552622">"채팅 종료"</string>
+    <string name="menu_view_contact_list" msgid="4630377976475003130">"연락처 목록"</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"초대..."</string>
+    <string name="menu_switch_chats" msgid="5113455126377025717">"채팅 전환"</string>
+    <string name="menu_insert_smiley" msgid="2555290958985391105">"이모티콘 삽입"</string>
+    <string name="menu_plus" msgid="5000617247235760106">"Menu+"</string>
+    <string name="default_input_title" msgid="6182729628894599563">"입력"</string>
+    <string name="confirm" msgid="3229086014444547636">"확인"</string>
+    <string name="confirm_delete_contact" msgid="1364595657359357114">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제됩니다."</string>
+    <string name="confirm_block_contact" msgid="2490910366424078491">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단됩니다."</string>
+    <string name="confirm_unblock_contact" msgid="2194464819104507216">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제됩니다."</string>
+    <string name="ok" msgid="1521940081498188645">"확인"</string>
+    <string name="cancel" msgid="5115511021657936211">"취소"</string>
+    <string name="yes" msgid="4042588907115698888">"확인"</string>
+    <string name="no" msgid="1791024164361629713">"취소"</string>
+    <string name="signed_out_prompt" msgid="8832702403969474634">"<xliff:g id="ACCOUNT">%1$s</xliff:g>에서 로그아웃되었습니다."</string>
+    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"<xliff:g id="REASON">%2$s</xliff:g>(으)로 인해 <xliff:g id="ACCOUNT">%1$s</xliff:g>에서 로그아웃되었습니다."</string>
+    <string name="add_account" msgid="3402105687785864337">"<xliff:g id="ACCOUNT">%1$s</xliff:g> 계정 추가"</string>
+    <string name="label_username" msgid="8704597829337399952">"사용자 이름:"</string>
+    <string name="label_password" msgid="7809879599377131899">"비밀번호:"</string>
+    <string name="remember_password" msgid="4090719436666073946">"내 비밀번호 저장"</string>
+    <string name="keep_me_signed_in" msgid="2883914867912933061">"자동으로 로그인"</string>
+    <string name="sign_up" msgid="7071654280992136839">"계정이 없으세요?"</string>
+    <string name="check_auto_sign_in" msgid="308461891031463647">"이 옵션을 선택하면 응용프로그램을 열 때마다 자동으로 로그인됩니다. 옵션을 사용 중지하려면 로그아웃한 다음 \'자동으로 로그인\' 확인란을 선택 취소하세요."</string>
+    <string name="sign_in" msgid="6204326200860136567">"로그인"</string>
+    <string name="signing_in_to" msgid="2689649632858697221">"<xliff:g id="ACCOUNT">%1$s</xliff:g>에 로그인하는 중"</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"로그인하는 중..."</string>
+    <string name="bg_data_prompt_title" msgid="4861800723853178111">"백그라운드 데이터 사용 안함"</string>
+    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g>을(를) 사용하려면 백그라운드 데이터를 사용하도록 설정해야 합니다."</string>
+    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"사용"</string>
+    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"종료"</string>
+    <string name="ongoing_conversation" msgid="6523428329676936109">"진행 중인 채팅(<xliff:g id="NUMBER">%1$d</xliff:g>개)"</string>
+    <string name="online_count" msgid="5007781327712739543">"온라인 접속자 <xliff:g id="NUMBER">%1$d</xliff:g>명"</string>
+    <string name="subscriptions" msgid="2039801939162848292">"친구 초대"</string>
+    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"알 수 없음"</i>")"</string>
+    <string name="empty_contact_group" msgid="5944413281854480292">"비어 있음"</string>
+    <string name="empty_conversation_group" msgid="3207190506591856738">"대화 내용 없음"</string>
+    <string name="contacts_picker_title" msgid="6681084488289812125">"초대할 연락처 선택"</string>
+    <string name="contact_filter_hint" msgid="7138176974380705986">"입력하여 연락처 찾기"</string>
+    <string name="empty_contact_list" msgid="1974715213398195818">"주소록이 없습니다."</string>
+    <string name="blocked_list_title" msgid="1107985939407422906">"차단된 주소록 - <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string name="no_blocked_contact" msgid="8733015382744327205">"차단된 주소록이 없습니다."</string>
+    <string name="contact_profile_title" msgid="3403866015406342297">"연락처 프로필"</string>
+    <string name="label_status" msgid="3228165483618856922">"상태:"</string>
+    <string name="label_client_type" msgid="2498423521352545451">"클라이언트 유형:"</string>
+    <string name="client_type_computer" msgid="5636516646543615981">"컴퓨터"</string>
+    <string name="client_type_mobile" msgid="8405440352829124713">"모바일"</string>
+    <string name="presence_available" msgid="7514162178730233803">"온라인"</string>
+    <string name="presence_busy" msgid="3425926873862063910">"다른 용무 중"</string>
+    <string name="presence_away" msgid="2893687249265559744">"자리 비움"</string>
+    <string name="presence_idle" msgid="3127526059878228229">"자리 비움"</string>
+    <string name="presence_offline" msgid="7946842914359044731">"오프라인"</string>
+    <string name="presence_invisible" msgid="1485652711495491831">"오프라인으로 표시"</string>
+    <string name="chat_with" msgid="8562954189958846831">"<xliff:g id="USER">%1$s</xliff:g>님과 채팅"</string>
+    <string name="me" msgid="8421609599685404593">"나"</string>
+    <string name="compose_hint" msgid="1735533889811320962">"메시지를 입력하세요."</string>
+    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g>님이 온라인 상태입니다."</string>
+    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g>님이 자리비움 상태입니다."</string>
+    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g>님이 다른 용무 중입니다."</string>
+    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g>님은 오프라인 상태입니다."</string>
+    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g>님이 채팅에 참여했습니다."</string>
+    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g>님이 채팅에서 나갔습니다."</string>
+    <string name="time_stamp" format="date" msgid="8952691401963972802">"<xliff:g id="DATE">EEEE</xliff:g>', '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>'에 전송'"</string>
+    <string name="send" msgid="2726588254020771734">"전송"</string>
+    <string name="msg_sent_failed" msgid="4209970218075996979">"메시지를 보내지 못했습니다."</string>
+    <string name="disconnected_warning" msgid="6798248948843269795">"서버와의 연결이 끊어졌습니다. 메시지는 온라인 상태일 때 전송됩니다."</string>
+    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g>님이 오프라인 상태입니다. <xliff:g id="USER_1">%1$s</xliff:g>님이 온라인 상태가 되면 보낸 메시지가 전달됩니다."</string>
+    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g>이(가) 연락처 목록에 없습니다."</string>
+    <string name="select_link_title" msgid="5020179468567358399">"링크 선택"</string>
+    <string name="empty_chat_list" msgid="7268903855432844937">"진행 중인 채팅이 없습니다."</string>
+    <string name="add_contact_title" msgid="8541795892456911186">"연락처 추가"</string>
+    <string name="input_contact_label" msgid="395294356081431462">"초대할 사람의 이메일 주소:"</string>
+    <string name="choose_list_label" msgid="1430489448508574145">"목록 선택:"</string>
+    <string name="invite_instruction" msgid="8262403243657760155">"주소록에서 추가할 이름을 입력하세요."</string>
+    <string name="invite_label" msgid="6229798754682424899">"초대장 보내기"</string>
+    <string name="setting_title" msgid="6676157178613673420">"일반 설정"</string>
+    <string name="hide_offline_contacts" msgid="8017909244732772990">"오프라인 주소록 숨기기"</string>
+    <string name="notification_group_title" msgid="4944275706770811080">"알림 설정"</string>
+    <string name="notification_enabled_title" msgid="6447889693376465773">"메신저 알림"</string>
+    <string name="notification_enabled_summary" msgid="2090889893066171466">"메신저가 오면 상태 표시줄에 알림"</string>
+    <string name="notification_vibrate_title" msgid="5603532186091800924">"진동"</string>
+    <string name="notification_vibrate_summary" msgid="1875275321875946598">"메신저가 오면 진동"</string>
+    <string name="notification_sound_title" msgid="8367990268592958299">"사운드"</string>
+    <string name="notification_sound_summary" msgid="3634976543811200858">"메신저가 오면 벨소리 재생"</string>
+    <string name="notification_ringtone_title" msgid="4847700898968990954">"벨소리 선택"</string>
+    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g>님이 그룹 채팅에 초대하셨습니다."</string>
+    <string name="invitation_sent_prompt" msgid="2542342110609014148">"<xliff:g id="USER">%1$s</xliff:g>님에게 초대장을 보냈습니다."</string>
+    <string name="accept_invitation" msgid="8852207669114500346">"수락"</string>
+    <string name="decline_invitation" msgid="3039909785911592632">"거부"</string>
+    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g>님이 연락처 목록에 올리기 위해 초대하셨습니다."</string>
+    <string name="approve_subscription" msgid="2035288988418082224">"수락"</string>
+    <string name="decline_subscription" msgid="3069941120905061191">"거부"</string>
+    <string name="approve_subscription_error" msgid="7653225198395861289">"<xliff:g id="USER">%1$s</xliff:g>님의 구독을 승인할 수 없습니다. 잠시 후에 다시 시도해 주세요."</string>
+    <string name="decline_subscription_error" msgid="7593921535412836089">"<xliff:g id="USER">%1$s</xliff:g>님의 구독을 거부할 수 없습니다. 잠시 후에 다시 시도해 주세요."</string>
+    <string name="newMessages_label" msgid="2180971062715087738">"새 메시지 <xliff:g id="PROVIDER">%1$s</xliff:g>개"</string>
+    <string name="num_unread_chats" msgid="728064925131396221">"읽지 않은 채팅 <xliff:g id="NUMBER">%1$d</xliff:g>개"</string>
+    <string name="subscription_notify_text" msgid="6742004636596633323">"<xliff:g id="USER">%s</xliff:g>님이 친구 초대를 보내셨습니다."</string>
+    <string name="notify_groupchat_label" msgid="4200552751080182984">"그룹 채팅 초대"</string>
+    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"<xliff:g id="USER">%s</xliff:g>님이 그룹 채팅에 초대하셨습니다."</string>
+    <string name="add_contact_success" msgid="6760968462242659207">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 추가되었습니다."</string>
+    <string name="delete_contact_success" msgid="4451989113378349412">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제되었습니다."</string>
+    <string name="block_contact_success" msgid="301279568695040166">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단되었습니다."</string>
+    <string name="unblock_contact_success" msgid="5506870117106713456">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제되었습니다."</string>
+    <string name="perm_label" msgid="203411797893865789">"메신저 서비스 시작"</string>
+    <string name="perm_desc" msgid="6978187394092498941">"응용프로그램이 인텐트를 통해 메신저 서비스를 시작할 수 있도록 합니다."</string>
+    <string name="error" msgid="4778856523246532623">"주의"</string>
+    <string name="login_service_failed" msgid="3883751713470046349">"<xliff:g id="SERVICE">%1$s</xliff:g> 서비스에 로그인할 수 없습니다. 잠시 후에 다시 시도해 주세요."\n"(세부정보: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string name="add_list_failed" msgid="5659371594032378190">"목록이 추가되지 않았습니다."</string>
+    <string name="block_contact_failed" msgid="5870952543258608424">"연락처를 차단하지 못했습니다."</string>
+    <string name="unblock_contact_failed" msgid="7761060327693183076">"연락처를 차단 해제하지 못했습니다."</string>
+    <string name="select_contact" msgid="5804415466346460387">"먼저 연락처를 선택하세요."</string>
+    <string name="disconnected" msgid="7731840958629349414">"연결 끊김"\n</string>
+    <string name="service_error" msgid="4578570332742070464">"서비스 오류"</string>
+    <string name="load_contact_list_failed" msgid="6395594768879404874">"연락처 목록을 로드하지 못했습니다."</string>
+    <string name="cant_connect_to_server" msgid="3188697382173578199">"서버에 연결할 수 없습니다. 연결을 확인하세요."</string>
+    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g>님이 이미 연락처 목록에 있습니다."</string>
+    <string name="contact_blocked" msgid="11602144969098173">"연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'은(는) 차단되었습니다."</string>
+    <string name="contact_not_loaded" msgid="3739109817357036832">"연락처 목록이 로드되는 동안 잠시 기다려 주세요."</string>
+    <string name="network_error" msgid="1971556432619053394">"네트워크 오류가 발생했습니다."</string>
+    <string name="service_not_support" msgid="6552484838382542900">"서버에서 이 기능을 지원하지 않습니다."</string>
+    <string name="invalid_password" msgid="4406190708977805393">"입력한 비밀번호가 올바르지 않습니다."</string>
+    <string name="internal_server_error" msgid="5659759443966908703">"서버에 오류가 발생했습니다."</string>
+    <string name="not_implemented" msgid="845369556603815808">"서버에서 이 기능을 지원하지 않습니다."</string>
+    <string name="service_unavaiable" msgid="4948915878388282443">"현재 서버를 사용할 수 없습니다."</string>
+    <string name="timeout" msgid="8160218318070765661">"서버가 제한 시간을 초과했습니다."</string>
+    <string name="version_not_supported" msgid="4342010736606775264">"서버에서 현재 버전을 지원하지 않습니다."</string>
+    <string name="message_queue_full" msgid="7501019992527859517">"메시지 대기열이 가득 찼습니다."</string>
+    <string name="domain_not_supported" msgid="7715663042901606605">"서버에서 도메인으로 전달하는 기능을 지원하지 않습니다."</string>
+    <string name="unknown_user" msgid="6680215792586778118">"입력한 사용자 이름을 인식할 수 없습니다."</string>
+    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"죄송합니다. 상대방에 의해 차단되었습니다."</string>
+    <string name="session_expired" msgid="1999103420742299764">"세션이 만료되었습니다. 다시 로그인하세요."</string>
+    <string name="forced_logout" msgid="4914497176506037105">"다른 클라이언트로부터 로그인했습니다."</string>
+    <string name="already_logged_in" msgid="1907391913706263174">"이미 다른 클라이언트로부터 로그인했습니다."</string>
+    <string name="msisdn_error" msgid="1477099919088266968">"죄송합니다. SIM 카드에서 전화번호를 읽을 수 없습니다. 이동통신사에 문의하세요."</string>
+    <string name="not_signed_in" msgid="8894662143178849906">"현재 로그인되어 있지 않습니다."</string>
+    <string name="general_error" msgid="2784900425265121080">"오류 코드 <xliff:g id="CODE">%1$d</xliff:g>"</string>
+  <string-array name="default_smiley_names">
+    <item msgid="1496436377093882868">"행복해"</item>
+    <item msgid="4535010061202018372">"슬퍼요"</item>
+    <item msgid="9126439186030536335">"윙크"</item>
+    <item msgid="850866187116359823">"메롱"</item>
+    <item msgid="394905071090547502">"헉!"</item>
+    <item msgid="154223719974718360">"키스"</item>
+    <item msgid="7922997411177141520">"아악"</item>
+    <item msgid="2507841103887006866">"멋진걸"</item>
+    <item msgid="7305800612774038776">"으이구"</item>
+    <item msgid="8019801991256267534">"실수했네"</item>
+    <item msgid="6054214980935551183">"당황"</item>
+    <item msgid="6425740366789820735">"천사"</item>
+    <item msgid="6790879686860830930">"결정하기 어렵군"</item>
+    <item msgid="8487432187298106600">"엉엉엉"</item>
+    <item msgid="1697327406585784541">"비밀로 할게"</item>
+    <item msgid="4623875498872672218">"하하하"</item>
+    <item msgid="6044435333460205962">"어리둥절"</item>
+  </string-array>
+</resources>

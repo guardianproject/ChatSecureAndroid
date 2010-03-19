@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2007-2008 Esmertec AG.
+ * Copyright (C) 2007-2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="ro_perm_label">read instant messages</string>
+    <string name="ro_perm_desc">
+        Allows applications to read data from the IM content provider.
+    </string>
+
+    <string name="wo_perm_label">write instant messages</string>
+    <string name="wo_perm_desc">
+        Allows applications to write data to the IM content provider.
+    </string>
+
+    <!-- The application label. This appears in the application launcher on the
+    Home screen. This is a noun. -->
+    <string name="im_label">IM</string>
+
+    <!-- These strings displayed on the landing page. -->
+    <!-- The title of the landing page.-->
+    <string name="landing_page_title">Chat - Select an account</string>
+
+    <!-- Landing page screen menu and context menu items. -->
+    <!-- Conext menu item: add a new account.-->
+    <string name="menu_add_account">Add account</string>
+    <!-- Conext menu item: edit an account.-->
+    <string name="menu_edit_account">Edit account</string>
+    <!-- Conext menu item: remove an account.-->
+    <string name="menu_remove_account">Remove account</string>
+    <!-- Screen menu item: sign out all service.-->
+    <string name="menu_sign_out_all">Sign out all</string>
+
+    <!-- These strings displayed on the landing page. -->
+    <!-- The title of the landing page.-->
+    <string name="choose_account_title">Chat - Select an account</string>
+    <!-- Displays the number of ongoing chats on the landing page.-->
+    <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+
+    <!-- Sign in progress screen menu items.-->
+    <!-- Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
+    <string name="menu_cancel_signin">Cancel signin</string>
+
+    <!--Contact list screen menu and context menu items.-->
+    <!-- This is a screen menu item for the Contact List Screen. It lets the
+    user to add a friend to the friend list. May be overrided by the plugin.-->
+    <string name="menu_add_contact">Add contact</string>
+    <!-- Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    remove a contact from the list. May be overrided by the plugin.-->
+    <string name="menu_remove_contact">Delete contact</string>
+    <!-- Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    block a contact. May be overrided by the plugin.-->
+    <string name="menu_block_contact">Block contact</string>
+    <!-- Screen menu item on the contact list screen to go to the blocked list
+    screen.-->
+    <string name="menu_view_blocked">Blocked</string>
+    <!-- Screen menu item on the contact list to go back to the landing page,
+    where you can choose which IM service you want to use-->
+    <string name="menu_view_accounts">Account list</string>
+    <!-- Screen menu item on the contact list to go to the setting page.-->
+    <string name="menu_settings">Settings</string>
+    <!-- Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    start a chat with a friend. May be overried by the plugin.-->
+    <string name="menu_start_chat">Start chat</string>
+    <!-- Screen menu item on the contact list to sign out the service.-->
+    <string name="menu_sign_out">Sign out</string>
+    <!-- Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the
+    user to view the contact's profile. May be overrided by the plugin.-->
+    <string name="menu_view_profile">View profile</string>
+    <!-- Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a conversation in the contact list. It lets the
+    user to end a chat with a contact. May be overrided by the plugin.-->
+    <string name="menu_end_conversation">End chat</string>
+
+    <!-- Chat screen menu and context menu items.-->
+    <!-- Screen menu item on the chat screen to go back the contact list screen.
+    May be overrided by the plugin.-->
+    <string name="menu_view_contact_list">Contact list</string>
+    <!-- Screen menu item on the chat screen to invite another contact to join the chat.
+    Currently not supported.-->
+    <string name="menu_invite_contact">Invite\u2026</string>
+    <!-- Screen menu item on the chat screen to open a chat dash board which lets the user to
+    switch between chats. May be overrided by the plugin.-->
+    <string name="menu_switch_chats">Switch chats</string>
+    <!-- Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
+    <string name="menu_insert_smiley">Insert smiley</string>
+
+    <!-- This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
+     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
+     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
+     be appended to the end of this.  -->
+    <string name="menu_plus">Menu+"</string>
+
+    <!-- The title of a simple input dialog. Currently not used.-->
+    <string name="default_input_title">Input</string>
+
+    <!-- Strings for the confirm dialogs-->
+    <!-- The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
+    <string name="confirm">Confirm</string>
+    <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
+    <string name="signout_all_confirm_message">Do you want to sign out all services?</string>
+    <!-- This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+    <string name="confirm_delete_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be deleted.</string>
+    <!-- This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+    <string name="confirm_block_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be blocked.</string>
+    <!-- This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+    <string name="confirm_unblock_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be unblocked.</string>
+    <!-- The "OK" button label for the error message dialog. -->
+    <string name="ok">OK</string>
+    <!-- The "Cancel" button label for the confirm dialogs. -->
+    <string name="cancel">Cancel</string>
+    <!-- The "OK" button label for the confirm dialogs. -->
+    <string name="yes">OK</string>
+    <!-- The "Cancel" button label for the confirm dialogs. -->
+    <string name="no">Cancel</string>
+
+    <!-- This is the toast message displayed when the user has been signed out of the service.-->
+    <string name="signed_out_prompt">You have been signed out of <xliff:g id="account">%1$s</xliff:g>.</string>
+    <!-- This is the toast message displayed when the user has been signed out of the service due to an error.-->
+    <string name="signed_out_prompt_with_error">You have been signed out of <xliff:g id="account">%1$s</xliff:g> because <xliff:g id="reason">%2$s</xliff:g>.</string>
+
+    <!-- These strings displayed on the landing page. -->
+    <!-- The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+    <string name="add_account">Add <xliff:g id="account">%1$s</xliff:g> account</string>
+
+    <!-- These strings are displayed on the account setup page. -->
+    <!-- The username label. May be overrided by the plugin.-->
+    <string name="label_username">Username:</string>
+    <!-- The password label. -->
+    <string name="label_password">Password:</string>
+    <!-- The label for the checkbox which asks if the user wants to save the password on the client. -->
+    <string name="remember_password">Remember my password.</string>
+    <!-- The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap. -->
+    <string name="keep_me_signed_in">Sign me in automatically.</string>
+    <!-- The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
+    <string name="sign_up">Don\u2019t have an account?</string>
+    <!-- This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+    <string name="check_auto_sign_in">This option automatically signs you in every time you open this application. To disable the option, sign out, then clear the \"Sign me in automatically\" check box.</string>
+    <!-- The button label which lets the user to sign into the IM service.  -->
+    <string name="sign_in">Sign in</string>
+
+    <!-- These strings are displayed the sign in progress screen.-->
+    <!-- The title of the sign-in progress screen.  -->
+    <string name="signing_in_to">Signing in to <xliff:g id="account">%1$s</xliff:g></string>
+    <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
+    <string name="signing_in_wait">Signing in\u2026</string>
+    <!-- Dialog title -->
+    <!-- This is the title for the background data prompt dialog, asking the user whether
+    to enable the background data if it is disabled when launch the IM app -->
+    <string name="bg_data_prompt_title">Background data disabled</string>
+    <!-- Dialog messages: -->
+    <!-- This is the message displayed in the prompt dialog when we launch IM but found
+    the background data is disabled -->
+    <string name="bg_data_prompt_message">
+         <xliff:g id="provider">%1$s</xliff:g> needs background data to be enabled.
+    </string>
+    <!-- Dialog buttons: -->
+    <!-- OK button for the prompt dialog -->
+    <string name="bg_data_prompt_ok">Enable</string>
+    <!-- Cancel button for the prompt dialog -->
+    <string name="bg_data_prompt_cancel">Quit</string>
+
+    <!-- These strings are displayed on the contact list page. -->
+    <!-- The title of the ongoing chat group. May be overrided by the plugin.-->
+    <string name="ongoing_conversation">Ongoing chats (<xliff:g id="number">%1$d</xliff:g>)</string>
+    <!-- Displays the number of online contacts in a list.-->
+    <string name="online_count"><xliff:g id="number">%1$d</xliff:g> online</string>
+    <!-- The title of the subscription request group if there is any.-->
+    <string name="subscriptions">Friend invitations</string>
+    <!-- Prefix of the contact if he/she is not in the user's list.-->
+    <string name="unknown_contact">(<i>Unknown</i>) </string>
+    <!-- Displayed as a child item of the contact list if it's empty.-->
+    <string name="empty_contact_group">Empty</string>
+    <!-- Displayed as a child item of the ongoing chat group if it's empty. -->
+    <string name="empty_conversation_group">No conversations</string>
+
+    <!-- Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
+    <string name="contacts_picker_title">Select contact(s) to invite</string>
+    <string name="contact_filter_hint">Type to find contact</string>
+    <string name="empty_contact_list">No contacts found.</string>
+
+    <!-- The title of blocked contact list.-->
+    <string name="blocked_list_title">Blocked contacts - <xliff:g id="user">%1$s</xliff:g></string>
+    <!-- Displayed if there isn't any blocked contact.-->
+    <string name="no_blocked_contact">No blocked contacts.</string>
+
+    <!-- These strings are displayed in the contact info dialog. -->
+    <!-- The title of the contact profile dialog. -->
+    <string name="contact_profile_title">Contact profile</string>
+    <!-- The label of the status on the contact profile dialog. -->
+    <string name="label_status">Status:</string>
+    <!-- The label of the client type on the contact profile dialog. -->
+    <string name="label_client_type">Client type:</string>
+    <!-- The client type which indicates the contact is sign in with a PC client. -->
+    <string name="client_type_computer">Computer</string>
+    <!-- The client type which indicates the contact is sign in with a mobile client. -->
+    <string name="client_type_mobile">Mobile</string>
+
+    <!-- The contact presence status. May be overrided by the plugin. -->
+    <!-- This is an adjective describing the "online" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_available">Online</string>
+    <!-- This is an adjective describing the "busy" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_busy">Busy</string>
+    <!-- This is an adjective describing the "away" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_away">Away</string>
+    <!-- This is an adjective describing the "idle" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_idle">Idle</string>
+    <!-- This is an adjective describing the "offline" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_offline">Offline</string>
+    <!-- This is an adjective describing the "invisible" status for the user. It appears in the
+    drop-down status menu on the Contact List screen -->
+    <string name="presence_invisible">Appear offline</string>
+
+    <!-- These strings are displayed on the connection setting activity. They are used for development only. Do not localize! -->
+    <string name="preference_title" translatable="false"><xliff:g id="provider">%1$s</xliff:g> settings (dev only)</string>
+    <string name="data_channel_label" translatable="false">Data channel</string>
+    <string name="data_encoding_label" translatable="false">Data encoding</string>
+    <string name="cir_channel_label" translatable="false">CIR channel</string>
+    <string name="host_label" translatable="false">Host</string>
+    <string name="msisdn_label" translatable="false">MSISDN</string>
+    <string name="http" translatable="false">HTTP</string>
+    <string name="sms" translatable="false">SMS</string>
+    <string name="tcp" translatable="false">TCP</string>
+    <string name="xml" translatable="false">XML</string>
+    <string name="wbxml" translatable="false">WBXML</string>
+    <string name="save" translatable="false">Save</string>
+
+    <!-- These strings are displayed on the chat screen -->
+    <!-- Chat screen title (i.e. Chat with Anne Clarkson) -->
+    <string name="chat_with">Chat with <xliff:g id="user">%1$s</xliff:g></string>
+    <!-- In the chat history list, this label is added before the chats the user typed -->
+    <string name="me">Me</string>
+    <!-- On the chat screen, this is the hint text in the input field where the user enters the
+    chat. This needs to fit in both portrait and landscape mode -->
+    <string name="compose_hint">Type to compose</string>    
+    <!-- Inline status message in the chat history list, when receiving a "online" status update. -->
+    <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> is online</string>
+    <!-- Inline status message in the chat history list, when receiving an "away" status update. -->
+    <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> is away</string>
+    <!-- Inline status message in the chat history list, when receiving a "busy" status update. -->
+    <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> is busy</string>
+    <!-- Inline status message in the chat history list, when receiving a "offline" status update. -->
+    <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> is offline</string>
+    <!-- Inline status message in the chat history list, when a friend joined the chat. -->
+    <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> has joined</string>
+    <!-- Inline status message in the chat history list, when a friend left the chat. -->
+    <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> has left</string>
+    <!-- Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+    <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+    <!-- The send button on the chat screen. -->
+    <string name="send">Send</string>
+    <!-- Error message when a chat failed to be sent.-->
+    <string name="msg_sent_failed">This message could not be sent.</string>
+    <!-- Warning message displayed in the chat screen when connection is lost.-->
+    <string name="disconnected_warning">Lost connection to server. Messages will be sent when online.</string>
+    <!-- Warning message displayed in the chat screen when the contact is offline.-->
+    <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
+    <!-- Warning message displayed in the chat screen when the contact is not in the user's list.-->
+    <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> is not in your Contact list.</string>
+    <!-- The menu of links brought up when the user clicks on a chat history item, if there are any.-->
+    <string name="select_link_title">Select link</string>
+    <!-- Displayed when there is no active chats in the chat dashboard.-->
+    <string name="empty_chat_list">No active chats.</string>
+
+    <!-- Add contact screen -->
+    <!-- This is the title of the Add Contact Screen. -->
+    <string name="add_contact_title">Add contact</string>
+    <!-- The label of the email input box on the Add Contact Screen. -->
+    <string name="input_contact_label">Email address of person you wish to invite:</string>
+    <!-- The label of the list spinner on the Add Contact Screen. -->
+    <string name="choose_list_label">Choose a list:</string>
+    <!-- This is an instruction message displayed under the input box on the Add Contact Screen.  -->
+    <string name="invite_instruction">Type a name to add from Contacts.</string>
+    <!-- The label of the button on the Add Contact Screen to send the invitation. -->
+    <string name="invite_label">Send invitation</string>
+
+    <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
+    <string name="setting_title">General settings</string>
+    <string name="hide_offline_contacts">Hide offline contacts</string>
+    <!-- This is a subtitle for the "Notification settings"  in the Setting screen. -->
+    <string name="notification_group_title">Notification settings</string>
+    <!-- This is the text label of the setting for IM notifications; a summary is displayed in
+    smaller text below this label -->
+    <string name="notification_enabled_title">IM notifications</string>
+    <!-- This is the summary of the setting for IM notifications -->
+    <string name="notification_enabled_summary">Notify in status bar when IM arrives</string>
+    <!-- This is the text label of the vibrate notification setting; a summary is displayed in
+    smaller text below this label -->
+    <string name="notification_vibrate_title">Vibrate</string>
+    <!-- This is the summary of the vibrate notification setting-->
+    <string name="notification_vibrate_summary">Also vibrate when IM arrives</string>
+    <!-- This is the text label of the sound notification setting; a summary is displayed in
+    smaller text below this label -->
+    <string name="notification_sound_title">Sound</string>
+    <!-- This is the summary of the vibrate notification setting-->
+    <string name="notification_sound_summary">Also play ringtone when IM arrives</string>
+    <!-- This is the text label selecting the ringtone. Clicking on this will take the user to
+    the ringtone picker -->
+    <string name="notification_ringtone_title">Select ringtone</string>
+
+    <!-- Group chat invitation screen (Currently not used.) -->
+    <!-- The prompt message displayed on the group chat invitation screen.-->
+    <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to join a group chat.</string>
+    <!-- Toast when group chat invitation has been sent to the contact.-->
+    <string name="invitation_sent_prompt"> Invitation has been sent to <xliff:g id="user">%1$s</xliff:g>.</string>
+    <!-- The button for accepting an invitation.-->
+    <string name="accept_invitation">Accept</string>
+    <!-- The button for decline an invitation.-->
+    <string name="decline_invitation">Decline</string>
+
+    <!-- Friend subscription screen -->
+    <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to be on their Contact list.</string>
+    <!-- The button for approving a subscription request.-->
+    <string name="approve_subscription">Accept</string>
+    <!-- The button for delecling a subscription request.-->
+    <string name="decline_subscription">Decline</string>
+    <!-- Toast when approve a subscription request failed.-->
+    <string name="approve_subscription_error">Unable to approve subscription from <xliff:g id="user">%1$s</xliff:g>. Please try again later.</string>
+    <!-- Toast when decline a subscription request failed.-->
+    <string name="decline_subscription_error">Unable to decline subscription from <xliff:g id="user">%1$s</xliff:g>. Please try again later.</string>
+    <!-- Notification bar messages -->
+    <!-- This is the notification bar message when a new IM arrives. -->
+    <string name="newMessages_label">New <xliff:g id="provider">%1$s</xliff:g> messages</string>
+    <!-- This is the notification bar message when new IMs comes from more than one contact. -->
+    <string name="num_unread_chats">
+        <xliff:g id="number">%1$d</xliff:g> unread chats
+    </string>
+    <!-- This is the notification bar message when an invitation from someone arrived. -->
+    <string name="subscription_notify_text">
+        New friend invitation from <xliff:g id="user">%s</xliff:g>
+    </string>
+    <!-- This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used. -->
+    <string name="notify_groupchat_label">Group chat invitation</string>
+    <!-- This is the text label of the group chat invitation message in the notification. Currently not used. -->
+    <string name="group_chat_invite_notify_text">
+        New group chat invitation from <xliff:g id="user">%s</xliff:g>
+    </string>
+
+    <!-- Toast when a contact is added into a list.-->
+    <string name="add_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" added.</string>
+    <!-- Toast when a contact is deleted from the list.-->
+    <string name="delete_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" deleted.</string>
+    <!-- Toast when a contact is blocked.-->
+    <string name="block_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" blocked.</string>
+    <!-- Toast when a contact is unblocked.-->
+    <string name="unblock_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" unblocked.</string>
+
+
+    <!-- IM service permission -->
+    <string name="perm_label">start IM service</string>
+    <string name="perm_desc">Allows applications to start IM service via intent.</string>
+
+    <!-- Errors-->
+    <!-- The title of the error dialog -->
+    <string name="error">Attention</string>
+    <!-- Error message for sign in failed.-->
+    <string name="login_service_failed">Unable to sign in to the <xliff:g id="service">%1$s</xliff:g> service. Please try again later.\n(Detail: <xliff:g id="description">%2$s</xliff:g>)</string>
+    <!-- Error message for creating contact list failed.-->
+    <string name="add_list_failed">The list was not added.</string>
+    <!-- Error message for blocking contact failed.-->
+    <string name="block_contact_failed">Contact was not blocked.</string>
+    <!-- Error message for unblocking contact failed.-->
+    <string name="unblock_contact_failed">Contact was not unblocked.</string>
+    <!-- Error message for when the user didn't select a contact as required.-->
+    <string name="select_contact">Please select a contact first.</string>
+    <!-- Error message for when the current connection disconnected.-->
+    <string name="disconnected">Disconnected!\n</string>
+    <!-- Error message for when the IM service has died.-->
+    <string name="service_error">Service error!</string>
+    <!-- Error message for loading contact list failed.-->
+    <string name="load_contact_list_failed">Contact list did not load.</string>
+    <!-- Error message for failed to connect to the server.-->
+    <string name="cant_connect_to_server">Cannot connect to server. Please check your connection.</string>
+    <!-- Error message for when the contact is already in the list.-->
+    <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" already exists in your Contact list.</string>
+    <!-- Error message for when the contact is blocked. -->
+    <string name="contact_blocked">Contact \"<xliff:g id="user">%1$s</xliff:g>\" has been blocked.</string>
+    <!-- Error message for when the contact list is not compeletely loaded.-->
+    <string name="contact_not_loaded">Please wait while your Contact list loads.</string>
+    <!-- Error message for when a network error occurred.-->
+    <string name="network_error">A network error occurred.</string>
+    <!-- Error message for lack of server support error.-->
+    <string name="service_not_support">The server does not support this functionality.</string>
+    <!-- Erorr message for bad password error.-->
+    <string name="invalid_password">The password you entered is not valid.</string>
+    <!-- Error message for server internal error.-->
+    <string name="internal_server_error">The server encountered an error.</string>
+    <!-- Error message for when the server does not implement the feature. -->
+    <string name="not_implemented">The server does not support this functionality.</string>
+    <!-- Error message for server not available error.-->
+    <string name="service_unavaiable">The server is currently unavailable.</string>
+    <!-- Error message for timeout error.-->
+    <string name="timeout">The server has timed out.</string>
+    <!-- Error message for when the server does not support the current protocol version.-->
+    <string name="version_not_supported">The server does not support the current version.</string>
+    <!-- Error message for when the message queue on the server is full.-->
+    <string name="message_queue_full">The message queue is full.</string>
+    <!-- Error message for when the domain is not supported by the server.-->
+    <string name="domain_not_supported">The server does not support forwarding to the domain.</string>
+    <!-- Error message for a bad username error.-->
+    <string name="unknown_user">The username you entered is not recognized.</string>
+    <!-- Error message for when the user is blocked by the recipient.-->
+    <string name="recipient_blocked_the_user">Sorry, you are blocked by the user.</string>
+    <!-- Error message for session expired error.-->
+    <string name="session_expired">The session has expired, please sign in again.</string>
+    <!-- forced_logout and already_logged_in are used within another sentence so y is not capped. -->
+    <string name="forced_logout">you have signed in from another client.</string>
+    <string name="already_logged_in">you have already signed in from another client.</string>
+    <!-- Error message for msisdn error.-->
+    <string name="msisdn_error">Sorry, the phone number cannot be read from your SIM card. Please contact your operator for help.</string>
+    <!-- Error message for when the user is not signed in.-->
+    <string name="not_signed_in">You are currently not signed in.</string>
+    <!-- Generic error.-->
+    <string name="general_error">Error code <xliff:g id="code">%1$d</xliff:g></string>
+
+    <!-- Smiley names. May be overrided by the plugin. -->
+    <string-array name="default_smiley_names">
+        <item>Happy</item>
+        <item>Sad</item>
+        <item>Winking</item>
+        <item>Tongue sticking out</item>
+        <item>Surprised</item>
+        <item>Kissing</item>
+        <item>Yelling</item>
+        <item>Cool</item>
+        <item>Money mouth</item>
+        <item>Foot in mouth</item>
+        <item>Embarrassed</item>
+        <item>Angel</item>
+        <item>Undecided</item>
+        <item>Crying</item>
+        <item>Lips are sealed</item>
+        <item>Laughing</item>
+        <item>Confused</item>
+    </string-array>
+    <!-- Do not localize! Smiley text representations. May be overrided by the plugin. -->
+    <string-array name="default_smiley_texts" translatable="false">
+        <item>:-)</item>
+        <item>:-(</item>
+        <item>;-)</item>
+        <item>:-P</item>
+        <item>=-O</item>
+        <item>:-*</item>
+        <item>:O</item>
+        <item>B-)</item>
+        <item>:-$</item>
+        <item>:-!</item>
+        <item>:-[</item>
+        <item>O:-)</item>
+        <item>:-\\</item>
+        <item>:\'(</item>
+        <item>:-X</item>
+        <item>:-D</item>
+        <item>o_O</item>
+    </string-array>
+</resources>

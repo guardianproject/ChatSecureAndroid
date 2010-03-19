@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2007-2008 Esmertec AG.
+ * Copyright (C) 2007-2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:paddingLeft="15dip"
+        android:paddingTop="15dip"
+        android:paddingRight="15dip"
+        android:paddingBottom="15dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView android:id="@+id/imgAvatar"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:padding="2dip"
+            android:background="@drawable/picture_frame_background" />
+
+        <TextView android:id="@+id/labelName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dip"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_username" />
+
+        <TextView android:id="@+id/txtName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView android:id="@+id/labelStatus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_status" />
+
+        <TextView android:id="@+id/txtStatus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/txtStatusText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dip"
+            android:layout_marginTop="4dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="4"
+            android:textStyle="italic" />
+
+        <TextView android:id="@+id/labelClientType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"                
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_client_type" />
+
+        <TextView android:id="@+id/txtClientType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>
