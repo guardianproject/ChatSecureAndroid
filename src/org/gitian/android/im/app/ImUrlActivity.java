@@ -225,11 +225,11 @@ public class ImUrlActivity extends Activity {
 
     private String getProviderNameForCategory(String providerCategory) {
         if (providerCategory != null) {
-            if (providerCategory.equalsIgnoreCase("com.android.im.category.AIM")) {
+            if (providerCategory.equalsIgnoreCase("org.gitian.android.im.category.AIM")) {
                 return Imps.ProviderNames.AIM;
-            } else if (providerCategory.equalsIgnoreCase("com.android.im.category.MSN")) {
+            } else if (providerCategory.equalsIgnoreCase("org.gitian.android.im.category.MSN")) {
                 return Imps.ProviderNames.MSN;
-            } else if (providerCategory.equalsIgnoreCase("com.android.im.category.YAHOO")) {
+            } else if (providerCategory.equalsIgnoreCase("org.gitian.android.im.category.YAHOO")) {
                 return Imps.ProviderNames.YAHOO;
             }
         }

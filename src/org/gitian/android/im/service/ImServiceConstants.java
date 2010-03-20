@@ -24,8 +24,8 @@ public class ImServiceConstants {
      * RemoteImService name, used for start or stop the IM service.
      */
     public static final ComponentName IM_SERVICE_COMPONENT = new ComponentName(
-            "com.android.im",
-            "com.android.im.service.RemoteImService");
+            "org.gitian.android.im",
+            "org.gitian.android.im.service.RemoteImService");
 
     /**
      * Broadcast action: broadcast event for avatar changed.

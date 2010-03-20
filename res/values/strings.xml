@@ -477,4 +477,48 @@
         <item>:-D</item>
         <item>o_O</item>
     </string-array>
+
+    <string-array name="smiley_names">
+        <item>Happy</item>
+        <item>Sad</item>
+        <item>Winking</item>
+        <item>Tongue sticking out</item>
+        <item>Surprised</item>
+        <item>Kissing</item>
+        <item>Yelling</item>
+        <item>Cool</item>
+        <item>Money mouth</item>
+        <item>Foot in mouth</item>
+        <item>Embarrassed</item>
+        <item>Angel</item>
+        <item>Undecided</item>
+        <item>Crying</item>
+        <item>Lips are sealed</item>
+        <item>Laughing</item>
+        <item>Confused</item>
+    </string-array>
+
+    <string-array name="smiley_texts">
+        <item>:-)</item>
+        <item>:-(</item>
+        <item>;-)</item>
+        <item>:-P</item>
+        <item>=-O</item>
+        <item>:-*</item>
+        <item>:O</item>
+        <item>B-)</item>
+        <item>:-$</item>
+        <item>:-!</item>
+        <item>:-[</item>
+        <item>O:-)</item>
+        <item>:-\\</item>
+        <item>:\'(</item>
+        <item>:-X</item>
+        <item>:-D</item>
+        <item>o_O</item>
+    </string-array>
+    <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
+    <string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
+    <string name="menu_contact_list">Contact List</string>
+    
 </resources>

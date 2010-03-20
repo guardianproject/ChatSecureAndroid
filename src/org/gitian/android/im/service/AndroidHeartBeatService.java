@@ -41,7 +41,7 @@ public class AndroidHeartBeatService extends BroadcastReceiver
     private static final String WAKELOCK_TAG = "IM_HEARTBEAT";
 
     private static final String HEARTBEAT_INTENT_ACTION
-            = "com.android.im.intent.action.HEARTBEAT";
+            = "org.gitian.android.im.intent.action.HEARTBEAT";
     private static final Uri HEARTBEAT_CONTENT_URI
             = Uri.parse("content://im/heartbeat");
     private static final String HEARTBEAT_CONTENT_TYPE

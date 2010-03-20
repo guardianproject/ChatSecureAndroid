@@ -254,7 +254,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
         if (!isLoggedIn) {
             menu.add(0, ID_SIGN_IN, 0, R.string.sign_in)
-            // TODO .setIcon(com.android.internal.R.drawable.ic_menu_login)
+            // TODO .setIcon(org.gitian.android.internal.R.drawable.ic_menu_login)
             ;
         } else {
             menu.add(0, ID_VIEW_CONTACT_LIST, 0,

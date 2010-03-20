@@ -21,23 +21,23 @@ public class ImPluginConstants {
     /**
      * The intent action name for the plugin service.
      */
-    public static final String PLUGIN_ACTION_NAME = "com.android.im.plugin";
+    public static final String PLUGIN_ACTION_NAME = "org.gitian.android.im.plugin";
 
     /**
      * The name of the provider. It should match the values defined in
-     * {@link com.android.im.provider.Imps.ProviderNames}.
+     * {@link org.gitian.android.im.provider.Imps.ProviderNames}.
      */
-    public static final String METADATA_PROVIDER_NAME = "com.android.im.provider_name";
+    public static final String METADATA_PROVIDER_NAME = "org.gitian.android.im.provider_name";
 
     /**
      * The full name of the provider.
      */
-    public static final String METADATA_PROVIDER_FULL_NAME = "com.android.im.provider_full_name";
+    public static final String METADATA_PROVIDER_FULL_NAME = "org.gitian.android.im.provider_full_name";
 
     /**
      * The url where the user can register a new account for the provider.
      */
-    public static final String METADATA_SIGN_UP_URL = "com.android.im.signup_url";
+    public static final String METADATA_SIGN_UP_URL = "org.gitian.android.im.signup_url";
 
     /**
      * Presence status OFFLINE. Should match the value defined in the IM engine.

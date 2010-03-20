@@ -370,26 +370,26 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
-                    //TODO .setIcon(com.android.internal.R.drawable.ic_menu_end_conversation)
+                    //TODO .setIcon(org.gitian.android.internal.R.drawable.ic_menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                        //.setIcon(com.android.internal.R.drawable.ic_menu_block)
+                        //.setIcon(org.gitian.android.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
-                    //.setIcon(com.android.internal.R.drawable.ic_menu_start_conversation)
+                    //.setIcon(org.gitian.android.internal.R.drawable.ic_menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_view_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                        //.setIcon(com.android.internal.R.drawable.ic_menu_block)
+                        //.setIcon(org.gitian.android.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
             menu.add(0, MENU_DELETE_CONTACT, 0, menu_delete_contact)

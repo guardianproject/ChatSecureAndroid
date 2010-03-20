@@ -112,10 +112,10 @@ public class BrandingResources {
 
     /**
      * Gets a drawable object associated with a particular resource ID defined
-     * in {@link com.android.im.plugin.BrandingResourceIDs}
+     * in {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      *
      * @param id The ID defined in
-     *            {@link com.android.im.plugin.BrandingResourceIDs}
+     *            {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      * @return Drawable An object that can be used to draw this resource.
      */
     public Drawable getDrawable(int id) {
@@ -155,10 +155,10 @@ public class BrandingResources {
 
     /**
      * Gets the string value associated with a particular resource ID defined in
-     * {@link com.android.im.plugin.BrandingResourceIDs}
+     * {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      *
      * @param id The ID of the string resource defined in
-     *            {@link com.android.im.plugin.BrandingResourceIDs}
+     *            {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      * @param formatArgs The format arguments that will be used for
      *            substitution.
      * @return The string data associated with the resource
@@ -176,10 +176,10 @@ public class BrandingResources {
 
     /**
      * Gets the string array associated with a particular resource ID defined in
-     * {@link com.android.im.plugin.BrandingResourceIDs}
+     * {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      *
      * @param id The ID of the string resource defined in
-     *            {@link com.android.im.plugin.BrandingResourceIDs}
+     *            {@link org.gitian.android.im.plugin.BrandingResourceIDs}
      * @return The string array associated with the resource.
      */
     public String[] getStringArray(int id) {

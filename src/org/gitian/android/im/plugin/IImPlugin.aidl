@@ -16,9 +16,7 @@
  */
 package org.gitian.android.im.plugin;
 
-import java.util.Map;
-
-public interface ImPlugin {
+interface IImPlugin {
     /**
      * Gets a map of branding resources for the provider. The keys are defined
      * in {@link org.gitian.android.im.plugin.BrandingResourceIDs}. The values are the
@@ -26,7 +24,7 @@ public interface ImPlugin {
      *
      * @return The map of branding resources.
      */
-    Map<Integer, Integer> getResourceMap();
+    Map getResourceMap();
 
     /**
      * Gets an array of IDs of the smiley icons. The sequence of the IDs must
@@ -44,5 +42,5 @@ public interface ImPlugin {
      *
      * @return the configuration for the provider.
      */
-    Map<String, String> getProviderConfig();
+    Map getProviderConfig();
 }

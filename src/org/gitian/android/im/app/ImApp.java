@@ -64,7 +64,7 @@ public class ImApp extends Application {
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
     public static final String EXTRA_INTENT_PASSWORD = "password";
 
-    public static final String IMPS_CATEGORY = "com.android.im.IMPS_CATEGORY";
+    public static final String IMPS_CATEGORY = "org.gitian.android.im.IMPS_CATEGORY";
 
     private static ImApp sImApp;
 
