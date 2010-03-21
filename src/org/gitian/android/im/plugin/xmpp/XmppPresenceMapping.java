@@ -19,12 +19,13 @@ package org.gitian.android.im.plugin.xmpp;
 import java.util.Map;
 
 import org.gitian.android.im.plugin.ImPluginConstants;
+import org.gitian.android.im.plugin.PresenceMapping;
 
 /**
  * A simple implementation of PresenceMaping for the provider.
  *
  */
-public class XmppPresenceMapping extends org.gitian.android.im.plugin.IPresenceMapping.Stub {
+public class XmppPresenceMapping implements PresenceMapping {
 
     public int[] getSupportedPresenceStatus() {
         return new int[] {
