@@ -13,6 +13,7 @@
     <property name="resource-dir" value="res" />
     <property name="asset-dir" value="assets" />
     <property name="srcdir" value="src" />
+    <property name="gendir" value="gen" />
 
     <!-- Output directories -->
     <property name="outdir-classes" value="${outdir}/classes" />
@@ -62,8 +63,9 @@
     <target name="aidl" depends="dirs">
         <apply executable="${aidl}" failonerror="true">
             <arg value="-I${srcdir}" />
-        	<fileset dir="${srcdir}">
-                <include name="**/*.aidl"/>
+            <arg value="-o${gendir}" />
+            <fileset dir="${srcdir}">
+              <include name="**/*.aidl"/>
             </fileset>
         </apply>
     </target>

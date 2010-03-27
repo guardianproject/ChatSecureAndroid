@@ -17,6 +17,11 @@
 
 package org.gitian.android.im.engine;
 
+import java.util.Map;
+
+import org.gitian.android.im.plugin.loopback.LoopbackConnection;
+import org.gitian.android.im.plugin.xmpp.XmppConnection;
+
 
 /**
  * The factory used to create an instance of ImConnection.
@@ -45,9 +50,11 @@ public class ConnectionFactory {
      * @return the new ImConnection.
      * @throws IMException if an error occurs during creating a connection.
      */
-    public ImConnection createConnection(ConnectionConfig config) throws ImException {
-        if ("XMPP".equals(config.getProtocolName())) {
-        	throw new ImException("Unsupported protocol"); // TODO
+    public ImConnection createConnection(Map<String, String> settings) throws ImException {
+    	if ("XMPP".equals(settings.get("im.protocol"))) {
+        	return new XmppConnection();
+    	} else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
+    		return new LoopbackConnection();
         } else {
             throw new ImException("Unsupported protocol");
         }

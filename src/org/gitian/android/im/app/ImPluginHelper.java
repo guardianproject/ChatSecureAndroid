@@ -268,11 +268,7 @@ public class ImPluginHelper {
             Map<String, String> config) {
         String origVersion = Imps.ProviderSettings.getStringValue(cr, providerId,
                 ImConfigNames.PLUGIN_VERSION);
-
-        if (origVersion == null) {
-            return true;
-        }
         String newVersion = config.get(ImConfigNames.PLUGIN_VERSION);
-        return !origVersion.equals(newVersion);
+        return (origVersion == null && newVersion != null) || !origVersion.equals(newVersion);
     }
 }

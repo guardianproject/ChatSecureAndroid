@@ -105,7 +105,7 @@ public class AddContactActivity extends Activity {
                 android.R.layout.simple_spinner_item,
                 c,
                 new String[] {Imps.ContactList.NAME},
-                new int[] {android.R.id.text1});
+                new int[] {R.id.text1});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mListSpinner.setAdapter(adapter);
         mListSpinner.setSelection(initSelection);

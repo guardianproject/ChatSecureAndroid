@@ -243,15 +243,9 @@ public class RemoteImService extends Service {
 
     IImConnection createConnection(long providerId) {
         Map<String, String> settings = loadProviderSettings(providerId);
-        String protocol = settings.get(ImConfigNames.PROTOCOL_NAME);
-        if(!"IMPS".equals(protocol)) {
-            Log.e(TAG, "Unsupported protocol: " + protocol);
-            return null;
-        }
-        ImpsConnectionConfig config = new ImpsConnectionConfig(settings);
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
-            ImConnection conn = factory.createConnection(config);
+            ImConnection conn = factory.createConnection(settings);
             ImConnectionAdapter result = new ImConnectionAdapter(providerId,
                     conn, this);
             mConnections.add(result);

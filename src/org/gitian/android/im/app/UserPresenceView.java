@@ -16,6 +16,7 @@
  */
 package org.gitian.android.im.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gitian.android.im.R;
@@ -53,13 +54,14 @@ public class UserPresenceView extends LinearLayout {
     private IImConnection mConn;
     private long mProviderId;
     Presence mPresence;
-    Context mContext; // TODO
+    Context mContext;
 
     private String mLastStatusText;
-    final List<StatusItem> mStatusItems = null; // TODO Lists.newArrayList();
+    final List<StatusItem> mStatusItems = new ArrayList<StatusItem>();
 
     public UserPresenceView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         mHandler = new SimpleAlertHandler((Activity)context);
     }
 

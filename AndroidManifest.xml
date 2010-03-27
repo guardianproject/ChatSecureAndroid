@@ -35,7 +35,7 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_im"
-             android:taskAffinity="android.task.im">
+             android:taskAffinity="org.gitian.android.task.im">
 
         <service android:name=".plugin.xmpp.XmppImPlugin">
             <intent-filter>
@@ -49,8 +49,19 @@
                 android:value="http://xxx.xxx.xxx"/>
         </service>
 
+        <service android:name=".plugin.loopback.LoopbackImPlugin">
+            <intent-filter>
+                <action android:name="org.gitian.android.im.plugin" />
+            </intent-filter>
+            <meta-data android:name="org.gitian.android.im.provider_name" android:value="Loopback"/>
+            <meta-data android:name="org.gitian.android.im.provider_full_name"
+                android:value="Loopback Provider"/>
+            <meta-data android:name="org.gitian.android.im.signup_url"
+                android:value="http://xxx.xxx.xxx"/>
+        </service>
+
+            <!-- android:process="android.process.im" -->
         <service android:name=".service.RemoteImService"
-            android:process="android.process.im"
             android:exported="true"
             android:permission="org.gitian.android.im.permission.IM_SERVICE">
             <intent-filter>

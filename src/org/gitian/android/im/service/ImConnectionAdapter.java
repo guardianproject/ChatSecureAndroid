@@ -145,10 +145,10 @@ public class ImConnectionAdapter extends org.gitian.android.im.IImConnection.Stu
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
 
-        mConnection.loginAsync(new LoginInfo(userName, password));
-
         mChatSessionManager = new ChatSessionManagerAdapter(this);
         mContactListManager = new ContactListManagerAdapter(this);
+
+        mConnection.loginAsync(new LoginInfo(userName, password));
     }
 
     private HashMap<String, String> querySessionCookie(ContentResolver cr) {

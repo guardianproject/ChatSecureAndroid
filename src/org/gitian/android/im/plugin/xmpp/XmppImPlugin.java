@@ -48,12 +48,9 @@ public class XmppImPlugin extends Service implements ImPlugin {
 	public Map getProviderConfig() {
 		HashMap<String, String> config = new HashMap<String, String>();
 		// The protocol name MUST be IMPS now.
-		config.put(ImConfigNames.PROTOCOL_NAME, "IMPS");
+		config.put(ImConfigNames.PROTOCOL_NAME, "XMPP");
+		config.put(ImConfigNames.PLUGIN_VERSION, "0.1");
 		config.put(ImpsConfigNames.HOST, "http://xxx.xxxx.xxx");
-		config.put(ImpsConfigNames.CLIENT_ID, "Jimmy");
-		config.put(ImpsConfigNames.DATA_CHANNEL, "HTTP");
-		config.put(ImpsConfigNames.DATA_ENCODING, "WBXML");
-		config.put(ImpsConfigNames.CIR_CHANNEL, "STCP");
 		config.put(ImpsConfigNames.CUSTOM_PRESENCE_MAPPING,
 		"org.gitian.android.im.plugin.xmpp.XmppPresenceMapping");
 		return config;
