@@ -2,6 +2,7 @@ package org.gitian.android.im.plugin.loopback;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.gitian.android.im.engine.Address;
@@ -16,10 +17,9 @@ import org.gitian.android.im.engine.ImException;
 import org.gitian.android.im.engine.LoginInfo;
 import org.gitian.android.im.engine.Message;
 import org.gitian.android.im.engine.Presence;
-import org.gitian.android.im.service.RemoteImService;
 
 import android.os.Parcel;
-import android.util.Log;
+import android.text.method.DateTimeKeyListener;
 
 public class LoopbackConnection extends ImConnection {
 
@@ -49,8 +49,11 @@ public class LoopbackConnection extends ImConnection {
 			
 			@Override
 			protected void sendMessageAsync(ChatSession session, Message message) {
-				// TODO Auto-generated method stub
-				
+				// Echo
+				Message rec = new Message(message.getBody());
+				rec.setFrom(message.getTo());
+				rec.setDateTime(new Date());
+				session.onReceiveMessage(rec);
 			}
 		};
 	}
@@ -69,20 +72,24 @@ public class LoopbackConnection extends ImConnection {
 			@Override
 			public String normalizeAddress(String address) {
 				// TODO Auto-generated method stub
-				return null;
+				return address;
 			}
 			
 			@Override
 			public void loadContactListsAsync() {
 				Collection<Contact> contacts = new ArrayList<Contact>();
+				Contact[] contacts_array = new Contact[1];
+				contacts.toArray(contacts_array);
 				Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com");
 				
 				Contact dummy = new Contact(dummy_addr, "dummy");
+				dummy.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
 				contacts.add(dummy);
 				
 				ContactList cl = new ContactList(null, "default", true, contacts, this);
 				mContactLists.add(cl);
 				notifyContactListLoaded(cl);
+				notifyContactsPresenceUpdated(contacts.toArray(contacts_array));
 				notifyContactListsLoaded();
 			}
 			
@@ -159,8 +166,13 @@ public class LoopbackConnection extends ImConnection {
 
 	@Override
 	public int[] getSupportedPresenceStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return new int[] {
+				Presence.AVAILABLE,
+				Presence.AWAY,
+				Presence.IDLE,
+				Presence.OFFLINE,
+				Presence.DO_NOT_DISTURB,
+		};
 	}
 
 	@Override
