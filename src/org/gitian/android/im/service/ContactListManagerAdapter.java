@@ -17,6 +17,9 @@
 
 package org.gitian.android.im.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -960,9 +963,18 @@ public class ContactListManagerAdapter extends org.gitian.android.im.IContactLis
         mResolver.insert(Imps.Contacts.BULK_CONTENT_URI, values);
     }
 
-    private void putStringArrayList(ContentValues values, String nickname,
+    private void putStringArrayList(ContentValues values, String key,
 			ArrayList<String> nicknames) {
-		// TODO Auto-generated method stub
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream os = new ObjectOutputStream(bos);
+			os.writeObject(nicknames);
+			os.close();
+		}
+		catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+		values.put(key, bos.toByteArray());
 		
 	}
 

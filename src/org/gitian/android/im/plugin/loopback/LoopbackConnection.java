@@ -1,8 +1,10 @@
 package org.gitian.android.im.plugin.loopback;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.gitian.android.im.engine.Address;
 import org.gitian.android.im.engine.ChatGroupManager;
 import org.gitian.android.im.engine.ChatSession;
 import org.gitian.android.im.engine.ChatSessionManager;
@@ -14,8 +16,14 @@ import org.gitian.android.im.engine.ImException;
 import org.gitian.android.im.engine.LoginInfo;
 import org.gitian.android.im.engine.Message;
 import org.gitian.android.im.engine.Presence;
+import org.gitian.android.im.service.RemoteImService;
+
+import android.os.Parcel;
+import android.util.Log;
 
 public class LoopbackConnection extends ImConnection {
+
+	protected static final String TAG = "LoopbackConnection";
 
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -66,14 +74,21 @@ public class LoopbackConnection extends ImConnection {
 			
 			@Override
 			public void loadContactListsAsync() {
-				// TODO Auto-generated method stub
+				Collection<Contact> contacts = new ArrayList<Contact>();
+				Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com");
 				
+				Contact dummy = new Contact(dummy_addr, "dummy");
+				contacts.add(dummy);
+				
+				ContactList cl = new ContactList(null, "default", true, contacts, this);
+				mContactLists.add(cl);
+				notifyContactListLoaded(cl);
+				notifyContactListsLoaded();
 			}
 			
 			@Override
 			protected ImConnection getConnection() {
-				// TODO Auto-generated method stub
-				return null;
+				return LoopbackConnection.this;
 			}
 			
 			@Override
@@ -172,4 +187,40 @@ public class LoopbackConnection extends ImConnection {
 
 	}
 
+	class LoopbackAddress extends Address {
+		
+		private String address;
+		private String name;
+
+		public LoopbackAddress() {
+		}
+		
+		public LoopbackAddress(String name, String address) {
+			this.name = name;
+			this.address = address;
+		}
+
+		@Override
+		public String getFullName() {
+			return name;
+		}
+
+		@Override
+		public String getScreenName() {
+			return address;
+		}
+
+		@Override
+		public void readFromParcel(Parcel source) {
+			name = source.readString();
+			address = source.readString();
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest) {
+			dest.writeString(name);
+			dest.writeString(address);
+		}
+		
+	}
 }

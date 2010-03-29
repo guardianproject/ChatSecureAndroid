@@ -33,7 +33,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -1676,9 +1680,22 @@ public class ImpsProvider extends ContentProvider {
     }
 
     private ArrayList<String> getStringArrayList(ContentValues values,
-			String rejected) {
-		// TODO Auto-generated method stub
-		return null;
+			String key) {
+    	byte[] stored = values.getAsByteArray(key);
+    	if (stored == null) return null;
+		ByteArrayInputStream bis = new ByteArrayInputStream(stored);
+    	try {
+			ObjectInputStream is = new ObjectInputStream(bis);
+			ArrayList<String> res = (ArrayList<String>)is.readObject();
+			is.close();
+			return res;
+		} catch (StreamCorruptedException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// package scope for testing.

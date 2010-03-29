@@ -135,7 +135,6 @@ public class XmppImPlugin extends Service implements ImPlugin {
 	 * match the smiley texts and smiley names defined in strings.xml.
 	 */
 	static final int[] SMILEY_RES_IDS = {
-		/*
         R.drawable.emo_im_happy,
         R.drawable.emo_im_sad,
         R.drawable.emo_im_winking,
@@ -153,6 +152,5 @@ public class XmppImPlugin extends Service implements ImPlugin {
         R.drawable.emo_im_lips_are_sealed,
         R.drawable.emo_im_laughing,
         R.drawable.emo_im_wtf
-		 */
 	};
 }

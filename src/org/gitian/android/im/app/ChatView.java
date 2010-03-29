@@ -287,6 +287,7 @@ public class ChatView extends LinearLayout {
         mScreen = (Activity) context;
         mApp = ImApp.getApplication(mScreen);
         mHandler = new ChatViewHandler();
+        mContext = context;
     }
 
     void registerForConnEvents() {
