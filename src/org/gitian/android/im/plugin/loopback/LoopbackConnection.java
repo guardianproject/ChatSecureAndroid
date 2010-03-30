@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.gitian.android.im.engine.Address;
 import org.gitian.android.im.engine.ChatGroupManager;
@@ -11,6 +12,7 @@ import org.gitian.android.im.engine.ChatSession;
 import org.gitian.android.im.engine.ChatSessionManager;
 import org.gitian.android.im.engine.Contact;
 import org.gitian.android.im.engine.ContactList;
+import org.gitian.android.im.engine.ContactListListener;
 import org.gitian.android.im.engine.ContactListManager;
 import org.gitian.android.im.engine.ImConnection;
 import org.gitian.android.im.engine.ImException;
@@ -19,16 +21,32 @@ import org.gitian.android.im.engine.Message;
 import org.gitian.android.im.engine.Presence;
 
 import android.os.Parcel;
-import android.text.method.DateTimeKeyListener;
 
 public class LoopbackConnection extends ImConnection {
 
 	protected static final String TAG = "LoopbackConnection";
+	private LoopbackContactList mContactListManager;
+	private Contact mUser;
 
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
-		// TODO Auto-generated method stub
-
+		// mimic presence
+		ContactList cl;
+		try {
+			cl = mContactListManager.getDefaultContactList();
+		} catch (ImException e) {
+			throw new RuntimeException(e);
+		}
+		if (cl == null)
+			return;
+		Collection<Contact> contacts = cl.getContacts();
+		for (Iterator<Contact> iter = contacts.iterator(); iter.hasNext();) {
+			Contact contact = iter.next();
+			contact.setPresence(presence);
+		}
+		Contact[] contacts_array = new Contact[contacts.size()];
+		contacts.toArray(contacts_array);
+		mContactListManager.doPresence(contacts_array);
 	}
 
 	@Override
@@ -60,102 +78,13 @@ public class LoopbackConnection extends ImConnection {
 
 	@Override
 	public ContactListManager getContactListManager() {
-		// TODO Auto-generated method stub
-		return new ContactListManager() {
-			
-			@Override
-			protected void setListNameAsync(String name, ContactList list) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public String normalizeAddress(String address) {
-				// TODO Auto-generated method stub
-				return address;
-			}
-			
-			@Override
-			public void loadContactListsAsync() {
-				Collection<Contact> contacts = new ArrayList<Contact>();
-				Contact[] contacts_array = new Contact[1];
-				contacts.toArray(contacts_array);
-				Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com");
-				
-				Contact dummy = new Contact(dummy_addr, "dummy");
-				dummy.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
-				contacts.add(dummy);
-				
-				ContactList cl = new ContactList(null, "default", true, contacts, this);
-				mContactLists.add(cl);
-				notifyContactListLoaded(cl);
-				notifyContactsPresenceUpdated(contacts.toArray(contacts_array));
-				notifyContactListsLoaded();
-			}
-			
-			@Override
-			protected ImConnection getConnection() {
-				return LoopbackConnection.this;
-			}
-			
-			@Override
-			protected void doRemoveContactFromListAsync(Contact contact,
-					ContactList list) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void doDeleteContactListAsync(ContactList list) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void doCreateContactListAsync(String name,
-					Collection<Contact> contacts, boolean isDefault) {
-				// TODO Auto-generated method stub
-				return;
-				
-			}
-			
-			@Override
-			protected void doBlockContactAsync(String address, boolean block) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void doAddContactToListAsync(String address, ContactList list)
-					throws ImException {
-				// TODO Auto-generated method stub
-				return;
-			}
-			
-			@Override
-			public void declineSubscriptionRequest(String contact) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public Contact createTemporaryContact(String address) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public void approveSubscriptionRequest(String contact) {
-				// TODO Auto-generated method stub
-				return;
-			}
-		};
+		mContactListManager = new LoopbackContactList();
+		return mContactListManager;
 	}
 
 	@Override
 	public Contact getLoginUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return mUser;
 	}
 
 	@Override
@@ -178,6 +107,7 @@ public class LoopbackConnection extends ImConnection {
 	@Override
 	public void loginAsync(LoginInfo loginInfo) {
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
+		mUser = new Contact(new LoopbackAddress(loginInfo.getUserName() + "!", "loopback"), loginInfo.getUserName());
 		setState(LOGGED_IN, null);
 	}
 
@@ -197,6 +127,103 @@ public class LoopbackConnection extends ImConnection {
 	public void suspend() {
 		// TODO Auto-generated method stub
 
+	}
+
+	private final class LoopbackContactList extends ContactListManager {
+		@Override
+		protected void setListNameAsync(String name, ContactList list) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String normalizeAddress(String address) {
+			return address;
+		}
+
+		@Override
+		public void loadContactListsAsync() {
+			Collection<Contact> contacts = new ArrayList<Contact>();
+			Contact[] contacts_array = new Contact[1];
+			contacts.toArray(contacts_array);
+			Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com");
+			
+			Contact dummy = new Contact(dummy_addr, "dummy");
+			dummy.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
+			contacts.add(dummy);
+			
+			ContactList cl = new ContactList(mUser.getAddress(), "default", true, contacts, this);
+			mContactLists.add(cl);
+			mDefaultContactList = cl;
+			notifyContactListLoaded(cl);
+			notifyContactsPresenceUpdated(contacts.toArray(contacts_array));
+			notifyContactListsLoaded();
+		}
+
+		public void doPresence(Contact[] contacts) {
+			notifyContactsPresenceUpdated(contacts);
+		}
+
+		@Override
+		protected ImConnection getConnection() {
+			return LoopbackConnection.this;
+		}
+
+		@Override
+		protected void doRemoveContactFromListAsync(Contact contact,
+				ContactList list) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void doDeleteContactListAsync(ContactList list) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void doCreateContactListAsync(String name,
+				Collection<Contact> contacts, boolean isDefault) {
+			// TODO Auto-generated method stub
+			return;
+			
+		}
+
+		@Override
+		protected void doBlockContactAsync(String address, boolean block) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void doAddContactToListAsync(String address, ContactList list)
+				throws ImException {
+			// TODO Auto-generated method stub
+			Contact contact = new Contact(new LoopbackAddress(address, address), address);
+			contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
+			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
+			Contact[] contacts = new Contact[] { contact };
+			mContactListManager.doPresence(contacts);
+		}
+
+		@Override
+		public void declineSubscriptionRequest(String contact) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Contact createTemporaryContact(String address) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void approveSubscriptionRequest(String contact) {
+			// TODO Auto-generated method stub
+			return;
+		}
 	}
 
 	class LoopbackAddress extends Address {
