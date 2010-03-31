@@ -54,7 +54,7 @@ public class ContactListView extends LinearLayout {
     Activity mScreen;
     IImConnection mConn;
     SimpleAlertHandler mHandler;
-    Context mContext; // TODO
+    Context mContext;
     private final IContactListListener mContactListListener;
 
     UserPresenceView mPresenceView;
@@ -66,6 +66,7 @@ public class ContactListView extends LinearLayout {
 
     public ContactListView(Context screen, AttributeSet attrs) {
         super(screen, attrs);
+        mContext = screen;
         mScreen = (Activity)screen;
         mHandler = new SimpleAlertHandler(mScreen);
         mContactListListener = new MyContactListListener(mHandler);

@@ -28,11 +28,13 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 
 import android.os.Parcel;
+import android.util.Log;
 
 public class XmppConnection extends ImConnection {
 
@@ -138,28 +140,37 @@ public class XmppConnection extends ImConnection {
 			public void processPacket(Packet packet) {
 				org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
 				Message rec = new Message(message.getBody());
-				String address = stripAddressResource(message.getFrom());
-				ChatSession session = mSessionManager.findSession(address);
-				if (session == null) {
-					Contact contact = mContactListManager.getContact(address);
-					// TODO handle strangers
-					if (contact == null)
-						return;
-					session = mSessionManager.createChatSession(contact);
-				}
+				String address = parseAddressBase(message.getFrom());
+				ChatSession session = findOrCreateSession(address);
 				rec.setFrom(session.getParticipant().getAddress());
 				rec.setDateTime(new Date());
 				session.onReceiveMessage(rec);
 			}
 		}, new MessageTypeFilter(org.jivesoftware.smack.packet.Message.Type.chat));
+        mConnection.addPacketListener(new PacketListener() {
+			
+			@Override
+			public void processPacket(Packet packet) {
+				org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence)packet;
+				if (presence.getType() == Type.subscribe) {
+					String address = parseAddressBase(presence.getFrom());
+					Contact contact = findOrCreateContact(address);
+					mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
+				}
+			}
+		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
         mConnection.login(login, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
 	}
 
-	protected String stripAddressResource(String from) {
+	protected String parseAddressBase(String from) {
 		return from.replaceFirst("/.*", "");
+	}
+
+	protected String parseAddressUser(String from) {
+		return from.replaceFirst("@.*", "");
 	}
 
 	@Override
@@ -179,6 +190,22 @@ public class XmppConnection extends ImConnection {
 	public void suspend() {
 		// TODO Auto-generated method stub
 
+	}
+
+	private ChatSession findOrCreateSession(String address) {
+		ChatSession session = mSessionManager.findSession(address);
+		if (session == null) {
+			Contact contact = findOrCreateContact(address);
+			session = mSessionManager.createChatSession(contact);
+		}
+		return session;
+	}
+
+	private Contact findOrCreateContact(String address) {
+		Contact contact = mContactListManager.getContact(address);
+		if (contact == null)
+			contact = new Contact(new XmppAddress(address, address), address);
+		return contact;
 	}
 
 	private final class XmppChatSessionManager extends ChatSessionManager {
@@ -226,7 +253,7 @@ public class XmppConnection extends ImConnection {
 				Contact[] contacts_array = new Contact[group.getEntryCount()];
 				for (Iterator<RosterEntry> iter = group.getEntries().iterator(); iter.hasNext();) {
 					RosterEntry entry = iter.next();
-					XmppAddress addr = new XmppAddress(entry.getName(), stripAddressResource(entry.getUser()));
+					XmppAddress addr = new XmppAddress(entry.getName(), parseAddressBase(entry.getUser()));
 					Contact contact = new Contact(addr, entry.getName());
 					contacts.add(contact);
 				}
@@ -245,7 +272,7 @@ public class XmppConnection extends ImConnection {
 				
 				@Override
 				public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-					String user = stripAddressResource(presence.getFrom());
+					String user = parseAddressBase(presence.getFrom());
 					Contact contact = mContactListManager.getContact(user);
 					if (contact == null)
 						return;
@@ -297,8 +324,28 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doRemoveContactFromListAsync(Contact contact,
 				ContactList list) {
-			// TODO Auto-generated method stub
-			
+			Roster roster = mConnection.getRoster();
+			String address = contact.getAddress().getFullName();
+			try {
+				RosterGroup group = roster.getGroup(list.getName());
+				if (group == null) {
+					Log.e(TAG, "could not find group " + list.getName() + " in roster");
+					return;
+				}
+				RosterEntry entry = roster.getEntry(address);
+				if (entry == null) {
+					Log.e(TAG, "could not find entry " + address + " in group " + list.getName());
+					return;
+				}
+				group.removeEntry(entry);
+			} catch (XMPPException e) {
+				throw new RuntimeException(e);
+			}
+            org.jivesoftware.smack.packet.Presence response =
+            	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
+            response.setTo(address);
+            mConnection.sendPacket(response);
+			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_REMOVED, contact);
 		}
 
 		@Override
@@ -324,29 +371,37 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
+			Roster roster = mConnection.getRoster();
+			String[] groups = new String[] { list.getName() };
+			try {
+				roster.createEntry(address, parseAddressUser(address), groups);
+			} catch (XMPPException e) {
+				throw new RuntimeException(e);
+			}
 			Contact contact = new Contact(new XmppAddress(address, address), address);
-			contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
 			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
-			Contact[] contacts = new Contact[] { contact };
-			mContactListManager.doPresence(contacts);
 		}
 
 		@Override
 		public void declineSubscriptionRequest(String contact) {
-			// TODO Auto-generated method stub
-			
+            org.jivesoftware.smack.packet.Presence response =
+            	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
+            response.setTo(contact);
+            mConnection.sendPacket(response);
 		}
 
 		@Override
 		public Contact createTemporaryContact(String address) {
-			// TODO Auto-generated method stub
-			return null;
+			return new Contact(new XmppAddress(address, address), address);
 		}
 
 		@Override
 		public void approveSubscriptionRequest(String contact) {
-			// TODO Auto-generated method stub
-			return;
+			// TODO remove from invitation
+            org.jivesoftware.smack.packet.Presence response =
+            	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
+            response.setTo(contact);
+            mConnection.sendPacket(response);
 		}
 	}
 
