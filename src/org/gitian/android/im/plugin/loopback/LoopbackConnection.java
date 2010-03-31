@@ -199,7 +199,6 @@ public class LoopbackConnection extends ImConnection {
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
-			// TODO Auto-generated method stub
 			Contact contact = new Contact(new LoopbackAddress(address, address), address);
 			contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT));
 			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
