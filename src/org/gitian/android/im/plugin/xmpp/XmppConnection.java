@@ -47,6 +47,12 @@ public class XmppConnection extends ImConnection {
 	public XmppConnection() {
 	}
 	
+	// TODO !connection drop
+	// TODO !tests
+	// TODO !battery tests
+	// TODO !OTR
+	// TODO !beta
+	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
 		// mimic presence
@@ -70,13 +76,13 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public int getCapability() {
-		// TODO Auto-generated method stub
+		// TODO chat groups
 		return 0;
 	}
 
 	@Override
 	public ChatGroupManager getChatGroupManager() {
-		// TODO Auto-generated method stub
+		// TODO chat groups
 		return null;
 	}
 
@@ -99,7 +105,6 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public HashMap<String, String> getSessionContext() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -182,13 +187,11 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void reestablishSessionAsync(HashMap<String, String> sessionContext) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void suspend() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -235,8 +238,8 @@ public class XmppConnection extends ImConnection {
 	private final class XmppContactList extends ContactListManager {
 		@Override
 		protected void setListNameAsync(String name, ContactList list) {
-			// TODO Auto-generated method stub
-			
+			mConnection.getRoster().getGroup(list.getName()).setName(name);
+			notifyContactListNameUpdated(list, name);
 		}
 
 		@Override
@@ -304,20 +307,18 @@ public class XmppConnection extends ImConnection {
 				
 				@Override
 				public void entriesUpdated(Collection<String> addresses) {
-					// TODO Auto-generated method stub
-					
+					// TODO update contact list entries from remote
 				}
 				
 				@Override
 				public void entriesDeleted(Collection<String> addresses) {
-					// TODO Auto-generated method stub
+					// TODO delete contacts from remote
 					
 				}
 				
 				@Override
 				public void entriesAdded(Collection<String> addresses) {
-					// TODO Auto-generated method stub
-					
+					// TODO add contacts from remote
 				}
 			});
 		}
@@ -360,28 +361,25 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		protected void doDeleteContactListAsync(ContactList list) {
-			// TODO Auto-generated method stub
+			// TODO delete contact list
 			
 		}
 
 		@Override
 		protected void doCreateContactListAsync(String name,
 				Collection<Contact> contacts, boolean isDefault) {
-			// TODO Auto-generated method stub
-			return;
-			
+			// TODO create contact list
 		}
 
 		@Override
 		protected void doBlockContactAsync(String address, boolean block) {
-			// TODO Auto-generated method stub
+			// TODO block contact
 			
 		}
 
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
-			// FIXME this does not work when called from approveSubscriptionRequest
 			org.jivesoftware.smack.packet.Presence response =
 				new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
 			response.setTo(address);
