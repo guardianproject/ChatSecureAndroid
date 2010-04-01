@@ -165,11 +165,11 @@ public class XmppConnection extends ImConnection {
         mConnection.sendPacket(presence);
 	}
 
-	protected String parseAddressBase(String from) {
+	protected static String parseAddressBase(String from) {
 		return from.replaceFirst("/.*", "");
 	}
 
-	protected String parseAddressUser(String from) {
+	protected static String parseAddressUser(String from) {
 		return from.replaceFirst("@.*", "");
 	}
 
@@ -203,8 +203,10 @@ public class XmppConnection extends ImConnection {
 
 	private Contact findOrCreateContact(String address) {
 		Contact contact = mContactListManager.getContact(address);
-		if (contact == null)
-			contact = new Contact(new XmppAddress(address, address), address);
+		if (contact == null) {
+			String user = parseAddressUser(address);
+			contact = new Contact(new XmppAddress(user, address), user);
+		}
 		return contact;
 	}
 
@@ -247,7 +249,9 @@ public class XmppConnection extends ImConnection {
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
+			boolean haveGroup = false;
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
+				haveGroup = true;
 				RosterGroup group = giter.next();
 				Collection<Contact> contacts = new ArrayList<Contact>();
 				Contact[] contacts_array = new Contact[group.getEntryCount()];
@@ -263,6 +267,12 @@ public class XmppConnection extends ImConnection {
 					mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
 				notifyContactsPresenceUpdated(contacts.toArray(contacts_array));
+			}
+			if (!haveGroup) {
+				roster.createGroup("Friends");
+				ContactList cl = new ContactList(mUser.getAddress(), "Friends" , true, new ArrayList<Contact>(), this);
+				mDefaultContactList = cl;
+				notifyContactListLoaded(cl);
 			}
 			notifyContactListsLoaded();
 		}
@@ -371,14 +381,21 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
+			// FIXME this does not work when called from approveSubscriptionRequest
+			org.jivesoftware.smack.packet.Presence response =
+				new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
+			response.setTo(address);
+			mConnection.sendPacket(response);
+
 			Roster roster = mConnection.getRoster();
 			String[] groups = new String[] { list.getName() };
+			String user = parseAddressUser(address);
 			try {
-				roster.createEntry(address, parseAddressUser(address), groups);
+				roster.createEntry(address, user, groups);
 			} catch (XMPPException e) {
 				throw new RuntimeException(e);
 			}
-			Contact contact = new Contact(new XmppAddress(address, address), address);
+			Contact contact = new Contact(new XmppAddress(user, address), user);
 			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
 		}
 
@@ -388,6 +405,7 @@ public class XmppConnection extends ImConnection {
             	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(contact);
             mConnection.sendPacket(response);
+            mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact);
 		}
 
 		@Override
@@ -397,11 +415,13 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public void approveSubscriptionRequest(String contact) {
-			// TODO remove from invitation
-            org.jivesoftware.smack.packet.Presence response =
-            	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
-            response.setTo(contact);
-            mConnection.sendPacket(response);
+            try {
+            	// FIXME maybe need to check if already in another contact list
+				mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
+			} catch (ImException e) {
+				Log.e(TAG, "failed to add " + contact + " to default list");
+			}
+            mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
 		}
 	}
 
