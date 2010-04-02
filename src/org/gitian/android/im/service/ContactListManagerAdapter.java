@@ -613,6 +613,7 @@ public class ContactListManagerAdapter extends org.gitian.android.im.IContactLis
         public void onSubScriptionRequest(final Contact from) {
             String username = from.getAddress().getFullName();
             String nickname = from.getName();
+            queryOrInsertContact(from); // FIXME Miron
             Uri uri = insertOrUpdateSubscription(username, nickname,
                     Imps.Contacts.SUBSCRIPTION_TYPE_FROM,
                     Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING);

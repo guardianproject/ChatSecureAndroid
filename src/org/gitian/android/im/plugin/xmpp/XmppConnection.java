@@ -207,9 +207,17 @@ public class XmppConnection extends ImConnection {
 	private Contact findOrCreateContact(String address) {
 		Contact contact = mContactListManager.getContact(address);
 		if (contact == null) {
-			String user = parseAddressUser(address);
-			contact = new Contact(new XmppAddress(user, address), user);
+			contact = makeContact(address);
 		}
+		return contact;
+	}
+
+	private static String makeNameFromAddress(String address) {
+		return address;
+	}
+
+	private static Contact makeContact(String address) {
+		Contact contact = new Contact(new XmppAddress(address), address);
 		return contact;
 	}
 
@@ -387,13 +395,13 @@ public class XmppConnection extends ImConnection {
 
 			Roster roster = mConnection.getRoster();
 			String[] groups = new String[] { list.getName() };
-			String user = parseAddressUser(address);
 			try {
-				roster.createEntry(address, user, groups);
+				roster.createEntry(address, makeNameFromAddress(address), groups);
 			} catch (XMPPException e) {
 				throw new RuntimeException(e);
 			}
-			Contact contact = new Contact(new XmppAddress(user, address), user);
+			
+			Contact contact = makeContact(address);
 			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
 		}
 
@@ -408,7 +416,7 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public Contact createTemporaryContact(String address) {
-			return new Contact(new XmppAddress(address, address), address);
+			return makeContact(address);
 		}
 
 		@Override
@@ -423,7 +431,7 @@ public class XmppConnection extends ImConnection {
 		}
 	}
 
-	class XmppAddress extends Address {
+	static class XmppAddress extends Address {
 		
 		private String address;
 		private String name;
@@ -433,6 +441,11 @@ public class XmppConnection extends ImConnection {
 		
 		public XmppAddress(String name, String address) {
 			this.name = name;
+			this.address = address;
+		}
+		
+		public XmppAddress(String address) {
+			this.name = makeNameFromAddress(address);
 			this.address = address;
 		}
 
