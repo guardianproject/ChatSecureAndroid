@@ -15,11 +15,13 @@ import org.gitian.android.im.engine.ContactList;
 import org.gitian.android.im.engine.ContactListListener;
 import org.gitian.android.im.engine.ContactListManager;
 import org.gitian.android.im.engine.ImConnection;
+import org.gitian.android.im.engine.ImErrorInfo;
 import org.gitian.android.im.engine.ImException;
 import org.gitian.android.im.engine.LoginInfo;
 import org.gitian.android.im.engine.Message;
 import org.gitian.android.im.engine.Presence;
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
@@ -47,7 +49,8 @@ public class XmppConnection extends ImConnection {
 	public XmppConnection() {
 	}
 	
-	// TODO !connection drop
+	// TODO !connection drop - keep track of connection state, keep alive (?)
+	// FIXME NPEs in contact handling
 	// TODO !tests
 	// TODO !battery tests
 	// TODO !OTR
@@ -55,23 +58,27 @@ public class XmppConnection extends ImConnection {
 	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
-		// mimic presence
-		ContactList cl;
-		try {
-			cl = mContactListManager.getDefaultContactList();
-		} catch (ImException e) {
-			throw new RuntimeException(e);
-		}
-		if (cl == null)
-			return;
-		Collection<Contact> contacts = cl.getContacts();
-		for (Iterator<Contact> iter = contacts.iterator(); iter.hasNext();) {
-			Contact contact = iter.next();
-			contact.setPresence(presence);
-		}
-		Contact[] contacts_array = new Contact[contacts.size()];
-		contacts.toArray(contacts_array);
-		mContactListManager.doPresence(contacts_array);
+		String statusText = presence.getStatusText();
+        Type type = Type.available;
+        Mode mode = Mode.available;
+        int priority = 20;
+        if (presence.getStatus() == Presence.AWAY) {
+        	priority = 10;
+        	mode = Mode.away;
+        }
+        else if (presence.getStatus() == Presence.DO_NOT_DISTURB) {
+        	priority = 1;
+        	mode = Mode.dnd;
+        }
+        else if (presence.getStatus() == Presence.OFFLINE) {
+        	priority = 0;
+        	type = Type.unavailable;
+        	statusText = "Offline";
+        }
+		org.jivesoftware.smack.packet.Presence packet = 
+        	new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
+        mConnection.sendPacket(packet);
+
 	}
 
 	@Override
@@ -121,6 +128,7 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void loginAsync(LoginInfo loginInfo) {
+		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = loginInfo.getUserName();
 		String []comps = username.split("@");
@@ -129,7 +137,8 @@ public class XmppConnection extends ImConnection {
 		try {
 			initConnection(comps[1], comps[0], loginInfo.getPassword(), "Android");
 		} catch (XMPPException e) {
-			throw new RuntimeException(e);
+			forced_disconnect(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage()));
+			return;
 		}
 		mUser = new Contact(new XmppAddress(comps[0], username), username);
 		setState(LOGGED_IN, null);
@@ -164,10 +173,52 @@ public class XmppConnection extends ImConnection {
 				}
 			}
 		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
+        mConnection.addConnectionListener(new ConnectionListener() {
+			@Override
+			public void reconnectionSuccessful() {
+				setState(LOGGED_IN, null);
+			}
+			
+			@Override
+			public void reconnectionFailed(Exception e) {
+				// TODO reconnection failed
+				
+			}
+			
+			@Override
+			public void reconnectingIn(int seconds) {
+				// TODO reconnecting
+				
+			}
+			
+			@Override
+			public void connectionClosedOnError(Exception e) {
+				forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+			}
+			
+			@Override
+			public void connectionClosed() {
+				forced_disconnect(null);
+			}
+		});
         mConnection.login(login, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
+	}
+	
+	void forced_disconnect(ImErrorInfo info) {
+		setState(DISCONNECTED, info);
+		try {
+			if (mConnection!= null) {
+				XMPPConnection conn = mConnection;
+				mConnection = null;
+				conn.disconnect();
+			}
+		}
+		catch (Exception e) {
+			// Ignore
+		}
 	}
 
 	protected static String parseAddressBase(String from) {
@@ -181,8 +232,9 @@ public class XmppConnection extends ImConnection {
 	@Override
 	public void logoutAsync() {
 		setState(LOGGING_OUT, null);
-		mConnection.disconnect();
-		setState(DISCONNECTED, null);
+		XMPPConnection conn = mConnection;
+		mConnection = null;
+		conn.disconnect();
 	}
 
 	@Override
@@ -329,10 +381,6 @@ public class XmppConnection extends ImConnection {
 					// TODO add contacts from remote
 				}
 			});
-		}
-
-		public void doPresence(Contact[] contacts) {
-			notifyContactsPresenceUpdated(contacts);
 		}
 
 		@Override
