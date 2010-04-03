@@ -60,9 +60,10 @@
                 android:value="http://xxx.xxx.xxx"/>
         </service>
 
-            <!-- android:process="android.process.im" -->
+            <!--  -->
         <service android:name=".service.RemoteImService"
             android:exported="true"
+            android:process="org.gitian.android.process.im"
             android:permission="org.gitian.android.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="org.gitian.android.im.IRemoteImService" />
@@ -72,7 +73,7 @@
 
         <provider android:name=".provider.ImpsProvider"
             android:authorities="imps"
-            android:process="android.process.im"
+            android:process="org.gitian.android.process.im"
             android:multiprocess="false"
             android:readPermission="org.gitian.android.providers.imps.permission.READ_ONLY"
             android:writePermission="org.gitian.android.providers.imps.permission.WRITE_ONLY"
@@ -239,5 +240,6 @@
 -->
     </application>
 	<uses-sdk android:targetSdkVersion="4" android:minSdkVersion="4"></uses-sdk>
+
 
 </manifest>
