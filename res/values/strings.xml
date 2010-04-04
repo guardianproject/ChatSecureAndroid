@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">IM</string>
+    <string name="im_label">Off The Record</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->

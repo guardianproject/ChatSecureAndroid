@@ -17,6 +17,8 @@
 
 package org.gitian.android.im.engine;
 
+import org.gitian.android.im.plugin.xmpp.XmppConnection;
+
 import android.os.Parcel;
 import android.util.Log;
 
@@ -31,6 +33,7 @@ public class AddressParcelHelper {
         // TODO ImpsUserAddress.class,
         //ImpsGroupAddress.class,
         //ImpsContactListAddress.class,
+    	XmppConnection.XmppAddress.class
     };
 
     private AddressParcelHelper() {

@@ -22,15 +22,22 @@ import org.gitian.android.im.engine.Message;
 import org.gitian.android.im.engine.Presence;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
+import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
@@ -41,20 +48,25 @@ import android.util.Log;
 public class XmppConnection extends ImConnection {
 
 	protected static final String TAG = "XmppConnection";
+	private static final long PING_TIMEOUT = 5000;
 	private XmppContactList mContactListManager;
 	private Contact mUser;
-	private XMPPConnection mConnection;
+	private MyXMPPConnection mConnection;
 	private XmppChatSessionManager mSessionManager;
 
 	public XmppConnection() {
+		Log.d(TAG, "created");
+		ReconnectionManager.activate();
+		SmackConfiguration.setKeepAliveInterval(-1);
 	}
 	
-	// TODO !connection drop - keep track of connection state, keep alive (?)
-	// FIXME NPEs in contact handling
 	// TODO !tests
 	// TODO !battery tests
 	// TODO !OTR
 	// TODO !beta
+	// FIXME NPEs in contact handling
+	// FIXME leaking binder threads
+	// FIXME IllegalStateException in ReconnectionManager
 	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -128,6 +140,7 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void loginAsync(LoginInfo loginInfo) {
+		Log.i(TAG, "loggin in " + loginInfo.getUserName());
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = loginInfo.getUserName();
@@ -142,11 +155,13 @@ public class XmppConnection extends ImConnection {
 		}
 		mUser = new Contact(new XmppAddress(comps[0], username), username);
 		setState(LOGGED_IN, null);
+		Log.i(TAG, "logged in");
 	}
 
 	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
     	ConnectionConfiguration config = new ConnectionConfiguration(serverHost);
-		mConnection = new XMPPConnection(config);
+		mConnection = new MyXMPPConnection(config);
+		startPingTask();
         mConnection.connect();
         mConnection.addPacketListener(new PacketListener() {
 			
@@ -168,6 +183,7 @@ public class XmppConnection extends ImConnection {
 				org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence)packet;
 				if (presence.getType() == Type.subscribe) {
 					String address = parseAddressBase(presence.getFrom());
+					Log.i(TAG, "sub request from " + address);
 					Contact contact = findOrCreateContact(address);
 					mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
 				}
@@ -176,28 +192,33 @@ public class XmppConnection extends ImConnection {
         mConnection.addConnectionListener(new ConnectionListener() {
 			@Override
 			public void reconnectionSuccessful() {
-				setState(LOGGED_IN, null);
+				Log.i(TAG, "reconnection success");
 			}
 			
 			@Override
 			public void reconnectionFailed(Exception e) {
 				// TODO reconnection failed
-				
+				Log.i(TAG, "reconnection failed");
+				forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 			
 			@Override
 			public void reconnectingIn(int seconds) {
 				// TODO reconnecting
-				
+				Log.i(TAG, "reconnecting in " + seconds);
+				if (seconds == 0)
+					startPingTask();
 			}
 			
 			@Override
 			public void connectionClosedOnError(Exception e) {
-				forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				Log.i(TAG, "closed on error", e);
+				pingThread = null;
 			}
 			
 			@Override
 			public void connectionClosed() {
+				Log.i(TAG, "connection closed");
 				forced_disconnect(null);
 			}
 		});
@@ -219,6 +240,7 @@ public class XmppConnection extends ImConnection {
 		catch (Exception e) {
 			// Ignore
 		}
+		Log.i(TAG, "connection cleaned up");
 	}
 
 	protected static String parseAddressBase(String from) {
@@ -231,6 +253,7 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void logoutAsync() {
+		Log.i(TAG, "logout");
 		setState(LOGGING_OUT, null);
 		XMPPConnection conn = mConnection;
 		mConnection = null;
@@ -298,6 +321,7 @@ public class XmppConnection extends ImConnection {
 	private final class XmppContactList extends ContactListManager {
 		@Override
 		protected void setListNameAsync(String name, ContactList list) {
+			Log.d(TAG, "set list name");
 			mConnection.getRoster().getGroup(list.getName()).setName(name);
 			notifyContactListNameUpdated(list, name);
 		}
@@ -309,6 +333,7 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public void loadContactListsAsync() {
+			Log.d(TAG, "load contact lists");
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
@@ -368,17 +393,19 @@ public class XmppConnection extends ImConnection {
 				@Override
 				public void entriesUpdated(Collection<String> addresses) {
 					// TODO update contact list entries from remote
+					Log.d(TAG, "roster entries updated");
 				}
 				
 				@Override
 				public void entriesDeleted(Collection<String> addresses) {
 					// TODO delete contacts from remote
-					
+					Log.d(TAG, "roster entries deleted");
 				}
 				
 				@Override
 				public void entriesAdded(Collection<String> addresses) {
 					// TODO add contacts from remote
+					Log.d(TAG, "roster entries added");
 				}
 			});
 		}
@@ -406,6 +433,7 @@ public class XmppConnection extends ImConnection {
 				}
 				group.removeEntry(entry);
 			} catch (XMPPException e) {
+				Log.e(TAG, "remove entry failed", e);
 				throw new RuntimeException(e);
 			}
             org.jivesoftware.smack.packet.Presence response =
@@ -418,13 +446,14 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doDeleteContactListAsync(ContactList list) {
 			// TODO delete contact list
-			
+			Log.i(TAG, "delete contact list " + list.getName());
 		}
 
 		@Override
 		protected void doCreateContactListAsync(String name,
 				Collection<Contact> contacts, boolean isDefault) {
 			// TODO create contact list
+			Log.i(TAG, "create contact list " + name + " default " + isDefault);
 		}
 
 		@Override
@@ -436,6 +465,7 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
+			Log.i(TAG, "add contact to " + list.getName());
 			org.jivesoftware.smack.packet.Presence response =
 				new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
 			response.setTo(address);
@@ -455,6 +485,7 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public void declineSubscriptionRequest(String contact) {
+			Log.d(TAG, "decline subscription");
             org.jivesoftware.smack.packet.Presence response =
             	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(contact);
@@ -463,12 +494,8 @@ public class XmppConnection extends ImConnection {
 		}
 
 		@Override
-		public Contact createTemporaryContact(String address) {
-			return makeContact(address);
-		}
-
-		@Override
 		public void approveSubscriptionRequest(String contact) {
+			Log.d(TAG, "approve subscription");
             try {
             	// FIXME maybe need to check if already in another contact list
 				mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
@@ -477,9 +504,15 @@ public class XmppConnection extends ImConnection {
 			}
             mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
 		}
+
+		@Override
+		public Contact createTemporaryContact(String address) {
+			Log.d(TAG, "create temporary " + address);
+			return makeContact(address);
+		}
 	}
 
-	static class XmppAddress extends Address {
+	public static class XmppAddress extends Address {
 		
 		private String address;
 		private String name;
@@ -520,4 +553,90 @@ public class XmppConnection extends ImConnection {
 		}
 		
 	}
+
+	Thread pingThread;
+
+	void startPingTask() {
+		// Schedule a ping task to run.
+		PingTask task = new PingTask(PING_TIMEOUT);
+		pingThread = new Thread(task);
+		task.setThread(pingThread);
+		pingThread.setDaemon(true);
+		pingThread.setName("XmppConnection Pinger");
+		pingThread.start();
+	}
+
+	public boolean sendPing() {
+		IQ req = new IQ() {
+			public String getChildElementXML() {
+				return "<ping xmlns='urn:xmpp:ping'/>";
+			}
+		};
+		req.setType(IQ.Type.GET);
+        PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
+                new PacketTypeFilter(IQ.class));
+        PacketCollector collector = mConnection.createPacketCollector(filter);
+        mConnection.sendPacket(req);
+        IQ result = (IQ)collector.nextResult(PING_TIMEOUT);
+        if (result == null)
+        {
+        	Log.e(TAG, "ping timeout");
+        	return false;
+        }
+        collector.cancel();
+        return true;
+	}
+	
+	/**
+	 * A TimerTask that keeps connections to the server alive by sending a space
+	 * character on an interval.
+	 */
+	class PingTask implements Runnable {
+
+		private static final int INITIAL_PING_DELAY = 15000;
+		private long delay;
+		private Thread thread;
+
+		public PingTask(long delay) {
+			this.delay = delay;
+		}
+
+		protected void setThread(Thread thread) {
+			this.thread = thread;
+		}
+
+		public void run() {
+			try {
+				// Sleep 15 seconds before sending first heartbeat. This will give time to
+				// properly finish TLS negotiation and then start sending heartbeats.
+				Thread.sleep(INITIAL_PING_DELAY);
+			}
+			catch (InterruptedException ie) {
+				// Do nothing
+			}
+			while (mConnection != null && pingThread == thread) {
+				Log.d(TAG, "ping");
+				if (mConnection.isConnected() && !sendPing()) {
+					Log.i(TAG, "ping failed");
+					mConnection.force_shutdown();
+				}
+				try {
+					// Sleep until we should write the next keep-alive.
+					Thread.sleep(delay);
+				}
+				catch (InterruptedException ie) {
+					// Do nothing
+				}
+			}
+		}
+	}
+	
+	static class MyXMPPConnection extends XMPPConnection {
+
+		public MyXMPPConnection(ConnectionConfiguration config) {
+			super(config);
+		}
+
+	}
 }
+
