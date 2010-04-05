@@ -64,6 +64,7 @@ public class XmppConnection extends ImConnection {
 	// TODO !battery tests
 	// TODO !OTR
 	// TODO !beta
+	// FIXME NPE if reconnect on sign in
 	// FIXME NPEs in contact handling
 	// FIXME IllegalStateException in ReconnectionManager
 	// FIXME Auto sign-in on service start, boot
@@ -214,9 +215,8 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void reconnectionFailed(Exception e) {
-				// TODO reconnection failed
 				Log.i(TAG, "reconnection failed");
-				forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				//forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 			
 			@Override
@@ -236,7 +236,6 @@ public class XmppConnection extends ImConnection {
 			@Override
 			public void connectionClosed() {
 				Log.i(TAG, "connection closed");
-				forced_disconnect(null);
 			}
 		});
         mConnection.login(login, password, resource);
