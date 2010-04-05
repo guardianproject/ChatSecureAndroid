@@ -90,7 +90,8 @@ public class XmppConnection extends ImConnection {
 		org.jivesoftware.smack.packet.Presence packet = 
         	new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
         mConnection.sendPacket(packet);
-
+		mUserPresence = presence;
+        notifyUserPresenceUpdated();
 	}
 
 	@Override
@@ -588,12 +589,11 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	/**
-	 * A TimerTask that keeps connections to the server alive by sending a space
-	 * character on an interval.
+	 * Keep connection alive and check for network changes by sending ping packets
 	 */
 	class PingTask implements Runnable {
 
-		private static final int INITIAL_PING_DELAY = 15000;
+		private static final int INITIAL_PING_DELAY = 20000;
 		private long delay;
 		private Thread thread;
 
@@ -607,8 +607,8 @@ public class XmppConnection extends ImConnection {
 
 		public void run() {
 			try {
-				// Sleep 15 seconds before sending first heartbeat. This will give time to
-				// properly finish TLS negotiation and then start sending heartbeats.
+				// Sleep before sending first heartbeat. This will give time to
+				// properly finish logging in.
 				Thread.sleep(INITIAL_PING_DELAY);
 			}
 			catch (InterruptedException ie) {

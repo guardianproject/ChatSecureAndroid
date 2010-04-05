@@ -1,0 +1,113 @@
+diff -ur org/jivesoftware/smack/ReconnectionManager.java org/jivesoftware/smack/ReconnectionManager.java
+--- org/jivesoftware/smack/ReconnectionManager.java	2010-04-04 16:16:36.000000000 -0700
++++ org/jivesoftware/smack/ReconnectionManager.java	2010-04-04 12:32:21.000000000 -0700
+@@ -24,15 +24,23 @@
+     // Holds the state of the reconnection
+     boolean done = false;
+ 
+-    static {
++	protected boolean is_reconnecting;
++    static boolean activated = false;
++
++    static public void activate() {
+         // Create a new PrivacyListManager on every established connection. In the init()
+         // method of PrivacyListManager, we'll add a listener that will delete the
+         // instance when the connection is closed.
+-        Connection.addConnectionCreationListener(new ConnectionCreationListener() {
+-            public void connectionCreated(Connection connection) {
+-                connection.addConnectionListener(new ReconnectionManager(connection));
+-            }
+-        });
++    	synchronized(ReconnectionManager.class) {
++    		if (activated)
++    			return;
++    		activated = true;
++            Connection.addConnectionCreationListener(new ConnectionCreationListener() {
++                public void connectionCreated(Connection connection) {
++                    connection.addConnectionListener(new ReconnectionManager(connection));
++                }
++            });
++    	}
+     }
+ 
+     private ReconnectionManager(Connection connection) {
+@@ -87,11 +95,25 @@
+                     return 10;              // 10 seconds
+                 }
+ 
++                public void run() {
++                	synchronized (ReconnectionManager.this) {
++                		if (is_reconnecting)
++                			return;
++                		is_reconnecting = true;
++                	}
++                	try {
++                		do_run();
++                	} finally {
++                		synchronized (ReconnectionManager.this) {
++                			is_reconnecting = false;
++                		}
++                	}
++                }
+                 /**
+                  * The process will try the reconnection until the connection succeed or the user
+                  * cancell it
+                  */
+-                public void run() {
++                public void do_run() {
+                     // The process will try to reconnect until the connection is established or
+                     // the user cancel the reconnection process {@link Connection#disconnect()}
+                     while (ReconnectionManager.this.isReconnectionAllowed()) {
+diff -ur org/jivesoftware/smack/XMPPConnection.java org/jivesoftware/smack/XMPPConnection.java
+--- org/jivesoftware/smack/XMPPConnection.java	2010-04-04 16:16:36.000000000 -0700
++++ org/jivesoftware/smack/XMPPConnection.java	2010-04-04 12:23:16.000000000 -0700
+@@ -407,15 +407,29 @@
+      */
+     protected void shutdown(Presence unavailablePresence) {
+         // Set presence to offline.
+-        packetWriter.sendPacket(unavailablePresence);
+-
++    	try {
++	    	if (packetWriter != null)
++	    		packetWriter.sendPacket(unavailablePresence);
++    	} catch (Throwable ignore) {
++    		//ignore
++    	}
++	    	
+         this.setWasAuthenticated(authenticated);
+         authenticated = false;
+         connected = false;
+ 
+-        packetReader.shutdown();
+-        packetWriter.shutdown();
+-        // Wait 150 ms for processes to clean-up, then shutdown.
++        try {
++        	packetReader.shutdown();
++    	} catch (Throwable ignore) {
++    		//ignore
++    	}
++        try {
++        	packetWriter.shutdown();
++    	} catch (Throwable ignore) {
++    		//ignore
++    	}
++
++    	// Wait 150 ms for processes to clean-up, then shutdown.
+         try {
+             Thread.sleep(150);
+         }
+@@ -449,6 +463,14 @@
+ 
+         saslAuthentication.init();
+     }
++    
++    public void force_shutdown() {
++    	try {
++    		socket.close();
++    	} catch (Exception e) {
++    		// ignore
++    	}
++    }
+ 
+     public void disconnect(Presence unavailablePresence) {
+         // If not connected, ignore this request.
