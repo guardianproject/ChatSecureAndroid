@@ -117,6 +117,12 @@ public class RemoteImService extends Service {
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvaiablePlugins();
         AndroidSystemService.getInstance().initialize(this);
+
+        // Check and login accounts if network is ready, otherwise it's checked
+        // when the network becomes available.
+        if (mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+            autoLogin();
+        }
     }
 
     @Override
@@ -129,7 +135,7 @@ public class RemoteImService extends Service {
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
         if (mNeedCheckAutoLogin &&
-                mNetworkConnectivityListener.getState() == State.CONNECTED) {
+                mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
             mNeedCheckAutoLogin = false;
             autoLogin();
         }

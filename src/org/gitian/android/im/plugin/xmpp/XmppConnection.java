@@ -65,9 +65,11 @@ public class XmppConnection extends ImConnection {
 	// TODO !OTR
 	// TODO !beta
 	// FIXME NPEs in contact handling
-	// FIXME leaking binder threads
 	// FIXME IllegalStateException in ReconnectionManager
+	// FIXME Auto sign-in on service start, boot
+	// FIXME finish moving relevant Async stuff to threads
 	
+
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
 		String statusText = presence.getStatusText();
@@ -78,8 +80,12 @@ public class XmppConnection extends ImConnection {
         	priority = 10;
         	mode = Mode.away;
         }
+        else if (presence.getStatus() == Presence.IDLE) {
+        	priority = 15;
+        	mode = Mode.away;
+        }
         else if (presence.getStatus() == Presence.DO_NOT_DISTURB) {
-        	priority = 1;
+        	priority = 5;
         	mode = Mode.dnd;
         }
         else if (presence.getStatus() == Presence.OFFLINE) {
@@ -140,10 +146,20 @@ public class XmppConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(LoginInfo loginInfo) {
+	public void loginAsync(final LoginInfo loginInfo) {
+		Thread worker = new Thread("Xmpp-login") {
+			@Override
+			public void run() {
+				do_login(loginInfo);
+			}
+		};
+		worker.start();
+	}
+	
+	private void do_login(LoginInfo loginInfo) {
 		Log.i(TAG, "loggin in " + loginInfo.getUserName());
 		setState(LOGGING_IN, null);
-		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
+		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = loginInfo.getUserName();
 		String []comps = username.split("@");
 		if (comps.length != 2)
@@ -254,6 +270,16 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void logoutAsync() {
+		Thread worker = new Thread("Xmpp-logout") {
+			@Override
+			public void run() {
+				do_logout();
+			}
+		};
+		worker.start();
+	}
+	
+	private void do_logout() {
 		Log.i(TAG, "logout");
 		setState(LOGGING_OUT, null);
 		XMPPConnection conn = mConnection;
@@ -321,7 +347,17 @@ public class XmppConnection extends ImConnection {
 
 	private final class XmppContactList extends ContactListManager {
 		@Override
-		protected void setListNameAsync(String name, ContactList list) {
+		protected void setListNameAsync(final String name, final ContactList list) {
+			Thread worker = new Thread("Xmpp-setListName") {
+				@Override
+				public void run() {
+					do_setListName(name, list);
+				}
+			};
+			worker.start();
+		}
+		
+		private void do_setListName(String name, ContactList list) {
 			Log.d(TAG, "set list name");
 			mConnection.getRoster().getGroup(list.getName()).setName(name);
 			notifyContactListNameUpdated(list, name);
@@ -334,6 +370,16 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public void loadContactListsAsync() {
+			Thread worker = new Thread("Xmpp-loadContactLists") {
+				@Override
+				public void run() {
+					do_loadContactLists();
+				}
+			};
+			worker.start();
+		}
+		
+		private void do_loadContactLists() {
 			Log.d(TAG, "load contact lists");
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
