@@ -48,7 +48,6 @@ import android.util.Log;
 public class XmppConnection extends ImConnection {
 
 	protected static final String TAG = "XmppConnection";
-	private static final long PING_TIMEOUT = 5000;
 	private XmppContactList mContactListManager;
 	private Contact mUser;
 	private MyXMPPConnection mConnection;
@@ -64,11 +63,15 @@ public class XmppConnection extends ImConnection {
 	// TODO !battery tests
 	// TODO !OTR
 	// TODO !beta
+	// TODO backoff in ReconnectionManager
+	// FIXME reconnection manager trace 2009-04-05
 	// FIXME NPE if reconnect on sign in
 	// FIXME NPEs in contact handling
 	// FIXME IllegalStateException in ReconnectionManager
 	// FIXME Auto sign-in on service start, boot
 	// FIXME finish moving relevant Async stuff to threads
+	// TODO think about reconnection feedback
+	// TODO think about NetworkStateListener
 	
 
 	@Override
@@ -157,8 +160,12 @@ public class XmppConnection extends ImConnection {
 		worker.start();
 	}
 	
-	private void do_login(LoginInfo loginInfo) {
-		Log.i(TAG, "loggin in " + loginInfo.getUserName());
+	private synchronized void do_login(LoginInfo loginInfo) {
+		if (mConnection != null) {
+			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
+			return;
+		}
+		Log.i(TAG, "logging in " + loginInfo.getUserName());
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = loginInfo.getUserName();
@@ -211,6 +218,7 @@ public class XmppConnection extends ImConnection {
 			@Override
 			public void reconnectionSuccessful() {
 				Log.i(TAG, "reconnection success");
+				setState(LOGGED_IN, null);
 			}
 			
 			@Override
@@ -221,16 +229,17 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void reconnectingIn(int seconds) {
-				// TODO reconnecting
 				Log.i(TAG, "reconnecting in " + seconds);
 				if (seconds == 0)
 					startPingTask();
+				setState(LOGGING_IN, null);
 			}
 			
 			@Override
 			public void connectionClosedOnError(Exception e) {
 				Log.i(TAG, "closed on error", e);
-				pingThread = null;
+				stopPingTask();
+				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 			
 			@Override
@@ -602,54 +611,63 @@ public class XmppConnection extends ImConnection {
 
 	Thread pingThread;
 
+	private static int ping_task_generation = 1;
+
 	void startPingTask() {
 		// Schedule a ping task to run.
-		PingTask task = new PingTask(PING_TIMEOUT);
+		PingTask task = new PingTask();
 		pingThread = new Thread(task);
 		task.setThread(pingThread);
 		pingThread.setDaemon(true);
-		pingThread.setName("XmppConnection Pinger");
+		pingThread.setName("XmppConnection Pinger " + ping_task_generation);
+		ping_task_generation++;
 		pingThread.start();
 	}
-
-	public boolean sendPing() {
-		IQ req = new IQ() {
-			public String getChildElementXML() {
-				return "<ping xmlns='urn:xmpp:ping'/>";
-			}
-		};
-		req.setType(IQ.Type.GET);
-        PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
-                new PacketTypeFilter(IQ.class));
-        PacketCollector collector = mConnection.createPacketCollector(filter);
-        mConnection.sendPacket(req);
-        IQ result = (IQ)collector.nextResult(PING_TIMEOUT);
-        if (result == null)
-        {
-        	Log.e(TAG, "ping timeout");
-        	return false;
-        }
-        collector.cancel();
-        return true;
-	}
 	
+	void stopPingTask() {
+		pingThread = null;
+	}
+
 	/**
 	 * Keep connection alive and check for network changes by sending ping packets
 	 */
 	class PingTask implements Runnable {
 
 		private static final int INITIAL_PING_DELAY = 20000;
+		private static final int PING_INTERVAL = 20000;
+		private static final long PING_TIMEOUT = 10000;
 		private long delay;
 		private Thread thread;
 
-		public PingTask(long delay) {
-			this.delay = delay;
+		public PingTask() {
+			this.delay = PING_INTERVAL;
 		}
 
 		protected void setThread(Thread thread) {
 			this.thread = thread;
 		}
 
+		private boolean sendPing() {
+			IQ req = new IQ() {
+				public String getChildElementXML() {
+					return "<ping xmlns='urn:xmpp:ping'/>";
+				}
+			};
+			req.setType(IQ.Type.GET);
+	        PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
+	                new PacketTypeFilter(IQ.class));
+	        PacketCollector collector = mConnection.createPacketCollector(filter);
+	        mConnection.sendPacket(req);
+	        IQ result = (IQ)collector.nextResult(PING_TIMEOUT);
+	        if (result == null)
+	        {
+	        	Log.e(TAG, "ping timeout");
+	        	return false;
+	        }
+	        collector.cancel();
+	        return true;
+		}
+		
 		public void run() {
 			try {
 				// Sleep before sending first heartbeat. This will give time to
@@ -660,10 +678,12 @@ public class XmppConnection extends ImConnection {
 				// Do nothing
 			}
 			while (mConnection != null && pingThread == thread) {
-				Log.d(TAG, "ping");
-				if (mConnection.isConnected() && !sendPing()) {
-					Log.i(TAG, "ping failed");
-					mConnection.force_shutdown();
+				if (mConnection.isConnected()) {
+					Log.d(TAG, "ping");
+					if (!sendPing()) {
+						Log.i(TAG, "ping failed - close connection");
+						mConnection.force_shutdown();
+					}
 				}
 				try {
 					// Sleep until we should write the next keep-alive.
@@ -673,6 +693,7 @@ public class XmppConnection extends ImConnection {
 					// Do nothing
 				}
 			}
+			Log.d(TAG, "pinger exit");
 		}
 	}
 	

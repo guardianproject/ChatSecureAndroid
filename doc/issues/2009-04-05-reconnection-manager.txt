@@ -1,0 +1,10 @@
+04-05 15:40:50.068: WARN/dalvikvm(557): threadid=21: thread exiting with uncaught exception (group=0x4001e170)
+04-05 15:40:50.078: ERROR/AndroidRuntime(557): Uncaught handler: thread Smack Reconnection Manager exiting due to uncaught exception
+04-05 15:40:50.158: ERROR/AndroidRuntime(557): java.lang.IllegalStateException: Not connected to server.
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.XMPPConnection.sendPacket(XMPPConnection.java:498)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.NonSASLAuthentication.authenticate(NonSASLAuthentication.java:69)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.SASLAuthentication.authenticate(SASLAuthentication.java:363)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.XMPPConnection.login(XMPPConnection.java:230)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.XMPPConnection.connect(XMPPConnection.java:1017)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.ReconnectionManager$2.do_run(ReconnectionManager.java:144)
+04-05 15:40:50.158: ERROR/AndroidRuntime(557):     at org.jivesoftware.smack.ReconnectionManager$2.run(ReconnectionManager.java:105)
