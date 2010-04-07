@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.gitian.android.im.engine.Address;
 import org.gitian.android.im.engine.ChatGroupManager;
@@ -52,9 +54,10 @@ public class XmppConnection extends ImConnection {
 	private Contact mUser;
 	private MyXMPPConnection mConnection;
 	private XmppChatSessionManager mSessionManager;
+	private ConnectionConfiguration mConfig;
 
 	public XmppConnection() {
-		Log.d(TAG, "created");
+		Log.w(TAG, "created");
 		ReconnectionManager.activate();
 		SmackConfiguration.setKeepAliveInterval(-1);
 	}
@@ -72,7 +75,8 @@ public class XmppConnection extends ImConnection {
 	// FIXME finish moving relevant Async stuff to threads
 	// TODO think about reconnection feedback
 	// TODO think about NetworkStateListener
-	
+	// TODO think about sleep
+	// FIXME offline messages not send when gone online
 
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -175,7 +179,7 @@ public class XmppConnection extends ImConnection {
 		try {
 			initConnection(comps[1], comps[0], loginInfo.getPassword(), "Android");
 		} catch (XMPPException e) {
-			forced_disconnect(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage()));
+			disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage()));
 			return;
 		}
 		mUser = new Contact(new XmppAddress(comps[0], username), username);
@@ -184,8 +188,8 @@ public class XmppConnection extends ImConnection {
 	}
 
 	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
-    	ConnectionConfiguration config = new ConnectionConfiguration(serverHost);
-		mConnection = new MyXMPPConnection(config);
+    	mConfig = new ConnectionConfiguration(serverHost);
+		mConnection = new MyXMPPConnection(mConfig);
 		startPingTask();
         mConnection.connect();
         mConnection.addPacketListener(new PacketListener() {
@@ -223,12 +227,17 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void reconnectionFailed(Exception e) {
-				Log.i(TAG, "reconnection failed");
+				Log.i(TAG, "reconnection failed", e);
 				//forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 			
 			@Override
 			public void reconnectingIn(int seconds) {
+				/*
+				 * Reconnect happens:
+				 * - due to network error
+				 * - but not if connectionClosed is fired
+				 */
 				Log.i(TAG, "reconnecting in " + seconds);
 				if (seconds == 0)
 					startPingTask();
@@ -237,6 +246,12 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void connectionClosedOnError(Exception e) {
+				/*
+				 * This fires when:
+				 * - Packet reader or writer detect an error
+				 * - Stream compression failes
+				 * - TLS fails but is required
+				 */
 				Log.i(TAG, "closed on error", e);
 				stopPingTask();
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
@@ -244,7 +259,20 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void connectionClosed() {
-				Log.i(TAG, "connection closed");
+				/*
+				 * This can be called in these cases:
+				 * - Connection is shutting down
+				 *   - because we are calling disconnect
+				 *     - in do_logout
+				 *     
+				 * - NOT (fixed in smack)
+				 *   - because server disconnected "normally"
+				 *   - we were trying to log in (initConnection), but are failing
+				 *   - due to network error
+				 *   - in forced disconnect
+				 *   - due to login failing
+				 */
+				Log.i(TAG, "connection closed", new Exception());
 			}
 		});
         mConnection.login(login, password, resource);
@@ -252,9 +280,16 @@ public class XmppConnection extends ImConnection {
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
 	}
+
+	void disconnected(ImErrorInfo info) {
+		Log.w(TAG, "disconnected");
+		mConfig.setReconnectionAllowed(false);
+		setState(DISCONNECTED, info);
+	}
 	
 	void forced_disconnect(ImErrorInfo info) {
-		setState(DISCONNECTED, info);
+		// UNUSED
+		Log.w(TAG, "forced disconnect");
 		try {
 			if (mConnection!= null) {
 				XMPPConnection conn = mConnection;
@@ -265,7 +300,7 @@ public class XmppConnection extends ImConnection {
 		catch (Exception e) {
 			// Ignore
 		}
-		Log.i(TAG, "connection cleaned up");
+		disconnected(info);
 	}
 
 	protected static String parseAddressBase(String from) {
@@ -288,11 +323,14 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	private void do_logout() {
-		Log.i(TAG, "logout");
+		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);
+		mConfig.setReconnectionAllowed(false);
+		stopPingTask();
 		XMPPConnection conn = mConnection;
 		mConnection = null;
 		conn.disconnect();
+		setState(DISCONNECTED, null);
 	}
 
 	@Override
@@ -393,23 +431,29 @@ public class XmppConnection extends ImConnection {
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
 			boolean haveGroup = false;
+			Set<String> seen = new HashSet<String>();
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 				haveGroup = true;
 				RosterGroup group = giter.next();
 				Collection<Contact> contacts = new ArrayList<Contact>();
-				Contact[] contacts_array = new Contact[group.getEntryCount()];
 				for (Iterator<RosterEntry> iter = group.getEntries().iterator(); iter.hasNext();) {
 					RosterEntry entry = iter.next();
-					XmppAddress addr = new XmppAddress(entry.getName(), parseAddressBase(entry.getUser()));
-					Contact contact = new Contact(addr, entry.getName());
-					contacts.add(contact);
+					String address = parseAddressBase(entry.getUser());
+					if (seen.add(address)) {
+						XmppAddress xaddress = new XmppAddress(entry.getName(), address);
+						Contact contact = new Contact(xaddress, entry.getName());
+						contacts.add(contact);
+					}
+					else {
+						Log.d(TAG, "skipped duplicate contact");
+					}
 				}
 				ContactList cl = new ContactList(mUser.getAddress(), group.getName(), true, contacts, this);
 				mContactLists.add(cl);
 				if (mDefaultContactList == null)
 					mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
-				notifyContactsPresenceUpdated(contacts.toArray(contacts_array));
+				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
 			}
 			if (!haveGroup) {
 				roster.createGroup("Friends");
@@ -634,7 +678,7 @@ public class XmppConnection extends ImConnection {
 	class PingTask implements Runnable {
 
 		private static final int INITIAL_PING_DELAY = 20000;
-		private static final int PING_INTERVAL = 20000;
+		private static final int PING_INTERVAL = 30000;
 		private static final long PING_TIMEOUT = 10000;
 		private long delay;
 		private Thread thread;
@@ -678,7 +722,7 @@ public class XmppConnection extends ImConnection {
 				// Do nothing
 			}
 			while (mConnection != null && pingThread == thread) {
-				if (mConnection.isConnected()) {
+				if (mConnection.isConnected() && getState() == LOGGED_IN) {
 					Log.d(TAG, "ping");
 					if (!sendPing()) {
 						Log.i(TAG, "ping failed - close connection");

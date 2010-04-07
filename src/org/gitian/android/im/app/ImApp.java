@@ -267,11 +267,13 @@ public class ImApp extends Application {
         Cursor c = cr.query(Imps.Account.CONTENT_URI, ACCOUNT_PROJECTION,
                 selection, selectionArgs, null);
         if (c != null && c.moveToFirst()) {
-            // Update the password
-            // TODO c.updateString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD), pw);
-            // c.commitUpdates();
-
             long id = c.getLong(c.getColumnIndexOrThrow(Imps.Account._ID));
+
+            ContentValues values = new ContentValues(1);
+        	values.put(Imps.Account.PASSWORD, pw);
+            Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, id);
+        	cr.update(accountUri, values, null, null);
+
             c.close();
             return id;
         } else {
@@ -658,9 +660,10 @@ public class ImApp extends Application {
 
                 case ImConnection.LOGGING_OUT:
                     what = EVENT_CONNECTION_LOGGING_OUT;
-                    synchronized (mConnections) {
-                        mConnections.remove(providerId);
-                    }
+                    // MIRON - remove only if disconnected!
+//                    synchronized (mConnections) {
+//                        mConnections.remove(providerId);
+//                    }
                     break;
 
                 case ImConnection.DISCONNECTED:
