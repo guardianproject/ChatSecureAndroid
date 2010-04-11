@@ -261,4 +261,7 @@ public class LoopbackConnection extends ImConnection {
 		}
 		
 	}
+	
+	public void sendHeartbeat() {
+	}
 }

@@ -66,4 +66,5 @@ interface IImConnection {
 
     void acceptInvitation(long id);
     void rejectInvitation(long id);
+    void sendHeartbeat();
 }

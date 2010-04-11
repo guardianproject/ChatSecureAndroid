@@ -255,4 +255,5 @@ public abstract class ImConnection {
 
     protected abstract void doUpdateUserPresenceAsync(Presence presence);
 
+    public abstract void sendHeartbeat();
 }

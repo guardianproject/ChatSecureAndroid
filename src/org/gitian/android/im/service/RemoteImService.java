@@ -18,6 +18,7 @@
 package org.gitian.android.im.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -32,6 +33,7 @@ import org.gitian.android.im.app.ImPluginHelper;
 import org.gitian.android.im.engine.ConnectionFactory;
 import org.gitian.android.im.engine.ImConnection;
 import org.gitian.android.im.engine.ImException;
+import org.gitian.android.im.engine.HeartbeatService.Callback;
 import org.gitian.android.im.plugin.ImConfigNames;
 import org.gitian.android.im.plugin.ImPluginInfo;
 import org.gitian.android.im.plugin.ImpsConfigNames;
@@ -74,6 +76,7 @@ public class RemoteImService extends Service {
 
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
+	private static final long HEARTBEAT_INTERVAL = 1000 * 60 * 4;
 
     private StatusBarNotifier mStatusBarNotifier;
     private Handler mServiceHandler;
@@ -117,12 +120,31 @@ public class RemoteImService extends Service {
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvaiablePlugins();
         AndroidSystemService.getInstance().initialize(this);
+        AndroidSystemService.getInstance().getHeartbeatService().startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
         if (mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
             autoLogin();
         }
+    }
+    
+    class HeartbeatHandler implements Callback {
+
+		@Override
+		public long sendHeartbeat() {
+			try {
+				for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter
+						.hasNext();) {
+					 ImConnectionAdapter conn =  iter.next();
+					 conn.sendHeartbeat();
+				}
+			}
+			finally {
+				return HEARTBEAT_INTERVAL;
+			}
+		}
+    	
     }
 
     @Override

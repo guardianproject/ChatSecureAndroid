@@ -150,6 +150,11 @@ public class ImConnectionAdapter extends org.gitian.android.im.IImConnection.Stu
 
         mConnection.loginAsync(new LoginInfo(userName, password));
     }
+    
+    @Override
+    public void sendHeartbeat() throws RemoteException {
+    	mConnection.sendHeartbeat();
+    }
 
     private HashMap<String, String> querySessionCookie(ContentResolver cr) {
         Cursor c = cr.query(getSessionCookiesUri(), SESSION_COOKIE_PROJECTION, null, null, null);

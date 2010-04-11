@@ -190,7 +190,6 @@ public class XmppConnection extends ImConnection {
 	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
     	mConfig = new ConnectionConfiguration(serverHost);
 		mConnection = new MyXMPPConnection(mConfig);
-		startPingTask();
         mConnection.connect();
         mConnection.addPacketListener(new PacketListener() {
 			
@@ -239,8 +238,6 @@ public class XmppConnection extends ImConnection {
 				 * - but not if connectionClosed is fired
 				 */
 				Log.i(TAG, "reconnecting in " + seconds);
-				if (seconds == 0)
-					startPingTask();
 				setState(LOGGING_IN, null);
 			}
 			
@@ -253,7 +250,7 @@ public class XmppConnection extends ImConnection {
 				 * - TLS fails but is required
 				 */
 				Log.i(TAG, "closed on error", e);
-				stopPingTask();
+				clearHeartbeat();
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 			
@@ -326,7 +323,7 @@ public class XmppConnection extends ImConnection {
 		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);
 		mConfig.setReconnectionAllowed(false);
-		stopPingTask();
+		clearHeartbeat();
 		XMPPConnection conn = mConnection;
 		mConnection = null;
 		conn.disconnect();
@@ -653,94 +650,47 @@ public class XmppConnection extends ImConnection {
 		
 	}
 
-	Thread pingThread;
+	private PacketCollector mPingCollector;
 
-	private static int ping_task_generation = 1;
-
-	void startPingTask() {
-		// Schedule a ping task to run.
-		PingTask task = new PingTask();
-		pingThread = new Thread(task);
-		task.setThread(pingThread);
-		pingThread.setDaemon(true);
-		pingThread.setName("XmppConnection Pinger " + ping_task_generation);
-		ping_task_generation++;
-		pingThread.start();
-	}
-	
-	void stopPingTask() {
-		pingThread = null;
-	}
-
-	/**
-	 * Keep connection alive and check for network changes by sending ping packets
-	 */
-	class PingTask implements Runnable {
-
-		private static final int INITIAL_PING_DELAY = 20000;
-		private static final int PING_INTERVAL = 30000;
-		private static final long PING_TIMEOUT = 10000;
-		private long delay;
-		private Thread thread;
-
-		public PingTask() {
-			this.delay = PING_INTERVAL;
-		}
-
-		protected void setThread(Thread thread) {
-			this.thread = thread;
-		}
-
-		private boolean sendPing() {
-			IQ req = new IQ() {
-				public String getChildElementXML() {
-					return "<ping xmlns='urn:xmpp:ping'/>";
-				}
-			};
-			req.setType(IQ.Type.GET);
-	        PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
-	                new PacketTypeFilter(IQ.class));
-	        PacketCollector collector = mConnection.createPacketCollector(filter);
-	        mConnection.sendPacket(req);
-	        IQ result = (IQ)collector.nextResult(PING_TIMEOUT);
-	        if (result == null)
-	        {
-	        	Log.e(TAG, "ping timeout");
-	        	return false;
-	        }
-	        collector.cancel();
-	        return true;
-		}
-		
-		public void run() {
-			try {
-				// Sleep before sending first heartbeat. This will give time to
-				// properly finish logging in.
-				Thread.sleep(INITIAL_PING_DELAY);
+	public void sendHeartbeat() {
+		if (mConnection != null && mConnection.isConnected() && getState() == LOGGED_IN) {
+			Log.d(TAG, "ping");
+			if (!sendPing()) {
+				Log.i(TAG, "ping failed - close connection");
+				mConnection.force_shutdown();
 			}
-			catch (InterruptedException ie) {
-				// Do nothing
-			}
-			while (mConnection != null && pingThread == thread) {
-				if (mConnection.isConnected() && getState() == LOGGED_IN) {
-					Log.d(TAG, "ping");
-					if (!sendPing()) {
-						Log.i(TAG, "ping failed - close connection");
-						mConnection.force_shutdown();
-					}
-				}
-				try {
-					// Sleep until we should write the next keep-alive.
-					Thread.sleep(delay);
-				}
-				catch (InterruptedException ie) {
-					// Do nothing
-				}
-			}
-			Log.d(TAG, "pinger exit");
 		}
 	}
 	
+	private void clearHeartbeat() {
+		mPingCollector = null;
+	}
+	
+	private boolean sendPing() {
+		if (mPingCollector != null) {
+			IQ result = (IQ)mPingCollector.nextResult(0);
+			mPingCollector.cancel();
+			if (result == null)
+			{
+				clearHeartbeat();
+				Log.e(TAG, "ping timeout");
+				return false;
+			}
+		}
+
+	    IQ req = new IQ() {
+			public String getChildElementXML() {
+				return "<ping xmlns='urn:xmpp:ping'/>";
+			}
+		};
+		req.setType(IQ.Type.GET);
+	    PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
+	            new PacketTypeFilter(IQ.class));
+	    mPingCollector = mConnection.createPacketCollector(filter);
+	    mConnection.sendPacket(req);
+	    return true;
+	}
+
 	static class MyXMPPConnection extends XMPPConnection {
 
 		public MyXMPPConnection(ConnectionConfiguration config) {
