@@ -55,29 +55,14 @@ public class XmppConnection extends ImConnection {
 	private MyXMPPConnection mConnection;
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
+	private boolean mNeedReconnect;
 
 	public XmppConnection() {
 		Log.w(TAG, "created");
-		ReconnectionManager.activate();
+		//ReconnectionManager.activate();
 		SmackConfiguration.setKeepAliveInterval(-1);
 	}
 	
-	// TODO !tests
-	// TODO !battery tests
-	// TODO !OTR
-	// TODO !beta
-	// TODO backoff in ReconnectionManager
-	// FIXME reconnection manager trace 2009-04-05
-	// FIXME NPE if reconnect on sign in
-	// FIXME NPEs in contact handling
-	// FIXME IllegalStateException in ReconnectionManager
-	// FIXME Auto sign-in on service start, boot
-	// FIXME finish moving relevant Async stuff to threads
-	// TODO think about reconnection feedback
-	// TODO think about NetworkStateListener
-	// TODO think about sleep
-	// FIXME offline messages not send when gone online
-
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
 		String statusText = presence.getStatusText();
@@ -170,6 +155,7 @@ public class XmppConnection extends ImConnection {
 			return;
 		}
 		Log.i(TAG, "logging in " + loginInfo.getUserName());
+		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = loginInfo.getUserName();
@@ -181,6 +167,8 @@ public class XmppConnection extends ImConnection {
 		} catch (XMPPException e) {
 			disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage()));
 			return;
+		} finally {
+			mNeedReconnect = false;
 		}
 		mUser = new Contact(new XmppAddress(comps[0], username), username);
 		setState(LOGGED_IN, null);
@@ -189,6 +177,7 @@ public class XmppConnection extends ImConnection {
 
 	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
     	mConfig = new ConnectionConfiguration(serverHost);
+		mConfig.setReconnectionAllowed(false);
 		mConnection = new MyXMPPConnection(mConfig);
         mConnection.connect();
         mConnection.addPacketListener(new PacketListener() {
@@ -246,12 +235,12 @@ public class XmppConnection extends ImConnection {
 				/*
 				 * This fires when:
 				 * - Packet reader or writer detect an error
-				 * - Stream compression failes
+				 * - Stream compression failed
 				 * - TLS fails but is required
 				 */
-				Log.i(TAG, "closed on error", e);
-				clearHeartbeat();
+				Log.i(TAG, "reconnect on error", e);
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				maybe_reconnect();
 			}
 			
 			@Override
@@ -269,7 +258,7 @@ public class XmppConnection extends ImConnection {
 				 *   - in forced disconnect
 				 *   - due to login failing
 				 */
-				Log.i(TAG, "connection closed", new Exception());
+				Log.i(TAG, "connection closed");
 			}
 		});
         mConnection.login(login, password, resource);
@@ -280,7 +269,6 @@ public class XmppConnection extends ImConnection {
 
 	void disconnected(ImErrorInfo info) {
 		Log.w(TAG, "disconnected");
-		mConfig.setReconnectionAllowed(false);
 		setState(DISCONNECTED, info);
 	}
 	
@@ -319,14 +307,14 @@ public class XmppConnection extends ImConnection {
 		worker.start();
 	}
 	
-	private void do_logout() {
+	private synchronized void do_logout() {
 		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);
-		mConfig.setReconnectionAllowed(false);
 		clearHeartbeat();
 		XMPPConnection conn = mConnection;
 		mConnection = null;
 		conn.disconnect();
+		mNeedReconnect = false;
 		setState(DISCONNECTED, null);
 	}
 
@@ -652,12 +640,23 @@ public class XmppConnection extends ImConnection {
 
 	private PacketCollector mPingCollector;
 
+	/*
+	 * Alarm event fired
+	 * @see org.gitian.android.im.engine.ImConnection#sendHeartbeat()
+	 */
 	public void sendHeartbeat() {
-		if (mConnection != null && mConnection.isConnected() && getState() == LOGGED_IN) {
+		if (mConnection == null)
+			return;
+		if (mNeedReconnect) {
+			retry_reconnect();
+		}
+		else if (mConnection.isConnected() && getState() == LOGGED_IN) {
 			Log.d(TAG, "ping");
 			if (!sendPing()) {
-				Log.i(TAG, "ping failed - close connection");
-				mConnection.force_shutdown();
+				if (getState() == LOGGED_IN)
+					setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
+				Log.w(TAG, "reconnect on ping failed");
+				force_reconnect();
 			}
 		}
 	}
@@ -667,6 +666,7 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	private boolean sendPing() {
+		// Check ping result from previous send
 		if (mPingCollector != null) {
 			IQ result = (IQ)mPingCollector.nextResult(0);
 			mPingCollector.cancel();
@@ -697,6 +697,77 @@ public class XmppConnection extends ImConnection {
 			super(config);
 		}
 
+	}
+
+	@Override
+	public void networkTypeChanged() {
+		super.networkTypeChanged();
+		if (getState() == LOGGED_IN)
+			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network changed"));
+		if (getState() != LOGGED_IN && getState() != LOGGING_IN)
+			return;
+		if (mNeedReconnect)
+			return;
+		Log.w(TAG, "reconnect on network change");
+		force_reconnect();
+	}
+
+	/*
+	 * Force a disconnect and reconnect, unless we are already reconnecting.
+	 */
+	private synchronized void force_reconnect() {
+		Log.d(TAG, "force_reconnect need=" + mNeedReconnect);
+		if (mConnection == null)
+			return;
+		if (mNeedReconnect)
+			return;
+		mConnection.force_shutdown();
+		mConnection.disconnect();
+		mNeedReconnect = true;
+		reconnect();
+	}
+	
+	/*
+	 * Reconnect unless we are already in the process of doing so.
+	 */
+	private void maybe_reconnect() {
+		// If we already know we don't have a good connection, someone else is taking care of this
+		Log.d(TAG, "maybe_reconnect need=" + mNeedReconnect);
+		if (mNeedReconnect)
+			return;
+		synchronized (this) {
+			if (mNeedReconnect)
+				return;
+			mNeedReconnect = true;
+			reconnect();
+		}
+	}
+	
+	/*
+	 * Retry a reconnect on alarm event
+	 */
+	private synchronized void retry_reconnect() {
+		// Retry reconnecting if we still need to
+		Log.d(TAG, "retry_reconnect need=" + mNeedReconnect);
+		if (mConnection != null && mNeedReconnect)
+			reconnect();
+	}
+
+	/*
+	 * Retry connecting
+	 */
+	private synchronized void reconnect() {
+		Log.i(TAG, "reconnect");
+		clearHeartbeat();
+		try {
+			mConnection.connect();
+			mNeedReconnect = false;
+			Log.i(TAG, "reconnected");
+			setState(LOGGED_IN, null);
+		} catch (XMPPException e) {
+			Log.e(TAG, "reconnection on network change failed", e);
+			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+		}
 	}
 }
 

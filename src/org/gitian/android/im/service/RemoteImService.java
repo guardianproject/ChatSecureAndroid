@@ -76,7 +76,7 @@ public class RemoteImService extends Service {
 
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
-	private static final long HEARTBEAT_INTERVAL = 1000 * 60 * 4;
+	private static final long HEARTBEAT_INTERVAL = 1000 * 60;
 
     private StatusBarNotifier mStatusBarNotifier;
     private Handler mServiceHandler;

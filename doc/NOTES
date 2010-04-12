@@ -10,6 +10,10 @@ TODO finish moving relevant Async stuff to threads
 FIX NPE if reconnect on sign in
 FIX NPEs in contact handling
 FIX offline messages not send when gone online
+FIX IllegalStateException sending chat message while UI shows online
+  ImService.onStart, check autoLogin = false
+FIX retry login on autologin failure
+TODO adaptive heartbeat depending on foreground/background
 
 == Keep Alives and Battery ==
 
@@ -17,10 +21,17 @@ TCP timeout is 15 minutes on Ubuntu.
 
 Battery:
 
+G1:
  * baseline - 2% / hr
  * 120 second ping - 5% / hr - 3% above baseline
  * 15 second ping - 20% / hr - 18% above baseline
  * ~5% / wakeup / minute / hour
+
+Nexus:
+ * baseline - 2% / hr
+ * 60 second ping - 4% /hr - 2% above baseline
+ * ~2% / wakeup / minute / hour
+ 
 
 Ping:
  * Periodic keepalive alarm 120 seconds when in background
