@@ -42,7 +42,7 @@ interface IImConnection {
      *          automatically after the user successfully login; otherwise, the
      *          client must load contacts manually.
      */
-    void login(long accountId, String userName, String password, boolean autoLoadContacts);
+    void login(long accountId, String userName, String password, boolean autoLoadContacts, boolean retry);
     void logout();
     void cancelLogin();
 

@@ -140,7 +140,7 @@ public class ImConnectionAdapter extends org.gitian.android.im.IImConnection.Stu
     }
 
     public void login(long accountId, String userName, String password,
-            boolean autoLoadContacts) {
+            boolean autoLoadContacts, boolean retry) {
         mAccountId = accountId;
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
@@ -148,7 +148,7 @@ public class ImConnectionAdapter extends org.gitian.android.im.IImConnection.Stu
         mChatSessionManager = new ChatSessionManagerAdapter(this);
         mContactListManager = new ContactListManagerAdapter(this);
 
-        mConnection.loginAsync(new LoginInfo(userName, password));
+        mConnection.loginAsync(new LoginInfo(userName, password), retry);
     }
     
     @Override

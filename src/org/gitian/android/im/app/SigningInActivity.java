@@ -177,7 +177,7 @@ public class SigningInActivity extends Activity {
                 if (mApp.isBackgroundDataEnabled()) {
                     mConn = mApp.createConnection(mProviderId);
                     mConn.registerConnectionListener(mListener);
-                    mConn.login(mAccountId, mUserName, mPassword, true);
+                    mConn.login(mAccountId, mUserName, mPassword, true, false);
                 } else {
                     promptForBackgroundDataSetting();
                     return;

@@ -48,6 +48,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -121,19 +122,21 @@ public class RemoteImService extends Service {
         mPluginHelper.loadAvaiablePlugins();
         AndroidSystemService.getInstance().initialize(this);
         AndroidSystemService.getInstance().getHeartbeatService().startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
-
-        // Check and login accounts if network is ready, otherwise it's checked
-        // when the network becomes available.
-        if (mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
-            autoLogin();
-        }
+        
+        // Have the heartbeat start autoLogin, unless onStart turns this off
+        mNeedCheckAutoLogin = true;
     }
     
     class HeartbeatHandler implements Callback {
 
+		@SuppressWarnings("finally")
 		@Override
 		public long sendHeartbeat() {
 			try {
+				if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+					Log.d(TAG, "autoLogin from heartbeat");
+					autoLogin();
+				}
 				for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter
 						.hasNext();) {
 					 ImConnectionAdapter conn =  iter.next();
@@ -152,7 +155,7 @@ public class RemoteImService extends Service {
         super.onStart(intent, startId);
         mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, false);
 
-        Log.d(TAG, "ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin);
+        Log.d(TAG, "ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent + " startId =" + startId);
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
@@ -184,7 +187,7 @@ public class RemoteImService extends Service {
             IImConnection conn = createConnection(providerId);
 
             try {
-                conn.login(accountId, username, password, true);
+                conn.login(accountId, username, password, true, true);
             } catch (RemoteException e) {
                 Log.w(TAG, "Logging error while automatically login!");
             }

@@ -26,7 +26,6 @@ import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -44,6 +43,7 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 
+import android.os.Debug;
 import android.os.Parcel;
 import android.util.Log;
 
@@ -56,6 +56,8 @@ public class XmppConnection extends ImConnection {
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
 	private boolean mNeedReconnect;
+	private LoginInfo mLoginInfo;
+	private boolean mRetryLogin;
 
 	public XmppConnection() {
 		Log.w(TAG, "created");
@@ -139,33 +141,56 @@ public class XmppConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(final LoginInfo loginInfo) {
+	public void loginAsync(final LoginInfo loginInfo, boolean retry) {
+		mLoginInfo = loginInfo;
+		mRetryLogin = retry;
 		Thread worker = new Thread("Xmpp-login") {
 			@Override
 			public void run() {
-				do_login(loginInfo);
+				do_login();
 			}
 		};
 		worker.start();
 	}
 	
-	private synchronized void do_login(LoginInfo loginInfo) {
+	private synchronized void do_login() {
 		if (mConnection != null) {
 			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
 			return;
 		}
-		Log.i(TAG, "logging in " + loginInfo.getUserName());
+		Log.i(TAG, "logging in " + mLoginInfo.getUserName());
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
-		String username = loginInfo.getUserName();
+		String username = mLoginInfo.getUserName();
 		String []comps = username.split("@");
-		if (comps.length != 2)
-			throw new RuntimeException("username should be user@host");
+		if (comps.length != 2) {
+			disconnected(new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "username should be user@host"));
+			mRetryLogin = false;
+			mNeedReconnect = false;
+			return;
+		}
 		try {
-			initConnection(comps[1], comps[0], loginInfo.getPassword(), "Android");
+			initConnection(comps[1], comps[0], mLoginInfo.getPassword(), "Android");
 		} catch (XMPPException e) {
-			disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage()));
+			Log.e(TAG, "login failed", e);
+			mConnection = null;
+			ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
+			if (e.getMessage().contains("not-authorized")) {
+				Log.w(TAG, "not authorized - will not retry");
+				info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
+				disconnected(info);
+				mRetryLogin = false;
+			}
+			else if (mRetryLogin) {
+				Log.w(TAG, "will retry");
+				setState(LOGGING_IN, info);
+			}
+			else {
+				Log.w(TAG, "will not retry");
+				mConnection = null;
+				disconnected(info);
+			}
 			return;
 		} finally {
 			mNeedReconnect = false;
@@ -315,6 +340,7 @@ public class XmppConnection extends ImConnection {
 		mConnection = null;
 		conn.disconnect();
 		mNeedReconnect = false;
+		mRetryLogin = false;
 		setState(DISCONNECTED, null);
 	}
 
@@ -645,6 +671,10 @@ public class XmppConnection extends ImConnection {
 	 * @see org.gitian.android.im.engine.ImConnection#sendHeartbeat()
 	 */
 	public void sendHeartbeat() {
+		if (mConnection == null && mRetryLogin && mLoginInfo != null) {
+			Log.i(TAG, "reconnect with login");
+			do_login();
+		}
 		if (mConnection == null)
 			return;
 		if (mNeedReconnect) {

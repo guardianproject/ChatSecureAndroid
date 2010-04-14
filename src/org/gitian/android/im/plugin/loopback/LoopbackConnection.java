@@ -105,7 +105,7 @@ public class LoopbackConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(LoginInfo loginInfo) {
+	public void loginAsync(LoginInfo loginInfo, boolean retry) {
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		mUser = new Contact(new LoopbackAddress(loginInfo.getUserName() + "!", "loopback"), loginInfo.getUserName());
 		setState(LOGGED_IN, null);

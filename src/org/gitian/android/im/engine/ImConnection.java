@@ -184,7 +184,7 @@ public abstract class ImConnection {
      *
      * @param loginInfo the login information.
      */
-    public abstract void loginAsync(LoginInfo loginInfo);
+    public abstract void loginAsync(LoginInfo loginInfo, boolean retry);
 
     /**
      * Re-establish previous session using the session context persisted by the
