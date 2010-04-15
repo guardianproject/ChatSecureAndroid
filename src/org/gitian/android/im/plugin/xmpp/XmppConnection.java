@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.gitian.android.im.engine.Address;
 import org.gitian.android.im.engine.ChatGroupManager;
@@ -58,11 +60,13 @@ public class XmppConnection extends ImConnection {
 	private boolean mNeedReconnect;
 	private LoginInfo mLoginInfo;
 	private boolean mRetryLogin;
+	private Executor mExecutor;
 
 	public XmppConnection() {
 		Log.w(TAG, "created");
 		//ReconnectionManager.activate();
 		SmackConfiguration.setKeepAliveInterval(-1);
+		mExecutor = Executors.newSingleThreadExecutor();
 	}
 	
 	@Override
@@ -144,16 +148,15 @@ public class XmppConnection extends ImConnection {
 	public void loginAsync(final LoginInfo loginInfo, boolean retry) {
 		mLoginInfo = loginInfo;
 		mRetryLogin = retry;
-		Thread worker = new Thread("Xmpp-login") {
+		mExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
 				do_login();
 			}
-		};
-		worker.start();
+		});
 	}
 	
-	private synchronized void do_login() {
+	private void do_login() {
 		if (mConnection != null) {
 			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
 			return;
@@ -264,8 +267,19 @@ public class XmppConnection extends ImConnection {
 				 * - TLS fails but is required
 				 */
 				Log.i(TAG, "reconnect on error", e);
-				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-				maybe_reconnect();
+				if (e.getMessage().contains("conflict")) {
+					disconnect();
+					disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "logged in from another location"));
+				}
+				else {
+					setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+					mExecutor.execute(new Runnable() {
+						@Override
+						public void run() {
+							maybe_reconnect();
+						}
+					});
+				}
 			}
 			
 			@Override
@@ -323,25 +337,32 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void logoutAsync() {
-		Thread worker = new Thread("Xmpp-logout") {
+		mExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
 				do_logout();
 			}
-		};
-		worker.start();
+		});
 	}
 	
-	private synchronized void do_logout() {
+	private void do_logout() {
 		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);
+		disconnect();
+		setState(DISCONNECTED, null);
+	}
+
+	private void disconnect() {
 		clearHeartbeat();
 		XMPPConnection conn = mConnection;
 		mConnection = null;
-		conn.disconnect();
+		try {
+			conn.disconnect();
+		} catch (Throwable th) {
+			// ignore
+		}
 		mNeedReconnect = false;
 		mRetryLogin = false;
-		setState(DISCONNECTED, null);
 	}
 
 	@Override
@@ -405,13 +426,12 @@ public class XmppConnection extends ImConnection {
 	private final class XmppContactList extends ContactListManager {
 		@Override
 		protected void setListNameAsync(final String name, final ContactList list) {
-			Thread worker = new Thread("Xmpp-setListName") {
+			mExecutor.execute(new Runnable() {
 				@Override
 				public void run() {
 					do_setListName(name, list);
 				}
-			};
-			worker.start();
+			});
 		}
 		
 		private void do_setListName(String name, ContactList list) {
@@ -427,13 +447,12 @@ public class XmppConnection extends ImConnection {
 
 		@Override
 		public void loadContactListsAsync() {
-			Thread worker = new Thread("Xmpp-loadContactLists") {
+			mExecutor.execute(new Runnable() {
 				@Override
 				public void run() {
 					do_loadContactLists();
 				}
-			};
-			worker.start();
+			});
 		}
 		
 		private void do_loadContactLists() {
@@ -671,6 +690,15 @@ public class XmppConnection extends ImConnection {
 	 * @see org.gitian.android.im.engine.ImConnection#sendHeartbeat()
 	 */
 	public void sendHeartbeat() {
+		mExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				doHeartbeat();
+			}
+		});
+	}
+	
+	public void doHeartbeat() {
 		if (mConnection == null && mRetryLogin && mLoginInfo != null) {
 			Log.i(TAG, "reconnect with login");
 			do_login();
@@ -692,6 +720,7 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	private void clearHeartbeat() {
+		Log.d(TAG, "clear heartbeat");
 		mPingCollector = null;
 	}
 	
@@ -745,7 +774,7 @@ public class XmppConnection extends ImConnection {
 	/*
 	 * Force a disconnect and reconnect, unless we are already reconnecting.
 	 */
-	private synchronized void force_reconnect() {
+	private void force_reconnect() {
 		Log.d(TAG, "force_reconnect need=" + mNeedReconnect);
 		if (mConnection == null)
 			return;
@@ -761,22 +790,18 @@ public class XmppConnection extends ImConnection {
 	 * Reconnect unless we are already in the process of doing so.
 	 */
 	private void maybe_reconnect() {
-		// If we already know we don't have a good connection, someone else is taking care of this
+		// If we already know we don't have a good connection, the heartbeat will take care of this
 		Log.d(TAG, "maybe_reconnect need=" + mNeedReconnect);
 		if (mNeedReconnect)
 			return;
-		synchronized (this) {
-			if (mNeedReconnect)
-				return;
-			mNeedReconnect = true;
-			reconnect();
-		}
+		mNeedReconnect = true;
+		reconnect();
 	}
 	
 	/*
 	 * Retry a reconnect on alarm event
 	 */
-	private synchronized void retry_reconnect() {
+	private void retry_reconnect() {
 		// Retry reconnecting if we still need to
 		Log.d(TAG, "retry_reconnect need=" + mNeedReconnect);
 		if (mConnection != null && mNeedReconnect)
@@ -786,7 +811,7 @@ public class XmppConnection extends ImConnection {
 	/*
 	 * Retry connecting
 	 */
-	private synchronized void reconnect() {
+	private void reconnect() {
 		Log.i(TAG, "reconnect");
 		clearHeartbeat();
 		try {

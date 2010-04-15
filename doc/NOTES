@@ -14,6 +14,7 @@ FIX IllegalStateException sending chat message while UI shows online
   ImService.onStart, check autoLogin = false
 FIX retry login on autologin failure
 TODO adaptive heartbeat depending on foreground/background
+FIX long press signout from provider list
 
 == Keep Alives and Battery ==
 
