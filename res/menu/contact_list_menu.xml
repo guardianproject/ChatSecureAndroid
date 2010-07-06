@@ -20,22 +20,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_invite_user"
-        android:title="@string/menu_add_contact"
-        android:icon="@*android:drawable/ic_menu_invite" />
+        android:title="@string/menu_add_contact" />
 
     <item android:id="@+id/menu_blocked_contacts"
-        android:title="@string/menu_view_blocked"
-        android:icon="@*android:drawable/ic_menu_blocked_user" />
+        android:title="@string/menu_view_blocked" />
 
     <item android:id="@+id/menu_view_accounts"
-        android:title="@string/menu_view_accounts"
-        android:icon="@*android:drawable/ic_menu_account_list" />
+        android:title="@string/menu_view_accounts" />
 
     <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        android:icon="@android:drawable/ic_menu_preferences" />
+        android:title="@string/menu_settings" />
 
     <item android:id="@+id/menu_sign_out"
-        android:title="@string/menu_sign_out"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+        android:title="@string/menu_sign_out" />
 </menu>

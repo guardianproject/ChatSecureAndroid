@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2008 Esmertec AG.
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<org.gitian.android.im.app.ChatView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chatView"
+    android:orientation="vertical"
+    android:background="#ffffffff"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <!-- The title bar -->
+    <LinearLayout style="?android:attr/windowTitleBackgroundStyle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView android:id="@+id/statusIcon"
+            android:layout_marginRight="3dip"
+            android:layout_width="16dip"
+            android:layout_height="16dip"
+            android:scaleType="fitCenter" />
+
+        <TextView android:id="@+id/title"
+            style="?android:attr/windowTitleStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:fadingEdge="horizontal"
+            android:scrollHorizontally="true"
+            android:layout_marginRight="20dip" />
+    </LinearLayout>
+
+    <View android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#ff202020" />
+
+    <ListView android:id="@+id/history"
+        android:cacheColorHint="#00000000"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="true"
+        android:listSelector="@drawable/chat_history_selector"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal"
+        android:scrollbarAlwaysDrawVerticalTrack="true" />
+
+    <LinearLayout android:id="@+id/invitationPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/text_divider_horizontal">
+
+        <TextView android:id="@+id/txtInvitation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffad45d6"
+            android:text="@string/invitation_prompt" />
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnAccept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accept_invitation" />
+
+            <Button android:id="@+id/btnDecline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:text="@string/decline_invitation" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/subscription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/text_divider_horizontal">
+
+        <TextView android:id="@+id/txtSubscription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffad45d6"
+            android:text="@string/subscription_prompt" />
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnApproveSubscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/approve_subscription" />
+
+            <Button android:id="@+id/btnDeclineSubscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:text="@string/decline_subscription" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/warning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:background="#ffeeeeee"
+        android:visibility="gone">
+
+        <ImageView android:id="@+id/warningIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_im_message_not_sent" />
+
+        <TextView android:id="@+id/warningText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dip"
+            android:textColor="#ffff0000"
+            android:text="@string/disconnected_warning"
+           
+             />
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:background="@drawable/background_textfield">
+
+        <EditText android:id="@+id/edtInput"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine|textImeMultiLine"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:maxLines="4"
+            android:maxLength="2000"
+            android:hint="@string/compose_hint"/>
+
+        <Button android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/send" />
+    </LinearLayout>
+</org.gitian.android.im.app.ChatView>

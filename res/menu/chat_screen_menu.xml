@@ -21,33 +21,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_view_friend_list"
-        android:title="@string/menu_view_contact_list"
-        android:icon="@*android:drawable/ic_menu_cc" />
+        android:title="@string/menu_view_contact_list"/>
 
     <item android:id="@+id/menu_switch_chats"
         android:title="@string/menu_switch_chats"
-        android:alphabeticShortcut=" "
-        android:icon="@*android:drawable/ic_menu_chat_dashboard" />
+        android:alphabeticShortcut=" "/>
 
     <item android:id="@+id/menu_insert_smiley"
-        android:title="@string/menu_insert_smiley"
-        android:icon="@*android:drawable/ic_menu_emoticons" />
+        android:title="@string/menu_insert_smiley" />
 
     <item android:id="@+id/menu_end_conversation"
-        android:title="@string/menu_end_conversation"
-        android:icon="@*android:drawable/ic_menu_end_conversation" />
+        android:title="@string/menu_end_conversation" />
 
     <item android:id="@+id/menu_block_contact"
-        android:title="@string/menu_block_contact"
-        android:icon="@*android:drawable/ic_menu_block" />
+        android:title="@string/menu_block_contact" />
 
     <item android:id="@+id/menu_invite_contact"
-        android:title="@string/menu_invite_contact"
-        android:icon="@*android:drawable/ic_menu_invite" />
+        android:title="@string/menu_invite_contact" />
 
     <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_view_profile"
-        android:icon="@drawable/ic_menu_view_profile"/>
+        android:title="@string/menu_view_profile"/>
 
     <item
         android:id="@+id/menu_prev_chat"
