@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">OtRChat</string>
+    <string name="im_label">Slipper</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
@@ -144,7 +144,7 @@
 
     <!-- These strings are displayed on the account setup page. -->
     <!-- The username label. May be overrided by the plugin.-->
-    <string name="label_username">Username:</string>
+    <string name="label_username">User@Host</string>
     <!-- The password label. -->
     <string name="label_password">Password:</string>
     <!-- The label for the checkbox which asks if the user wants to save the password on the client. -->

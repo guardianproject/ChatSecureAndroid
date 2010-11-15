@@ -3,6 +3,7 @@
     android:sharedUserLabel="@string/perm_label"
      android:versionName="0.0.1" android:versionCode="5">
 
+<uses-sdk android:minSdkVersion="3"></uses-sdk>
     <uses-permission android:name="org.gitian.android.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="org.gitian.android.providers.imps.permission.WRITE_ONLY" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -244,7 +245,4 @@
         </receiver>
 -->
     </application>
-	<uses-sdk android:targetSdkVersion="4" android:minSdkVersion="4"></uses-sdk>
-
-
 </manifest>
