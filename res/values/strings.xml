@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">Slipper</string>
+    <string name="im_label">Gibber</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
