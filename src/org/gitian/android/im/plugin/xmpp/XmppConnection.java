@@ -607,30 +607,43 @@ public class XmppConnection extends ImConnection {
 				}
 			});
 		}
-		
+
+		/**
+		 *  Create new list of contacts from roster entries.
+		 *
+		 *  @param entryIter	iterator of roster entries to add to contact list
+		 *  @param skipList		list of contacts which should be omitted; new contacts are added to this list automatically
+		 *  @return				contacts from roster which were not present in skiplist.
+		 */
+		private Collection<Contact> fillContacts(Iterator<RosterEntry> entryIter, Set<String> skipList) {
+			Collection<Contact> contacts = new ArrayList<Contact>();
+			for (; entryIter.hasNext();) {
+				RosterEntry entry = entryIter.next();
+				String address = parseAddressBase(entry.getUser());
+
+				/* Skip entries present in the skip list */
+				if (skipList != null && !skipList.add(address))
+					continue;
+
+				String name = entry.getName();
+				if (name == null)
+					name = address;
+				XmppAddress xaddress = new XmppAddress(name, address);
+				Contact contact = new Contact(xaddress, name);
+				contacts.add(contact);
+			}
+			return contacts;
+		}
+
 		private void do_loadContactLists() {
 			Log.d(TAG, "load contact lists");
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
-			boolean haveGroup = false;
 			Set<String> seen = new HashSet<String>();
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
-				haveGroup = true;
 				RosterGroup group = giter.next();
-				Collection<Contact> contacts = new ArrayList<Contact>();
-				for (Iterator<RosterEntry> iter = group.getEntries().iterator(); iter.hasNext();) {
-					RosterEntry entry = iter.next();
-					String address = parseAddressBase(entry.getUser());
-					if (seen.add(address)) {
-						XmppAddress xaddress = new XmppAddress(entry.getName(), address);
-						Contact contact = new Contact(xaddress, entry.getName());
-						contacts.add(contact);
-					}
-					else {
-						Log.d(TAG, "skipped duplicate contact");
-					}
-				}
+				Collection<Contact> contacts = fillContacts(group.getEntries().iterator(), seen);
 				ContactList cl = new ContactList(mUser.getAddress(), group.getName(), true, contacts, this);
 				mContactLists.add(cl);
 				if (mDefaultContactList == null)
@@ -638,9 +651,10 @@ public class XmppConnection extends ImConnection {
 				notifyContactListLoaded(cl);
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
 			}
-			if (!haveGroup) {
-				roster.createGroup("Friends");
-				ContactList cl = new ContactList(mUser.getAddress(), "Friends" , true, new ArrayList<Contact>(), this);
+			if (roster.getUnfiledEntryCount() > 0) {
+				roster.createGroup("General");
+				Collection<Contact> contacts = fillContacts(roster.getUnfiledEntries().iterator(), null);
+				ContactList cl = new ContactList(mUser.getAddress(), "General" , true, contacts, this);
 				mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
 			}
