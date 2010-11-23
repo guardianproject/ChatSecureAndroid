@@ -1,0 +1,11 @@
+
+
+2010-11-23
+- added "General" contact list on loadContacts() call to the mContactList array
+- added notifyPresenceUpdate for "General" contacts list
+- Patches 1-3/3 by: Adrian-Ken Rueegsegger <ken@codelabs.ch>
+-- Contacts which have no assigned group are put into the default group.
+-- Rename default list to General
+-- Factor out reading of contacts into container to private fillContacts() function.
+- fixed app name and ensured build is working on Android 1.5 and up 
+- add support for scrollview in Account Activity; final button was getting squished in landscape mode 

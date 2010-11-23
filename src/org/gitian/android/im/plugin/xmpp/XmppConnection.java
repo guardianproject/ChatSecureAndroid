@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -599,6 +600,9 @@ public class XmppConnection extends ImConnection {
 	}
 
 	private final class XmppContactList extends ContactListManager {
+		
+		private Hashtable<String, org.jivesoftware.smack.packet.Presence> unprocdPresence = new Hashtable<String, org.jivesoftware.smack.packet.Presence>();
+		
 		@Override
 		protected void setListNameAsync(final String name, final ContactList list) {
 			mExecutor.execute(new Runnable() {
@@ -653,19 +657,26 @@ public class XmppConnection extends ImConnection {
 				XmppAddress xaddress = new XmppAddress(name, address);
 				Contact contact = new Contact(xaddress, name);
 				contacts.add(contact);
+				
+				
 			}
 			return contacts;
 		}
 
 		private void do_loadContactLists() {
+			
+			//android.os.Debug.waitForDebugger();
 			Log.d(TAG, "load contact lists");
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
 			
 			Set<String> seen = new HashSet<String>();
-			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 			
+			
+			
+			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
+				
 				RosterGroup group = giter.next();
 				Collection<Contact> contacts = fillContacts(group.getEntries().iterator(), seen);
 				ContactList cl = new ContactList(mUser.getAddress(), group.getName(), true, contacts, this);
@@ -674,6 +685,10 @@ public class XmppConnection extends ImConnection {
 					mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
+				
+				processQueuedPresenceNotifications (contacts);
+				
+				
 			}
 			
 			if (roster.getUnfiledEntryCount() > 0) {
@@ -687,15 +702,53 @@ public class XmppConnection extends ImConnection {
 				mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
 				
+				processQueuedPresenceNotifications(contacts);
+				
 				//n8fr8: also needs to ping the presence status change, too!
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
 
 			}
+			
 			notifyContactListsLoaded();
 			
 			
 		}
 
+		/*
+		 * iterators through a list of contacts to see if there were any Presence
+		 * notifications sent before the contact was loaded
+		 */
+		private void processQueuedPresenceNotifications (Collection<Contact> contacts)
+		{
+			//now iterate through the list of queued up unprocessed presence changes
+			for (Contact contact : contacts)
+			{
+				
+				String address = parseAddressBase(contact.getAddress().getFullName());
+				
+				org.jivesoftware.smack.packet.Presence presence = unprocdPresence.get(address);
+				
+				if (presence != null)
+				{
+					unprocdPresence.remove(address);
+					
+					int type = Presence.AVAILABLE;
+					Mode rmode = presence.getMode();
+					Type rtype = presence.getType();
+					
+					if (rmode == Mode.away || rmode == Mode.xa)
+						type = Presence.AWAY;
+					if (rmode == Mode.dnd)
+						type = Presence.DO_NOT_DISTURB;
+					if (rtype == Type.unavailable)
+						type = Presence.OFFLINE;
+					
+					contact.setPresence(new Presence(type, presence.getStatus(), null, null, Presence.CLIENT_TYPE_DEFAULT));
+					
+				}
+			}
+		}
+		
 		private void listenToRoster(final Roster roster) {
 			
 			roster.addRosterListener(new RosterListener() {
@@ -712,6 +765,8 @@ public class XmppConnection extends ImConnection {
 					if (contact == null)
 					{
 						Log.d(TAG, "Got present update for NULL user: " + user);
+						//store the latest presence notification for this user in this queue
+						unprocdPresence.put(user, presence);
 						return;
 					}
 					
