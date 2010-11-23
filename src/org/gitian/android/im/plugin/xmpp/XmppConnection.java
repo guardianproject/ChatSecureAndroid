@@ -83,7 +83,6 @@ public class XmppConnection extends ImConnection {
 		mExecutor = Executors.newSingleThreadExecutor();
 		xmppConnection = this;
 		
-		
 	}
 	
 	public void sendMessage(org.jivesoftware.smack.packet.Message msg) {
@@ -102,10 +101,14 @@ public class XmppConnection extends ImConnection {
 	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
+		
+		//android.os.Debug.waitForDebugger();
+		
 		String statusText = presence.getStatusText();
         Type type = Type.available;
         Mode mode = Mode.available;
         int priority = 20;
+        
         if (presence.getStatus() == Presence.AWAY) {
         	priority = 10;
         	mode = Mode.away;
@@ -123,6 +126,7 @@ public class XmppConnection extends ImConnection {
         	type = Type.unavailable;
         	statusText = "Offline";
         }
+        
 		org.jivesoftware.smack.packet.Presence packet = 
         	new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
         mConnection.sendPacket(packet);
@@ -280,6 +284,9 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void processPacket(Packet packet) {
+				
+				//android.os.Debug.waitForDebugger();
+
 				org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence)packet;
 				if (presence.getType() == Type.subscribe) {
 					String address = parseAddressBase(presence.getFrom());
@@ -287,6 +294,19 @@ public class XmppConnection extends ImConnection {
 					Contact contact = findOrCreateContact(address);
 					mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
 				}
+				else if (presence.getType() == Type.available)
+				{
+					String address = parseAddressBase(presence.getFrom());
+					Log.i(TAG, "got 'available' from " + address);
+					
+					
+				}
+				else if (presence.getType() == Type.unavailable)
+				{
+					String address = parseAddressBase(presence.getFrom());
+					Log.i(TAG, "got 'unavailable' from " + address);
+				}
+			
 			}
 		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
         
@@ -359,7 +379,9 @@ public class XmppConnection extends ImConnection {
         mConnection.login(login, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
+       
         mConnection.sendPacket(presence);
+        
 	}
 
 	void disconnected(ImErrorInfo info) {
@@ -640,8 +662,10 @@ public class XmppConnection extends ImConnection {
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 			listenToRoster(roster);
+			
 			Set<String> seen = new HashSet<String>();
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
+			
 				RosterGroup group = giter.next();
 				Collection<Contact> contacts = fillContacts(group.getEntries().iterator(), seen);
 				ContactList cl = new ContactList(mUser.getAddress(), group.getName(), true, contacts, this);
@@ -651,37 +675,61 @@ public class XmppConnection extends ImConnection {
 				notifyContactListLoaded(cl);
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
 			}
+			
 			if (roster.getUnfiledEntryCount() > 0) {
+				
 				roster.createGroup("General");
 				Collection<Contact> contacts = fillContacts(roster.getUnfiledEntries().iterator(), null);
 				ContactList cl = new ContactList(mUser.getAddress(), "General" , true, contacts, this);
+				
+				//n8fr8: adding this contact list to the master list manager seems like the righ thing to do
+				mContactLists.add(cl);
 				mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
+				
+				//n8fr8: also needs to ping the presence status change, too!
+				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
+
 			}
 			notifyContactListsLoaded();
+			
+			
 		}
 
 		private void listenToRoster(final Roster roster) {
+			
 			roster.addRosterListener(new RosterListener() {
 				
 				@Override
 				public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+					
+					//android.os.Debug.waitForDebugger(); //this is for debugging a service
+
 					String user = parseAddressBase(presence.getFrom());
+					
 					Contact contact = mContactListManager.getContact(user);
+					
 					if (contact == null)
+					{
+						Log.d(TAG, "Got present update for NULL user: " + user);
 						return;
+					}
+					
 					Contact []contacts = new Contact[] { contact };
 					// Get it from the roster - it handles priorities, etc.
 					presence = roster.getPresence(user);
+					
 					int type = Presence.AVAILABLE;
 					Mode rmode = presence.getMode();
 					Type rtype = presence.getType();
+					
 					if (rmode == Mode.away || rmode == Mode.xa)
 						type = Presence.AWAY;
 					if (rmode == Mode.dnd)
 						type = Presence.DO_NOT_DISTURB;
 					if (rtype == Type.unavailable)
 						type = Presence.OFFLINE;
+					
 					contact.setPresence(new Presence(type, presence.getStatus(), null, null, Presence.CLIENT_TYPE_DEFAULT));
 					notifyContactsPresenceUpdated(contacts);
 				}
@@ -690,6 +738,9 @@ public class XmppConnection extends ImConnection {
 				public void entriesUpdated(Collection<String> addresses) {
 					// TODO update contact list entries from remote
 					Log.d(TAG, "roster entries updated");
+					
+					
+
 				}
 				
 				@Override
