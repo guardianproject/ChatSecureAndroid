@@ -1,9 +1,9 @@
-package info.guardianproject.otr.app.im.plugin.xmpp;
+package info.guardianproject.otr;
 
-import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import org.jivesoftware.smack.packet.Packet;
 
 import android.util.Log;
 
-public class XmppChatPacketListener implements PacketListener {
+public class OtrChatListener implements PacketListener {
 
 	private XmppConnection xConn;
 	private OtrChatManager otrMgr;
@@ -23,7 +23,7 @@ public class XmppChatPacketListener implements PacketListener {
 
 	private final static String OTR_HEADER_STRING = "?OTR";
 	
-	public XmppChatPacketListener (XmppConnection xConn)
+	public OtrChatListener (XmppConnection xConn)
 	{
 		this.xConn = xConn;
 	}
@@ -70,16 +70,17 @@ public class XmppChatPacketListener implements PacketListener {
 				
 				if (otrMgr == null)
 				{
-					otrMgr = new OtrChatManager(xConn);	
-					xConn.setOtrManager(otrMgr);
+					// TODO OTRCHAT xConn
+					//otrMgr = new OtrChatManager(xConn);	
+					//xConn.setOtrManager(otrMgr);
 				}
 			}
 			else if ((otrMgr == null && msgBody.indexOf(OTR_HEADER_STRING)!=-1))
 			{
 				//restart session
-				
-				otrMgr = new OtrChatManager(xConn);	
-				xConn.setOtrManager(otrMgr);
+				// TODO OTRCHAT xConn
+				//otrMgr = new OtrChatManager(xConn);	
+				//xConn.setOtrManager(otrMgr);
 				otrMgr.refreshSession(message.getTo(), message.getFrom());
 			}
 			
@@ -107,10 +108,13 @@ public class XmppChatPacketListener implements PacketListener {
 	
 	private ChatSession findOrCreateSession(String address) {
 		ChatSession session = xConn.findSession(address);
+		// TODO OTRCHAT xConn
+		/*
 		if (session == null) {
 			Contact contact = xConn.findOrCreateContact(address);
 			session = xConn.createChatSession(contact);
 		}
+		*/
 		
 		
 		return session;

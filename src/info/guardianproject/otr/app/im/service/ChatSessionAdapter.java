@@ -227,6 +227,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     public void sendMessage(String text) {
+    	// TODO OTRCHAT encrypt message here
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // connection has been suspended, save the message without send it
             insertMessageInDb(null, text, -1, Imps.MessageType.POSTPONED);
@@ -627,30 +628,5 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         public void onMemberLeft(ChatGroup group, Contact contact) {
             mContactStatusMap.remove(contact.getName());
         }
-    }
-    
-    
-    /**
-     * Start encryption for this chat
-     */
-    public boolean encryptChat()
-    {
-    	
-    	return false;
-    }
-    
-     /**
-     * Stop encryption for this chat
-     */
-    public boolean unencryptChat()
-    {
-    	return false;
-    }
-      /**
-     * Start remote identity verification
-     */
-    public void verifyRemoteIdentity()
-    {
-    	
     }
 }

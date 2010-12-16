@@ -26,7 +26,6 @@ public class AndroidSystemService extends SystemService {
     private static AndroidSystemService sInstance;
 
     private AndroidSystemService() {
-    	
     }
 
     public static AndroidSystemService getInstance() {

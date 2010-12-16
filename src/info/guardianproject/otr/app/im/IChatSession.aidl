@@ -83,6 +83,5 @@ interface IChatSession {
     /**
      * Mark this chat session as read.
      */
-    void markAsRead();
-   
+    void markAsRead();   
 }

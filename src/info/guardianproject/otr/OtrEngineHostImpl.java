@@ -1,6 +1,6 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
+import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class OtrEngineHostImpl implements OtrEngineHost{
 	
-	private XmppConnection xConn;
+	private ChatSessionAdapter mChatSessionAdapter;
 	private OtrPolicy policy;
     public String lastInjectedMessage;
     
@@ -25,9 +25,9 @@ public class OtrEngineHostImpl implements OtrEngineHost{
 	
 	private final static String TAG = OtrEngineHostImpl.class.getClass().getName();
 	
-	public OtrEngineHostImpl(XmppConnection xConn, OtrPolicy policy) throws IOException 
+	public OtrEngineHostImpl(ChatSessionAdapter chatSessionAdapter, OtrPolicy policy) throws IOException 
 	{
-		this.xConn = xConn;
+		this.mChatSessionAdapter = chatSessionAdapter;
 		this.policy = policy;
 		otrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
 		
@@ -82,7 +82,7 @@ public class OtrEngineHostImpl implements OtrEngineHost{
 	
 	@Override
 	public void injectMessage(SessionID sessionID, String msg) {
-		
+		// TODO OTRCHAT convert this to a Message re-start here
 		org.jivesoftware.smack.packet.Message xMsg =
 			new org.jivesoftware.smack.packet.Message(
 					sessionID.getUserID(),
@@ -91,8 +91,8 @@ public class OtrEngineHostImpl implements OtrEngineHost{
 		
 		
 		xMsg.setBody(msg);
-		
-		xConn.sendMessage(xMsg);
+		// TODO OTRCHAT use a generic method for sending messages
+		//mChatSessionAdapter.sendMessage(xMsg);
 		
 	}
 

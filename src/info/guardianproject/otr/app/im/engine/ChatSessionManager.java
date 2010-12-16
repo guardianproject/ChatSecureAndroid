@@ -98,35 +98,4 @@ public abstract class ChatSessionManager {
      * @param message the message to send.
      */
     protected abstract void sendMessageAsync(ChatSession session, Message message);
-    
-    /**
-     * Start encryption for this chat
-     */
-    public abstract boolean encryptChat(String address);
-    
-     /**
-     * Stop encryption for this chat
-     */
-    public abstract boolean unencryptChat(String address);
-    
-    /**
-    * Check if session is encrypted
-     */
-    public abstract boolean isEncryptedSession(String address);
-    
-      /**
-     * Start remote identity verification
-     */
-    public abstract void verifyRemoteIdentity(String address);
-    
-
-    /**
-    * Get public key fingerprint
-    */
-    public abstract String getRemoteKeyFingerprint(String address);
-   
-   /**
-    * Get public key fingerprint
-    */
-    public abstract String getLocalKeyFingerprint(String address);
 }

@@ -2,7 +2,7 @@ package info.guardianproject.otr;
 
 //Originally: package com.zadov.beem;
 
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
+import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 
 import java.security.PublicKey;
 import java.util.Hashtable;
@@ -20,18 +20,19 @@ import android.util.Log;
 public class OtrChatManager implements OtrEngineListener {
 
 	private final static String TAG = "Xmpp";
-	protected XmppConnection xConn;
+	protected ChatSessionAdapter mChatSessionAdapter;
 	protected OtrEngineHostImpl myHost;
 	private OtrEngineImpl otrEngine;
 	
 	private Hashtable<String,SessionID> sessions;
 	
-	public OtrChatManager(XmppConnection xConn){
-		this.xConn = xConn;
+	// TODO OTRCHAT replace XmmpConnection with a class that can send a message, ie. ImConnection
+	public OtrChatManager(ChatSessionAdapter chatSessionAdapter){
+		this.mChatSessionAdapter = chatSessionAdapter;
 
 		try
 		{
-			myHost = new OtrEngineHostImpl(xConn, 
+			myHost = new OtrEngineHostImpl(chatSessionAdapter, 
 				new OtrPolicyImpl(OtrPolicy.ALLOW_V2
 						| OtrPolicy.ERROR_START_AKE));
 		

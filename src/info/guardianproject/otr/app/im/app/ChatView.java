@@ -86,8 +86,7 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ChatView extends LinearLayout {
-	
+public class ChatView extends LinearLayout {	
     // This projection and index are set for the query of active chats
     static final String[] CHAT_PROJECTION = {
         Imps.Contacts._ID,
@@ -240,8 +239,6 @@ public class ChatView extends LinearLayout {
         public void onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
             scheduleRequery(0);
-            
-
         }
 
         @Override
@@ -664,7 +661,8 @@ public class ChatView extends LinearLayout {
             mHistory.setAdapter(null);
         }
         
-        updateSecureWarning ();
+		// TODO OTRCHAT updateSecureWarning
+        //updateSecureWarning ();
     }
 
     private void startQuery() {
@@ -700,8 +698,6 @@ public class ChatView extends LinearLayout {
             log("scheduleRequery");
         }
         mHandler.postDelayed(mRequeryCallback, interval);
-        
-       
     }
 
     void cancelRequery() {
@@ -720,15 +716,14 @@ public class ChatView extends LinearLayout {
             return;
         }
         
-
-        updateSecureWarning ();
+// TODO OTRCHAT updateSecureWarning
+//        updateSecureWarning ();
         
         // TODO: async query?
         Cursor cursor = getMessageCursor();
         if (cursor != null) {
             cursor.requery();
         }
-        
     }
 
     private Cursor getMessageCursor() {
@@ -765,14 +760,12 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    public void viewProfile()  {
-    	
-    	/*
+    public void viewProfile() {
         Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mChatId);
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
         mScreen.startActivity(intent);
-        */
-    	
+        /*
+    	// TODO OTRCHAT viewProfile
     	//we should launch a new Intent here to handle this and display the progress
     	
     	try
@@ -806,9 +799,8 @@ public class ChatView extends LinearLayout {
     		Log.e("ChatView","error: " + re);
     		re.printStackTrace();
     	}
-    	
+    */	
     }
-    
 
     public void blockContact() {
         // TODO: unify with codes in ContactListView
@@ -902,7 +894,6 @@ public class ChatView extends LinearLayout {
         if (TextUtils.isEmpty(msg.trim())) {
             return;
         }
-        
 
         if (mChatSession != null) {
             try {
@@ -921,20 +912,18 @@ public class ChatView extends LinearLayout {
         if (config.orientation == config.ORIENTATION_LANDSCAPE) {
             closeSoftKeyboard();
         }
-        
-        updateSecureWarning();
+// TODO OTRCHAT updateSecureWarning        
+//        updateSecureWarning();
         
     }
-    
+    /*
     boolean securityTextSet = false;
     
     void updateSecureWarning ()
     {
-
+// TODO OTRCHAT use the OtrChatManager directly here
     	try
-    	{
-    		
-    	
+    	{  	
 	        if (mChatSessionMgr!=null)
 	        {
 	            try {
@@ -983,9 +972,9 @@ public class ChatView extends LinearLayout {
     	{
     		Log.e("ChatView","Error checking security status: " + e);
     		
-    	}
-	           
+    	} 
     }
+    */
 
     void registerChatListener() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
@@ -1110,8 +1099,8 @@ public class ChatView extends LinearLayout {
         if (mChatSession != null) {
             try {
                 mChatSession.markAsRead();
-                
-                updateSecureWarning();
+                // TODO OTRCHAT updateSecureWarning
+                //updateSecureWarning();
 
              
             } catch (RemoteException e) {
