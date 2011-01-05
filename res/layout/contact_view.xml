@@ -19,7 +19,7 @@
 -->
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="org.gitian.android.im.app.ContactView"
+    class="info.guardianproject.otr.app.im.app.ContactView"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"

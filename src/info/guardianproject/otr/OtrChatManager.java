@@ -2,6 +2,8 @@ package info.guardianproject.otr;
 
 //Originally: package com.zadov.beem;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
+
 import java.security.PublicKey;
 import java.util.Hashtable;
 
@@ -12,7 +14,6 @@ import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 
-import org.gitian.android.im.plugin.xmpp.XmppConnection;
 
 import android.util.Log;
 
@@ -75,7 +76,6 @@ public class OtrChatManager implements OtrEngineListener {
 
 		otrEngine.startSession(getSessionId(localUserId,remoteUserId));
 
-		
 	}
 	
 	public void endSession(String localUserId, String remoteUserId){

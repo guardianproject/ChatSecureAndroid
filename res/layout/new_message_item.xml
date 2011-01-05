@@ -18,7 +18,7 @@
  */
 -->
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="org.gitian.android.im.app.MessageView"
+    class="info.guardianproject.otr.app.im.app.MessageView"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >

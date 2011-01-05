@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.gitian.android.im" 
+    package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
      android:versionName="0.0.1" android:versionCode="5">
 
 <uses-sdk android:minSdkVersion="3"></uses-sdk>
-    <uses-permission android:name="org.gitian.android.providers.imps.permission.READ_ONLY" />
-    <uses-permission android:name="org.gitian.android.providers.imps.permission.WRITE_ONLY" />
+    <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
+    <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,21 +17,21 @@
      -->
     
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="org.gitian.android.im.permission.IM_SERVICE" />
+    <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
 
-    <permission android:name="org.gitian.android.im.permission.IM_SERVICE"
+    <permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE"
             android:permissionGroup="android.permission-group.MESSAGES"
             android:protectionLevel="dangerous"
             android:label="@string/perm_label"
             android:description="@string/perm_desc" />
 
-    <permission android:name="org.gitian.android.providers.imps.permission.READ_ONLY"
+    <permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"
         android:label="@string/ro_perm_label"
         android:description="@string/ro_perm_desc" />
 
-    <permission android:name="org.gitian.android.providers.imps.permission.WRITE_ONLY"
+    <permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"
         android:label="@string/wo_perm_label"
@@ -40,49 +40,49 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_im"
-             android:taskAffinity="org.gitian.android.task.im">
+             android:taskAffinity="info.guardianproject.otr.app.task.im">
 
         <service android:name=".plugin.xmpp.XmppImPlugin">
             <intent-filter>
-                <action android:name="org.gitian.android.im.plugin" />
+                <action android:name="info.guardianproject.otr.app.im.plugin" />
             </intent-filter>
-            <meta-data android:name="org.gitian.android.im.provider_name"
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
                 android:value="XMPP"/>
-            <meta-data android:name="org.gitian.android.im.provider_full_name"
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
                 android:value="XMPP IM Provider"/>
-            <meta-data android:name="org.gitian.android.im.signup_url"
+            <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
                 android:value="http://xmpp.org/services/"/>
         </service>
 
 <!-- 
         <service android:name=".plugin.loopback.LoopbackImPlugin">
             <intent-filter>
-                <action android:name="org.gitian.android.im.plugin" />
+                <action android:name="info.guardianproject.otr.app.im.plugin" />
             </intent-filter>
-            <meta-data android:name="org.gitian.android.im.provider_name" android:value="Loopback"/>
-            <meta-data android:name="org.gitian.android.im.provider_full_name"
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_name" android:value="Loopback"/>
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
                 android:value="Loopback Provider"/>
-            <meta-data android:name="org.gitian.android.im.signup_url"
+            <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
                 android:value="http://xxx.xxx.xxx"/>
         </service>
  -->
             <!--  -->
         <service android:name=".service.RemoteImService"
             android:exported="true"
-            android:process="org.gitian.android.process.im"
-            android:permission="org.gitian.android.im.permission.IM_SERVICE">
+            android:process="info.guardianproject.otr.app.process.im"
+            android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
-                <action android:name="org.gitian.android.im.IRemoteImService" />
-                <action android:name="org.gitian.android.im.SERVICE" />
+                <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
+                <action android:name="info.guardianproject.otr.app.im.SERVICE" />
             </intent-filter>
         </service>
 
         <provider android:name=".provider.ImpsProvider"
             android:authorities="imps"
-            android:process="org.gitian.android.process.im"
+            android:process="info.guardianproject.otr.app.process.im"
             android:multiprocess="false"
-            android:readPermission="org.gitian.android.providers.imps.permission.READ_ONLY"
-            android:writePermission="org.gitian.android.providers.imps.permission.WRITE_ONLY"
+            android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
+            android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
             android:grantUriPermissions="true" />
 
         <activity android:name=".app.ChooseAccountActivity"
@@ -98,9 +98,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="org.gitian.android.im.category.AIM" />
-                <category android:name="org.gitian.android.im.category.MSN" />
-                <category android:name="org.gitian.android.im.category.YAHOO" />
+                <category android:name="info.guardianproject.otr.app.im.category.AIM" />
+                <category android:name="info.guardianproject.otr.app.im.category.MSN" />
+                <category android:name="info.guardianproject.otr.app.im.category.YAHOO" />
                 <data android:scheme="im" />
             </intent-filter>
 
@@ -133,13 +133,13 @@
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.item/imps-accounts" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.item/imps-providers" />
             </intent-filter>
         </activity>
@@ -163,7 +163,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.dir/imps-contacts"/>
             </intent-filter>
         </activity>
@@ -177,7 +177,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.item/imps-chats" />
             </intent-filter>
             <intent-filter>
@@ -225,7 +225,7 @@
         <activity android:name=".app.SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="org.gitian.android.im.IMPS_CATEGORY" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android-dir/imps-providerSettings" />
             </intent-filter>

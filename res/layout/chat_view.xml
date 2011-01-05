@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 -->
-<org.gitian.android.im.app.ChatView
+<info.guardianproject.otr.app.im.app.ChatView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chatView"
     android:orientation="vertical"
@@ -171,4 +171,4 @@
             android:layout_height="fill_parent"
             android:text="@string/send" />
     </LinearLayout>
-</org.gitian.android.im.app.ChatView>
+</info.guardianproject.otr.app.im.app.ChatView>

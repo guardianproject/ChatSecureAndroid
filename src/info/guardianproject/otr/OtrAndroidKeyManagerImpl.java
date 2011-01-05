@@ -1,5 +1,7 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.service.AndroidSystemService;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,7 +28,6 @@ import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 
-import org.gitian.android.im.service.AndroidSystemService;
 import org.jivesoftware.smack.util.Base64;
 
 import android.content.Context;

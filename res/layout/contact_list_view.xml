@@ -17,13 +17,13 @@
  * limitations under the License.
  */
 -->
-<org.gitian.android.im.app.ContactListView xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.otr.app.im.app.ContactListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/contactListView"
     android:orientation="vertical">
 
-    <org.gitian.android.im.app.UserPresenceView
+    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -72,10 +72,10 @@
             android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
 
-    </org.gitian.android.im.app.UserPresenceView>
+    </info.guardianproject.otr.app.im.app.UserPresenceView>
 
     <ExpandableListView android:id="@+id/contactsList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-</org.gitian.android.im.app.ContactListView>
+</info.guardianproject.otr.app.im.app.ContactListView>

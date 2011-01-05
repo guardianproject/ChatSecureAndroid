@@ -54,7 +54,7 @@
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary" />
 
-        <org.gitian.android.im.app.ImRingtonePreference
+        <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="notification-sound"
                 android:key="notification-ringtone"

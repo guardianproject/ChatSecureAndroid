@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 -->
-<org.gitian.android.im.app.ContactListFilterView
+<info.guardianproject.otr.app.im.app.ContactListFilterView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -28,4 +28,4 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-</org.gitian.android.im.app.ContactListFilterView>
+</info.guardianproject.otr.app.im.app.ContactListFilterView>

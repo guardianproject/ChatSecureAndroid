@@ -1,5 +1,7 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
+
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -8,7 +10,6 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 
-import org.gitian.android.im.plugin.xmpp.XmppConnection;
 
 import android.util.Log;
 

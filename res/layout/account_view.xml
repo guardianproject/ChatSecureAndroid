@@ -17,7 +17,7 @@
  */
 -->
 
-<org.gitian.android.im.app.ProviderListItem
+<info.guardianproject.otr.app.im.app.ProviderListItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
@@ -88,4 +88,4 @@
             android:layout_width="30dip"
             android:layout_height="18dip"/>
     </LinearLayout>
-</org.gitian.android.im.app.ProviderListItem>
+</info.guardianproject.otr.app.im.app.ProviderListItem>
