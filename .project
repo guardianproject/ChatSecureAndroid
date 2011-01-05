@@ -30,11 +30,4 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>smack</name>
-			<type>2</type>
-			<location>/home/android/proj/smack/asmack/snap/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>

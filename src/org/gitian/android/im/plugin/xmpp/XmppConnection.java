@@ -780,7 +780,7 @@ public class XmppConnection extends ImConnection {
 			return;
 		if (mNeedReconnect)
 			return;
-		mConnection.force_shutdown();
+		//mConnection.force_shutdown();
 		mConnection.disconnect();
 		mNeedReconnect = true;
 		reconnect();
