@@ -1,8 +1,10 @@
 package org.gitian.android.im.plugin.xmpp;
 
+import info.guardianproject.otr.OtrChatManager;
+
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,6 +37,7 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -44,30 +47,58 @@ import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
+import org.jivesoftware.smack.proxy.ProxyInfo;
+import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 
-import android.os.Debug;
 import android.os.Parcel;
 import android.util.Log;
 
 public class XmppConnection extends ImConnection {
 
-	protected static final String TAG = "XmppConnection";
+	private final static String TAG = "Xmpp";
 	private XmppContactList mContactListManager;
 	private Contact mUser;
+	
 	private MyXMPPConnection mConnection;
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
+	private XmppChatPacketListener mChatListener;
+	
+	private OtrChatManager mOtrMgr;
+
+	
 	private boolean mNeedReconnect;
 	private LoginInfo mLoginInfo;
 	private boolean mRetryLogin;
 	private Executor mExecutor;
 
+	private XmppConnection xmppConnection;
+	
+	private ProxyInfo mProxyInfo = null;
+	
 	public XmppConnection() {
 		Log.w(TAG, "created");
 		//ReconnectionManager.activate();
 		SmackConfiguration.setKeepAliveInterval(-1);
 		mExecutor = Executors.newSingleThreadExecutor();
+		xmppConnection = this;
+		
+		
 	}
+	
+	public void sendMessage(org.jivesoftware.smack.packet.Message msg) {
+		android.os.Debug.waitForDebugger();
+
+		if (mOtrMgr != null && mOtrMgr.isEncryptedSession(msg.getFrom(),msg.getTo()))
+		{
+			msg.setBody(mOtrMgr.sendMessage(msg.getFrom(),msg.getTo(), msg.getBody()));
+		}
+		
+		
+		mConnection.sendPacket(msg);
+		
+	}
+
 	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -174,6 +205,7 @@ public class XmppConnection extends ImConnection {
 			return;
 		}
 		try {
+			
 			initConnection(comps[1], comps[0], mLoginInfo.getPassword(), "Android");
 		} catch (XMPPException e) {
 			Log.e(TAG, "login failed", e);
@@ -203,24 +235,46 @@ public class XmppConnection extends ImConnection {
 		Log.i(TAG, "logged in");
 	}
 
+	public void setProxy (String type, String host, int port)
+	{
+		android.os.Debug.waitForDebugger();
+
+		if (type == null)
+		{
+			 mProxyInfo = ProxyInfo.forNoProxy();
+		}
+		else
+		{
+			ProxyInfo.ProxyType pType = ProxyType.valueOf(type);
+			mProxyInfo = new ProxyInfo(pType, host, port,"","");
+		}
+	}
+	
 	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
-    	mConfig = new ConnectionConfiguration(serverHost);
+    	
+    	
+    	if (mProxyInfo == null)
+    		 mProxyInfo = ProxyInfo.forNoProxy();
+    	
+    	
+    	mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+
 		mConfig.setReconnectionAllowed(false);
+		
+		mConfig.setSecurityMode(SecurityMode.required);
+		
 		mConnection = new MyXMPPConnection(mConfig);
+		mChatListener = new XmppChatPacketListener(this);
+		
+		
         mConnection.connect();
-        mConnection.addPacketListener(new PacketListener() {
-			
-			@Override
-			public void processPacket(Packet packet) {
-				org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
-				Message rec = new Message(message.getBody());
-				String address = parseAddressBase(message.getFrom());
-				ChatSession session = findOrCreateSession(address);
-				rec.setFrom(session.getParticipant().getAddress());
-				rec.setDateTime(new Date());
-				session.onReceiveMessage(rec);
-			}
-		}, new MessageTypeFilter(org.jivesoftware.smack.packet.Message.Type.chat));
+        
+        Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
+        Log.i(TAG,"is using TLS? " + mConnection.isUsingTLS());
+
+        
+        mConnection.addPacketListener(mChatListener, new MessageTypeFilter(org.jivesoftware.smack.packet.Message.Type.chat));
+        
         mConnection.addPacketListener(new PacketListener() {
 			
 			@Override
@@ -234,6 +288,7 @@ public class XmppConnection extends ImConnection {
 				}
 			}
 		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
+        
         mConnection.addConnectionListener(new ConnectionListener() {
 			@Override
 			public void reconnectionSuccessful() {
@@ -384,7 +439,7 @@ public class XmppConnection extends ImConnection {
 		return session;
 	}
 
-	private Contact findOrCreateContact(String address) {
+	Contact findOrCreateContact(String address) {
 		Contact contact = mContactListManager.getContact(address);
 		if (contact == null) {
 			contact = makeContact(address);
@@ -404,12 +459,20 @@ public class XmppConnection extends ImConnection {
 	private final class XmppChatSessionManager extends ChatSessionManager {
 		@Override
 		protected void sendMessageAsync(ChatSession session, Message message) {
+
 			org.jivesoftware.smack.packet.Message msg =
 				new org.jivesoftware.smack.packet.Message(
 						message.getTo().getFullName(),
 						org.jivesoftware.smack.packet.Message.Type.chat
 						);
-			msg.setBody(message.getBody());
+			
+			if (mOtrMgr != null && mOtrMgr.isEncryptedSession(msg.getFrom(),msg.getTo()))
+			{
+				msg.setBody(mOtrMgr.sendMessage(msg.getFrom(),msg.getTo(), message.getBody()));
+			}
+			else
+				msg.setBody(message.getBody());
+			
 			mConnection.sendPacket(msg);
 		}
 		
@@ -421,6 +484,95 @@ public class XmppConnection extends ImConnection {
 			}
 			return null;
 		}
+		
+
+		/**
+	     * Start encryption for this chat
+	     */
+	    public boolean encryptChat(String address)
+	    {
+	    	Log.i(TAG, "Got encryptChat() request for: " + address);
+	    	
+	    	if (address == null || address.length() == 0 || address.equals(mUser.getAddress().getFullName()))
+	    		return false;
+	    	
+	    	if (mOtrMgr == null)
+	    	{
+				mOtrMgr = new OtrChatManager(xmppConnection);	
+				mChatListener.setOtrMgr(mOtrMgr);
+
+	    	}
+	    	
+	    	
+	    	
+			if (!mOtrMgr.isEncryptedSession(mUser.getAddress().getFullName(), address))
+				mOtrMgr.startSession(mUser.getAddress().getFullName(), address);
+			
+			
+	    	
+	    	return true;
+	    }
+	    
+	     /**
+	     * Stop encryption for this chat
+	     */
+	    public boolean unencryptChat(String remoteAddress)
+	    {
+	    	if (mOtrMgr != null)
+	    	{
+	    		mOtrMgr.endSession(mUser.getAddress().getFullName(), remoteAddress);
+	    	}
+	    	
+	    	return true;
+	    }
+	    
+	      /**
+	     * Start remote identity verification
+	     */
+	    public void verifyRemoteIdentity(String address)
+	    {
+	    	
+	    }
+	    
+	    /**
+	     * Get remote key fingerprint
+	     */
+	    public String getRemoteKeyFingerprint(String remoteAddress)
+	    {
+	    	return mOtrMgr.getRemoteKeyFingerprint(mUser.getAddress().getFullName(), remoteAddress);
+	    }
+	    
+	    
+	    /**
+	     * Get remote key fingerprint
+	     */
+	    public String getLocalKeyFingerprint(String remoteAddress)
+	    {
+	    	return mOtrMgr.getLocalKeyFingerprint(mUser.getAddress().getFullName(), remoteAddress);
+	    }
+	    
+	    /**
+	     * Start remote identity verification
+	     */
+	    public boolean isEncryptedSession(String remoteAddress)
+	    {
+			android.os.Debug.waitForDebugger();
+
+	    	if (mOtrMgr!=null)
+	    		return (mOtrMgr.isEncryptedSession(mUser.getAddress().getFullName(), remoteAddress));
+	    	else
+	    		return false;
+	    }
+	}
+	
+	public ChatSession findSession (String address)
+	{
+		return mSessionManager.findSession(address);
+	}
+	
+	public ChatSession createChatSession (Contact contact)
+	{
+		return mSessionManager.createChatSession(contact);
 	}
 
 	private final class XmppContactList extends ContactListManager {
@@ -754,6 +906,9 @@ public class XmppConnection extends ImConnection {
 
 		public MyXMPPConnection(ConnectionConfiguration config) {
 			super(config);
+			
+			//this.getConfiguration().setSocketFactory(arg0)
+			
 		}
 
 	}
@@ -780,7 +935,6 @@ public class XmppConnection extends ImConnection {
 			return;
 		if (mNeedReconnect)
 			return;
-		//mConnection.force_shutdown();
 		mConnection.disconnect();
 		mNeedReconnect = true;
 		reconnect();
@@ -824,5 +978,21 @@ public class XmppConnection extends ImConnection {
 			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 		}
 	}
+	
+
+	/**
+	 * @return the mOtrMgr
+	 */
+	public OtrChatManager getOtrManager() {
+		return mOtrMgr;
+	}
+
+	/**
+	 * @param mOtrMgr the mOtrMgr to set
+	 */
+	public void setOtrManager(OtrChatManager mOtrMgr) {
+		this.mOtrMgr = mOtrMgr;
+	}
+
 }
 

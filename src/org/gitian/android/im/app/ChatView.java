@@ -19,9 +19,7 @@ package org.gitian.android.im.app;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
-import org.gitian.android.im.R;
 import org.gitian.android.im.IChatListener;
 import org.gitian.android.im.IChatSession;
 import org.gitian.android.im.IChatSessionListener;
@@ -30,6 +28,7 @@ import org.gitian.android.im.IContactList;
 import org.gitian.android.im.IContactListListener;
 import org.gitian.android.im.IContactListManager;
 import org.gitian.android.im.IImConnection;
+import org.gitian.android.im.R;
 import org.gitian.android.im.app.adapter.ChatListenerAdapter;
 import org.gitian.android.im.app.adapter.ChatSessionListenerAdapter;
 import org.gitian.android.im.engine.Contact;
@@ -53,6 +52,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -176,6 +176,17 @@ public class ChatView extends LinearLayout {
     }
     private QueryHandler mQueryHandler;
 
+
+	public SimpleAlertHandler getHandler ()
+	{
+		return mHandler;
+	}
+	
+	public int getType ()
+	{
+		return mViewType;
+	}
+	
     private class RequeryCallback implements Runnable {
         public void run() {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
@@ -227,6 +238,8 @@ public class ChatView extends LinearLayout {
         public void onIncomingMessage(IChatSession ses,
                 org.gitian.android.im.engine.Message msg) {
             scheduleRequery(0);
+            
+
         }
 
         @Override
@@ -648,6 +661,8 @@ public class ChatView extends LinearLayout {
         } else {
             mHistory.setAdapter(null);
         }
+        
+        updateSecureWarning ();
     }
 
     private void startQuery() {
@@ -683,6 +698,8 @@ public class ChatView extends LinearLayout {
             log("scheduleRequery");
         }
         mHandler.postDelayed(mRequeryCallback, interval);
+        
+       
     }
 
     void cancelRequery() {
@@ -700,11 +717,16 @@ public class ChatView extends LinearLayout {
             mMessageAdapter.setNeedRequeryCursor(true);
             return;
         }
+        
+
+        updateSecureWarning ();
+        
         // TODO: async query?
         Cursor cursor = getMessageCursor();
         if (cursor != null) {
             cursor.requery();
         }
+        
     }
 
     private Cursor getMessageCursor() {
@@ -741,11 +763,50 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    public void viewProfile() {
+    public void viewProfile()  {
+    	
+    	/*
         Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mChatId);
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
         mScreen.startActivity(intent);
+        */
+    	
+    	//we should launch a new Intent here to handle this and display the progress
+    	
+    	try
+    	{
+    		
+    		if (mChatSessionMgr.isEncryptedSession(mUserName))
+    		{
+    			mChatSessionMgr.unencryptChat(mUserName);
+				
+				 mStatusWarningView.setVisibility(View.VISIBLE);
+			     mWarningIcon.setVisibility(View.VISIBLE);
+			     mWarningText.setTextColor(Color.RED);
+			     mWarningText.setTextSize(10);
+			      mWarningText.setText("stopping encrypted chat...");
+    		}
+    		else
+    		{
+	    		
+				mChatSessionMgr.encryptChat(mUserName);
+				
+				 mStatusWarningView.setVisibility(View.VISIBLE);
+			     mWarningIcon.setVisibility(View.VISIBLE);
+			     mWarningText.setTextSize(10);
+
+			      mWarningText.setText("initiating encrypted chat...");
+    		}
+    		
+    	}
+    	catch (RemoteException re)
+    	{
+    		Log.e("ChatView","error: " + re);
+    		re.printStackTrace();
+    	}
+    	
     }
+    
 
     public void blockContact() {
         // TODO: unify with codes in ContactListView
@@ -839,6 +900,7 @@ public class ChatView extends LinearLayout {
         if (TextUtils.isEmpty(msg.trim())) {
             return;
         }
+        
 
         if (mChatSession != null) {
             try {
@@ -857,6 +919,70 @@ public class ChatView extends LinearLayout {
         if (config.orientation == config.ORIENTATION_LANDSCAPE) {
             closeSoftKeyboard();
         }
+        
+        updateSecureWarning();
+        
+    }
+    
+    boolean securityTextSet = false;
+    
+    void updateSecureWarning ()
+    {
+
+    	try
+    	{
+    		
+    	
+	        if (mChatSessionMgr!=null)
+	        {
+	            try {
+					if (mChatSessionMgr.isEncryptedSession(mUserName))
+					{
+						if (!securityTextSet)
+						{
+					
+							String localKeyFingerprint = mChatSessionMgr.getLocalKeyFingerprint(mUserName);
+							String remoteKeyFingerprint = mChatSessionMgr.getRemoteKeyFingerprint(mUserName);
+		
+							StringBuffer statusText = new StringBuffer();
+							statusText.append("ENCRYPTED CHAT SESSION (key fingerprints below)");
+							statusText.append("\n");
+							statusText.append("You: " + localKeyFingerprint);
+							statusText.append("\n");
+							statusText.append("Them: " + remoteKeyFingerprint);
+							
+							mStatusWarningView.setVisibility(View.VISIBLE);
+							mWarningIcon.setVisibility(View.INVISIBLE);
+						    mWarningText.setText(statusText.toString());
+						     mWarningText.setTextSize(10);
+	
+						    mWarningText.setTextColor(Color.parseColor("#005500"));
+						    
+						    securityTextSet = true;
+						}
+					    
+					}
+					else
+					{
+						mStatusWarningView.setVisibility(View.VISIBLE);
+						mWarningIcon.setVisibility(View.VISIBLE);
+						mWarningText.setTextColor(Color.RED);
+					    
+					    mWarningText.setText("WARNING: Your chat is *NOT SECURE*");
+					    
+					    securityTextSet = false;
+					}
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+	        }
+    	}
+    	catch (Exception e)
+    	{
+    		Log.e("ChatView","Error checking security status: " + e);
+    		
+    	}
+	           
     }
 
     void registerChatListener() {
@@ -982,6 +1108,10 @@ public class ChatView extends LinearLayout {
         if (mChatSession != null) {
             try {
                 mChatSession.markAsRead();
+                
+                updateSecureWarning();
+
+             
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }

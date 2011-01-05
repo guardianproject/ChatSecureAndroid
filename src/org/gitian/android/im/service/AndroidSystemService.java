@@ -26,6 +26,7 @@ public class AndroidSystemService extends SystemService {
     private static AndroidSystemService sInstance;
 
     private AndroidSystemService() {
+    	
     }
 
     public static AndroidSystemService getInstance() {
@@ -41,6 +42,11 @@ public class AndroidSystemService extends SystemService {
 
     public void initialize(Context context) {
         mContext = context;
+    }
+    
+    public Context getContext()
+    {
+    	return mContext;
     }
 
     public void shutdown() {

@@ -155,6 +155,12 @@ public class ImConnectionAdapter extends org.gitian.android.im.IImConnection.Stu
     public void sendHeartbeat() throws RemoteException {
     	mConnection.sendHeartbeat();
     }
+    
+    @Override
+    public void setProxy (String type, String host, int port) throws RemoteException
+    {
+    	mConnection.setProxy(type, host, port);
+    }
 
     private HashMap<String, String> querySessionCookie(ContentResolver cr) {
         Cursor c = cr.query(getSessionCookiesUri(), SESSION_COOKIE_PROJECTION, null, null, null);

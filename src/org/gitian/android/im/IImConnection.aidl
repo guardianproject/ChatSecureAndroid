@@ -67,4 +67,6 @@ interface IImConnection {
     void acceptInvitation(long id);
     void rejectInvitation(long id);
     void sendHeartbeat();
+    
+    void setProxy(String type, String host, int port);
 }

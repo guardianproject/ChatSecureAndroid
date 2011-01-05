@@ -53,9 +53,11 @@ public class ConnectionFactory {
     public ImConnection createConnection(Map<String, String> settings) throws ImException {
     	if ("XMPP".equals(settings.get("im.protocol"))) {
         	return new XmppConnection();
-    	} else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
+    	} 
+    	/*else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
     		return new LoopbackConnection();
-        } else {
+        } */
+    	else {
             throw new ImException("Unsupported protocol");
         }
     }

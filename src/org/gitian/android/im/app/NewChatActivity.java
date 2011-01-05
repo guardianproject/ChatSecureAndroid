@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gitian.android.im.R;
 import org.gitian.android.im.IChatSession;
+import org.gitian.android.im.R;
 import org.gitian.android.im.app.adapter.ChatListenerAdapter;
 import org.gitian.android.im.plugin.BrandingResourceIDs;
 import org.gitian.android.im.provider.Imps;
@@ -72,7 +72,7 @@ public class NewChatActivity extends Activity {
         setContentView(R.layout.chat_view);
 
         mChatView = (ChatView) findViewById(R.id.chatView);
-        mHandler = mChatView.mHandler;
+        mHandler = mChatView.getHandler();
         mInflater = LayoutInflater.from(this);
 
         mApp = ImApp.getApplication(this);
@@ -149,8 +149,10 @@ public class NewChatActivity extends Activity {
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
         menu.findItem(R.id.menu_end_conversation).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_END_CHAT));
+        
         menu.findItem(R.id.menu_view_profile).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE));
+        
         menu.findItem(R.id.menu_block_contact).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT));
         return true;
@@ -166,7 +168,7 @@ public class NewChatActivity extends Activity {
         //XXX HACK: Yahoo! doesn't allow to block a friend. We can only block a temporary contact.
         ProviderDef provider = mApp.getProvider(mChatView.getProviderId());
         if ((provider != null) && Imps.ProviderNames.YAHOO.equals(provider.mName)) {
-            if (Imps.Contacts.TYPE_TEMPORARY != mChatView.mType) {
+            if (Imps.Contacts.TYPE_TEMPORARY != mChatView.getType()) {
                 menu.findItem(R.id.menu_block_contact).setVisible(false);
             }
         }

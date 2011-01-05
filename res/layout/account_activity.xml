@@ -56,13 +56,16 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/remember_password" />
-
+                
+                 
             <CheckBox android:id="@+id/keepSignIn"
                 android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/keep_me_signed_in" />
+                
+          
         </LinearLayout>
 
         <LinearLayout android:layout_width="fill_parent"
@@ -77,6 +80,13 @@
                 android:text="@string/sign_in" />
         </LinearLayout>
     </LinearLayout>
+
+  <CheckBox android:id="@+id/useTor"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/use_tor" />
 
     <TextView android:id="@+id/signUp"
         android:layout_width="wrap_content"

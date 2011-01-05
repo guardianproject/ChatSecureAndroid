@@ -63,6 +63,10 @@ public class SigningInActivity extends Activity {
     private String mPassword;
 
     private String mToAddress;
+    
+    private String mProxyType;
+    private String mProxyHost;
+    private int mProxyPort;
 
     protected static final int ID_CANCEL_SIGNIN = Menu.FIRST + 1;
 
@@ -105,6 +109,14 @@ public class SigningInActivity extends Activity {
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mAccountId = c.getLong(c.getColumnIndexOrThrow(Imps.Account._ID));
         mUserName = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
+        
+        mProxyType = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_TYPE);
+        if (mProxyType != null)
+        {
+        	mProxyHost = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_HOST);
+        	mProxyPort = intent.getIntExtra(ImApp.EXTRA_INTENT_PROXY_PORT,-1);
+        }
+        
         String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
         mPassword = pwExtra != null ? pwExtra
                 : c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
@@ -177,6 +189,9 @@ public class SigningInActivity extends Activity {
                 if (mApp.isBackgroundDataEnabled()) {
                     mConn = mApp.createConnection(mProviderId);
                     mConn.registerConnectionListener(mListener);
+                    
+                    mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
+                    
                     mConn.login(mAccountId, mUserName, mPassword, true, false);
                 } else {
                     promptForBackgroundDataSetting();

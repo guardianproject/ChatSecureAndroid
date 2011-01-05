@@ -146,4 +146,6 @@ public class ChatSession {
     public List<Message> getHistoryMessages() {
         return Collections.unmodifiableList(mHistoryMessages);
     }
+    
+   
 }

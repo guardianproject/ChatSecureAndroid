@@ -627,4 +627,29 @@ public class ChatSessionAdapter extends org.gitian.android.im.IChatSession.Stub 
             mContactStatusMap.remove(contact.getName());
         }
     }
+    
+    
+    /**
+     * Start encryption for this chat
+     */
+    public boolean encryptChat()
+    {
+    	
+    	return false;
+    }
+    
+     /**
+     * Stop encryption for this chat
+     */
+    public boolean unencryptChat()
+    {
+    	return false;
+    }
+      /**
+     * Start remote identity verification
+     */
+    public void verifyRemoteIdentity()
+    {
+    	
+    }
 }

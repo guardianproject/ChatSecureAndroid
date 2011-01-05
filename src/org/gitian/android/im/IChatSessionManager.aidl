@@ -47,4 +47,34 @@ interface IChatSessionManager {
      * @return a list of IBinders of all active ChatSessions.
      */
     List getActiveChatSessions();
+    
+    /**
+     * Start encryption for this chat
+     */
+    boolean encryptChat(String address);
+    
+     /**
+     * Stop encryption for this chat
+     */
+    boolean unencryptChat(String address);
+    
+    /**
+    * Check if session is encrypted
+    */
+    boolean isEncryptedSession(String address);
+    
+      /**
+     * Start remote identity verification
+     */
+    void verifyRemoteIdentity(String address);
+    
+     /**
+     * Get public key fingerprint
+     */
+    String getRemoteKeyFingerprint(String address);
+    
+    /**
+     * Get public key fingerprint
+     */
+    String getLocalKeyFingerprint(String address);
 }

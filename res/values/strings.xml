@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">Off The Record</string>
+    <string name="im_label">OtRChat</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
@@ -520,5 +520,8 @@
     <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
     <string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
     <string name="menu_contact_list">Contact List</string>
+    
+    <string name="menu_view_encrypt_chat">Encrypt On/Off</string>
+    <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
     
 </resources>

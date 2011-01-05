@@ -77,6 +77,7 @@ public class AccountActivity extends Activity {
     EditText mEditPass;
     CheckBox mRememberPass;
     CheckBox mKeepSignIn;
+    CheckBox mUseTor;
     Button   mBtnSignIn;
 
     String mToAddress;
@@ -92,6 +93,7 @@ public class AccountActivity extends Activity {
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
         mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
+        mUseTor = (CheckBox)findViewById(R.id.useTor);
         mBtnSignIn = (Button)findViewById(R.id.btnSignIn);
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView,
@@ -191,6 +193,7 @@ public class AccountActivity extends Activity {
 
                 long accountId = ImApp.insertOrUpdateAccount(cr, providerId, username,
                         rememberPass ? pass : null);
+                
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
 
                 if (!origUserName.equals(username) && shouldShowTermOfUse(brandingRes)) {
@@ -210,6 +213,16 @@ public class AccountActivity extends Activity {
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }
+                
+                if (mUseTor.isChecked())
+                {
+                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
+                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
+                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
+                }
+               
+            	
+                
 
                 if (mToAddress != null) {
                     intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
@@ -220,9 +233,11 @@ public class AccountActivity extends Activity {
         });
 
         // Make link for signing up.
+        String publicXmppServices = "http://xmpp.org/services/";
+        	
         String text = brandingRes.getString(BrandingResourceIDs.STRING_LABEL_SIGN_UP);
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        builder.setSpan(new URLSpan(provider.mSignUpUrl), 0, builder.length(),
+        builder.setSpan(new URLSpan(publicXmppServices), 0, builder.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         TextView signUp = (TextView)findViewById(R.id.signUp);
         signUp.setText(builder);

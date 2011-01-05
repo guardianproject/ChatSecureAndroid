@@ -210,4 +210,48 @@ public class ChatSessionManagerAdapter extends org.gitian.android.im.IChatSessio
             }
         }
     }
+
+	@Override
+	public boolean encryptChat(String address) throws RemoteException {
+		return mSessionManager.encryptChat(address);
+	}
+
+	@Override
+	public boolean unencryptChat(String address) throws RemoteException {
+		
+        
+		// TODO Auto-generated method stub
+		return mSessionManager.unencryptChat(address);
+	}
+	
+	@Override
+	public boolean isEncryptedSession(String address) throws RemoteException {
+		
+		return mSessionManager.isEncryptedSession(address);
+	}
+
+	@Override
+	public void verifyRemoteIdentity(String address)
+			throws RemoteException {
+		
+		
+		
+	}
+	
+
+    /**
+    * Get public key fingerprint
+    */
+    public String getRemoteKeyFingerprint(String address)
+    {
+    	return mSessionManager.getRemoteKeyFingerprint(address);
+    }
+   
+   /**
+    * Get public key fingerprint
+    */
+    public String getLocalKeyFingerprint(String address)
+    {
+    	return mSessionManager.getLocalKeyFingerprint(address);
+    }
 }

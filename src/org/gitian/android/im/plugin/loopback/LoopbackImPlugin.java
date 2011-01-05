@@ -35,9 +35,9 @@ import android.os.RemoteException;
  * Simple example of writing a plug-in for the IM application.
  *
  */
-public class LoopbackImPlugin extends Service implements ImPlugin {
+//public class LoopbackImPlugin extends Service implements ImPlugin {
+	public class LoopbackImPlugin  {
 
-	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
@@ -46,6 +46,7 @@ public class LoopbackImPlugin extends Service implements ImPlugin {
 	 * The implementation of IImPlugin defined through AIDL.
 	 */
 	public Map getProviderConfig() {
+		/*
 		HashMap<String, String> config = new HashMap<String, String>();
 		// The protocol name MUST be IMPS now.
 		config.put(ImConfigNames.PROTOCOL_NAME, "LOOPBACK");
@@ -54,6 +55,8 @@ public class LoopbackImPlugin extends Service implements ImPlugin {
 		config.put(ImpsConfigNames.CUSTOM_PRESENCE_MAPPING,
 		"org.gitian.android.im.plugin.loopback.LoopbackPresenceMapping");
 		return config;
+		*/
+		return null;
 	}
 
 	public Map getResourceMap() {

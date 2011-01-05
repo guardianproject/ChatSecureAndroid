@@ -46,9 +46,10 @@
             <meta-data android:name="org.gitian.android.im.provider_full_name"
                 android:value="XMPP IM Provider"/>
             <meta-data android:name="org.gitian.android.im.signup_url"
-                android:value="http://xxx.xxx.xxx"/>
+                android:value="http://xmpp.org/services/"/>
         </service>
 
+<!-- 
         <service android:name=".plugin.loopback.LoopbackImPlugin">
             <intent-filter>
                 <action android:name="org.gitian.android.im.plugin" />
@@ -59,7 +60,7 @@
             <meta-data android:name="org.gitian.android.im.signup_url"
                 android:value="http://xxx.xxx.xxx"/>
         </service>
-
+ -->
             <!--  -->
         <service android:name=".service.RemoteImService"
             android:exported="true"
