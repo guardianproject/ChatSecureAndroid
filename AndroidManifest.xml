@@ -78,7 +78,7 @@
         </service>
 
         <provider android:name=".provider.ImpsProvider"
-            android:authorities="imps"
+            android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:process="info.guardianproject.otr.app.process.im"
             android:multiprocess="false"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"

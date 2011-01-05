@@ -50,7 +50,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String LOG_TAG = "imProvider";
     private static final boolean DBG = false;
 
-    private static final String AUTHORITY = "imps";
+    private static final String AUTHORITY = "info.guardianproject.otr.app.im.provider.Imps";
 
     private static final String TABLE_ACCOUNTS = "accounts";
     private static final String TABLE_PROVIDERS = "providers";

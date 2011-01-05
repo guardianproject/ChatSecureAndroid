@@ -147,10 +147,10 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/providers");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/providers");
 
         public static final Uri CONTENT_URI_WITH_ACCOUNT =
-            Uri.parse("content://imps/providers/account");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/providers/account");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -254,7 +254,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/accounts");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/accounts");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -327,7 +327,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/accountStatus");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/accountStatus");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of account status.
@@ -523,71 +523,71 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/contacts");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts");
 
         /**
          * The content:// style URL for contacts joined with presence
          */
         public static final Uri CONTENT_URI_WITH_PRESENCE =
-            Uri.parse("content://imps/contactsWithPresence");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contactsWithPresence");
 
         /**
          * The content:// style URL for barebone contacts, not joined with any other table
          */
         public static final Uri CONTENT_URI_CONTACTS_BAREBONE =
-            Uri.parse("content://imps/contactsBarebone");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contactsBarebone");
 
         /**
          * The content:// style URL for contacts who have an open chat session
          */
         public static final Uri CONTENT_URI_CHAT_CONTACTS =
-            Uri.parse("content://imps/contacts/chatting");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/chatting");
 
         /**
          * The content:// style URL for contacts who have been blocked
          */
         public static final Uri CONTENT_URI_BLOCKED_CONTACTS =
-            Uri.parse("content://imps/contacts/blocked");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/blocked");
 
         /**
          * The content:// style URL for contacts by provider and account
          */
         public static final Uri CONTENT_URI_CONTACTS_BY =
-            Uri.parse("content://imps/contacts");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts");
 
         /**
          * The content:// style URL for contacts by provider and account,
          * and who have an open chat session
          */
         public static final Uri CONTENT_URI_CHAT_CONTACTS_BY =
-            Uri.parse("content://imps/contacts/chatting");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/chatting");
 
         /**
          * The content:// style URL for contacts by provider and account,
          * and who are online
          */
         public static final Uri CONTENT_URI_ONLINE_CONTACTS_BY =
-            Uri.parse("content://imps/contacts/online");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/online");
 
         /**
          * The content:// style URL for contacts by provider and account,
          * and who are offline
          */
         public static final Uri CONTENT_URI_OFFLINE_CONTACTS_BY =
-            Uri.parse("content://imps/contacts/offline");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/offline");
 
         /**
          * The content:// style URL for operations on bulk contacts
          */
         public static final Uri BULK_CONTENT_URI =
-                Uri.parse("content://imps/bulk_contacts");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/bulk_contacts");
 
         /**
          * The content:// style URL for the count of online contacts in each
          * contact list by provider and account.
          */
         public static final Uri CONTENT_URI_ONLINE_COUNT =
-            Uri.parse("content://imps/contacts/onlineCount");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contacts/onlineCount");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -635,7 +635,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/contactLists");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contactLists");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -700,7 +700,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/blockedList");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/blockedList");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -823,7 +823,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/contactsEtag");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/contactsEtag");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1058,61 +1058,61 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-                Uri.parse("content://imps/messages");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/messages");
 
         /**
          * The content:// style URL for messages by thread id
          */
         public static final Uri CONTENT_URI_MESSAGES_BY_THREAD_ID =
-                Uri.parse("content://imps/messagesByThreadId");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByThreadId");
 
         /**
          * The content:// style URL for messages by account and contact
          */
         public static final Uri CONTENT_URI_MESSAGES_BY_ACCOUNT_AND_CONTACT =
-                Uri.parse("content://imps/messagesByAcctAndContact");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByAcctAndContact");
 
         /**
          * The content:// style URL for messages by provider
          */
         public static final Uri CONTENT_URI_MESSAGES_BY_PROVIDER =
-                Uri.parse("content://imps/messagesByProvider");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByProvider");
 
         /**
          * The content:// style URL for messages by account
          */
         public static final Uri CONTENT_URI_BY_ACCOUNT =
-                Uri.parse("content://imps/messagesByAccount");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByAccount");
 
         /**
          * The content:// style url for off the record messages
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI =
-                Uri.parse("content://imps/otrMessages");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessages");
 
         /**
          * The content:// style url for off the record messages by thread id
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI_BY_THREAD_ID =
-                Uri.parse("content://imps/otrMessagesByThreadId");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByThreadId");
 
         /**
          * The content:// style url for off the record messages by account and contact
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI_BY_ACCOUNT_AND_CONTACT =
-                Uri.parse("content://imps/otrMessagesByAcctAndContact");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByAcctAndContact");
 
         /**
          * The content:// style URL for off the record messages by provider
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI_BY_PROVIDER =
-                Uri.parse("content://imps/otrMessagesByProvider");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByProvider");
 
         /**
          * The content:// style URL for off the record messages by account
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI_BY_ACCOUNT =
-                Uri.parse("content://imps/otrMessagesByAccount");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByAccount");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1166,7 +1166,7 @@ public class Imps {
         private GroupMembers(){}
 
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/groupMembers");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/groupMembers");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1246,7 +1246,7 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/invitations");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/invitations");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1302,13 +1302,13 @@ public class Imps {
         /**
          * The content:// style URL for this table
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/avatars");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/avatars");
 
         /**
          * The content:// style URL for avatars by provider, account and contact
          */
         public static final Uri CONTENT_URI_AVATARS_BY =
-                Uri.parse("content://imps/avatarsBy");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/avatarsBy");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing the avatars
@@ -1397,23 +1397,23 @@ public class Imps {
         /**
          * The content:// style URL for this table
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/presence");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/presence");
 
         /**
          * The content URL for IM presences for an account
          */
-        public static final Uri CONTENT_URI_BY_ACCOUNT = Uri.parse("content://imps/presence/account");
+        public static final Uri CONTENT_URI_BY_ACCOUNT = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/presence/account");
 
         /**
          * The content:// style URL for operations on bulk contacts
          */
-        public static final Uri BULK_CONTENT_URI = Uri.parse("content://imps/bulk_presence");
+        public static final Uri BULK_CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/bulk_presence");
 
         /**
          * The content:// style URL for seeding presences for a given account id.
          */
         public static final Uri SEED_PRESENCE_BY_ACCOUNT_CONTENT_URI =
-                Uri.parse("content://imps/seed_presence/account");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/seed_presence/account");
 
         /**
          * The MIME type of a {@link #CONTENT_URI} providing a directory of presence
@@ -1491,12 +1491,12 @@ public class Imps {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://imps/chats");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/chats");
 
         /**
          * The content URL for all chats that belong to the account
          */
-        public static final Uri CONTENT_URI_BY_ACCOUNT = Uri.parse("content://imps/chats/account");
+        public static final Uri CONTENT_URI_BY_ACCOUNT = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/chats/account");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of chats.
@@ -1534,13 +1534,13 @@ public class Imps {
         /**
          * The content:// style URI for this table
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/sessionCookies");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/sessionCookies");
 
         /**
          * The content:// style URL for session cookies by provider and account
          */
         public static final Uri CONTENT_URI_SESSION_COOKIES_BY =
-            Uri.parse("content://imps/sessionCookiesBy");
+            Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/sessionCookiesBy");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1581,7 +1581,7 @@ public class Imps {
          * The content:// style URI for this table
          */
         public static final Uri CONTENT_URI =
-                Uri.parse("content://imps/providerSettings");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/providerSettings");
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing provider settings
@@ -2167,7 +2167,7 @@ public class Imps {
         /**
          * The content:// style URL for this table.
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/brandingResMapCache");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/brandingResMapCache");
     }
 
 
@@ -2229,13 +2229,13 @@ public class Imps {
         /**
          * The content:// style URL for this table.
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/outgoingRmqMessages");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/outgoingRmqMessages");
 
         /**
          * The content:// style URL for the highest rmq id for the outgoing rmq messages
          */
         public static final Uri CONTENT_URI_FOR_HIGHEST_RMQ_ID =
-                Uri.parse("content://imps/outgoingHighestRmqId");
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/outgoingHighestRmqId");
 
         /**
          * The default sort order for this table.
@@ -2309,7 +2309,7 @@ public class Imps {
         /**
          * The content:// style URL for this table.
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/lastRmqId");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/lastRmqId");
     }
 
     /**
@@ -2327,7 +2327,7 @@ public class Imps {
         /**
          * The content:// style URL for this table.
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://imps/s2dids");
+        public static final Uri CONTENT_URI = Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/s2dids");
     }
 
 }
