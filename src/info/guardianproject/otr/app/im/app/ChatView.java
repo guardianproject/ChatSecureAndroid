@@ -1490,7 +1490,7 @@ public class ChatView extends LinearLayout {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            MessageView chatMsgView = (MessageView) view;
+            MessageView messageView = (MessageView) view;
 
             int type = cursor.getInt(mTypeColumn);
             String contact = isGroupChat() ? cursor.getString(mNicknameColumn) : mNickName;
@@ -1501,24 +1501,24 @@ public class ChatView extends LinearLayout {
 
             switch (type) {
                 case Imps.MessageType.INCOMING:
-                    chatMsgView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
+                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
                     break;
 
                 case Imps.MessageType.OUTGOING:
                 case Imps.MessageType.POSTPONED:
                     int errCode = cursor.getInt(mErrCodeColumn);
                     if (errCode != 0) {
-                        chatMsgView.bindErrorMessage(errCode);
+                        messageView.bindErrorMessage(errCode);
                     } else {
-                        chatMsgView.bindOutgoingMessage(body, date, mMarkup, isScrolling());
+                        messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling());
                     }
                     break;
 
                 default:
-                    chatMsgView.bindPresenceMessage(contact, type, isGroupChat(), isScrolling());
+                    messageView.bindPresenceMessage(contact, type, isGroupChat(), isScrolling());
             }
             if (!isScrolling()) {
-                mBgMaker.setBackground(chatMsgView, contact, type);
+                mBgMaker.setBackground(messageView, contact, type);
             }
 
             // if showTimeStamp is false for the latest message, then set a timer to query the
