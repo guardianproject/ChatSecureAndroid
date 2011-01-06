@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
 
-    private TextView mMessage;
+    private TextView mTextViewForMessages;
 
     private Resources mResources;
 
@@ -53,40 +53,40 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mMessage = (TextView) findViewById(R.id.message);
+        mTextViewForMessages = (TextView) findViewById(R.id.message);
 
         mResources = getResources();
     }
 
     public URLSpan[] getMessageLinks() {
-        return mMessage.getUrls();
+        return mTextViewForMessages.getUrls();
     }
 
     public void bindIncomingMessage(String contact, String body, Date date,
             Markup smileyRes, boolean scrolling) {
     	// TODO OTRCHAT decrypt messages here
         CharSequence message =  formatMessage(contact, body, date, smileyRes, scrolling);
-        mMessage.setText(message);
-        mMessage.setTextColor(mResources.getColor(R.color.chat_msg));
+        mTextViewForMessages.setText(message);
+        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
     }
 
     public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling) {
         String contact = mResources.getString(R.string.me);
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
-        mMessage.setText(message);
-        mMessage.setTextColor(mResources.getColor(R.color.chat_msg));
+        mTextViewForMessages.setText(message);
+        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat,
             boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
-        mMessage.setText(message);
-        mMessage.setTextColor(mResources.getColor(R.color.chat_msg_presence));
+        mTextViewForMessages.setText(message);
+        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
     }
 
     public void bindErrorMessage(int errCode) {
-        mMessage.setText(R.string.msg_sent_failed);
-        mMessage.setTextColor(mResources.getColor(R.color.error));
+        mTextViewForMessages.setText(R.string.msg_sent_failed);
+        mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
     }
 
     private CharSequence formatMessage(String contact, String body,
