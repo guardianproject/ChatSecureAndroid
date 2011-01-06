@@ -156,7 +156,7 @@
         android:orientation="horizontal"
         android:background="@drawable/background_textfield">
 
-        <EditText android:id="@+id/edtInput"
+        <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"

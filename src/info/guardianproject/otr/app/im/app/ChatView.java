@@ -128,7 +128,7 @@ public class ChatView extends LinearLayout {
     private ImageView   mStatusIcon;
     private TextView    mTitle;
     /*package*/ListView    mHistory;
-    EditText    mEdtInput;
+    EditText    mComposeMessage;
     private Button      mSendButton;
     private View mStatusWarningView;
     private ImageView mWarningIcon;
@@ -315,7 +315,7 @@ public class ChatView extends LinearLayout {
         mStatusIcon     = (ImageView) findViewById(R.id.statusIcon);
         mTitle          = (TextView) findViewById(R.id.title);
         mHistory        = (ListView) findViewById(R.id.history);
-        mEdtInput       = (EditText) findViewById(R.id.edtInput);
+        mComposeMessage       = (EditText) findViewById(R.id.composeMessage);
         mSendButton     = (Button)findViewById(R.id.btnSend);
         mHistory.setOnItemClickListener(mOnItemClickListener);
 
@@ -351,7 +351,7 @@ public class ChatView extends LinearLayout {
             }
         });
 
-        mEdtInput.setOnKeyListener(new OnKeyListener(){
+        mComposeMessage.setOnKeyListener(new OnKeyListener(){
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
@@ -361,7 +361,7 @@ public class ChatView extends LinearLayout {
 
                         case KeyEvent.KEYCODE_ENTER:
                             if (event.isAltPressed()) {
-                                mEdtInput.append("\n");
+                                mComposeMessage.append("\n");
                                 return true;
                             }
                     }
@@ -370,7 +370,7 @@ public class ChatView extends LinearLayout {
             }
         });
 
-        mEdtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mComposeMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null) {
                     if (event.isAltPressed()) {
@@ -385,7 +385,7 @@ public class ChatView extends LinearLayout {
 
         // TODO: this is a hack to implement BUG #1611278, when dispatchKeyEvent() works with
         // the soft keyboard, we should remove this hack.
-        mEdtInput.addTextChangedListener(new TextWatcher() {
+        mComposeMessage.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int before, int after) {
             }
 
@@ -441,7 +441,7 @@ public class ChatView extends LinearLayout {
         InputMethodManager inputMethodManager =
             (InputMethodManager)mApp.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        inputMethodManager.hideSoftInputFromWindow(mEdtInput.getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(mComposeMessage.getWindowToken(), 0);
     }
 
     void updateChat() {
@@ -477,7 +477,7 @@ public class ChatView extends LinearLayout {
         // only change the message adapter when we switch to another chat
         if (mChatId != oldChatId) {
             startQuery();
-            mEdtInput.setText("");
+            mComposeMessage.setText("");
         }
 
         updateWarningView();
@@ -653,10 +653,10 @@ public class ChatView extends LinearLayout {
     }
 
     private void setChatViewEnabled(boolean enabled) {
-        mEdtInput.setEnabled(enabled);
+        mComposeMessage.setEnabled(enabled);
         mSendButton.setEnabled(enabled);
         if (enabled) {
-            mEdtInput.requestFocus();
+            mComposeMessage.requestFocus();
         } else {
             mHistory.setAdapter(null);
         }
@@ -731,7 +731,7 @@ public class ChatView extends LinearLayout {
     }
 
     public void insertSmiley(String smiley) {
-        mEdtInput.append(mMarkup.applyEmoticons(smiley));
+        mComposeMessage.append(mMarkup.applyEmoticons(smiley));
     }
 
     public void closeChatSession() {
@@ -889,7 +889,7 @@ public class ChatView extends LinearLayout {
     }
 
     void sendMessage() {
-        String msg = mEdtInput.getText().toString();
+        String msg = mComposeMessage.getText().toString();
 
         if (TextUtils.isEmpty(msg.trim())) {
             return;
@@ -898,8 +898,8 @@ public class ChatView extends LinearLayout {
         if (mChatSession != null) {
             try {
                 mChatSession.sendMessage(msg);
-                mEdtInput.setText("");
-                mEdtInput.requestFocus();
+                mComposeMessage.setText("");
+                mComposeMessage.requestFocus();
                 requeryCursor();
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
