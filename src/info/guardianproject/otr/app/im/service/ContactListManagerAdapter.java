@@ -1136,10 +1136,10 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     void closeChatSession(String address) {
-        ChatSessionManagerAdapter sessionManager =
+        ChatSessionManagerAdapter chatSessionManager =
             (ChatSessionManagerAdapter) mConn.getChatSessionManager();
         ChatSessionAdapter session =
-            (ChatSessionAdapter) sessionManager.getChatSession(address);
+            (ChatSessionAdapter) chatSessionManager.getChatSession(address);
         if(session != null) {
             session.leave();
         }

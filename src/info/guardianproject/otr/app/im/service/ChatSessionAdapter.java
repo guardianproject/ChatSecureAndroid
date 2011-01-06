@@ -62,7 +62,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             = new RemoteCallbackList<IChatListener>();
 
     ImConnectionAdapter mConnection;
-    ChatSessionManagerAdapter mChatManager;
+    ChatSessionManagerAdapter mChatSessionManager;
     ChatSession mAdaptee;
     ListenerAdapter mListenerAdapter;
     boolean mIsGroupChat;
@@ -88,7 +88,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         RemoteImService service = connection.getContext();
         mContentResolver = service.getContentResolver();
         mStatusBarNotifier = service.getStatusBarNotifier();
-        mChatManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
+        mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
         mListenerAdapter = new ListenerAdapter();
         mAdaptee.addMessageListener(mListenerAdapter);
@@ -217,7 +217,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mContentResolver.delete(mChatURI, null, null);
         mStatusBarNotifier.dismissChatNotification(
                 mConnection.getProviderId(), getAddress());
-        mChatManager.closeChatSession(this);
+        mChatSessionManager.closeChatSession(this);
     }
 
     public void leaveIfInactive() {
@@ -312,7 +312,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         Contact oldParticipant = (Contact)mAdaptee.getParticipant();
         String oldAddress = getAddress();
         mAdaptee.setParticipant(group);
-        mChatManager.updateChatSession(oldAddress, this);
+        mChatSessionManager.updateChatSession(oldAddress, this);
 
         Uri oldChatUri = mChatURI;
         Uri oldMessageUri = mMessageURI;
