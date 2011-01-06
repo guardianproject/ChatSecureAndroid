@@ -135,7 +135,7 @@ public class ChatView extends LinearLayout {
     private TextView mWarningText;
 
     private MessageAdapter mMessageAdapter;
-    private IChatSessionManager mChatSessionMgr;
+    private IChatSessionManager mChatSessionManager;
     private IChatSessionListener mChatSessionListener;
 
     private IChatSession mChatSession;
@@ -856,17 +856,17 @@ public class ChatView extends LinearLayout {
     }
 
     private IChatSessionManager getChatSessionManager(long providerId) {
-        if (mChatSessionMgr == null) {
+        if (mChatSessionManager == null) {
             IImConnection conn = mApp.getConnection(providerId);
             if (conn != null) {
                 try {
-                    mChatSessionMgr = conn.getChatSessionManager();
+                    mChatSessionManager = conn.getChatSessionManager();
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert();
                 }
             }
         }
-        return mChatSessionMgr;
+        return mChatSessionManager;
     }
 
     private IChatSession getChatSession(Cursor cursor) {
