@@ -381,7 +381,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     mContactListManager.loadContactLists();
                 }
 
-                for (ChatSessionAdapter session : mChatSessionManager.mActiveSessions.values()) {
+                for (ChatSessionAdapter session : mChatSessionManager.mActiveChatSessionAdapters.values()) {
                     session.sendPostponedMessages();
                 }
             } else if (state == ImConnection.LOGGING_OUT) {
