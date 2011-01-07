@@ -92,26 +92,26 @@ public class ChatSession {
      * Sends a message to other participant(s) in this session asynchronously.
      * TODO: more docs on async callbacks.
      *
-     * @param msg the message to send.
+     * @param message the message to send.
      */
-    public void sendMessageAsync(Message msg) {
-        msg.setTo(mParticipant.getAddress());
+    public void sendMessageAsync(Message message) {
+        message.setTo(mParticipant.getAddress());
 
-        mHistoryMessages.add(msg);
-        mManager.sendMessageAsync(this, msg);
+        mHistoryMessages.add(message);
+        mManager.sendMessageAsync(this, message);
     }
 
     /**
      * Called by ChatSessionManager when received a message of the ChatSession.
      * All the listeners registered in this session will be notified.
      *
-     * @param msg the received message.
+     * @param message the received message.
      */
-    public void onReceiveMessage(Message msg) {
-        mHistoryMessages.add(msg);
+    public void onReceiveMessage(Message message) {
+        mHistoryMessages.add(message);
 
         for (MessageListener listener : mListeners) {
-            listener.onIncomingMessage(this, msg);
+            listener.onIncomingMessage(this, message);
         }
     }
 
@@ -127,10 +127,10 @@ public class ChatSession {
         }
     }
 
-    public void onSendMessageError(String msgId, ImErrorInfo error) {
-        for(Message msg : mHistoryMessages){
-            if(msgId.equals(msg.getID())){
-                onSendMessageError(msg, error);
+    public void onSendMessageError(String messageId, ImErrorInfo error) {
+        for(Message message : mHistoryMessages){
+            if(messageId.equals(message.getID())){
+                onSendMessageError(message, error);
                 return;
             }
         }
