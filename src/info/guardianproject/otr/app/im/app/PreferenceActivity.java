@@ -17,8 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.plugin.ImConfigNames;
-import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.HashMap;
@@ -31,8 +29,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 

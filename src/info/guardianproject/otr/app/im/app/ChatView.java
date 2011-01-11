@@ -53,7 +53,6 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -909,7 +908,7 @@ public class ChatView extends LinearLayout {
         // Close the soft on-screen keyboard if we're in landscape mode so the user can see the
         // conversation.
         Configuration config = getResources().getConfiguration();
-        if (config.orientation == config.ORIENTATION_LANDSCAPE) {
+        if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             closeSoftKeyboard();
         }
 // TODO OTRCHAT updateSecureWarning        

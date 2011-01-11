@@ -33,7 +33,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.os.Handler.Callback;
 import android.util.SparseArray;
 
 public class AndroidHeartBeatService extends BroadcastReceiver

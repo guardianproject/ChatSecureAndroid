@@ -16,21 +16,13 @@
  */
 package info.guardianproject.otr.app.im.plugin.loopback;
 
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
-import info.guardianproject.otr.app.im.plugin.ImConfigNames;
-import info.guardianproject.otr.app.im.plugin.ImPlugin;
-import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
+import info.guardianproject.otr.app.im.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.IImPlugin;
-
-import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteException;
 
 /**
  * Simple example of writing a plug-in for the IM application.

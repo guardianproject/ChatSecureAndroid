@@ -17,9 +17,7 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.app.im.engine.HeartbeatService;
-import info.guardianproject.otr.app.im.engine.SmsService;
 import info.guardianproject.otr.app.im.engine.SystemService;
-
 import android.content.Context;
 
 public class AndroidSystemService extends SystemService {

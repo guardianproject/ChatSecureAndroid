@@ -17,7 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
-import info.guardianproject.otr.app.im.plugin.loopback.LoopbackConnection;
+//import info.guardianproject.otr.app.im.plugin.loopback.LoopbackConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
 import java.util.Map;

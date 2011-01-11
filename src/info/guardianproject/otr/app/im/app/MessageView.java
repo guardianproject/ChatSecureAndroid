@@ -64,7 +64,7 @@ public class MessageView extends LinearLayout {
 
     public void bindIncomingMessage(String contact, String body, Date date,
             Markup smileyRes, boolean scrolling) {
-    	// TODO OTRCHAT decrypt messages here
+    	// TODO SQLCipher decrypt messages from encrypted message store here
         CharSequence message =  formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
