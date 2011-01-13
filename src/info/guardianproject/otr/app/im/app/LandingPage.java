@@ -110,6 +110,11 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         setListAdapter(mAdapter);
 
         registerForContextMenu(getListView());
+        
+        // TODO hack to get it to auto-login, this will need to be improved when we have multiple plugins
+        if (allAccountsSignedOut()) {
+        	signInAll();
+        }
     }
 
 
@@ -125,6 +130,46 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         super.onResume();
 
         mHandler.registerForBroadcastEvents();
+    }
+    
+    private void signInAll() {
+    	Log.i(TAG, "signInAll");
+    	mProviderCursor.moveToFirst();
+    	do {
+    		int position = mProviderCursor.getPosition();
+    		signInAccountAtPosition(position);
+    	} while (mProviderCursor.moveToNext()) ;
+    }
+    
+    private void signInAccountAtPosition(int position) {
+        Intent intent = null;
+        mProviderCursor.moveToPosition(position);
+
+        if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
+            // add account
+            intent = getCreateAccountIntent();
+        } else {
+            int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
+            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+            if (state == Imps.ConnectionStatus.OFFLINE) {
+                boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
+                boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+                if (isKeepSignedIn) {
+                    signIn(accountId);
+                } else if(isAccountEditible) {
+                    intent = getEditAccountIntent();
+                }
+            } else if (state == Imps.ConnectionStatus.CONNECTING) {
+                signIn(accountId);
+            } else {
+                intent = getViewContactsIntent();
+            }
+        }
+
+        if (intent != null) {
+            startActivity(intent);
+        }
     }
 
     private void signIn(long accountId) {
@@ -170,7 +215,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         return true;
     }
 
-    private void signoutAll() {
+    private void signOutAll() {
         DialogInterface.OnClickListener confirmListener
                 = new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -224,7 +269,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case ID_SIGN_OUT_ALL:
-                signoutAll();
+                signOutAll();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -346,34 +391,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = null;
-        mProviderCursor.moveToPosition(position);
-
-        if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            // add account
-            intent = getCreateAccountIntent();
-        } else {
-            int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
-            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-            if (state == Imps.ConnectionStatus.OFFLINE) {
-                boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-                boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
-                if (isKeepSignedIn) {
-                    signIn(accountId);
-                } else if(isAccountEditible) {
-                    intent = getEditAccountIntent();
-                }
-            } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                signIn(accountId);
-            } else {
-                intent = getViewContactsIntent();
-            }
-        }
-
-        if (intent != null) {
-            startActivity(intent);
-        }
+    	signInAccountAtPosition(position);
     }
 
     Intent getCreateAccountIntent() {
