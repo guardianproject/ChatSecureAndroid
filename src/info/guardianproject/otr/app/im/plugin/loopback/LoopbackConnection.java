@@ -67,7 +67,7 @@ public class LoopbackConnection extends ImConnection {
 		return new ChatSessionManager() {
 			
 			@Override
-			protected void sendMessageAsync(ChatSession session, Message message) {
+			public void sendMessageAsync(ChatSession session, Message message) {
 				// Echo
 				Message rec = new Message(message.getBody());
 				rec.setFrom(message.getTo());
@@ -75,37 +75,6 @@ public class LoopbackConnection extends ImConnection {
 				session.onReceiveMessage(rec);
 			}
 			
-			/**
-		     * Start encryption for this chat
-		     */
-		    public  boolean encryptChat(String address) { return false; }
-		    
-		     /**
-		     * Stop encryption for this chat
-		     */
-		    public  boolean unencryptChat(String address) { return false; }
-		    
-		    
-		    /**
-		     * Is definitely not encrypted
-		     */
-		    public  boolean isEncryptedSession(String address) { return false; }
-		    
-		      /**
-		     * Start remote identity verification
-		     */
-		    public void verifyRemoteIdentity(String address) {}
-		    
-
-		    /**
-		    * Get public key fingerprint
-		    */
-		    public String getRemoteKeyFingerprint(String address) { return null; }
-		   
-		   /**
-		    * Get public key fingerprint
-		    */
-		    public String getLocalKeyFingerprint(String address) { return null; }
 		};
 	}
 
@@ -297,10 +266,7 @@ public class LoopbackConnection extends ImConnection {
 	
 	public void sendHeartbeat() {
 	}
-	
-	public void setProxy (String type, String host, int port)
-	{
-		
-	}
 
+	public void setProxy(String type, String host, int port) {
+	}
 }

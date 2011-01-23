@@ -68,8 +68,6 @@ public class XmppConnection extends ImConnection {
 	private LoginInfo mLoginInfo;
 	private boolean mRetryLogin;
 	private Executor mExecutor;
-
-	private XmppConnection xmppConnection;
 	
 	private ProxyInfo mProxyInfo = null;
 	
@@ -78,7 +76,6 @@ public class XmppConnection extends ImConnection {
 		//ReconnectionManager.activate();
 		SmackConfiguration.setKeepAliveInterval(-1);
 		mExecutor = Executors.newSingleThreadExecutor();
-		xmppConnection = this;
 	}
 	
 	public void sendMessage(org.jivesoftware.smack.packet.Message msg) {
@@ -289,10 +286,11 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void processPacket(Packet packet) {
-				org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
-				Message rec = new Message(message.getBody());
-				String address = parseAddressBase(message.getFrom());
+				org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
+				Message rec = new Message(smackMessage.getBody());
+				String address = parseAddressBase(smackMessage.getFrom());
 				ChatSession session = findOrCreateSession(address);
+				rec.setTo(mUser.getAddress());
 				rec.setFrom(session.getParticipant().getAddress());
 				rec.setDateTime(new Date());
 				session.onReceiveMessage(rec);
@@ -493,7 +491,7 @@ public class XmppConnection extends ImConnection {
 
 	private final class XmppChatSessionManager extends ChatSessionManager {
 		@Override
-		protected void sendMessageAsync(ChatSession session, Message message) {
+		public void sendMessageAsync(ChatSession session, Message message) {
 			org.jivesoftware.smack.packet.Message msg =
 				new org.jivesoftware.smack.packet.Message(
 						message.getTo().getFullName(),

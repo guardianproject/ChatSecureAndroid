@@ -17,6 +17,9 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionListener;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -32,35 +35,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionListener;
-
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
 
+/**
+ * manages the chat sessions for a given protocol
+ */
 public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.IChatSessionManager.Stub {
     static final String TAG = RemoteImService.TAG;
 
     ImConnectionAdapter mConnection;
-    ChatSessionManager mSessionManager;
+    ChatSessionManager mChatSessionManager;
     ChatGroupManager mGroupManager;
     HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
     ChatSessionListenerAdapter mSessionListenerAdapter;
+    OtrChatManager mOtrChatManager;
     final RemoteCallbackList<IChatSessionListener> mRemoteListeners
             = new RemoteCallbackList<IChatSessionListener>();
 
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
         mConnection = connection;
         ImConnection connAdaptee = connection.getAdaptee();
-        mSessionManager = connAdaptee.getChatSessionManager();
+        mChatSessionManager = connAdaptee.getChatSessionManager();
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();
-        mSessionManager.addChatSessionListener(mSessionListenerAdapter);
-
+        mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
+        RemoteImService service = connection.getContext();
+        mOtrChatManager = service.getOtrChatManager();
+        
         if((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
             mGroupManager = connAdaptee.getChatGroupManager();
             mGroupManager.addGroupListener(new ChatGroupListenerAdapter());
         }
+    }
+
+    public ChatSessionManager getChatSessionManager() {
+            return mChatSessionManager;
     }
 
     public IChatSession createChatSession(String contactAddress) {
@@ -77,14 +88,22 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
                 return null;
             }
         }
-        ChatSession session = mSessionManager.createChatSession(contact);
+        ImConnection imConnection = mConnection.getAdaptee();
+        String userName = imConnection.getLoginUserName();
+        ChatSession session = mChatSessionManager.createChatSession(contact);
+        if (mOtrChatManager == null) {
+        	Log.i(TAG, "mOtrChatManager == null");
+        } else {
+        	Log.i(TAG, "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
+        	mOtrChatManager.startSession(userName, contactAddress);
+        }
         return getChatSessionAdapter(session);
     }
 
     public void closeChatSession(ChatSessionAdapter adapter) {
         synchronized (mActiveChatSessionAdapters) {
             ChatSession session = adapter.getAdaptee();
-            mSessionManager.closeChatSession(session);
+            mChatSessionManager.closeChatSession(session);
             mActiveChatSessionAdapters.remove(adapter.getAddress());
         }
     }
@@ -196,7 +215,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public void onJoinedGroup(ChatGroup group) {
-            mSessionManager.createChatSession(group);
+            mChatSessionManager.createChatSession(group);
         }
 
         public void onLeftGroup(ChatGroup group) {

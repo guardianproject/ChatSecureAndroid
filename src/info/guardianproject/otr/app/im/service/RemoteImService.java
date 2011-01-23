@@ -17,15 +17,17 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.NetworkConnectivityListener.State;
-import info.guardianproject.otr.app.im.ImpsConnectionConfig;
+import info.guardianproject.otr.app.im.IConnectionCreationListener;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
-import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -36,10 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import info.guardianproject.otr.app.im.IConnectionCreationListener;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.IRemoteImService;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -49,13 +47,11 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -89,14 +85,14 @@ public class RemoteImService extends Service {
     private boolean mBackgroundDataEnabled;
 
     private SettingsMonitor mSettingsMonitor;
-
+    private OtrChatManager mOtrChatManager;
+    
     private ImPluginHelper mPluginHelper;
     Vector<ImConnectionAdapter> mConnections;
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners
             = new RemoteCallbackList<IConnectionCreationListener>();
 
-
-    public RemoteImService() {
+	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
     }
 
@@ -260,6 +256,11 @@ public class RemoteImService extends Service {
         return mStatusBarNotifier;
     }
 
+	public OtrChatManager getOtrChatManager() {
+		Log.i(TAG, "getOtrChatManager");
+		return mOtrChatManager;
+	}
+
     public void scheduleReconnect(long delay) {
         if (!isNetworkAvailable()) {
             // Don't schedule reconnect if no network available. We will try to
@@ -278,22 +279,24 @@ public class RemoteImService extends Service {
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
             ImConnection conn = factory.createConnection(settings);
-            ImConnectionAdapter result = new ImConnectionAdapter(providerId,
+            ImConnectionAdapter imConnectionAdapter = new ImConnectionAdapter(providerId,
                     conn, this);
-            mConnections.add(result);
+            mConnections.add(imConnectionAdapter);
 
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IConnectionCreationListener listener = mRemoteListeners.getBroadcastItem(i);
                 try {
-                    listener.onConnectionCreated(result);
+                    listener.onConnectionCreated(imConnectionAdapter);
                 } catch (RemoteException e) {
                     // The RemoteCallbackList will take care of removing the
                     // dead listeners.
                 }
             }
             mRemoteListeners.finishBroadcast();
-            return result;
+            // TODO OTRCHAT add support for more than one connection type (this is a kludge)
+            mOtrChatManager = new OtrChatManager(imConnectionAdapter);
+            return imConnectionAdapter;
         } catch (ImException e) {
             Log.e(TAG, "Error creating connection", e);
             return null;

@@ -1,123 +1,59 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.engine.ChatSession;
-import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
-
-import java.util.Date;
-
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.packet.Packet;
-
+import info.guardianproject.otr.app.im.engine.MessageListener;
 import android.util.Log;
 
-public class OtrChatListener implements PacketListener {
+public class OtrChatListener implements MessageListener {
 
-	private XmppConnection xConn;
-	private OtrChatManager otrMgr;
-	
-	private final static String TAG = "Xmpp";
-	
-	private final static String OTR_INIT_STRING = "?OTR?v2?";
+	private OtrChatManager mOtrChatManager;
+	private MessageListener mMessageListener;
+
+	private final static String TAG = "OtrChatListener";
+	// we want to support OTR v2 only since v1 has security issues
+	private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
+	private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
 
 	private final static String OTR_HEADER_STRING = "?OTR";
 	
-	public OtrChatListener (XmppConnection xConn)
+	public OtrChatListener (OtrChatManager otrChatManager, MessageListener listener)
 	{
-		this.xConn = xConn;
+		this.mOtrChatManager = otrChatManager;
+		this.mMessageListener = listener;
 	}
-	
-	
-	/**
-	 * @return the otrMgr
-	 */
-	public OtrChatManager getOtrMgr() {
-		return otrMgr;
-	}
-
-
-	/**
-	 * @param otrMgr the otrMgr to set
-	 */
-	public void setOtrMgr(OtrChatManager otrMgr) {
-		this.otrMgr = otrMgr;
-		
-	}
-
 
 	@Override
-	public void processPacket(Packet packet) {
-		org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
-		
-		if (message != null && message.getBody()!=null)
-		{
-			//android.os.Debug.waitForDebugger();
-			
+	public void onIncomingMessage(ChatSession session, Message msg) {
+		String body = msg.getBody();
+		String from = msg.getFrom().getFullName();
+		String to = msg.getTo().getFullName();
 
-			String msgBody = message.getBody();
-			
-			
-			Log.i(TAG, "msg.id: " + message.getPacketID());
-			Log.i(TAG, "msg.from: " + message.getFrom());
-			Log.i(TAG, "msg.to: " + message.getTo());
-			Log.i(TAG, "msg.body: " +  message.getBody());
-			
-			
-			if (msgBody.indexOf(OTR_INIT_STRING)!=-1)
-			{
-				//start a new session
-				
-				if (otrMgr == null)
-				{
-					// TODO OTRCHAT xConn
-					//otrMgr = new OtrChatManager(xConn);	
-					//xConn.setOtrManager(otrMgr);
-				}
+		if (body.indexOf(OTR_V12_STRING) != -1
+				|| body.indexOf(OTR_V2ONLY_STRING) != -1) {
+			if (mOtrChatManager.isEncryptedSession(to, from)) {
+				mOtrChatManager.refreshSession(to, from);
+			} else {
+				mOtrChatManager.startSession(to, from);
 			}
-			else if ((otrMgr == null && msgBody.indexOf(OTR_HEADER_STRING)!=-1))
-			{
-				//restart session
-				// TODO OTRCHAT xConn
-				//otrMgr = new OtrChatManager(xConn);	
-				//xConn.setOtrManager(otrMgr);
-				otrMgr.refreshSession(message.getTo(), message.getFrom());
+		} else {
+			if (body.indexOf(OTR_HEADER_STRING) != -1) {
+				body = mOtrChatManager.decryptMessage(to, from, body);
 			}
-			
-			if (otrMgr != null)
-			{
-				msgBody = (otrMgr.receiveMessage(message.getTo(), message.getFrom(), msgBody));
-			}
-
-			Message rec = new Message(msgBody);
-			
-			rec.setBody(msgBody);
-			String address = parseAddressBase(message.getFrom());
-			ChatSession session = findOrCreateSession(address);
-			rec.setFrom(session.getParticipant().getAddress());
-			rec.setDateTime(new Date());
-			session.onReceiveMessage(rec);
+			Message rec = new Message(body);
+			rec.setID(msg.getID());
+			rec.setFrom(msg.getFrom());
+			rec.setTo(msg.getTo());
+			rec.setDateTime(msg.getDateTime());
+			mMessageListener.onIncomingMessage(session, rec);
 		}
-		
-		
-	}
-	
-	protected static String parseAddressBase(String from) {
-		return from.replaceFirst("/.*", "");
-	}
-	
-	private ChatSession findOrCreateSession(String address) {
-		ChatSession session = xConn.findSession(address);
-		// TODO OTRCHAT xConn
-		/*
-		if (session == null) {
-			Contact contact = xConn.findOrCreateContact(address);
-			session = xConn.createChatSession(contact);
-		}
-		*/
-		
-		
-		return session;
 	}
 
+	@Override
+	public void onSendMessageError(ChatSession session, Message msg,
+			ImErrorInfo error) {
+		mMessageListener.onSendMessageError(session, msg, error);
+		Log.i(TAG, "onSendMessageError: " + msg.toString());
+	}
 }

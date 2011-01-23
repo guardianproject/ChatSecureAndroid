@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.OtrChatManager;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -31,6 +33,7 @@ import android.util.Log;
 public class ChatSession {
     private ImEntity mParticipant;
     private ChatSessionManager mManager;
+    private OtrChatManager mOtrChatManager;
     private CopyOnWriteArrayList<MessageListener> mListeners;
     private Vector<Message> mHistoryMessages;
 
@@ -55,6 +58,9 @@ public class ChatSession {
         mParticipant = participant;
     }
 
+    public void setOtrChatManager(OtrChatManager otrChatManager) {
+        mOtrChatManager = otrChatManager;
+    }
     /**
      * Adds a MessageListener so that it can be notified of any new message in
      * this session.
@@ -78,26 +84,36 @@ public class ChatSession {
 
     /**
      * Sends a text message to other participant(s) in this session
-     * asynchronously.
+     * asynchronously and adds the message to the history.
      * TODO: more docs on async callbacks.
      *
      * @param text the text to send.
      */
+    // TODO these sendMessageAsync() should probably be renamed to sendMessageAsyncAndLog()
     public void sendMessageAsync(String text) {
         Message message = new Message(text);
         sendMessageAsync(message);
     }
 
     /**
-     * Sends a message to other participant(s) in this session asynchronously.
+     * Sends a message to other participant(s) in this session asynchronously 
+     * and adds the message to the history.
      * TODO: more docs on async callbacks.
      *
      * @param message the message to send.
      */
     public void sendMessageAsync(Message message) {
         message.setTo(mParticipant.getAddress());
-
+        // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession
         mHistoryMessages.add(message);
+        
+        String localUserId = message.getFrom().getFullName();
+        String remoteUserId =  message.getTo().getFullName();
+        if (mOtrChatManager.isEncryptedSession(localUserId, remoteUserId)) {
+        	String encryptedBody = mOtrChatManager.encryptMessage(localUserId, 
+        			remoteUserId, message.getBody());
+        	message.setBody(encryptedBody);
+        }
         mManager.sendMessageAsync(this, message);
     }
 
@@ -109,7 +125,7 @@ public class ChatSession {
      */
     public void onReceiveMessage(Message message) {
         mHistoryMessages.add(message);
-
+        //  BUG it only seems to find the most recently added listener.
         for (MessageListener listener : mListeners) {
             listener.onIncomingMessage(this, message);
         }

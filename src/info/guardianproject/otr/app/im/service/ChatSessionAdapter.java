@@ -17,6 +17,9 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.OtrChatListener;
+import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -34,8 +37,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import info.guardianproject.otr.app.im.IChatListener;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -63,6 +64,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     ImConnectionAdapter mConnection;
     ChatSessionManagerAdapter mChatSessionManager;
+    OtrChatManager mOtrChatManager;
     ChatSession mAdaptee;
     ListenerAdapter mListenerAdapter;
     boolean mIsGroupChat;
@@ -88,10 +90,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         RemoteImService service = connection.getContext();
         mContentResolver = service.getContentResolver();
         mStatusBarNotifier = service.getStatusBarNotifier();
+        mOtrChatManager = service.getOtrChatManager();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
         mListenerAdapter = new ListenerAdapter();
-        mAdaptee.addMessageListener(mListenerAdapter);
+        // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
+        mAdaptee.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
+        mAdaptee.setOtrChatManager(mOtrChatManager);
 
         ImEntity participant = mAdaptee.getParticipant();
 
@@ -227,7 +232,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     public void sendMessage(String text) {
-    	// TODO OTRCHAT encrypt message here
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // connection has been suspended, save the message without send it
             insertMessageInDb(null, text, -1, Imps.MessageType.POSTPONED);
@@ -235,10 +239,25 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         Message msg = new Message(text);
+        // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
+        msg.setFrom(mConnection.getLoginUser().getAddress());
         mAdaptee.sendMessageAsync(msg);
         long now = System.currentTimeMillis();
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING);
     }
+
+    /**
+     * Sends a message to other participant(s) in this session
+     * without adding it to the history.
+     *
+     * @param msg the message to send.
+     *//*
+    public void sendMessageWithoutHistory(String text) {
+        android.os.Debug.waitForDebugger();
+        Message msg = new Message(text);
+        // TODO OTRCHAT use a lower level method
+        mAdaptee.sendMessageAsync(msg);
+    }*/
 
     void sendPostponedMessages() {
         String[] projection = new String[] {
@@ -258,7 +277,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         while (c.moveToNext()) {
             String body = c.getString(1);
-            mAdaptee.sendMessageAsync(new Message(body));
+            Message msg = new Message(body);
+            // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
+            msg.setFrom(mConnection.getLoginUser().getAddress());
+            mAdaptee.sendMessageAsync(msg);
 
             //TODO c.updateLong(2, System.currentTimeMillis());
             //c.updateInt(3, Imps.MessageType.OUTGOING);

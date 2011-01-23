@@ -1,6 +1,10 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.engine.ChatSessionManager;
+import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
+import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
+import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -9,13 +13,14 @@ import java.security.PublicKey;
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-
-
 import android.util.Log;
 
-public class OtrEngineHostImpl implements OtrEngineHost{
+/* OtrEngineHostImpl is the connects this app and the OtrEngine
+ * http://code.google.com/p/otr4j/wiki/QuickStart
+ */
+public class OtrEngineHostImpl implements OtrEngineHost {
 	
-	private ChatSessionAdapter mChatSessionAdapter;
+	private ImConnectionAdapter mConnection;
 	private OtrPolicy policy;
     public String lastInjectedMessage;
     
@@ -25,9 +30,9 @@ public class OtrEngineHostImpl implements OtrEngineHost{
 	
 	private final static String TAG = OtrEngineHostImpl.class.getClass().getName();
 	
-	public OtrEngineHostImpl(ChatSessionAdapter chatSessionAdapter, OtrPolicy policy) throws IOException 
+	public OtrEngineHostImpl(ImConnectionAdapter imConnectionAdapter, OtrPolicy policy) throws IOException 
 	{
-		this.mChatSessionAdapter = chatSessionAdapter;
+		this.mConnection = imConnectionAdapter;
 		this.policy = policy;
 		otrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
 		
@@ -81,19 +86,14 @@ public class OtrEngineHostImpl implements OtrEngineHost{
 	
 	
 	@Override
-	public void injectMessage(SessionID sessionID, String msg) {
-		// TODO OTRCHAT convert this to a Message re-start here
-		org.jivesoftware.smack.packet.Message xMsg =
-			new org.jivesoftware.smack.packet.Message(
-					sessionID.getUserID(),
-					org.jivesoftware.smack.packet.Message.Type.chat
-					);
-		
-		
-		xMsg.setBody(msg);
-		// TODO OTRCHAT use a generic method for sending messages
-		//mChatSessionAdapter.sendMessage(xMsg);
-		
+	public void injectMessage(SessionID sessionID, String text) {
+		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
+		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
+		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
+		Message msg = new Message(text);
+		msg.setFrom(mConnection.getLoginUser().getAddress());
+		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
+		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
 	}
 
 	@Override
