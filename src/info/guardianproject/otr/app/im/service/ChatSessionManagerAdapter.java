@@ -59,7 +59,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
 
         if((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
             mGroupManager = connAdaptee.getChatGroupManager();
-            mGroupManager.addGroupListener(new ChatGroupListenerAdpater());
+            mGroupManager.addGroupListener(new ChatGroupListenerAdapter());
         }
     }
 
@@ -181,7 +181,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         }
     }
 
-    class ChatGroupListenerAdpater implements GroupListener {
+    class ChatGroupListenerAdapter implements GroupListener {
         public void onGroupCreated(ChatGroup group) {
         }
 
