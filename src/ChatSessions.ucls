@@ -1,0 +1,354 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ListenerAdapter" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false">    
+    <position x="975" y="2097" width="325" height="145"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ChatConvertor" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false">    
+    <position x="1361" y="2097" width="232" height="241"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false">    
+    <position x="1091" y="1265" width="502" height="792"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false">    
+    <position x="687" y="2378" width="280" height="273"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.engine.ChatSessionListener" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionListener.java" binary="false">    
+    <position x="687" y="2097" width="227" height="65"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppChatSessionManager" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false">    
+    <position x="349" y="2097" width="256" height="81"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false">    
+    <position x="330" y="398" width="289" height="817"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false">    
+    <position x="41" y="1265" width="247" height="65"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatGroupListenerAdapter" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false">    
+    <position x="1061" y="398" width="223" height="145"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" 
+    binary="false">    
+    <position x="1061" y="37" width="576" height="321"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatSessionListenerAdapter" project="Gibber" 
+    file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false">    
+    <position x="732" y="398" width="289" height="81"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+    project="Gibber" file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false">    
+    <position x="605" y="1265" width="288" height="145"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <bendpoint x="318" y="1265"/>    
+    <bendpoint x="318" y="2097"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <nesting>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <bendpoint x="360" y="1265"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false" 
+      navigable="false">      
+      <attribute name="mSessionManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1335" y="398"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mChatSessionManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mSessionListenerAdapter"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatSessionListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatGroupListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <bendpoint x="944" y="1265"/>    
+    <bendpoint x="944" y="2097"/>    
+    <source project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatSessionListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <bendpoint x="701" y="398"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mChatSessionManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false" navigable="false">      
+      <attribute name="mListeners"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionListener" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionListener.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatSessionListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>  
+  </nesting>  
+  <dependency>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionListener" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionListener.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <bendpoint x="635" y="2097"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false" navigable="false">      
+      <attribute name="mSessions"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="656" y="2097"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false" navigable="false">      
+      <attribute name="mManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false" 
+      navigable="false">      
+      <attribute name="mConnection"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionManager.java" binary="false"/>  
+  </generalization>  
+  <realization>    
+    <bendpoint x="923" y="1265"/>    
+    <source project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatSessionListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSessionListener" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSessionListener.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <bendpoint x="1314" y="398"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mActiveChatSessionAdapters"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1330" y="2097"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mAdaptee"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ChatConvertor" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false" 
+      navigable="false">      
+      <attribute name="mListenerAdapter"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionAdapter.ListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionAdapter.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <bendpoint x="1623" y="398"/>    
+    <bendpoint x="1623" y="1265"/>    
+    <bendpoint x="1623" y="2097"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.engine.ChatSession" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/engine/ChatSession.java" binary="false"/>  
+  </dependency>  
+  <nesting>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>    
+    <target project="Gibber" 
+      name="info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter.ChatGroupListenerAdapter" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/service/ChatSessionManagerAdapter.java" binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <bendpoint x="339" y="1265"/>    
+    <source project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>    
+    <target project="Gibber" name="info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppChatSessionManager" 
+      file="/Gibber/src/info/guardianproject/otr/app/im/plugin/xmpp/XmppConnection.java" binary="false"/>  
+  </nesting>  
+  <classifier-display autosize="true" package="true" initial-value="true" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
