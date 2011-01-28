@@ -24,7 +24,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	private OtrPolicy policy;
     public String lastInjectedMessage;
     
-	private OtrAndroidKeyManagerImpl otrKeyManager;
+	private OtrAndroidKeyManagerImpl mOtrKeyManager;
 
 	private final static String OTR_KEYSTORE_PATH ="otr_keystore";
 	
@@ -34,49 +34,40 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	{
 		this.mConnection = imConnectionAdapter;
 		this.policy = policy;
-		otrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
-		
+		mOtrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
 	}
 	
 	public void storeRemoteKey (SessionID sessionID, PublicKey remoteKey)
 	{
-		otrKeyManager.savePublicKey(sessionID, remoteKey);
+		mOtrKeyManager.savePublicKey(sessionID, remoteKey);
 	}
 	
 	public boolean isRemoteKeyVerified (SessionID sessionID)
 	{
-		return otrKeyManager.isVerified(sessionID);
+		return mOtrKeyManager.isVerified(sessionID);
 	}
 	
 	public String getLocalKeyFingerprint (SessionID sessionID)
 	{
-		return otrKeyManager.getLocalFingerprint(sessionID);
+		return mOtrKeyManager.getLocalFingerprint(sessionID);
 	}
 	
 	public String getRemoteKeyFingerprint (SessionID sessionID)
 	{
-		return otrKeyManager.getRemoteFingerprint(sessionID);
+		return mOtrKeyManager.getRemoteFingerprint(sessionID);
 	}
 	
 	@Override
 	public KeyPair getKeyPair(SessionID sessionID) {
-		 
+		android.os.Debug.waitForDebugger();
 		KeyPair kp = null;
-		
-		
-		kp = otrKeyManager.loadLocalKeyPair(sessionID);
-		
-		if (kp != null)
-			return kp;
-		else
+		kp = mOtrKeyManager.loadLocalKeyPair(sessionID);
+		if (kp == null)
 		{
-		
-         	otrKeyManager.generateLocalKeyPair(sessionID);
-         	
-         	kp = otrKeyManager.loadLocalKeyPair(sessionID);
-         	
-         	return kp;
+         	mOtrKeyManager.generateLocalKeyPair(sessionID);	
+         	kp = mOtrKeyManager.loadLocalKeyPair(sessionID);
 		}
+     	return kp;
 	}
 
 	@Override
