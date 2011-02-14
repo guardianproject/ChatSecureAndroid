@@ -27,6 +27,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -35,10 +36,8 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SASLAuthentication;
-import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -73,8 +72,10 @@ public class XmppConnection extends ImConnection {
 	
 	public XmppConnection() {
 		Log.w(TAG, "created");
+		
 		//ReconnectionManager.activate();
-		SmackConfiguration.setKeepAliveInterval(-1);
+		//SmackConfiguration.setKeepAliveInterval(-1);
+		
 		mExecutor = Executors.newSingleThreadExecutor();
 	}
 	
@@ -180,10 +181,12 @@ public class XmppConnection extends ImConnection {
 			return;
 		}
 		Log.i(TAG, "logging in " + mLoginInfo.getUserName());
+		
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
 		String username = mLoginInfo.getUserName();
+		
 		String []comps = username.split("@");
 		if (comps.length != 2) {
 			disconnected(new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "username should be user@host"));
@@ -192,7 +195,14 @@ public class XmppConnection extends ImConnection {
 			return;
 		}
 		try {
-			initConnection(comps[1], comps[0], mLoginInfo.getPassword(), "Android");
+			
+			String sUsername = java.net.URLDecoder.decode(comps[0]);
+			String serverInfo[] = comps[1].split(":");
+			
+			String serverHost = serverInfo[0];
+			int serverPort = Integer.parseInt(serverInfo[1]);
+			
+			initConnection(serverHost, serverPort, sUsername, mLoginInfo.getPassword(), "Android");
 		} catch (XMPPException e) {
 			Log.e(TAG, "login failed", e);
 			mConnection = null;
@@ -236,44 +246,50 @@ public class XmppConnection extends ImConnection {
 		}
 	}
 	
-	private void initConnection(String serverHost, String login, String password, String resource) throws XMPPException {
+	private void initConnection(String serverHost, int serverPort, String login, String password, String resource) throws XMPPException {
     	
-		//Android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
     	
     	
+    	//how should we handle special configs for hosts like google?
+    	//we want to make it easy for users - maybe this shouldn't be here though
+    	
     	if (serverHost.equals("gmail.com") || serverHost.equals("talk.google.com") || serverHost.equals("googlemail.com"))
     	{
-    		mConfig = new ConnectionConfiguration("talk.google.com",5222,"gmail.com", mProxyInfo);
+    		mConfig = new ConnectionConfiguration("talk.google.com",serverPort,"gmail.com", mProxyInfo);
     		 // You have to put this code before you login
     	     SASLAuthentication.supportSASLMechanism("PLAIN", 0);
     	     mConfig.setSecurityMode(SecurityMode.required);
-    	     login = login + "@gmail.com";
+    	
+    	     if (login.indexOf("@")==-1)
+    	    	 login = login + "@gmail.com";
     	}
     	else
     	{
-    		
-    		//SASLAuthentication.supportSASLMechanism("DIGEST-MD5",0);
-    	//	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    	
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",0);
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
     		  
-    	    mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
-
-    		//mConfig = new ConnectionConfiguration(serverHost, 5223, serverHost, mProxyInfo);
-    		
+    	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
+    	    
     		mConfig.setSecurityMode(SecurityMode.required);
   		  
-//    		mConfig.setSASLAuthenticationEnabled(false);
-    		//mConfig.setCompressionEnabled(false);
-    		
-    //		mConfig.setSelfSignedCertificateEnabled(true);
-   // 		mConfig.setVerifyChainEnabled(false);
-   // 		mConfig.setVerifyRootCAEnabled(false);
     		
     	}
 
+    	//security!
+    	mConfig.setSASLAuthenticationEnabled(true);
+
+		mConfig.setSelfSignedCertificateEnabled(true);
+		mConfig.setVerifyChainEnabled(true);
+		mConfig.setVerifyRootCAEnabled(true);
+		
+		//reconnect please
 		mConfig.setReconnectionAllowed(true);
+		
 		
 		mConnection = new MyXMPPConnection(mConfig);
 		

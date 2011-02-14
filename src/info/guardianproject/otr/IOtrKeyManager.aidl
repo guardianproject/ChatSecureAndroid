@@ -5,11 +5,7 @@
 package info.guardianproject.otr;
 
 interface IOtrKeyManager {
-    /**
-     * Stop the OTR encryption on this chat session.
-     */
-    void getRemotePublicKey(String address);
-
+ 
     /**
      * Verify the key for a given address.
      */
@@ -28,12 +24,12 @@ interface IOtrKeyManager {
     /**
      * Returns the fingerprint for the local user's key for a given account address.
      */
-    String getLocalFingerprint(String address);
+    String getLocalFingerprint();
 
     /**
      * Returns the fingerprint for a remote user's key for a given account address.
      */
-    String getRemoteFingerprint(String address);
+    String getRemoteFingerprint();
 
     /**
      * generate a new local private/public key pair.

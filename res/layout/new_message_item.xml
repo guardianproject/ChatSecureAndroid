@@ -21,7 +21,8 @@
     class="info.guardianproject.otr.app.im.app.MessageView"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="#ccffffff" >
 
     <TextView android:id="@+id/message"
         android:textAppearance="?android:attr/textAppearanceMedium"

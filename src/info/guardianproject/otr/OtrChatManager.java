@@ -28,6 +28,8 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	private Hashtable<String,SessionID> sessions;
 	
+	private String mlocalUserId;
+	
 	public OtrChatManager(ImConnectionAdapter imConnectionAdapter){
 		try
 		{
@@ -47,8 +49,15 @@ public class OtrChatManager implements OtrEngineListener {
 		}
 	}
 	
+	public OtrAndroidKeyManagerImpl getKeyManager ()
+	{
+		return this.myHost.getKeyManager();
+	}
+	
 	public SessionID getSessionId (String localUserId, String remoteUserId)
 	{
+		mlocalUserId = localUserId;
+		
 		SessionID sessionId = sessions.get(remoteUserId);
 		
 		if (sessionId == null)
@@ -196,5 +205,13 @@ public class OtrChatManager implements OtrEngineListener {
 			Log.i(TAG,"remote key fingerprint: " + rkFingerprint);
 		}
 		return rkFingerprint;
+	}
+
+	public void setLocalUserId(String localUser) {
+		this.mlocalUserId = localUser;
+	}
+
+	public String getLocalUserId() {
+		return mlocalUserId;
 	}
 }

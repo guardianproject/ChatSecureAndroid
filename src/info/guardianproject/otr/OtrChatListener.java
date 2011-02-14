@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import net.java.otr4j.session.SessionID;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
@@ -29,6 +30,7 @@ public class OtrChatListener implements MessageListener {
 		String body = msg.getBody();
 		String from = msg.getFrom().getFullName();
 		String to = msg.getTo().getFullName();
+		
 
 		if (body.indexOf(OTR_V12_STRING) != -1
 				|| body.indexOf(OTR_V2ONLY_STRING) != -1) {
@@ -37,6 +39,11 @@ public class OtrChatListener implements MessageListener {
 			} else {
 				mOtrChatManager.startSession(to, from);
 			}
+			
+			
+			SessionID sessionId = mOtrChatManager.getSessionId(to,from);
+			
+
 		} else {
 			if (body.indexOf(OTR_HEADER_STRING) != -1) {
 				body = mOtrChatManager.decryptMessage(to, from, body);

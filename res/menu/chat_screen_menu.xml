@@ -20,6 +20,13 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item android:id="@+id/menu_view_otr"
+        android:title="@string/menu_view_otr"/>
+
+    <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"/>
+        
     <item android:id="@+id/menu_view_friend_list"
         android:title="@string/menu_view_contact_list"/>
 
@@ -27,21 +34,17 @@
         android:title="@string/menu_switch_chats"
         android:alphabeticShortcut=" "/>
 
-    <item android:id="@+id/menu_insert_smiley"
-        android:title="@string/menu_insert_smiley" />
-
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" />
 
     <item android:id="@+id/menu_block_contact"
         android:title="@string/menu_block_contact" />
 
+<!-- 
+
     <item android:id="@+id/menu_invite_contact"
         android:title="@string/menu_invite_contact" />
-
-    <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_view_profile"/>
-
+ -->
     <item
         android:id="@+id/menu_prev_chat"
         android:alphabeticShortcut="j"

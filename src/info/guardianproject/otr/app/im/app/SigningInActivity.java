@@ -135,9 +135,9 @@ public class SigningInActivity extends Activity {
         setTitle(getResources().getString(R.string.signing_in_to,
                 provider.mFullName));
 
-        ImageView splash = (ImageView)findViewById(R.id.splashscr);
-        splash.setImageDrawable(brandingRes.getDrawable(
-                BrandingResourceIDs.DRAWABLE_SPLASH_SCREEN));
+//        ImageView splash = (ImageView)findViewById(R.id.splashscr);
+  //      splash.setImageDrawable(brandingRes.getDrawable(
+    //            BrandingResourceIDs.DRAWABLE_SPLASH_SCREEN));
 
         mHandler = new SimpleAlertHandler(this);
         mListener = new MyConnectionListener(mHandler);

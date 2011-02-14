@@ -23,10 +23,20 @@
     android:layout_height="fill_parent"
     android:gravity="center_vertical">
 
-    <ImageView android:id="@+id/splashscr"
+<LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dip"
+        android:gravity="center_horizontal">
+
+    <ImageView android:src="@drawable/gibbermini"
+    	android:id="@+id/splashscr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="fitCenter"/>
+
+</LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

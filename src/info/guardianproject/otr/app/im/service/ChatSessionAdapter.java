@@ -17,8 +17,10 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatListener;
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -37,6 +39,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import net.java.otr4j.OtrKeyManager;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -64,7 +68,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     ImConnectionAdapter mConnection;
     ChatSessionManagerAdapter mChatSessionManager;
+    
     OtrChatManager mOtrChatManager;
+    OtrKeyManagerAdapter mOtrKeyManager;
+    
     ChatSession mAdaptee;
     ListenerAdapter mListenerAdapter;
     boolean mIsGroupChat;
@@ -94,6 +101,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
         mListenerAdapter = new ListenerAdapter();
+        
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
         mAdaptee.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
         mAdaptee.setOtrChatManager(mOtrChatManager);
@@ -105,6 +113,17 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         } else {
             init((Contact)participant);
         }
+    }
+    
+    public IOtrKeyManager getOtrKeyManager () 
+    {
+    	if (mOtrKeyManager == null)
+    	{
+    		mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager.getLocalUserId(), mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
+    
+    	}
+    	
+    	return mOtrKeyManager;
     }
 
     private void init(ChatGroup group) {

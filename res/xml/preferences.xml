@@ -19,6 +19,68 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+<PreferenceCategory android:title="Account Setup">
+
+
+<EditTextPreference android:key="pref_account_user"
+android:defaultValue=""
+android:title="Username"
+android:summary="username or login for XMPP Account"
+android:dialogTitle="Username"
+/>
+
+<EditTextPreference android:key="pref_account_pass"
+android:defaultValue=""
+android:title="Password"
+android:summary="Password for XMPP Account (optional / will prompt)"
+android:dialogTitle="Password"
+ android:password="true"/>
+
+<EditTextPreference android:key="pref_account_host"
+android:defaultValue=""
+android:title="Hostname"
+android:summary="Internet Hostname for XMPP Server"
+android:dialogTitle="Hostname"
+/>
+
+<EditTextPreference android:key="pref_account_port"
+android:defaultValue="5222"
+android:title="Server Port"
+android:summary="Port for XMPP Server"
+android:dialogTitle="Hostname"
+/>
+
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Security Options">
+
+<CheckBoxPreference 
+android:defaultValue="true" 
+android:key="pref_security_tls"
+android:title="Transport Encryption"
+android:summary="Require TLS/SSL connection"
+android:enabled="true"/> 
+
+<CheckBoxPreference 
+android:defaultValue="true" 
+android:key="pref_security_tls_very"
+android:title="TLS Verification"
+android:summary="Verify TLS Certificate"
+android:enabled="true"/> 
+
+<ListPreference android:summary="control when and how you encrypt chats" android:title="Chat Encryption" android:key="pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options"></ListPreference>
+
+<CheckBoxPreference 
+android:defaultValue="false" 
+android:key="pref_security_use_tor"
+android:title="Use Tor Network"
+android:summary="Anonymize your connection and circumvent filters (requires Orbot app)"
+android:enabled="true"/> 
+
+</PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/setting_title">
         <CheckBoxPreference
                 android:key="hide-offline-contacts"
@@ -53,7 +115,7 @@
                 android:key="notification-sound"
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary" />
-
+<!-- 
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="notification-sound"
@@ -61,7 +123,7 @@
                 android:persistent="false"
                 android:title="@string/notification_ringtone_title"
                 android:ringtoneType="notification" />
-
+ -->
     </PreferenceCategory>
 
 </PreferenceScreen>

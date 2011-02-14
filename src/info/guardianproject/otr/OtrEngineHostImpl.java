@@ -37,6 +37,11 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		mOtrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
 	}
 	
+	public OtrAndroidKeyManagerImpl getKeyManager ()
+	{
+		return mOtrKeyManager;
+	}
+	
 	public void storeRemoteKey (SessionID sessionID, PublicKey remoteKey)
 	{
 		mOtrKeyManager.savePublicKey(sessionID, remoteKey);

@@ -1,21 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.1" android:versionCode="5">
+     android:versionName="0.0.2" android:versionCode="6">
 
 <uses-sdk android:minSdkVersion="3"></uses-sdk>
+
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-     -->
-    
+  
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
 
@@ -42,6 +37,21 @@
              android:icon="@drawable/ic_launcher_im"
              android:taskAffinity="info.guardianproject.otr.app.task.im">
 
+
+         <activity android:name=".ui.MainActivity">
+            
+              <intent-filter>
+          
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+         <activity android:name=".ui.AboutActivity"/>
+        <activity android:name=".ui.AppPassphraseActivity"/>
+         <activity android:name=".ui.SettingsActivity"/>
+        
+        
         <service android:name=".plugin.xmpp.XmppImPlugin">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -87,13 +97,9 @@
 
         <activity android:name=".app.ChooseAccountActivity"
                 android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
-
+        
+<!-- 
         <activity android:name=".app.ImUrlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
@@ -112,7 +118,8 @@
                 <data android:scheme="imto" android:host="msn"/>
             </intent-filter>
         </activity>
-
+ -->
+<!--
         <activity android:name=".app.LandingPage">
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -124,6 +131,7 @@
                 <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
             </intent-filter>
         </activity>
+      
 
         <activity android:name=".app.AccountActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -136,11 +144,12 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
-                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.item/imps-providers" />
             </intent-filter>
         </activity>
+          -->
+      
 
         <activity android:name=".app.SigningInActivity"
             android:configChanges="orientation|keyboardHidden">
@@ -235,12 +244,12 @@
             </intent-filter>
         </activity>
 
-<!--        <receiver android:name=".receiver.ImServiceAutoStarter"
+      <receiver android:name=".receiver.ImServiceAutoStarter"
             android:process="android.process.im">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
--->
+
     </application>
 </manifest>

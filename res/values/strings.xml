@@ -85,10 +85,15 @@
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-    <string name="menu_view_profile">View profile</string>
+    <string name="menu_view_profile">Verify Key</string>
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
+    
+    <!--  OTRCHAT Adding in new menu options -->
+    <string name="menu_view_otr">OTR Encrypt</string>
+    
+    
     <string name="menu_end_conversation">End chat</string>
 
     <!-- Chat screen menu and context menu items.-->
@@ -160,7 +165,7 @@
 
     <!-- These strings are displayed the sign in progress screen.-->
     <!-- The title of the sign-in progress screen.  -->
-    <string name="signing_in_to">Signing in to <xliff:g id="account">%1$s</xliff:g></string>
+    <string name="signing_in_to">getting the gibber going...</string>
     <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
     <string name="signing_in_wait">Signing in\u2026</string>
     <!-- Dialog title -->
@@ -524,4 +529,78 @@
     <string name="menu_view_encrypt_chat">Encrypt On/Off</string>
     <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
     
+    	<!-- Welcome Splash Screen -->
+	<string name="app_name">Gibber</string>
+    <string name="welcome_first">First time using Gibber?</string>
+	<string name="welcome_skip">Can\'t wait to get started?</string>
+    <string name="welcome_about">About Gibber</string>
+    <string name="welcome_account">Account Setup</string>
+
+	<!-- About: Welcome -->
+	<string name="about_welcome_title">Welcome to Gibber</string>
+	<string name="about_welcome">Gibber is a fully featured messaging application integrated with the OTR encrypted chat protocol. Built on Google\'s Talk app, Gibber has been modified to support the XMPP IM chat protocol directly, and we\'re planning on expaning to other protocols soon.\n\nWe\'re supporters of Open-Source software development. Find us online at https://guardianproject.info</string>
+ 
+	<!-- About: OTR -->
+	<string name="about_otr_title">What is OTR?</string>
+	<string name="about_otr">\'Off-the-Record Messaging\' is a cryptographic protocol designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy</string>
+	
+	<!-- About: Security -->
+    <string name="about_security_title">Are My Chats Secure?</string>
+	<string name="about_security">By default Gibber will automatically prompt you to encrypt conversations when messaging with others using a compatible client. Access to Gibber is also restricted by a passphrase that you\'ll choose during setup. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</string>
+	
+	<!-- Setup: Passphrase-->
+    <string name="setup_passphrase_title">Passphrase Setup</string>
+	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibber data from unjust access.</string>
+    <string name="setup_passphrase_label1">Passphrase:</string>
+    <string name="setup_passphrase_label2">Passphrase (again):</string>
+	
+	<!-- Account Setup: Account -->
+	<string name="account_setup_acct_subtitle">Account</string>
+    <string name="account_setup_acct_acctname_title">Account Name</string>
+    <string name="account_setup_acct_acctname_sub">Display name for this account</string>
+    <string name="account_setup_acct_username_title">Username (login)</string>
+    <string name="account_setup_acct_username_sub">Format: user@host:port</string>
+    <string name="account_setup_acct_password_title">Password</string>
+    <string name="account_setup_acct_password_sub">Password for authentication</string>
+	
+	<!-- Account Setup: Persistence -->
+	<string name="account_setup_pers_sub">Persistence</string>
+	<string name="account_setup_pers_pw_title">Remember Password</string>
+	<string name="account_setup_pers_pw_on">Password cached</string>
+	<string name="account_setup_pers_pw_off">Password not cached</string>
+	<string name="account_setup_pers_auto_title">Automatically Sign In</string>
+	<string name="account_setup_pers_auto_on">Connect at Gibber start-up</string>
+	<string name="account_setup_pers_auto_off">Don\'t connect at Gibber start-up</string>
+	<string name="account_setup_pers_now_title">Sign In Now</string>
+	<string name="account_setup_pers_now_on">Connect following account setup</string>
+	<string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
+
+	
+	<!-- Account Setup: Personal -->
+	<string name="account_setup_personal_sub">Personal (optional)</string>
+    <string name="account_setup_personal_alias_title">Account Alias (your name)</string>
+    <string name="account_setup_personal_alias_sub">How your account appears online</string>
+    <string name="account_setup_personal_profile_title">Profile</string>
+    <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
+	
+	<!-- Account Setup: Advanced -->
+	<string name="account_setup_advanced_sub">Advanced</string>
+    <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
+    <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
+    <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
+	<string name="account_setup_advanced_enc_off">Disable chat encryption</string>
+
+	<!-- Account Setup: First Sign In -->
+	<string name="account_setup_signin_a">Validating credentials...</string>
+	<string name="account_setup_signin_b">Generating keypair...</string>
+	<string name="account_setup_signin_c">Signing in...</string>
+
+	<!-- Account Setup: Sign In Errors -->
+	<string name="account_setup_error_validating">Gibber encountered an error while validating your username or password - please check them and try again.</string>
+	<string name="account_setup_error_keypair">Gibber encountered an error while generating a keypair.</string>
+	<string name="account_setup_error_server">Gibber encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+	<string name="account_setup_error_connectivity">Gibber encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+    
+    
+    <string name="label_fingerprint">OTR Public Key Fingerprint</string>
 </resources>

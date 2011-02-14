@@ -91,6 +91,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         ImConnection imConnection = mConnection.getAdaptee();
         String userName = imConnection.getLoginUserName();
         ChatSession session = mChatSessionManager.createChatSession(contact);
+        
         if (mOtrChatManager == null) {
         	Log.i(TAG, "mOtrChatManager == null");
         } else {

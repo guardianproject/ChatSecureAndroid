@@ -116,6 +116,7 @@ public class AccountActivity extends Activity {
             provider = app.getProvider(providerId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
         } else if(Intent.ACTION_EDIT.equals(action)) {
+        	
             ContentResolver cr = getContentResolver();
             Uri uri = i.getData();
 

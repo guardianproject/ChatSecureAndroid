@@ -141,13 +141,17 @@ public class NewChatActivity extends Activity {
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         long providerId = mChatView.getProviderId();
+        /*
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
+        
         menu.findItem(R.id.menu_view_friend_list).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
         menu.findItem(R.id.menu_switch_chats).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_SWITCH_CHATS));
+        
         menu.findItem(R.id.menu_insert_smiley).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
+        
         menu.findItem(R.id.menu_end_conversation).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_END_CHAT));
         
@@ -156,6 +160,8 @@ public class NewChatActivity extends Activity {
         
         menu.findItem(R.id.menu_block_contact).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT));
+                */
+        
         return true;
     }
 
@@ -164,30 +170,44 @@ public class NewChatActivity extends Activity {
         super.onPrepareOptionsMenu(menu);
 
         //XXX hide the invite menu, group chat is not supported by the server.
-        menu.findItem(R.id.menu_invite_contact).setVisible(false);
+        //menu.findItem(R.id.menu_invite_contact).setVisible(false);
 
+        /*
         //XXX HACK: Yahoo! doesn't allow to block a friend. We can only block a temporary contact.
         ProviderDef provider = mApp.getProvider(mChatView.getProviderId());
         if ((provider != null) && Imps.ProviderNames.YAHOO.equals(provider.mName)) {
             if (Imps.Contacts.TYPE_TEMPORARY != mChatView.getType()) {
                 menu.findItem(R.id.menu_block_contact).setVisible(false);
             }
-        }
+        }*/
+        
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_view_friend_list:
+            
+        case R.id.menu_view_otr:
+        		switchOtrState();
+        		return true;
+        		
+
+        case R.id.menu_view_profile:
+            mChatView.viewProfile();
+            return true;
+            
+        	case R.id.menu_view_friend_list:
                 finish();
                 showRosterScreen();
                 return true;
-
+                
+                /*
             case R.id.menu_insert_smiley:
                 showSmileyDialog();
                 return true;
-
+				*/
+             
             case R.id.menu_end_conversation:
                 mChatView.closeChatSession();
                 return true;
@@ -201,13 +221,10 @@ public class NewChatActivity extends Activity {
 
                 return true;
 
-            case R.id.menu_invite_contact:
-                startContactPicker();
-                return true;
+//            case R.id.menu_invite_contact:
+  //              startContactPicker();
+    //            return true;
 
-            case R.id.menu_view_profile:
-                mChatView.viewProfile();
-                return true;
 
             case R.id.menu_block_contact:
                 mChatView.blockContact();
@@ -254,6 +271,13 @@ public class NewChatActivity extends Activity {
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
 
+    private void switchOtrState ()
+    {
+    	//TODO OTRCHAT switch state on/off
+    	Toast.makeText(this, "OTR is automatically enabled (for now)", Toast.LENGTH_LONG).show();
+    	
+    }
+    
     private void showRosterScreen() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClass(this, ContactListActivity.class);

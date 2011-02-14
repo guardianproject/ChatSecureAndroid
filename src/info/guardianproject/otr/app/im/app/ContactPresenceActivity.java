@@ -17,6 +17,10 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -30,16 +34,27 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactPresenceActivity extends Activity {
 
+	private String remoteFingerprint;
+	private boolean remoteFingerprintVerified = false;
+	private String remoteAddress;
+	
+	private String localFingerprint;
+	
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -53,7 +68,8 @@ public class ContactPresenceActivity extends Activity {
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtClientType = (TextView) findViewById(R.id.txtClientType);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
-
+        TextView txtFingerprint = (TextView) findViewById(R.id.txtFingerprint);
+        
         Intent i = getIntent();
         Uri uri = i.getData();
         if(uri == null) {
@@ -62,6 +78,12 @@ public class ContactPresenceActivity extends Activity {
             return;
         }
 
+        remoteFingerprint = i.getExtras().getString("remoteFingerprint");
+        remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
+        localFingerprint = i.getExtras().getString("localFingerprint");
+        
+        txtFingerprint.setText(remoteFingerprint + "; verified=" + remoteFingerprintVerified);
+        
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(uri, null, null, null, null);
         if(c == null) {
@@ -72,13 +94,14 @@ public class ContactPresenceActivity extends Activity {
 
         if(c.moveToFirst()) {
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
-            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             String nickname   = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             int status    = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
             int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
 
             ImApp app = ImApp.getApplication(this);
+            
             BrandingResources brandingRes = app.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
@@ -92,7 +115,7 @@ public class ContactPresenceActivity extends Activity {
 
             labelName.setText(brandingRes.getString(
                     BrandingResourceIDs.STRING_LABEL_USERNAME));
-            txtName.setText(ImpsAddressUtils.getDisplayableAddress(username));
+            txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
 
             String statusString = brandingRes.getString(
                     PresenceUtils.getStatusStringRes(status));
@@ -131,4 +154,94 @@ public class ContactPresenceActivity extends Activity {
     private static void warning(String msg) {
         Log.w(ImApp.LOG_TAG, "<ContactPresenceActivity> " + msg);
     }
+    
+    private void verifyRemoteFingerprint ()
+    {
+    	Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT).show();
+    	
+        ImApp app = ImApp.getApplication(this);
+
+
+    	IOtrKeyManager okm;
+		try {
+			okm = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
+	    	okm.verifyKey(remoteAddress);
+
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+                
+    }
+    
+    public void startScan ()
+    {
+    	IntentIntegrator.initiateScan(this);
+    	
+    }
+    
+    public void displayQRCode (String text)
+    {
+    	IntentIntegrator.shareText(this, text);
+    }
+    
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	     
+    	IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+	     
+	     if (scanResult != null) {
+	        
+	    	 String otherFingerprint = scanResult.getContents();
+	    	 
+	    	 if (otherFingerprint != null && otherFingerprint.equals(remoteFingerprint))
+	    	 {
+	    		 verifyRemoteFingerprint();
+	    	 }
+	    	 
+	    	
+	      }
+	     
+    // else continue with any other code you need in the method
+     }
+    
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        
+        MenuItem mItem = null;
+        
+        
+        mItem = menu.add(0, 1, Menu.NONE, "Scan Fingerprint");
+        
+        mItem = menu.add(0, 2, Menu.NONE, "Your Fingerprint");
+        
+        mItem = menu.add(0, 3, Menu.NONE, "Verify Fingerprint");
+        
+       
+        return true;
+    }
+    
+    /* When a menu item is selected launch the appropriate view or activity
+     * (non-Javadoc)
+	 * @see android.app.Activity#onMenuItemSelected(int, android.view.MenuItem)
+	 */
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		
+		super.onMenuItemSelected(featureId, item);
+		
+		if (item.getItemId() == 1)
+		{
+			startScan();
+		}
+		else if (item.getItemId() == 2)
+		{
+			displayQRCode(localFingerprint);
+		}
+		else if (item.getItemId() == 3)
+		{
+			verifyRemoteFingerprint();
+		}
+		
+		
+        return true;
+	}
 }

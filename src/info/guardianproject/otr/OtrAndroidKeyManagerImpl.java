@@ -39,9 +39,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 	private final static String TAG = "OtrAndroidKeyManagerImpl";
 	
+	private final static String KEY_ALG = "DSA";
+	private final static int KEY_SIZE = 2048;
+	
 	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store) {
 		this.store = store;
-		
 		
 	}
 
@@ -58,6 +60,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 			try
 			{
+				
 				FileInputStream fis = AndroidSystemService.getInstance().getContext().openFileInput(filepath);
 				
 				InputStream in = new BufferedInputStream(fis);
@@ -148,9 +151,18 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			return;
 
 		String accountID = sessionID.getAccountID();
+		
+		generateLocalKeyPair(accountID);
+	}
+	
+	public void generateLocalKeyPair(String accountID) {
+
 		KeyPair keyPair;
 		try {
-			keyPair = KeyPairGenerator.getInstance("DSA").genKeyPair();
+			
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance(KEY_ALG);
+			kpg.initialize(KEY_SIZE);
+			keyPair = kpg.genKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return;
@@ -174,7 +186,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	public String getLocalFingerprint(SessionID sessionID) {
-		KeyPair keyPair = loadLocalKeyPair(sessionID);
+		return getLocalFingerprint(sessionID.getAccountID());
+	}
+	
+	public String getLocalFingerprint(String userId) {
+		KeyPair keyPair = loadLocalKeyPair(userId);
 
 		if (keyPair == null)
 			return null;
@@ -188,9 +204,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			return null;
 		}
 	}
-
+	
 	public String getRemoteFingerprint(SessionID sessionID) {
-		PublicKey remotePublicKey = loadRemotePublicKey(sessionID);
+		return getRemoteFingerprint(sessionID.getUserID());
+	}
+
+	public String getRemoteFingerprint(String userId) {
+		PublicKey remotePublicKey = loadRemotePublicKey(userId);
 		if (remotePublicKey == null)
 			return null;
 		try {
@@ -208,12 +228,25 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		return this.store.getPropertyBoolean(sessionID.getUserID()
 				+ ".publicKey.verified", false);
 	}
+	
+	public boolean isVerifiedUser(String userId) {
+		if (userId == null)
+			return false;
+		
+
+		return this.store.getPropertyBoolean(userId
+				+ ".publicKey.verified", false);
+	}
 
 	public KeyPair loadLocalKeyPair(SessionID sessionID) {
 		if (sessionID == null)
 			return null;
 
 		String accountID = sessionID.getAccountID();
+		return loadLocalKeyPair(accountID);
+	}
+	
+	public KeyPair loadLocalKeyPair(String accountID) {
 		
 		// Load Private Key.
 		
@@ -238,7 +271,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		// Generate KeyPair.
 		KeyFactory keyFactory;
 		try {
-			keyFactory = KeyFactory.getInstance("DSA");
+			keyFactory = KeyFactory.getInstance(KEY_ALG);
 			publicKey = keyFactory.generatePublic(publicKeySpec);
 			privateKey = keyFactory.generatePrivate(privateKeySpec);
 		} catch (NoSuchAlgorithmException e) {
@@ -253,10 +286,12 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	public PublicKey loadRemotePublicKey(SessionID sessionID) {
-		if (sessionID == null)
-			return null;
 
-		String userID = sessionID.getUserID();
+		return loadRemotePublicKey(sessionID.getUserID());
+	}
+	
+	public PublicKey loadRemotePublicKey(String userID) {
+	
 
 		byte[] b64PubKey = this.store.getPropertyBytes(userID + ".publicKey");
 		if (b64PubKey == null)
@@ -306,6 +341,22 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			l.verificationStatusChanged(sessionID);
 
 	}
+	
+	public void unverifyUser(String userId) {
+		if (userId == null)
+			return;
+
+		if (!isVerifiedUser(userId))
+			return;
+
+		this.store
+				.removeProperty(userId + ".publicKey.verified");
+
+	//	for (OtrKeyManagerListener l : listeners)
+		//	l.verificationStatusChanged(sessionID);
+
+	}
+
 
 	public void verify(SessionID sessionID) {
 		if (sessionID == null)
@@ -319,6 +370,22 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		for (OtrKeyManagerListener l : listeners)
 			l.verificationStatusChanged(sessionID);
+	}
+	
+	public void verifyUser(String userId) {
+		if (userId == null)
+			return;
+
+		if (this.isVerifiedUser(userId))
+			return;
+
+		this.store.setProperty(userId + ".publicKey.verified",
+				true);
+
+		//for (OtrKeyManagerListener l : listeners)
+			//l.verificationStatusChanged(sessionID);
+		
+	
 	}
 
 }
