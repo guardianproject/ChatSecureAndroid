@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView android:text="@string/setup_passphrase_title" 	android:textColor="#ffffff" android:id="@+id/WizardTextTitle" android:textSize="14pt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:singleLine="true" android:fadingEdge="vertical"></TextView>
+    
+<TableLayout android:id="@+id/TableLayout01" android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
+
+<TableRow android:id="@+id/TableRow01"  android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+
+	<ScrollView android:id="@+id/helpscrollview" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		 android:layout_span="3">    
+
+<TableLayout android:id="@+id/TableLayout01" android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
+
+<TableRow android:id="@+id/TableRow01"  android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+			<TextView android:text="@string/setup_passphrase"  android:id="@+id/WizardTextBody" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+</TableRow>
+<TableRow android:id="@+id/TableRow01"   android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    			<TextView android:text="Passphrase:" android:layout_width="100px" android:layout_height="wrap_content"></TextView>
+</TableRow>
+<TableRow android:id="@+id/TableRow01"   android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+ <EditText android:text="" android:id="@+id/editText1" android:layout_width="200px" android:layout_height="30px"></EditText>
+   
+</TableRow>
+<TableRow android:id="@+id/TableRow01"  android:layout_width="wrap_content" android:layout_height="wrap_content">
+    
+ <TextView android:text="Passphrase (again):" android:layout_width="100px" android:layout_height="wrap_content"></TextView>
+</TableRow>
+<TableRow android:id="@+id/TableRow01"  android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+ <EditText android:text="" android:id="@+id/editText2" android:layout_width="200px" android:layout_height="30px"></EditText>
+   
+</TableRow>
+</TableLayout>
+		</ScrollView>
+		
+</TableRow>
+<TableRow android:id="@+id/TableRow01" android:layout_width="fill_parent" android:layout_height="30px">
+	   	<Button android:text="button1" android:id="@+id/btnWizard1" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+    	<Button android:text="button2" android:id="@+id/btnWizard2"  android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>	    
+</TableRow>			
+</TableLayout>
+</LinearLayout>
+
+
