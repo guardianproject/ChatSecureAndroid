@@ -45,6 +45,15 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+               <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
+            </intent-filter>
         </activity>
         
          <activity android:name=".ui.AboutActivity"/>
@@ -244,8 +253,7 @@
             </intent-filter>
         </activity>
 
-      <receiver android:name=".receiver.ImServiceAutoStarter"
-            android:process="android.process.im">
+      <receiver android:name=".ui.OnBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

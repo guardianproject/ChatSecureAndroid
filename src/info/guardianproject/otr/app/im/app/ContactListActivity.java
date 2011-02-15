@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.MainActivity;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -466,7 +467,14 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("Current connection disconnected, finish");
                     }
-                    finish();
+                  
+                    //TODO Gibber manually launch back to main
+                	Intent intent = new Intent(getBaseContext(), MainActivity.class);					
+					intent.putExtra("showSettings",false);
+					intent.putExtra("doSignIn",false);					
+					startActivity(intent);
+					
+					finish();
                 }
                 return;
             }

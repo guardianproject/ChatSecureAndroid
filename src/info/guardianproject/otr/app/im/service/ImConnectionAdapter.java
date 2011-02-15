@@ -357,7 +357,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             synchronized (this) {
                 if (state == ImConnection.LOGGED_IN
                         && mConnectionState == ImConnection.LOGGING_OUT) {
-                    // A bit tricky here. The engine did login successfully
+                    
+                	// A bit tricky here. The engine did login successfully
                     // but the notification comes a bit late; user has already
                     // issued a cancelLogin() and that cannot be undone. Here
                     // we have to ignore the LOGGED_IN event and wait for

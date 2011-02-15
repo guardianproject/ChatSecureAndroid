@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.MainActivity;
 
 import info.guardianproject.otr.app.im.IImConnection;
 
@@ -86,7 +87,11 @@ public class SignoutActivity extends Activity {
     }
 
     private void signOut(long providerId, long accountId) {
-        try {
+        try {	
+        	
+       
+        	
+        	
             IImConnection conn = mApp.getConnection(providerId);
             if (conn != null) {
                 conn.logout();
@@ -108,7 +113,10 @@ public class SignoutActivity extends Activity {
         } catch (RemoteException ex) {
             Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
         } finally {
-            finish();
+           // finish();
+        	
+        	returnToMain();
+        	
         }
     }
 
@@ -118,9 +126,17 @@ public class SignoutActivity extends Activity {
 
         // always call finish here, because we don't want to be in the backlist ever, and
         // we don't handle onRestart()
-        finish();
+        returnToMain();
+    	
     }
 
+    private void returnToMain()
+    {
+    	Intent intent = new Intent(getBaseContext(), MainActivity.class);
+		
+		intent.putExtra("doSignIn",false);
+		startActivityForResult(intent, 1);
+    }
 
     static void log(String msg) {
         Log.d(ImApp.LOG_TAG, "[Signout] " + msg);

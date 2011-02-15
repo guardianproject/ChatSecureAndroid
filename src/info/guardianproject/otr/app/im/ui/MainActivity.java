@@ -31,21 +31,30 @@ public class MainActivity extends Activity {
     Uri mAccountUri;
     ImApp app;
     
+    boolean autoLaunchedOnce = false;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
-        
-        
-        app = ImApp.getApplication(this);
+        initXmpp();
+    
+        showUI();
+    }
+   
+    public void initXmpp ()
+    {
+    	app = ImApp.getApplication(this);
         ImPluginHelper.getInstance(this).loadAvaiablePlugins();
-	
 	    provider = app.getProviders().get(0);//the default provider XMPP
         
+    }
+    
+    private void showUI ()
+    {
         setContentView(R.layout.splash_activity);
      
-        
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setOnClickListener(new OnClickListener()
         {
@@ -85,39 +94,27 @@ public class MainActivity extends Activity {
         String host = prefs.getString("pref_account_host", null);
         String port = prefs.getString("pref_account_port", null);
         
-        if (user == null)
+        if (user == null || user.length() == 0)
         {
         	Toast.makeText(getBaseContext(), "Please setup an account to login", Toast.LENGTH_SHORT).show();
         }
-        else
+        else if (!autoLaunchedOnce)
         {
-        	boolean doSignIn = false;
+        	autoLaunchedOnce = true;
         	
-        	//check if we just signed out, otherwise autologin
-        	List<IImConnection> activeConns = app.getActiveConnections();
-        	
-        	if (activeConns != null && activeConns.size() > 0)
-        	{
-        		doSignIn = true;
-        	}
-        	
-        	
-        	
-        	if (doSignIn)
-        	{
-	            String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
-	            
-	            final String pass = prefs.getString("pref_account_pass", null);
-	            final boolean rememberPass = true;
-	
-	            ContentResolver cr = getContentResolver();
-	
-	            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,
-	                    rememberPass ? pass : null);
-	            
-	            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-	            signIn(rememberPass, pass);
-        	}
+            String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
+            
+            final String pass = prefs.getString("pref_account_pass", null);
+            final boolean rememberPass = true;
+
+            ContentResolver cr = getContentResolver();
+
+            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,
+                    rememberPass ? pass : null);
+            
+            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            signIn(rememberPass, pass);
+    
         }
     }
     
@@ -150,6 +147,8 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		boolean doSignIn = true;
+		
 		Bundle extras = getIntent().getExtras();
         if (extras != null)
         {
@@ -159,10 +158,12 @@ public class MainActivity extends Activity {
 	        	startActivityForResult(new Intent(getBaseContext(), SettingsActivity.class), 1);
 	        	return;
 	        }
-	       
+	    
+	        doSignIn = extras.getBoolean("doSignIn",true);
         }
         
-        checkAccountAndSignin();
+        if(doSignIn)
+        	checkAccountAndSignin();
         
 	}
 

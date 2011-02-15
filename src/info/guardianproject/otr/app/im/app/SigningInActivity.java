@@ -333,6 +333,7 @@ public class SigningInActivity extends Activity {
                 } else {
                     intent = new Intent(this, ContactListActivity.class);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+                    
                 }
                 startActivity(intent);
             } catch (RemoteException e) {

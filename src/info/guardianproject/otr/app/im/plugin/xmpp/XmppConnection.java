@@ -457,6 +457,8 @@ public class XmppConnection extends ImConnection {
 	}
 
 	private void disconnect() {
+	 
+		
 		clearHeartbeat();
 		XMPPConnection conn = mConnection;
 		mConnection = null;
