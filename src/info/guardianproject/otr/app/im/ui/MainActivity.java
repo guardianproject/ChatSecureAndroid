@@ -1,5 +1,8 @@
 package info.guardianproject.otr.app.im.ui;
 
+import java.util.List;
+
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
@@ -26,7 +29,7 @@ public class MainActivity extends Activity {
     long providerId = 1;
     ProviderDef provider;
     Uri mAccountUri;
-
+    ImApp app;
     
     /** Called when the activity is first created. */
     @Override
@@ -35,23 +38,13 @@ public class MainActivity extends Activity {
        
         
         
-        ImApp app = ImApp.getApplication(this);
+        app = ImApp.getApplication(this);
         ImPluginHelper.getInstance(this).loadAvaiablePlugins();
-
-        provider = app.getProviders().get(0);//the default provider XMPP
+	
+	    provider = app.getProviders().get(0);//the default provider XMPP
         
         setContentView(R.layout.splash_activity);
-        
-        /*ImageView imgSplash = ((ImageView)findViewById(R.id.imgSplash));
-        
-        imgSplash.setOnClickListener(new OnClickListener() {
-           
-
-         
-        });
-*/
-        
-       
+     
         
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setOnClickListener(new OnClickListener()
@@ -98,19 +91,33 @@ public class MainActivity extends Activity {
         }
         else
         {
-            String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
-            
-            final String pass = prefs.getString("pref_account_pass", null);
-            final boolean rememberPass = true;
-
-            ContentResolver cr = getContentResolver();
-
-            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,
-                    rememberPass ? pass : null);
-            
-            
-            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-            signIn(rememberPass, pass);
+        	boolean doSignIn = false;
+        	
+        	//check if we just signed out, otherwise autologin
+        	List<IImConnection> activeConns = app.getActiveConnections();
+        	
+        	if (activeConns != null && activeConns.size() > 0)
+        	{
+        		doSignIn = true;
+        	}
+        	
+        	
+        	
+        	if (doSignIn)
+        	{
+	            String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
+	            
+	            final String pass = prefs.getString("pref_account_pass", null);
+	            final boolean rememberPass = true;
+	
+	            ContentResolver cr = getContentResolver();
+	
+	            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,
+	                    rememberPass ? pass : null);
+	            
+	            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+	            signIn(rememberPass, pass);
+        	}
         }
     }
     
