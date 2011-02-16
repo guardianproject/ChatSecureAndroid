@@ -31,6 +31,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -45,7 +46,11 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class SigningInActivity extends Activity {
@@ -64,6 +69,8 @@ public class SigningInActivity extends Activity {
     private String mPassword;
 
     private String mToAddress;
+    
+    private boolean isActive;
     
     private String mProxyType;
     private String mProxyHost;
@@ -89,6 +96,7 @@ public class SigningInActivity extends Activity {
             finish();
             return;
         }
+        
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(data, null, null, null, null);
         if (c == null) {
@@ -118,12 +126,33 @@ public class SigningInActivity extends Activity {
         	mProxyPort = intent.getIntExtra(ImApp.EXTRA_INTENT_PROXY_PORT,-1);
         }
         
+        
+        
         String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
+        
         mPassword = pwExtra != null ? pwExtra
                 : c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
-        final boolean isActive = c.getInt(c.getColumnIndexOrThrow(Imps.Account.ACTIVE)) == 1;
+        
+        
+        
+        isActive = c.getInt(c.getColumnIndexOrThrow(Imps.Account.ACTIVE)) == 1;
 
         c.close();
+        
+        if (mPassword == null || mPassword.length() == 0)
+        {
+        	//show password prompt
+        	showPasswordDialog();
+        }
+        else
+        {
+        	gogo();
+        }
+    }
+    
+    public void gogo()
+    {
+       
         mApp = ImApp.getApplication(this);
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
@@ -135,9 +164,6 @@ public class SigningInActivity extends Activity {
         setTitle(getResources().getString(R.string.signing_in_to,
                 provider.mFullName));
 
-//        ImageView splash = (ImageView)findViewById(R.id.splashscr);
-  //      splash.setImageDrawable(brandingRes.getDrawable(
-    //            BrandingResourceIDs.DRAWABLE_SPLASH_SCREEN));
 
         mHandler = new SimpleAlertHandler(this);
         mListener = new MyConnectionListener(mHandler);
@@ -157,6 +183,73 @@ public class SigningInActivity extends Activity {
         setResult(RESULT_OK);
     }
 
+    private Dialog dl = null;
+    
+	private void gotCredentials (String usr, String pwd)
+	{
+		this.mPassword = pwd;
+		
+		gogo();
+	}
+	
+    private void showPasswordDialog ()
+	{
+    	/*
+		dl = new Dialog(this);
+	    dl.setTitle("Enter Your Password:");
+	 dl.setCancelable(false);
+	 
+	 
+	    dl.setContentView(R.layout.password_prompt);
+	 dl.show();
+	    
+	    EditText inputBox1 = (EditText)dl.findViewById(R.id.pwd);
+	    inputBox1.setText("");
+	    
+	    Button bOk = (Button) dl.findViewById(R.id.ok);
+	    bOk.setOnClickListener(new OnClickListener() {
+	            public void onClick(View v) {
+	              
+
+	                EditText inputBox2 = (EditText)dl.findViewById(R.id.pwd);
+	                String pwd = inputBox2.getText().toString();
+	                inputBox2.setText("");
+
+	                dl.dismiss();
+	                
+	                gotCredentials(null, pwd);
+	            }
+	    });
+	    */
+    	
+    	 AlertDialog.Builder alert = new AlertDialog.Builder(this);  
+
+         alert.setTitle("Password");  
+         alert.setMessage("Please enter your password to login:");  
+
+
+         final EditText input = new EditText(this);  
+         alert.setView(input);  
+
+         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+         public void onClick(DialogInterface dialog, int whichButton) {  
+        	 String pwd = input.getText().toString();  
+        	 gotCredentials(null,pwd);
+           }  
+         });  
+
+         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {  
+         public void onClick(DialogInterface dialog, int whichButton) {  
+        	 
+        	 finish();
+             return;
+           }  
+        });  
+
+        alert.show();  
+	}
+	
+    
     @Override
     protected void onRestart() {
         super.onRestart();

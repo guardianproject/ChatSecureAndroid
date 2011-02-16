@@ -110,8 +110,6 @@ android:enabled="true"/>
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="enable-notifications"
-                android:defaultValue="true"
-                android:persistent="false"
                 android:key="notification-sound"
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary" />

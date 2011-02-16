@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="200px">
+   <TextView android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:text="Password please..."
+   android:textStyle="bold"/>
+   <EditText android:id="@+id/user"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:layout_weight="1">
+   <requestFocus/>
+   </EditText>
+    <EditText android:id="@+id/pwd"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:layout_weight="1"/>
+   <Button android:id="@+id/ok" android:text="Okay">
+   
+   </Button>"
+ </LinearLayout>

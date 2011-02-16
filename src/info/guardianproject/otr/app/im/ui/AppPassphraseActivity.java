@@ -2,50 +2,81 @@ package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 
-public class AppPassphraseActivity extends Activity implements OnClickListener
+public class AppPassphraseActivity extends Activity 
 {
 	
-	private String buttons[][] =
-	{
-			{"Cancel","Next"}
-			
-	};
+
+	       
+	private Dialog dl;
 	
-	private View.OnClickListener listener[][] =
+	private void gotCredentials (String usr, String pwd)
 	{
 		
-			{
-				new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-				
-						startActivityForResult(new Intent(getBaseContext(), MainActivity.class), 1);
+	}
+	
+	private void foo ()
+	{
+		dl = new Dialog(this);
+	    dl.setTitle("Information Prompt");
+	    
+	    dl.setContentView(R.layout.auth_view);
+	    EditText inputBox1 = (EditText)dl.findViewById(R.id.user);
+	    inputBox1.setText("");
+	    EditText inputBox2 = (EditText)dl.findViewById(R.id.pwd);
+	    inputBox2.setText("");
 
-					}
-				},
-				new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-					
-						startActivityForResult(new Intent(getBaseContext(), SettingsActivity.class), 1);
+	    Button bOk = (Button) dl.findViewById(R.id.ok);
+	    bOk.setOnClickListener(new OnClickListener() {
+	            public void onClick(View v) {
+	                EditText inputBox1 =
+	                (EditText)dl.findViewById(R.id.user);
+	                String usr = inputBox1.getText().toString();
+	                inputBox1.setText("");
 
-						
-					}
-				}
-			}
+	                EditText inputBox2 = (EditText)dl.findViewById(R.id.pwd);
+	                String pwd = inputBox2.getText().toString();
+	                inputBox2.setText("");
 
-			
-	};
-	                                 
+	                dl.dismiss();
+	                
+	                gotCredentials(usr, pwd);
+	            }
+	    });
+	}
+	
+	private void showPasswordDialog ()
+	{
+		dl = new Dialog(this);
+	    dl.setTitle("Enter Password Please");
+	    
+	    dl.setContentView(R.layout.password_prompt);
+	    EditText inputBox1 = (EditText)dl.findViewById(R.id.pwd);
+	    inputBox1.setText("");
+	    
+	    Button bOk = (Button) dl.findViewById(R.id.ok);
+	    bOk.setOnClickListener(new OnClickListener() {
+	            public void onClick(View v) {
+	              
+
+	                EditText inputBox2 = (EditText)dl.findViewById(R.id.pwd);
+	                String pwd = inputBox2.getText().toString();
+	                inputBox2.setText("");
+
+	                dl.dismiss();
+	                
+	                gotCredentials(null, pwd);
+	            }
+	    });
+	}
 	
 	private int contentIdx = -1;
 	
@@ -62,43 +93,9 @@ public class AppPassphraseActivity extends Activity implements OnClickListener
 		
         setContentView(R.layout.passphrase_view);
         
-        showContent ();
-
+       
 	}
 	
-	private void showContent ()
-	{
-		contentIdx = 0;
-		
-        Button btn1 = ((Button)findViewById(R.id.btnWizard1));
-        if (buttons[contentIdx][0] != null)
-        {
-        	btn1.setText(buttons[contentIdx][0]);
-        	btn1.setOnClickListener(listener[contentIdx][0]);
-        	btn1.setVisibility(Button.VISIBLE);
-        	
-        }
-        else
-        {
-        	btn1.setVisibility(Button.INVISIBLE);
-        }
-        
-        Button btn2 = ((Button)findViewById(R.id.btnWizard2));
-        if (buttons[contentIdx][1] != null)
-        {
-        	btn2.setText(buttons[contentIdx][1]);
-        	btn2.setOnClickListener(listener[contentIdx][1]);
-        	btn2.setVisibility(Button.VISIBLE);
-        	
-        }
-        else
-        {
-        	btn2.setVisibility(Button.INVISIBLE);
-        }
-        
-      
-      
-	}
 	
 	
 
@@ -111,13 +108,5 @@ public class AppPassphraseActivity extends Activity implements OnClickListener
 
 
 
-
-	@Override
-	public void onClick(DialogInterface arg0, int arg1) {
-		
-		
-	}
-	
-	
 	
 }

@@ -324,11 +324,12 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey
 				.getEncoded());
 
-		String userID = sessionID.getUserID();
-		this.store.setProperty(userID + ".publicKey", x509EncodedKeySpec
+		String userId = sessionID.getUserID();
+		this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec
 				.getEncoded());
-
-		this.store.removeProperty(userID + ".publicKey.verified");
+		
+		
+		this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 	}
 
 	public void unverify(SessionID sessionID) {
@@ -338,8 +339,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		if (!isVerified(sessionID))
 			return;
 
+		String userId = sessionID.getUserID();
+		
 		this.store
-				.removeProperty(sessionID.getUserID() + ".publicKey.verified");
+				.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 
 		for (OtrKeyManagerListener l : listeners)
 			l.verificationStatusChanged(sessionID);
@@ -354,7 +357,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			return;
 
 		this.store
-				.removeProperty(userId + ".publicKey.verified");
+				.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 
 	//	for (OtrKeyManagerListener l : listeners)
 		//	l.verificationStatusChanged(sessionID);
@@ -369,11 +372,17 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		if (this.isVerified(sessionID))
 			return;
 
-		this.store.setProperty(sessionID.getUserID() + ".publicKey.verified",
-				true);
+		String userId = sessionID.getUserID();
+		
+		this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)),true);
 
 		for (OtrKeyManagerListener l : listeners)
 			l.verificationStatusChanged(sessionID);
+	}
+	
+	private static String buildPublicKeyVerifiedId (String userId, String fingerprint)
+	{
+		return userId + "." + fingerprint + ".publicKey.verified";
 	}
 	
 	public void verifyUser(String userId) {
@@ -383,9 +392,9 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		if (this.isVerifiedUser(userId))
 			return;
 
-		this.store.setProperty(userId + ".publicKey.verified",
+		this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)),
 				true);
-
+		
 		//for (OtrKeyManagerListener l : listeners)
 			//l.verificationStatusChanged(userId);
 		

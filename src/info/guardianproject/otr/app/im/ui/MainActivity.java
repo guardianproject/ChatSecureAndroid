@@ -106,27 +106,25 @@ public class MainActivity extends Activity {
         {
         	Toast.makeText(getBaseContext(), "Please setup an account to login", Toast.LENGTH_SHORT).show();
         }
-        else if (!autoLaunchedOnce)
+        else 
         {
-        	autoLaunchedOnce = true;
         	
+        	        	
             String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
             
             final String pass = prefs.getString("pref_account_pass", null);
-            final boolean rememberPass = true;
 
             ContentResolver cr = getContentResolver();
 
-            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,
-                    rememberPass ? pass : null);
+            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,pass);
             
             mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-            signIn(rememberPass, pass);
+            signIn();
     
         }
     }
     
-    void signIn(boolean rememberPass, String pass) {
+    void signIn() {
         
     	Intent intent = new Intent(MainActivity.this, SigningInActivity.class);
         intent.setData(mAccountUri);
@@ -171,9 +169,11 @@ public class MainActivity extends Activity {
 	        doSignIn = extras.getBoolean("doSignIn",true);
         }
         
-        if(doSignIn)
+        if(doSignIn && (!autoLaunchedOnce))
+        {
+        	autoLaunchedOnce = true;
         	checkAccountAndSignin();
-        
+        }
 	}
 
     
