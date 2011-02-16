@@ -261,10 +261,13 @@ public class SigningInActivity extends Activity {
             if (mConn != null) {
                 try {
                     if (mConn.getState() == ImConnection.LOGGING_IN) {
-                        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+                        
+                    	if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                             log("Cancelling sign in");
                         }
+                        
                         mConn.logout();
+                       
                         finish();
                     }
                 } catch (RemoteException e) {

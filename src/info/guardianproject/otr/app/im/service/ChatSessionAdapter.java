@@ -17,9 +17,11 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatListener;
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.OtrChatSessionAdapter;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
@@ -39,8 +41,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import net.java.otr4j.OtrKeyManager;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -69,8 +69,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     ImConnectionAdapter mConnection;
     ChatSessionManagerAdapter mChatSessionManager;
     
+    //all the otr bits that work per session
     OtrChatManager mOtrChatManager;
     OtrKeyManagerAdapter mOtrKeyManager;
+    OtrChatSessionAdapter mOtrChatSession;
     
     ChatSession mAdaptee;
     ListenerAdapter mListenerAdapter;
@@ -125,6 +127,19 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     	
     	return mOtrKeyManager;
     }
+    
+    public IOtrChatSession getOtrChatSession () 
+    {
+    	
+    	if (mOtrChatSession == null)
+    	{
+    		mOtrChatSession = new OtrChatSessionAdapter(mOtrChatManager.getLocalUserId(), mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
+    
+    	}
+    	
+    	return mOtrChatSession;
+    }
+    
 
     private void init(ChatGroup group) {
         mIsGroupChat = true;
@@ -272,7 +287,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
      * @param msg the message to send.
      *//*
     public void sendMessageWithoutHistory(String text) {
-        android.os.Debug.waitForDebugger();
+       
         Message msg = new Message(text);
         // TODO OTRCHAT use a lower level method
         mAdaptee.sendMessageAsync(msg);

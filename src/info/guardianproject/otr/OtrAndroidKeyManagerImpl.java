@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.service.AndroidSystemService;
 
 import java.io.BufferedInputStream;
@@ -42,7 +43,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	private final static String KEY_ALG = "DSA";
 	private final static int KEY_SIZE = 2048;
 	
-	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store) {
+	
+	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store, Context context) {
 		this.store = store;
 		
 	}
@@ -60,6 +62,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 			try
 			{
+				
+				android.os.Debug.waitForDebugger();
 				
 				FileInputStream fis = AndroidSystemService.getInstance().getContext().openFileInput(filepath);
 				
@@ -88,6 +92,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		private void store() throws FileNotFoundException, IOException {
 			
+
 			FileOutputStream fis = AndroidSystemService.getInstance().getContext().openFileOutput(filepath, Context.MODE_PRIVATE);
 
 			properties.store(fis, null);
@@ -302,7 +307,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		// Generate KeyPair.
 		KeyFactory keyFactory;
 		try {
-			keyFactory = KeyFactory.getInstance("DSA");
+			keyFactory = KeyFactory.getInstance(KEY_ALG);
 			return keyFactory.generatePublic(publicKeySpec);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -383,7 +388,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 				true);
 
 		//for (OtrKeyManagerListener l : listeners)
-			//l.verificationStatusChanged(sessionID);
+			//l.verificationStatusChanged(userId);
 		
 	
 	}

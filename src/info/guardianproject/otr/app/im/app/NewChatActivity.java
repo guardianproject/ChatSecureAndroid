@@ -16,6 +16,7 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -39,6 +40,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,6 +61,8 @@ public class NewChatActivity extends Activity {
     ChatView mChatView;
     SimpleAlertHandler mHandler;
 
+    MenuItem menuOtr;
+    
     private AlertDialog mSmileyDialog;
     private ChatSwitcher mChatSwitcher;
 
@@ -140,6 +144,7 @@ public class NewChatActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
+        menuOtr = menu.findItem(R.id.menu_view_otr);
         long providerId = mChatView.getProviderId();
         /*
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
@@ -168,6 +173,8 @@ public class NewChatActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        
+        updateOtrMenuState ();
 
         //XXX hide the invite menu, group chat is not supported by the server.
         //menu.findItem(R.id.menu_invite_contact).setVisible(false);
@@ -274,8 +281,57 @@ public class NewChatActivity extends Activity {
     private void switchOtrState ()
     {
     	//TODO OTRCHAT switch state on/off
-    	Toast.makeText(this, "OTR is automatically enabled (for now)", Toast.LENGTH_LONG).show();
     	
+    	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+    	 
+    	try {
+			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+			
+			if (!isOtrEnabled)
+			{
+				otrChatSession.startChatEncryption();
+				
+			}
+			else
+			{
+				otrChatSession.stopChatEncryption();
+
+			}
+			
+			updateOtrMenuState();
+			mChatView.updateWarningView();
+			
+			
+		} catch (RemoteException e) {
+			Log.d("Gibber", "error getting remote activity",e);
+		}
+    	
+    	
+    }
+    
+    private void updateOtrMenuState ()
+    {
+    	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+   	 
+    	try {
+			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+			
+			if (isOtrEnabled)
+			{
+				menuOtr.setTitle(R.string.menu_otr_stop);
+			}
+			else
+			{
+				menuOtr.setTitle(R.string.menu_otr_start);
+			}
+			
+			mChatView.updateWarningView();
+			
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     private void showRosterScreen() {

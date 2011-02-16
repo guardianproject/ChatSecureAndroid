@@ -88,8 +88,7 @@ public class OtrChatManager implements OtrEngineListener {
 		try {
 			otrEngine.refreshSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "refreshSession", e);
 		}
 	}
 	
@@ -103,8 +102,8 @@ public class OtrChatManager implements OtrEngineListener {
 		try {
 			otrEngine.startSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "startSession", e);
+
 		}
 	}
 	
@@ -112,8 +111,7 @@ public class OtrChatManager implements OtrEngineListener {
 		try {
 			otrEngine.endSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "endSession", e);
 		}
 	}
 
@@ -122,48 +120,48 @@ public class OtrChatManager implements OtrEngineListener {
 	}
 	
 	public String decryptMessage(String localUserId, String remoteUserId, String msg){
-		//Log.i(TAG,"session status: " + otrEngine.getSessionStatus(localSessionID));
 
-	//	Log.d(TAG, "in-cypher: "+msg);
 		String plain = null;
 		
-		if(otrEngine != null){
+		SessionID sessionId = getSessionId(localUserId,remoteUserId);
+		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+
+		if(otrEngine != null && sessionId != null){
 			try {
-				plain = otrEngine.transformReceiving(getSessionId(localUserId,remoteUserId), msg);
+				plain = otrEngine.transformReceiving(sessionId, msg);
 			} catch (OtrException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG,"error decrypting message",e);
 			}
-			
-			// TODO why remove HTML in text after decrypting?
-			//remove HTML in text
-			plain = plain.replaceAll("\\<.*?\\>", "");
 
-		//	Log.d(TAG,"in-plain: "+plain);
 		}
 		return plain;
 	}
 	
 	public String encryptMessage(String localUserId, String remoteUserId, String msg){
-//		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(localSessionID));
+		
+		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 
-	//	Log.d(TAG, "out-plain: "+msg);
-		if(otrEngine != null) {
+		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+
+		
+		if(otrEngine != null && sessionId != null) {
 			try {
-				msg = otrEngine.transformSending(getSessionId(localUserId,remoteUserId), msg);
+				msg = otrEngine.transformSending(sessionId, msg);
 			} catch (OtrException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.d(TAG, "error encrypting", e);
 			}	
-		//	Log.d(TAG, "out-cypher: "+msg);
 		}
 		return msg;
 	}
 
 	@Override
 	public void sessionStatusChanged(SessionID sessionID) {
-		Log.i(TAG,"session status changed: " + otrEngine.getSessionStatus(sessionID));
-		if (otrEngine.getSessionStatus(sessionID) == SessionStatus.ENCRYPTED)
+		SessionStatus sStatus = otrEngine.getSessionStatus(sessionID);
+		
+		Log.i(TAG,"session status changed: " + sStatus);
+		
+		if (sStatus == SessionStatus.ENCRYPTED)
 		{
 			String sKey = sessionID.getUserID();
 			if (sKey.indexOf("/")!=-1)
@@ -179,10 +177,10 @@ public class OtrChatManager implements OtrEngineListener {
 				Log.i(TAG,"remote key fingerprint: " + rkFingerprint);			
 			}
 		}
-		else if (otrEngine.getSessionStatus(sessionID) == SessionStatus.PLAINTEXT)
+		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
 		}
-		else if (otrEngine.getSessionStatus(sessionID) == SessionStatus.FINISHED)
+		else if (sStatus == SessionStatus.FINISHED)
 		{
 		}
 	}

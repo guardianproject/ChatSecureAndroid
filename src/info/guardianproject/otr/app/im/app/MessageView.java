@@ -98,6 +98,10 @@ public class MessageView extends LinearLayout {
             // the "\r\n" case.
             body = body.replace("\r\n", "\n").replace('\r', '\n');
         }
+        
+        //remove HTML tags since we can't display HTML
+        body = body.replaceAll("\\<.*?\\>", "");
+
 
         SpannableStringBuilder buf = new SpannableStringBuilder(contact);
         buf.append(": ");
@@ -106,7 +110,9 @@ public class MessageView extends LinearLayout {
         } else {
             buf.setSpan(ChatView.STYLE_BOLD, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-            buf.append(smileyRes.markup(body));
+            //sorry smileyRes
+            //buf.append(smileyRes.markup(body));
+            buf.append(body);
 
             if (date != null) {
                 appendTimeStamp(buf, date);

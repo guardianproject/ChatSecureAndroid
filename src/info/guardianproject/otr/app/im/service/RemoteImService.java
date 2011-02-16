@@ -294,8 +294,10 @@ public class RemoteImService extends Service {
                 }
             }
             mRemoteListeners.finishBroadcast();
+            
             // TODO OTRCHAT add support for more than one connection type (this is a kludge)
             mOtrChatManager = new OtrChatManager(imConnectionAdapter);
+            
             return imConnectionAdapter;
         } catch (ImException e) {
             Log.e(TAG, "Error creating connection", e);

@@ -22,7 +22,7 @@
 
 
     <item android:id="@+id/menu_view_otr"
-        android:title="@string/menu_view_otr"/>
+        android:title="@string/menu_otr_start"/>
 
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"/>

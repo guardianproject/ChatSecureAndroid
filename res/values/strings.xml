@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">Gibber</string>
+    <string name="im_label">Gibberbot</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
@@ -91,7 +91,8 @@
     user to end a chat with a contact. May be overrided by the plugin.-->
     
     <!--  OTRCHAT Adding in new menu options -->
-    <string name="menu_view_otr">OTR Encrypt</string>
+    <string name="menu_otr_start">Start Encryption</string>
+    <string name="menu_otr_stop">Stop Encryption</string>
     
     
     <string name="menu_end_conversation">End chat</string>
@@ -165,7 +166,7 @@
 
     <!-- These strings are displayed the sign in progress screen.-->
     <!-- The title of the sign-in progress screen.  -->
-    <string name="signing_in_to">getting the gibber going...</string>
+    <string name="signing_in_to">getting the Gibberbot going...</string>
     <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
     <string name="signing_in_wait">Signing in\u2026</string>
     <!-- Dialog title -->
@@ -530,15 +531,15 @@
     <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
     
     	<!-- Welcome Splash Screen -->
-	<string name="app_name">Gibber</string>
-    <string name="welcome_first">First time using Gibber?</string>
+	<string name="app_name">Gibberbot</string>
+    <string name="welcome_first">First time using Gibberbot?</string>
 	<string name="welcome_skip">Can\'t wait to get started?</string>
-    <string name="welcome_about">About Gibber</string>
+    <string name="welcome_about">About Gibberbot</string>
     <string name="welcome_account">Account Setup</string>
 
 	<!-- About: Welcome -->
-	<string name="about_welcome_title">Welcome to Gibber</string>
-	<string name="about_welcome">Gibber is a fully featured messaging application integrated with the OTR encrypted chat protocol. Built on Google\'s Talk app, Gibber has been modified to support the XMPP IM chat protocol directly, and we\'re planning on expaning to other protocols soon.\n\nWe\'re supporters of Open-Source software development. Find us online at https://guardianproject.info</string>
+	<string name="about_welcome_title">Welcome to Gibberbot</string>
+	<string name="about_welcome">Gibberbot is a fully featured messaging application integrated with the OTR encrypted chat protocol. Built on Google\'s Talk app, Gibberbot has been modified to support the XMPP IM chat protocol directly, and we\'re planning on expaning to other protocols soon.\n\nWe\'re supporters of Open-Source software development. Find us online at https://guardianproject.info</string>
  
 	<!-- About: OTR -->
 	<string name="about_otr_title">What is OTR?</string>
@@ -546,11 +547,11 @@
 	
 	<!-- About: Security -->
     <string name="about_security_title">Are My Chats Secure?</string>
-	<string name="about_security">By default Gibber will automatically prompt you to encrypt conversations when messaging with others using a compatible client. Access to Gibber is also restricted by a passphrase that you\'ll choose during setup. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</string>
+	<string name="about_security">By default Gibberbot will automatically prompt you to encrypt conversations when messaging with others using a compatible client. Access to Gibberbot is also restricted by a passphrase that you\'ll choose during setup. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</string>
 	
 	<!-- Setup: Passphrase-->
     <string name="setup_passphrase_title">Passphrase Setup</string>
-	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibber data from unjust access.</string>
+	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibberbot data from unjust access.</string>
     <string name="setup_passphrase_label1">Passphrase:</string>
     <string name="setup_passphrase_label2">Passphrase (again):</string>
 	
@@ -569,8 +570,8 @@
 	<string name="account_setup_pers_pw_on">Password cached</string>
 	<string name="account_setup_pers_pw_off">Password not cached</string>
 	<string name="account_setup_pers_auto_title">Automatically Sign In</string>
-	<string name="account_setup_pers_auto_on">Connect at Gibber start-up</string>
-	<string name="account_setup_pers_auto_off">Don\'t connect at Gibber start-up</string>
+	<string name="account_setup_pers_auto_on">Connect at Gibberbot start-up</string>
+	<string name="account_setup_pers_auto_off">Don\'t connect at Gibberbot start-up</string>
 	<string name="account_setup_pers_now_title">Sign In Now</string>
 	<string name="account_setup_pers_now_on">Connect following account setup</string>
 	<string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
@@ -596,11 +597,13 @@
 	<string name="account_setup_signin_c">Signing in...</string>
 
 	<!-- Account Setup: Sign In Errors -->
-	<string name="account_setup_error_validating">Gibber encountered an error while validating your username or password - please check them and try again.</string>
-	<string name="account_setup_error_keypair">Gibber encountered an error while generating a keypair.</string>
-	<string name="account_setup_error_server">Gibber encountered an error while connecting to the chat server - please check your configuration and try again.</string>
-	<string name="account_setup_error_connectivity">Gibber encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+	<string name="account_setup_error_validating">Gibberbot encountered an error while validating your username or password - please check them and try again.</string>
+	<string name="account_setup_error_keypair">Gibberbot encountered an error while generating a keypair.</string>
+	<string name="account_setup_error_server">Gibberbot encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+	<string name="account_setup_error_connectivity">Gibberbot encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
     
     
     <string name="label_fingerprint">OTR Public Key Fingerprint</string>
+    <string name="menu_sign_in">Sign In</string>
+    
 </resources>

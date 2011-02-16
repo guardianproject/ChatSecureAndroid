@@ -157,10 +157,12 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        
+    	MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+        
         menu.findItem(R.id.menu_invite_user).setTitle(
             brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
 

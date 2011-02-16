@@ -31,13 +31,16 @@ public class OtrChatListener implements MessageListener {
 		String from = msg.getFrom().getFullName();
 		String to = msg.getTo().getFullName();
 		
-
+ 		android.os.Debug.waitForDebugger();
+ 		
 		if (body.indexOf(OTR_V12_STRING) != -1
 				|| body.indexOf(OTR_V2ONLY_STRING) != -1) {
+			
 			if (mOtrChatManager.isEncryptedSession(to, from)) {
 				mOtrChatManager.refreshSession(to, from);
 			} else {
 				mOtrChatManager.startSession(to, from);
+				
 			}
 			
 			
@@ -45,7 +48,14 @@ public class OtrChatListener implements MessageListener {
 			
 
 		} else {
+
+
 			if (body.indexOf(OTR_HEADER_STRING) != -1) {
+				
+			//	if (!mOtrChatManager.isEncryptedSession(to, from)) {
+				//	mOtrChatManager.refreshSession(to, from);
+			//	}
+					
 				body = mOtrChatManager.decryptMessage(to, from, body);
 			}
 			Message rec = new Message(body);

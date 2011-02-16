@@ -142,6 +142,7 @@ public class ChatView extends LinearLayout {
 
     private IChatSession mChatSession;
     private IOtrKeyManager mOtrKeyManager;
+    private IOtrChatSession mOtrChatSession;
     
     private long mChatId;
     int mType;
@@ -243,6 +244,8 @@ public class ChatView extends LinearLayout {
         public void onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
             scheduleRequery(0);
+            
+           
         }
 
         @Override
@@ -467,13 +470,14 @@ public class ChatView extends LinearLayout {
             return;
         }
 
+        /*
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         mHistory.setBackgroundDrawable(
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_CHAT_WATERMARK));
 
         if (mMarkup == null) {
             mMarkup = new Markup(brandingRes);
-        }
+        }*/
 
         if (mMessageAdapter == null) {
             mMessageAdapter = new MessageAdapter(mScreen, null);
@@ -547,21 +551,31 @@ public class ChatView extends LinearLayout {
             return;
         } else {
             mChatSession = getChatSession(mCursor);
-            try
-            {
-            	mOtrKeyManager = mChatSession.getOtrKeyManager();
-            	
-            }
-            catch (RemoteException e)
-            {
-            	Log.e(ImApp.LOG_TAG, "unable to get otr key mgr",e);
-            	
-            }
+          
+            initOtr();
+            
             updateChat();
             registerChatListener();
         }
     }
 
+    private void initOtr ()
+    {
+
+        try
+        {
+        	mOtrKeyManager = mChatSession.getOtrKeyManager();
+        	mOtrChatSession = mChatSession.getOtrChatSession();
+
+        }
+        catch (RemoteException e)
+        {
+        	Log.e(ImApp.LOG_TAG, "unable to get otr key mgr",e);
+        	
+        }
+        
+    }
+    
     public void bindInvitation(long invitationId) {
         Uri uri = ContentUris.withAppendedId(Imps.Invitation.CONTENT_URI, invitationId);
         ContentResolver cr = mScreen.getContentResolver();
@@ -784,6 +798,9 @@ public class ChatView extends LinearLayout {
     	String mLocalUserName = "";
     	boolean isVerified = false;
     	
+    	if (mOtrKeyManager == null)
+    		 initOtr ();
+    	
     	try {
     		
     		remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
@@ -880,6 +897,13 @@ public class ChatView extends LinearLayout {
     	return mOtrKeyManager;
     }
     
+    public IOtrChatSession getOtrChatSession ()
+    {
+    	initOtr();
+    	
+    	return mOtrChatSession;
+    }
+    
     private IChatSession getChatSession(Cursor cursor) {
         long providerId = cursor.getLong(PROVIDER_COLUMN);
         String username = cursor.getString(USERNAME_COLUMN);
@@ -892,6 +916,8 @@ public class ChatView extends LinearLayout {
                 mHandler.showServiceErrorAlert();
             }
         }
+        
+      
         return null;
     }
 
@@ -926,66 +952,7 @@ public class ChatView extends LinearLayout {
         
     }
     
-    
-    /*
-    boolean securityTextSet = false;
-    
-    void updateSecureWarning ()
-    {
-// TODO OTRCHAT use the OtrChatManager directly here
-    	try
-    	{  	
-	        if (mChatSessionMgr!=null)
-	        {
-	            try {
-					if (mChatSessionMgr.isEncryptedSession(mUserName))
-					{
-						if (!securityTextSet)
-						{
-					
-							String localKeyFingerprint = mChatSessionMgr.getLocalKeyFingerprint(mUserName);
-							String remoteKeyFingerprint = mChatSessionMgr.getRemoteKeyFingerprint(mUserName);
-		
-							StringBuffer statusText = new StringBuffer();
-							statusText.append("ENCRYPTED CHAT SESSION (key fingerprints below)");
-							statusText.append("\n");
-							statusText.append("You: " + localKeyFingerprint);
-							statusText.append("\n");
-							statusText.append("Them: " + remoteKeyFingerprint);
-							
-							mStatusWarningView.setVisibility(View.VISIBLE);
-							mWarningIcon.setVisibility(View.INVISIBLE);
-						    mWarningText.setText(statusText.toString());
-						     mWarningText.setTextSize(10);
-	
-						    mWarningText.setTextColor(Color.parseColor("#005500"));
-						    
-						    securityTextSet = true;
-						}
-					    
-					}
-					else
-					{
-						mStatusWarningView.setVisibility(View.VISIBLE);
-						mWarningIcon.setVisibility(View.VISIBLE);
-						mWarningText.setTextColor(Color.RED);
-					    
-					    mWarningText.setText("WARNING: Your chat is *NOT SECURE*");
-					    
-					    securityTextSet = false;
-					}
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-	        }
-    	}
-    	catch (Exception e)
-    	{
-    		Log.e("ChatView","Error checking security status: " + e);
-    		
-    	} 
-    }
-    */
+  
 
     void registerChatListener() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
@@ -1058,6 +1025,19 @@ public class ChatView extends LinearLayout {
         String message = null;
         boolean isConnected;
 
+        
+        boolean isOtrChat = false;
+        
+        //check if the chat is otr or not
+        if (mOtrChatSession != null)
+        {
+        	try {
+				isOtrChat = mOtrChatSession.isChatEncrypted();
+			} catch (RemoteException e) {
+				Log.w("Gibber","Unable to call remote OtrChatSession from ChatView",e);
+			}
+        }
+        
         try {
             IImConnection conn = mApp.getConnection(mProviderId);
             isConnected = (conn == null) ? false
@@ -1084,14 +1064,14 @@ public class ChatView extends LinearLayout {
             		String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
 					boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
 					
-            		if (rFingerprint != null)
+            		if (isOtrChat && rFingerprint != null)
             		{
             			if (!rVerified)
             			{
-            				message = "UNverified Secure Chat: You should verify the key fingerprint for '" + mUserName + "'";
+            				message = "Secure Chat: You should verify the key fingerprint for '" + mUserName + "' to make sure it is really them.";
 
-                			mWarningText.setTextColor(Color.WHITE);
-                			mWarningText.setBackgroundColor(Color.RED);
+                			mWarningText.setTextColor(Color.BLACK);
+                			mWarningText.setBackgroundColor(Color.YELLOW);
             			}
             			else
             			{
@@ -1127,6 +1107,8 @@ public class ChatView extends LinearLayout {
             mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
         }
+        
+        
     }
 
     @Override
@@ -1153,7 +1135,7 @@ public class ChatView extends LinearLayout {
                 mChatSession.markAsRead();
                 // TODO OTRCHAT updateSecureWarning
                 //updateSecureWarning();
-
+                updateWarningView();
              
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
@@ -1174,16 +1156,20 @@ public class ChatView extends LinearLayout {
             }
 
             switch(msg.what) {
-            case ImApp.EVENT_CONNECTION_LOGGED_IN:
-                log("Connection resumed");
-                updateWarningView();
-                return;
-            case ImApp.EVENT_CONNECTION_SUSPENDED:
-                log("Connection suspended");
-                updateWarningView();
-                return;
+            
+	            case ImApp.EVENT_CONNECTION_LOGGED_IN:
+	                log("Connection resumed");
+	                updateWarningView();
+	                return;
+	            case ImApp.EVENT_CONNECTION_SUSPENDED:
+	                log("Connection suspended");
+	                updateWarningView();
+	                return;
+	            
             }
 
+            updateWarningView();
+            
             super.handleMessage(msg);
         }
     }
@@ -1201,6 +1187,9 @@ public class ChatView extends LinearLayout {
                             bindChat(id);
                         }});
                 }
+                
+                updateWarningView();
+                
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
@@ -1555,6 +1544,7 @@ public class ChatView extends LinearLayout {
             switch (type) {
                 case Imps.MessageType.INCOMING:
                     messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
+                    
                     break;
 
                 case Imps.MessageType.OUTGOING:
@@ -1573,6 +1563,9 @@ public class ChatView extends LinearLayout {
             if (!isScrolling()) {
                 mBgMaker.setBackground(messageView, contact, type);
             }
+            
+           
+            updateWarningView();
 
             // if showTimeStamp is false for the latest message, then set a timer to query the
             // cursor again in a minute, so we can update the last message timestamp if no new

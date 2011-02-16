@@ -20,6 +20,8 @@ package info.guardianproject.otr.app.im;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.IOtrChatSession;
+
 
 
 interface IChatSession {
@@ -88,6 +90,11 @@ interface IChatSession {
     void markAsRead();   
     
     /**
+    * Get OTR Session Manager
+    */
+    IOtrChatSession getOtrChatSession();
+    
+     /**
     * Get OTR Key Manager
     */
     IOtrKeyManager getOtrKeyManager();
