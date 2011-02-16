@@ -34,7 +34,7 @@
         android:paddingLeft="5dip"
         android:paddingBottom="5dip"
         android:paddingRight="5dip"
-        android:background="#ffa9a9a9">
+        android:background="#cca9a9a9">
 
         <LinearLayout
             android:layout_width="wrap_content"

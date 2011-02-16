@@ -64,7 +64,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	@Override
 	public KeyPair getKeyPair(SessionID sessionID) {
-		android.os.Debug.waitForDebugger();
 		KeyPair kp = null;
 		kp = mOtrKeyManager.loadLocalKeyPair(sessionID);
 		if (kp == null)

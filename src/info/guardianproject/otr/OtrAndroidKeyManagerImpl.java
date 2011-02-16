@@ -63,7 +63,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try
 			{
 				
-				android.os.Debug.waitForDebugger();
 				
 				FileInputStream fis = AndroidSystemService.getInstance().getContext().openFileInput(filepath);
 				
