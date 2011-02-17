@@ -54,17 +54,23 @@ public class OtrChatManager implements OtrEngineListener {
 		return this.myHost.getKeyManager();
 	}
 	
+	public static String processUserId (String userId)
+	{
+		return userId.split(":")[0]; //remove any port indication in the username
+	}
+	
 	public SessionID getSessionId (String localUserId, String remoteUserId)
 	{
-		mlocalUserId = localUserId;
+		mlocalUserId = processUserId(localUserId);
 		
-		SessionID sessionId = sessions.get(remoteUserId);
+		SessionID sessionId = sessions.get(processUserId(remoteUserId));
 		
 		if (sessionId == null)
 		{
-			sessionId = new SessionID(localUserId, remoteUserId, "XMPP");
+			sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
 			sessions.put(remoteUserId, sessionId);
 		}
+		
 		return sessionId;
 	}
 	
@@ -77,6 +83,8 @@ public class OtrChatManager implements OtrEngineListener {
 	 */
 	public boolean isEncryptedSession (String localUserId, String remoteUserId)
 	{
+		android.os.Debug.waitForDebugger();
+		
 		if (otrEngine.getSessionStatus(getSessionId(localUserId,remoteUserId)) == SessionStatus.ENCRYPTED)
 			return true;
 		else
@@ -99,6 +107,8 @@ public class OtrChatManager implements OtrEngineListener {
 	 * @param remoteUserId i.e. the account that this user is talking to
 	 */
 	public void startSession(String localUserId, String remoteUserId) {
+		
+	
 		try {
 			otrEngine.startSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {

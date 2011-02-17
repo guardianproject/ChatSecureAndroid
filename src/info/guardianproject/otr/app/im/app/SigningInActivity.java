@@ -43,6 +43,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,6 +79,9 @@ public class SigningInActivity extends Activity {
 
     protected static final int ID_CANCEL_SIGNIN = Menu.FIRST + 1;
 
+    private Dialog dl = null;
+    
+    
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -139,21 +143,32 @@ public class SigningInActivity extends Activity {
 
         c.close();
         
-        if (mPassword == null || mPassword.length() == 0)
+        mApp = ImApp.getApplication(this);
+
+        IImConnection conn = mApp.getConnection(mProviderId);
+
+        try
         {
-        	//show password prompt
-        	showPasswordDialog();
+	        if (conn == null || (conn.getState() != ImConnection.LOGGED_IN) && (mPassword == null || mPassword.length() == 0))
+	        {
+	        	//show password prompt
+	        	showPasswordDialog();
+	        }
+	        else
+	        {
+	        	  gogo();
+	        }
+	      
         }
-        else
+        catch (Exception e)
         {
-        	gogo();
+        	log("bad things: " + e);
         }
     }
     
     public void gogo()
     {
        
-        mApp = ImApp.getApplication(this);
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
 
@@ -167,7 +182,7 @@ public class SigningInActivity extends Activity {
 
         mHandler = new SimpleAlertHandler(this);
         mListener = new MyConnectionListener(mHandler);
-
+        
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {
                 if (mApp.serviceConnected()) {
@@ -183,8 +198,6 @@ public class SigningInActivity extends Activity {
         setResult(RESULT_OK);
     }
 
-    private Dialog dl = null;
-    
 	private void gotCredentials (String usr, String pwd)
 	{
 		this.mPassword = pwd;
@@ -194,41 +207,17 @@ public class SigningInActivity extends Activity {
 	
     private void showPasswordDialog ()
 	{
-    	/*
-		dl = new Dialog(this);
-	    dl.setTitle("Enter Your Password:");
-	 dl.setCancelable(false);
-	 
-	 
-	    dl.setContentView(R.layout.password_prompt);
-	 dl.show();
-	    
-	    EditText inputBox1 = (EditText)dl.findViewById(R.id.pwd);
-	    inputBox1.setText("");
-	    
-	    Button bOk = (Button) dl.findViewById(R.id.ok);
-	    bOk.setOnClickListener(new OnClickListener() {
-	            public void onClick(View v) {
-	              
-
-	                EditText inputBox2 = (EditText)dl.findViewById(R.id.pwd);
-	                String pwd = inputBox2.getText().toString();
-	                inputBox2.setText("");
-
-	                dl.dismiss();
-	                
-	                gotCredentials(null, pwd);
-	            }
-	    });
-	    */
+    	
     	
     	 AlertDialog.Builder alert = new AlertDialog.Builder(this);  
 
          alert.setTitle("Password");  
-         alert.setMessage("Please enter your password to login:");  
+         alert.setMessage("Enter your chat account password:");  
 
 
          final EditText input = new EditText(this);  
+         input.setTransformationMethod(new PasswordTransformationMethod());
+         
          alert.setView(input);  
 
          alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
@@ -285,8 +274,11 @@ public class SigningInActivity extends Activity {
                     mConn.registerConnectionListener(mListener);
                     
                     mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
+                 	mConn.login(mAccountId, mUserName, mPassword, true, false);
+
+                  
+                    	
                     
-                    mConn.login(mAccountId, mUserName, mPassword, true, false);
                 } else {
                     promptForBackgroundDataSetting();
                     return;

@@ -95,24 +95,25 @@ android:enabled="true"/>
                 android:key="enable-notifications"
                 android:title="@string/notification_enabled_title"
                 android:summary="@string/notification_enabled_summary"
-                android:defaultValue="true"
-                android:persistent="false" />
+                android:defaultValue="true" />
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="enable-notifications"
                 android:key="notification-vibrate"
-                android:defaultValue="false"
-                android:persistent="false"
                 android:title="@string/notification_vibrate_title"
-                android:summary="@string/notification_vibrate_summary" />
+                android:summary="@string/notification_vibrate_summary"
+                android:defaultValue="true"
+                 />
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="enable-notifications"
                 android:key="notification-sound"
                 android:title="@string/notification_sound_title"
-                android:summary="@string/notification_sound_summary" />
+                android:summary="@string/notification_sound_summary"
+                android:defaultValue="false"
+                 />
 <!-- 
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"

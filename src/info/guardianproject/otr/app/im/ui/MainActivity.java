@@ -108,14 +108,13 @@ public class MainActivity extends Activity {
         }
         else 
         {
-        	
         	        	
             String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
             
             final String pass = prefs.getString("pref_account_pass", null);
 
             ContentResolver cr = getContentResolver();
-
+            
             long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,pass);
             
             mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);

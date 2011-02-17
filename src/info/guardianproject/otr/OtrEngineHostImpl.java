@@ -14,6 +14,7 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import android.util.Log;
+import android.widget.Toast;
 
 /* OtrEngineHostImpl is the connects this app and the OtrEngine
  * http://code.google.com/p/otr4j/wiki/QuickStart
@@ -85,7 +86,9 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
 		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
 		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
+		
 		Message msg = new Message(text);
+		
 		msg.setFrom(mConnection.getLoginUser().getAddress());
 		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
@@ -99,6 +102,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
 		Log.w(TAG, sessionID.getUserID() + ": " +  warning);
+		
+    
 	}
 
 }

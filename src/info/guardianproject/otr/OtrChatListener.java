@@ -31,19 +31,25 @@ public class OtrChatListener implements MessageListener {
 		String from = msg.getFrom().getFullName();
 		String to = msg.getTo().getFullName();
 		
+ 		android.os.Debug.waitForDebugger();
+ 		
+ 		
+ 		//remove port number from to/from names
+ 		String otrTo = OtrChatManager.processUserId(to);
+ 		String otrFrom = OtrChatManager.processUserId(from);
  		
 		if (body.indexOf(OTR_V12_STRING) != -1
 				|| body.indexOf(OTR_V2ONLY_STRING) != -1) {
 			
-			if (mOtrChatManager.isEncryptedSession(to, from)) {
-				mOtrChatManager.refreshSession(to, from);
+			if (mOtrChatManager.isEncryptedSession(otrTo, otrFrom)) {
+				mOtrChatManager.refreshSession(otrTo, otrFrom);
 			} else {
-				mOtrChatManager.startSession(to, from);
+				mOtrChatManager.startSession(otrTo, otrFrom);
 				
 			}
 			
 			
-			SessionID sessionId = mOtrChatManager.getSessionId(to,from);
+			SessionID sessionId = mOtrChatManager.getSessionId(otrTo,otrFrom);
 			
 
 		} else {
@@ -55,7 +61,7 @@ public class OtrChatListener implements MessageListener {
 				//	mOtrChatManager.refreshSession(to, from);
 			//	}
 					
-				body = mOtrChatManager.decryptMessage(to, from, body);
+				body = mOtrChatManager.decryptMessage(otrTo, otrFrom, body);
 			}
 			Message rec = new Message(body);
 			rec.setID(msg.getID());

@@ -104,16 +104,19 @@ public class ChatSession {
      */
     public void sendMessageAsync(Message message) {
         message.setTo(mParticipant.getAddress());
+        
         // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession
         mHistoryMessages.add(message);
         
         String localUserId = message.getFrom().getFullName();
         String remoteUserId =  message.getTo().getFullName();
+        
         if (mOtrChatManager.isEncryptedSession(localUserId, remoteUserId)) {
         	String encryptedBody = mOtrChatManager.encryptMessage(localUserId, 
         			remoteUserId, message.getBody());
         	message.setBody(encryptedBody);
         }
+        
         mManager.sendMessageAsync(this, message);
     }
 
