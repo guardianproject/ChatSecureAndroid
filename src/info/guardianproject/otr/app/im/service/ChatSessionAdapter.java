@@ -92,11 +92,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     private boolean mHasUnreadMessages;
 
+    private RemoteImService service = null;
+    
     public ChatSessionAdapter(ChatSession adaptee,
             ImConnectionAdapter connection) {
         mAdaptee = adaptee;
         mConnection = connection;
-        RemoteImService service = connection.getContext();
+        
+        service = connection.getContext();
         mContentResolver = service.getContentResolver();
         mStatusBarNotifier = service.getStatusBarNotifier();
         mOtrChatManager = service.getOtrChatManager();
@@ -119,9 +122,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     
     public IOtrKeyManager getOtrKeyManager () 
     {
-    	if (mOtrKeyManager == null)
+    	
+    	if (mOtrChatManager == null)
+    		mOtrChatManager = service.getOtrChatManager();
+
+    	if (mOtrChatManager !=null && mOtrKeyManager == null)
     	{
-    		mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager.getLocalUserId(), mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
+    		mOtrKeyManager = new OtrKeyManagerAdapter(mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
     
     	}
     	
@@ -131,9 +138,17 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     public IOtrChatSession getOtrChatSession () 
     {
     	
-    	if (mOtrChatSession == null)
+    	if (mOtrChatManager == null)
+    		mOtrChatManager = service.getOtrChatManager();
+
+    	
+    	if (mOtrChatManager !=null && mOtrChatSession == null)
     	{
-    		mOtrChatSession = new OtrChatSessionAdapter(mOtrChatManager.getLocalUserId(), mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
+    		
+    		String localUser = mConnection.getLoginUser().getAddress().getFullName();
+    		String remoteUser = mAdaptee.getParticipant().getAddress().getFullName();
+    		
+    		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager.getKeyManager(), mOtrChatManager);
     
     	}
     	

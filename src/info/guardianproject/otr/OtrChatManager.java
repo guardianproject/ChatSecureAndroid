@@ -28,14 +28,14 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	private Hashtable<String,SessionID> sessions;
 	
-	private String mlocalUserId;
 	
 	public OtrChatManager(ImConnectionAdapter imConnectionAdapter){
 		try
 		{
+			
+			
 			myHost = new OtrEngineHostImpl(imConnectionAdapter, 
-				new OtrPolicyImpl(OtrPolicy.ALLOW_V2
-						| OtrPolicy.ERROR_START_AKE));
+				new OtrPolicyImpl(OtrPolicy.OPPORTUNISTIC));
 		
 			otrEngine = new OtrEngineImpl(myHost);
 			otrEngine.addOtrEngineListener(this);
@@ -61,14 +61,15 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	public SessionID getSessionId (String localUserId, String remoteUserId)
 	{
-		mlocalUserId = processUserId(localUserId);
+		
 		
 		SessionID sessionId = sessions.get(processUserId(remoteUserId));
+		
 		
 		if (sessionId == null)
 		{
 			sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
-			sessions.put(remoteUserId, sessionId);
+			sessions.put( processUserId(remoteUserId), sessionId);
 		}
 		
 		return sessionId;
@@ -81,14 +82,12 @@ public class OtrChatManager implements OtrEngineListener {
 	 * @param remoteUserId
 	 * @return state
 	 */
-	public boolean isEncryptedSession (String localUserId, String remoteUserId)
+	public SessionStatus getSessionStatus (String localUserId, String remoteUserId)
 	{
-		android.os.Debug.waitForDebugger();
+		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 		
-		if (otrEngine.getSessionStatus(getSessionId(localUserId,remoteUserId)) == SessionStatus.ENCRYPTED)
-			return true;
-		else
-			return false;
+		return otrEngine.getSessionStatus(sessionId);
+		
 	}
 
 	public void refreshSession (String localUserId, String remoteUserId)
@@ -106,20 +105,29 @@ public class OtrChatManager implements OtrEngineListener {
 	 * @param localUserId i.e. the account of the user of this phone
 	 * @param remoteUserId i.e. the account that this user is talking to
 	 */
-	public void startSession(String localUserId, String remoteUserId) {
+	public SessionID startSession(String localUserId, String remoteUserId) {
 		
 	
 		try {
-			otrEngine.startSession(getSessionId(localUserId,remoteUserId));
+			SessionID sessionId = getSessionId(localUserId, remoteUserId);
+			otrEngine.startSession(sessionId);
+			
+			return sessionId;
+			
 		} catch (OtrException e) {
 			Log.e(TAG, "startSession", e);
 
 		}
+		
+		return null;
 	}
 	
 	public void endSession(String localUserId, String remoteUserId){
+		
 		try {
-			otrEngine.endSession(getSessionId(localUserId,remoteUserId));
+			SessionID sessionId = getSessionId(localUserId,remoteUserId);
+		
+			otrEngine.endSession(sessionId);
 		} catch (OtrException e) {
 			Log.e(TAG, "endSession", e);
 		}
@@ -148,7 +156,42 @@ public class OtrChatManager implements OtrEngineListener {
 		return plain;
 	}
 	
+	public void processMessageReceiving(String localUserId, String remoteUserId, String msg)
+	{
+
+		
+		SessionID sessionId = getSessionId(localUserId,remoteUserId);
+		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+
+		if(otrEngine != null && sessionId != null){
+			try {
+				otrEngine.transformReceiving(sessionId, msg);
+			} catch (OtrException e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG,"error decrypting message",e);
+			}
+
+		}
+	}
+	
 	public String encryptMessage(String localUserId, String remoteUserId, String msg){
+		
+		SessionID sessionId = getSessionId(localUserId,remoteUserId);
+
+		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+
+		
+		if(otrEngine != null && sessionId != null) {
+			try {
+				msg = otrEngine.transformSending(sessionId, msg);
+			} catch (OtrException e) {
+				Log.d(TAG, "error encrypting", e);
+			}	
+		}
+		return msg;
+	}
+	
+	public String processMessageSending(String localUserId, String remoteUserId, String msg){
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 
@@ -215,11 +258,4 @@ public class OtrChatManager implements OtrEngineListener {
 		return rkFingerprint;
 	}
 
-	public void setLocalUserId(String localUser) {
-		this.mlocalUserId = localUser;
-	}
-
-	public String getLocalUserId() {
-		return mlocalUserId;
-	}
 }

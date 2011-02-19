@@ -149,10 +149,18 @@ public class SigningInActivity extends Activity {
 
         try
         {
-	        if (conn == null || (conn.getState() != ImConnection.LOGGED_IN) && (mPassword == null || mPassword.length() == 0))
+	        if (conn == null || (conn.getState() != ImConnection.LOGGED_IN))
 	        {
-	        	//show password prompt
-	        	showPasswordDialog();
+	        	
+	        	 if (mPassword == null || mPassword.length() == 0)
+	        	 {
+	        		 //show password prompt
+	        		 showPasswordDialog();
+	        	 }
+	        	 else
+	        	 {
+	        		 gogo();
+	        	 }
 	        }
 	        else
 	        {

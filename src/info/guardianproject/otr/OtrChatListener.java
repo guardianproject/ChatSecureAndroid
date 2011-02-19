@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionStatus;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
@@ -14,10 +15,9 @@ public class OtrChatListener implements MessageListener {
 
 	private final static String TAG = "OtrChatListener";
 	// we want to support OTR v2 only since v1 has security issues
-	private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
-	private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
-
-	private final static String OTR_HEADER_STRING = "?OTR";
+	//private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
+	//private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
+	private final static String OTR_HEADER = "?OTR";
 	
 	public OtrChatListener (OtrChatManager otrChatManager, MessageListener listener)
 	{
@@ -31,50 +31,50 @@ public class OtrChatListener implements MessageListener {
 		String from = msg.getFrom().getFullName();
 		String to = msg.getTo().getFullName();
 		
- 		android.os.Debug.waitForDebugger();
- 		
- 		
  		//remove port number from to/from names
- 		String otrTo = OtrChatManager.processUserId(to);
- 		String otrFrom = OtrChatManager.processUserId(from);
- 		
-		if (body.indexOf(OTR_V12_STRING) != -1
-				|| body.indexOf(OTR_V2ONLY_STRING) != -1) {
-			
-			if (mOtrChatManager.isEncryptedSession(otrTo, otrFrom)) {
-				mOtrChatManager.refreshSession(otrTo, otrFrom);
-			} else {
-				mOtrChatManager.startSession(otrTo, otrFrom);
+ 		String localUserId = OtrChatManager.processUserId(to);
+ 		String remoteUserId = OtrChatManager.processUserId(from);
+		 SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
+
+		 //	        	mOtrChatManager.refreshSession(localUserId, remoteUserId);
+
+		 
+			if (otrStatus == SessionStatus.ENCRYPTED)
+	        {
+				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
+
+				if (body != null)
+				{
+					msg.setBody(body);
 				
+					mMessageListener.onIncomingMessage(session, msg);
+				}
 			}
-			
-			
-			SessionID sessionId = mOtrChatManager.getSessionId(otrTo,otrFrom);
-			
-
-		} else {
-
-
-			if (body.indexOf(OTR_HEADER_STRING) != -1) {
+			else if (otrStatus == SessionStatus.PLAINTEXT)
+			{
+				//this is most likely a DH setup message, so we will process and swallow it
+				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
-			//	if (!mOtrChatManager.isEncryptedSession(to, from)) {
-				//	mOtrChatManager.refreshSession(to, from);
-			//	}
-					
-				body = mOtrChatManager.decryptMessage(otrTo, otrFrom, body);
+				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
+				
+				if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
+				{
+					msg.setBody(body);
+				
+					mMessageListener.onIncomingMessage(session, msg);
+				}
 			}
-			Message rec = new Message(body);
-			rec.setID(msg.getID());
-			rec.setFrom(msg.getFrom());
-			rec.setTo(msg.getTo());
-			rec.setDateTime(msg.getDateTime());
-			mMessageListener.onIncomingMessage(session, rec);
-		}
+			else
+			{
+				mMessageListener.onIncomingMessage(session, msg);
+			}
+		//}
 	}
 
 	@Override
 	public void onSendMessageError(ChatSession session, Message msg,
 			ImErrorInfo error) {
+		
 		mMessageListener.onSendMessageError(session, msg, error);
 		Log.i(TAG, "onSendMessageError: " + msg.toString());
 	}

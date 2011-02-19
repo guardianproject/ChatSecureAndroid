@@ -26,21 +26,21 @@
 <EditTextPreference android:key="pref_account_user"
 android:defaultValue=""
 android:title="Username"
-android:summary="username or login for XMPP Account"
+android:summary="Just the username part of your account without the @yourhost.com"
 android:dialogTitle="Username"
 />
 
 <EditTextPreference android:key="pref_account_pass"
 android:defaultValue=""
 android:title="Password"
-android:summary="Password for XMPP Account (optional / will prompt)"
+android:summary="Password for account (optional / will prompt)"
 android:dialogTitle="Password"
  android:password="true"/>
 
 <EditTextPreference android:key="pref_account_host"
 android:defaultValue=""
 android:title="Hostname"
-android:summary="Internet Hostname for XMPP Server"
+android:summary="The chat service you use - gmail.com, jabber.org, etc"
 android:dialogTitle="Hostname"
 />
 
@@ -75,7 +75,7 @@ android:enabled="true"/>
 android:defaultValue="false" 
 android:key="pref_security_use_tor"
 android:title="Use Tor Network"
-android:summary="Anonymize your connection and circumvent filters (requires Orbot app)"
+android:summary="Send chat traffic through Tor - ORBOT must be installed and connected"
 android:enabled="true"/> 
 
 </PreferenceCategory>

@@ -41,7 +41,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	private final static String TAG = "OtrAndroidKeyManagerImpl";
 	
 	private final static String KEY_ALG = "DSA";
-	private final static int KEY_SIZE = 2048;
+	private final static int KEY_SIZE = 1024;
 	
 	
 	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store, Context context) {
@@ -229,8 +229,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		if (sessionID == null)
 			return false;
 
-		return this.store.getPropertyBoolean(sessionID.getUserID()
-				+ ".publicKey.verified", false);
+		String userId = sessionID.getUserID();
+		String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId));
+		
+		return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
 	}
 	
 	public boolean isVerifiedUser(String userId) {
@@ -238,8 +240,9 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			return false;
 		
 
-		return this.store.getPropertyBoolean(userId
-				+ ".publicKey.verified", false);
+		String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId));
+		
+		return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
 	}
 
 	public KeyPair loadLocalKeyPair(SessionID sessionID) {

@@ -96,7 +96,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         	Log.i(TAG, "mOtrChatManager == null");
         } else {
         	Log.i(TAG, "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
-        	mOtrChatManager.startSession(userName, contactAddress);
+        	//mOtrChatManager.startSession(userName, contactAddress);
         }
         return getChatSessionAdapter(session);
     }

@@ -20,14 +20,16 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 
 	private SessionID sessionId;
 	
-	public OtrKeyManagerAdapter (String localUser, ChatSession chatSession, OtrAndroidKeyManagerImpl keyManager, OtrChatManager chatManager)
+	public OtrKeyManagerAdapter (ChatSession chatSession, OtrAndroidKeyManagerImpl keyManager, OtrChatManager chatManager)
 	{
+		
+		
 		_keyManager = keyManager;
 		_chatManager = chatManager;
 		_chatSession = chatSession;
 		
 		String remoteUser = _chatSession.getParticipant().getAddress().getFullName();
-
+		String localUser = "";
 		
 		sessionId = _chatManager.getSessionId(localUser, remoteUser);
 		

@@ -143,6 +143,7 @@ public class ChatView extends LinearLayout {
     private IChatSession mChatSession;
     private IOtrKeyManager mOtrKeyManager;
     private IOtrChatSession mOtrChatSession;
+    private boolean mIsOtrChat = false;
     
     private long mChatId;
     int mType;
@@ -421,10 +422,11 @@ public class ChatView extends LinearLayout {
             } else {
                 requeryCursor();
             }
-            updateWarningView();
         }
         registerChatListener();
         registerForConnEvents();
+        
+        updateWarningView();
     }
 
     public void onPause(){
@@ -552,7 +554,7 @@ public class ChatView extends LinearLayout {
         } else {
             mChatSession = getChatSession(mCursor);
           
-            initOtr();
+        //    initOtr();
             
             updateChat();
             registerChatListener();
@@ -561,11 +563,19 @@ public class ChatView extends LinearLayout {
 
     private void initOtr ()
     {
-
+    	
+    	
         try
         {
-        	mOtrKeyManager = mChatSession.getOtrKeyManager();
-        	mOtrChatSession = mChatSession.getOtrChatSession();
+
+        	if (mOtrChatSession == null)
+        		mOtrChatSession = mChatSession.getOtrChatSession();
+        	
+        	if (mOtrChatSession != null && mOtrChatSession.isChatEncrypted())
+        	{
+        		if (mOtrKeyManager == null)
+        			mOtrKeyManager = mChatSession.getOtrKeyManager();
+        	}
 
         }
         catch (RemoteException e)
@@ -573,7 +583,7 @@ public class ChatView extends LinearLayout {
         	Log.e(ImApp.LOG_TAG, "unable to get otr key mgr",e);
         	
         }
-        
+         
     }
     
     public void bindInvitation(long invitationId) {
@@ -894,6 +904,8 @@ public class ChatView extends LinearLayout {
 
     public IOtrKeyManager getOtrKeyManager ()
     {
+    	initOtr();
+    	
     	return mOtrKeyManager;
     }
     
@@ -945,10 +957,11 @@ public class ChatView extends LinearLayout {
 
         // Close the soft on-screen keyboard if we're in landscape mode so the user can see the
         // conversation.
+        /*
         Configuration config = getResources().getConfiguration();
         if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
           //  closeSoftKeyboard();
-        }
+        }*/
         
     }
     
@@ -1026,13 +1039,13 @@ public class ChatView extends LinearLayout {
         boolean isConnected;
 
         
-        boolean isOtrChat = false;
+        mIsOtrChat = false;
         
         //check if the chat is otr or not
         if (mOtrChatSession != null)
         {
         	try {
-				isOtrChat = mOtrChatSession.isChatEncrypted();
+        		mIsOtrChat = mOtrChatSession.isChatEncrypted();
 			} catch (RemoteException e) {
 				Log.w("Gibber","Unable to call remote OtrChatSession from ChatView",e);
 			}
@@ -1048,6 +1061,7 @@ public class ChatView extends LinearLayout {
         }
 
         if (isConnected) {
+        	
             if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mNickName);
@@ -1059,12 +1073,20 @@ public class ChatView extends LinearLayout {
             {
             	
             	visibility = View.VISIBLE;
+            	
+            }
+            
+        	if (mIsOtrChat)
+        	{
             	try {
+            		
+            		if (mOtrKeyManager == null)
+            			initOtr();
 					
             		String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
 					boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
 					
-            		if (isOtrChat && rFingerprint != null)
+            		if (rFingerprint != null)
             		{
             			if (!rVerified)
             			{
@@ -1093,8 +1115,13 @@ public class ChatView extends LinearLayout {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-            }
-            
+        	}
+        	else
+    		{
+    			mWarningText.setTextColor(Color.WHITE);
+    			mWarningText.setBackgroundColor(Color.RED);
+    			message = "Warning: this is not an encrypted chat session";
+    		}
             
         } else {
             visibility = View.VISIBLE;
@@ -1560,9 +1587,11 @@ public class ChatView extends LinearLayout {
                 default:
                     messageView.bindPresenceMessage(contact, type, isGroupChat(), isScrolling());
             }
-            if (!isScrolling()) {
+            
+            //if (!isScrolling()) {
                 mBgMaker.setBackground(messageView, contact, type);
-            }
+            //}
+                
             
            
             updateWarningView();

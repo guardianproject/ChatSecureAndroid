@@ -313,25 +313,33 @@ public class NewChatActivity extends Activity {
     {
     	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
    	 
-    	try {
-			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
-			
-			if (isOtrEnabled)
-			{
-				menuOtr.setTitle(R.string.menu_otr_stop);
+    	if (otrChatSession != null)
+    	{
+	    	try {
+				boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+				
+				if (isOtrEnabled)
+				{
+					menuOtr.setTitle(R.string.menu_otr_stop);
+				}
+				else
+				{
+					menuOtr.setTitle(R.string.menu_otr_start);
+				}
+				
+				
+			} catch (RemoteException e) {
+				Log.d("NewChat","Error accessing remote service",e);
 			}
-			else
-			{
-				menuOtr.setTitle(R.string.menu_otr_start);
-			}
-			
-			mChatView.updateWarningView();
-			
-			
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	}
+    	else
+    	{
+			menuOtr.setTitle(R.string.menu_otr_start);
+
+    	}
+    	
+		mChatView.updateWarningView();
+
     }
     
     private void showRosterScreen() {

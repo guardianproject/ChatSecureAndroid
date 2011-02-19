@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.java.otr4j.session.SessionStatus;
+
 import android.util.Log;
 
 /**
@@ -31,6 +33,7 @@ import android.util.Log;
  * a unique participant which is either another user or a group.
  */
 public class ChatSession {
+	
     private ImEntity mParticipant;
     private ChatSessionManager mManager;
     private OtrChatManager mOtrChatManager;
@@ -48,6 +51,7 @@ public class ChatSession {
         mManager = manager;
         mListeners = new CopyOnWriteArrayList<MessageListener>();
         mHistoryMessages = new Vector<Message>();
+        
     }
 
     public ImEntity getParticipant() {
@@ -111,7 +115,18 @@ public class ChatSession {
         String localUserId = message.getFrom().getFullName();
         String remoteUserId =  message.getTo().getFullName();
         
-        if (mOtrChatManager.isEncryptedSession(localUserId, remoteUserId)) {
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
+        
+        if (otrStatus == SessionStatus.PLAINTEXT)
+        {
+        	//this is key negotiation phase, so we must pass for DH key setup
+        	String processedBody = mOtrChatManager.processMessageSending(localUserId, 
+        			remoteUserId, message.getBody());
+        	message.setBody(processedBody);
+        }
+        else  if (otrStatus == SessionStatus.ENCRYPTED)
+        {
+        	//this is encrypted phase
         	String encryptedBody = mOtrChatManager.encryptMessage(localUserId, 
         			remoteUserId, message.getBody());
         	message.setBody(encryptedBody);

@@ -80,7 +80,6 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	public void sendMessage(org.jivesoftware.smack.packet.Message msg) {
-	//	android.os.Debug.waitForDebugger();
 	
 		mConnection.sendPacket(msg);		
 	}
@@ -88,7 +87,6 @@ public class XmppConnection extends ImConnection {
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
 		
-		//android.os.Debug.waitForDebugger();
 		
 		String statusText = presence.getStatusText();
         Type type = Type.available;
@@ -226,14 +224,15 @@ public class XmppConnection extends ImConnection {
 		} finally {
 			mNeedReconnect = false;
 		}
-		mUser = new Contact(new XmppAddress(comps[0], username), username);
+		
+		username = username.split(":")[0];//remove any port mentions
+		mUser = new Contact(new XmppAddress(username, username), username);
 		setState(LOGGED_IN, null);
 		Log.i(TAG, "logged in");
 	}
 
 	public void setProxy (String type, String host, int port)
 	{
-	//	android.os.Debug.waitForDebugger();
 
 		if (type == null)
 		{
@@ -248,7 +247,6 @@ public class XmppConnection extends ImConnection {
 	
 	private void initConnection(String serverHost, int serverPort, String login, String password, String resource) throws XMPPException {
     	
-		//android.os.Debug.waitForDebugger();
 
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
@@ -605,7 +603,6 @@ public class XmppConnection extends ImConnection {
 
 		private void do_loadContactLists() {
 			
-			//android.os.Debug.waitForDebugger();
 			Log.d(TAG, "load contact lists");
 			Roster roster = mConnection.getRoster();
 			roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
@@ -698,7 +695,6 @@ public class XmppConnection extends ImConnection {
 				@Override
 				public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 					
-					//android.os.Debug.waitForDebugger(); //this is for debugging a service
 
 					String user = parseAddressBase(presence.getFrom());
 					

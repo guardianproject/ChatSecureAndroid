@@ -182,6 +182,8 @@ public class RemoteImService extends Service {
             String password = cursor.getString(ACCOUNT_PASSOWRD_COLUMN);
 
             IImConnection conn = createConnection(providerId);
+            
+        
 
             try {
                 conn.login(accountId, username, password, true, true);
@@ -293,10 +295,12 @@ public class RemoteImService extends Service {
                     // dead listeners.
                 }
             }
-            mRemoteListeners.finishBroadcast();
+            
             
             // TODO OTRCHAT add support for more than one connection type (this is a kludge)
             mOtrChatManager = new OtrChatManager(imConnectionAdapter);
+            
+            mRemoteListeners.finishBroadcast();
             
             return imConnectionAdapter;
         } catch (ImException e) {
