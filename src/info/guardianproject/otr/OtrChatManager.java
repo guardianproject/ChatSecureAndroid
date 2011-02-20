@@ -62,7 +62,6 @@ public class OtrChatManager implements OtrEngineListener {
 	public SessionID getSessionId (String localUserId, String remoteUserId)
 	{
 		
-		
 		SessionID sessionId = sessions.get(processUserId(remoteUserId));
 		
 		
@@ -180,7 +179,6 @@ public class OtrChatManager implements OtrEngineListener {
 
 		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
 
-		
 		if(otrEngine != null && sessionId != null) {
 			try {
 				msg = otrEngine.transformSending(sessionId, msg);
@@ -191,23 +189,7 @@ public class OtrChatManager implements OtrEngineListener {
 		return msg;
 	}
 	
-	public String processMessageSending(String localUserId, String remoteUserId, String msg){
-		
-		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-
-		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
-
-		
-		if(otrEngine != null && sessionId != null) {
-			try {
-				msg = otrEngine.transformSending(sessionId, msg);
-			} catch (OtrException e) {
-				Log.d(TAG, "error encrypting", e);
-			}	
-		}
-		return msg;
-	}
-
+	
 	@Override
 	public void sessionStatusChanged(SessionID sessionID) {
 		SessionStatus sStatus = otrEngine.getSessionStatus(sessionID);

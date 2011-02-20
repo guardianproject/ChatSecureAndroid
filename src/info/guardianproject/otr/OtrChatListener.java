@@ -27,6 +27,9 @@ public class OtrChatListener implements MessageListener {
 
 	@Override
 	public void onIncomingMessage(ChatSession session, Message msg) {
+		
+		android.os.Debug.waitForDebugger();
+		
 		String body = msg.getBody();
 		String from = msg.getFrom().getFullName();
 		String to = msg.getTo().getFullName();
@@ -50,7 +53,7 @@ public class OtrChatListener implements MessageListener {
 					mMessageListener.onIncomingMessage(session, msg);
 				}
 			}
-			else if (otrStatus == SessionStatus.PLAINTEXT)
+			else if (otrStatus == SessionStatus.PLAINTEXT || otrStatus == SessionStatus.FINISHED)
 			{
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);

@@ -568,7 +568,7 @@ public class ChatView extends LinearLayout {
         try
         {
 
-        	if (mOtrChatSession == null)
+        	if (mOtrChatSession == null && mChatSession != null)
         		mOtrChatSession = mChatSession.getOtrChatSession();
         	
         	if (mOtrChatSession != null && mOtrChatSession.isChatEncrypted())
@@ -1041,6 +1041,8 @@ public class ChatView extends LinearLayout {
         
         mIsOtrChat = false;
         
+    	initOtr();
+
         //check if the chat is otr or not
         if (mOtrChatSession != null)
         {
@@ -1195,8 +1197,7 @@ public class ChatView extends LinearLayout {
 	            
             }
 
-            updateWarningView();
-            
+           
             super.handleMessage(msg);
         }
     }

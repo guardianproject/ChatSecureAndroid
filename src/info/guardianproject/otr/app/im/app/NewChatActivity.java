@@ -302,6 +302,7 @@ public class NewChatActivity extends Activity {
 			mChatView.updateWarningView();
 			
 			
+			
 		} catch (RemoteException e) {
 			Log.d("Gibber", "error getting remote activity",e);
 		}

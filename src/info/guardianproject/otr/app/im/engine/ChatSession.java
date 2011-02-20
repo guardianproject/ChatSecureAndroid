@@ -36,7 +36,11 @@ public class ChatSession {
 	
     private ImEntity mParticipant;
     private ChatSessionManager mManager;
+    
     private OtrChatManager mOtrChatManager;
+	private final static String OTR_HEADER = "?OTR";
+
+    
     private CopyOnWriteArrayList<MessageListener> mListeners;
     private Vector<Message> mHistoryMessages;
 
@@ -93,11 +97,12 @@ public class ChatSession {
      *
      * @param text the text to send.
      */
-    // TODO these sendMessageAsync() should probably be renamed to sendMessageAsyncAndLog()
+    // TODO these sendMessageAsync() should probably be renamed to sendMessageAsyncAndLog()/
+    /*
     public void sendMessageAsync(String text) {
         Message message = new Message(text);
         sendMessageAsync(message);
-    }
+    }*/
 
     /**
      * Sends a message to other participant(s) in this session asynchronously 
@@ -107,7 +112,11 @@ public class ChatSession {
      * @param message the message to send.
      */
     public void sendMessageAsync(Message message) {
-        message.setTo(mParticipant.getAddress());
+        
+    	android.os.Debug.waitForDebugger();
+    	
+    	if (message.getTo() == null)
+    		message.setTo(mParticipant.getAddress());
         
         // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession
         mHistoryMessages.add(message);
@@ -117,14 +126,7 @@ public class ChatSession {
         
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
         
-        if (otrStatus == SessionStatus.PLAINTEXT)
-        {
-        	//this is key negotiation phase, so we must pass for DH key setup
-        	String processedBody = mOtrChatManager.processMessageSending(localUserId, 
-        			remoteUserId, message.getBody());
-        	message.setBody(processedBody);
-        }
-        else  if (otrStatus == SessionStatus.ENCRYPTED)
+        if (otrStatus == SessionStatus.ENCRYPTED)
         {
         	//this is encrypted phase
         	String encryptedBody = mOtrChatManager.encryptMessage(localUserId, 

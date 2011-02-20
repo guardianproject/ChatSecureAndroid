@@ -68,8 +68,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		KeyPair kp = null;
 		kp = mOtrKeyManager.loadLocalKeyPair(sessionID);
 		
-		
-		
 		if (kp == null)
 		{
          	mOtrKeyManager.generateLocalKeyPair(sessionID);	
@@ -83,52 +81,40 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		return this.policy;
 	}
 	
-	
-	@Override
-	public void injectMessage(SessionID sessionID, String text) {
-		
-		Log.e(TAG, sessionID.toString() + ": " + text);
-		
+	private void sendMessage (SessionID sessionID, String body)
+	{
 		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
 		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
 		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
 		
-		Message msg = new Message(text);
+		Message msg = new Message(body);
 		
 		msg.setFrom(mConnection.getLoginUser().getAddress());
 		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+	}
+	
+	@Override
+	public void injectMessage(SessionID sessionID, String text) {
+		
+		Log.i(TAG, sessionID.toString() + ": " + text);
+		
+		sendMessage(sessionID,text);
+		
 	}
 
 	@Override
 	public void showError(SessionID sessionID, String error) {
 		Log.e(TAG, sessionID.toString() + ": " + error);
 		
-		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
-		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
-		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
-		
-		Message msg = new Message(error);
-		
-		msg.setFrom(mConnection.getLoginUser().getAddress());
-		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
-		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+		sendMessage(sessionID,error);
 	}
 
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
 		Log.w(TAG, sessionID.toString() + ": " +  warning);
 		
-		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
-		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
-		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
-		
-		Message msg = new Message(warning);
-		
-		msg.setFrom(mConnection.getLoginUser().getAddress());
-		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
-		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
-		
+		sendMessage(sessionID,warning);
     
 	}
 
