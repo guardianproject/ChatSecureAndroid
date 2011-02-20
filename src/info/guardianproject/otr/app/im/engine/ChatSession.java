@@ -113,7 +113,7 @@ public class ChatSession {
      */
     public void sendMessageAsync(Message message) {
         
-    	android.os.Debug.waitForDebugger();
+    //	android.os.Debug.waitForDebugger();
     	
     	if (message.getTo() == null)
     		message.setTo(mParticipant.getAddress());

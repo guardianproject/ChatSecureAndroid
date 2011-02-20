@@ -811,23 +811,29 @@ public class ChatView extends LinearLayout {
     	if (mOtrKeyManager == null)
     		 initOtr ();
     	
-    	try {
-    		
-    		remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
-    		localFingerprint = mOtrKeyManager.getLocalFingerprint();
-			isVerified = mOtrKeyManager.isKeyVerified(mUserName);
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		
+
     	Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mChatId);
     	
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
-        intent.putExtra("remoteFingerprint", remoteFingerprint);
-        intent.putExtra("localFingerprint", localFingerprint);
-        
-        intent.putExtra("remoteVerified", isVerified);
+    	
+    	if (mOtrKeyManager != null)
+    	{
+	    	try {
+	    		
+	    		remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
+	    		localFingerprint = mOtrKeyManager.getLocalFingerprint();
+				isVerified = mOtrKeyManager.isKeyVerified(mUserName);
+				
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
+	        intent.putExtra("remoteFingerprint", remoteFingerprint);
+	        intent.putExtra("localFingerprint", localFingerprint);
+	        
+	        intent.putExtra("remoteVerified", isVerified);
+    	}
+    	
         mScreen.startActivity(intent);
        
     }

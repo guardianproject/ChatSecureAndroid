@@ -28,7 +28,7 @@ public class OtrChatListener implements MessageListener {
 	@Override
 	public void onIncomingMessage(ChatSession session, Message msg) {
 		
-		android.os.Debug.waitForDebugger();
+	//	android.os.Debug.waitForDebugger();
 		
 		String body = msg.getBody();
 		String from = msg.getFrom().getFullName();
