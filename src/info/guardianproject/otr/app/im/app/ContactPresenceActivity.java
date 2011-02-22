@@ -78,11 +78,18 @@ public class ContactPresenceActivity extends Activity {
             return;
         }
 
-        remoteFingerprint = i.getExtras().getString("remoteFingerprint");
-        remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
-        localFingerprint = i.getExtras().getString("localFingerprint");
-        
-        txtFingerprint.setText(remoteFingerprint + "; verified=" + remoteFingerprintVerified);
+        if (i.getExtras() != null)
+        {
+	        remoteFingerprint = i.getExtras().getString("remoteFingerprint");
+	        
+	        if (remoteFingerprint != null)
+	        {
+	        	remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
+	        	localFingerprint = i.getExtras().getString("localFingerprint");
+	        
+	        	txtFingerprint.setText(remoteFingerprint + "; verified=" + remoteFingerprintVerified);
+	        }
+        }
         
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(uri, null, null, null, null);

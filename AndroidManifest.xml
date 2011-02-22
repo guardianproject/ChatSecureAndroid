@@ -61,7 +61,7 @@
          <activity android:name=".ui.SettingsActivity"/>
         
         
-        <service android:name=".plugin.xmpp.XmppImPlugin">
+        <service android:name=".plugin.xmpp.XmppImPlugin" android:process=":remote">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
             </intent-filter>
@@ -86,9 +86,11 @@
         </service>
  -->
             <!--  -->
+            
+           <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
             android:exported="true"
-            android:process="info.guardianproject.otr.app.process.im"
+            android:process=":remote"
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
@@ -98,7 +100,7 @@
 
         <provider android:name=".provider.ImpsProvider"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
-            android:process="info.guardianproject.otr.app.process.im"
+            android:process=":remote"
             android:multiprocess="false"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
