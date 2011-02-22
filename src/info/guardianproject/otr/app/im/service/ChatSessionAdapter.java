@@ -102,8 +102,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         service = connection.getContext();
         mContentResolver = service.getContentResolver();
         mStatusBarNotifier = service.getStatusBarNotifier();
-        mOtrChatManager = service.getOtrChatManager();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
+
+        mOtrChatManager = service.getOtrChatManager();
+		mOtrKeyManager = new OtrKeyManagerAdapter(mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
+		String localUser = mConnection.getLoginUser().getAddress().getFullName();
+		String remoteUser = mAdaptee.getParticipant().getAddress().getFullName();
+		
+		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager.getKeyManager(), mOtrChatManager);
 
         mListenerAdapter = new ListenerAdapter();
         
@@ -122,35 +128,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     
     public IOtrKeyManager getOtrKeyManager () 
     {
-    	
-    	if (mOtrChatManager == null)
-    		mOtrChatManager = service.getOtrChatManager();
-
-    	if (mOtrChatManager !=null && mOtrKeyManager == null)
-    	{
-    		mOtrKeyManager = new OtrKeyManagerAdapter(mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
     
-    	}
-    	
     	return mOtrKeyManager;
     }
     
     public IOtrChatSession getOtrChatSession () 
     {
-    	
-    	if (mOtrChatManager == null)
-    		mOtrChatManager = service.getOtrChatManager();
-
-    	
-    	if (mOtrChatManager !=null && mOtrChatSession == null)
-    	{
-    		
-    		String localUser = mConnection.getLoginUser().getAddress().getFullName();
-    		String remoteUser = mAdaptee.getParticipant().getAddress().getFullName();
-    		
-    		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager.getKeyManager(), mOtrChatManager);
-    
-    	}
     	
     	return mOtrChatSession;
     }
