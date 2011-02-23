@@ -166,6 +166,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			KeyPairGenerator kpg = KeyPairGenerator.getInstance(KEY_ALG);
 			kpg.initialize(KEY_SIZE);
+			
 			keyPair = kpg.genKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import net.java.otr4j.OtrPolicy;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -298,7 +300,7 @@ public class RemoteImService extends Service {
             
             
             // TODO OTRCHAT add support for more than one connection type (this is a kludge)
-            mOtrChatManager = new OtrChatManager(imConnectionAdapter);
+            mOtrChatManager = OtrChatManager.getInstance(imConnectionAdapter, OtrPolicy.OPPORTUNISTIC);
             
             mRemoteListeners.finishBroadcast();
             

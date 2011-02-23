@@ -22,20 +22,40 @@ import android.util.Log;
  */
 public class OtrChatManager implements OtrEngineListener {
 
+	//the singleton instance
+	private static OtrChatManager _instance;
+	
 	private final static String TAG = "OtrChatManager";
 	protected OtrEngineHostImpl myHost;
-	private OtrEngineImpl otrEngine;
-	
+	private OtrEngineImpl otrEngine;	
 	private Hashtable<String,SessionID> sessions;
 	
+	private OtrChatManager ()
+	{
+		
+	}
 	
-	public OtrChatManager(ImConnectionAdapter imConnectionAdapter){
+	
+	public static synchronized OtrChatManager getInstance(ImConnectionAdapter imConnectionAdapter, int otrPolicy)
+	{
+		if (_instance == null)
+		{
+			_instance = new OtrChatManager();
+			_instance.init(imConnectionAdapter, otrPolicy);
+		}
+		
+		return _instance;
+	}
+	
+	private void init (ImConnectionAdapter imConnectionAdapter, int otrPolicy)
+	{
 		try
 		{
 			
 			
 			myHost = new OtrEngineHostImpl(imConnectionAdapter, 
-				new OtrPolicyImpl(OtrPolicy.OPPORTUNISTIC));
+				new OtrPolicyImpl(otrPolicy));
+			
 		
 			otrEngine = new OtrEngineImpl(myHost);
 			otrEngine.addOtrEngineListener(this);

@@ -23,7 +23,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	private ImConnectionAdapter mConnection;
 	private OtrPolicy policy;
-    public String lastInjectedMessage;
     
 	private OtrAndroidKeyManagerImpl mOtrKeyManager;
 
@@ -79,6 +78,11 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	@Override
 	public OtrPolicy getSessionPolicy(SessionID sessionID) {
 		return this.policy;
+	}
+	
+	public void setSessionPolicty (OtrPolicy policy)
+	{
+		this.policy = policy;
 	}
 	
 	private void sendMessage (SessionID sessionID, String body)
