@@ -69,6 +69,11 @@ public class OtrChatManager implements OtrEngineListener {
 		}
 	}
 	
+	public void addOtrEngineListener (OtrEngineListener oel)
+	{
+		otrEngine.addOtrEngineListener(oel);
+	}
+	
 	public OtrAndroidKeyManagerImpl getKeyManager ()
 	{
 		return this.myHost.getKeyManager();
@@ -109,6 +114,13 @@ public class OtrChatManager implements OtrEngineListener {
 		
 	}
 
+	public SessionStatus getSessionStatus (SessionID sessionId)
+	{
+		
+		return otrEngine.getSessionStatus(sessionId);
+		
+	}
+	
 	public void refreshSession (String localUserId, String remoteUserId)
 	{
 		try {
@@ -224,6 +236,7 @@ public class OtrChatManager implements OtrEngineListener {
 			
 			this.sessions.put(sKey, sessionID);
 			
+			//make sure remote public key is loaded if it isn't verified
 			if (!myHost.isRemoteKeyVerified(sessionID))
 			{
 				PublicKey remoteKey = otrEngine.getRemotePublicKey(sessionID);
@@ -237,6 +250,7 @@ public class OtrChatManager implements OtrEngineListener {
 		}
 		else if (sStatus == SessionStatus.FINISHED)
 		{
+			
 		}
 	}
 	

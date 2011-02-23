@@ -23,6 +23,7 @@ import info.guardianproject.otr.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -38,7 +39,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrPolicy;
+import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionStatus;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -59,7 +63,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-public class RemoteImService extends Service {
+public class RemoteImService extends Service implements OtrEngineListener {
 
     private static final String[] ACCOUNT_PROJECTION = {
         Imps.Account._ID,
@@ -204,6 +208,7 @@ public class RemoteImService extends Service {
         // Insert a fake msisdn on emulator. We don't need this on device
         // because the mobile network will take care of it.
 //        if ("1".equals(SystemProperties.get("ro.kernel.qemu"))) {
+        /*
         if (false) {
             settings.put(ImpsConfigNames.MSISDN, "15555218135");
         } else if (networkInfo != null
@@ -226,7 +231,8 @@ public class RemoteImService extends Service {
                 }
                 settings.put(ImpsConfigNames.MSISDN, msisdn);
             }
-        }
+        }*/
+        
         return settings;
     }
 
@@ -301,6 +307,7 @@ public class RemoteImService extends Service {
             
             // TODO OTRCHAT add support for more than one connection type (this is a kludge)
             mOtrChatManager = OtrChatManager.getInstance(imConnectionAdapter, OtrPolicy.OPPORTUNISTIC);
+            mOtrChatManager.addOtrEngineListener(this);
             
             mRemoteListeners.finishBroadcast();
             
@@ -387,6 +394,9 @@ public class RemoteImService extends Service {
                 conn.reestablishSession();
             }
         }
+        
+        showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
+
     }
 
     private void suspendConnections() {
@@ -395,7 +405,10 @@ public class RemoteImService extends Service {
                 continue;
             }
             conn.suspend();
+            
         }
+        
+        showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
     }
 
     private final IRemoteImService.Stub mBinder = new IRemoteImService.Stub() {
@@ -471,4 +484,30 @@ public class RemoteImService extends Service {
             }
         }
     }
+
+	@Override
+	public void sessionStatusChanged(SessionID sessionID) {
+		
+		SessionStatus sStatus = mOtrChatManager.getSessionStatus(sessionID);
+		
+		String msg = "";
+		
+		if (sStatus == SessionStatus.PLAINTEXT)
+		{
+			msg = getString(R.string.otr_session_status_plaintext);
+			
+		}
+		else if (sStatus == SessionStatus.ENCRYPTED)
+		{
+			msg = getString(R.string.otr_session_status_encrypted);
+			
+		}
+		else if (sStatus == SessionStatus.FINISHED)
+		{
+			msg = getString(R.string.otr_session_status_finished);
+		}
+		
+		showToast(msg, Toast.LENGTH_SHORT);
+		
+	}
 }

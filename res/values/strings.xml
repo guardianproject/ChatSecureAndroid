@@ -606,4 +606,12 @@
     <string name="label_fingerprint">OTR Public Key Fingerprint</string>
     <string name="menu_sign_in">Sign In</string>
     
+    <string name="error_suspended_connection">Gibberbot has lost a connection to the network</string>
+	<string name="error_reestablish_connection">Gibberbot is attempting to restablish a connection</string>
+	
+	<string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
+	<string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
+	<string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
+	<string name="otr_session_status_verified">This chat is secured and verified</string>
+	
 </resources>

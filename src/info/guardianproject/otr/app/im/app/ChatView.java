@@ -1098,14 +1098,14 @@ public class ChatView extends LinearLayout {
             		{
             			if (!rVerified)
             			{
-            				message = "Secure Chat: You should verify the key fingerprint for '" + mUserName + "' to make sure it is really them.";
+                			message = mContext.getString(R.string.otr_session_status_encrypted);
 
                 			mWarningText.setTextColor(Color.BLACK);
                 			mWarningText.setBackgroundColor(Color.YELLOW);
             			}
             			else
             			{
-            				message = "Verified OTR Secure Chat";
+                			message = mContext.getString(R.string.otr_session_status_verified);
 
                 			mWarningText.setTextColor(Color.BLACK);
                 			mWarningText.setBackgroundColor(Color.GREEN);
@@ -1115,7 +1115,7 @@ public class ChatView extends LinearLayout {
             		{
             			mWarningText.setTextColor(Color.WHITE);
             			mWarningText.setBackgroundColor(Color.RED);
-            			message = "Warning: this is not an encrypted chat session";
+            			message = mContext.getString(R.string.otr_session_status_plaintext);
             		}
             			
 					
