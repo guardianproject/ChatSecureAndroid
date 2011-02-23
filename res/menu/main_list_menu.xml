@@ -20,9 +20,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_sign_in"
-        android:title="@string/menu_sign_in" />
+        android:title="@string/menu_sign_in"
+        android:icon="@drawable/icon_dialog"
+         />
 
     <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings" />
+        android:title="@string/menu_settings"
+         android:icon="@drawable/icon_settings"
+         />
 
 </menu>
