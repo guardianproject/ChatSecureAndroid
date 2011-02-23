@@ -6,22 +6,23 @@ package info.guardianproject.otr.app.im.ui;
 import info.guardianproject.otr.app.im.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.view.KeyEvent;
 
 
 public class SettingsActivity 
 		extends PreferenceActivity implements OnPreferenceClickListener {
 
-	//private CheckBoxPreference prefCBTransProxy = null;
-	
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		
 		
 		
 	}
@@ -32,6 +33,14 @@ public class SettingsActivity
 	
 		super.onResume();
 	
+		EditTextPreference pref = (EditTextPreference)((PreferenceCategory)getPreferenceScreen().getPreference(0)).getPreference(0);
+		String value = pref.getText();
+		
+		if (value != null && value.length() > 0)
+			pref.setSummary(value);
+		
+		
+		
 		
 	};
 	
@@ -50,25 +59,8 @@ public class SettingsActivity
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		
-		/*
-		if (preference == prefTransProxyApps)
-		{
-			startActivity(new Intent(this, AppManager.class));
-		}
-		else if (preference == prefHiddenServices)
-		{
-			
-			((PreferenceCategory)this.getPreferenceScreen().getPreference(5)).getPreference(1).setEnabled(prefHiddenServices.isChecked());
-			((PreferenceCategory)this.getPreferenceScreen().getPreference(5)).getPreference(2).setEnabled(prefHiddenServices.isChecked());
-			
-		}
-		else
-		{
-			prefcBTransProxyAll.setEnabled(prefCBTransProxy.isChecked());
-			prefTransProxyApps.setEnabled(prefCBTransProxy.isChecked() && (!prefcBTransProxyAll.isChecked()));
-			
-		}
-		*/
+		
+		
 		
 		return true;
 	}

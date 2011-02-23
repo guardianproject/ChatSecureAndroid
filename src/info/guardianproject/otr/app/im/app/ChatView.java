@@ -959,6 +959,9 @@ public class ChatView extends LinearLayout {
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
+            catch (Exception e) {
+                mHandler.showServiceErrorAlert();
+            }
         }
 
         // Close the soft on-screen keyboard if we're in landscape mode so the user can see the
