@@ -307,10 +307,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
 
-		// Generate KeyPair.
+		// Generate KeyPair from spec
 		KeyFactory keyFactory;
 		try {
 			keyFactory = KeyFactory.getInstance(KEY_ALG);
+			
 			return keyFactory.generatePublic(publicKeySpec);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -327,13 +328,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey
 				.getEncoded());
-
+		
 		String userId = sessionID.getUserID();
 		this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec
 				.getEncoded());
 		
-		
-		this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 	}
 
 	public void unverify(SessionID sessionID) {
