@@ -113,6 +113,11 @@
     <!-- Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
     <string name="menu_insert_smiley">Insert smiley</string>
 
+	<!-- Strings for the contact info screen -->
+	<string name="menu_scan">Scan Fingerprint</string>
+	<string name="menu_fingerprint">Your Fingerprint</string>
+	<string name="menu_verify">Verify Fingerprint</string>
+
     <!-- This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
