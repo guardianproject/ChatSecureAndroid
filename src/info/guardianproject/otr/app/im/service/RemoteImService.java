@@ -100,6 +100,27 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
+        
+        initOtr();
+	}
+	
+	private void initOtr()
+	{
+		
+		if (mOtrChatManager == null)
+		{
+	        
+	        try
+	        {
+		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
+		        mOtrChatManager = OtrChatManager.getInstance(OtrPolicy.OPPORTUNISTIC, this);
+		        mOtrChatManager.addOtrEngineListener(this);
+	        }
+	        catch (Exception e)
+	        {
+	        	Log.e(TAG, "can't get otr manager",e);
+	        }
+		}
     }
 
     @Override
@@ -304,10 +325,10 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 }
             }
             
+         
+            initOtr();
+            mOtrChatManager.setConnection(imConnectionAdapter);
             
-            // TODO OTRCHAT add support for more than one connection type (this is a kludge)
-            mOtrChatManager = OtrChatManager.getInstance(imConnectionAdapter, OtrPolicy.OPPORTUNISTIC);
-            mOtrChatManager.addOtrEngineListener(this);
             
             mRemoteListeners.finishBroadcast();
             

@@ -16,6 +16,7 @@ import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 
 
+import android.content.Context;
 import android.util.Log;
 
 /* OtrChatManager keeps track of the status of chats and their OTR stuff
@@ -25,53 +26,43 @@ public class OtrChatManager implements OtrEngineListener {
 	//the singleton instance
 	private static OtrChatManager _instance;
 	
+	
 	private final static String TAG = "OtrChatManager";
-	protected OtrEngineHostImpl myHost;
-	private OtrEngineImpl otrEngine;	
+	
+	private OtrEngineHostImpl myHost;
+	private OtrEngineImpl mOtrEngine;	
 	private Hashtable<String,SessionID> sessions;
 	
-	private OtrChatManager ()
+	private OtrChatManager (int otrPolicy,Context context) throws Exception
 	{
+		myHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy), context);
 		
+		mOtrEngine = new OtrEngineImpl(myHost);
+		mOtrEngine.addOtrEngineListener(this);
+		
+		sessions = new Hashtable<String,SessionID>();
 	}
 	
 	
-	public static synchronized OtrChatManager getInstance(ImConnectionAdapter imConnectionAdapter, int otrPolicy)
+	public static OtrChatManager getInstance(int otrPolicy, Context context) throws Exception
 	{
 		if (_instance == null)
 		{
-			_instance = new OtrChatManager();
-			_instance.init(imConnectionAdapter, otrPolicy);
+			_instance = new OtrChatManager(otrPolicy, context);
 		}
 		
 		return _instance;
 	}
 	
-	private void init (ImConnectionAdapter imConnectionAdapter, int otrPolicy)
+	public void setConnection (ImConnectionAdapter imConnectionAdapter)
 	{
-		try
-		{
-			
-			
-			myHost = new OtrEngineHostImpl(imConnectionAdapter, 
-				new OtrPolicyImpl(otrPolicy));
-			
-		
-			otrEngine = new OtrEngineImpl(myHost);
-			otrEngine.addOtrEngineListener(this);
-			
-			sessions = new Hashtable<String,SessionID>();
-			
-		}
-		catch (Exception re)
-		{
-			Log.w(TAG, re);
-		}
+		myHost.setConnection(imConnectionAdapter);
 	}
+	
 	
 	public void addOtrEngineListener (OtrEngineListener oel)
 	{
-		otrEngine.addOtrEngineListener(oel);
+		mOtrEngine.addOtrEngineListener(oel);
 	}
 	
 	public OtrAndroidKeyManagerImpl getKeyManager ()
@@ -110,21 +101,21 @@ public class OtrChatManager implements OtrEngineListener {
 	{
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 		
-		return otrEngine.getSessionStatus(sessionId);
+		return mOtrEngine.getSessionStatus(sessionId);
 		
 	}
 
 	public SessionStatus getSessionStatus (SessionID sessionId)
 	{
 		
-		return otrEngine.getSessionStatus(sessionId);
+		return mOtrEngine.getSessionStatus(sessionId);
 		
 	}
 	
 	public void refreshSession (String localUserId, String remoteUserId)
 	{
 		try {
-			otrEngine.refreshSession(getSessionId(localUserId,remoteUserId));
+			mOtrEngine.refreshSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {
 			Log.e(TAG, "refreshSession", e);
 		}
@@ -141,7 +132,7 @@ public class OtrChatManager implements OtrEngineListener {
 	
 		try {
 			SessionID sessionId = getSessionId(localUserId, remoteUserId);
-			otrEngine.startSession(sessionId);
+			mOtrEngine.startSession(sessionId);
 			
 			return sessionId;
 			
@@ -158,14 +149,14 @@ public class OtrChatManager implements OtrEngineListener {
 		try {
 			SessionID sessionId = getSessionId(localUserId,remoteUserId);
 		
-			otrEngine.endSession(sessionId);
+			mOtrEngine.endSession(sessionId);
 		} catch (OtrException e) {
 			Log.e(TAG, "endSession", e);
 		}
 	}
 
 	public void status(String localUserId, String remoteUserId){
-		otrEngine.getSessionStatus(getSessionId(localUserId,remoteUserId)).toString();
+		mOtrEngine.getSessionStatus(getSessionId(localUserId,remoteUserId)).toString();
 	}
 	
 	public String decryptMessage(String localUserId, String remoteUserId, String msg){
@@ -173,11 +164,11 @@ public class OtrChatManager implements OtrEngineListener {
 		String plain = null;
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
 
-		if(otrEngine != null && sessionId != null){
+		if(mOtrEngine != null && sessionId != null){
 			try {
-				plain = otrEngine.transformReceiving(sessionId, msg);
+				plain = mOtrEngine.transformReceiving(sessionId, msg);
 			} catch (OtrException e) {
 				// TODO Auto-generated catch block
 				Log.e(TAG,"error decrypting message",e);
@@ -192,11 +183,11 @@ public class OtrChatManager implements OtrEngineListener {
 
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
 
-		if(otrEngine != null && sessionId != null){
+		if(mOtrEngine != null && sessionId != null){
 			try {
-				otrEngine.transformReceiving(sessionId, msg);
+				mOtrEngine.transformReceiving(sessionId, msg);
 			} catch (OtrException e) {
 				// TODO Auto-generated catch block
 				Log.e(TAG,"error decrypting message",e);
@@ -209,11 +200,11 @@ public class OtrChatManager implements OtrEngineListener {
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 
-		Log.i(TAG,"session status: " + otrEngine.getSessionStatus(sessionId));
+		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
 
-		if(otrEngine != null && sessionId != null) {
+		if(mOtrEngine != null && sessionId != null) {
 			try {
-				msg = otrEngine.transformSending(sessionId, msg);
+				msg = mOtrEngine.transformSending(sessionId, msg);
 			} catch (OtrException e) {
 				Log.d(TAG, "error encrypting", e);
 			}	
@@ -224,7 +215,7 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	@Override
 	public void sessionStatusChanged(SessionID sessionID) {
-		SessionStatus sStatus = otrEngine.getSessionStatus(sessionID);
+		SessionStatus sStatus = mOtrEngine.getSessionStatus(sessionID);
 		
 		Log.i(TAG,"session status changed: " + sStatus);
 		
@@ -236,7 +227,7 @@ public class OtrChatManager implements OtrEngineListener {
 			
 			this.sessions.put(sKey, sessionID);
 			
-			PublicKey remoteKey = otrEngine.getRemotePublicKey(sessionID);
+			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			myHost.storeRemoteKey(sessionID, remoteKey);
 			
 			
@@ -262,7 +253,7 @@ public class OtrChatManager implements OtrEngineListener {
 
 		if (rkFingerprint == null)
 		{
-			PublicKey remoteKey = otrEngine.getRemotePublicKey(sessionID);
+			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			myHost.storeRemoteKey(sessionID, remoteKey);
 			rkFingerprint = myHost.getRemoteKeyFingerprint(sessionID);
 			Log.i(TAG,"remote key fingerprint: " + rkFingerprint);

@@ -282,10 +282,8 @@ public class SigningInActivity extends Activity {
                     mConn.registerConnectionListener(mListener);
                     
                     mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
-                 	mConn.login(mAccountId, mUserName, mPassword, true, false);
-
-                  
-                    	
+                 	mConn.login(mAccountId, mUserName, mPassword, true, true);
+                 	
                     
                 } else {
                     promptForBackgroundDataSetting();

@@ -14,6 +14,7 @@ import java.util.Date;
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,11 +32,17 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	private final static String TAG = "OtrEngineHostImpl";
 	
-	public OtrEngineHostImpl(ImConnectionAdapter imConnectionAdapter, OtrPolicy policy) throws IOException 
+	public OtrEngineHostImpl(OtrPolicy policy, Context context) throws IOException 
+	{
+		this.policy = policy;
+		
+		mOtrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH, context);
+	}
+	
+	public void setConnection (ImConnectionAdapter imConnectionAdapter)
 	{
 		this.mConnection = imConnectionAdapter;
-		this.policy = policy;
-		mOtrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH);
+
 	}
 	
 	public OtrAndroidKeyManagerImpl getKeyManager ()
@@ -97,6 +104,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		msg.setFrom(mConnection.getLoginUser().getAddress());
 		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
 		msg.setDateTime(new Date());
+		msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
 	}
 	

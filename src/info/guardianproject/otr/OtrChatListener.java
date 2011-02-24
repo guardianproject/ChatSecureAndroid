@@ -28,7 +28,6 @@ public class OtrChatListener implements MessageListener {
 	@Override
 	public void onIncomingMessage(ChatSession session, Message msg) {
 		
-	//	android.os.Debug.waitForDebugger();
 		Log.d(TAG, "processing incoming message: " + msg.getID());
 		
 		String body = msg.getBody();

@@ -1,8 +1,5 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.otr.app.im.app.ImApp;
-import info.guardianproject.otr.app.im.service.AndroidSystemService;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,18 +54,27 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		private final Properties properties = new Properties();
 		private String filepath;
 
-		public DefaultPropertiesStore(String filepath) throws IOException {
+		private Context context;
+		private boolean hasLoaded = false;
+		
+		public DefaultPropertiesStore(String filepath, Context context) {
 			if (filepath == null || filepath.length() < 1)
 				throw new IllegalArgumentException();
 			
+			this.context = context;
 			this.filepath = filepath;
 			properties.clear();
-
+			
+			load();
+		}
+		
+		private void load() 
+		{
 			try
 			{
 				
 				
-				FileInputStream fis = AndroidSystemService.getInstance().getContext().openFileInput(filepath);
+				FileInputStream fis = context.openFileInput(filepath);
 				
 				InputStream in = new BufferedInputStream(fis);
 				try {
@@ -79,7 +85,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			}
 			catch (FileNotFoundException fnfe)
 			{
-				Log.i(TAG,"Properties store file not found: First time?");
+				Log.e(TAG,"Properties store file not found: First time?",fnfe);
+			}
+			catch (IOException ioe)
+			{
+				Log.e(TAG,"Properties store error",ioe);
 			}
 		}
 
@@ -97,7 +107,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			Log.d(TAG,"saving otr keystore to: " + filepath);
 			
-			FileOutputStream fis = AndroidSystemService.getInstance().getContext().openFileOutput(filepath, Context.MODE_PRIVATE);
+			FileOutputStream fis = context.openFileOutput(filepath, Context.MODE_PRIVATE);
 
 			properties.store(fis, null);
 			fis.close();
@@ -136,8 +146,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		}
 	}
 
-	public OtrAndroidKeyManagerImpl(String filepath) throws IOException {
-		this.store = new DefaultPropertiesStore(filepath);
+	public OtrAndroidKeyManagerImpl(String filepath, Context context) throws IOException {
+		this.store = new DefaultPropertiesStore(filepath, context);
 	}
 
 	private List<OtrKeyManagerListener> listeners = new Vector<OtrKeyManagerListener>();
