@@ -38,6 +38,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 	private OtrKeyManagerStore store;
 
+	private OtrCryptoEngineImpl cryptoEngine;
+	
 	private final static String TAG = "OtrAndroidKeyManagerImpl";
 	
 	private final static String KEY_ALG = "DSA";
@@ -46,6 +48,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	
 	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store, Context context) {
 		this.store = store;
+		
+		cryptoEngine = new OtrCryptoEngineImpl();
 		
 	}
 
@@ -91,7 +95,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		private void store() throws FileNotFoundException, IOException {
 			
-
+			Log.d(TAG,"saving otr keystore to: " + filepath);
+			
 			FileOutputStream fis = AndroidSystemService.getInstance().getContext().openFileOutput(filepath, Context.MODE_PRIVATE);
 
 			properties.store(fis, null);
@@ -161,6 +166,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	
 	public void generateLocalKeyPair(String accountID) {
 
+		Log.d(TAG, "generating local key pair for: " + accountID);
+		
 		KeyPair keyPair;
 		try {
 			
@@ -203,7 +210,12 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		PublicKey pubKey = keyPair.getPublic();
 
 		try {
-			return new OtrCryptoEngineImpl().getFingerprint(pubKey);
+			String fingerprint = cryptoEngine.getFingerprint(pubKey);
+			
+			Log.d(TAG, "got fingerprint for: " + userId + "=" + fingerprint);
+			
+			return fingerprint;
+			
 		} catch (OtrCryptoException e) {
 			e.printStackTrace();
 			return null;
@@ -215,7 +227,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	public String getRemoteFingerprint(String userId) {
-		PublicKey remotePublicKey = loadRemotePublicKey(userId);
+		
+		PublicKey remotePublicKey = loadRemotePublicKeyFromStore(userId);
 		if (remotePublicKey == null)
 			return null;
 		try {
@@ -295,10 +308,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 	public PublicKey loadRemotePublicKey(SessionID sessionID) {
 
-		return loadRemotePublicKey(sessionID.getUserID());
+		return loadRemotePublicKeyFromStore(sessionID.getUserID());
 	}
 	
-	public PublicKey loadRemotePublicKey(String userID) {
+	public PublicKey loadRemotePublicKeyFromStore(String userID) {
 	
 
 		byte[] b64PubKey = this.store.getPropertyBytes(userID + ".publicKey");

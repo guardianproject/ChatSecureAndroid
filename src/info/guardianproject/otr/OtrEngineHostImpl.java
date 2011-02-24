@@ -9,6 +9,7 @@ import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.Date;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrPolicy;
@@ -28,7 +29,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	private final static String OTR_KEYSTORE_PATH ="otr_keystore";
 	
-	private final static String TAG = OtrEngineHostImpl.class.getClass().getName();
+	private final static String TAG = "OtrEngineHostImpl";
 	
 	public OtrEngineHostImpl(ImConnectionAdapter imConnectionAdapter, OtrPolicy policy) throws IOException 
 	{
@@ -95,13 +96,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		
 		msg.setFrom(mConnection.getLoginUser().getAddress());
 		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
+		msg.setDateTime(new Date());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
 	}
 	
 	@Override
 	public void injectMessage(SessionID sessionID, String text) {
 		
-		Log.i(TAG, sessionID.toString() + ": " + text);
+		Log.i(TAG, sessionID.toString() + ": injecting message: " + text);
 		
 		sendMessage(sessionID,text);
 		

@@ -29,6 +29,7 @@ public class OtrChatListener implements MessageListener {
 	public void onIncomingMessage(ChatSession session, Message msg) {
 		
 	//	android.os.Debug.waitForDebugger();
+		Log.d(TAG, "processing incoming message: " + msg.getID());
 		
 		String body = msg.getBody();
 		String from = msg.getFrom().getFullName();
@@ -44,6 +45,8 @@ public class OtrChatListener implements MessageListener {
 		 
 			if (otrStatus == SessionStatus.ENCRYPTED)
 	        {
+				Log.d(TAG, "session status: encrypted");
+
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 
 				if (body != null)
@@ -55,12 +58,32 @@ public class OtrChatListener implements MessageListener {
 			}
 			else if (otrStatus == SessionStatus.PLAINTEXT || otrStatus == SessionStatus.FINISHED)
 			{
+				Log.d(TAG, "session status: plaintext");
+
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
 				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
 				
-				if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
+				//if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
+				if (body != null)
+				{
+					msg.setBody(body);
+				
+					mMessageListener.onIncomingMessage(session, msg);
+				}
+			}
+			else if (otrStatus == SessionStatus.FINISHED)
+			{
+				Log.d(TAG, "session status: finished");
+
+				//this is most likely a DH setup message, so we will process and swallow it
+				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
+				
+				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
+				
+				//if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
+				if (body != null)
 				{
 					msg.setBody(body);
 				

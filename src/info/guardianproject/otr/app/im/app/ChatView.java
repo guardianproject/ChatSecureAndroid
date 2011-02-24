@@ -571,16 +571,27 @@ public class ChatView extends LinearLayout {
         	if (mOtrChatSession == null && mChatSession != null)
         		mOtrChatSession = mChatSession.getOtrChatSession();
         	
-        	if (mOtrChatSession != null && mOtrChatSession.isChatEncrypted())
+        	if (mOtrChatSession != null)
         	{
+        		Log.i(ImApp.LOG_TAG, "ChatView: OtrChatSession is init'd");
+        		
         		if (mOtrKeyManager == null)
+        		{
         			mOtrKeyManager = mChatSession.getOtrKeyManager();
+        			
+        			if (mOtrKeyManager != null)
+        			{
+                		Log.i(ImApp.LOG_TAG, "ChatView: OtrKeyManager is init'd");
+
+        			}
+        		}
         	}
 
         }
-        catch (RemoteException e)
+        catch (Exception e)
         {
         	Log.e(ImApp.LOG_TAG, "unable to get otr key mgr",e);
+        	
         	
         }
          
