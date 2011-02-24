@@ -203,12 +203,12 @@ public class NewChatActivity extends Activity {
         case R.id.menu_view_profile:
             mChatView.viewProfile();
             return true;
-            
+/*            
         	case R.id.menu_view_friend_list:
                 finish();
                 showRosterScreen();
                 return true;
-                
+ */              
                 /*
             case R.id.menu_insert_smiley:
                 showSmileyDialog();
@@ -232,11 +232,11 @@ public class NewChatActivity extends Activity {
   //              startContactPicker();
     //            return true;
 
-
+/*
             case R.id.menu_block_contact:
                 mChatView.blockContact();
                 return true;
-
+*/
             case R.id.menu_prev_chat:
                 switchChat(-1);
                 return true;

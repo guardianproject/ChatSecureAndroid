@@ -181,22 +181,23 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                 startActivity(i);
                 return true;
 
-            case R.id.menu_blocked_contacts:
+/*            case R.id.menu_blocked_contacts:
                 Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
                 ContentUris.appendId(builder, mProviderId);
                 ContentUris.appendId(builder, mAccountId);
                 startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
                 return true;
-
+*/
+/*
             case R.id.menu_view_accounts:
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType(Imps.Provider.CONTENT_TYPE);
                 startActivity(intent);
                 finish();
                 return true;
-
+*/				
             case R.id.menu_settings:
-                intent = new Intent(this, SettingActivity.class);
+                Intent intent = new Intent(this, SettingActivity.class);
                 intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                 startActivity(intent);
                 return true;

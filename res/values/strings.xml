@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">Gibberbot (v20110222a)</string>
+    <string name="im_label">Gibberbot (v20110223djh)</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
@@ -76,6 +76,8 @@
     <string name="menu_view_accounts">Account list</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
     <string name="menu_settings">Settings</string>
+    <!-- Screen menu item on the contact list to trigger search dialog -->
+    <string name="menu_search_contacts">Search Contacts</string>
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -85,7 +87,7 @@
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-    <string name="menu_view_profile">Verify Key</string>
+    <string name="menu_view_profile">View Profile</string>
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
@@ -94,6 +96,7 @@
     <string name="menu_otr_start">Start Encryption</string>
     <string name="menu_otr_stop">Stop Encryption</string>
     
+    <string name="menu_clear_chat">Clear Chat</string>
     
     <string name="menu_end_conversation">End chat</string>
 

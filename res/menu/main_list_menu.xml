@@ -21,12 +21,12 @@
 
     <item android:id="@+id/menu_sign_in"
         android:title="@string/menu_sign_in"
-        android:icon="@drawable/icon_dialog"
+        android:icon="@drawable/ic_menu_sign_in"
          />
 
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
-         android:icon="@drawable/icon_settings"
+         android:icon="@drawable/ic_menu_settings"
          />
 
 </menu>

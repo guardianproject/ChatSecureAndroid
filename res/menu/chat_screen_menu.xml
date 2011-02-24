@@ -20,27 +20,34 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item android:id="@+id/menu_view_otr"
-        android:title="@string/menu_otr_start"/>
-
-    <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_view_profile"/>
-        
-    <item android:id="@+id/menu_view_friend_list"
-        android:title="@string/menu_view_contact_list"/>
+        android:title="@string/menu_otr_start"
+        android:icon="@drawable/ic_menu_encrypt" />
 
     <item android:id="@+id/menu_switch_chats"
         android:title="@string/menu_switch_chats"
+        android:icon="@drawable/ic_menu_switch"
         android:alphabeticShortcut=" "/>
 
+    <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"
+        android:icon="@drawable/ic_menu_profile" />
+<!--     
+    <item android:id="@+id/menu_view_friend_list"
+        android:title="@string/menu_view_contact_list"/>
+-->  
+	<item android:id="@+id/menu_clear_chat"
+		android:title="@string/menu_clear_chat"
+		android:icon="@drawable/ic_menu_clear" />
+
     <item android:id="@+id/menu_end_conversation"
-        android:title="@string/menu_end_conversation" />
+        android:title="@string/menu_end_conversation" 
+        android:icon="@drawable/ic_menu_close" />
+
+<!--
 
     <item android:id="@+id/menu_block_contact"
         android:title="@string/menu_block_contact" />
-
-<!-- 
 
     <item android:id="@+id/menu_invite_contact"
         android:title="@string/menu_invite_contact" />

@@ -40,6 +40,7 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -212,7 +213,8 @@ public class ContactPresenceActivity extends Activity {
      }
     
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+    	
+    	super.onCreateOptionsMenu(menu);
         
         MenuItem mItem = null;
         
