@@ -236,14 +236,10 @@ public class OtrChatManager implements OtrEngineListener {
 			
 			this.sessions.put(sKey, sessionID);
 			
-			//make sure remote public key is loaded if it isn't verified
-			if (!myHost.isRemoteKeyVerified(sessionID))
-			{
-				PublicKey remoteKey = otrEngine.getRemotePublicKey(sessionID);
-				myHost.storeRemoteKey(sessionID, remoteKey);
-				String rkFingerprint = myHost.getRemoteKeyFingerprint(sessionID);
-				Log.i(TAG,"remote key fingerprint: " + rkFingerprint);			
-			}
+			PublicKey remoteKey = otrEngine.getRemotePublicKey(sessionID);
+			myHost.storeRemoteKey(sessionID, remoteKey);
+			
+			
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
