@@ -77,7 +77,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		
 		private void load() 
 		{
-			android.os.Debug.waitForDebugger();
 			try
 			{
 
@@ -123,7 +122,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		private void store() throws FileNotFoundException, IOException {
 			
-			android.os.Debug.waitForDebugger();
 			
 			Log.d(TAG,"saving otr keystore to: " + filepath);
 			

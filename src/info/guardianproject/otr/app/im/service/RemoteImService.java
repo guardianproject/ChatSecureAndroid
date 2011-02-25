@@ -100,7 +100,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
-        android.os.Debug.waitForDebugger();
 	}
 	
 	private void initOtr()
@@ -528,7 +527,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 			msg = getString(R.string.otr_session_status_finished);
 		}
 		
-		showToast(msg, Toast.LENGTH_SHORT);
+		//showToast(msg, Toast.LENGTH_SHORT);
 	
 		  
 		
