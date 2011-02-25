@@ -35,18 +35,20 @@
             android:layout_height="60dip"
             android:padding="2dip"
             android:background="@drawable/picture_frame_background" />
-
+<!-- 
         <TextView android:id="@+id/labelName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dip"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_username" />
+            android:text="@string/label_username" /> -->
 
         <TextView android:id="@+id/txtName"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="14pt"
+            android:text="name here"/>
 
         <TextView android:id="@+id/labelStatus"
             android:layout_width="fill_parent"
@@ -69,6 +71,7 @@
             android:maxLines="4"
             android:textStyle="italic" />
 
+<!-- 
         <TextView android:id="@+id/labelClientType"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -80,18 +83,35 @@
         <TextView android:id="@+id/txtClientType"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
+             -->
             
-            <TextView android:id="@+id/labelFingerprint"
+            <TextView android:id="@+id/labelFingerprintRemote"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip"                
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_fingerprint" />
+            android:text="@string/label_fingerprint_remote" />
 
-        <TextView android:id="@+id/txtFingerprint"
+        <TextView android:id="@+id/txtFingerprintRemote"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:text="" />
+            
+               <TextView android:id="@+id/labelFingerprintLocal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"                
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_fingerprint_local" />
+
+        <TextView android:id="@+id/txtFingerprintLocal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:text="" />
 
     </LinearLayout>
 

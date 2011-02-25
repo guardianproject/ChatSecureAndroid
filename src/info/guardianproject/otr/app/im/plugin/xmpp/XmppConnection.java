@@ -255,6 +255,7 @@ public class XmppConnection extends ImConnection {
     	//how should we handle special configs for hosts like google?
     	//we want to make it easy for users - maybe this shouldn't be here though
     	
+    	
     	if (serverHost.equals("gmail.com") || serverHost.equals("talk.google.com") || serverHost.equals("googlemail.com"))
     	{
     		mConfig = new ConnectionConfiguration("talk.google.com",serverPort,"gmail.com", mProxyInfo);
@@ -268,12 +269,13 @@ public class XmppConnection extends ImConnection {
     	else
     	{
     	
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",0);
+
     		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",1);
     		  
     	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
     	    
-    		mConfig.setSecurityMode(SecurityMode.required);
+    		mConfig.setSecurityMode(SecurityMode.enabled);
   		  
     		
     	}
@@ -281,10 +283,20 @@ public class XmppConnection extends ImConnection {
     	//security!
     	mConfig.setSASLAuthenticationEnabled(true);
 
-		mConfig.setSelfSignedCertificateEnabled(true);
-		mConfig.setVerifyChainEnabled(true);
-		mConfig.setVerifyRootCAEnabled(true);
-		
+    	boolean doCertVerification = false;
+    	
+    	if (doCertVerification)
+    	{
+    		mConfig.setVerifyChainEnabled(true);
+    		mConfig.setVerifyRootCAEnabled(true);
+    		mConfig.setExpiredCertificatesCheckEnabled(true);
+    	}
+    	else
+    	{
+    		mConfig.setSelfSignedCertificateEnabled(true);
+	
+    	}
+    	
 		//reconnect please
 		mConfig.setReconnectionAllowed(true);
 		

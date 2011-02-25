@@ -31,6 +31,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,13 +65,13 @@ public class ContactPresenceActivity extends Activity {
         setContentView(R.layout.contact_presence_activity);
 
         ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
-        TextView labelName = (TextView) findViewById(R.id.labelName);
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
-        TextView txtClientType = (TextView) findViewById(R.id.txtClientType);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
-        TextView txtFingerprint = (TextView) findViewById(R.id.txtFingerprint);
-        
+        TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
+        TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
+        TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
+
         Intent i = getIntent();
         Uri uri = i.getData();
         if(uri == null) {
@@ -88,7 +89,19 @@ public class ContactPresenceActivity extends Activity {
 	        	remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
 	        	localFingerprint = i.getExtras().getString("localFingerprint");
 	        
-	        	txtFingerprint.setText(remoteFingerprint + "; verified=" + remoteFingerprintVerified);
+	        	txtFingerprintRemote.setText(remoteFingerprint);
+	        	
+	        	if (remoteFingerprintVerified)
+	        	{
+	        		lblFingerprintRemote.setText("Their Fingerprint (Verified)");
+	        		txtFingerprintRemote.setBackgroundColor(Color.GREEN);
+	        	}
+	        	else
+	        		txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
+
+	        	txtFingerprintRemote.setTextColor(Color.BLACK);
+	        	
+	        	txtFingerprintLocal.setText(localFingerprint);
 	        }
         }
         
@@ -121,8 +134,6 @@ public class ContactPresenceActivity extends Activity {
                 imgAvatar.setImageResource(R.drawable.avatar_unknown);
             }
 
-            labelName.setText(brandingRes.getString(
-                    BrandingResourceIDs.STRING_LABEL_USERNAME));
             txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
 
             String statusString = brandingRes.getString(
@@ -136,7 +147,7 @@ public class ContactPresenceActivity extends Activity {
                     SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             txtStatus.setText(s);
 
-            txtClientType.setText(getClientTypeString(clientType));
+       //     txtClientType.setText(getClientTypeString(clientType));
 
             if (!TextUtils.isEmpty(customStatus)) {
                 txtCustomStatus.setVisibility(View.VISIBLE);

@@ -263,6 +263,10 @@ public class SigningInActivity extends Activity {
     }
 
     void signInAccount() {
+    	
+    	boolean autoLoadContacts = true;
+    	boolean autoRetryLogin = false;
+    	
         try {
             IImConnection conn = mApp.getConnection(mProviderId);
             if (conn != null) {
@@ -282,7 +286,7 @@ public class SigningInActivity extends Activity {
                     mConn.registerConnectionListener(mListener);
                     
                     mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
-                 	mConn.login(mAccountId, mUserName, mPassword, true, true);
+                 	mConn.login(mAccountId, mUserName, mPassword, autoLoadContacts, autoRetryLogin);
                  	
                     
                 } else {

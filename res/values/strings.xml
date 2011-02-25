@@ -87,7 +87,7 @@
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-    <string name="menu_view_profile">View Profile</string>
+    <string name="menu_view_profile">Verify</string>
     <!-- Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
@@ -611,7 +611,9 @@
 	<string name="account_setup_error_connectivity">Gibberbot encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
     
     
-    <string name="label_fingerprint">OTR Public Key Fingerprint</string>
+        <string name="label_fingerprint_remote">Their Fingerprint</string>
+    
+    <string name="label_fingerprint_local">Your Fingerprint</string>
     <string name="menu_sign_in">Sign In</string>
     <string name="menu_gen_key">Regen Key</string>
     
