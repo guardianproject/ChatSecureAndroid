@@ -613,6 +613,7 @@
     
     <string name="label_fingerprint">OTR Public Key Fingerprint</string>
     <string name="menu_sign_in">Sign In</string>
+    <string name="menu_gen_key">Regen Key</string>
     
     <string name="error_suspended_connection">Gibberbot has lost a connection to the network</string>
 	<string name="error_reestablish_connection">Gibberbot is attempting to restablish a connection</string>

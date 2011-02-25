@@ -1,5 +1,7 @@
 package net.java.otr4j;
 
+import info.guardianproject.bouncycastle.util.encoders.Base64;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +23,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.bouncycastle.util.encoders.Base64;
 
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;

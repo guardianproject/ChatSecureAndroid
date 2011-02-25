@@ -225,13 +225,14 @@ public class OtrChatManager implements OtrEngineListener {
 		if (sStatus == SessionStatus.ENCRYPTED)
 		{
 			
-			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
+			PublicKey remoteKey = this.mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
-			
 			
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
+			
+			
 		}
 		else if (sStatus == SessionStatus.FINISHED)
 		{

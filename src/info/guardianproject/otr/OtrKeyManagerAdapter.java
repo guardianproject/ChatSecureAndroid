@@ -15,24 +15,17 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 
 	private OtrAndroidKeyManagerImpl _keyManager;
-	private OtrChatManager _chatManager;
-	private ChatSession _chatSession;
 
-	private SessionID sessionId;
+	private SessionID _sessionId;
 	
-	public OtrKeyManagerAdapter (ChatSession chatSession, OtrAndroidKeyManagerImpl keyManager, OtrChatManager chatManager)
+	public OtrKeyManagerAdapter (OtrAndroidKeyManagerImpl keyManager, SessionID sessionId)
 	{
 		
 		
 		_keyManager = keyManager;
-		_chatManager = chatManager;
-		_chatSession = chatSession;
 		
-		String remoteUser = _chatSession.getParticipant().getAddress().getFullName();
-		String localUser = "";
 		
-		sessionId = _chatManager.getSessionId(localUser, remoteUser);
-		
+		_sessionId = sessionId;
 		
 	}	
 	
@@ -74,7 +67,7 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 	@Override
 	public String getLocalFingerprint() throws RemoteException {
 		
-		return _keyManager.getLocalFingerprint(sessionId);
+		return _keyManager.getLocalFingerprint(_sessionId);
 		
 	}
 
@@ -84,16 +77,16 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 	@Override
 	public String getRemoteFingerprint() throws RemoteException {
 		
-		return _keyManager.getRemoteFingerprint(sessionId);
+		return _keyManager.getRemoteFingerprint(_sessionId);
 	}
 
 	/* (non-Javadoc)
 	 * @see info.guardianproject.otr.IOtrKeyManager#generateLocalKeyPair(java.lang.String)
 	 */
 	@Override
-	public void generateLocalKeyPair(String address) throws RemoteException {
+	public void generateLocalKeyPair() throws RemoteException {
 		
-		_keyManager.generateLocalKeyPair(address);
+		_keyManager.generateLocalKeyPair(_sessionId);
 
 	}
 

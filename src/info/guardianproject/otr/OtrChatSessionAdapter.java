@@ -1,10 +1,8 @@
 package info.guardianproject.otr;
 
-import net.java.otr4j.session.SessionID;
+import info.guardianproject.otr.IOtrChatSession.Stub;
 import net.java.otr4j.session.SessionStatus;
 import android.os.RemoteException;
-import info.guardianproject.otr.IOtrChatSession.Stub;
-import info.guardianproject.otr.app.im.engine.ChatSession;
 
 public class OtrChatSessionAdapter extends Stub {
 

@@ -6,6 +6,8 @@
  */
 package net.java.otr4j.io;
 
+import info.guardianproject.bouncycastle.util.encoders.Base64;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +22,6 @@ import java.util.regex.Pattern;
 
 import javax.crypto.interfaces.DHPublicKey;
 
-import org.bouncycastle.util.encoders.Base64;
 
 import net.java.otr4j.io.messages.AbstractEncodedMessage;
 import net.java.otr4j.io.messages.AbstractMessage;

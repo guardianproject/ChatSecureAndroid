@@ -62,7 +62,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	class DefaultPropertiesStore implements OtrKeyManagerStore {
-		private final Properties properties = new Properties();
+		private Properties properties = new Properties();
 		private String filepath;
 		private File mStoreFile;
 		
@@ -70,7 +70,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			this.filepath = filepath;
 			mStoreFile = new File(filepath);
-
 			properties.clear();
 			
 			load();
@@ -78,6 +77,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		
 		private void load() 
 		{
+			android.os.Debug.waitForDebugger();
 			try
 			{
 
@@ -92,7 +92,18 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			}
 			catch (FileNotFoundException fnfe)
 			{
-				Log.e(TAG,"Properties store file not found: First time?",fnfe);
+				Log.e(TAG,"Properties store file not found: First time?");
+				mStoreFile.getParentFile().mkdirs();
+				
+				try
+				{
+						store();
+				}
+				catch (Exception ioe)
+				{
+					Log.e(TAG,"Properties store error",ioe);
+				}
+				
 			}
 			catch (IOException ioe)
 			{
@@ -106,17 +117,18 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try {
 				this.store();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.e(TAG,"Properties store error",e);
 			}
 		}
 
 		private void store() throws FileNotFoundException, IOException {
 			
+			android.os.Debug.waitForDebugger();
+			
 			Log.d(TAG,"saving otr keystore to: " + filepath);
 			
 
 			FileOutputStream fos = new FileOutputStream(mStoreFile);
-				//context.openFileOutput(filepath, Context.MODE_PRIVATE);
 
 			properties.store(fos, null);
 			
@@ -130,7 +142,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try {
 				this.store();
 			} catch (Exception e) {
-				Log.e(TAG,"store saved",e);
+				Log.e(TAG,"store not saved",e);
 			}
 		}
 
@@ -336,7 +348,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		byte[] b64PubKey = this.store.getPropertyBytes(userID + ".publicKey");
 		if (b64PubKey == null)
+		{
 			return null;
+		
+		}
 
 		X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
 

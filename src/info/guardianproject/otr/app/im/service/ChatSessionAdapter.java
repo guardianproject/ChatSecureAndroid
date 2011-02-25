@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.java.otr4j.session.SessionID;
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -104,13 +106,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mStatusBarNotifier = service.getStatusBarNotifier();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
-        mOtrChatManager = service.getOtrChatManager();
-		mOtrKeyManager = new OtrKeyManagerAdapter(mAdaptee, mOtrChatManager.getKeyManager(), mOtrChatManager);
-		String localUser = mConnection.getLoginUser().getAddress().getFullName();
-		String remoteUser = mAdaptee.getParticipant().getAddress().getFullName();
-		
-		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager);
+		String localUserId = mConnection.getLoginUser().getAddress().getFullName();
+		String remoteUserId = mAdaptee.getParticipant().getAddress().getFullName();
 
+        mOtrChatManager = service.getOtrChatManager();
+		mOtrChatSession = new OtrChatSessionAdapter(localUserId, remoteUserId, mOtrChatManager);
+		SessionID sessionId = mOtrChatManager.getSessionId(localUserId, remoteUserId);
+
+		mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), sessionId);
+
+		
         mListenerAdapter = new ListenerAdapter();
         
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs

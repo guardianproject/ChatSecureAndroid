@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -32,6 +33,7 @@ import info.guardianproject.otr.app.im.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +41,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -203,6 +206,10 @@ public class NewChatActivity extends Activity {
         case R.id.menu_view_profile:
             mChatView.viewProfile();
             return true;
+            
+        case R.id.menu_gen_key:
+        	otrGenKey();
+        	return true;
 /*            
         	case R.id.menu_view_friend_list:
                 finish();
@@ -278,6 +285,74 @@ public class NewChatActivity extends Activity {
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
 
+	ProgressDialog pbarDialog;
+
+    private void otrGenKey ()
+    {
+    	
+
+
+		pbarDialog = new ProgressDialog( this );
+    	
+
+    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    	pbarDialog.setMessage("Generating keypair...");
+    	pbarDialog.show();
+
+    	
+		KeyGenThread kgt = new KeyGenThread();
+		kgt.start();
+    	
+    }
+    
+    private class KeyGenThread extends Thread {
+
+    	IOtrKeyManager otrKeyManager;
+    	
+    	public KeyGenThread ()
+    	{
+    		otrKeyManager = mChatView.getOtrKeyManager();
+    	}
+
+        @Override
+        public void run() {         
+        	
+
+        	try {
+				otrKeyManager.generateLocalKeyPair();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            handler.sendEmptyMessage(0);
+        }
+
+        private Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+             
+            	pbarDialog.dismiss();
+            	
+            	try {
+					String lFingerprint = otrKeyManager.getLocalFingerprint();
+					showToast("New fingerprint: " + lFingerprint);
+					
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	
+            	
+            }
+        };
+    }
+    
+    private void showToast (String msg)
+    {
+    	Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+    	toast.show();
+    }
     private void switchOtrState ()
     {
     	//TODO OTRCHAT switch state on/off
@@ -286,17 +361,31 @@ public class NewChatActivity extends Activity {
     	 
     	try {
 			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+			boolean desiredState;
 			
+			pbarDialog = new ProgressDialog( this );
+	    	
+
+	    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	    	
+	    	
+
 			if (!isOtrEnabled)
 			{
 				otrChatSession.startChatEncryption();
-				
+				desiredState = true;
+				pbarDialog.setMessage("Starting encrypted chat session...");
 			}
 			else
 			{
 				otrChatSession.stopChatEncryption();
+				desiredState = false;
+				pbarDialog.setMessage("Stopping encrypted chat session...");
 
 			}
+			
+			pbarDialog.show();
+			new OtrStateCheckerThread(desiredState).start();
 			
 			updateOtrMenuState();
 			mChatView.updateWarningView();
@@ -308,6 +397,58 @@ public class NewChatActivity extends Activity {
 		}
     	
     	
+    }
+    
+    private class OtrStateCheckerThread extends Thread 
+    {
+    	IOtrChatSession otrChatSession ;
+    	boolean currentState;
+    	boolean desiredState;
+    	
+    	public OtrStateCheckerThread(boolean desiredState) 
+    	{
+    		otrChatSession = mChatView.getOtrChatSession();
+    		this.desiredState = desiredState;
+    		
+    		
+    		
+    	}
+    	
+    	public void run ()
+    	{
+    		
+    		while (currentState != desiredState)
+    		{
+	    		try {
+	    			currentState = otrChatSession.isChatEncrypted();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+    		}
+    		  handler.sendEmptyMessage(0);
+        }
+
+        private Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+             
+            	pbarDialog.dismiss();
+            	mChatView.updateWarningView();
+            	updateOtrMenuState();
+            }
+      	
+    		
+    	};
     }
     
     private void updateOtrMenuState ()

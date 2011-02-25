@@ -100,7 +100,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
-        
+        android.os.Debug.waitForDebugger();
 	}
 	
 	private void initOtr()

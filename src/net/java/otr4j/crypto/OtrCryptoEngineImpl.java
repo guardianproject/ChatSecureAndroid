@@ -6,6 +6,23 @@
  */
 package net.java.otr4j.crypto;
 
+import info.guardianproject.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import info.guardianproject.bouncycastle.crypto.BufferedBlockCipher;
+import info.guardianproject.bouncycastle.crypto.engines.AESFastEngine;
+import info.guardianproject.bouncycastle.crypto.generators.DHKeyPairGenerator;
+import info.guardianproject.bouncycastle.crypto.modes.SICBlockCipher;
+import info.guardianproject.bouncycastle.crypto.params.DHKeyGenerationParameters;
+import info.guardianproject.bouncycastle.crypto.params.DHParameters;
+import info.guardianproject.bouncycastle.crypto.params.DHPrivateKeyParameters;
+import info.guardianproject.bouncycastle.crypto.params.DHPublicKeyParameters;
+import info.guardianproject.bouncycastle.crypto.params.DSAParameters;
+import info.guardianproject.bouncycastle.crypto.params.DSAPrivateKeyParameters;
+import info.guardianproject.bouncycastle.crypto.params.DSAPublicKeyParameters;
+import info.guardianproject.bouncycastle.crypto.params.KeyParameter;
+import info.guardianproject.bouncycastle.crypto.params.ParametersWithIV;
+import info.guardianproject.bouncycastle.crypto.signers.DSASigner;
+import info.guardianproject.bouncycastle.util.BigIntegers;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -30,22 +47,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import net.java.otr4j.io.SerializationUtils;
 
-import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
-import org.bouncycastle.crypto.BufferedBlockCipher;
-import org.bouncycastle.crypto.engines.AESFastEngine;
-import org.bouncycastle.crypto.generators.DHKeyPairGenerator;
-import org.bouncycastle.crypto.modes.SICBlockCipher;
-import org.bouncycastle.crypto.params.DHKeyGenerationParameters;
-import org.bouncycastle.crypto.params.DHParameters;
-import org.bouncycastle.crypto.params.DHPrivateKeyParameters;
-import org.bouncycastle.crypto.params.DHPublicKeyParameters;
-import org.bouncycastle.crypto.params.DSAParameters;
-import org.bouncycastle.crypto.params.DSAPrivateKeyParameters;
-import org.bouncycastle.crypto.params.DSAPublicKeyParameters;
-import org.bouncycastle.crypto.params.KeyParameter;
-import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.bouncycastle.crypto.signers.DSASigner;
-import org.bouncycastle.util.BigIntegers;
 
 /**
  * 

@@ -17,7 +17,6 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 /* OtrEngineHostImpl is the connects this app and the OtrEngine
  * http://code.google.com/p/otr4j/wiki/QuickStart
