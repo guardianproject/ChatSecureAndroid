@@ -29,15 +29,15 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	private final static String TAG = "OtrChatManager";
 	
-	private OtrEngineHostImpl myHost;
+	private OtrEngineHostImpl mOtrEngineHost;
 	private OtrEngineImpl mOtrEngine;	
 	private Hashtable<String,SessionID> sessions;
 	
 	private OtrChatManager (int otrPolicy,Context context) throws Exception
 	{
-		myHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy), context);
+		mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy), context);
 		
-		mOtrEngine = new OtrEngineImpl(myHost);
+		mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
 		mOtrEngine.addOtrEngineListener(this);
 		
 		sessions = new Hashtable<String,SessionID>();
@@ -56,7 +56,7 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	public void setConnection (ImConnectionAdapter imConnectionAdapter)
 	{
-		myHost.setConnection(imConnectionAdapter);
+		mOtrEngineHost.setConnection(imConnectionAdapter);
 	}
 	
 	
@@ -67,7 +67,7 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	public OtrAndroidKeyManagerImpl getKeyManager ()
 	{
-		return this.myHost.getKeyManager();
+		return mOtrEngineHost.getKeyManager();
 	}
 	
 	public static String processUserId (String userId)
@@ -228,7 +228,7 @@ public class OtrChatManager implements OtrEngineListener {
 			this.sessions.put(sKey, sessionID);
 			
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
-			myHost.storeRemoteKey(sessionID, remoteKey);
+			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 			
 			
 		}
@@ -243,19 +243,19 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	public String getLocalKeyFingerprint (String localUserId, String remoteUserId)
 	{
-		return myHost.getLocalKeyFingerprint(getSessionId(localUserId,remoteUserId));
+		return mOtrEngineHost.getLocalKeyFingerprint(getSessionId(localUserId,remoteUserId));
 	}
 	
 	public String getRemoteKeyFingerprint(String localUserId, String remoteUserId)
 	{
 		SessionID sessionID = getSessionId(localUserId,remoteUserId);
-		String rkFingerprint = myHost.getRemoteKeyFingerprint(sessionID);
+		String rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
 
 		if (rkFingerprint == null)
 		{
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
-			myHost.storeRemoteKey(sessionID, remoteKey);
-			rkFingerprint = myHost.getRemoteKeyFingerprint(sessionID);
+			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
+			rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
 			Log.i(TAG,"remote key fingerprint: " + rkFingerprint);
 		}
 		return rkFingerprint;

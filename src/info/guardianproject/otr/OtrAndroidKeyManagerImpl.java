@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -42,20 +43,25 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	private final static String KEY_ALG = "DSA";
 	private final static int KEY_SIZE = 1024;
 	
-	
+	public OtrAndroidKeyManagerImpl(String filepath, Context context) throws IOException {
+		this.store = new DefaultPropertiesStore(filepath, context);
+
+		cryptoEngine = new OtrCryptoEngineImpl();
+	}
+
+	/*
 	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store, Context context) {
 		this.store = store;
 		
 		cryptoEngine = new OtrCryptoEngineImpl();
 		
-	}
+	}*/
 
 	class DefaultPropertiesStore implements OtrKeyManagerStore {
 		private final Properties properties = new Properties();
 		private String filepath;
-
+		private File mStoreFile;
 		private Context context;
-		private boolean hasLoaded = false;
 		
 		public DefaultPropertiesStore(String filepath, Context context) {
 			if (filepath == null || filepath.length() < 1)
@@ -63,6 +69,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			this.context = context;
 			this.filepath = filepath;
+			mStoreFile = new File(context.getFilesDir(), filepath);
+
 			properties.clear();
 			
 			load();
@@ -72,9 +80,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		{
 			try
 			{
-				
-				
-				FileInputStream fis = context.openFileInput(filepath);
+
+				FileInputStream fis = new FileInputStream(mStoreFile);
 				
 				InputStream in = new BufferedInputStream(fis);
 				try {
@@ -107,10 +114,14 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			Log.d(TAG,"saving otr keystore to: " + filepath);
 			
-			FileOutputStream fis = context.openFileOutput(filepath, Context.MODE_PRIVATE);
 
-			properties.store(fis, null);
-			fis.close();
+			FileOutputStream fos = new FileOutputStream(mStoreFile);
+				//context.openFileOutput(filepath, Context.MODE_PRIVATE);
+
+			properties.store(fos, null);
+			
+			
+			fos.close();
 		}
 
 		public void setProperty(String id, byte[] value) {
@@ -119,7 +130,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try {
 				this.store();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.e(TAG,"store saved",e);
 			}
 		}
 
@@ -146,9 +157,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		}
 	}
 
-	public OtrAndroidKeyManagerImpl(String filepath, Context context) throws IOException {
-		this.store = new DefaultPropertiesStore(filepath, context);
-	}
 
 	private List<OtrKeyManagerListener> listeners = new Vector<OtrKeyManagerListener>();
 
@@ -186,7 +194,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			keyPair = kpg.genKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.e(TAG, "no such algorithm",e);
 			return;
 		}
 
