@@ -6,6 +6,7 @@ import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -36,7 +37,9 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	{
 		this.policy = policy;
 		
-		mOtrKeyManager = new OtrAndroidKeyManagerImpl(OTR_KEYSTORE_PATH, context);
+		File storeFile = new File(context.getFilesDir(), OTR_KEYSTORE_PATH);
+		
+		mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile.getAbsolutePath());
 	}
 	
 	public void setConnection (ImConnectionAdapter imConnectionAdapter)

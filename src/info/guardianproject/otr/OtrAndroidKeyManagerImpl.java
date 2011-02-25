@@ -43,33 +43,33 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	private final static String KEY_ALG = "DSA";
 	private final static int KEY_SIZE = 1024;
 	
-	public OtrAndroidKeyManagerImpl(String filepath, Context context) throws IOException {
-		this.store = new DefaultPropertiesStore(filepath, context);
+	private static OtrAndroidKeyManagerImpl _instance;
+	
+	public static synchronized OtrAndroidKeyManagerImpl getInstance (String filepath) throws IOException
+	{
+		if (_instance == null)
+		{
+			_instance = new OtrAndroidKeyManagerImpl(filepath);
+		}
+		
+		return _instance;
+	}
+	
+	private OtrAndroidKeyManagerImpl(String filepath) throws IOException {
+		this.store = new DefaultPropertiesStore(filepath);
 
 		cryptoEngine = new OtrCryptoEngineImpl();
 	}
-
-	/*
-	public OtrAndroidKeyManagerImpl(OtrKeyManagerStore store, Context context) {
-		this.store = store;
-		
-		cryptoEngine = new OtrCryptoEngineImpl();
-		
-	}*/
 
 	class DefaultPropertiesStore implements OtrKeyManagerStore {
 		private final Properties properties = new Properties();
 		private String filepath;
 		private File mStoreFile;
-		private Context context;
 		
-		public DefaultPropertiesStore(String filepath, Context context) {
-			if (filepath == null || filepath.length() < 1)
-				throw new IllegalArgumentException();
+		public DefaultPropertiesStore(String filepath) {
 			
-			this.context = context;
 			this.filepath = filepath;
-			mStoreFile = new File(context.getFilesDir(), filepath);
+			mStoreFile = new File(filepath);
 
 			properties.clear();
 			

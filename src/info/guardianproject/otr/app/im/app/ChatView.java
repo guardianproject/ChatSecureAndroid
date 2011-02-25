@@ -569,11 +569,15 @@ public class ChatView extends LinearLayout {
         {
 
         	if (mOtrChatSession == null && mChatSession != null)
+        	{
         		mOtrChatSession = mChatSession.getOtrChatSession();
+        	
+        		if (mOtrChatSession != null)
+            		Log.i(ImApp.LOG_TAG, "ChatView: OtrChatSession was init'd");
+        	}
         	
         	if (mOtrChatSession != null)
         	{
-        		Log.i(ImApp.LOG_TAG, "ChatView: OtrChatSession is init'd");
         		
         		if (mOtrKeyManager == null)
         		{
