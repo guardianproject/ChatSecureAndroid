@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.2" android:versionCode="6">
+     android:versionName="0.0.3.20110225d" android:versionCode="7">
 
-<uses-sdk android:minSdkVersion="3"></uses-sdk>
+<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -35,7 +35,7 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_im"
-             android:taskAffinity="info.guardianproject.otr.app.task.im">
+             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true">
 
 
          <activity android:name=".ui.MainActivity">

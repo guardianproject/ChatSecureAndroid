@@ -1146,7 +1146,7 @@ public class ChatView extends LinearLayout {
     		{
     			mWarningText.setTextColor(Color.WHITE);
     			mWarningText.setBackgroundColor(Color.RED);
-    			message = "Warning: this is not an encrypted chat session";
+    			message = mContext.getString(R.string.otr_session_status_plaintext);
     		}
             
         } else {

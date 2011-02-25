@@ -101,7 +101,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
         
-        initOtr();
 	}
 	
 	private void initOtr()
@@ -288,6 +287,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     }
 
 	public OtrChatManager getOtrChatManager() {
+		initOtr();
 		Log.i(TAG, "getOtrChatManager");
 		return mOtrChatManager;
 	}
@@ -314,6 +314,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
                     conn, this);
             mConnections.add(imConnectionAdapter);
 
+            initOtr();
+            mOtrChatManager.setConnection(imConnectionAdapter);
+            
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IConnectionCreationListener listener = mRemoteListeners.getBroadcastItem(i);
@@ -324,11 +327,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
                     // dead listeners.
                 }
             }
-            
-         
-            initOtr();
-            mOtrChatManager.setConnection(imConnectionAdapter);
-            
             
             mRemoteListeners.finishBroadcast();
             
@@ -509,6 +507,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	@Override
 	public void sessionStatusChanged(SessionID sessionID) {
 		
+		initOtr();
+		
 		SessionStatus sStatus = mOtrChatManager.getSessionStatus(sessionID);
 		
 		String msg = "";
@@ -529,6 +529,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
 		}
 		
 		showToast(msg, Toast.LENGTH_SHORT);
+	
+		  
 		
 	}
 }

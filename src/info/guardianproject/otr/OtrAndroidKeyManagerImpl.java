@@ -198,6 +198,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			return;
 		}
 
+		Log.d(TAG, "SUCCESS! generating local key pair for: " + accountID);
+
 		// Store Public Key.
 		PublicKey pubKey = keyPair.getPublic();
 		X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey

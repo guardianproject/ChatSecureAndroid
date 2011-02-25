@@ -8,19 +8,14 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 
 public class OtrChatSessionAdapter extends Stub {
 
-	private OtrAndroidKeyManagerImpl _keyManager;
 	private OtrChatManager _chatManager;
-	private ChatSession _chatSession;
-
-	private SessionID _sessionId;
 	
 	private String _localUser;
 	private String _remoteUser;
 	
-	public OtrChatSessionAdapter (String localUser, String remoteUser, OtrAndroidKeyManagerImpl keyManager, OtrChatManager chatManager)
+	public OtrChatSessionAdapter (String localUser, String remoteUser, OtrChatManager chatManager)
 	{
 		
-		_keyManager = keyManager;
 		_chatManager = chatManager;
 		
 		_localUser = localUser;
@@ -31,13 +26,14 @@ public class OtrChatSessionAdapter extends Stub {
 	
 	public void startChatEncryption() throws RemoteException {
 		
-		_sessionId = _chatManager.startSession(_localUser, _remoteUser);
+		_chatManager.startSession(_localUser, _remoteUser);
 	}
 
 	@Override
 	public void stopChatEncryption() throws RemoteException {
 	
 		_chatManager.endSession(_localUser, _remoteUser);
+		
 	}
 
 	@Override

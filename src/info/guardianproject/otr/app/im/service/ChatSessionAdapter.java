@@ -109,7 +109,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 		String localUser = mConnection.getLoginUser().getAddress().getFullName();
 		String remoteUser = mAdaptee.getParticipant().getAddress().getFullName();
 		
-		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager.getKeyManager(), mOtrChatManager);
+		mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, mOtrChatManager);
 
         mListenerAdapter = new ListenerAdapter();
         

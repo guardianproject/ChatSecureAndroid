@@ -44,7 +44,7 @@ public class OtrChatManager implements OtrEngineListener {
 	}
 	
 	
-	public static OtrChatManager getInstance(int otrPolicy, Context context) throws Exception
+	public static synchronized OtrChatManager getInstance(int otrPolicy, Context context) throws Exception
 	{
 		if (_instance == null)
 		{
@@ -72,19 +72,22 @@ public class OtrChatManager implements OtrEngineListener {
 	
 	public static String processUserId (String userId)
 	{
-		return userId.split(":")[0]; //remove any port indication in the username
+		String result = userId.split(":")[0]; //remove any port indication in the username
+		result = userId.split("/")[0];
+		
+		return result;
 	}
 	
 	public SessionID getSessionId (String localUserId, String remoteUserId)
 	{
+		String sessionIdKey = processUserId(localUserId)+"+"+processUserId(remoteUserId);
 		
-		SessionID sessionId = sessions.get(processUserId(remoteUserId));
-		
+		SessionID sessionId = sessions.get(sessionIdKey);
 		
 		if (sessionId == null)
 		{
 			sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
-			sessions.put( processUserId(remoteUserId), sessionId);
+			sessions.put(sessionIdKey, sessionId);
 		}
 		
 		return sessionId;
@@ -221,11 +224,6 @@ public class OtrChatManager implements OtrEngineListener {
 		
 		if (sStatus == SessionStatus.ENCRYPTED)
 		{
-			String sKey = sessionID.getUserID();
-			if (sKey.indexOf("/")!=-1)
-				sKey = sKey.substring(0,sKey.indexOf("/"));
-			
-			this.sessions.put(sKey, sessionID);
 			
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
