@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.3.20110225d" android:versionCode="7">
+     android:versionName="0.0.3.20110227b" android:versionCode="8">
 
 <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="8"></uses-sdk>
 
