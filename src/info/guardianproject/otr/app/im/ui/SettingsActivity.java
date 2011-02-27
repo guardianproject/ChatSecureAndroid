@@ -32,14 +32,14 @@ public class SettingsActivity
 	protected void onResume() {
 	
 		super.onResume();
-	
+	/*
 		EditTextPreference pref = (EditTextPreference)((PreferenceCategory)getPreferenceScreen().getPreference(0)).getPreference(0);
 		String value = pref.getText();
 		
 		if (value != null && value.length() > 0)
 			pref.setSummary(value);
 		
-		
+		*/
 		
 		
 	};
@@ -65,6 +65,7 @@ public class SettingsActivity
 		return true;
 	}
 
+	/*
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -76,7 +77,7 @@ public class SettingsActivity
 	        return true;
 	    }
 	    return super.onKeyDown(keyCode, event);
-	}
+	}*/
 	
 
 }
