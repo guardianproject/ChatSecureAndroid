@@ -225,17 +225,20 @@ public class ContactPresenceActivity extends Activity {
     
     public boolean onCreateOptionsMenu(Menu menu) {
     	
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.contact_info_menu, menu);
+        
+    	/*
     	super.onCreateOptionsMenu(menu);
         
         MenuItem mItem = null;
-        
         
         mItem = menu.add(0, 1, Menu.NONE, "Scan Fingerprint");
         
         mItem = menu.add(0, 2, Menu.NONE, "Your Fingerprint");
         
         mItem = menu.add(0, 3, Menu.NONE, "Verify Fingerprint");
-        
+        */
        
         return true;
     }
@@ -244,6 +247,7 @@ public class ContactPresenceActivity extends Activity {
      * (non-Javadoc)
 	 * @see android.app.Activity#onMenuItemSelected(int, android.view.MenuItem)
 	 */
+    /*
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		
 		super.onMenuItemSelected(featureId, item);
@@ -264,4 +268,22 @@ public class ContactPresenceActivity extends Activity {
 		
         return true;
 	}
+	*/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+	       	case R.id.menu_scan:
+	        	startScan();
+	        	return true;
+	
+	        case R.id.menu_fingerprint:
+	            displayQRCode(localFingerprint);
+	            return true;
+	            
+	        case R.id.menu_verify:
+	        	verifyRemoteFingerprint();
+	        	return true;
+	        }
+        return super.onOptionsItemSelected(item);
+    }
 }
