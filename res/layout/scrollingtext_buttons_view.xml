@@ -4,10 +4,9 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-            android:background="@drawable/gibberlogo"
-    
-    >
-    <TextView android:text="TITLE" 	android:textColor="#ffffff" android:id="@+id/WizardTextTitle" android:textSize="14pt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:singleLine="true" android:fadingEdge="vertical"></TextView>
+            android:background="@drawable/gibberbg">
+            
+ <TextView android:text="TITLE" 	android:textColor="#ffffff" android:id="@+id/WizardTextTitle" android:textSize="14pt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:singleLine="true" android:fadingEdge="vertical"></TextView>
     
 <TableLayout android:id="@+id/TableLayout01" android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
 

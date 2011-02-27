@@ -87,10 +87,11 @@ public class AboutActivity extends Activity implements OnClickListener
 					@Override
 					public void onClick(View v) {
 					
-						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						
-						intent.putExtra("showSettings",true);
-						startActivityForResult(intent, 1);
+						Intent intent = new Intent(getBaseContext(), AccountWizardActivity.class);
+						
+					
+						startActivity(intent);
 
 					}
 				}

@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				startActivityForResult(new Intent(getBaseContext(), SettingsActivity.class), 1);
+				startActivityForResult(new Intent(getBaseContext(), AccountWizardActivity.class), 1);
 
 				
 			}
