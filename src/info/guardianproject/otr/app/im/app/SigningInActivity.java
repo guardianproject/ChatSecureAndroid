@@ -37,12 +37,15 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -227,8 +230,26 @@ public class SigningInActivity extends Activity {
          input.setTransformationMethod(new PasswordTransformationMethod());
          
          alert.setView(input);  
+         
+         alert.setNeutralButton("Remember", new DialogInterface.OnClickListener() {  
+             public void onClick(DialogInterface dialog, int whichButton) {  
+            	 String pwd = input.getText().toString();  
+            	 
+            	 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+     			
+     			Editor edit = prefs.edit();
+     			
+     			edit.putString("pref_account_pass", pwd);
+     			
+     			edit.commit();
+     			
+            	 
+            	 
+            	 gotCredentials(null,pwd);
+               }  
+             }); 
 
-         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+         alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {  
          public void onClick(DialogInterface dialog, int whichButton) {  
         	 String pwd = input.getText().toString();  
         	 gotCredentials(null,pwd);

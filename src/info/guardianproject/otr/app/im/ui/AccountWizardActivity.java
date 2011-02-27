@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import info.guardianproject.otr.app.im.R;
 
 public class AccountWizardActivity extends Activity implements OnClickListener
@@ -44,8 +45,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	private String buttons[][] =
 	{
 			{null,"Next"},
-			{"Back","Next"},
-			{"Back","Connect"},
+			{"Back","Look's Good!"},
+			{"Back","Login"},
 	};
 	
 	private View.OnClickListener listener[][] =
@@ -239,6 +240,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	
 	private void parseAccount ()
 	{
+		boolean isGood = false;
+		
 		EditText editAccountId = ((EditText)findViewById(R.id.edit1));
 		
 		String accountId = editAccountId.getText().toString();
@@ -246,7 +249,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		String[] split = accountId.split("@");
 		String username = split[0];
 		
-		String hostname = "";
+		String hostname = null;
 		String port = "5222";
 		
 		if (split.length > 1)
@@ -261,26 +264,52 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 				port = split[1];
 		}
 		
+		String errMsg = "";
+			
+		if (hostname == null)
+		{
+			isGood = false;
+			errMsg = "You didn't enter an @hostname.com part for your account ID. Try again!";
+		}
+		else if (hostname.indexOf(".")==-1)
+		{
+			isGood = false;
+			errMsg = "Your server hostname didn't have a .com, .net or similar appendix. Try again!";
+		}
+		else
+		{
+			isGood = true;
+		}
+			
 		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-		
-		Editor edit = prefs.edit();
-		
-		edit.putString("pref_account_user", username);
-		edit.putString("pref_account_host", hostname);
-		edit.putString("pref_account_port", port);
+		if (!isGood)
+		{
+			Toast.makeText(this, errMsg, Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+			
+			Editor edit = prefs.edit();
+			
+			edit.putString("pref_account_user", username);
+			edit.remove("pref_account_pass");
 
-		
-		
-		edit.commit();
-		
-		nextContent();
-		
-		EditText editAccountId1 = ((EditText)findViewById(R.id.edit1));
-		EditText editAccountId2 = ((EditText)findViewById(R.id.edit2));
-
-		editAccountId1.setText(hostname);
-		editAccountId2.setText(port);
+			edit.putString("pref_account_host", hostname);
+			edit.putString("pref_account_port", port);
+	
+			
+			
+			edit.commit();
+			
+			nextContent();
+			
+			EditText editAccountId1 = ((EditText)findViewById(R.id.edit1));
+			EditText editAccountId2 = ((EditText)findViewById(R.id.edit2));
+	
+			editAccountId1.setText(hostname);
+			editAccountId2.setText(port);
+		}
 		
 	}
 	

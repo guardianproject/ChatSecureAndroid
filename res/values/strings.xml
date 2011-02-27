@@ -632,7 +632,7 @@
 	
 	<string name="account_wizard_setup_body">Enter your account ID to automatically configure Gibberbot for you chat service.
 	\n\nIt probably looks like an email address - so yourname@gmail.com, or someone@jabber.org, for instance.</string>
-	<string name="account_wizard_host_body">Please enter or edit your server hostname and port number.</string>
+	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 			
