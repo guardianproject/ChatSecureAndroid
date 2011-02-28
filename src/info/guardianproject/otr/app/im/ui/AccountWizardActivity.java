@@ -1,16 +1,16 @@
 package info.guardianproject.otr.app.im.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,10 +19,19 @@ import info.guardianproject.otr.app.im.R;
 
 public class AccountWizardActivity extends Activity implements OnClickListener
 {
-	//WizardHelper wizard = null;
+
+	private String accountId = "";
+	private String username = "";
+	private String hostname = "";
+	private String port = "5222";
+	
+
+	private EditText editAccountId1;
+	private EditText editAccountId2;
 	
 	private int title[] = {
 			R.string.account_wizard_setup_title,
+			R.string.account_wizard_account_title,
 			R.string.account_wizard_host_title,
 			R.string.account_wizard_ready_title
 
@@ -30,6 +39,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	
 	private int msg[] = {
 			R.string.account_wizard_setup_body,
+			R.string.account_wizard_account_body,
 			R.string.account_wizard_host_body,
 			R.string.account_wizard_ready_body,
 
@@ -37,6 +47,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	
 	private String fields[][] =
 	{
+			{null,null},
 			{"Account ID",null},
 			{"Hostname","Port Number"},
 			{null, null},
@@ -45,8 +56,9 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	private String buttons[][] =
 	{
 			{null,"Next"},
-			{"Back","Look's Good!"},
-			{"Back","Login"},
+			{"Previous","Next"},
+			{"Previous","Next"},
+			{"Previous","Login Now"},
 	};
 	
 	private View.OnClickListener listener[][] =
@@ -58,7 +70,28 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 					@Override
 					public void onClick(View v) {
 					
+						nextContent();
+						
+						editAccountId1.setText(accountId);
+					}
+				}
+			},
+			{
+				new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						prevContent();
+
+					}
+				},
+				new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+					
 						parseAccount ();
+						hideKeyboard ();
 					}
 				}
 			},
@@ -68,8 +101,10 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 					
 					@Override
 					public void onClick(View v) {
-						prevContent();
 						
+						prevContent();
+						editAccountId1.setText(accountId);
+
 					}
 				},
 				new View.OnClickListener() {
@@ -79,6 +114,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 					
 						saveHostValues();
 						nextContent();
+						hideKeyboard();
+						
 						
 					}
 				}
@@ -112,6 +149,13 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			
 			
 	};
+	
+	private void hideKeyboard ()
+	{
+
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editAccountId1.getWindowToken(), 0);
+	}
 	                                 
 	
 	private int contentIdx = -1;
@@ -147,6 +191,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		showContent(contentIdx);
 	}
 	
+	
 	private void showContent (int contentIdx)
 	{
 		TextView txtTitle  = ((TextView)findViewById(R.id.WizardTextTitle));
@@ -157,8 +202,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
         TextView txtField1 = ((TextView)findViewById(R.id.lbl1));
         TextView txtField2 = ((TextView)findViewById(R.id.lbl2));
-		EditText editAccountId1 = ((EditText)findViewById(R.id.edit1));
-		EditText editAccountId2 = ((EditText)findViewById(R.id.edit2));
+		editAccountId1 = ((EditText)findViewById(R.id.edit1));
+		editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
 		
 
@@ -244,13 +289,13 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
 		EditText editAccountId = ((EditText)findViewById(R.id.edit1));
 		
-		String accountId = editAccountId.getText().toString();
+		accountId = editAccountId.getText().toString();
 		
 		String[] split = accountId.split("@");
-		String username = split[0];
+		username = split[0];
 		
-		String hostname = null;
-		String port = "5222";
+		hostname = null;
+		port = "5222";
 		
 		if (split.length > 1)
 		{
@@ -298,9 +343,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			edit.putString("pref_account_host", hostname);
 			edit.putString("pref_account_port", port);
 	
-			
-			
 			edit.commit();
+		
 			
 			nextContent();
 			
@@ -309,6 +353,12 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	
 			editAccountId1.setText(hostname);
 			editAccountId2.setText(port);
+			
+			if (hostname.equals("gmail.com") || hostname.equals("jabber.org"))
+			{
+				nextContent();
+			}
+			
 		}
 		
 	}
@@ -318,8 +368,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		EditText editAccountId1 = ((EditText)findViewById(R.id.edit1));
 		EditText editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
-		String hostname = editAccountId1.getText().toString();
-		String port = editAccountId2.getText().toString();
+		hostname = editAccountId1.getText().toString();
+		port = editAccountId2.getText().toString();
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 		

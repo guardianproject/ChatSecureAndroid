@@ -110,8 +110,10 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        
 	        try
 	        {
+	        	int otrPolicy = OtrPolicy.OPPORTUNISTIC;
+	        	
 		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
-		        mOtrChatManager = OtrChatManager.getInstance(OtrPolicy.OPPORTUNISTIC, this);
+		        mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
 		        mOtrChatManager.addOtrEngineListener(this);
 	        }
 	        catch (Exception e)

@@ -197,6 +197,9 @@ public class XmppConnection extends ImConnection {
 			String sUsername = java.net.URLDecoder.decode(comps[0]);
 			String serverInfo[] = comps[1].split(":");
 			
+			if (serverInfo.length == 0)
+				throw new XMPPException("invalid host setting");
+			
 			String serverHost = serverInfo[0];
 			int serverPort = Integer.parseInt(serverInfo[1]);
 			

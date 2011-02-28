@@ -223,7 +223,7 @@ public class SigningInActivity extends Activity {
     	 AlertDialog.Builder alert = new AlertDialog.Builder(this);  
 
          alert.setTitle("Password");  
-         alert.setMessage("Enter your chat account password:");  
+         alert.setMessage(R.string.signin_password_prompt);  
 
 
          final EditText input = new EditText(this);  

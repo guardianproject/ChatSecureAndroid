@@ -625,16 +625,18 @@
 	<string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
 	<string name="otr_session_status_verified">This chat is secured and verified</string>
 	
-	<string name="account_wizard_setup_title">Setup Your Account</string>
+	<string name="account_wizard_setup_title">Account Wizard</string>
+	<string name="account_wizard_account_title">Your Account ID</string>
 	<string name="account_wizard_host_title">Configure Server</string>
 	<string name="account_wizard_ready_title">Are You Ready?</string>
 	
 	
-	<string name="account_wizard_setup_body">Enter your account ID to automatically configure Gibberbot for you chat service.
-	\n\nIt probably looks like an email address - so yourname@gmail.com, or someone@jabber.org, for instance.</string>
+	<string name="account_wizard_setup_body">Enter your account ID to automatically configure Gibberbot for you chat service.\n\nIt probably looks like an email address - so yourname@gmail.com, or someone@jabber.org, for instance.</string>
+	<string name="account_wizard_account_body">Please enter your username@hostname.com below</string>
 	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 			
+	<string name="signin_password_prompt">Enter account password:</string>
 	
 </resources>

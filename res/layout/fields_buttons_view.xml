@@ -6,11 +6,12 @@
     android:layout_height="fill_parent"
             android:background="@drawable/gibberbg">
             
- <TextView android:text="TITLE" android:textColor="#ffffff" 
+ <TextView android:text="TITLE" android:textColor="#00ff00" 
  android:id="@+id/WizardTextTitle" android:textSize="14pt" 
  android:layout_width="fill_parent" android:layout_height="wrap_content" 
  android:layout_gravity="center_horizontal" android:singleLine="true" 
  android:fadingEdge="vertical"/>
+    
     
 <TableLayout android:id="@+id/TableLayout01" 
 android:stretchColumns="*" android:layout_height="fill_parent" 
@@ -27,7 +28,7 @@ android:layout_width="wrap_content">
 		 android:layout_span="2">    
 
 			<TextView android:text="this is sample text this is sample textthis is sample textthis is sample textthis is sample textthis is sample textthis is sample textthis is sample textthis " 
-			android:padding="6px" android:background="#eeffffff" android:textColor="#333333" 
+			android:padding="6px" android:background="#222222" android:textColor="#ffffff" 
 			 android:id="@+id/WizardTextBody" android:textSize="8pt" android:layout_width="wrap_content" 
 			 android:layout_height="wrap_content"></TextView>
 
@@ -64,7 +65,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content">
 </TableRow>
 <TableRow android:id="@+id/TableRowFields2" 
 android:layout_width="fill_parent" 
-android:layout_height="wrap_content" >
+android:layout_height="wrap_content"  android:layout_weight="1">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"

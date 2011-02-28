@@ -36,10 +36,11 @@
     <item android:id="@+id/menu_view_friend_list"
         android:title="@string/menu_view_contact_list"/>
 -->  
+<!-- 
 	<item android:id="@+id/menu_clear_chat"
 		android:title="@string/menu_clear_chat"
 		android:icon="@drawable/ic_menu_trash" />
-
+ -->
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close" />
