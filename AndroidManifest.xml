@@ -35,7 +35,7 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true">
+             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false">
 
 
          <activity android:name=".ui.MainActivity">
