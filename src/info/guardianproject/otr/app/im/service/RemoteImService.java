@@ -50,6 +50,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -58,6 +59,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -92,6 +94,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     private SettingsMonitor mSettingsMonitor;
     private OtrChatManager mOtrChatManager;
+    private boolean autoStartOtr = false;
     
     private ImPluginHelper mPluginHelper;
     Vector<ImConnectionAdapter> mConnections;
@@ -111,6 +114,33 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        try
 	        {
 	        	int otrPolicy = OtrPolicy.OPPORTUNISTIC;
+	        	autoStartOtr = false;
+	        	
+	        	
+	        	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+	        	
+	        	String otrModeSelect = prefs.getString("pref_security_otr_mode", "auto");
+	        	
+	        	if (otrModeSelect.equals("auto"))
+	        	{
+	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
+	        		//autoStartOtr = true;
+	        	}
+	        	else if (otrModeSelect.equals("disabled"))
+	        	{
+	        		otrPolicy = OtrPolicy.NEVER;
+
+	        	}
+	        	else if (otrModeSelect.equals("force"))
+	        	{
+	        		otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+
+	        	}
+	        	else if (otrModeSelect.equals("requested"))
+	        	{
+	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
+	        	}
+	        			
 	        	
 		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
 		        mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
@@ -330,6 +360,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             }
             
             mRemoteListeners.finishBroadcast();
+            
             
             return imConnectionAdapter;
         } catch (ImException e) {

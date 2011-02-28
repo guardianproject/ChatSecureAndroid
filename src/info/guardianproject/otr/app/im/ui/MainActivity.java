@@ -186,6 +186,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	
         if (item.getItemId() == R.id.menu_sign_in) {
            
         	checkAccountAndSignin();

@@ -69,7 +69,11 @@ android:title="TLS Verification"
 android:summary="Verify TLS Certificate"
 android:enabled="true"/> 
 
-<ListPreference android:summary="control when and how you encrypt chats" android:title="Chat Encryption" android:key="pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options"></ListPreference>
+<ListPreference android:summary="control when and how you encrypt chats" 
+android:title="Chat Encryption" android:key="pref_security_otr_mode" 
+android:dialogTitle="Chat Encryption" 
+android:entryValues="@array/otr_options_values"
+ android:entries="@array/otr_options"></ListPreference>
 
 <CheckBoxPreference 
 android:defaultValue="false" 

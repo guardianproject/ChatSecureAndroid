@@ -163,8 +163,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         
-        menu.findItem(R.id.menu_invite_user).setTitle(
-            brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
+        //TODO make sure this works
+     //   menu.findItem(R.id.menu_invite_user).setTitle(
+       //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
 
         return true;
     }
@@ -172,6 +173,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        
+        //TODO make sure this works
+        /*
             case R.id.menu_invite_user:
                 Intent i = new Intent(ContactListActivity.this, AddContactActivity.class);
                 i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
@@ -180,7 +184,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         mContactListView.getSelectedContactList());
                 startActivity(i);
                 return true;
-
+*/
+        
 /*            case R.id.menu_blocked_contacts:
                 Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
                 ContentUris.appendId(builder, mProviderId);
