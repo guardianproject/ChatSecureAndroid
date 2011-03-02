@@ -78,7 +78,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     private static final int TOKEN_CONTACT_LISTS = -1;
     private static final int TOKEN_ONGOING_CONVERSATION = -2;
-    private static final int TOKEN_SUBSCRITPTION = -3;
+    private static final int TOKEN_SUBSCRIPTION = -3;
 
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
         + Imps.Contacts.LAST_MESSAGE_DATE + " IS NULL) AND ("
@@ -119,7 +119,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             } else if (token == TOKEN_ONGOING_CONVERSATION) {
                 setOngoingConversations(c);
                 notifyDataSetChanged();
-            } else if (token == TOKEN_SUBSCRITPTION) {
+            } else if (token == TOKEN_SUBSCRIPTION) {
                 setSubscriptions(c);
                 notifyDataSetChanged();
             } else {
@@ -158,7 +158,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     public void changeConnection(IImConnection conn) {
         mQueryHandler.cancelOperation(TOKEN_ONGOING_CONVERSATION);
-        mQueryHandler.cancelOperation(TOKEN_SUBSCRITPTION);
+        mQueryHandler.cancelOperation(TOKEN_SUBSCRIPTION);
         mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
 
         synchronized (this) {
@@ -242,7 +242,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
 
-        mQueryHandler.startQuery(TOKEN_SUBSCRITPTION, null, uri,
+        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri,
                 ContactView.CONTACT_PROJECTION,
                 String.format("%s=%d AND %s=%d",
                     Imps.Contacts.SUBSCRIPTION_STATUS, Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
