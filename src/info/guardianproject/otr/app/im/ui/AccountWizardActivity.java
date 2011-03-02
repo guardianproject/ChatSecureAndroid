@@ -56,9 +56,9 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	private String buttons[][] =
 	{
 			{null,"Next"},
-			{"Previous","Next"},
-			{"Previous","Next"},
-			{"Previous","Login Now"},
+			{"Cancel","Submit"},
+			{"Back","Save"},
+			{"Back","Let's Go!"},
 	};
 	
 	private View.OnClickListener listener[][] =
@@ -200,8 +200,6 @@ public class AccountWizardActivity extends Activity implements OnClickListener
         TextView txtBody = ((TextView)findViewById(R.id.WizardTextBody));
 		txtBody.setText(getString(msg[contentIdx]));
 		
-        TextView txtField1 = ((TextView)findViewById(R.id.lbl1));
-        TextView txtField2 = ((TextView)findViewById(R.id.lbl2));
 		editAccountId1 = ((EditText)findViewById(R.id.edit1));
 		editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
@@ -209,29 +207,25 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 
         if (fields[contentIdx][0] != null)
         {
-        	txtField1.setText(fields[contentIdx][0]);
+        	editAccountId1.setHint(fields[contentIdx][0]);
 
-        	txtField1.setVisibility(TextView.VISIBLE);
         	editAccountId1.setVisibility(TextView.VISIBLE);
+        	
         }
         else
         {
-        	txtField1.setVisibility(TextView.INVISIBLE);
-        	editAccountId1.setVisibility(TextView.INVISIBLE);
-
+        	editAccountId1.setVisibility(TextView.GONE);
         }
         	
         if (fields[contentIdx][1] != null)
         {
-        	txtField2.setText(fields[contentIdx][1]);
+        	editAccountId2.setHint(fields[contentIdx][1]);
 
-        	txtField2.setVisibility(TextView.VISIBLE);
         	editAccountId2.setVisibility(TextView.VISIBLE);
         }
         else
         {
-        	txtField2.setVisibility(TextView.INVISIBLE);
-        	editAccountId2.setVisibility(TextView.INVISIBLE);
+        	editAccountId2.setVisibility(TextView.GONE);
 
         }
         
@@ -340,7 +334,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			edit.putString("pref_account_user", username);
 			edit.remove("pref_account_pass");
 
-			edit.putString("pref_account_host", hostname);
+			edit.putString("pref_account_host", hostname.toLowerCase());
 			edit.putString("pref_account_port", port);
 	
 			edit.commit();
@@ -375,7 +369,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
 		Editor edit = prefs.edit();
 		
-		edit.putString("pref_account_host", hostname);
+		edit.putString("pref_account_host", hostname.toLowerCase());
 		edit.putString("pref_account_port", port);
 
 		

@@ -46,6 +46,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -227,9 +228,12 @@ public class SigningInActivity extends Activity {
 
 
          final EditText input = new EditText(this);  
+       //  input.setInputType(524288);//this turns off auto suggest
+         input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
          input.setTransformationMethod(new PasswordTransformationMethod());
+
          
-         alert.setView(input);  
+         alert.setView(input);
          
          alert.setNeutralButton("Remember", new DialogInterface.OnClickListener() {  
              public void onClick(DialogInterface dialog, int whichButton) {  
