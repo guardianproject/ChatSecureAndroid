@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+        android:background="@drawable/ic_splash_landscape"
+    >
+
+<!-- <ImageView android:src="" android:id="@+id/imgSplash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal"></ImageView>
+ -->
+
+<TableLayout  android:stretchColumns="*" android:id="@+id/TableLayout01" android:layout_height="fill_parent" android:layout_width="fill_parent">
+<TableRow  android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent">
+	<TextView android:text="" android:textColor="#333333"  android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+
+</TableRow>
+<TableRow android:id="@+id/TableRow01" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<TextView android:text="@string/welcome_first" android:background="#99ffffff" android:textColor="#333333" android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+</TableRow>
+<TableRow android:id="@+id/TableRow04" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<Button android:text="@string/welcome_about" android:id="@+id/btnSplashAbout" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+</TableRow><TableRow android:id="@+id/TableRow03" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<TextView android:text="@string/welcome_skip" android:background="#99ffffff" android:textColor="#333333" android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+</TableRow><TableRow android:id="@+id/TableRow02" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<Button android:text="@string/welcome_account" android:id="@+id/btnSplashSetup" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+
+</TableRow>
+
+
+</TableLayout>
+</LinearLayout>

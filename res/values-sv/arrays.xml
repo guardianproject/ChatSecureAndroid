@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Force / Kräv</item>
+        <item>Automatiskt att försöka</item>
+        <item>Som begärts</item>
+        <item>Funktionshindrade / aldrig</item>
+    </string-array>
+</resources>

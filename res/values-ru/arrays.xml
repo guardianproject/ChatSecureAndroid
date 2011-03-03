@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Группа / Требовать</item>
+        <item>Автоматически пытается</item>
+        <item>В соответствии с просьбой</item>
+        <item>Инвалидов / Никогда</item>
+    </string-array>
+</resources>

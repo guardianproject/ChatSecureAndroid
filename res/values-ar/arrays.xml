@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>قوة / طلب</item>
+        <item>محاولة تلقائيا</item>
+        <item>وبناء على طلب</item>
+        <item>تعطيل / أبدا</item>
+    </string-array>
+</resources>

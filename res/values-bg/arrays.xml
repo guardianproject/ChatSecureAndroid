@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Необходима сили /</item>
+        <item>Автоматично Опит</item>
+        <item>Както се изисква</item>
+        <item>Никога увреждания /</item>
+    </string-array>
+</resources>

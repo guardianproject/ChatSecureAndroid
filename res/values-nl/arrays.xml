@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Force / vereisen</item>
+        <item>Automatisch proberen</item>
+        <item>Zoals gevraagd</item>
+        <item>Gehandicapten / nooit</item>
+    </string-array>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Δύναμη / Απαίτηση</item>
+        <item>Αυτόματα Απόπειρα</item>
+        <item>Όπως ζητήθηκε</item>
+        <item>Άτομα με ειδικές ανάγκες Ποτέ μην /</item>
+    </string-array>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Force / Require</item>
+        <item>Automatisch versuchen</item>
+        <item>Wie verlangt</item>
+        <item>Behinderte / nie</item>
+    </string-array>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>要求部隊 /</item>
+        <item>自動嘗試</item>
+        <item>按照要求</item>
+        <item>殘疾人 /從不</item>
+    </string-array>
+</resources>

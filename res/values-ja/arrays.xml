@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>力が必要と/</item>
+        <item>自動的に試み</item>
+        <item>要求されたとして</item>
+        <item>バリアフリー/決して</item>
+    </string-array>
+</resources>

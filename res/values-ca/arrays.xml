@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string-array name="otr_options">
+        <item>Força / Requerir</item>
+        <item>Automàticament Ocasió</item>
+        <item>Com requerit</item>
+        <item>Mai / persones de mobilitat reduïda</item>
+    </string-array>
+</resources>
