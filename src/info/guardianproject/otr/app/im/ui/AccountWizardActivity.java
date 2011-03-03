@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -282,7 +283,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		boolean isGood = false;
 		
 		EditText editAccountId = ((EditText)findViewById(R.id.edit1));
-		
+		editAccountId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 		accountId = editAccountId.getText().toString();
 		
 		String[] split = accountId.split("@");

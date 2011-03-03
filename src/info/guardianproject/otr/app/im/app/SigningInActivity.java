@@ -228,7 +228,6 @@ public class SigningInActivity extends Activity {
 
 
          final EditText input = new EditText(this);  
-       //  input.setInputType(524288);//this turns off auto suggest
          input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
          input.setTransformationMethod(new PasswordTransformationMethod());
 
