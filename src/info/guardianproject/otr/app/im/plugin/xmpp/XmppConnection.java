@@ -55,7 +55,7 @@ import android.util.Log;
 
 public class XmppConnection extends ImConnection {
 
-	private final static String TAG = "Xmpp";
+	private final static String TAG = "XmppConnection";
 	private XmppContactList mContactListManager;
 	private Contact mUser;
 	
@@ -203,7 +203,7 @@ public class XmppConnection extends ImConnection {
 			String serverHost = serverInfo[0];
 			int serverPort = Integer.parseInt(serverInfo[1]);
 			
-			initConnection(serverHost, serverPort, sUsername, mLoginInfo.getPassword(), "Android");
+			initConnection(serverHost, serverPort, sUsername, mLoginInfo.getPassword(), "Gibberbot");
 		} catch (XMPPException e) {
 			Log.e(TAG, "login failed", e);
 			mConnection = null;
@@ -249,75 +249,73 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	private void initConnection(String serverHost, int serverPort, String login, String password, String resource) throws XMPPException {
-    	
+		// TODO these booleans should be set in the preferences
+		boolean doCertVerification = true;
+    	boolean allowSelfSignedCerts = false;
 
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
     	
-    	
-    	//how should we handle special configs for hosts like google?
+    	// TODO how should we handle special ConnectionConfiguration for hosts like google?
     	//we want to make it easy for users - maybe this shouldn't be here though
-    	
-    	
-    	if (serverHost.equals("gmail.com") || serverHost.equals("talk.google.com") || serverHost.equals("googlemail.com"))
-    	{
-    		String defaultHost = "talk.google.com";
-    		
-    		String[] loginParts = login.split("@");
-    		
-    		String loginDomain = "gmail.com";
-    		if (loginParts.length > 1)
-    			loginDomain = loginParts[1];
-    		
-    		mConfig = new ConnectionConfiguration(defaultHost,serverPort,loginDomain, mProxyInfo);
-    		 // You have to put this code before you login
-    	     SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-    	     mConfig.setSecurityMode(SecurityMode.required);
-    	
-    	}
-    	else
-    	{
-    	
-
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",1);
-    		  
-    	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
-    	    
+		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
+    		// only use "gmail.com" so that ConnectionConfiguration does a DNS SRV lookup
+    		mConfig = new ConnectionConfiguration("talk.google.com", 5222, serverHost, mProxyInfo);
     		mConfig.setSecurityMode(SecurityMode.required);
-  		  
-    		
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",0);
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    		if (login.indexOf("@")==-1)
+    			login = login + "@" + serverHost;
+    		mConfig.setSASLAuthenticationEnabled(true);
+    		// TODO fails with "javax.net.ssl.SSLException: Not trusted server certificate"
+    		// this is probably related to the Google cert having a 'talk.google.com' or 
+    		// 'gmail.com' domain, while the servers are actually talk1.l.google.com.  
+    		// We need to get DNS SRV working properly, since the SRV of gmail.com are the
+    		// right servers.  For now, we should be able to get away with all checks except 
+    		// for notMatchingDomainCheckEnabled 
+			doCertVerification = true;
+			//mConfig.setVerifyChainEnabled(true);
+			//mConfig.setVerifyRootCAEnabled(true);
+			//mConfig.setExpiredCertificatesCheckEnabled(true);
+			//mConfig.setNotMatchingDomainCheckEnabled(false);
+			// the above doesn't seem to take effect without the below enabled
+			//allowSelfSignedCerts = true;
+		} else {
+			// TODO test first only using serverHost to use the DNS SRV lookup, otherwise try all the saved settings
+			// set the priority of auth methods, 0 being the first tried
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
+    		mConfig.setSecurityMode(SecurityMode.enabled);
+        	mConfig.setSASLAuthenticationEnabled(true);
+			doCertVerification = true;
     	}
-
+    	
     	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
 	     mConfig.setTruststoreType("bks");
 	     mConfig.setTruststorePath("/system/etc/security/cacerts.bks");
-	     mConfig.setKeystoreType("bks");
-	     mConfig.setKeystorePath("/system/etc/security/cacerts.bks");
+	     // this should probably be set to our own, if we are going to save self-signed certs
+	     //mConfig.setKeystoreType("bks");
+	     //mConfig.setKeystorePath("/system/etc/security/cacerts.bks");
 
-    	//security!
-    	mConfig.setSASLAuthenticationEnabled(true);
-
-    	boolean doCertVerification = false;
-    	
-    	if (doCertVerification)
-    	{
-    		mConfig.setVerifyChainEnabled(true);
-    		mConfig.setVerifyRootCAEnabled(true);
-    		mConfig.setExpiredCertificatesCheckEnabled(true);
-    	}
-    	else
-    	{
-    		mConfig.setSelfSignedCertificateEnabled(true);
-	
-    	}
+		if (doCertVerification) {
+			Log.i(TAG, "doing proper certificate verification");
+			mConfig.setVerifyChainEnabled(true);
+			mConfig.setVerifyRootCAEnabled(true);
+			mConfig.setExpiredCertificatesCheckEnabled(true);
+			mConfig.setNotMatchingDomainCheckEnabled(true);
+		}
+		if (allowSelfSignedCerts) {
+			Log.i(TAG, "allowing self-signed certs");
+			mConfig.setSelfSignedCertificateEnabled(true);
+		}
     	
 		//reconnect please
 		mConfig.setReconnectionAllowed(true);
 		
+		Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
 		
 		mConnection = new MyXMPPConnection(mConfig);
-		
         mConnection.connect();
         
         Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
