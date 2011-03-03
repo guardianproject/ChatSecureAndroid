@@ -283,6 +283,12 @@ public class XmppConnection extends ImConnection {
     		
     	}
 
+    	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
+	     mConfig.setTruststoreType("bks");
+	     mConfig.setTruststorePath("/system/etc/security/cacerts.bks");
+	     mConfig.setKeystoreType("bks");
+	     mConfig.setKeystorePath("/system/etc/security/cacerts.bks");
+
     	//security!
     	mConfig.setSASLAuthenticationEnabled(true);
 
