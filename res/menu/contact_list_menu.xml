@@ -19,11 +19,11 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-<!-- 
+
     <item android:id="@+id/menu_invite_user"
         android:title="@string/menu_add_contact" 
         android:icon="@drawable/ic_menu_add_contact" />
- -->
+
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
         android:icon="@drawable/ic_menu_settings" />

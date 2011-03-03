@@ -235,7 +235,7 @@ public class SigningInActivity extends Activity {
          
          alert.setView(input);
          
-         alert.setNeutralButton("Remember", new DialogInterface.OnClickListener() {  
+         alert.setNeutralButton("Remember & Login", new DialogInterface.OnClickListener() {  
              public void onClick(DialogInterface dialog, int whichButton) {  
             	 String pwd = input.getText().toString();  
             	 

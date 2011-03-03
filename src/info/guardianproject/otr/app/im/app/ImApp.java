@@ -287,6 +287,11 @@ public class ImApp extends Application {
             values.put(Imps.Account.NAME, userName);
             values.put(Imps.Account.USERNAME, userName);
             values.put(Imps.Account.PASSWORD, pw);
+            
+            if (pw != null && pw.length() > 0)
+            {
+            	values.put(Imps.Account.KEEP_SIGNED_IN, true);
+            }
          
             Uri result = cr.insert(Imps.Account.CONTENT_URI, values);
             return ContentUris.parseId(result);

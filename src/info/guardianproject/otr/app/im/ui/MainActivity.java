@@ -41,21 +41,29 @@ public class MainActivity extends Activity {
     
     protected static final int ID_SIGNIN = Menu.FIRST + 1;
 
+    private String user;
+    private String host;
+    private String port;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
         initXmpp();
-    
-        showUI();
     }
-   
+    
     public void initXmpp ()
     {
     	app = ImApp.getApplication(this);
         ImPluginHelper.getInstance(this).loadAvaiablePlugins();
 	    provider = app.getProviders().get(0);//the default provider XMPP
+	    
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+
+        user = prefs.getString("pref_account_user", null);
+        host = prefs.getString("pref_account_host", null);
+        port = prefs.getString("pref_account_port", null);
         
     }
     
@@ -63,48 +71,54 @@ public class MainActivity extends Activity {
     {
         setContentView(R.layout.splash_activity);
      
-        Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
-        btnSplashAbout.setOnClickListener(new OnClickListener()
+        if (user == null || user.length() == 0)
         {
-
-			@Override
-			public void onClick(View v) {
-				
-				startActivityForResult(new Intent(getBaseContext(), AboutActivity.class), 1);
-
-				
-			}
-        	
-        	
-        });
-        
-        Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
-        btnSplashSetup.setOnClickListener(new OnClickListener()
+	        Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
+	        btnSplashAbout.setOnClickListener(new OnClickListener()
+	        {
+	
+				@Override
+				public void onClick(View v) {
+					
+					startActivityForResult(new Intent(getBaseContext(), AboutActivity.class), 1);
+	
+					
+				}
+	        	
+	        	
+	        });
+	        
+	        Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
+	        btnSplashSetup.setOnClickListener(new OnClickListener()
+	        {
+	
+				@Override
+				public void onClick(View v) {
+					
+					startActivityForResult(new Intent(getBaseContext(), AccountWizardActivity.class), 1);
+	
+					
+				}
+	        	
+	        	
+	        });
+        }
+        else
         {
-
-			@Override
-			public void onClick(View v) {
-				
-				startActivityForResult(new Intent(getBaseContext(), AccountWizardActivity.class), 1);
-
-				
-			}
-        	
-        	
-        });
+        	View view = findViewById(R.id.splashSetupButtons);
+        	view.setVisibility(View.GONE);
+        }
     }
     
-    public void checkAccountAndSignin() {
+    public boolean checkAccountAndSignin() {
     	
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 
-        String user = prefs.getString("pref_account_user", null);
-        String host = prefs.getString("pref_account_host", null);
-        String port = prefs.getString("pref_account_port", null);
         
         if (user == null || user.length() == 0)
         {
         	Toast.makeText(getBaseContext(), "Please setup an account to login", Toast.LENGTH_SHORT).show();
+        	return false;
         }
         else 
         {
@@ -117,9 +131,11 @@ public class MainActivity extends Activity {
             
             long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,pass);
             
+            
             mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
             signIn();
     
+            return true;
         }
     }
     
@@ -153,6 +169,9 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+
+		showUI();
+       
 		boolean doSignIn = true;
 		
 		Bundle extras = getIntent().getExtras();

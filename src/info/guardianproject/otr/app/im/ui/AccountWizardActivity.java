@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -56,7 +57,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	private String buttons[][] =
 	{
 			{null,"Next"},
-			{"Cancel","Submit"},
+			{null,"Next"},
 			{"Back","Save"},
 			{"Back","Let's Go!"},
 	};
@@ -163,19 +164,48 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
-
+        
+        if (savedInstanceState != null)
+        {
+	        if (savedInstanceState.containsKey("contentIdx"))
+	        	contentIdx = savedInstanceState.getInt("contentIdx");
+	        
+	        if (savedInstanceState.containsKey("accountId"))
+	        	contentIdx = savedInstanceState.getInt("accountId");
+	        
+        }
+        
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putInt("contentIdx", contentIdx);
+		outState.putString("accountId", accountId);
+		
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
 	@Override
 	protected void onStart() {
 		
 		super.onStart();
-		
+
+        setContentView(R.layout.fields_buttons_view);
+
         if (contentIdx == -1)
         {
-            setContentView(R.layout.fields_buttons_view);
         
         	nextContent ();
+        }
+        else
+        {
+        	showContent(contentIdx);
         }
 	}
 	
@@ -201,9 +231,10 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		txtBody.setText(getString(msg[contentIdx]));
 		
 		editAccountId1 = ((EditText)findViewById(R.id.edit1));
+		editAccountId1.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+		
 		editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
-		
 
         if (fields[contentIdx][0] != null)
         {

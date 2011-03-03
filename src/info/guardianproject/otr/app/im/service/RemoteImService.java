@@ -446,7 +446,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             }
         }
         
-        showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
+       // showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
 
     }
 
@@ -459,7 +459,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             
         }
         
-        showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
+      //  showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
     }
 
     private final IRemoteImService.Stub mBinder = new IRemoteImService.Stub() {

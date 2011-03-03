@@ -278,7 +278,7 @@ public class XmppConnection extends ImConnection {
     		  
     	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
     	    
-    		mConfig.setSecurityMode(SecurityMode.enabled);
+    		mConfig.setSecurityMode(SecurityMode.required);
   		  
     		
     	}
@@ -310,7 +310,7 @@ public class XmppConnection extends ImConnection {
         
         Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
         Log.i(TAG,"is using TLS? " + mConnection.isUsingTLS());
-       
+        
         mConnection.addPacketListener(new PacketListener() {
 			
 			@Override
