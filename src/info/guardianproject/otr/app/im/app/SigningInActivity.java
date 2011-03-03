@@ -216,41 +216,28 @@ public class SigningInActivity extends Activity {
 		
 		gogo();
 	}
-	
-    private void showPasswordDialog ()
-	{
-    	
-    	
-    	 AlertDialog.Builder alert = new AlertDialog.Builder(this);  
 
-         alert.setTitle("Password");  
-         alert.setMessage(R.string.signin_password_prompt);  
-
-
-         final EditText input = new EditText(this);  
-         input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-         input.setTransformationMethod(new PasswordTransformationMethod());
-
-         
-         alert.setView(input);
-         
-         alert.setNeutralButton("Remember", new DialogInterface.OnClickListener() {  
-             public void onClick(DialogInterface dialog, int whichButton) {  
-            	 String pwd = input.getText().toString();  
-            	 
-            	 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-     			
-     			Editor edit = prefs.edit();
-     			
-     			edit.putString("pref_account_pass", pwd);
-     			
-     			edit.commit();
-     			
-            	 
-            	 
-            	 gotCredentials(null,pwd);
-               }  
-             }); 
+	private void showPasswordDialog() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle("Password");
+		String message = getString(R.string.signin_password_prompt).concat(" " + mUserName);
+		alert.setMessage(message);
+		final EditText input = new EditText(this);
+		input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		input.setTransformationMethod(new PasswordTransformationMethod());
+		alert.setView(input);
+		alert.setNeutralButton("Remember",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String pwd = input.getText().toString();
+						SharedPreferences prefs = PreferenceManager
+								.getDefaultSharedPreferences(getApplication());
+						Editor edit = prefs.edit();
+						edit.putString("pref_account_pass", pwd);
+						edit.commit();
+						gotCredentials(null, pwd);
+					}
+				});
 
          alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {  
          public void onClick(DialogInterface dialog, int whichButton) {  
