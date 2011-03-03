@@ -261,13 +261,19 @@ public class XmppConnection extends ImConnection {
     	
     	if (serverHost.equals("gmail.com") || serverHost.equals("talk.google.com") || serverHost.equals("googlemail.com"))
     	{
-    		mConfig = new ConnectionConfiguration("talk.google.com",serverPort,"gmail.com", mProxyInfo);
+    		String defaultHost = "talk.google.com";
+    		
+    		String[] loginParts = login.split("@");
+    		
+    		String loginDomain = "gmail.com";
+    		if (loginParts.length > 1)
+    			loginDomain = loginParts[1];
+    		
+    		mConfig = new ConnectionConfiguration(defaultHost,serverPort,loginDomain, mProxyInfo);
     		 // You have to put this code before you login
     	     SASLAuthentication.supportSASLMechanism("PLAIN", 0);
     	     mConfig.setSecurityMode(SecurityMode.required);
     	
-    	     if (login.indexOf("@")==-1)
-    	    	 login = login + "@gmail.com";
     	}
     	else
     	{
