@@ -547,7 +547,7 @@
 
 	<!-- About: Welcome -->
 	<string name="about_welcome_title">Welcome to Gibberbot</string>
-	<string name="about_welcome">Gibberbot is a mobile instant messaging app that provides extra security features in order to stop people from snopping on your converstations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
+	<string name="about_welcome">Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
  
 	<!-- About: OTR -->
 	<string name="about_otr_title">How is it secure?</string>
@@ -555,7 +555,7 @@
 	
 	<!-- About: Security -->
     <string name="about_security_title">Are My Chats Secure?</string>
-	<string name="about_security">With Gibberbot, you can easily choose to encrypt conversations when messaging with others using a compatible app or program. You can also control how secure your connection to the chat server is. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</string>
+	<string name="about_security">Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
 	
 	<!-- Setup: Passphrase-->
     <string name="setup_passphrase_title">Passphrase Setup</string>
