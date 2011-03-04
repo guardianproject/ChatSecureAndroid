@@ -1,12 +1,11 @@
-
 asmack
 ------
 
 Development of SMACK for Android seems to have fragmented, so there are many
-versions. 
+versions.
 
   asmack-jse.jar
-        https://github.com/guardianproject/smack
+        https://github.com/guardianproject/asmack
 
 Previously, we've used other versions:
 
