@@ -32,6 +32,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -93,18 +94,27 @@ public class SigningInActivity extends Activity {
         //setTheme(android.R.style.Theme_Dialog);
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.signing_in_activity);
-        Intent intent = getIntent();
-        mToAddress = intent.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
+      
+    }
+    
+    
+    @Override
+	protected void onResume() {
+    	
+		super.onResume();
+		
+		  Intent intent = getIntent();
+	        mToAddress = intent.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
 
-        Uri data = intent.getData();
-        if (data == null) {
-            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("Need account data to sign in");
-            }
-            finish();
-            return;
-        }
-        
+	        Uri data = intent.getData();
+	        if (data == null) {
+	            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+	                log("Need account data to sign in");
+	            }
+	            finish();
+	            return;
+	        }
+	
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(data, null, null, null, null);
         if (c == null) {
@@ -133,7 +143,6 @@ public class SigningInActivity extends Activity {
         	mProxyHost = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_HOST);
         	mProxyPort = intent.getIntExtra(ImApp.EXTRA_INTENT_PROXY_PORT,-1);
         }
-        
         
         
         String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
@@ -179,16 +188,31 @@ public class SigningInActivity extends Activity {
         }
     }
     
+    ProgressDialog pbarDialog;
+    
     public void gogo()
     {
        
+    	if (pbarDialog != null)
+    		pbarDialog.dismiss();
+    	
+    	pbarDialog = new ProgressDialog( this );
+    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    	
+    	String message = getString(R.string.signing_in_wait);
+    	
+    	pbarDialog.setMessage(message);
+    	pbarDialog.show();
+    	
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
 
+        /*
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-
+*/
+        
         setTitle(getResources().getString(R.string.signing_in_to,
                 provider.mFullName));
 
@@ -218,10 +242,12 @@ public class SigningInActivity extends Activity {
 		gogo();
 	}
 	private void showPasswordDialog() {
+		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle("Password");
-		String message = getString(R.string.signin_password_prompt).concat(" " + mUserName);
+		String message = getString(R.string.signin_password_prompt);
 		alert.setMessage(message);
+		
 		final EditText input = new EditText(this);
 		input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		input.setTransformationMethod(new PasswordTransformationMethod());
@@ -307,6 +333,8 @@ public class SigningInActivity extends Activity {
             }
 
         } catch (RemoteException e) {
+        	pbarDialog.dismiss();
+        	
             mHandler.showServiceErrorAlert();
             finish();
         }
@@ -331,6 +359,10 @@ public class SigningInActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+        
+        if (pbarDialog != null)   	
+        	pbarDialog.dismiss();
+
 
         if (mApp != null) {
             mApp.removePendingCall(mHandler);
@@ -372,8 +404,8 @@ public class SigningInActivity extends Activity {
                             log("Cancelling sign in");
                         }
                         
-                        mConn.logout();
-                       
+                    	mConn.cancelLogin();
+                    
                         finish();
                     }
                 } catch (RemoteException e) {
@@ -420,6 +452,10 @@ public class SigningInActivity extends Activity {
         }
 
         if (state == ImConnection.LOGGED_IN) {
+
+            if (pbarDialog != null)   	
+            	pbarDialog.dismiss();
+            
             // sign in successfully, finish and switch to contact list
             finish();
             try {
@@ -450,6 +486,11 @@ public class SigningInActivity extends Activity {
                 Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared while signing in!");
             }
         } else if (state == ImConnection.DISCONNECTED) {
+        	
+
+            if (pbarDialog != null)   	
+            	pbarDialog.dismiss();
+            
             // sign in failed
             Resources r = getResources();
             new AlertDialog.Builder(this)

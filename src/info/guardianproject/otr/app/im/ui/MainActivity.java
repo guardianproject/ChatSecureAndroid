@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     	app = ImApp.getApplication(this);
         ImPluginHelper.getInstance(this).loadAvaiablePlugins();
 	    provider = app.getProviders().get(0);//the default provider XMPP
-	    
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 
         user = prefs.getString("pref_account_user", null);
@@ -122,6 +122,10 @@ public class MainActivity extends Activity {
         }
         else 
         {
+
+            user = prefs.getString("pref_account_user", null);
+            host = prefs.getString("pref_account_host", null);
+            port = prefs.getString("pref_account_port", null);
         	        	
             String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
             

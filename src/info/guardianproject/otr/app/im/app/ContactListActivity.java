@@ -175,7 +175,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         switch (item.getItemId()) {
         
         //TODO make sure this works
-        /*
+        
             case R.id.menu_invite_user:
                 Intent i = new Intent(ContactListActivity.this, AddContactActivity.class);
                 i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
@@ -184,7 +184,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         mContactListView.getSelectedContactList());
                 startActivity(i);
                 return true;
-*/
+
         
 /*            case R.id.menu_blocked_contacts:
                 Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();

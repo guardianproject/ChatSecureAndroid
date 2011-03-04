@@ -272,8 +272,6 @@ public class XmppConnection extends ImConnection {
 		Log.i(TAG, "cert verification? " + doCertVerification);
 
 		
-
-		
     	boolean allowSelfSignedCerts = !doCertVerification;
     	boolean doVerifyDomain = doCertVerification;
     	
@@ -327,11 +325,9 @@ public class XmppConnection extends ImConnection {
         	mConfig.setSASLAuthenticationEnabled(true);
         	
         	//set at equal priority
-        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+        	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
 
-
-    		Log.i(TAG, "doing proper certificate verification?" + doCertVerification);
     		mConfig.setVerifyChainEnabled(doCertVerification);
     		mConfig.setVerifyRootCAEnabled(doCertVerification);
     		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
@@ -479,6 +475,7 @@ public class XmppConnection extends ImConnection {
 				Log.i(TAG, "connection closed");
 			}
 		});
+        
         
         mConnection.login(login, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 

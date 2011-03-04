@@ -332,7 +332,7 @@ public class ImApp extends Application {
     private void loadDefaultBrandingRes() {
         HashMap<Integer, Integer> resMapping = new HashMap<Integer, Integer>();
 
-        resMapping.put(BrandingResourceIDs.DRAWABLE_LOGO, R.drawable.imlogo_s);
+        resMapping.put(BrandingResourceIDs.DRAWABLE_LOGO, R.drawable.ic_launcher_gibberbot);
         resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_ONLINE,
                 android.R.drawable.presence_online);
         resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_AWAY,

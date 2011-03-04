@@ -235,11 +235,12 @@ public class NewChatActivity extends Activity {
 
                 return true;
 
-//            case R.id.menu_invite_contact:
-  //              startContactPicker();
-    //            return true;
+                /*
+            case R.id.menu_invite_contact:
+                startContactPicker();
+              return true;
 
-/*
+
             case R.id.menu_block_contact:
                 mChatView.blockContact();
                 return true;

@@ -637,6 +637,6 @@
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 			
-	<string name="signin_password_prompt">Enter password for</string>
+	<string name="signin_password_prompt">Enter your password:</string>
 	
 </resources>

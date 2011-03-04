@@ -246,7 +246,7 @@ public class StatusBarNotifier {
 
         public Notification createNotification(String tickerText, boolean lightWeightNotify) {
             Notification notification = new Notification(
-                    android.R.drawable.stat_notify_chat,
+                    R.drawable.status,
                     lightWeightNotify ? null : tickerText,
                     System.currentTimeMillis());
 

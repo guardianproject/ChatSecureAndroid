@@ -21,40 +21,10 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:background="@drawable/ic_splash_portrait"
+    >
 
-<LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:gravity="center_horizontal">
 
-    <ImageView android:src="@drawable/gibbermini"
-    	android:id="@+id/splashscr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"/>
-
-</LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:gravity="center_horizontal">
-
-        <ProgressBar android:layout_width="20dip"
-            android:layout_height="20dip"
-            android:indeterminate="true" />
-
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:gravity="center_vertical"
-            android:text="@string/signing_in_wait" />
-
-    </LinearLayout>
 
 </LinearLayout>
