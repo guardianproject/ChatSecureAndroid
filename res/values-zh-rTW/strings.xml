@@ -15,7 +15,6 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="im_label" msgid="6289028202073124911">"即時訊息"</string>
     <string name="menu_cancel_signin" msgid="146078926243968887">"取消登入"</string>
     <string name="menu_add_contact" msgid="6315091944808434095">"新增聯絡人"</string>
     <string name="menu_remove_contact" msgid="3306468526492774925">"刪除聯絡人"</string>
