@@ -313,7 +313,8 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		boolean isGood = false;
 		
 		EditText editAccountId = ((EditText)findViewById(R.id.edit1));
-		editAccountId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);// | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS would also be nice but Android 2.x only
+		editAccountId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		accountId = editAccountId.getText().toString();
 		
 		String[] split = accountId.split("@");
