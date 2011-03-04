@@ -262,7 +262,9 @@ public class XmppConnection extends ImConnection {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
 		boolean doTLS = prefs.getBoolean("pref_security_tls", true);
+		boolean doSRV = prefs.getBoolean("pref_security_do_srv", false);
 
+		
 		boolean doCertVerification = prefs.getBoolean("pref_security_tls_very", true);
 		
     	boolean allowSelfSignedCerts = !doCertVerification;
@@ -303,10 +305,11 @@ public class XmppConnection extends ImConnection {
 			// TODO test first only using serverHost to use the DNS SRV lookup, otherwise try all the saved settings
 			// set the priority of auth methods, 0 being the first tried
     		
-    		if (serverPort != XMPP_DEFAULT_PORT)
-    			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
-    		else
+    		if (doSRV)
     			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+    		else
+    			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
+    		
     		
     		if (doTLS)
         		mConfig.setSecurityMode(SecurityMode.required);
@@ -314,7 +317,9 @@ public class XmppConnection extends ImConnection {
         		mConfig.setSecurityMode(SecurityMode.enabled);
 
         	mConfig.setSASLAuthenticationEnabled(true);
-        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+        	
+        	//set at equal priority
+        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
     		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
 
 

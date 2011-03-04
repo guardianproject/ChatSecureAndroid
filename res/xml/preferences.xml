@@ -79,9 +79,15 @@ android:entryValues="@array/otr_options_values"
 android:defaultValue="false" 
 android:key="pref_security_use_tor"
 android:title="Use Tor Network"
-android:summary="Send chat traffic through Tor - ORBOT must be installed and connected"
+android:summary="Send chat traffic through Tor - ORbot must be installed and connected"
 android:enabled="true"/> 
 
+<CheckBoxPreference 
+android:defaultValue="false" 
+android:key="pref_security_do_srv"
+android:title="Do SRV Lookup"
+android:summary="Use DNS to find actual XMPP server from domain name"
+android:enabled="false"/> 
 </PreferenceCategory>
 
 
