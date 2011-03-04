@@ -87,7 +87,7 @@ android:defaultValue="false"
 android:key="pref_security_do_srv"
 android:title="Do SRV Lookup"
 android:summary="Use DNS to find actual XMPP server from domain name"
-android:enabled="false"/> 
+android:enabled="true"/> 
 </PreferenceCategory>
 
 

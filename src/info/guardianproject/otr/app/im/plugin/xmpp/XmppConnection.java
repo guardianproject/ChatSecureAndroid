@@ -263,9 +263,16 @@ public class XmppConnection extends ImConnection {
 
 		boolean doTLS = prefs.getBoolean("pref_security_tls", true);
 		boolean doSRV = prefs.getBoolean("pref_security_do_srv", false);
+		boolean doCertVerification = prefs.getBoolean("pref_security_tls_very", true);
+
+		Log.i(TAG, "TLS required? " + doTLS);
+
+		Log.i(TAG, "Do SRV check? " + doSRV);
+
+		Log.i(TAG, "cert verification? " + doCertVerification);
 
 		
-		boolean doCertVerification = prefs.getBoolean("pref_security_tls_very", true);
+
 		
     	boolean allowSelfSignedCerts = !doCertVerification;
     	boolean doVerifyDomain = doCertVerification;
@@ -279,7 +286,9 @@ public class XmppConnection extends ImConnection {
 		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
 			
     		// only use the @host.com serverHost name so that ConnectionConfiguration does a DNS SRV lookup
-    		mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+			// is always talk.google.com
+			mConfig = new ConnectionConfiguration("talk.google.com", 5222, serverHost, mProxyInfo);
+			
     		if (doTLS)
         		mConfig.setSecurityMode(SecurityMode.required);
         	else
@@ -292,9 +301,8 @@ public class XmppConnection extends ImConnection {
     			login = login + "@" + serverHost;
     		
 			
-			Log.i(TAG, "doing proper certificate verification?" + doCertVerification);
 
-    		mConfig.setVerifyRootCAEnabled(false); //we have to disable this for now with Gmail
+    		mConfig.setVerifyRootCAEnabled(false); //TODO we have to disable this for now with Gmail
     		mConfig.setVerifyChainEnabled(doCertVerification); //but we still can verify the chain
     		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
     		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
@@ -478,8 +486,6 @@ public class XmppConnection extends ImConnection {
         mConnection.sendPacket(presence);
         
 
-        Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
-        Log.i(TAG,"is using TLS? " + mConnection.isUsingTLS());
 	}
 
 	void disconnected(ImErrorInfo info) {
