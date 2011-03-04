@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.3.20110301" android:versionCode="10">
+     android:versionName="0.0.3.20110304a" android:versionCode="11">
 
-<uses-sdk android:minSdkVersion="3"></uses-sdk>
+<uses-sdk android:minSdkVersion="4"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
