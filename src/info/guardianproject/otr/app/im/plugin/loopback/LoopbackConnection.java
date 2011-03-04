@@ -29,6 +29,11 @@ public class LoopbackConnection extends ImConnection {
 	private LoopbackContactList mContactListManager;
 	private Contact mUser;
 
+	public LoopbackConnection ()
+	{
+		super(null);
+	}
+	
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
 		// mimic presence

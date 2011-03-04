@@ -340,7 +340,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         Map<String, String> settings = loadProviderSettings(providerId);
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
-            ImConnection conn = factory.createConnection(settings);
+            ImConnection conn = factory.createConnection(settings, this);
             ImConnectionAdapter imConnectionAdapter = new ImConnectionAdapter(providerId,
                     conn, this);
             mConnections.add(imConnectionAdapter);

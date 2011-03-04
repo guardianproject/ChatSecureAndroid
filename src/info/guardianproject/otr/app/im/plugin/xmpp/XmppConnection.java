@@ -1,5 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -50,7 +51,10 @@ import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class XmppConnection extends ImConnection {
@@ -70,7 +74,11 @@ public class XmppConnection extends ImConnection {
 	
 	private ProxyInfo mProxyInfo = null;
 	
-	public XmppConnection() {
+	private final static int XMPP_DEFAULT_PORT = 5222;
+	
+	public XmppConnection(Context context) {
+		super(context);
+		
 		Log.w(TAG, "created");
 		
 		//ReconnectionManager.activate();
@@ -250,61 +258,82 @@ public class XmppConnection extends ImConnection {
 	
 	private void initConnection(String serverHost, int serverPort, String login, String password, String resource) throws XMPPException {
 		// TODO these booleans should be set in the preferences
-		boolean doCertVerification = true;
-    	boolean allowSelfSignedCerts = false;
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
+		boolean doTLS = prefs.getBoolean("pref_security_tls", true);
+
+		boolean doCertVerification = prefs.getBoolean("pref_security_tls_very", true);
+		
+    	boolean allowSelfSignedCerts = !doCertVerification;
+    	boolean doVerifyDomain = doCertVerification;
+    	
+    	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
     	
     	// TODO how should we handle special ConnectionConfiguration for hosts like google?
     	//we want to make it easy for users - maybe this shouldn't be here though
 		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
-    		// only use "gmail.com" so that ConnectionConfiguration does a DNS SRV lookup
-    		mConfig = new ConnectionConfiguration("talk.google.com", 5222, serverHost, mProxyInfo);
-    		mConfig.setSecurityMode(SecurityMode.required);
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5",0);
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+			
+    		// only use the @host.com serverHost name so that ConnectionConfiguration does a DNS SRV lookup
+    		mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+    		if (doTLS)
+        		mConfig.setSecurityMode(SecurityMode.required);
+        	else
+        		mConfig.setSecurityMode(SecurityMode.enabled);
+
+        	mConfig.setSASLAuthenticationEnabled(true);
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 0); //Gtalk only supports PLAIN
+    		
     		if (login.indexOf("@")==-1)
     			login = login + "@" + serverHost;
-    		mConfig.setSASLAuthenticationEnabled(true);
-    		// TODO fails with "javax.net.ssl.SSLException: Not trusted server certificate"
-    		// this is probably related to the Google cert having a 'talk.google.com' or 
-    		// 'gmail.com' domain, while the servers are actually talk1.l.google.com.  
-    		// We need to get DNS SRV working properly, since the SRV of gmail.com are the
-    		// right servers.  For now, we should be able to get away with all checks except 
-    		// for notMatchingDomainCheckEnabled 
-			doCertVerification = true;
-			//mConfig.setVerifyChainEnabled(true);
-			//mConfig.setVerifyRootCAEnabled(true);
-			//mConfig.setExpiredCertificatesCheckEnabled(true);
-			//mConfig.setNotMatchingDomainCheckEnabled(false);
-			// the above doesn't seem to take effect without the below enabled
-			//allowSelfSignedCerts = true;
+    		
+			
+			Log.i(TAG, "doing proper certificate verification?" + doCertVerification);
+
+    		mConfig.setVerifyRootCAEnabled(false); //we have to disable this for now with Gmail
+    		mConfig.setVerifyChainEnabled(doCertVerification); //but we still can verify the chain
+    		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
+    		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
+    		
+			
+
 		} else {
 			// TODO test first only using serverHost to use the DNS SRV lookup, otherwise try all the saved settings
 			// set the priority of auth methods, 0 being the first tried
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 1);
-    	    mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
-    		mConfig.setSecurityMode(SecurityMode.enabled);
+    		
+    		if (serverPort != XMPP_DEFAULT_PORT)
+    			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
+    		else
+    			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+    		
+    		if (doTLS)
+        		mConfig.setSecurityMode(SecurityMode.required);
+        	else
+        		mConfig.setSecurityMode(SecurityMode.enabled);
+
         	mConfig.setSASLAuthenticationEnabled(true);
-			doCertVerification = true;
+        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+
+
+    		Log.i(TAG, "doing proper certificate verification?" + doCertVerification);
+    		mConfig.setVerifyChainEnabled(doCertVerification);
+    		mConfig.setVerifyRootCAEnabled(doCertVerification);
+    		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
+    		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
+
     	}
     	
     	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
-	     mConfig.setTruststoreType("bks");
-	     mConfig.setTruststorePath("/system/etc/security/cacerts.bks");
+		mConfig.setTruststoreType("BKS");
+		mConfig.setTruststorePath("/system/etc/security/cacerts.bks");
 	     // this should probably be set to our own, if we are going to save self-signed certs
 	     //mConfig.setKeystoreType("bks");
 	     //mConfig.setKeystorePath("/system/etc/security/cacerts.bks");
 
-		if (doCertVerification) {
-			Log.i(TAG, "doing proper certificate verification");
-			mConfig.setVerifyChainEnabled(true);
-			mConfig.setVerifyRootCAEnabled(true);
-			mConfig.setExpiredCertificatesCheckEnabled(true);
-			mConfig.setNotMatchingDomainCheckEnabled(true);
-		}
+		
 		if (allowSelfSignedCerts) {
 			Log.i(TAG, "allowing self-signed certs");
 			mConfig.setSelfSignedCertificateEnabled(true);
@@ -312,6 +341,8 @@ public class XmppConnection extends ImConnection {
     	
 		//reconnect please
 		mConfig.setReconnectionAllowed(true);
+		mConfig.setRosterLoadedAtLogin(true);
+		mConfig.setSendPresence(true);
 		
 		Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
 		
@@ -435,10 +466,15 @@ public class XmppConnection extends ImConnection {
 				Log.i(TAG, "connection closed");
 			}
 		});
+        
         mConnection.login(login, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
+        
+
+        Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
+        Log.i(TAG,"is using TLS? " + mConnection.isUsingTLS());
 	}
 
 	void disconnected(ImErrorInfo info) {

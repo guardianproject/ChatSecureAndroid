@@ -20,6 +20,8 @@ package info.guardianproject.otr.app.im.engine;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import android.content.Context;
+
 /**
  * An <code>ImConnection</code> is an abstract representation of a connection
  * to the IM server.
@@ -72,9 +74,12 @@ public abstract class ImConnection {
     protected CopyOnWriteArrayList<ConnectionListener> mConnectionListeners;
     protected Presence mUserPresence;
 
-    protected ImConnection() {
+    protected Context mContext;
+    
+    protected ImConnection(Context context) {
         mConnectionListeners = new CopyOnWriteArrayList<ConnectionListener>();
         mState = DISCONNECTED;
+        mContext = context;
     }
 
     public void addConnectionListener(ConnectionListener listener) {

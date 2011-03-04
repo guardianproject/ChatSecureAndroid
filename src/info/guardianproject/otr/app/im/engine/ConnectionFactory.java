@@ -22,6 +22,8 @@ import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
 import java.util.Map;
 
+import android.content.Context;
+
 
 
 /**
@@ -51,9 +53,9 @@ public class ConnectionFactory {
      * @return the new ImConnection.
      * @throws IMException if an error occurs during creating a connection.
      */
-    public ImConnection createConnection(Map<String, String> settings) throws ImException {
+    public ImConnection createConnection(Map<String, String> settings, Context context) throws ImException {
     	if ("XMPP".equals(settings.get("im.protocol"))) {
-        	return new XmppConnection();
+        	return new XmppConnection(context);
     	} 
     	/*else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
     		return new LoopbackConnection();

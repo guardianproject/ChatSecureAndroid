@@ -143,6 +143,7 @@ public class SigningInActivity extends Activity {
         
         
         
+        
         isActive = c.getInt(c.getColumnIndexOrThrow(Imps.Account.ACTIVE)) == 1;
 
         c.close();
