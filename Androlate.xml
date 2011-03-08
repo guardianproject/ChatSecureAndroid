@@ -148,18 +148,6 @@
                 <value>Do you want to sign out all services?</value>
             </string>
             <string>
-                <name>confirm_delete_contact</name>
-                <value>The contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" will be deleted.</value>
-            </string>
-            <string>
-                <name>confirm_block_contact</name>
-                <value>The contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" will be blocked.</value>
-            </string>
-            <string>
-                <name>confirm_unblock_contact</name>
-                <value>The contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" will be unblocked.</value>
-            </string>
-            <string>
                 <name>ok</name>
                 <value>OK</value>
             </string>
@@ -176,16 +164,8 @@
                 <value>Cancel</value>
             </string>
             <string>
-                <name>signed_out_prompt</name>
-                <value>You have been signed out of &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</value>
-            </string>
-            <string>
                 <name>signed_out_prompt_with_error</name>
                 <value>You have been signed out of &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; because &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;.</value>
-            </string>
-            <string>
-                <name>add_account</name>
-                <value>Add &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; account</value>
             </string>
             <string>
                 <name>label_username</name>
@@ -228,12 +208,6 @@
                 <value>Background data disabled</value>
             </string>
             <string>
-                <name>bg_data_prompt_message</name>
-                <value>
-         &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; needs background data to be enabled.
-    </value>
-            </string>
-            <string>
                 <name>bg_data_prompt_ok</name>
                 <value>Enable</value>
             </string>
@@ -242,20 +216,8 @@
                 <value>Quit</value>
             </string>
             <string>
-                <name>ongoing_conversation</name>
-                <value>Ongoing chats (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</value>
-            </string>
-            <string>
-                <name>online_count</name>
-                <value>&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; online</value>
-            </string>
-            <string>
                 <name>subscriptions</name>
                 <value>Friend invitations</value>
-            </string>
-            <string>
-                <name>unknown_contact</name>
-                <value>(&lt;i&gt;Unknown&lt;/i&gt;) </value>
             </string>
             <string>
                 <name>empty_contact_group</name>
@@ -276,10 +238,6 @@
             <string>
                 <name>empty_contact_list</name>
                 <value>No contacts found.</value>
-            </string>
-            <string>
-                <name>blocked_list_title</name>
-                <value>Blocked contacts - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</value>
             </string>
             <string>
                 <name>no_blocked_contact</name>
@@ -330,10 +288,6 @@
                 <value>Appear offline</value>
             </string>
             <string>
-                <name>preference_title</name>
-                <value>&lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</value>
-            </string>
-            <string>
                 <name>data_channel_label</name>
                 <value>Data channel</value>
             </string>
@@ -378,44 +332,12 @@
                 <value>Save</value>
             </string>
             <string>
-                <name>chat_with</name>
-                <value>Chat with &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</value>
-            </string>
-            <string>
                 <name>me</name>
                 <value>Me</value>
             </string>
             <string>
                 <name>compose_hint</name>
                 <value>Type to compose</value>
-            </string>
-            <string>
-                <name>contact_online</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is online</value>
-            </string>
-            <string>
-                <name>contact_away</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is away</value>
-            </string>
-            <string>
-                <name>contact_busy</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is busy</value>
-            </string>
-            <string>
-                <name>contact_offline</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is offline</value>
-            </string>
-            <string>
-                <name>contact_joined</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; has joined</value>
-            </string>
-            <string>
-                <name>contact_left</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; has left</value>
-            </string>
-            <string>
-                <name>time_stamp</name>
-                <value>\'Sent at\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'on\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</value>
             </string>
             <string>
                 <name>send</name>
@@ -428,14 +350,6 @@
             <string>
                 <name>disconnected_warning</name>
                 <value>Lost connection to server. Messages will be sent when online.</value>
-            </string>
-            <string>
-                <name>contact_offline_warning</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is offline. Messages you send will be delivered when &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; comes online.</value>
-            </string>
-            <string>
-                <name>contact_not_in_list_warning</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is not in your Contact list.</value>
             </string>
             <string>
                 <name>select_link_title</name>
@@ -506,10 +420,6 @@
                 <value>Select ringtone</value>
             </string>
             <string>
-                <name>invitation_prompt</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; has invited you to join a group chat.</value>
-            </string>
-            <string>
                 <name>invitation_sent_prompt</name>
                 <value> Invitation has been sent to &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;.</value>
             </string>
@@ -522,40 +432,12 @@
                 <value>Decline</value>
             </string>
             <string>
-                <name>subscription_prompt</name>
-                <value>&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; has invited you to be on their Contact list.</value>
-            </string>
-            <string>
                 <name>approve_subscription</name>
                 <value>Accept</value>
             </string>
             <string>
                 <name>decline_subscription</name>
                 <value>Decline</value>
-            </string>
-            <string>
-                <name>approve_subscription_error</name>
-                <value>Unable to approve subscription from &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</value>
-            </string>
-            <string>
-                <name>decline_subscription_error</name>
-                <value>Unable to decline subscription from &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</value>
-            </string>
-            <string>
-                <name>newMessages_label</name>
-                <value>New &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; messages</value>
-            </string>
-            <string>
-                <name>num_unread_chats</name>
-                <value>
-        &lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; unread chats
-    </value>
-            </string>
-            <string>
-                <name>subscription_notify_text</name>
-                <value>
-        New friend invitation from &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;
-    </value>
             </string>
             <string>
                 <name>notify_groupchat_label</name>
@@ -568,22 +450,6 @@
     </value>
             </string>
             <string>
-                <name>add_contact_success</name>
-                <value>Contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" added.</value>
-            </string>
-            <string>
-                <name>delete_contact_success</name>
-                <value>Contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" deleted.</value>
-            </string>
-            <string>
-                <name>block_contact_success</name>
-                <value>Contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" blocked.</value>
-            </string>
-            <string>
-                <name>unblock_contact_success</name>
-                <value>Contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" unblocked.</value>
-            </string>
-            <string>
                 <name>perm_label</name>
                 <value>start IM service</value>
             </string>
@@ -594,10 +460,6 @@
             <string>
                 <name>error</name>
                 <value>Attention</value>
-            </string>
-            <string>
-                <name>login_service_failed</name>
-                <value>Unable to sign in to the &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt; service. Please try again later.\n(Detail: &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;)</value>
             </string>
             <string>
                 <name>add_list_failed</name>
@@ -630,14 +492,6 @@
             <string>
                 <name>cant_connect_to_server</name>
                 <value>Cannot connect to server. Please check your connection.</value>
-            </string>
-            <string>
-                <name>contact_already_exist</name>
-                <value>"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" already exists in your Contact list.</value>
-            </string>
-            <string>
-                <name>contact_blocked</name>
-                <value>Contact \"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;\" has been blocked.</value>
             </string>
             <string>
                 <name>contact_not_loaded</name>
@@ -712,17 +566,8 @@
                 <value>You are currently not signed in.</value>
             </string>
             <string>
-                <name>general_error</name>
-                <value>Error code &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</value>
-            </string>
-            <string>
                 <name>default_smiley_names</name>
                 <value>Happy</value>
-                <index>0</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-)</value>
                 <index>0</index>
             </string>
             <string>
@@ -731,17 +576,8 @@
                 <index>0</index>
             </string>
             <string>
-                <name>smiley_texts</name>
-                <value>:-)</value>
-                <index>0</index>
-            </string>
-            <string>
                 <name>check_save_password</name>
                 <value>For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</value>
-            </string>
-            <string>
-                <name>buddy_list_title</name>
-                <value>Contact List - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</value>
             </string>
             <string>
                 <name>menu_contact_list</name>
@@ -781,7 +617,7 @@
             </string>
             <string>
                 <name>about_welcome</name>
-                <value>Gibberbot is a mobile instant messaging app that provides extra security features in order to stop people from snopping on your converstations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</value>
+                <value>Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</value>
             </string>
             <string>
                 <name>about_otr_title</name>
@@ -797,7 +633,7 @@
             </string>
             <string>
                 <name>about_security</name>
-                <value>With Gibberbot, you can easily choose to encrypt conversations when messaging with others using a compatible app or program. You can also control how secure your connection to the chat server is. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</value>
+                <value>Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</value>
             </string>
             <string>
                 <name>setup_passphrase_title</name>
@@ -1013,7 +849,7 @@
             </string>
             <string>
                 <name>account_wizard_account_body</name>
-                <value>Please enter your username@hostname.com below</value>
+                <value>Please enter your account ID (user@hostname):</value>
             </string>
             <string>
                 <name>account_wizard_host_body</name>
@@ -1025,7 +861,7 @@
             </string>
             <string>
                 <name>signin_password_prompt</name>
-                <value>Enter account password:</value>
+                <value>Enter your password:</value>
             </string>
             <string>
                 <name>default_smiley_names</name>
@@ -1108,86 +944,6 @@
                 <index>16</index>
             </string>
             <string>
-                <name>default_smiley_texts</name>
-                <value>:-(</value>
-                <index>1</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>;-)</value>
-                <index>2</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-P</value>
-                <index>3</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>=-O</value>
-                <index>4</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-*</value>
-                <index>5</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:O</value>
-                <index>6</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>B-)</value>
-                <index>7</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-$</value>
-                <index>8</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-!</value>
-                <index>9</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-[</value>
-                <index>10</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>O:-)</value>
-                <index>11</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-\\</value>
-                <index>12</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:\'(</value>
-                <index>13</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-X</value>
-                <index>14</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>:-D</value>
-                <index>15</index>
-            </string>
-            <string>
-                <name>default_smiley_texts</name>
-                <value>o_O</value>
-                <index>16</index>
-            </string>
-            <string>
                 <name>smiley_names</name>
                 <value>Sad</value>
                 <index>1</index>
@@ -1265,86 +1021,6 @@
             <string>
                 <name>smiley_names</name>
                 <value>Confused</value>
-                <index>16</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-(</value>
-                <index>1</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>;-)</value>
-                <index>2</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-P</value>
-                <index>3</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>=-O</value>
-                <index>4</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-*</value>
-                <index>5</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:O</value>
-                <index>6</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>B-)</value>
-                <index>7</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-$</value>
-                <index>8</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-!</value>
-                <index>9</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-[</value>
-                <index>10</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>O:-)</value>
-                <index>11</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-\\</value>
-                <index>12</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:\'(</value>
-                <index>13</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-X</value>
-                <index>14</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>:-D</value>
-                <index>15</index>
-            </string>
-            <string>
-                <name>smiley_texts</name>
-                <value>o_O</value>
                 <index>16</index>
             </string>
         </translate>
@@ -1372,7 +1048,7 @@
             </string>
             <string>
                 <name>im_label</name>
-                <value>Gibberbot 0.0.3 (v20110227c)</value>
+                <value>Gibberbot 0.0.3.20110304b</value>
             </string>
             <string>
                 <name>landing_page_title</name>
@@ -2460,7 +2136,7 @@
             </string>
             <string>
                 <name>about_welcome</name>
-                <value>Gibberbot is a mobile instant messaging app that provides extra security features in order to stop people from snopping on your converstations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</value>
+                <value>Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</value>
             </string>
             <string>
                 <name>about_otr_title</name>
@@ -2476,7 +2152,7 @@
             </string>
             <string>
                 <name>about_security</name>
-                <value>With Gibberbot, you can easily choose to encrypt conversations when messaging with others using a compatible app or program. You can also control how secure your connection to the chat server is. You\'ll always have the option to modify these settings in Account Settings.\n\nLet\'s get started!</value>
+                <value>Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</value>
             </string>
             <string>
                 <name>setup_passphrase_title</name>
@@ -2692,7 +2368,7 @@
             </string>
             <string>
                 <name>account_wizard_account_body</name>
-                <value>Please enter your username@hostname.com below</value>
+                <value>Please enter your account ID (user@hostname):</value>
             </string>
             <string>
                 <name>account_wizard_host_body</name>
@@ -2704,7 +2380,7 @@
             </string>
             <string>
                 <name>signin_password_prompt</name>
-                <value>Enter account password:</value>
+                <value>Enter your password:</value>
             </string>
         </allstrings>
     </operation>
@@ -2762,5 +2438,15 @@
         <display>SPANISH</display>
         <iso639_1>es</iso639_1>
         <directory>es</directory>
+    </target_language>
+    <target_language>
+        <display>SLOVAK</display>
+        <iso639_1>sk</iso639_1>
+        <directory>sk</directory>
+    </target_language>
+    <target_language>
+        <display>PERSIAN</display>
+        <iso639_1>fa</iso639_1>
+        <directory>fa</directory>
     </target_language>
 </Androlate>
