@@ -282,18 +282,19 @@ public class XmppConnection extends ImConnection {
     	// TODO how should we handle special ConnectionConfiguration for hosts like google?
     	//we want to make it easy for users - maybe this shouldn't be here though
 		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
+			// Google only supports a certain configuration for XMPP:
+			// http://code.google.com/apis/talk/open_communications.html
 			
     		// only use the @host.com serverHost name so that ConnectionConfiguration does a DNS SRV lookup
 			// is always talk.google.com
 			mConfig = new ConnectionConfiguration("talk.google.com", 5222, serverHost, mProxyInfo);
 			
-    		if (doTLS)
-        		mConfig.setSecurityMode(SecurityMode.required);
-        	else
-        		mConfig.setSecurityMode(SecurityMode.enabled);
-
+			mConfig.setSecurityMode(SecurityMode.required); // Gtalk requires TLS always
         	mConfig.setSASLAuthenticationEnabled(true);
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 0); //Gtalk only supports PLAIN
+        	// Google only supports SASL/PLAIN so disable the rest just in case
+        	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+        	SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
+        	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4"); // never supported
     		
     		if (login.indexOf("@")==-1)
     			login = login + "@" + serverHost;
