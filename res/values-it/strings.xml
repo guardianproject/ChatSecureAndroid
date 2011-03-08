@@ -13,154 +13,153 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="menu_cancel_signin" msgid="146078926243968887">"Annulla accesso"</string>
-    <string name="menu_add_contact" msgid="6315091944808434095">"Aggiungi contatto"</string>
-    <string name="menu_remove_contact" msgid="3306468526492774925">"Elimina contatto"</string>
-    <string name="menu_block_contact" msgid="727204732836017804">"Blocca contatto"</string>
-    <string name="menu_view_blocked" msgid="7567355003496935631">"Bloccati"</string>
-    <string name="menu_view_accounts" msgid="2876518557188672305">"Elenco account"</string>
-    <string name="menu_settings" msgid="4609084900756093288">"Impostazioni"</string>
-    <string name="menu_start_chat" msgid="6188262479212139863">"Inizia conversazione"</string>
-    <string name="menu_sign_out" msgid="2456603636849489202">"Disconnetti"</string>
-    <string name="menu_view_profile" msgid="5883288134525529119">"Visualizza profilo"</string>
-    <string name="menu_end_conversation" msgid="3556567768336552622">"Termina conversazione"</string>
-    <string name="menu_view_contact_list" msgid="4630377976475003130">"Elenco contatti"</string>
-    <string name="menu_invite_contact" msgid="4669830812552484236">"Invita..."</string>
-    <string name="menu_switch_chats" msgid="5113455126377025717">"Cambia conversazione"</string>
-    <string name="menu_insert_smiley" msgid="2555290958985391105">"Inserisci emoticon"</string>
-    <string name="menu_plus" msgid="5000617247235760106">"Menu+"</string>
-    <string name="default_input_title" msgid="6182729628894599563">"Input"</string>
-    <string name="confirm" msgid="3229086014444547636">"Conferma"</string>
-    <string name="confirm_delete_contact" msgid="1364595657359357114">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà eliminato."</string>
-    <string name="confirm_block_contact" msgid="2490910366424078491">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà bloccato."</string>
-    <string name="confirm_unblock_contact" msgid="2194464819104507216">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà sbloccato."</string>
-    <string name="ok" msgid="1521940081498188645">"OK"</string>
-    <string name="cancel" msgid="5115511021657936211">"Annulla"</string>
-    <string name="yes" msgid="4042588907115698888">"OK"</string>
-    <string name="no" msgid="1791024164361629713">"Annulla"</string>
-    <string name="signed_out_prompt" msgid="8832702403969474634">"Utente disconnesso da <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
-    <string name="signed_out_prompt_with_error" msgid="7747094436931805456">"Utente disconnesso da <xliff:g id="ACCOUNT">%1$s</xliff:g>. Causa: <xliff:g id="REASON">%2$s</xliff:g>."</string>
-    <string name="add_account" msgid="3402105687785864337">"Aggiungi account <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
-    <string name="label_username" msgid="8704597829337399952">"Nome utente:"</string>
-    <string name="label_password" msgid="7809879599377131899">"Password:"</string>
-    <string name="remember_password" msgid="4090719436666073946">"Memorizza la password."</string>
-    <string name="keep_me_signed_in" msgid="2883914867912933061">"Accesso automatico"</string>
-    <string name="sign_up" msgid="7071654280992136839">"Non hai un account?"</string>
-    <string name="check_auto_sign_in" msgid="308461891031463647">"Questa opzione ti consente di accedere automaticamente ogni volta che apri l\'applicazione. Per disattivare l\'opzione, disconnettiti e deseleziona la casella \"Accesso automatico\"."</string>
-    <string name="sign_in" msgid="6204326200860136567">"Accedi"</string>
-    <string name="signing_in_to" msgid="2689649632858697221">"Accesso a <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
-    <string name="signing_in_wait" msgid="987357161364666888">"Accesso..."</string>
-    <string name="bg_data_prompt_title" msgid="4861800723853178111">"Dati in background disattivati"</string>
-    <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> richiede l\'attivazione dei dati in background."</string>
-    <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Attiva"</string>
-    <string name="bg_data_prompt_cancel" msgid="7206105589826174638">"Esci"</string>
-    <string name="ongoing_conversation" msgid="6523428329676936109">"Conversazioni in corso (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
-    <string name="online_count" msgid="5007781327712739543">"<xliff:g id="NUMBER">%1$d</xliff:g> online"</string>
-    <string name="subscriptions" msgid="2039801939162848292">"Inviti amici"</string>
-    <string name="unknown_contact" msgid="3493840718873032803">"("<i>"Sconosciuto"</i>")"</string>
-    <string name="empty_contact_group" msgid="5944413281854480292">"Vuoto"</string>
-    <string name="empty_conversation_group" msgid="3207190506591856738">"Nessuna conversazione"</string>
-    <string name="contacts_picker_title" msgid="6681084488289812125">"Seleziona contatti da invitare"</string>
-    <string name="contact_filter_hint" msgid="7138176974380705986">"Digita per trovare contatti"</string>
-    <string name="empty_contact_list" msgid="1974715213398195818">"Nessun contatto trovato."</string>
-    <string name="blocked_list_title" msgid="1107985939407422906">"Contatti bloccati - <xliff:g id="USER">%1$s</xliff:g>"</string>
-    <string name="no_blocked_contact" msgid="8733015382744327205">"Nessun contatto bloccato."</string>
-    <string name="contact_profile_title" msgid="3403866015406342297">"Profilo contatto"</string>
-    <string name="label_status" msgid="3228165483618856922">"Stato:"</string>
-    <string name="label_client_type" msgid="2498423521352545451">"Tipo client:"</string>
-    <string name="client_type_computer" msgid="5636516646543615981">"Computer"</string>
-    <string name="client_type_mobile" msgid="8405440352829124713">"Portatile"</string>
-    <string name="presence_available" msgid="7514162178730233803">"Online"</string>
-    <string name="presence_busy" msgid="3425926873862063910">"Occupato"</string>
-    <string name="presence_away" msgid="2893687249265559744">"Assente"</string>
-    <string name="presence_idle" msgid="3127526059878228229">"Inattivo"</string>
-    <string name="presence_offline" msgid="7946842914359044731">"Offline"</string>
-    <string name="presence_invisible" msgid="1485652711495491831">"Invisibile"</string>
-    <string name="chat_with" msgid="8562954189958846831">"Conversazione con <xliff:g id="USER">%1$s</xliff:g>"</string>
-    <string name="me" msgid="8421609599685404593">"Io"</string>
-    <string name="compose_hint" msgid="1735533889811320962">"Digita qui per scrivere"</string>
-    <string name="contact_online" msgid="4241843267436748586">"<xliff:g id="USER">%1$s</xliff:g> è online"</string>
-    <string name="contact_away" msgid="2333627320542883164">"<xliff:g id="USER">%1$s</xliff:g> non è al computer"</string>
-    <string name="contact_busy" msgid="9175172991334146704">"<xliff:g id="USER">%1$s</xliff:g> è occupato"</string>
-    <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> è offline"</string>
-    <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> è entrato"</string>
-    <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> è uscito"</string>
-    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Inviato alle '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>' il '<xliff:g id="DATE">EEEE</xliff:g>"</string>
-    <string name="send" msgid="2726588254020771734">"Invia"</string>
-    <string name="msg_sent_failed" msgid="4209970218075996979">"Impossibile inviare il messaggio."</string>
-    <string name="disconnected_warning" msgid="6798248948843269795">"Connessione al server persa. I messaggi saranno inviati quando verrà ristabilita."</string>
-    <string name="contact_offline_warning" msgid="8822964251595561504">"<xliff:g id="USER_0">%1$s</xliff:g> è offline. I messaggi inviati saranno consegnati non appena <xliff:g id="USER_1">%1$s</xliff:g> torna online."</string>
-    <string name="contact_not_in_list_warning" msgid="2411313232707156524">"<xliff:g id="USER">%1$s</xliff:g> non presente nell\'elenco contatti."</string>
-    <string name="select_link_title" msgid="5020179468567358399">"Seleziona link"</string>
-    <string name="empty_chat_list" msgid="7268903855432844937">"Nessuna conversazione attiva."</string>
-    <string name="add_contact_title" msgid="8541795892456911186">"Aggiungi contatto"</string>
-    <string name="input_contact_label" msgid="395294356081431462">"Indirizzo email della persona da invitare:"</string>
-    <string name="choose_list_label" msgid="1430489448508574145">"Selezionare un elenco:"</string>
-    <string name="invite_instruction" msgid="8262403243657760155">"Digita un nome da aggiungere dai contatti."</string>
-    <string name="invite_label" msgid="6229798754682424899">"Invia invito"</string>
-    <string name="setting_title" msgid="6676157178613673420">"Impostazioni generali"</string>
-    <string name="hide_offline_contacts" msgid="8017909244732772990">"Nascondi contatti offline"</string>
-    <string name="notification_group_title" msgid="4944275706770811080">"Impostazioni notifiche"</string>
-    <string name="notification_enabled_title" msgid="6447889693376465773">"Notifiche chat"</string>
-    <string name="notification_enabled_summary" msgid="2090889893066171466">"Notifica in barra di stato all\'arrivo di un messaggio"</string>
-    <string name="notification_vibrate_title" msgid="5603532186091800924">"Vibrazione"</string>
-    <string name="notification_vibrate_summary" msgid="1875275321875946598">"Vibra anche all\'arrivo di msg chat"</string>
-    <string name="notification_sound_title" msgid="8367990268592958299">"Allarme"</string>
-    <string name="notification_sound_summary" msgid="3634976543811200858">"Usa anche suoneria all\'arrivo di msg chat"</string>
-    <string name="notification_ringtone_title" msgid="4847700898968990954">"Seleziona suoneria"</string>
-    <string name="invitation_prompt" msgid="1776461436395016582">"<xliff:g id="USER">%1$s</xliff:g> ti ha invitato a unirti a una conversazione di gruppo."</string>
-    <string name="invitation_sent_prompt" msgid="2542342110609014148">"L\'invito è stato inviato a <xliff:g id="USER">%1$s</xliff:g>."</string>
-    <string name="accept_invitation" msgid="8852207669114500346">"Accetto"</string>
-    <string name="decline_invitation" msgid="3039909785911592632">"Rifiuto"</string>
-    <string name="subscription_prompt" msgid="1915974310850760232">"<xliff:g id="USER">%1$s</xliff:g> ti ha invitato a inserirti nel suo elenco contatti."</string>
-    <string name="approve_subscription" msgid="2035288988418082224">"Accetto"</string>
-    <string name="decline_subscription" msgid="3069941120905061191">"Rifiuto"</string>
-    <string name="approve_subscription_error" msgid="7653225198395861289">"Impossibile approvare l\'iscrizione di <xliff:g id="USER">%1$s</xliff:g>. Riprova più tardi."</string>
-    <string name="decline_subscription_error" msgid="7593921535412836089">"Impossibile rifiutare l\'iscrizione di <xliff:g id="USER">%1$s</xliff:g>. Riprova più tardi."</string>
-    <string name="newMessages_label" msgid="2180971062715087738">"Nuovi messaggi <xliff:g id="PROVIDER">%1$s</xliff:g>"</string>
-    <string name="num_unread_chats" msgid="728064925131396221">"<xliff:g id="NUMBER">%1$d</xliff:g> messaggi da leggere"</string>
-    <string name="subscription_notify_text" msgid="6742004636596633323">"Invito nuovo amico da <xliff:g id="USER">%s</xliff:g>"</string>
-    <string name="notify_groupchat_label" msgid="4200552751080182984">"Invito a conversazione di gruppo"</string>
-    <string name="group_chat_invite_notify_text" msgid="2115253984204158370">"Nuovo invito a conversazione di gruppo di <xliff:g id="USER">%s</xliff:g>"</string>
-    <string name="add_contact_success" msgid="6760968462242659207">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" aggiunto."</string>
-    <string name="delete_contact_success" msgid="4451989113378349412">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" eliminato."</string>
-    <string name="block_contact_success" msgid="301279568695040166">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" bloccato."</string>
-    <string name="unblock_contact_success" msgid="5506870117106713456">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sbloccato."</string>
-    <string name="perm_label" msgid="203411797893865789">"avviare servizio IM"</string>
-    <string name="perm_desc" msgid="6978187394092498941">"Consente l\'avvio del servizio IM tramite intent."</string>
-    <string name="error" msgid="4778856523246532623">"Attenzione"</string>
-    <string name="login_service_failed" msgid="3883751713470046349">"Impossibile accedere al servizio <xliff:g id="SERVICE">%1$s</xliff:g>. Riprova più tardi."\n"(Dettagli: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
-    <string name="add_list_failed" msgid="5659371594032378190">"L\'elenco non è stato aggiunto."</string>
-    <string name="block_contact_failed" msgid="5870952543258608424">"Il contatto non è stato bloccato."</string>
-    <string name="unblock_contact_failed" msgid="7761060327693183076">"Il contatto non è stato sbloccato."</string>
-    <string name="select_contact" msgid="5804415466346460387">"Seleziona prima un contatto."</string>
-    <string name="disconnected" msgid="7731840958629349414">"Disconnessa!"\n</string>
-    <string name="service_error" msgid="4578570332742070464">"Errore del servizio."</string>
-    <string name="load_contact_list_failed" msgid="6395594768879404874">"Elenco contatti non caricato."</string>
-    <string name="cant_connect_to_server" msgid="3188697382173578199">"Impossibile collegarsi al server. Controllare la connessione."</string>
-    <string name="contact_already_exist" msgid="4982433960953410393">"<xliff:g id="USER">%1$s</xliff:g> già presente nell\'elenco contatti."</string>
-    <string name="contact_blocked" msgid="11602144969098173">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" è stato bloccato."</string>
-    <string name="contact_not_loaded" msgid="3739109817357036832">"Attendere il caricamento dell\'elenco contatti."</string>
-    <string name="network_error" msgid="1971556432619053394">"Errore di rete."</string>
-    <string name="service_not_support" msgid="6552484838382542900">"Il server non supporta questa funzionalità."</string>
-    <string name="invalid_password" msgid="4406190708977805393">"La password inserita non è valida."</string>
-    <string name="internal_server_error" msgid="5659759443966908703">"Errore del server."</string>
-    <string name="not_implemented" msgid="845369556603815808">"Il server non supporta questa funzionalità."</string>
-    <string name="service_unavaiable" msgid="4948915878388282443">"Server al momento non disponibile."</string>
-    <string name="timeout" msgid="8160218318070765661">"Timeout del server."</string>
-    <string name="version_not_supported" msgid="4342010736606775264">"Il server non supporta la versione corrente."</string>
-    <string name="message_queue_full" msgid="7501019992527859517">"La coda messaggi è piena."</string>
-    <string name="domain_not_supported" msgid="7715663042901606605">"Il server non supporta l\'inoltro al dominio."</string>
-    <string name="unknown_user" msgid="6680215792586778118">"Nome utente inserito non riconosciuto."</string>
-    <string name="recipient_blocked_the_user" msgid="8438323314518151118">"Spiacenti. Sei stato bloccato dall\'utente."</string>
-    <string name="session_expired" msgid="1999103420742299764">"Sessione scaduta. Accedi di nuovo."</string>
-    <string name="forced_logout" msgid="4914497176506037105">"accesso effettuato da un altro client"</string>
-    <string name="already_logged_in" msgid="1907391913706263174">"accesso già effettuato da un altro client"</string>
-    <string name="msisdn_error" msgid="1477099919088266968">"Spiacenti. Impossibile leggere il numero di telefono sulla scheda SIM. Contattare l\'operatore."</string>
-    <string name="not_signed_in" msgid="8894662143178849906">"Accesso non effettuato."</string>
-    <string name="general_error" msgid="2784900425265121080">"Codice errore <xliff:g id="CODE">%1$d</xliff:g>"</string>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="146078926243968887" name="menu_cancel_signin">"Annulla accesso"</string>
+    <string msgid="6315091944808434095" name="menu_add_contact">"Aggiungi contatto"</string>
+    <string msgid="3306468526492774925" name="menu_remove_contact">"Elimina contatto"</string>
+    <string msgid="727204732836017804" name="menu_block_contact">"Blocca contatto"</string>
+    <string msgid="7567355003496935631" name="menu_view_blocked">"Bloccati"</string>
+    <string msgid="2876518557188672305" name="menu_view_accounts">"Elenco account"</string>
+    <string msgid="4609084900756093288" name="menu_settings">"Impostazioni"</string>
+    <string msgid="6188262479212139863" name="menu_start_chat">"Inizia conversazione"</string>
+    <string msgid="2456603636849489202" name="menu_sign_out">"Disconnetti"</string>
+    <string msgid="5883288134525529119" name="menu_view_profile">"Visualizza profilo"</string>
+    <string msgid="3556567768336552622" name="menu_end_conversation">"Termina conversazione"</string>
+    <string msgid="4630377976475003130" name="menu_view_contact_list">"Elenco contatti"</string>
+    <string msgid="4669830812552484236" name="menu_invite_contact">"Invita..."</string>
+    <string msgid="5113455126377025717" name="menu_switch_chats">"Cambia conversazione"</string>
+    <string msgid="2555290958985391105" name="menu_insert_smiley">"Inserisci emoticon"</string>
+    <string msgid="5000617247235760106" name="menu_plus">"Menu+"</string>
+    <string msgid="6182729628894599563" name="default_input_title">"Input"</string>
+    <string msgid="3229086014444547636" name="confirm">"Conferma"</string>
+    <string msgid="1364595657359357114" name="confirm_delete_contact">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà eliminato."</string>
+    <string msgid="2490910366424078491" name="confirm_block_contact">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà bloccato."</string>
+    <string msgid="2194464819104507216" name="confirm_unblock_contact">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà sbloccato."</string>
+    <string msgid="1521940081498188645" name="ok">"OK"</string>
+    <string msgid="5115511021657936211" name="cancel">"Annulla"</string>
+    <string msgid="4042588907115698888" name="yes">"OK"</string>
+    <string msgid="1791024164361629713" name="no">"Annulla"</string>
+    <string msgid="8832702403969474634" name="signed_out_prompt">"Utente disconnesso da <xliff:g id="ACCOUNT">%1$s</xliff:g>."</string>
+    <string msgid="7747094436931805456" name="signed_out_prompt_with_error">"Utente disconnesso da <xliff:g id="ACCOUNT">%1$s</xliff:g>. Causa: <xliff:g id="REASON">%2$s</xliff:g>."</string>
+    <string msgid="3402105687785864337" name="add_account">"Aggiungi account <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string msgid="8704597829337399952" name="label_username">"Nome utente:"</string>
+    <string msgid="7809879599377131899" name="label_password">"Password:"</string>
+    <string msgid="4090719436666073946" name="remember_password">"Memorizza la password."</string>
+    <string msgid="2883914867912933061" name="keep_me_signed_in">"Accesso automatico"</string>
+    <string msgid="7071654280992136839" name="sign_up">"Non hai un account?"</string>
+    <string msgid="308461891031463647" name="check_auto_sign_in">"Questa opzione ti consente di accedere automaticamente ogni volta che apri l\'applicazione. Per disattivare l\'opzione, disconnettiti e deseleziona la casella \"Accesso automatico\"."</string>
+    <string msgid="6204326200860136567" name="sign_in">"Accedi"</string>
+    <string msgid="2689649632858697221" name="signing_in_to">"Accesso a <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
+    <string msgid="987357161364666888" name="signing_in_wait">"Accesso..."</string>
+    <string msgid="4861800723853178111" name="bg_data_prompt_title">"Dati in background disattivati"</string>
+    <string msgid="2343305645142823544" name="bg_data_prompt_message">"<xliff:g id="PROVIDER">%1$s</xliff:g> richiede l\'attivazione dei dati in background."</string>
+    <string msgid="3443385427882751532" name="bg_data_prompt_ok">"Attiva"</string>
+    <string msgid="7206105589826174638" name="bg_data_prompt_cancel">"Esci"</string>
+    <string msgid="6523428329676936109" name="ongoing_conversation">"Conversazioni in corso (<xliff:g id="NUMBER">%1$d</xliff:g>)"</string>
+    <string msgid="5007781327712739543" name="online_count">"<xliff:g id="NUMBER">%1$d</xliff:g> online"</string>
+    <string msgid="2039801939162848292" name="subscriptions">"Inviti amici"</string>
+    <string msgid="3493840718873032803" name="unknown_contact">"("<i>"Sconosciuto"</i>")"</string>
+    <string msgid="5944413281854480292" name="empty_contact_group">"Vuoto"</string>
+    <string msgid="3207190506591856738" name="empty_conversation_group">"Nessuna conversazione"</string>
+    <string msgid="6681084488289812125" name="contacts_picker_title">"Seleziona contatti da invitare"</string>
+    <string msgid="7138176974380705986" name="contact_filter_hint">"Digita per trovare contatti"</string>
+    <string msgid="1974715213398195818" name="empty_contact_list">"Nessun contatto trovato."</string>
+    <string msgid="1107985939407422906" name="blocked_list_title">"Contatti bloccati - <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string msgid="8733015382744327205" name="no_blocked_contact">"Nessun contatto bloccato."</string>
+    <string msgid="3403866015406342297" name="contact_profile_title">"Profilo contatto"</string>
+    <string msgid="3228165483618856922" name="label_status">"Stato:"</string>
+    <string msgid="2498423521352545451" name="label_client_type">"Tipo client:"</string>
+    <string msgid="5636516646543615981" name="client_type_computer">"Computer"</string>
+    <string msgid="8405440352829124713" name="client_type_mobile">"Portatile"</string>
+    <string msgid="7514162178730233803" name="presence_available">"Online"</string>
+    <string msgid="3425926873862063910" name="presence_busy">"Occupato"</string>
+    <string msgid="2893687249265559744" name="presence_away">"Assente"</string>
+    <string msgid="3127526059878228229" name="presence_idle">"Inattivo"</string>
+    <string msgid="7946842914359044731" name="presence_offline">"Offline"</string>
+    <string msgid="1485652711495491831" name="presence_invisible">"Invisibile"</string>
+    <string msgid="8562954189958846831" name="chat_with">"Conversazione con <xliff:g id="USER">%1$s</xliff:g>"</string>
+    <string msgid="8421609599685404593" name="me">"Io"</string>
+    <string msgid="1735533889811320962" name="compose_hint">"Digita qui per scrivere"</string>
+    <string msgid="4241843267436748586" name="contact_online">"<xliff:g id="USER">%1$s</xliff:g> è online"</string>
+    <string msgid="2333627320542883164" name="contact_away">"<xliff:g id="USER">%1$s</xliff:g> non è al computer"</string>
+    <string msgid="9175172991334146704" name="contact_busy">"<xliff:g id="USER">%1$s</xliff:g> è occupato"</string>
+    <string msgid="7054903259540426223" name="contact_offline">"<xliff:g id="USER">%1$s</xliff:g> è offline"</string>
+    <string msgid="6713312815095658394" name="contact_joined">"<xliff:g id="USER">%1$s</xliff:g> è entrato"</string>
+    <string msgid="3020686291216941829" name="contact_left">"<xliff:g id="USER">%1$s</xliff:g> è uscito"</string>
+    <string format="date" msgid="8952691401963972802" name="time_stamp">"'Inviato alle '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>' il '<xliff:g id="DATE">EEEE</xliff:g>"</string>
+    <string msgid="2726588254020771734" name="send">"Invia"</string>
+    <string msgid="4209970218075996979" name="msg_sent_failed">"Impossibile inviare il messaggio."</string>
+    <string msgid="6798248948843269795" name="disconnected_warning">"Connessione al server persa. I messaggi saranno inviati quando verrà ristabilita."</string>
+    <string msgid="8822964251595561504" name="contact_offline_warning">"<xliff:g id="USER_0">%1$s</xliff:g> è offline. I messaggi inviati saranno consegnati non appena <xliff:g id="USER_1">%1$s</xliff:g> torna online."</string>
+    <string msgid="2411313232707156524" name="contact_not_in_list_warning">"<xliff:g id="USER">%1$s</xliff:g> non presente nell\'elenco contatti."</string>
+    <string msgid="5020179468567358399" name="select_link_title">"Seleziona link"</string>
+    <string msgid="7268903855432844937" name="empty_chat_list">"Nessuna conversazione attiva."</string>
+    <string msgid="8541795892456911186" name="add_contact_title">"Aggiungi contatto"</string>
+    <string msgid="395294356081431462" name="input_contact_label">"Indirizzo email della persona da invitare:"</string>
+    <string msgid="1430489448508574145" name="choose_list_label">"Selezionare un elenco:"</string>
+    <string msgid="8262403243657760155" name="invite_instruction">"Digita un nome da aggiungere dai contatti."</string>
+    <string msgid="6229798754682424899" name="invite_label">"Invia invito"</string>
+    <string msgid="6676157178613673420" name="setting_title">"Impostazioni generali"</string>
+    <string msgid="8017909244732772990" name="hide_offline_contacts">"Nascondi contatti offline"</string>
+    <string msgid="4944275706770811080" name="notification_group_title">"Impostazioni notifiche"</string>
+    <string msgid="6447889693376465773" name="notification_enabled_title">"Notifiche chat"</string>
+    <string msgid="2090889893066171466" name="notification_enabled_summary">"Notifica in barra di stato all\'arrivo di un messaggio"</string>
+    <string msgid="5603532186091800924" name="notification_vibrate_title">"Vibrazione"</string>
+    <string msgid="1875275321875946598" name="notification_vibrate_summary">"Vibra anche all\'arrivo di msg chat"</string>
+    <string msgid="8367990268592958299" name="notification_sound_title">"Allarme"</string>
+    <string msgid="3634976543811200858" name="notification_sound_summary">"Usa anche suoneria all\'arrivo di msg chat"</string>
+    <string msgid="4847700898968990954" name="notification_ringtone_title">"Seleziona suoneria"</string>
+    <string msgid="1776461436395016582" name="invitation_prompt">"<xliff:g id="USER">%1$s</xliff:g> ti ha invitato a unirti a una conversazione di gruppo."</string>
+    <string msgid="2542342110609014148" name="invitation_sent_prompt">"L\'invito è stato inviato a <xliff:g id="USER">%1$s</xliff:g>."</string>
+    <string msgid="8852207669114500346" name="accept_invitation">"Accetto"</string>
+    <string msgid="3039909785911592632" name="decline_invitation">"Rifiuto"</string>
+    <string msgid="1915974310850760232" name="subscription_prompt">"<xliff:g id="USER">%1$s</xliff:g> ti ha invitato a inserirti nel suo elenco contatti."</string>
+    <string msgid="2035288988418082224" name="approve_subscription">"Accetto"</string>
+    <string msgid="3069941120905061191" name="decline_subscription">"Rifiuto"</string>
+    <string msgid="7653225198395861289" name="approve_subscription_error">"Impossibile approvare l\'iscrizione di <xliff:g id="USER">%1$s</xliff:g>. Riprova più tardi."</string>
+    <string msgid="7593921535412836089" name="decline_subscription_error">"Impossibile rifiutare l\'iscrizione di <xliff:g id="USER">%1$s</xliff:g>. Riprova più tardi."</string>
+    <string msgid="2180971062715087738" name="newMessages_label">"Nuovi messaggi <xliff:g id="PROVIDER">%1$s</xliff:g>"</string>
+    <string msgid="728064925131396221" name="num_unread_chats">"<xliff:g id="NUMBER">%1$d</xliff:g> messaggi da leggere"</string>
+    <string msgid="6742004636596633323" name="subscription_notify_text">"Invito nuovo amico da <xliff:g id="USER">%s</xliff:g>"</string>
+    <string msgid="4200552751080182984" name="notify_groupchat_label">"Invito a conversazione di gruppo"</string>
+    <string msgid="2115253984204158370" name="group_chat_invite_notify_text">"Nuovo invito a conversazione di gruppo di <xliff:g id="USER">%s</xliff:g>"</string>
+    <string msgid="6760968462242659207" name="add_contact_success">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" aggiunto."</string>
+    <string msgid="4451989113378349412" name="delete_contact_success">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" eliminato."</string>
+    <string msgid="301279568695040166" name="block_contact_success">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" bloccato."</string>
+    <string msgid="5506870117106713456" name="unblock_contact_success">"Contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sbloccato."</string>
+    <string msgid="203411797893865789" name="perm_label">"avviare servizio IM"</string>
+    <string msgid="6978187394092498941" name="perm_desc">"Consente l\'avvio del servizio IM tramite intent."</string>
+    <string msgid="4778856523246532623" name="error">"Attenzione"</string>
+    <string msgid="3883751713470046349" name="login_service_failed">"Impossibile accedere al servizio <xliff:g id="SERVICE">%1$s</xliff:g>. Riprova più tardi."\n"(Dettagli: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)"</string>
+    <string msgid="5659371594032378190" name="add_list_failed">"L\'elenco non è stato aggiunto."</string>
+    <string msgid="5870952543258608424" name="block_contact_failed">"Il contatto non è stato bloccato."</string>
+    <string msgid="7761060327693183076" name="unblock_contact_failed">"Il contatto non è stato sbloccato."</string>
+    <string msgid="5804415466346460387" name="select_contact">"Seleziona prima un contatto."</string>
+    <string msgid="7731840958629349414" name="disconnected">"Disconnessa!"\n</string>
+    <string msgid="4578570332742070464" name="service_error">"Errore del servizio."</string>
+    <string msgid="6395594768879404874" name="load_contact_list_failed">"Elenco contatti non caricato."</string>
+    <string msgid="3188697382173578199" name="cant_connect_to_server">"Impossibile collegarsi al server. Controllare la connessione."</string>
+    <string msgid="4982433960953410393" name="contact_already_exist">"<xliff:g id="USER">%1$s</xliff:g> già presente nell\'elenco contatti."</string>
+    <string msgid="11602144969098173" name="contact_blocked">"Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" è stato bloccato."</string>
+    <string msgid="3739109817357036832" name="contact_not_loaded">"Attendere il caricamento dell\'elenco contatti."</string>
+    <string msgid="1971556432619053394" name="network_error">"Errore di rete."</string>
+    <string msgid="6552484838382542900" name="service_not_support">"Il server non supporta questa funzionalità."</string>
+    <string msgid="4406190708977805393" name="invalid_password">"La password inserita non è valida."</string>
+    <string msgid="5659759443966908703" name="internal_server_error">"Errore del server."</string>
+    <string msgid="845369556603815808" name="not_implemented">"Il server non supporta questa funzionalità."</string>
+    <string msgid="4948915878388282443" name="service_unavaiable">"Server al momento non disponibile."</string>
+    <string msgid="8160218318070765661" name="timeout">"Timeout del server."</string>
+    <string msgid="4342010736606775264" name="version_not_supported">"Il server non supporta la versione corrente."</string>
+    <string msgid="7501019992527859517" name="message_queue_full">"La coda messaggi è piena."</string>
+    <string msgid="7715663042901606605" name="domain_not_supported">"Il server non supporta l\'inoltro al dominio."</string>
+    <string msgid="6680215792586778118" name="unknown_user">"Nome utente inserito non riconosciuto."</string>
+    <string msgid="8438323314518151118" name="recipient_blocked_the_user">"Spiacenti. Sei stato bloccato dall\'utente."</string>
+    <string msgid="1999103420742299764" name="session_expired">"Sessione scaduta. Accedi di nuovo."</string>
+    <string msgid="4914497176506037105" name="forced_logout">"accesso effettuato da un altro client"</string>
+    <string msgid="1907391913706263174" name="already_logged_in">"accesso già effettuato da un altro client"</string>
+    <string msgid="1477099919088266968" name="msisdn_error">"Spiacenti. Impossibile leggere il numero di telefono sulla scheda SIM. Contattare l\'operatore."</string>
+    <string msgid="8894662143178849906" name="not_signed_in">"Accesso non effettuato."</string>
+    <string msgid="2784900425265121080" name="general_error">"Codice errore <xliff:g id="CODE">%1$d</xliff:g>"</string>
   <string-array name="default_smiley_names">
     <item msgid="1496436377093882868">"Felice"</item>
     <item msgid="4535010061202018372">"Triste"</item>
@@ -180,4 +179,124 @@
     <item msgid="4623875498872672218">"Risata"</item>
     <item msgid="6044435333460205962">"Confuso"</item>
   </string-array>
+<string name="ro_perm_label">leggere i messaggi istantanei</string>
+    <string name="ro_perm_desc">Consente alle applicazioni di leggere i dati dal fornitore di contenuti IM.</string>
+    <string name="wo_perm_label">scrivere messaggi istantanei</string>
+    <string name="wo_perm_desc">Consente alle applicazioni di scrivere i dati al fornitore del contenuto IM.</string>
+    <string name="landing_page_title">Chat - selezionare un account</string>
+    <string name="menu_add_account">Aggiungi account</string>
+    <string name="menu_edit_account">Modifica account</string>
+    <string name="menu_remove_account">Rimuovere l\'account</string>
+    <string name="menu_sign_out_all">Esci da tutte le</string>
+    <string name="choose_account_title">Chat - selezionare un account</string>
+    <string name="menu_search_contacts">Cerca Contatti</string>
+    <string name="menu_otr_start">Avvio di crittografia</string>
+    <string name="menu_otr_stop">Stop di crittografia</string>
+    <string name="menu_clear_chat">Clear Chat</string>
+    <string name="menu_scan">Scansione delle impronte digitali</string>
+    <string name="menu_fingerprint">La propria impronta digitale</string>
+    <string name="menu_verify">Verifica di impronte digitali</string>
+    <string name="signout_all_confirm_message">Vuoi uscire tutti i servizi?</string>
+    <string name="data_channel_label">Dati del canale</string>
+    <string name="data_encoding_label">La codifica dei dati</string>
+    <string name="cir_channel_label">CIR canale</string>
+    <string name="host_label">Host</string>
+    <string name="msisdn_label">MSISDN</string>
+    <string name="http">HTTP</string>
+    <string name="sms">SMS</string>
+    <string name="tcp">TCP</string>
+    <string name="xml">XML</string>
+    <string name="wbxml">Wbxml</string>
+    <string name="save">Salva</string>
+    <string-array name="smiley_names">
+        <item>Felice</item>
+        <item>Triste</item>
+        <item>Strizza l\'occhio</item>
+        <item>Lingua sporge</item>
+        <item>Sorpreso</item>
+        <item>Kissing</item>
+        <item>Urlando</item>
+        <item>Cool</item>
+        <item>Denaro bocca</item>
+        <item>Piede in bocca</item>
+        <item>Imbarazzato</item>
+        <item>Angel</item>
+        <item>Indeciso</item>
+        <item>Pianto</item>
+        <item>Lips Are Sealed</item>
+        <item>Ridente</item>
+        <item>Confuso</item>
+    </string-array>
+    <string name="check_save_password">Per la tua sicurezza, se il telefono viene perso o rubato, visitare il sito Web sul proprio computer e cambiare la password.</string>
+    <string name="menu_contact_list">Lista di contatti</string>
+    <string name="menu_view_encrypt_chat">Cifra On/Off</string>
+    <string name="use_tor">Connessione via Tor (Richiede app Orbot)</string>
+    <string name="app_name">Gibberbot</string>
+    <string name="welcome_first">Prima volta con Gibberbot?</string>
+    <string name="welcome_skip">Can\'t l\'ora di cominciare?</string>
+    <string name="welcome_about">A proposito di Gibberbot</string>
+    <string name="welcome_account">Impostazione account</string>
+    <string name="about_welcome_title">Benvenuti a Gibberbot</string>
+    <string name="about_welcome">Gibberbot è un mobile app di messaggistica istantanea che offre ulteriori funzionalità di sicurezza che impediscono ad altri di spiare le conversazioni e le app communications.\n\nThe supporta qualsiasi servizio di chat che utilizza il protocollo Jabber e XMPP, come Google o GTalk Jabber.org.</string>
+    <string name="about_otr_title">Come è sicuro?</string>
+    <string name="about_otr">\'Off-the-record Messaging\' è un sistema di sicurezza progettato per consentire la privacy imitando le caratteristiche di una conversazione privata nel mondo reale, ivi compresa la cifratura, autenticazione, possibilità di smentita e Forward Secrecy.\n\nThe OTR-protocollo è compatibile con i desktop client di chat come Adiumo Pidgin.</string>
+    <string name="about_security_title">Le mie chat sicura?</string>
+    <string name="about_security">funzione di crittografia chat Gibberbot\ gli funziona solo quando la messaggistica con gli altri utilizzando una applicazione compatibile o un programma, così si dovrebbe garantire i contatti sono con Gibberbot per cellulari e Adium o Pidgin per i desktop. È possibile ottimizzare esattamente come e quando Gibberbot tenta di cifrare le chat in Accos Settings.\n\nLet\ unt \'iniziare!</string>
+    <string name="setup_passphrase_title">Passphrase Setup</string>
+    <string name="setup_passphrase">Prima di iniziare si prega di scegliere una passphrase sicura per proteggere i dati da accessi Gibberbot ingiusta.</string>
+    <string name="setup_passphrase_label1">Passphrase:</string>
+    <string name="setup_passphrase_label2">Passphrase (di nuovo) :</string>
+    <string name="account_setup_acct_subtitle">Conto</string>
+    <string name="account_setup_acct_acctname_title">Nome account</string>
+    <string name="account_setup_acct_acctname_sub">Nome visualizzato per l\'account</string>
+    <string name="account_setup_acct_username_title">Nome utente (login)</string>
+    <string name="account_setup_acct_username_sub">Format: user @ host:port</string>
+    <string name="account_setup_acct_password_title">Password</string>
+    <string name="account_setup_acct_password_sub">Password per l\'autenticazione</string>
+    <string name="account_setup_pers_sub">Persistenza</string>
+    <string name="account_setup_pers_pw_title">Ricorda la password</string>
+    <string name="account_setup_pers_pw_on">Password memorizzata nella cache</string>
+    <string name="account_setup_pers_pw_off">La password non memorizzati nella cache</string>
+    <string name="account_setup_pers_auto_title">Accesso automatico</string>
+    <string name="account_setup_pers_auto_on">Collegare a Gibberbot start-up</string>
+    <string name="account_setup_pers_auto_off">Don\'t collegare a Gibberbot start-up</string>
+    <string name="account_setup_pers_now_title">Entra adesso</string>
+    <string name="account_setup_pers_now_on">Collegare seguenti impostazioni account</string>
+    <string name="account_setup_pers_now_off">Don\'t collegare seguente impostazione dell\'account</string>
+    <string name="account_setup_personal_sub">Personale (opzionale)</string>
+    <string name="account_setup_personal_alias_title">Account Alias (il tuo nome)</string>
+    <string name="account_setup_personal_alias_sub">Come il vostro account viene visualizzato on line</string>
+    <string name="account_setup_personal_profile_title">Profilo</string>
+    <string name="account_setup_personal_profile_sub">A breve blurb su di te</string>
+    <string name="account_setup_advanced_sub">Advanced</string>
+    <string name="account_setup_advanced_enc_force">Forza crittografia / chiaro rifiuto</string>
+    <string name="account_setup_advanced_enc_auto">Quando possibile, chat crittografare automaticamente</string>
+    <string name="account_setup_advanced_enc_req">Cifra chat come richiesto</string>
+    <string name="account_setup_advanced_enc_off">Disabilitare la chat di crittografia</string>
+    <string name="account_setup_signin_a">La convalida delle credenziali ...</string>
+    <string name="account_setup_signin_b">Generazione coppia di chiavi ...</string>
+    <string name="account_setup_signin_c">Firma a. ..</string>
+    <string name="account_setup_error_validating">Gibberbot è verificato un errore durante la convalida il nome utente o password - si prega di verificare e riprovare.</string>
+    <string name="account_setup_error_keypair">Gibberbot è verificato un errore durante la generazione di una coppia di chiavi.</string>
+    <string name="account_setup_error_server">Gibberbot è verificato un errore durante la connessione al server di chat - si prega di controllare la configurazione e riprovare.</string>
+    <string name="account_setup_error_connectivity">Gibberbot è verificato un errore durante la connessione - si prega di ricontrollare i connettività di rete e riprovare.</string>
+    <string name="label_fingerprint_remote">Le loro impronte digitali</string>
+    <string name="label_fingerprint_local">La propria impronta digitale</string>
+    <string name="menu_sign_in">Entra</string>
+    <string name="menu_gen_key">Regen chiave</string>
+    <string name="error_suspended_connection">Gibberbot ha perso una connessione alla rete</string>
+    <string name="error_reestablish_connection">Gibberbot sta tentando di restablish una connessione</string>
+    <string name="otr_session_status_plaintext">Warning: Questa chat non è criptato</string>
+    <string name="otr_session_status_encrypted">Questa chat è sicura, ma l\'identità dei partecipanti non sono state verificate</string>
+    <string name="otr_session_status_finished">crittografia Warning: chat è stato arrestato.</string>
+    <string name="otr_session_status_verified">Questa chat è assicurato e verificato</string>
+    <string name="account_wizard_setup_title">Guidata account</string>
+    <string name="account_wizard_account_title">Il tuo account ID</string>
+    <string name="account_wizard_host_title">Configura server</string>
+    <string name="account_wizard_ready_title">Are You Ready?</string>
+    <string name="account_wizard_setup_body">Inserisci il tuo ID account per configurare automaticamente Gibberbot per chattare service.\n\nIt appare probabilmente come un indirizzo e-mail - in modo yourname@gmail.com, o someone@jabber.org, per esempio.</string>
+    <string name="account_wizard_account_body">Inserisci il tuo ID account (user @ hostname) :</string>
+    <string name="account_wizard_host_body">Si prega di inserire o modificare i tuoi jabber/xmpp chat hostname del server e il numero di porta (5222 è l\'impostazione predefinita).</string>
+    <string name="account_wizard_ready_body">Gibberbot è stato configurato, ed ora è il momento di connettersi al servizio, e iniziare a chattare in modo sicuro, sicuro e riservato!</string>
+    <string name="signin_password_prompt">Inserisci il tuo password:</string>
 </resources>

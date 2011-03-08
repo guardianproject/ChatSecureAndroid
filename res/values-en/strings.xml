@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="ro_perm_label">read instant messages</string>
+    <string name="ro_perm_desc">
+        Allows applications to read data from the IM content provider.
+    </string>
+    <string name="wo_perm_label">write instant messages</string>
+    <string name="wo_perm_desc">
+        Allows applications to write data to the IM content provider.
+    </string>
+    <string name="landing_page_title">Chat - Select an account</string>
+    <string name="menu_add_account">Add account</string>
+    <string name="menu_edit_account">Edit account</string>
+    <string name="menu_remove_account">Remove account</string>
+    <string name="menu_sign_out_all">Sign out all</string>
+    <string name="choose_account_title">Chat - Select an account</string>
+    <string name="menu_cancel_signin">Cancel signin</string>
+    <string name="menu_add_contact">Add contact</string>
+    <string name="menu_remove_contact">Delete contact</string>
+    <string name="menu_block_contact">Block contact</string>
+    <string name="menu_view_blocked">Blocked</string>
+    <string name="menu_view_accounts">Account list</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_search_contacts">Search Contacts</string>
+    <string name="menu_start_chat">Start chat</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="menu_view_profile">Verify</string>
+    <string name="menu_otr_start">Start Encryption</string>
+    <string name="menu_otr_stop">Stop Encryption</string>
+    <string name="menu_clear_chat">Clear Chat</string>
+    <string name="menu_end_conversation">End chat</string>
+    <string name="menu_view_contact_list">Contact list</string>
+    <string name="menu_switch_chats">Switch chats</string>
+    <string name="menu_insert_smiley">Insert smiley</string>
+    <string name="menu_scan">Scan Fingerprint</string>
+    <string name="menu_fingerprint">Your Fingerprint</string>
+    <string name="menu_verify">Verify Fingerprint</string>
+    <string name="menu_plus">Menu+"</string>
+    <string name="default_input_title">Input</string>
+    <string name="confirm">Confirm</string>
+    <string name="signout_all_confirm_message">Do you want to sign out all services?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">OK</string>
+    <string name="no">Cancel</string>
+    <string name="signed_out_prompt_with_error">You have been signed out of <xliff:g id="account">%1$s</xliff:g> because <xliff:g id="reason">%2$s</xliff:g>.</string>
+    <string name="label_username">User@Host</string>
+    <string name="label_password">Password:</string>
+    <string name="remember_password">Remember my password.</string>
+    <string name="keep_me_signed_in">Sign me in automatically.</string>
+    <string name="sign_up">Don\u2019t have an account?</string>
+    <string name="check_auto_sign_in">This option automatically signs you in every time you open this application. To disable the option, sign out, then clear the \"Sign me in automatically\" check box.</string>
+    <string name="sign_in">Sign in</string>
+    <string name="signing_in_to">getting the Gibberbot going...</string>
+    <string name="signing_in_wait">Signing in\u2026</string>
+    <string name="bg_data_prompt_title">Background data disabled</string>
+    <string name="bg_data_prompt_ok">Enable</string>
+    <string name="bg_data_prompt_cancel">Quit</string>
+    <string name="subscriptions">Friend invitations</string>
+    <string name="empty_contact_group">Empty</string>
+    <string name="empty_conversation_group">No conversations</string>
+    <string name="contacts_picker_title">Select contact(s) to invite</string>
+    <string name="contact_filter_hint">Type to find contact</string>
+    <string name="empty_contact_list">No contacts found.</string>
+    <string name="no_blocked_contact">No blocked contacts.</string>
+    <string name="contact_profile_title">Contact profile</string>
+    <string name="label_status">Status:</string>
+    <string name="label_client_type">Client type:</string>
+    <string name="client_type_computer">Computer</string>
+    <string name="client_type_mobile">Mobile</string>
+    <string name="presence_available">Online</string>
+    <string name="presence_busy">Busy</string>
+    <string name="presence_away">Away</string>
+    <string name="presence_idle">Idle</string>
+    <string name="presence_offline">Offline</string>
+    <string name="presence_invisible">Appear offline</string>
+    <string name="data_channel_label">Data channel</string>
+    <string name="data_encoding_label">Data encoding</string>
+    <string name="cir_channel_label">CIR channel</string>
+    <string name="host_label">Host</string>
+    <string name="msisdn_label">MSISDN</string>
+    <string name="http">HTTP</string>
+    <string name="sms">SMS</string>
+    <string name="tcp">TCP</string>
+    <string name="xml">XML</string>
+    <string name="wbxml">WBXML</string>
+    <string name="save">Save</string>
+    <string name="me">Me</string>
+    <string name="compose_hint">Type to compose</string>
+    <string name="send">Send</string>
+    <string name="msg_sent_failed">This message could not be sent.</string>
+    <string name="disconnected_warning">Lost connection to server. Messages will be sent when online.</string>
+    <string name="select_link_title">Select link</string>
+    <string name="empty_chat_list">No active chats.</string>
+    <string name="add_contact_title">Add contact</string>
+    <string name="input_contact_label">Email address of person you wish to invite:</string>
+    <string name="choose_list_label">Choose a list:</string>
+    <string name="invite_instruction">Type a name to add from Contacts.</string>
+    <string name="invite_label">Send invitation</string>
+    <string name="setting_title">General settings</string>
+    <string name="hide_offline_contacts">Hide offline contacts</string>
+    <string name="notification_group_title">Notification settings</string>
+    <string name="notification_enabled_title">IM notifications</string>
+    <string name="notification_enabled_summary">Notify in status bar when IM arrives</string>
+    <string name="notification_vibrate_title">Vibrate</string>
+    <string name="notification_vibrate_summary">Also vibrate when IM arrives</string>
+    <string name="notification_sound_title">Sound</string>
+    <string name="notification_sound_summary">Also play ringtone when IM arrives</string>
+    <string name="notification_ringtone_title">Select ringtone</string>
+    <string name="invitation_sent_prompt"> Invitation has been sent to <xliff:g id="user">%1$s</xliff:g>.</string>
+    <string name="accept_invitation">Accept</string>
+    <string name="decline_invitation">Decline</string>
+    <string name="approve_subscription">Accept</string>
+    <string name="decline_subscription">Decline</string>
+    <string name="notify_groupchat_label">Group chat invitation</string>
+    <string name="group_chat_invite_notify_text">
+        New group chat invitation from <xliff:g id="user">%s</xliff:g>
+    </string>
+    <string name="perm_label">start IM service</string>
+    <string name="perm_desc">Allows applications to start IM service via intent.</string>
+    <string name="error">Attention</string>
+    <string name="add_list_failed">The list was not added.</string>
+    <string name="block_contact_failed">Contact was not blocked.</string>
+    <string name="unblock_contact_failed">Contact was not unblocked.</string>
+    <string name="select_contact">Please select a contact first.</string>
+    <string name="disconnected">Disconnected!\n</string>
+    <string name="service_error">Service error!</string>
+    <string name="load_contact_list_failed">Contact list did not load.</string>
+    <string name="cant_connect_to_server">Cannot connect to server. Please check your connection.</string>
+    <string name="contact_not_loaded">Please wait while your Contact list loads.</string>
+    <string name="network_error">A network error occurred.</string>
+    <string name="service_not_support">The server does not support this functionality.</string>
+    <string name="invalid_password">The password you entered is not valid.</string>
+    <string name="internal_server_error">The server encountered an error.</string>
+    <string name="not_implemented">The server does not support this functionality.</string>
+    <string name="service_unavaiable">The server is currently unavailable.</string>
+    <string name="timeout">The server has timed out.</string>
+    <string name="version_not_supported">The server does not support the current version.</string>
+    <string name="message_queue_full">The message queue is full.</string>
+    <string name="domain_not_supported">The server does not support forwarding to the domain.</string>
+    <string name="unknown_user">The username you entered is not recognized.</string>
+    <string name="recipient_blocked_the_user">Sorry, you are blocked by the user.</string>
+    <string name="session_expired">The session has expired, please sign in again.</string>
+    <string name="forced_logout">you have signed in from another client.</string>
+    <string name="already_logged_in">you have already signed in from another client.</string>
+    <string name="msisdn_error">Sorry, the phone number cannot be read from your SIM card. Please contact your operator for help.</string>
+    <string name="not_signed_in">You are currently not signed in.</string>
+    <string-array name="default_smiley_names">
+        <item>Happy</item>
+        <item>Sad</item>
+        <item>Winking</item>
+        <item>Tongue sticking out</item>
+        <item>Surprised</item>
+        <item>Kissing</item>
+        <item>Yelling</item>
+        <item>Cool</item>
+        <item>Money mouth</item>
+        <item>Foot in mouth</item>
+        <item>Embarrassed</item>
+        <item>Angel</item>
+        <item>Undecided</item>
+        <item>Crying</item>
+        <item>Lips are sealed</item>
+        <item>Laughing</item>
+        <item>Confused</item>
+    </string-array>
+    <string-array name="smiley_names">
+        <item>Happy</item>
+        <item>Sad</item>
+        <item>Winking</item>
+        <item>Tongue sticking out</item>
+        <item>Surprised</item>
+        <item>Kissing</item>
+        <item>Yelling</item>
+        <item>Cool</item>
+        <item>Money mouth</item>
+        <item>Foot in mouth</item>
+        <item>Embarrassed</item>
+        <item>Angel</item>
+        <item>Undecided</item>
+        <item>Crying</item>
+        <item>Lips are sealed</item>
+        <item>Laughing</item>
+        <item>Confused</item>
+    </string-array>
+    <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
+    <string name="menu_contact_list">Contact List</string>
+    <string name="menu_view_encrypt_chat">Encrypt On/Off</string>
+    <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
+    <string name="app_name">Gibberbot</string>
+    <string name="welcome_first">First time using Gibberbot?</string>
+    <string name="welcome_skip">Can\'t wait to get started?</string>
+    <string name="welcome_about">About Gibberbot</string>
+    <string name="welcome_account">Account Setup</string>
+    <string name="about_welcome_title">Welcome to Gibberbot</string>
+    <string name="about_welcome">Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
+    <string name="about_otr_title">How is it secure?</string>
+    <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.\n\nThe OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
+    <string name="about_security_title">Are My Chats Secure?</string>
+    <string name="about_security">Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
+    <string name="setup_passphrase_title">Passphrase Setup</string>
+    <string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibberbot data from unjust access.</string>
+    <string name="setup_passphrase_label1">Passphrase:</string>
+    <string name="setup_passphrase_label2">Passphrase (again):</string>
+    <string name="account_setup_acct_subtitle">Account</string>
+    <string name="account_setup_acct_acctname_title">Account Name</string>
+    <string name="account_setup_acct_acctname_sub">Display name for this account</string>
+    <string name="account_setup_acct_username_title">Username (login)</string>
+    <string name="account_setup_acct_username_sub">Format: user@host:port</string>
+    <string name="account_setup_acct_password_title">Password</string>
+    <string name="account_setup_acct_password_sub">Password for authentication</string>
+    <string name="account_setup_pers_sub">Persistence</string>
+    <string name="account_setup_pers_pw_title">Remember Password</string>
+    <string name="account_setup_pers_pw_on">Password cached</string>
+    <string name="account_setup_pers_pw_off">Password not cached</string>
+    <string name="account_setup_pers_auto_title">Automatically Sign In</string>
+    <string name="account_setup_pers_auto_on">Connect at Gibberbot start-up</string>
+    <string name="account_setup_pers_auto_off">Don\'t connect at Gibberbot start-up</string>
+    <string name="account_setup_pers_now_title">Sign In Now</string>
+    <string name="account_setup_pers_now_on">Connect following account setup</string>
+    <string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
+    <string name="account_setup_personal_sub">Personal (optional)</string>
+    <string name="account_setup_personal_alias_title">Account Alias (your name)</string>
+    <string name="account_setup_personal_alias_sub">How your account appears online</string>
+    <string name="account_setup_personal_profile_title">Profile</string>
+    <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
+    <string name="account_setup_advanced_sub">Advanced</string>
+    <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
+    <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
+    <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
+    <string name="account_setup_advanced_enc_off">Disable chat encryption</string>
+    <string name="account_setup_signin_a">Validating credentials...</string>
+    <string name="account_setup_signin_b">Generating keypair...</string>
+    <string name="account_setup_signin_c">Signing in...</string>
+    <string name="account_setup_error_validating">Gibberbot encountered an error while validating your username or password - please check them and try again.</string>
+    <string name="account_setup_error_keypair">Gibberbot encountered an error while generating a keypair.</string>
+    <string name="account_setup_error_server">Gibberbot encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+    <string name="account_setup_error_connectivity">Gibberbot encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+    <string name="label_fingerprint_remote">Their Fingerprint</string>
+    <string name="label_fingerprint_local">Your Fingerprint</string>
+    <string name="menu_sign_in">Sign In</string>
+    <string name="menu_gen_key">Regen Key</string>
+    <string name="error_suspended_connection">Gibberbot has lost a connection to the network</string>
+    <string name="error_reestablish_connection">Gibberbot is attempting to restablish a connection</string>
+    <string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
+    <string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
+    <string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
+    <string name="otr_session_status_verified">This chat is secured and verified</string>
+    <string name="account_wizard_setup_title">Account Wizard</string>
+    <string name="account_wizard_account_title">Your Account ID</string>
+    <string name="account_wizard_host_title">Configure Server</string>
+    <string name="account_wizard_ready_title">Are You Ready?</string>
+    <string name="account_wizard_setup_body">Enter your account ID to automatically configure Gibberbot for you chat service.\n\nIt probably looks like an email address - so yourname@gmail.com, or someone@jabber.org, for instance.</string>
+    <string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
+    <string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
+    <string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
+    <string name="signin_password_prompt">Enter your password:</string>
+</resources>
