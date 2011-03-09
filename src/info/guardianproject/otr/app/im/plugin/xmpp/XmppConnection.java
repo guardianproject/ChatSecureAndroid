@@ -316,24 +316,33 @@ public class XmppConnection extends ImConnection {
     			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
     		else
     			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
-    		
-    		
-    		if (doTLS)
-        		mConfig.setSecurityMode(SecurityMode.required);
-        	else
-        		mConfig.setSecurityMode(SecurityMode.enabled);
 
-        	mConfig.setSASLAuthenticationEnabled(true);
-        	
-        	//set at equal priority
-        	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-        	SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    		//mConfig.setDebuggerEnabled(true);
+    		mConfig.setSASLAuthenticationEnabled(true);
+    		if (doTLS) {
+    			mConfig.setSecurityMode(SecurityMode.required);
+    			// with TLS, use PLAIN first for best compatibility
+    			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    		} else {
+    			// if it finds a cert, still use it, but don't check anything since 
+    			// TLS errors are not expected by the user
+    			mConfig.setSecurityMode(SecurityMode.enabled);
+    			doCertVerification = false;
+    			doVerifyDomain = false;
+    			// without TLS, use DIGEST-MD5 first
+    			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
+    			SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    			// TODO allow PLAIN using "allow passwords in the clear" preference
+    		}
+    		// Android has no support for Kerberos or GSSAPI, so disable completely
+    		SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
+    		SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
     		mConfig.setVerifyChainEnabled(doCertVerification);
     		mConfig.setVerifyRootCAEnabled(doCertVerification);
     		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
     		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
-
     	}
     	
     	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
