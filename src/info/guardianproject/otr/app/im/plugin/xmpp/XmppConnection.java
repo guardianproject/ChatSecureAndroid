@@ -1093,19 +1093,22 @@ public class XmppConnection extends ImConnection {
 		mNeedReconnect = true;
 		reconnect();
 	}
-	
+
 	/*
 	 * Reconnect unless we are already in the process of doing so.
 	 */
 	private void maybe_reconnect() {
-		// If we already know we don't have a good connection, the heartbeat will take care of this
-		Log.d(TAG, "maybe_reconnect need=" + mNeedReconnect);
-		if (mNeedReconnect)
+		// If we already know we don't have a good connection, the heartbeat
+		// will take care of this
+		Log.d(TAG, "maybe_reconnect mNeedReconnect=" + mNeedReconnect);
+		// for some reason the mNeedReconnect logic is flipped here, donno why.
+		// Added the mConnection test to stop NullPointerExceptions hans@eds.org
+		if (mNeedReconnect || mConnection == null)
 			return;
 		mNeedReconnect = true;
 		reconnect();
 	}
-	
+
 	/*
 	 * Retry a reconnect on alarm event
 	 */
