@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<project name="XMPPClient" default="package">
-    <property name="sdk-folder" value="/home/android/proj/android-sdk/platforms/android-4" />
-    <property name="android-tools" value="/home/android/proj/android-sdk/platforms/android-4/tools" />
+<project name="Gibberbot" default="package">
+    <property name="sdk-folder" value="/usr/local/android-sdk/platforms/android-4" />
+    <property name="android-tools" value="/usr/local/android-sdk/platforms/android-4/tools" />
 
     <!-- The intermediates directory -->
     <!-- Eclipse uses "bin" for its own output, so we do the same. -->
