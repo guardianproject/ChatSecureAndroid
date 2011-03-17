@@ -6,8 +6,37 @@
     android:layout_height="fill_parent"
             android:background="@drawable/gibberbg">
             
- <TextView android:text="TITLE" android:textColor="#00ff00"  android:id="@+id/WizardTextTitle" android:textSize="14pt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:singleLine="true" android:fadingEdge="vertical"></TextView>
-    
+<RelativeLayout 
+	android:layout_width="match_parent" 
+	android:layout_height="wrap_content" 
+	android:id="@+id/relativeLayout1" 
+	android:layout_gravity="center_horizontal">
+        <ImageView 
+        	android:src="@drawable/ic_launcher_gibberbot" 
+        	android:id="@+id/gibber_image" 
+        	android:layout_width="wrap_content" 
+        	android:layout_height="wrap_content" 
+        	android:layout_alignParentLeft="true"
+        	android:paddingLeft="20px" android:paddingRight="20px" >
+        </ImageView>
+        <TextView android:textSize="10pt" 
+        	android:layout_toRightOf="@id/gibber_image" 
+        	android:layout_alignParentTop="true"
+        	android:gravity="center_vertical"
+       	 	android:layout_height="wrap_content" 
+        	android:id="@+id/WizardTextTitle" 
+        	android:layout_width="wrap_content" 
+        	android:fadingEdge="vertical" 
+        	android:text="TITLE" 
+        	android:textColor="#00ff00" 
+        	android:singleLine="true" 
+        	
+        	
+        	
+        	android:layout_centerInParent="true" 
+        	android:padding="20px"> 
+        </TextView>
+    </RelativeLayout>    
 <TableLayout android:id="@+id/TableLayout01" android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
 
 <TableRow android:id="@+id/TableRow01" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent">

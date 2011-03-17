@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import info.guardianproject.otr.app.im.R;
 
@@ -17,7 +18,7 @@ public class AboutActivity extends Activity implements OnClickListener
 	//WizardHelper wizard = null;
 	
 	private int title[] = {
-			R.string.about_welcome_title,
+			R.string.gibber_welcome_title,
 			R.string.about_otr_title,
 			R.string.about_security_title
 	};
@@ -144,6 +145,9 @@ public class AboutActivity extends Activity implements OnClickListener
 		txtBody.setText(getString(msg[contentIdx]));
         
         Button btn1 = ((Button)findViewById(R.id.btnWizard1));
+        
+        ImageView img = (ImageView) findViewById(R.id.gibber_image);
+        
         if (buttons[contentIdx][0] != null)
         {
         	btn1.setText(buttons[contentIdx][0]);
@@ -169,7 +173,14 @@ public class AboutActivity extends Activity implements OnClickListener
         	btn2.setVisibility(Button.INVISIBLE);
         }
         
-      
+        if(contentIdx !=0)
+        {
+        	img.setVisibility(ImageView.GONE);
+        }
+        else
+        {	
+        	img.setVisibility(ImageView.VISIBLE);
+        }
       
 	}
 	
