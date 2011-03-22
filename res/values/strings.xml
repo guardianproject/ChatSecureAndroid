@@ -313,6 +313,9 @@
     <string name="invite_label">Send invitation</string>
 
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
+
+    <string name="account_setup_title">Account Setup</string>
+    <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
     <string name="setting_title">General settings</string>
     <string name="hide_offline_contacts">Hide offline contacts</string>
     <!-- This is a subtitle for the "Notification settings"  in the Setting screen. -->
@@ -636,7 +639,28 @@
 	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
-			
+
 	<string name="signin_password_prompt">Enter your password:</string>
-	
+
+    <!-- Do not localize! Symbols for looking up preferences in Java code. -->
+
+	<string name="pref_account_user">pref_account_user</string>
+	<string name="pref_account_pass">pref_account_pass</string>
+	<string name="pref_account_domain">pref_account_domain</string>
+	<string name="pref_account_resource">pref_account_resource</string>
+	<string name="pref_account_port">pref_account_port</string>
+	<string name="pref_account_server">pref_account_server</string>
+	<string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+	<string name="pref_security_require_tls">pref_security_require_tls</string>
+	<string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+	<string name="pref_security_otr_mode">pref_security_otr_mode</string>
+	<string name="pref_security_use_tor">pref_security_use_tor</string>
+	<string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+	<string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+	<string name="pref_enable_notifications">pref_enable_notifications</string>
+	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
+	<string name="pref_notification_sound">pref_notification_sound</string>
+	<string name="pref_notification_ringtone">pref_notification_ringtone</string>
+
+
 </resources>

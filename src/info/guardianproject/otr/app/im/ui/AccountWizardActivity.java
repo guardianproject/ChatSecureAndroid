@@ -366,7 +366,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			edit.putString("pref_account_user", username);
 			edit.remove("pref_account_pass");
 
-			edit.putString("pref_account_host", hostname.toLowerCase());
+			edit.putString("pref_account_domain", hostname.toLowerCase());
 			edit.putString("pref_account_port", port);
 	
 			edit.commit();
@@ -401,7 +401,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
 		Editor edit = prefs.edit();
 		
-		edit.putString("pref_account_host", hostname.toLowerCase());
+		edit.putString("pref_account_domain", hostname.toLowerCase());
 		edit.putString("pref_account_port", port);
 
 		

@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 
         user = prefs.getString("pref_account_user", null);
-        host = prefs.getString("pref_account_host", null);
+        host = prefs.getString("pref_account_domain", null);
         port = prefs.getString("pref_account_port", null);
         
     }
@@ -124,7 +124,7 @@ public class MainActivity extends Activity {
         {
 
             user = prefs.getString("pref_account_user", null);
-            host = prefs.getString("pref_account_host", null);
+            host = prefs.getString("pref_account_domain", null);
             port = prefs.getString("pref_account_port", null);
         	        	
             String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;

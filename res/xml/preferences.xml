@@ -20,80 +20,68 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-<PreferenceCategory android:title="Account Setup">
+<PreferenceCategory android:title="@string/account_setup_title">
 
 
-<EditTextPreference android:key="pref_account_user"
+<EditTextPreference android:key="@string/pref_account_user"
 android:defaultValue=""
 android:title="Username"
-android:summary="Just the username part of your account without the @yourhost.com"
-android:dialogTitle="Username"
-/>
+android:summary="Just the username part of your account without the @yourhost.com"/>
 
-<EditTextPreference android:key="pref_account_pass"
+<EditTextPreference android:key="@string/pref_account_pass"
 android:defaultValue=""
 android:title="Password"
-android:summary="Password for account (optional / will prompt)"
-android:dialogTitle="Password"
- android:password="true"/>
+android:summary="Password for account (optional / will prompt)" android:password="true"/>
 
-<EditTextPreference android:key="pref_account_host"
-android:defaultValue=""
-android:title="Hostname"
-android:summary="The chat service you use - gmail.com, jabber.org, etc"
-android:dialogTitle="Hostname"
-/>
+<EditTextPreference android:defaultValue=""
+android:key="@string/pref_account_domain" android:summary="The domain of the chat service you use - gmail.com, jabber.org, etc" android:title="Domain"/>
 
-<EditTextPreference android:key="pref_account_port"
+<EditTextPreference android:key="@string/pref_account_resource"
+      android:title="Resource" android:summary="the name for this connection
+      to separate from others"></EditTextPreference>
+
+<EditTextPreference android:key="@string/pref_account_port"
 android:defaultValue="5222"
 android:title="Server Port"
-android:summary="Port for XMPP Server"
-android:dialogTitle="Hostname"
-/>
+android:summary="Port for XMPP Server"/>
+
+<EditTextPreference android:key="@string/pref_account_server" android:title="Connect Server" android:summary="The server to connect to, if needed"></EditTextPreference>
 
 </PreferenceCategory>
 
-<PreferenceCategory android:title="Security Options">
+<PreferenceCategory android:title="@string/encryption_and_anonymity_title">
 
-<CheckBoxPreference 
+<ListPreference android:title="Chat Encryption" android:key="@string/pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options" android:summary="how encrypted chats are started"></ListPreference><CheckBoxPreference android:enabled="true" android:defaultValue="false" android:title="Allow Plain Text Auth" android:key="@string/pref_security_allow_plain_auth" android:summary="Allow the username and password to be sent as plain text when using an unencrypted transport"></CheckBoxPreference><CheckBoxPreference 
 android:defaultValue="true" 
-android:key="pref_security_tls"
 android:title="Transport Encryption"
 android:summary="Require TLS/SSL connection"
-android:enabled="true"/> 
+android:enabled="true" android:key="@string/pref_security_require_tls"/> 
 
 <CheckBoxPreference 
 android:defaultValue="true" 
-android:key="pref_security_tls_very"
 android:title="TLS Verification"
-android:summary="Verify TLS Certificate"
-android:enabled="true"/> 
+android:enabled="true" android:key="@string/pref_security_tls_cert_verify" android:summary="Verify that the certificate is trusted"/> 
 
-<ListPreference android:summary="control when and how you encrypt chats" 
-android:title="Chat Encryption" android:key="pref_security_otr_mode" 
-android:dialogTitle="Chat Encryption" 
-android:entryValues="@array/otr_options_values"
- android:entries="@array/otr_options"></ListPreference>
+
 
 <CheckBoxPreference 
 android:defaultValue="false" 
-android:key="pref_security_use_tor"
+android:key="@string/pref_security_use_tor"
 android:title="Use Tor Network"
 android:summary="Send chat traffic through Tor - ORbot must be installed and connected"
 android:enabled="true"/> 
 
 <CheckBoxPreference 
 android:defaultValue="false" 
-android:key="pref_security_do_srv"
 android:title="Do SRV Lookup"
-android:summary="Use DNS to find actual XMPP server from domain name"
-android:enabled="true"/> 
+android:enabled="true" android:summary="Use DNS SRV to find actual XMPP server from domain name" android:key="@string/pref_security_do_dns_srv"/> 
+
 </PreferenceCategory>
 
 
     <PreferenceCategory android:title="@string/setting_title">
         <CheckBoxPreference
-                android:key="hide-offline-contacts"
+                android:key="@string/pref_hide_offline_contacts"
                 android:title="@string/hide_offline_contacts"
                 android:defaultValue="false"
                 android:persistent="false" />
@@ -102,15 +90,15 @@ android:enabled="true"/>
     <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference
-                android:key="enable-notifications"
+                android:key="@string/pref_enable_notifications"
                 android:title="@string/notification_enabled_title"
                 android:summary="@string/notification_enabled_summary"
                 android:defaultValue="true" />
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="enable-notifications"
-                android:key="notification-vibrate"
+                android:dependency="@string/pref_enable_notifications"
+                android:key="@string/pref_notification_vibrate"
                 android:title="@string/notification_vibrate_title"
                 android:summary="@string/notification_vibrate_summary"
                 android:defaultValue="true"
@@ -118,8 +106,8 @@ android:enabled="true"/>
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="enable-notifications"
-                android:key="notification-sound"
+                android:dependency="@string/pref_enable_notifications"
+                android:key="@string/pref_notification_sound"
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary"
                 android:defaultValue="false"
@@ -127,8 +115,8 @@ android:enabled="true"/>
 <!-- 
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="notification-sound"
-                android:key="notification-ringtone"
+                android:dependency="@string/pref_notification_sound"
+                android:key="@string/pref_notification_ringtone"
                 android:persistent="false"
                 android:title="@string/notification_ringtone_title"
                 android:ringtoneType="notification" />
