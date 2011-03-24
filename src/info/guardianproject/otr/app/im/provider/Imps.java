@@ -246,6 +246,42 @@ public class Imps {
 
             return providerId;
         }
+        
+        public static final String getUserName(ContentResolver cr, long accountId) {
+            Cursor cursor = cr.query(CONTENT_URI,
+            		new String[] { USERNAME },
+                    _ID + "=" + accountId,
+                    null /* selection args */,
+                    null /* sort order */);
+            String ret = null;
+            try {
+                if (cursor.moveToFirst()) {
+                    ret = cursor.getString(cursor.getColumnIndexOrThrow(USERNAME));
+                }
+            } finally {
+                cursor.close();
+            }
+
+            return ret;
+        }
+        
+        public static final String getPassword(ContentResolver cr, long accountId) {
+            Cursor cursor = cr.query(CONTENT_URI,
+            		new String[] { PASSWORD },
+                    _ID + "=" + accountId,
+                    null /* selection args */,
+                    null /* sort order */);
+            String ret = null;
+            try {
+                if (cursor.moveToFirst()) {
+                    ret = cursor.getString(cursor.getColumnIndexOrThrow(PASSWORD));
+                }
+            } finally {
+                cursor.close();
+            }
+
+            return ret;
+        }
 
         private static final String[] PROVIDER_PROJECTION = new String[] { PROVIDER };
         private static final int PROVIDER_COLUMN = 0;
