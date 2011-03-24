@@ -36,13 +36,11 @@ interface IImConnection {
      * Login the IM server.
      *
      * @param accountId the id of the account in content provider.
-     * @param userName the useName.
-     * @param password the password.
      * @param autoLoadContacts if true, contacts will be loaded from the server
      *          automatically after the user successfully login; otherwise, the
      *          client must load contacts manually.
      */
-    void login(long accountId, String userName, String password, boolean autoLoadContacts, boolean retry);
+    void login(long accountId, boolean autoLoadContacts, boolean retry);
     void logout();
     void cancelLogin();
 

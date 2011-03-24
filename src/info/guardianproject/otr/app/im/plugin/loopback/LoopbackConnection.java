@@ -10,9 +10,9 @@ import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
-import info.guardianproject.otr.app.im.engine.LoginInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
+import android.content.ContentResolver;
 import android.os.Parcel;
 
 public class LoopbackConnection extends ImConnection {
@@ -112,9 +113,11 @@ public class LoopbackConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(LoginInfo loginInfo, boolean retry) {
+	public void loginAsync(long accountId, long providerId, boolean retry) {
+		ContentResolver contentResolver = mContext.getContentResolver();
+		String userName = Imps.Account.getUserName(contentResolver, accountId);
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);
-		mUser = new Contact(new LoopbackAddress(loginInfo.getUserName() + "!", "loopback"), loginInfo.getUserName());
+		mUser = new Contact(new LoopbackAddress(userName + "!", "loopback"), userName);
 		setState(LOGGED_IN, null);
 	}
 

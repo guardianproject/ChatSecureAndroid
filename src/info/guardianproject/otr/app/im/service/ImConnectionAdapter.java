@@ -26,7 +26,6 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Invitation;
 import info.guardianproject.otr.app.im.engine.InvitationListener;
-import info.guardianproject.otr.app.im.engine.LoginInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -140,16 +139,13 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return builder.build();
     }
 
-    public void login(long accountId, String userName, String password,
-            boolean autoLoadContacts, boolean retry) {
+    public void login(long accountId, boolean autoLoadContacts, boolean retry) {
         mAccountId = accountId;
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
-
         mChatSessionManager = new ChatSessionManagerAdapter(this);
         mContactListManager = new ContactListManagerAdapter(this);
-
-        mConnection.loginAsync(new LoginInfo(userName, password), retry);
+        mConnection.loginAsync(mAccountId, mProviderId, retry);
     }
     
     @Override

@@ -185,11 +185,13 @@ public abstract class ImConnection {
     public abstract int getCapability();
 
     /**
-     * Log in to the IM server.
+     * Log in to the IM server, using the settings stored in Imps.
      *
-     * @param loginInfo the login information.
+     * @param accountId the ID to get the Account record
+     * @param providerId the ID to get the ProviderSettings record
+     * @param retry whether or not to retry the connection upon failure
      */
-    public abstract void loginAsync(LoginInfo loginInfo, boolean retry);
+    public abstract void loginAsync(long accountId, long providerId, boolean retry);
 
     /**
      * Re-establish previous session using the session context persisted by the

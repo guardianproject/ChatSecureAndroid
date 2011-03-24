@@ -73,6 +73,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         Imps.Account.USERNAME,
         Imps.Account.PASSWORD,
     };
+    // TODO why aren't these Imps.Account.* values?
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
@@ -232,15 +233,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
         while (cursor.moveToNext()) {
             long accountId = cursor.getLong(ACCOUNT_ID_COLUMN);
             long providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
-            String username = cursor.getString(ACCOUNT_USERNAME_COLUMN);
-            String password = cursor.getString(ACCOUNT_PASSOWRD_COLUMN);
-
             IImConnection conn = createConnection(providerId);
-            
-        
-
             try {
-                conn.login(accountId, username, password, true, true);
+                conn.login(accountId, true, true);
             } catch (RemoteException e) {
                 Log.w(TAG, "Logging error while automatically login!");
             }

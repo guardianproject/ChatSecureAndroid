@@ -1,6 +1,5 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
-import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -12,9 +11,9 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
-import info.guardianproject.otr.app.im.engine.LoginInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +27,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -39,6 +37,7 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -51,8 +50,10 @@ import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -68,13 +69,15 @@ public class XmppConnection extends ImConnection {
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
 	private boolean mNeedReconnect;
-	private LoginInfo mLoginInfo;
 	private boolean mRetryLogin;
 	private Executor mExecutor;
 	
 	private ProxyInfo mProxyInfo = null;
 	
 	private final static int XMPP_DEFAULT_PORT = 5222;
+	
+	private long mAccountId = -1;
+	private long mProviderId = -1;
 	
 	public XmppConnection(Context context) {
 		super(context);
@@ -170,8 +173,9 @@ public class XmppConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(final LoginInfo loginInfo, boolean retry) {
-		mLoginInfo = loginInfo;
+	public void loginAsync(long accountId, long providerId, boolean retry) {
+		mAccountId = accountId;
+		mProviderId = providerId;
 		mRetryLogin = retry;
 		mExecutor.execute(new Runnable() {
 			@Override
@@ -186,32 +190,24 @@ public class XmppConnection extends ImConnection {
 			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
 			return;
 		}
-		Log.i(TAG, "logging in " + mLoginInfo.getUserName());
+		ContentResolver contentResolver = mContext.getContentResolver();
+		Imps.ProviderSettings.QueryMap providerSettings = 
+			new Imps.ProviderSettings.QueryMap(contentResolver,
+					mProviderId, false, null);
+		// providerSettings is closed in initConnection()
+		String userName = Imps.Account.getUserName(contentResolver, mAccountId);
+		String password = Imps.Account.getPassword(contentResolver, mAccountId);
+		String domain = providerSettings.getDomain();
+		Log.i(TAG, "logging in " + userName + "@" + domain);
 		
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
 		mUserPresence = new Presence(Presence.AVAILABLE, "Online", null, null, Presence.CLIENT_TYPE_DEFAULT);
-		String username = mLoginInfo.getUserName();
-		
-		String []comps = username.split("@");
-		if (comps.length != 2) {
-			disconnected(new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "username should be user@host"));
-			mRetryLogin = false;
-			mNeedReconnect = false;
-			return;
-		}
+
 		try {
-			
-			String sUsername = java.net.URLDecoder.decode(comps[0]);
-			String serverInfo[] = comps[1].split(":");
-			
-			if (serverInfo.length == 0)
-				throw new XMPPException("invalid host setting");
-			
-			String serverHost = serverInfo[0];
-			int serverPort = Integer.parseInt(serverInfo[1]);
-			
-			initConnection(serverHost, serverPort, sUsername, mLoginInfo.getPassword(), "Gibberbot");
+			if (userName.length() == 0)
+				throw new XMPPException("blank username not allowed");
+			initConnection(userName, password, providerSettings);
 		} catch (XMPPException e) {
 			Log.e(TAG, "login failed", e);
 			mConnection = null;
@@ -236,8 +232,9 @@ public class XmppConnection extends ImConnection {
 			mNeedReconnect = false;
 		}
 		
-		username = username.split(":")[0];//remove any port mentions
-		mUser = new Contact(new XmppAddress(username, username), username);
+		// TODO should we really be using the same name for both address and name?
+		String xmppName = userName + '@' + domain;
+		mUser = new Contact(new XmppAddress(xmppName, xmppName), xmppName);
 		setState(LOGGED_IN, null);
 		Log.i(TAG, "logged in");
 	}
@@ -256,25 +253,27 @@ public class XmppConnection extends ImConnection {
 		}
 	}
 	
-	private void initConnection(String serverHost, int serverPort, String login, String password, String resource) throws XMPPException {
-		// TODO these booleans should be set in the preferences
+	private void initConnection(String userName, String password, 
+			Imps.ProviderSettings.QueryMap providerSettings) throws XMPPException {
+
+		boolean requireTls = providerSettings.getRequireTls();
+		boolean doDnsSrv = providerSettings.getDoDnsSrv();
+		boolean tlsCertVerify = providerSettings.getTlsCertVerify();
+
+		// TODO this should be reorged as well as the gmail.com section below
+		String serverHost = providerSettings.getDomain();
+		String login = userName;
+		String resource = providerSettings.getXmppResource();
+		int serverPort = providerSettings.getPort();
 		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-		boolean doTLS = prefs.getBoolean("pref_security_tls", true);
-		boolean doSRV = prefs.getBoolean("pref_security_do_srv", false);
-		boolean doCertVerification = prefs.getBoolean("pref_security_tls_very", true);
-
-		Log.i(TAG, "TLS required? " + doTLS);
-
-		Log.i(TAG, "Do SRV check? " + doSRV);
-
-		Log.i(TAG, "cert verification? " + doCertVerification);
-
+		providerSettings.close();
 		
-    	boolean allowSelfSignedCerts = !doCertVerification;
-    	boolean doVerifyDomain = doCertVerification;
-    	
+		Log.i(TAG, "TLS required? " + requireTls);
+		Log.i(TAG, "Do SRV check? " + doDnsSrv);
+		Log.i(TAG, "cert verification? " + tlsCertVerify);
+
+    	boolean allowSelfSignedCerts = !tlsCertVerify;
+    	boolean doVerifyDomain = tlsCertVerify;
     	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
@@ -302,8 +301,8 @@ public class XmppConnection extends ImConnection {
 			
 
     		mConfig.setVerifyRootCAEnabled(false); //TODO we have to disable this for now with Gmail
-    		mConfig.setVerifyChainEnabled(doCertVerification); //but we still can verify the chain
-    		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
+    		mConfig.setVerifyChainEnabled(tlsCertVerify); //but we still can verify the chain
+    		mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
     		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
     		
 			
@@ -312,14 +311,14 @@ public class XmppConnection extends ImConnection {
 			// TODO test first only using serverHost to use the DNS SRV lookup, otherwise try all the saved settings
 			// set the priority of auth methods, 0 being the first tried
     		
-    		if (doSRV)
+    		if (doDnsSrv)
     			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
     		else
     			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
 
     		//mConfig.setDebuggerEnabled(true);
     		mConfig.setSASLAuthenticationEnabled(true);
-    		if (doTLS) {
+    		if (requireTls) {
     			mConfig.setSecurityMode(SecurityMode.required);
     			// with TLS, use PLAIN first for best compatibility
     			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
@@ -328,7 +327,7 @@ public class XmppConnection extends ImConnection {
     			// if it finds a cert, still use it, but don't check anything since 
     			// TLS errors are not expected by the user
     			mConfig.setSecurityMode(SecurityMode.enabled);
-    			doCertVerification = false;
+    			tlsCertVerify = false;
     			doVerifyDomain = false;
     			// without TLS, use DIGEST-MD5 first
     			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
@@ -339,9 +338,9 @@ public class XmppConnection extends ImConnection {
     		SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
     		SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
-    		mConfig.setVerifyChainEnabled(doCertVerification);
-    		mConfig.setVerifyRootCAEnabled(doCertVerification);
-    		mConfig.setExpiredCertificatesCheckEnabled(doCertVerification);
+    		mConfig.setVerifyChainEnabled(tlsCertVerify);
+    		mConfig.setVerifyRootCAEnabled(tlsCertVerify);
+    		mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
     		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
     	}
     	
@@ -1001,7 +1000,7 @@ public class XmppConnection extends ImConnection {
 	}
 	
 	public void doHeartbeat() {
-		if (mConnection == null && mRetryLogin && mLoginInfo != null) {
+		if (mConnection == null && mRetryLogin) {
 			Log.i(TAG, "reconnect with login");
 			do_login();
 		}

@@ -323,9 +323,7 @@ public class SigningInActivity extends Activity {
                     mConn.registerConnectionListener(mListener);
                     
                     mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
-                 	mConn.login(mAccountId, mUserName, mPassword, autoLoadContacts, autoRetryLogin);
-                 	
-                    
+                 	mConn.login(mAccountId, autoLoadContacts, autoRetryLogin);
                 } else {
                     promptForBackgroundDataSetting();
                     return;
