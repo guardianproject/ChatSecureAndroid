@@ -94,7 +94,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     private SettingsMonitor mSettingsMonitor;
     private OtrChatManager mOtrChatManager;
-    private boolean autoStartOtr = false;
     
     private ImPluginHelper mPluginHelper;
     Vector<ImConnectionAdapter> mConnections;
@@ -113,9 +112,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        
 	        try
 	        {
-	        	int otrPolicy = OtrPolicy.OPPORTUNISTIC;
-	        	autoStartOtr = false;
-	        	
+	        	int otrPolicy = OtrPolicy.OPPORTUNISTIC;	        	
 	        	
 	        	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 	        	
