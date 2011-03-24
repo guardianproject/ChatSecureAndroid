@@ -7,9 +7,11 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.ProviderDef;
+import info.guardianproject.otr.app.im.app.SettingActivity;
 import info.guardianproject.otr.app.im.app.SigningInActivity;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -32,7 +34,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
-    long providerId = 1;
+    long mProviderId = 1;
+    private long mAccountId;
     ProviderDef provider;
     Uri mAccountUri;
     ImApp app;
@@ -67,44 +70,35 @@ public class MainActivity extends Activity {
         
     }
     
-    private void showUI ()
-    {
+    private void showUI () {
         setContentView(R.layout.splash_activity);
      
-        if (user == null || user.length() == 0)
-        {
+        if (user == null || user.length() == 0) {
 	        Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
 	        btnSplashAbout.setOnClickListener(new OnClickListener()
 	        {
-	
 				@Override
 				public void onClick(View v) {
-					
-					startActivityForResult(new Intent(getBaseContext(), AboutActivity.class), 1);
-	
-					
+					Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+			        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+			        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+					startActivityForResult(intent, 1);
 				}
-	        	
-	        	
 	        });
 	        
 	        Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
 	        btnSplashSetup.setOnClickListener(new OnClickListener()
 	        {
-	
 				@Override
 				public void onClick(View v) {
-					
-					startActivityForResult(new Intent(getBaseContext(), AccountWizardActivity.class), 1);
-	
-					
+					Intent intent = new Intent(getBaseContext(), AccountWizardActivity.class);
+					intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+					intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+					startActivityForResult(intent, 1);
 				}
-	        	
-	        	
 	        });
         }
-        else
-        {
+        else {
         	View view = findViewById(R.id.splashSetupButtons);
         	view.setVisibility(View.GONE);
         }
@@ -132,11 +126,8 @@ public class MainActivity extends Activity {
             final String pass = prefs.getString("pref_account_pass", null);
 
             ContentResolver cr = getContentResolver();
-            
-            long accountId = ImApp.insertOrUpdateAccount(cr, providerId, userHostKey,pass);
-            
-            
-            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, userHostKey,pass);
+            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
             signIn();
     
             return true;
@@ -147,13 +138,15 @@ public class MainActivity extends Activity {
         
     	Intent intent = new Intent(MainActivity.this, SigningInActivity.class);
         intent.setData(mAccountUri);
-        
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
 
         boolean useTor = prefs.getBoolean("pref_security_use_tor", false);
         
-        if (useTor)
-        {
+        if (useTor) {
+        	// TODO move ImApp.EXTRA_INTENT_PROXY_* to ImServiceConstants
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
@@ -179,15 +172,15 @@ public class MainActivity extends Activity {
 		boolean doSignIn = true;
 		
 		Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
 	        boolean showSettings = extras.getBoolean("showSettings", false);
-	        if (showSettings)
-	        {
-	        	startActivityForResult(new Intent(getBaseContext(), SettingsActivity.class), 1);
+	        if (showSettings) {
+	        	Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+	        	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+	        	intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+	        	startActivityForResult(intent, 1);
 	        	return;
 	        }
-	    
 	        doSignIn = extras.getBoolean("doSignIn",true);
         }
         
@@ -216,8 +209,10 @@ public class MainActivity extends Activity {
         	
             return true;
         } else if (item.getItemId() == R.id.menu_settings) {
-           
-        	startActivityForResult(new Intent(getBaseContext(), SettingsActivity.class), 1);
+        	Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+        	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+        	intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+        	startActivityForResult(intent, 1);
         	
             return true;
         } else {

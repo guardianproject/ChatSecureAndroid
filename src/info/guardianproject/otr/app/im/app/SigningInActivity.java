@@ -71,7 +71,6 @@ public class SigningInActivity extends Activity {
     private long mAccountId;
     private String mProviderName;
 
-    private String mUserName;
     private String mPassword;
 
     private String mToAddress;
@@ -135,7 +134,6 @@ public class SigningInActivity extends Activity {
 
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mAccountId = c.getLong(c.getColumnIndexOrThrow(Imps.Account._ID));
-        mUserName = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
         
         mProxyType = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_TYPE);
         if (mProxyType != null)
@@ -458,7 +456,7 @@ public class SigningInActivity extends Activity {
             finish();
             try {
                 Intent intent;
-                long accountId = mConn.getAccountId();
+                mAccountId = mConn.getAccountId();
 
                 if (mToAddress != null) {
                     IChatSessionManager manager = mConn.getChatSessionManager();
@@ -468,14 +466,14 @@ public class SigningInActivity extends Activity {
                     }
                     Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, session.getId());
                     intent = new Intent(Intent.ACTION_VIEW, data);
-                    intent.putExtra("from", mToAddress);
-                    intent.putExtra("providerId", mProviderId);
-                    intent.putExtra("accountId", accountId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS, mToAddress);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                     intent.addCategory(ImApp.IMPS_CATEGORY);
 
                 } else {
                     intent = new Intent(this, ContactListActivity.class);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                     
                 }
                 startActivity(intent);

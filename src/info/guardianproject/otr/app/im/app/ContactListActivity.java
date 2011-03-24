@@ -477,7 +477,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     }
                   
                     //TODO Gibber manually launch back to main
-                	Intent intent = new Intent(getBaseContext(), MainActivity.class);					
+                	Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 					intent.putExtra("showSettings",false);
 					intent.putExtra("doSignIn",false);					
 					startActivity(intent);

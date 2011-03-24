@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -123,6 +124,7 @@ public class ImUrlActivity extends Activity {
         intent.setAction(Intent.ACTION_INSERT);
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
         intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
+        
         startActivity(intent);
     }
 
@@ -161,12 +163,12 @@ public class ImUrlActivity extends Activity {
             }
 
             Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, session.getId());
-            Intent i = new Intent(Intent.ACTION_VIEW, data);
-            i.putExtra("from", mToAddress);
-            i.putExtra("providerId", provider);
-            i.putExtra("accountId", account);
-            i.addCategory(ImApp.IMPS_CATEGORY);
-            startActivity(i);
+            Intent intent = new Intent(Intent.ACTION_VIEW, data);
+            intent.putExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS, mToAddress);
+            intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, provider);
+            intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, account);
+            intent.addCategory(ImApp.IMPS_CATEGORY);
+            startActivity(intent);
         } catch (RemoteException e) {
             // Ouch!  Service died!  We'll just disappear.
             Log.w("ImUrlActivity", "Connection disappeared!");

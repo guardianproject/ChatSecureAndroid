@@ -89,6 +89,7 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
+        // TODO this should use Imps.ProviderSettings.QueryMap to get this stuff
         mEditName = (EditText)findViewById(R.id.edtName);
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);

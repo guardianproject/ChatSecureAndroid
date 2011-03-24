@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -227,6 +228,8 @@ public class ChatView extends LinearLayout {
                 public void onClick(DialogInterface dialog, int which) {
                     Uri uri = Uri.parse(linkUrls.get(which));
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                     intent.putExtra(Browser.EXTRA_APPLICATION_ID, mScreen.getPackageName());
                     mScreen.startActivity(intent);
                 }
@@ -830,7 +833,9 @@ public class ChatView extends LinearLayout {
     	Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mChatId);
     	
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
-    	
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+
     	if (mOtrKeyManager != null)
     	{
 	    	try {
@@ -842,7 +847,7 @@ public class ChatView extends LinearLayout {
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
-			
+			// TODO define these in ImServiceConstants
 	        intent.putExtra("remoteFingerprint", remoteFingerprint);
 	        intent.putExtra("localFingerprint", localFingerprint);
 	        

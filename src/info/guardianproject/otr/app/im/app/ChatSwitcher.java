@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -452,6 +453,7 @@ public class ChatSwitcher {
             protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
 
                 if (cursor != null) {
+                	// TODO this should probably use Imps convenience methods
                     mContactIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts._ID);
                     mProviderIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.PROVIDER);
                     mAccountIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.ACCOUNT);
@@ -531,18 +533,18 @@ public class ChatSwitcher {
 
     public static Intent makeChatIntent(ContentResolver resolver, long provider, long account,
             String contact, long contactId, int groupChat) {
-        Intent i = new Intent(Intent.ACTION_VIEW,
+        Intent intent = new Intent(Intent.ACTION_VIEW,
                 ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, contactId));
-        i.addCategory(findCategory(resolver, provider));
-        i.putExtra("from", contact);
-        i.putExtra("providerId", provider);
-        i.putExtra("accountId", account);
+        intent.addCategory(findCategory(resolver, provider));
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS, contact);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, provider);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, account);
 
         if (groupChat != 0) {
-            i.putExtra("groupChat", groupChat);
+            intent.putExtra("groupChat", groupChat);
         }
 
-        return i;
+        return intent;
     }
 
     public void open() {
