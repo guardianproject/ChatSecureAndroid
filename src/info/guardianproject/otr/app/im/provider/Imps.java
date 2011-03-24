@@ -1588,48 +1588,84 @@ public class Imps {
          */
         public static final String CONTENT_TYPE = "vnd.android-dir/imps-providerSettings";
 
-        /**
-         * A boolean value to indicate whether this provider should show the offline contacts
-         */
+        // ACCOUNT SETTINGS (username and password are part of Account above)
+        
+        // TODO since everything is here except username/password, perhaps it should also be moved here?
+        
+        /** the domain name of the account, i.e. @gmail.com for XMPP */
+        public static final String DOMAIN = "pref_account_domain";
+
+        /** The XMPP Resource string  */
+        public static final String XMPP_RESOURCE = "pref_account_resource";
+
+        /** the port number to connect to */
+        public static final String PORT = "pref_account_port";
+
+        /** The hostname or IP of the server to connect to */
+        public static final String SERVER = "pref_account_server";
+
+        // ENCRYPTION AND ANONYMITY SETTINGS
+        
+        /** allow plain text authentication */
+        public static final String ALLOW_PLAIN_AUTH = "pref_security_allow_plain_auth";
+
+        /** boolean for the required use of a TLS connection */
+        public static final String REQUIRE_TLS = "pref_security_require_tls";
+
+        /** boolean for whether the TLS certificate should be verified */
+        public static final String TLS_CERT_VERIFY = "pref_security_tls_cert_verify";
+
+        /** How should the OTR engine operate: auto, force, requested, disabled */
+        public static final String OTR_MODE = "pref_security_otr_mode";
+
+        /** boolean to specify whether to use Tor proxying or not */
+        public static final String USE_TOR = "pref_security_use_tor";
+
+        /** boolean to control whether DNS SRV lookups are used to find the server */
+        public static final String DO_DNS_SRV = "pref_security_do_dns_srv";
+        
+        // GENERAL PREFERENCES
+        
+        /** controls whether this provider should show the offline contacts */
         public static final String SHOW_OFFLINE_CONTACTS = "show_offline_contacts";
 
-        /** controls whether or not the GTalk service automatically connect to server. */
-        public static final String SETTING_AUTOMATICALLY_CONNECT_GTALK = "gtalk_auto_connect";
+        /** controls whether the GTalk service automatically connect to server. */
+        public static final String AUTOMATICALLY_CONNECT_GTALK = "gtalk_auto_connect";
 
-        /** controls whether or not the IM service will be automatically started after boot */
-        public static final String SETTING_AUTOMATICALLY_START_SERVICE = "auto_start_service";
+        /** controls whether the IM service will be automatically started after boot */
+        public static final String AUTOMATICALLY_START_SERVICE = "auto_start_service";
 
-        /** controls whether or not the offline contacts will be hided */
-        public static final String SETTING_HIDE_OFFLINE_CONTACTS = "hide_offline_contacts";
+        /** controls whether the offline contacts will be hided */
+        public static final String HIDE_OFFLINE_CONTACTS = "hide_offline_contacts";
 
-        /** controls whether or not enable the IM notification */
-        public static final String SETTING_ENABLE_NOTIFICATION = "enable_notification";
+        /** controls whether enable the IM notification */
+        public static final String ENABLE_NOTIFICATIONS = "enable_notification";
 
-        /** specifies whether or not to vibrate */
-        public static final String SETTING_VIBRATE = "vibrate";
+        /** specifies whether to vibrate */
+        public static final String NOTIFICATION_VIBRATE = "vibrate";
 
         /** specifies the Uri string of the ringtone */
-        public static final String SETTING_RINGTONE = "ringtone";
+        public static final String NOTIFICATION_RINGTONE = "ringtone";
 
         /** specifies the Uri of the default ringtone */
-        public static final String SETTING_RINGTONE_DEFAULT =
+        public static final String RINGTONE_DEFAULT =
                 "content://settings/system/notification_sound";
 
-        /** specifies whether or not to show mobile indicator to friends */
-        public static final String SETTING_SHOW_MOBILE_INDICATOR = "mobile_indicator";
+        /** specifies whether to show mobile indicator to friends */
+        public static final String SHOW_MOBILE_INDICATOR = "mobile_indicator";
 
-        /** specifies whether or not to show as away when device is idle */
-        public static final String SETTING_SHOW_AWAY_ON_IDLE = "show_away_on_idle";
+        /** specifies whether to show as away when device is idle */
+        public static final String SHOW_AWAY_ON_IDLE = "show_away_on_idle";
 
-        /** specifies whether or not to upload heartbeat stat upon login */
-        public static final String SETTING_UPLOAD_HEARTBEAT_STAT = "upload_heartbeat_stat";
+        /** specifies whether to upload heartbeat stat upon login */
+        public static final String UPLOAD_HEARTBEAT_STAT = "upload_heartbeat_stat";
 
         /** specifies the last heartbeat interval received from the server */
-        public static final String SETTING_HEARTBEAT_INTERVAL = "heartbeat_interval";
+        public static final String HEARTBEAT_INTERVAL = "heartbeat_interval";
 
         /** specifiy the JID resource used for Google Talk connection */
-        public static final String SETTING_JID_RESOURCE = "jid_resource";
-
+        public static final String JID_RESOURCE = "jid_resource";
+        
         /**
          * Used for reliable message queue (RMQ). This is for storing the last rmq id received
          * from the GTalk server
@@ -1769,6 +1805,126 @@ public class Imps {
         }
 
         /**
+         * A convenience method to set the domain name affiliated with an account
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param domain The domain name to use for the account
+         */
+        public static void setDomain(ContentResolver cr,
+                long providerId, String domain) {
+            putStringValue(cr, providerId, DOMAIN, domain);
+        }
+
+        /**
+         * A convenience method to set the XMPP Resource string
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param xmppResource the XMPP Resource string
+         */
+        public static void setXmppResource(ContentResolver cr,
+                long providerId, String xmppResource) {
+            putStringValue(cr, providerId, XMPP_RESOURCE, xmppResource);
+        }
+        
+        /**
+         * A convenience method to set the TCP/IP port number to connect to
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param port the TCP/IP port number to connect to
+         */
+        public static void setPort(ContentResolver cr,
+                long providerId, int port) {
+            putLongValue(cr, providerId, PORT, (long)port);
+        }
+        
+        /**
+         * A convenience method to set the hostname or IP of the server to connect to
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param server the hostname or IP of the server to connect to
+         */
+        public static void setServer(ContentResolver cr,
+                long providerId, String server) {
+            putStringValue(cr, providerId, SERVER, server);
+        }
+        
+        /**
+         * A convenience method to set whether to allow plain text auth
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param allowPlainAuth
+         */
+        public static void setAllowPlainAuth(ContentResolver cr,
+                long providerId, boolean allowPlainAuth) {
+        	putBooleanValue(cr, providerId, ALLOW_PLAIN_AUTH, allowPlainAuth);
+        }
+        
+        /**
+         * A convenience method to set whether to require TLS
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param requireTls
+         */
+        public static void setRequireTls(ContentResolver cr,
+                long providerId, boolean requireTls) {
+        	putBooleanValue(cr, providerId, REQUIRE_TLS, requireTls);
+        }
+        
+        /**
+         * A convenience method to set whether to verify the TLS cert
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param tlsCertVerify
+         */
+        public static void setTlsCertVerify(ContentResolver cr,
+                long providerId, boolean tlsCertVerify) {
+        	putBooleanValue(cr, providerId, TLS_CERT_VERIFY, tlsCertVerify);
+        }
+        
+        /**
+         * A convenience method to set the mode of operation for the OTR Engine
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param otrMode OTR Engine mode (force, auto, requested, disabled)
+         */
+        public static void setOtrMode(ContentResolver cr,
+                long providerId, String otrMode) {
+            putStringValue(cr, providerId, OTR_MODE, otrMode);
+        }
+        
+        /**
+         * A convenience method to set whether to use Tor
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param useTor
+         */
+        public static void setUseTor(ContentResolver cr,
+                long providerId, boolean useTor) {
+        	putBooleanValue(cr, providerId, USE_TOR, useTor);
+        }
+        
+        /**
+         * A convenience method to set whether to use DNS SRV lookups to find the server
+         * 
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param doDnsSrv
+         */
+        public static void setDoDnsSrv(ContentResolver cr,
+        		long providerId, boolean doDnsSrv) {
+        	putBooleanValue(cr, providerId, DO_DNS_SRV, doDnsSrv);
+        }
+        
+        /**
          * A convenience method to set whether or not the GTalk service should be started
          * automatically.
          *
@@ -1777,7 +1933,7 @@ public class Imps {
          */
         public static void setAutomaticallyConnectGTalk(ContentResolver contentResolver,
                 long providerId, boolean autoConnect) {
-            putBooleanValue(contentResolver, providerId, SETTING_AUTOMATICALLY_CONNECT_GTALK,
+            putBooleanValue(contentResolver, providerId, AUTOMATICALLY_CONNECT_GTALK,
                     autoConnect);
         }
 
@@ -1789,7 +1945,7 @@ public class Imps {
          */
         public static void setHideOfflineContacts(ContentResolver contentResolver,
                 long providerId, boolean hideOfflineContacts) {
-            putBooleanValue(contentResolver, providerId, SETTING_HIDE_OFFLINE_CONTACTS,
+            putBooleanValue(contentResolver, providerId, HIDE_OFFLINE_CONTACTS,
                     hideOfflineContacts);
         }
 
@@ -1801,7 +1957,7 @@ public class Imps {
          */
         public static void setEnableNotification(ContentResolver contentResolver, long providerId,
                 boolean enable) {
-            putBooleanValue(contentResolver, providerId, SETTING_ENABLE_NOTIFICATION, enable);
+            putBooleanValue(contentResolver, providerId, ENABLE_NOTIFICATIONS, enable);
         }
 
         /**
@@ -1812,7 +1968,7 @@ public class Imps {
          */
         public static void setVibrate(ContentResolver contentResolver, long providerId,
                 boolean vibrate) {
-            putBooleanValue(contentResolver, providerId, SETTING_VIBRATE, vibrate);
+            putBooleanValue(contentResolver, providerId, NOTIFICATION_VIBRATE, vibrate);
         }
 
         /**
@@ -1823,7 +1979,7 @@ public class Imps {
          */
         public static void setRingtoneURI(ContentResolver contentResolver, long providerId,
                 String ringtoneUri) {
-            putStringValue(contentResolver, providerId, SETTING_RINGTONE, ringtoneUri);
+            putStringValue(contentResolver, providerId, NOTIFICATION_RINGTONE, ringtoneUri);
         }
 
         /**
@@ -1834,7 +1990,7 @@ public class Imps {
          */
         public static void setShowMobileIndicator(ContentResolver contentResolver, long providerId,
                 boolean showMobileIndicator) {
-            putBooleanValue(contentResolver, providerId, SETTING_SHOW_MOBILE_INDICATOR,
+            putBooleanValue(contentResolver, providerId, SHOW_MOBILE_INDICATOR,
                     showMobileIndicator);
         }
 
@@ -1846,7 +2002,7 @@ public class Imps {
          */
         public static void setShowAwayOnIdle(ContentResolver contentResolver,
                 long providerId, boolean showAway) {
-            putBooleanValue(contentResolver, providerId, SETTING_SHOW_AWAY_ON_IDLE, showAway);
+            putBooleanValue(contentResolver, providerId, SHOW_AWAY_ON_IDLE, showAway);
         }
 
         /**
@@ -1857,7 +2013,7 @@ public class Imps {
          */
         public static void setUploadHeartbeatStat(ContentResolver contentResolver,
                 long providerId, boolean uploadStat) {
-            putBooleanValue(contentResolver, providerId, SETTING_UPLOAD_HEARTBEAT_STAT, uploadStat);
+            putBooleanValue(contentResolver, providerId, UPLOAD_HEARTBEAT_STAT, uploadStat);
         }
 
         /**
@@ -1868,7 +2024,7 @@ public class Imps {
          */
         public static void setHeartbeatInterval(ContentResolver contentResolver,
                 long providerId, long interval) {
-            putLongValue(contentResolver, providerId, SETTING_HEARTBEAT_INTERVAL, interval);
+            putLongValue(contentResolver, providerId, HEARTBEAT_INTERVAL, interval);
         }
 
         /**
@@ -1876,7 +2032,7 @@ public class Imps {
          */
         public static void setJidResource(ContentResolver contentResolver,
                                           long providerId, String jidResource) {
-            putStringValue(contentResolver, providerId, SETTING_JID_RESOURCE, jidResource);
+            putStringValue(contentResolver, providerId, JID_RESOURCE, jidResource);
         }
 
         public static class QueryMap extends ContentQueryMap {
@@ -1910,10 +2066,106 @@ public class Imps {
              * @return if the GTalk service should automatically connect to server.
              */
             public boolean getAutomaticallyConnectToGTalkServer() {
-                return getBoolean(SETTING_AUTOMATICALLY_CONNECT_GTALK,
+                return getBoolean(AUTOMATICALLY_CONNECT_GTALK,
                         true /* default to automatically sign in */);
             }
 
+            public void setDomain(String domain) {
+                ProviderSettings.setDomain(mContentResolver, mProviderId,
+                		domain);
+            }
+            
+            public String getDomain() {
+                return getString(DOMAIN, "");
+            }
+
+            public void setXmppResource(String resource) {
+                ProviderSettings.setXmppResource(mContentResolver, mProviderId,
+                		resource);
+            }
+            
+            public String getXmppResource() {
+                return getString(XMPP_RESOURCE, "Gibberbot");
+            }
+
+            public void setPort(int port) {
+                ProviderSettings.setHeartbeatInterval(mContentResolver, mProviderId, port);
+            }
+
+            public int getPort() {
+                return (int)getLong(PORT,
+                			5222 /* by default use XMPP's default port */);
+            }
+
+            public void setServer(String server) {
+                ProviderSettings.setServer(mContentResolver, mProviderId,
+                		server);
+            }
+            
+            public String getServer() {
+                return getString(SERVER, "");
+            }
+
+            public void setAllowPlainAuth(boolean value) {
+                ProviderSettings.setAllowPlainAuth(mContentResolver, mProviderId,
+                        value);
+            }
+            
+            public boolean getAllowPlainAuth() {
+                return getBoolean(ALLOW_PLAIN_AUTH,
+                        false /* by default do not send passwords in the clear */);
+            }
+
+            public void setRequireTls(boolean value) {
+                ProviderSettings.setRequireTls(mContentResolver, mProviderId,
+                        value);
+            }
+            
+            public boolean getRequireTls() {
+                return getBoolean(REQUIRE_TLS,
+                        false /* by default attempt TLS but don't require */);
+            }
+
+            public void setTlsCertVerify(boolean value) {
+                ProviderSettings.setTlsCertVerify(mContentResolver, mProviderId,
+                        value);
+            }
+            
+            public boolean getTlsCertVerify() {
+                return getBoolean(TLS_CERT_VERIFY,
+                        true /* by default try to verify the TLS Cert */);
+            }
+
+            public void setOtrMode(String otrMode) {
+                ProviderSettings.setOtrMode(mContentResolver, mProviderId,
+                		otrMode);
+            }
+            
+            public String getOtrMode() {
+                return getString(OTR_MODE, 
+                			"auto" /* by default, try to use OTR */);
+            }
+
+            public void setUseTor(boolean value) {
+            	ProviderSettings.setUseTor(mContentResolver, mProviderId,
+            			value);
+            }
+            
+            public boolean getUseTor() {
+                return getBoolean(USE_TOR,
+                        false /* by default do not use Tor */);
+            }
+
+            public void setDoDnsSrv(boolean value) {
+                ProviderSettings.setDoDnsSrv(mContentResolver, mProviderId,
+                        value);
+            }
+            
+            public boolean getDoDnsSrv() {
+                return getBoolean(DO_DNS_SRV,
+                        true /* by default use DNS SRV to find the server */);
+            }
+            
             /**
              * Set whether or not the offline contacts should be hided.
              *
@@ -1930,7 +2182,7 @@ public class Imps {
              * @return Whether or not the offline contacts should be hided.
              */
             public boolean getHideOfflineContacts() {
-                return getBoolean(SETTING_HIDE_OFFLINE_CONTACTS,
+                return getBoolean(HIDE_OFFLINE_CONTACTS,
                         false/* by default not hide the offline contacts*/);
             }
 
@@ -1949,7 +2201,7 @@ public class Imps {
              * @return Whether or not enable the IM notification.
              */
             public boolean getEnableNotification() {
-                return getBoolean(SETTING_ENABLE_NOTIFICATION,
+                return getBoolean(ENABLE_NOTIFICATIONS,
                         true/* by default enable the notification */);
             }
 
@@ -1968,7 +2220,7 @@ public class Imps {
              * @return Whether or not to vibrate.
              */
             public boolean getVibrate() {
-                return getBoolean(SETTING_VIBRATE, false /* by default disable vibrate */);
+                return getBoolean(NOTIFICATION_VIBRATE, false /* by default disable vibrate */);
             }
 
             /**
@@ -1986,7 +2238,7 @@ public class Imps {
              * @return The Uri String of the current ringtone.
              */
             public String getRingtoneURI() {
-                return getString(SETTING_RINGTONE, SETTING_RINGTONE_DEFAULT);
+                return getString(NOTIFICATION_RINGTONE, RINGTONE_DEFAULT);
             }
 
             /**
@@ -2004,7 +2256,7 @@ public class Imps {
              * @return Whether or not to show mobile indicator.
              */
             public boolean getShowMobileIndicator() {
-                return getBoolean(SETTING_SHOW_MOBILE_INDICATOR,
+                return getBoolean(SHOW_MOBILE_INDICATOR,
                         true /* by default show mobile indicator */);
             }
 
@@ -2023,7 +2275,7 @@ public class Imps {
              * @return Whether or not to show as away when device is idle.
              */
             public boolean getShowAwayOnIdle() {
-                return getBoolean(SETTING_SHOW_AWAY_ON_IDLE,
+                return getBoolean(SHOW_AWAY_ON_IDLE,
                         true /* by default show as away on idle*/);
             }
 
@@ -2042,7 +2294,7 @@ public class Imps {
              * @return Whether or not to upload heartbeat stat.
              */
             public boolean getUploadHeartbeatStat() {
-                return getBoolean(SETTING_UPLOAD_HEARTBEAT_STAT,
+                return getBoolean(UPLOAD_HEARTBEAT_STAT,
                         false /* by default do not upload */);
             }
 
@@ -2061,7 +2313,7 @@ public class Imps {
              * @return the last received heartbeat interval from the server.
              */
             public long getHeartbeatInterval() {
-                return getLong(SETTING_HEARTBEAT_INTERVAL, 0L /* an invalid default interval */);
+                return getLong(HEARTBEAT_INTERVAL, 0L /* an invalid default interval */);
             }
 
             /**
@@ -2078,7 +2330,7 @@ public class Imps {
              * @return the JID resource stored.
              */
             public String getJidResource() {
-                return getString(SETTING_JID_RESOURCE, null);
+                return getString(JID_RESOURCE, null);
             }
 
             /**
