@@ -18,8 +18,8 @@
     <!-- Output directories -->
     <property name="outdir-classes" value="${outdir}/classes" />
 
-    <!-- Create R.java in the source directory -->
-    <property name="outdir-r" value="src" />
+    <!-- Create R.java in the source directory for generated files -->
+    <property name="outdir-r" value="gen" />
 
     <!-- Intermediate files -->
     <property name="dex-file" value="classes.dex" />
