@@ -37,8 +37,7 @@ android:summary="Password for account (optional / will prompt)" android:password
 android:key="@string/pref_account_domain" android:summary="The domain of the chat service you use - gmail.com, jabber.org, etc" android:title="Domain"/>
 
 <EditTextPreference android:key="@string/pref_account_resource"
-      android:title="Resource" android:summary="the name for this connection
-      to separate from others"></EditTextPreference>
+      android:title="Resource" android:summary="to distinguish this connection from other clients that are also logged in" android:defaultValue="Gibberbot"></EditTextPreference>
 
 <EditTextPreference android:key="@string/pref_account_port"
 android:defaultValue="5222"
@@ -51,7 +50,7 @@ android:summary="Port for XMPP Server"/>
 
 <PreferenceCategory android:title="@string/encryption_and_anonymity_title">
 
-<ListPreference android:title="Chat Encryption" android:key="@string/pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options" android:summary="how encrypted chats are started"></ListPreference><CheckBoxPreference android:enabled="true" android:defaultValue="false" android:title="Allow Plain Text Auth" android:key="@string/pref_security_allow_plain_auth" android:summary="Allow the username and password to be sent as plain text when using an unencrypted transport"></CheckBoxPreference><CheckBoxPreference 
+<ListPreference android:title="Chat Encryption" android:key="@string/pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options" android:summary="how encrypted chats are started" android:defaultValue="auto"></ListPreference><CheckBoxPreference android:enabled="true" android:defaultValue="false" android:title="Allow Plain Text Auth" android:key="@string/pref_security_allow_plain_auth" android:summary="Allow the username and password to be sent as plain text when using an unencrypted transport"></CheckBoxPreference><CheckBoxPreference 
 android:defaultValue="true" 
 android:title="Transport Encryption"
 android:summary="Require TLS/SSL connection"
@@ -72,9 +71,8 @@ android:summary="Send chat traffic through Tor - ORbot must be installed and con
 android:enabled="true"/> 
 
 <CheckBoxPreference 
-android:defaultValue="false" 
 android:title="Do SRV Lookup"
-android:enabled="true" android:summary="Use DNS SRV to find actual XMPP server from domain name" android:key="@string/pref_security_do_dns_srv"/> 
+android:enabled="true" android:summary="Use DNS SRV to find actual XMPP server from domain name" android:key="@string/pref_security_do_dns_srv" android:defaultValue="true"/> 
 
 </PreferenceCategory>
 
