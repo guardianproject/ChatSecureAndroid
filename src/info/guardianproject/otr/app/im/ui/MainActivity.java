@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
 	
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
     long mProviderId = 1;
+    // TODO get mAccountId and mProviderId for real
     private long mAccountId;
     ProviderDef provider;
     Uri mAccountUri;
@@ -107,6 +108,7 @@ public class MainActivity extends Activity {
     public boolean checkAccountAndSignin() {
     	
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+        user = prefs.getString("pref_account_user", null);
 
         
         if (user == null || user.length() == 0)
@@ -116,17 +118,12 @@ public class MainActivity extends Activity {
         }
         else 
         {
-
-            user = prefs.getString("pref_account_user", null);
             host = prefs.getString("pref_account_domain", null);
             port = prefs.getString("pref_account_port", null);
-        	        	
-            String userHostKey = java.net.URLEncoder.encode(user) + '@' + host + ':' + port;
-            
             final String pass = prefs.getString("pref_account_pass", null);
 
             ContentResolver cr = getContentResolver();
-            mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, userHostKey,pass);
+            mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, user, pass);
             mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
             signIn();
     
