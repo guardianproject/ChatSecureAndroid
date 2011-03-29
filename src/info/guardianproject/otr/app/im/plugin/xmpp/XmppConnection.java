@@ -485,8 +485,9 @@ public class XmppConnection extends ImConnection {
 			}
 		});
         
-        
-        mConnection.login(login, password, resource);
+        String user = login.split("@")[0];
+        Log.i(TAG, "mConnection.login("+user+", "+password+", "+resource+");");
+        mConnection.login(user, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
