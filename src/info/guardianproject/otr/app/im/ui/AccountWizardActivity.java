@@ -1,14 +1,12 @@
 package info.guardianproject.otr.app.im.ui;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,9 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.provider.Imps;
 
 public class AccountWizardActivity extends Activity implements OnClickListener
 {
+    // TODO get mAccountId and mProviderId for real from the intent that launched me
+    private long mProviderId = 1;
+    private long mAccountId;
 
 	private String accountId = "";
 	private String username = "";
@@ -353,24 +356,16 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		}
 			
 		
-		if (!isGood)
-		{
+		if (!isGood) {
 			Toast.makeText(this, errMsg, Toast.LENGTH_LONG).show();
-		}
-		else
-		{
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-			
-			Editor edit = prefs.edit();
-			
-			edit.putString("pref_account_user", username);
-			edit.remove("pref_account_pass");
-
-			edit.putString("pref_account_domain", hostname.toLowerCase());
-			edit.putString("pref_account_port", port);
-	
-			edit.commit();
-		
+		} else {		
+            ContentResolver cr = getContentResolver();
+            mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, username, "");
+	        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+	                getContentResolver(), mProviderId,
+	                false /* don't keep updated */, null /* no handler */);
+	        settings.setDomain(hostname.toLowerCase());
+	        settings.setPort(Integer.parseInt(port));
 			
 			nextContent();
 			
@@ -396,18 +391,11 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 
 		hostname = editAccountId1.getText().toString();
 		port = editAccountId2.getText().toString();
-		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-		
-		Editor edit = prefs.edit();
-		
-		edit.putString("pref_account_domain", hostname.toLowerCase());
-		edit.putString("pref_account_port", port);
 
-		
-		
-		edit.commit();
+		final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+				getContentResolver(), mProviderId,
+				false /* don't keep updated */, null /* no handler */);
+		settings.setDomain(hostname.toLowerCase());
+		settings.setPort(Integer.parseInt(port));
 	}
-	
-	
 }
