@@ -110,11 +110,6 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         setListAdapter(mAdapter);
 
         registerForContextMenu(getListView());
-        
-        // TODO hack to get it to auto-login, this will need to be improved when we have multiple plugins
-        if (allAccountsSignedOut()) {
-        	signInAll();
-        }
     }
 
 
