@@ -647,7 +647,7 @@
 	<string name="pref_account_user">pref_account_user</string>
 	<string name="pref_account_pass">pref_account_pass</string>
 	<string name="pref_account_domain">pref_account_domain</string>
-	<string name="pref_account_resource">pref_account_resource</string>
+	<string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
 	<string name="pref_account_port">pref_account_port</string>
 	<string name="pref_account_server">pref_account_server</string>
 	<string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>

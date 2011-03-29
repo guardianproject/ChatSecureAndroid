@@ -1632,7 +1632,7 @@ public class Imps {
         public static final String DOMAIN = "pref_account_domain";
 
         /** The XMPP Resource string  */
-        public static final String XMPP_RESOURCE = "pref_account_resource";
+        public static final String XMPP_RESOURCE = "pref_account_xmpp_resource";
 
         /** the port number to connect to */
         public static final String PORT = "pref_account_port";

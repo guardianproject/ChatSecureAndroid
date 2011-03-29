@@ -36,8 +36,7 @@ android:summary="Password for account (optional / will prompt)" android:password
 <EditTextPreference android:defaultValue=""
 android:key="@string/pref_account_domain" android:summary="The domain of the chat service you use - gmail.com, jabber.org, etc" android:title="Domain"/>
 
-<EditTextPreference android:key="@string/pref_account_resource"
-      android:title="Resource" android:summary="to distinguish this connection from other clients that are also logged in" android:defaultValue="Gibberbot"></EditTextPreference>
+<EditTextPreference android:title="Resource" android:summary="to distinguish this connection from other clients that are also logged in" android:defaultValue="Gibberbot" android:key="@string/pref_account_xmpp_resource"></EditTextPreference>
 
 <EditTextPreference android:key="@string/pref_account_port"
 android:defaultValue="5222"
