@@ -32,6 +32,7 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SettingActivity extends android.preference.PreferenceActivity {
 
@@ -58,26 +59,28 @@ public class SettingActivity extends android.preference.PreferenceActivity {
         //android.os.Debug.waitForDebugger();
         
         // TODO set all preferences here so that the values from the Imps are in the fields, this is needed to support multiple accounts
-        CheckBoxPreference pref; 
-//        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_account_resource));
-//        pref.setDefaultValue(settings.getXmppResource());
+        ((EditTextPreference) findPreference(getString(R.string.pref_account_domain))).setText(settings.getDomain());
+        ((EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource))).setText(settings.getXmppResource());
+        ((EditTextPreference) findPreference(getString(R.string.pref_account_port))).setText(Integer.toString(settings.getPort()));
+        ((EditTextPreference) findPreference(getString(R.string.pref_account_server))).setText(settings.getServer());
 
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
-        pref.setChecked(settings.getAllowPlainAuth());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
-        pref.setChecked(settings.getRequireTls());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
-        pref.setChecked(settings.getTlsCertVerify());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
-        pref.setChecked(settings.getDoDnsSrv());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
-        pref.setChecked(settings.getHideOfflineContacts());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notifications));
-        pref.setChecked(settings.getEnableNotification());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
-        pref.setChecked(settings.getVibrate());
-        pref = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
-        pref.setChecked(settings.getRingtoneURI() != null);
+        CheckBoxPreference checkbox; 
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
+        checkbox.setChecked(settings.getAllowPlainAuth());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
+        checkbox.setChecked(settings.getRequireTls());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
+        checkbox.setChecked(settings.getTlsCertVerify());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
+        checkbox.setChecked(settings.getDoDnsSrv());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
+        checkbox.setChecked(settings.getHideOfflineContacts());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notifications));
+        checkbox.setChecked(settings.getEnableNotification());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
+        checkbox.setChecked(settings.getVibrate());
+        checkbox = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
+        checkbox.setChecked(settings.getRingtoneURI() != null);
         
         settings.close();
     }
@@ -130,8 +133,16 @@ public class SettingActivity extends android.preference.PreferenceActivity {
                 mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, userName, value);
             } else if (key.equals(getString(R.string.pref_account_domain))) {
             	settings.setDomain(value);
+            } else if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
+            	settings.setXmppResource(value);
             } else if (key.equals(getString(R.string.pref_account_port))) {
-            	settings.setPort(Integer.valueOf(value));
+            	try {
+            		settings.setPort(Integer.parseInt(value));
+            	} catch (NumberFormatException nfe) {
+            		// TODO port numbers with non-int content should be handled better
+            		Toast.makeText(getBaseContext(), "Port number must be a number",
+            				Toast.LENGTH_SHORT).show();     
+            	}
             } else if (key.equals(getString(R.string.pref_account_server))) {
                 settings.setServer(value);
             } else if (key.equals(getString(R.string.pref_security_otr_mode))) {
