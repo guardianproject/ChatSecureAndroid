@@ -45,9 +45,8 @@ public class MainActivity extends Activity {
     
     protected static final int ID_SIGNIN = Menu.FIRST + 1;
 
+    // TODO replace this with the proper mAccountId stuff
     private String user;
-    private String host;
-    private String port;
     
     /** Called when the activity is first created. */
     @Override
@@ -64,11 +63,7 @@ public class MainActivity extends Activity {
 	    provider = app.getProviders().get(0);//the default provider XMPP
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-
         user = prefs.getString("pref_account_user", null);
-        host = prefs.getString("pref_account_domain", null);
-        port = prefs.getString("pref_account_port", null);
-        
     }
     
     private void showUI () {
@@ -118,10 +113,8 @@ public class MainActivity extends Activity {
         }
         else 
         {
-            host = prefs.getString("pref_account_domain", null);
-            port = prefs.getString("pref_account_port", null);
             final String pass = prefs.getString("pref_account_pass", null);
-
+            // TODO this class should be receiving mAccountId in the intent that launches it, and get the rest from there via Imps
             ContentResolver cr = getContentResolver();
             mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, user, pass);
             mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
@@ -138,8 +131,8 @@ public class MainActivity extends Activity {
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 
+        // TODO replace this with Imps.ProviderSettings.QueryMap settings.getUseTor()
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-
         boolean useTor = prefs.getBoolean("pref_security_use_tor", false);
         
         if (useTor) {
