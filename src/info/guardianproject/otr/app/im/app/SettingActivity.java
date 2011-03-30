@@ -95,6 +95,7 @@ public class SettingActivity extends android.preference.PreferenceActivity {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId,
                 false /* don't keep updated */, null /* no handler */);
+        boolean ret = false;
         String key = preference.getKey();
         if (preference instanceof CheckBoxPreference) {
             boolean value = ((CheckBoxPreference) preference).isChecked();
@@ -117,8 +118,7 @@ public class SettingActivity extends android.preference.PreferenceActivity {
                     settings.setRingtoneURI(null);
                 }
             }
-            settings.close();
-            return true;
+            ret = true;
         } else if (preference instanceof EditTextPreference) {
         	String value = ((EditTextPreference) preference).getText();
             if (key.equals(getString(R.string.pref_account_user))) {
@@ -148,10 +148,9 @@ public class SettingActivity extends android.preference.PreferenceActivity {
             } else if (key.equals(getString(R.string.pref_security_otr_mode))) {
             	settings.setOtrMode(value);
             }
-            settings.close();
-            return true;
+            ret = true;
         }
-        
-        return false;
+        settings.close();
+        return ret;
     }
 }
