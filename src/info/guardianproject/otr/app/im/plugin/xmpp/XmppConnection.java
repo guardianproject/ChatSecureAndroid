@@ -259,27 +259,25 @@ public class XmppConnection extends ImConnection {
 		boolean requireTls = providerSettings.getRequireTls();
 		boolean doDnsSrv = providerSettings.getDoDnsSrv();
 		boolean tlsCertVerify = providerSettings.getTlsCertVerify();
+		boolean allowSelfSignedCerts = !tlsCertVerify;
+		boolean doVerifyDomain = tlsCertVerify;
 
 		// TODO this should be reorged as well as the gmail.com section below
 		String serverHost = providerSettings.getDomain();
-		String login = userName;
+		String server = providerSettings.getServer();
 		String resource = providerSettings.getXmppResource();
 		int serverPort = providerSettings.getPort();
 		
-		providerSettings.close();
+		providerSettings.close(); // close this, which was opened in do_login()
 		
 		Log.i(TAG, "TLS required? " + requireTls);
 		Log.i(TAG, "Do SRV check? " + doDnsSrv);
 		Log.i(TAG, "cert verification? " + tlsCertVerify);
-
-    	boolean allowSelfSignedCerts = !tlsCertVerify;
-    	boolean doVerifyDomain = tlsCertVerify;
     	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
     	
-    	// TODO how should we handle special ConnectionConfiguration for hosts like google?
-    	//we want to make it easy for users - maybe this shouldn't be here though
+    	// TODO move gmail config to the AccountWizardActivity, to be stored in Imps
 		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
 			// Google only supports a certain configuration for XMPP:
 			// http://code.google.com/apis/talk/open_communications.html
@@ -294,11 +292,9 @@ public class XmppConnection extends ImConnection {
         	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
         	SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
         	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4"); // never supported
-    		
-    		if (login.indexOf("@")==-1)
-    			login = login + "@" + serverHost;
-    		
-			
+
+        	if (userName.indexOf("@")==-1)
+        		userName = userName + "@" + serverHost;
 
     		mConfig.setVerifyRootCAEnabled(false); //TODO we have to disable this for now with Gmail
     		mConfig.setVerifyChainEnabled(tlsCertVerify); //but we still can verify the chain
@@ -308,15 +304,19 @@ public class XmppConnection extends ImConnection {
 			
 
 		} else {
-			// TODO test first only using serverHost to use the DNS SRV lookup, otherwise try all the saved settings
-			// set the priority of auth methods, 0 being the first tried
-    		
-    		if (doDnsSrv)
+			// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
+    		if (doDnsSrv) {
+    			Log.i(TAG, "(DNS SRV) ConnectionConfiguration("+serverHost+", mProxyInfo);");
     			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
-    		else
+    		} else if (server == null) { // no server specified in prefs, use the domain
+    			Log.i(TAG, "(use domain) ConnectionConfiguration("+serverHost+", "+serverPort+", "+serverHost+", mProxyInfo);");
     			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
-
-    		//mConfig.setDebuggerEnabled(true);
+    		} else {	
+    			Log.i(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+serverHost+", mProxyInfo);");
+    			mConfig = new ConnectionConfiguration(server, serverPort, serverHost, mProxyInfo);
+    		}
+    		
+    		mConfig.setDebuggerEnabled(true);
     		mConfig.setSASLAuthenticationEnabled(true);
     		if (requireTls) {
     			mConfig.setSecurityMode(SecurityMode.required);
@@ -485,9 +485,8 @@ public class XmppConnection extends ImConnection {
 			}
 		});
         
-        String user = login.split("@")[0];
-        Log.i(TAG, "mConnection.login("+user+", "+password+", "+resource+");");
-        mConnection.login(user, password, resource);
+        Log.i(TAG, "mConnection.login("+userName+", "+password+", "+resource+");");
+        mConnection.login(userName, password, resource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
