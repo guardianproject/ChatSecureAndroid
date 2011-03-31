@@ -1,15 +1,11 @@
 package info.guardianproject.otr.app.im.ui;
 
-import java.util.List;
-
-import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.ProviderDef;
 import info.guardianproject.otr.app.im.app.SettingActivity;
 import info.guardianproject.otr.app.im.app.SigningInActivity;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
@@ -19,16 +15,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -125,29 +118,24 @@ public class MainActivity extends Activity {
     }
     
     void signIn() {
-        
     	Intent intent = new Intent(MainActivity.this, SigningInActivity.class);
         intent.setData(mAccountUri);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-
-        // TODO replace this with Imps.ProviderSettings.QueryMap settings.getUseTor()
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-        boolean useTor = prefs.getBoolean("pref_security_use_tor", false);
         
-        if (useTor) {
-        	// TODO move ImApp.EXTRA_INTENT_PROXY_* to ImServiceConstants
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), mProviderId,
+                false /* keep updated */, null /* no handler */);
+        if (settings.getUseTor()) {
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
         }
-       
-    	
+    	settings.close();
         
        // if (mToAddress != null) {
          //   intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
         //}
-
         startActivityForResult(intent, REQUEST_SIGN_IN);
     }
     
