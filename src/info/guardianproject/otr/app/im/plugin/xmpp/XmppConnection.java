@@ -253,9 +253,10 @@ public class XmppConnection extends ImConnection {
 		}
 	}
 	
-	private void initConnection(String userName, String password, 
+	private void initConnection(String userName, final String password, 
 			Imps.ProviderSettings.QueryMap providerSettings) throws XMPPException {
 
+		boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
 		boolean requireTls = providerSettings.getRequireTls();
 		boolean doDnsSrv = providerSettings.getDoDnsSrv();
 		boolean tlsCertVerify = providerSettings.getTlsCertVerify();
@@ -263,9 +264,9 @@ public class XmppConnection extends ImConnection {
 		boolean doVerifyDomain = tlsCertVerify;
 
 		// TODO this should be reorged as well as the gmail.com section below
-		String serverHost = providerSettings.getDomain();
+		String domain = providerSettings.getDomain();
 		String server = providerSettings.getServer();
-		String resource = providerSettings.getXmppResource();
+		String xmppResource = providerSettings.getXmppResource();
 		int serverPort = providerSettings.getPort();
 		
 		providerSettings.close(); // close this, which was opened in do_login()
@@ -278,13 +279,13 @@ public class XmppConnection extends ImConnection {
     		 mProxyInfo = ProxyInfo.forNoProxy();
     	
     	// TODO move gmail config to the AccountWizardActivity, to be stored in Imps
-		if (serverHost.equals("gmail.com") || serverHost.equals("googlemail.com")) {
+		if (domain.equals("gmail.com") || domain.equals("googlemail.com")) {
 			// Google only supports a certain configuration for XMPP:
 			// http://code.google.com/apis/talk/open_communications.html
 			
     		// only use the @host.com serverHost name so that ConnectionConfiguration does a DNS SRV lookup
 			// is always talk.google.com
-			mConfig = new ConnectionConfiguration("talk.google.com", 5222, serverHost, mProxyInfo);
+			mConfig = new ConnectionConfiguration("talk.google.com", 5222, domain, mProxyInfo);
 			
 			mConfig.setSecurityMode(SecurityMode.required); // Gtalk requires TLS always
         	mConfig.setSASLAuthenticationEnabled(true);
@@ -294,29 +295,26 @@ public class XmppConnection extends ImConnection {
         	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4"); // never supported
 
         	if (userName.indexOf("@")==-1)
-        		userName = userName + "@" + serverHost;
+        		userName = userName + "@" + domain;
 
     		mConfig.setVerifyRootCAEnabled(false); //TODO we have to disable this for now with Gmail
     		mConfig.setVerifyChainEnabled(tlsCertVerify); //but we still can verify the chain
     		mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
     		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
-    		
-			
-
 		} else {
 			// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
     		if (doDnsSrv) {
-    			Log.i(TAG, "(DNS SRV) ConnectionConfiguration("+serverHost+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(serverHost, mProxyInfo);
+    			Log.i(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
+    			mConfig = new ConnectionConfiguration(domain, mProxyInfo);
     		} else if (server == null) { // no server specified in prefs, use the domain
-    			Log.i(TAG, "(use domain) ConnectionConfiguration("+serverHost+", "+serverPort+", "+serverHost+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(serverHost, serverPort, serverHost, mProxyInfo);
+    			Log.i(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
+    			mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
     		} else {	
-    			Log.i(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+serverHost+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(server, serverPort, serverHost, mProxyInfo);
+    			Log.i(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
+    			mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
     		}
     		
-    		mConfig.setDebuggerEnabled(true);
+    		//mConfig.setDebuggerEnabled(true);
     		mConfig.setSASLAuthenticationEnabled(true);
     		if (requireTls) {
     			mConfig.setSecurityMode(SecurityMode.required);
@@ -329,10 +327,13 @@ public class XmppConnection extends ImConnection {
     			mConfig.setSecurityMode(SecurityMode.enabled);
     			tlsCertVerify = false;
     			doVerifyDomain = false;
+    			allowSelfSignedCerts = true;
     			// without TLS, use DIGEST-MD5 first
     			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-    			SASLAuthentication.supportSASLMechanism("PLAIN", 1);
-    			// TODO allow PLAIN using "allow passwords in the clear" preference
+    			if(allowPlainAuth)
+    				SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    			else
+    				SASLAuthentication.unsupportSASLMechanism("PLAIN");
     		}
     		// Android has no support for Kerberos or GSSAPI, so disable completely
     		SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
@@ -484,9 +485,9 @@ public class XmppConnection extends ImConnection {
 				Log.i(TAG, "connection closed");
 			}
 		});
-        
-        Log.i(TAG, "mConnection.login("+userName+", "+password+", "+resource+");");
-        mConnection.login(userName, password, resource);
+        // dangerous debug statement below, prints password!
+        //Log.i(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
+        mConnection.login(userName, password, xmppResource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
         mConnection.sendPacket(presence);
