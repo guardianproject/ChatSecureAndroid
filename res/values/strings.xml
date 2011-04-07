@@ -168,6 +168,7 @@
     <!-- The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
     <string name="sign_up">Don\u2019t have an account?</string>
     <!-- This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+    <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
     <string name="check_auto_sign_in">This option automatically signs you in every time you open this application. To disable the option, sign out, then clear the \"Sign me in automatically\" check box.</string>
     <!-- The button label which lets the user to sign into the IM service.  -->
     <string name="sign_in">Sign in</string>
@@ -534,7 +535,6 @@
         <item>:-D</item>
         <item>o_O</item>
     </string-array>
-    <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
     <string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
     <string name="menu_contact_list">Contact List</string>
     

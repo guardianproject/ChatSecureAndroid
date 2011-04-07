@@ -399,8 +399,11 @@ public class ImApp extends Application {
         resMapping.put(BrandingResourceIDs.STRING_MENU_SWITCH_CHATS,
                 R.string.menu_switch_chats);
 
+        resMapping.put(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD,
+                R.string.check_save_password);
         resMapping.put(BrandingResourceIDs.STRING_TOAST_CHECK_AUTO_SIGN_IN,
                 R.string.check_auto_sign_in);
+
         resMapping.put(BrandingResourceIDs.STRING_LABEL_SIGN_UP,
                 R.string.sign_up);
 
