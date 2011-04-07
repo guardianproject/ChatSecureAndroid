@@ -18,9 +18,8 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-public class AccountWizardActivity extends Activity implements OnClickListener
-{
-    // TODO get mAccountId and mProviderId for real from the intent that launched me
+public class AccountWizardActivity extends Activity implements OnClickListener {
+    // TODO get mAccountId and mProviderId from the intent that launched me
     private long mProviderId = 1;
     private long mAccountId;
 
@@ -28,7 +27,6 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	private String username = "";
 	private String hostname = "";
 	private String port = "5222";
-	
 
 	private EditText editAccountId1;
 	private EditText editAccountId2;
@@ -38,7 +36,6 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			R.string.account_wizard_account_title,
 			R.string.account_wizard_host_title,
 			R.string.account_wizard_ready_title
-
 	};
 	
 	private int msg[] = {
@@ -46,36 +43,30 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			R.string.account_wizard_account_body,
 			R.string.account_wizard_host_body,
 			R.string.account_wizard_ready_body,
-
 	};
 	
-	private String fields[][] =
-	{
-			{null,null},
-			{"Account ID",null},
-			{"Hostname","Port Number"},
+	private String fields[][] = {
+			{null, null},
+			{"Account ID", null},
+			{"Hostname", "Port Number"},
 			{null, null},
 	};
 	
-	private String buttons[][] =
-	{
-			{null,"Next"},
-			{null,"Next"},
-			{"Back","Save"},
-			{"Back","Let's Go!"},
+	private String buttons[][] = {
+			{null, "Next"},
+			{null, "Next"},
+			{"Back", "Save"},
+			{"Back", "Let's Go!"},
 	};
 	
-	private View.OnClickListener listener[][] =
-	{
+	private View.OnClickListener listener[][] = {
 			{
 				null,
 				new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-					
 						nextContent();
-						
 						editAccountId1.setText(accountId);
 					}
 				}
@@ -86,41 +77,33 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 					@Override
 					public void onClick(View v) {
 						prevContent();
-
 					}
 				},
 				new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-					
-						parseAccount ();
-						hideKeyboard ();
+						parseAccount();
+						hideKeyboard();
 					}
 				}
 			},
-
 			{
 				new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						
 						prevContent();
 						editAccountId1.setText(accountId);
-
 					}
 				},
 				new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-					
 						saveHostValues();
 						nextContent();
 						hideKeyboard();
-						
-						
 					}
 				}
 			},
@@ -130,33 +113,21 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 					@Override
 					public void onClick(View v) {
 						prevContent();
-						
 					}
 				},
 				new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-					
-						
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
-						
 						intent.putExtra("doSignIn",true);
 						startActivityForResult(intent, 1);
-						
 					}
 				}
 			},
-
-			
-
-			
-			
 	};
 	
-	private void hideKeyboard ()
-	{
-
+	private void hideKeyboard () {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editAccountId1.getWindowToken(), 0);
 	}
@@ -164,20 +135,16 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 	
 	private int contentIdx = -1;
 	
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
 	        if (savedInstanceState.containsKey("contentIdx"))
 	        	contentIdx = savedInstanceState.getInt("contentIdx");
 	        
 	        if (savedInstanceState.containsKey("accountId"))
 	        	contentIdx = savedInstanceState.getInt("accountId");
-	        
         }
-        
 	}
 	
 	@Override
@@ -196,37 +163,29 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 
 	@Override
 	protected void onStart() {
-		
 		super.onStart();
 
         setContentView(R.layout.fields_buttons_view);
 
-        if (contentIdx == -1)
-        {
-        
-        	nextContent ();
-        }
-        else
-        {
+        if (contentIdx == -1) {
+        	nextContent();
+        } else {
         	showContent(contentIdx);
         }
 	}
 	
-	private void prevContent ()
-	{
+	private void prevContent() {
 		contentIdx--;
 		showContent(contentIdx);
 	}
 	
-	private void nextContent ()
-	{
+	private void nextContent() {
 		contentIdx++;
 		showContent(contentIdx);
 	}
 	
 	
-	private void showContent (int contentIdx)
-	{
+	private void showContent(int contentIdx) {
 		TextView txtTitle  = ((TextView)findViewById(R.id.WizardTextTitle));
 		txtTitle.setText(getString(title[contentIdx]));
         
@@ -238,85 +197,57 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
 		editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
-
-        if (fields[contentIdx][0] != null)
-        {
+        if (fields[contentIdx][0] != null) {
         	editAccountId1.setHint(fields[contentIdx][0]);
 
         	editAccountId1.setVisibility(TextView.VISIBLE);
-        	
-        }
-        else
-        {
+        } else {
         	editAccountId1.setVisibility(TextView.GONE);
         }
         	
-        if (fields[contentIdx][1] != null)
-        {
+        if (fields[contentIdx][1] != null) {
         	editAccountId2.setHint(fields[contentIdx][1]);
 
         	editAccountId2.setVisibility(TextView.VISIBLE);
-        }
-        else
-        {
+        } else {
         	editAccountId2.setVisibility(TextView.GONE);
-
         }
         
         Button btn1 = ((Button)findViewById(R.id.btnWizard1));
-        if (buttons[contentIdx][0] != null)
-        {
+        if (buttons[contentIdx][0] != null) {
         	btn1.setText(buttons[contentIdx][0]);
         	btn1.setOnClickListener(listener[contentIdx][0]);
         	btn1.setVisibility(Button.VISIBLE);
-        	
-        }
-        else
-        {
+        } else {
         	btn1.setVisibility(Button.INVISIBLE);
         }
         
         Button btn2 = ((Button)findViewById(R.id.btnWizard2));
-        if (buttons[contentIdx][1] != null)
-        {
+        if (buttons[contentIdx][1] != null) {
         	btn2.setText(buttons[contentIdx][1]);
         	btn2.setOnClickListener(listener[contentIdx][1]);
         	btn2.setVisibility(Button.VISIBLE);
-        	
-        }
-        else
-        {
+        } else {
         	btn2.setVisibility(Button.INVISIBLE);
         }
-        
-      
-      
 	}
-	
 	
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-	
-		
 	}
-
-
 
 
 	@Override
 	public void onClick(DialogInterface arg0, int arg1) {
-		
-		
 	}
 	
-	private void parseAccount ()
-	{
+	private void parseAccount() {
 		boolean isGood = false;
 		
 		EditText editAccountId = ((EditText)findViewById(R.id.edit1));
-        // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS would also be nice but Android 2.x only
+		// InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS would also be nice but Android 2.x only
 		editAccountId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		accountId = editAccountId.getText().toString();
 		
@@ -326,8 +257,7 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		hostname = null;
 		port = "5222";
 		
-		if (split.length > 1)
-		{
+		if (split.length > 1) {
 			hostname = split[1];
 			
 			split = hostname.split(":");
@@ -340,21 +270,15 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		
 		String errMsg = "";
 			
-		if (hostname == null)
-		{
+		if (hostname == null) {
 			isGood = false;
 			errMsg = "You didn't enter an @hostname.com part for your account ID. Try again!";
-		}
-		else if (hostname.indexOf(".")==-1)
-		{
+		} else if (hostname.indexOf(".")==-1) {
 			isGood = false;
 			errMsg = "Your server hostname didn't have a .com, .net or similar appendix. Try again!";
-		}
-		else
-		{
+		} else {
 			isGood = true;
 		}
-			
 		
 		if (!isGood) {
 			Toast.makeText(this, errMsg, Toast.LENGTH_LONG).show();
@@ -362,8 +286,10 @@ public class AccountWizardActivity extends Activity implements OnClickListener
             ContentResolver cr = getContentResolver();
             mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, username, "");
 	        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-	                getContentResolver(), mProviderId,
-	                false /* don't keep updated */, null /* no handler */);
+	                getContentResolver(),
+	                mProviderId,
+	                false /* don't keep updated */,
+	                null /* no handler */);
 	        settings.setDomain(hostname.toLowerCase());
 	        settings.setPort(Integer.parseInt(port));
 			
@@ -375,17 +301,13 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 			editAccountId1.setText(hostname);
 			editAccountId2.setText(port);
 			
-			if (hostname.equals("gmail.com") || hostname.equals("jabber.org"))
-			{
+			if (hostname.equals("gmail.com") || hostname.equals("jabber.org")) {
 				nextContent();
 			}
-			
 		}
-		
 	}
 	
-	private void saveHostValues ()
-	{
+	private void saveHostValues() {
 		EditText editAccountId1 = ((EditText)findViewById(R.id.edit1));
 		EditText editAccountId2 = ((EditText)findViewById(R.id.edit2));
 
@@ -393,8 +315,10 @@ public class AccountWizardActivity extends Activity implements OnClickListener
 		port = editAccountId2.getText().toString();
 
 		final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-				getContentResolver(), mProviderId,
-				false /* don't keep updated */, null /* no handler */);
+				getContentResolver(), 
+				mProviderId,
+				false /* don't keep updated */, 
+				null /* no handler */);
 		settings.setDomain(hostname.toLowerCase());
 		settings.setPort(Integer.parseInt(port));
 	}
