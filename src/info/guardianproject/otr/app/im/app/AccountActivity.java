@@ -91,10 +91,7 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
-        // TODO this should use Imps.ProviderSettings.QueryMap to get this stuff
         mEditName = (EditText)findViewById(R.id.edtName);
-		// InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS would also be nice but Android 2.x only
-        mEditName.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
         mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
@@ -184,8 +181,6 @@ public class AccountActivity extends Activity {
             }
         });
 
-        TextView labelUsername = (TextView)findViewById(R.id.label_username);
-        labelUsername.setText(brandingRes.getString(BrandingResourceIDs.STRING_LABEL_USERNAME));
         mEditName.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 

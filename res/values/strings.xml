@@ -634,7 +634,7 @@
 	<string name="account_wizard_ready_title">Are You Ready?</string>
 	
 	
-	<string name="account_wizard_setup_body">Enter your XMPP account ID to configure Gibberbot for your chat service. It looks like an email address - so something like yourname@gmail.com or someone@jabber.org.</string>
+	<string name="account_wizard_setup_body">Enter your account ID to configure Gibberbot for your XMPP chat service. It looks like an email address:</string>
 	<string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
 	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
