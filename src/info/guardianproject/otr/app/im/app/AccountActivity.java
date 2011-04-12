@@ -190,13 +190,21 @@ public class AccountActivity extends Activity {
         mEditPass.addTextChangedListener(mTextWatcher);
 
         mBtnSignIn.setOnClickListener(new OnClickListener() {
+        	String username;
+        	String domain;
+        	int port;
             public void onClick(View v) {
-                String username = mEditName.getText().toString();
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
 
                 ContentResolver cr = getContentResolver();
 
+                if (! parseAccount(mEditName.getText().toString())) {
+                	mEditName.selectAll();
+                	mEditName.requestFocus();
+                	return;
+                }
+                
                 long accountId = ImApp.insertOrUpdateAccount(cr, providerId, username,
                         rememberPass ? pass : null);
                 
@@ -213,25 +221,76 @@ public class AccountActivity extends Activity {
                 }
             }
 
+            private boolean parseAccount(String userField) {
+            	boolean isGood = true;
+            	String[] splitAt = userField.split("@");
+            	username = splitAt[0];
+            	domain = null;
+            	port = 5222;
+
+            	if (splitAt.length > 1) {
+            		domain = splitAt[1].toLowerCase();
+            		String[] splitColon = domain.split(":");
+            		domain = splitColon[0];
+            		if(splitColon.length > 1) {
+            			try {
+            				port = Integer.parseInt(splitColon[1]);
+            			} catch (NumberFormatException e) {
+            				// TODO move these strings to strings.xml
+            				isGood = false;
+            				Toast.makeText(AccountActivity.this, 
+            						"The port value '" + splitColon[1] +
+            						"' after the : could not be parsed as a number!",
+            						Toast.LENGTH_LONG).show();
+            			}
+            		}
+            	}
+
+            	// TODO move these strings to strings.xml
+            	if (domain == null) {
+            		isGood = false;
+            		Toast.makeText(AccountActivity.this, 
+            				"You didn't enter an @hostname.com part for your account ID. Try again!",
+            				Toast.LENGTH_LONG).show();
+            	} else if (domain.indexOf(".") == -1) {
+            		isGood = false;
+            		Toast.makeText(AccountActivity.this, 
+            				"Your server hostname didn't have a .com, .net or similar appendix. Try again!",
+            				Toast.LENGTH_LONG).show();
+            	}
+
+            	return isGood;
+            }
+
             void signIn(boolean rememberPass, String pass) {
+                final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        getContentResolver(),
+                        providerId,
+                        false /* don't keep updated */,
+                        null /* no handler */);
+                
+        		settingsForDomain(settings, domain, port);
+                
                 Intent intent = new Intent(AccountActivity.this, SigningInActivity.class);
                 intent.setData(mAccountUri);
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }
-                
-                if (mUseTor.isChecked())
-                {
+
+                if (mUseTor.isChecked()) {	
+                	settings.setUseTor(true);
+                	// TODO move proxy settings to a central location
                 	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
                 	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
                 	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
-                }
-               
-            	
+                } else
+                	settings.setUseTor(false);
+
                 if (mToAddress != null) {
                     intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
                 }
-
+                
+        		settings.close();
                 startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
@@ -252,6 +311,38 @@ public class AccountActivity extends Activity {
         // TODO move this warning to strings.xml
         String msg = "WARNING: This is an ALPHA release of Gibberbot that may still include security holes or bugs. Experimental use only!";
         Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    void settingsForDomain(Imps.ProviderSettings.QueryMap settings, String domain, int port) {
+    	if (domain.equals("gmail.com")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain(domain);
+    		settings.setPort(5222);
+    		settings.setServer("talk.google.com");
+    		settings.setRequireTls(false);
+    		settings.setTlsCertVerify(false);
+    	} else if (domain.equals("jabber.org")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain(domain);
+    		settings.setPort(5222);
+    		settings.setServer(null);
+    		settings.setRequireTls(true);
+    		settings.setTlsCertVerify(true);
+    	} else if (domain.equals("chat.facebook.com")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain(domain);
+    		settings.setPort(5222);
+    		settings.setServer(domain);
+    		settings.setRequireTls(false);
+    		settings.setTlsCertVerify(false);
+    	} else {
+    		settings.setDoDnsSrv(true);
+    		settings.setDomain(domain);
+    		settings.setPort(port);
+    		settings.setServer(null);
+    		settings.setRequireTls(false);
+    		settings.setTlsCertVerify(true);
+    	}
     }
 
     void comfirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
