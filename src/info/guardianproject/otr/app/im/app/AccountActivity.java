@@ -310,6 +310,10 @@ public class AccountActivity extends Activity {
 
     void settingsForDomain(Imps.ProviderSettings.QueryMap settings, String domain, int port) {
     	if (domain.equals("gmail.com")) {
+			// Google only supports a certain configuration for XMPP:
+			// http://code.google.com/apis/talk/open_communications.html
+    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
+    		// then perhaps we could enable RequireTls
     		settings.setDoDnsSrv(false);
     		settings.setDomain(domain);
     		settings.setPort(5222);

@@ -198,7 +198,6 @@ public class XmppConnection extends ImConnection {
 		String userName = Imps.Account.getUserName(contentResolver, mAccountId);
 		String password = Imps.Account.getPassword(contentResolver, mAccountId);
 		String domain = providerSettings.getDomain();
-		Log.i(TAG, "logging in " + userName + "@" + domain);
 		
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
@@ -239,6 +238,7 @@ public class XmppConnection extends ImConnection {
 		Log.i(TAG, "logged in");
 	}
 
+	// TODO shouldn't setProxy be handled in Imps/settings?
 	public void setProxy (String type, String host, int port)
 	{
 
@@ -277,73 +277,48 @@ public class XmppConnection extends ImConnection {
     	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
-    	
-    	// TODO move gmail config to the AccountWizardActivity, to be stored in Imps
-		if (domain.equals("gmail.com") || domain.equals("googlemail.com")) {
-			// Google only supports a certain configuration for XMPP:
-			// http://code.google.com/apis/talk/open_communications.html
-			
-    		// only use the @host.com serverHost name so that ConnectionConfiguration does a DNS SRV lookup
-			// is always talk.google.com
-			mConfig = new ConnectionConfiguration("talk.google.com", 5222, domain, mProxyInfo);
-			
-			mConfig.setSecurityMode(SecurityMode.required); // Gtalk requires TLS always
-        	mConfig.setSASLAuthenticationEnabled(true);
-        	// Google only supports SASL/PLAIN so disable the rest just in case
-        	SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-        	SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
-        	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4"); // never supported
 
-        	if (userName.indexOf("@")==-1)
-        		userName = userName + "@" + domain;
-
-    		mConfig.setVerifyRootCAEnabled(false); //TODO we have to disable this for now with Gmail
-    		mConfig.setVerifyChainEnabled(tlsCertVerify); //but we still can verify the chain
-    		mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
-    		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
-		} else {
-			// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
-    		if (doDnsSrv) {
-    			Log.i(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(domain, mProxyInfo);
-    		} else if (server == null) { // no server specified in prefs, use the domain
-    			Log.i(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
-    		} else {	
-    			Log.i(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
-    			mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
-    		}
-    		
-    		//mConfig.setDebuggerEnabled(true);
-    		mConfig.setSASLAuthenticationEnabled(true);
-    		if (requireTls) {
-    			mConfig.setSecurityMode(SecurityMode.required);
-    			// with TLS, use PLAIN first for best compatibility
-    			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-    			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
-    		} else {
-    			// if it finds a cert, still use it, but don't check anything since 
-    			// TLS errors are not expected by the user
-    			mConfig.setSecurityMode(SecurityMode.enabled);
-    			tlsCertVerify = false;
-    			doVerifyDomain = false;
-    			allowSelfSignedCerts = true;
-    			// without TLS, use DIGEST-MD5 first
-    			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-    			if(allowPlainAuth)
-    				SASLAuthentication.supportSASLMechanism("PLAIN", 1);
-    			else
-    				SASLAuthentication.unsupportSASLMechanism("PLAIN");
-    		}
-    		// Android has no support for Kerberos or GSSAPI, so disable completely
-    		SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
-    		SASLAuthentication.unregisterSASLMechanism("GSSAPI");
-
-    		mConfig.setVerifyChainEnabled(tlsCertVerify);
-    		mConfig.setVerifyRootCAEnabled(tlsCertVerify);
-    		mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
-    		mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
+    	// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
+    	if (doDnsSrv) {
+    		Log.i(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
+    		mConfig = new ConnectionConfiguration(domain, mProxyInfo);
+    	} else if (server == null) { // no server specified in prefs, use the domain
+    		Log.i(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
+    		mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
+    	} else {	
+    		Log.i(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
+    		mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
     	}
+
+    	//mConfig.setDebuggerEnabled(true);
+    	mConfig.setSASLAuthenticationEnabled(true);
+    	if (requireTls) {
+    		mConfig.setSecurityMode(SecurityMode.required);
+    		// with TLS, use PLAIN first for best compatibility
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    	} else {
+    		// if it finds a cert, still use it, but don't check anything since 
+    		// TLS errors are not expected by the user
+    		mConfig.setSecurityMode(SecurityMode.enabled);
+    		tlsCertVerify = false;
+    		doVerifyDomain = false;
+    		allowSelfSignedCerts = true;
+    		// without TLS, use DIGEST-MD5 first
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
+    		if(allowPlainAuth)
+    			SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    		else
+    			SASLAuthentication.unsupportSASLMechanism("PLAIN");
+    	}
+    	// Android has no support for Kerberos or GSSAPI, so disable completely
+    	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
+    	SASLAuthentication.unregisterSASLMechanism("GSSAPI");
+
+    	mConfig.setVerifyChainEnabled(tlsCertVerify);
+    	mConfig.setVerifyRootCAEnabled(tlsCertVerify);
+    	mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
+    	mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
     	
     	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
 		mConfig.setTruststoreType("BKS");
