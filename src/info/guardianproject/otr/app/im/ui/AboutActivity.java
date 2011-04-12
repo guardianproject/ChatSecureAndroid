@@ -1,20 +1,23 @@
 package info.guardianproject.otr.app.im.ui;
 
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.AccountActivity;
+import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import info.guardianproject.otr.app.im.R;
 
 public class AboutActivity extends Activity implements OnClickListener
 {
 	//WizardHelper wizard = null;
+    // TODO get mProviderId for real
+    long mProviderId = 1;
 	
 	private int title[] = {
 			R.string.about_welcome_title,
@@ -86,13 +89,10 @@ public class AboutActivity extends Activity implements OnClickListener
 					
 					@Override
 					public void onClick(View v) {
-					
-						
-						Intent intent = new Intent(getBaseContext(), AccountWizardActivity.class);
-						
-					
+						Intent intent = new Intent(getBaseContext(), AccountActivity.class);
+						intent.setAction(Intent.ACTION_INSERT);
+						intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
 						startActivity(intent);
-
 					}
 				}
 			},

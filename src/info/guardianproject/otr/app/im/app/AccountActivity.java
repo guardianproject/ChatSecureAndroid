@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -54,6 +55,7 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class AccountActivity extends Activity {
+    public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
 
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
@@ -91,6 +93,8 @@ public class AccountActivity extends Activity {
         setContentView(R.layout.account_activity);
         // TODO this should use Imps.ProviderSettings.QueryMap to get this stuff
         mEditName = (EditText)findViewById(R.id.edtName);
+		// InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS would also be nice but Android 2.x only
+        mEditName.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
         mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
@@ -245,7 +249,8 @@ public class AccountActivity extends Activity {
 
         updateWidgetState();
         
-        String msg = "WARNING: This is an ALPHA release of OtrChat that may still include security holes or bugs. Experimental use only!";
+        // TODO move this warning to strings.xml
+        String msg = "WARNING: This is an ALPHA release of Gibberbot that may still include security holes or bugs. Experimental use only!";
         Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 

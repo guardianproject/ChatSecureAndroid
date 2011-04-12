@@ -28,6 +28,7 @@
 	    android:layout_height="fill_parent"
 	    android:orientation="vertical"
 	    android:padding="10dip">
+		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/messageTextView" android:text="@string/account_wizard_setup_body"></TextView>
 	
 	    <TextView android:id= "@+id/label_username"
 	        android:layout_width="wrap_content"

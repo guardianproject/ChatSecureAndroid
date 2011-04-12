@@ -145,6 +145,7 @@
             </intent-filter>
         </activity>
       
+-->
 
         <activity android:name=".app.AccountActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -161,7 +162,6 @@
                 <data android:mimeType="vnd.android.cursor.item/imps-providers" />
             </intent-filter>
         </activity>
-          -->
       
 
         <activity android:name=".app.SigningInActivity"

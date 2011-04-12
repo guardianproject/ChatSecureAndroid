@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.AccountActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.ProviderDef;
@@ -16,6 +17,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +27,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
+    public static final String TAG = "MainActivity";
+
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
     long mProviderId = 1;
     // TODO get mAccountId and mProviderId for real
@@ -58,6 +61,18 @@ public class MainActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
         user = prefs.getString("pref_account_user", null);
     }
+
+    private Intent getCreateAccountIntent() {
+		Intent intent = new Intent(getBaseContext(), AccountActivity.class);
+        //Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_INSERT);
+
+        //mProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+        Log.i(TAG, " getCreateAccountIntent URI: " + ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId).toString());
+        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
+        //intent.addCategory(getProviderCategory(mProviderCursor));
+        return intent;
+    }
     
     private void showUI () {
         setContentView(R.layout.splash_activity);
@@ -80,7 +95,7 @@ public class MainActivity extends Activity {
 	        {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getBaseContext(), AccountWizardActivity.class);
+					Intent intent = getCreateAccountIntent();
 					intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
 					intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 					startActivityForResult(intent, 1);
@@ -94,7 +109,7 @@ public class MainActivity extends Activity {
     }
     
     public boolean checkAccountAndSignin() {
-    	
+    	// TODO convert this to Imps
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
         user = prefs.getString("pref_account_user", null);
 
@@ -127,6 +142,7 @@ public class MainActivity extends Activity {
                 getContentResolver(), mProviderId,
                 false /* keep updated */, null /* no handler */);
         if (settings.getUseTor()) {
+        	// TODO move proxy settings to a central location
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
         	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
