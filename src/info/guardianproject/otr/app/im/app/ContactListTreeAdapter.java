@@ -109,6 +109,29 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
+        	
+        	String lastMessage = c.getString(ContactView.COLUMN_LAST_MESSAGE);
+        	Log.v("Foo","last message: " + lastMessage);
+        	
+        	/*
+        	String[] thatCursor  = c.getColumnNames();
+        	for (int i= 0; i< thatCursor.length ; i++ ){
+        		Log.v("That Column:" + i,thatCursor[i]);
+        		
+        		
+        			      //String data = c.getString(c.getColumnIndex("last_unread_message"));
+        			    
+        			
+        		
+        		/*if(c.isNull(c.getColumnIndex(thatCursor[i]))){
+        		break;
+        		}
+        		else{
+        			Log.v("That Column:" + i,thatCursor[i] + ":" + c.getString(c.getColumnIndex(thatCursor[i])));
+        		}
+        		
+        	}
+        	*/
             if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
                 log("onQueryComplete:token=" + token);
             }

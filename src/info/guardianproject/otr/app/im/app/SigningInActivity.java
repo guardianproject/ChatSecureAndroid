@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IChatSession;
@@ -461,7 +462,11 @@ public class SigningInActivity extends Activity {
             try {
                 Intent intent;
                 long accountId = mConn.getAccountId();
-
+                
+                /*#############################################################################
+                 * This (see below) intent is the one that needs to be passed to the tab Event 
+                 */
+                
                 if (mToAddress != null) {
                     IChatSessionManager manager = mConn.getChatSessionManager();
                     IChatSession session = manager.getChatSession(mToAddress);
@@ -476,7 +481,7 @@ public class SigningInActivity extends Activity {
                     intent.addCategory(ImApp.IMPS_CATEGORY);
 
                 } else {
-                    intent = new Intent(this, ContactListActivity.class);
+                    intent = new Intent(this, TabbedContainer.class);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
                     
                 }

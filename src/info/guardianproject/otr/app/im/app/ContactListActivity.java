@@ -332,7 +332,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     }
 
     static void log(String msg) {
-        Log.d(ImApp.LOG_TAG, "<ContactListActivity> " +msg);
+        Log.v(ImApp.LOG_TAG, "<ContactListActivity> " +msg);
     }
 
     @Override
