@@ -21,6 +21,7 @@
 	android:id="@+id/acct_act_scrollview"
 	android:layout_height="fill_parent"
 	android:layout_width="fill_parent"
+	android:background="@drawable/gibberbg"
 	android:fillViewport="true">
 			
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,19 +29,32 @@
 	    android:layout_height="fill_parent"
 	    android:orientation="vertical"
 	    android:padding="10dip">
-		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/messageTextView" android:text="@string/account_wizard_setup_body"></TextView>
+	    
+		<TextView android:id="@+id/messageTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="#ffffff"
+			android:background="#333333"
+			android:text="@string/account_wizard_setup_body"/>
 	
 	    <EditText android:id="@+id/edtName"
 	        android:completionThreshold="1"
 	        android:selectAllOnFocus="true"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:inputType="text" android:text="user@domain.com" android:autoText="false" android:capitalize="none" android:cursorVisible="true" android:autoLink="none"/>
+ 	        android:inputType="text"
+	        android:text="user@domain.com"
+	        android:autoText="false"
+	        android:capitalize="none"
+	        android:cursorVisible="true"
+	        android:autoLink="none" />
 	
-	    <TextView android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="3dip"
-	        android:text="@string/label_password" />
+	    <TextView android:text="@string/label_password"
+	    	android:layout_width="wrap_content"
+ 			android:textColor="#ffffff"
+ 			android:background="#333333"
+ 	        android:layout_height="wrap_content"
+	        android:layout_marginTop="3dip" />
 	
 	    <EditText android:id="@+id/edtPass"
 	        android:layout_width="fill_parent"
