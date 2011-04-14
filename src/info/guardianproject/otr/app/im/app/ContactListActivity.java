@@ -16,16 +16,14 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.otr.app.im.ui.MainActivity;
 
 import java.util.Observable;
 import java.util.Observer;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -477,7 +475,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     }
                   
                     //TODO Gibber manually launch back to main
-                	Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 					intent.putExtra("showSettings",false);

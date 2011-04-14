@@ -38,21 +38,11 @@
              android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false">
 
 
-         <activity android:name=".ui.MainActivity">
+         <activity android:name=".app.WelcomeActivity">
             
               <intent-filter>
-          
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-               <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
             </intent-filter>
         </activity>
         

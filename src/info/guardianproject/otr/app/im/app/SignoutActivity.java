@@ -16,11 +16,8 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.MainActivity;
-
 import info.guardianproject.otr.app.im.IImConnection;
-
+import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -115,7 +112,7 @@ public class SignoutActivity extends Activity {
         } finally {
            // finish();
         	
-        	returnToMain();
+        	returnToWelcomePage();
         	
         }
     }
@@ -126,13 +123,13 @@ public class SignoutActivity extends Activity {
 
         // always call finish here, because we don't want to be in the backlist ever, and
         // we don't handle onRestart()
-        returnToMain();
+        returnToWelcomePage();
     	
     }
 
-    private void returnToMain()
+    private void returnToWelcomePage()
     {
-    	Intent intent = new Intent(getBaseContext(), MainActivity.class);
+    	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
 		
 		intent.putExtra("doSignIn",false);
 		startActivityForResult(intent, 1);
