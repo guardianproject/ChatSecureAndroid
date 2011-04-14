@@ -16,19 +16,16 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
-import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionListener;
 import info.guardianproject.otr.app.im.IImConnection;
-
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,14 +49,12 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 public class SigningInActivity extends Activity {
+    private static final String TAG = "SigningInActivity";
+
     private static final String SYNC_SETTINGS_ACTION = "android.settings.SYNC_SETTINGS";
     private static final String SYNC_SETTINGS_CATEGORY = "android.intent.category.DEFAULT";
 
@@ -76,10 +71,6 @@ public class SigningInActivity extends Activity {
     private String mToAddress;
     
     private boolean isActive;
-    
-    private String mProxyType;
-    private String mProxyHost;
-    private int mProxyPort;
 
     protected static final int ID_CANCEL_SIGNIN = Menu.FIRST + 1;
 
@@ -134,24 +125,14 @@ public class SigningInActivity extends Activity {
 
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mAccountId = c.getLong(c.getColumnIndexOrThrow(Imps.Account._ID));
-        
-        mProxyType = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_TYPE);
-        if (mProxyType != null)
-        {
-        	mProxyHost = intent.getStringExtra(ImApp.EXTRA_INTENT_PROXY_HOST);
-        	mProxyPort = intent.getIntExtra(ImApp.EXTRA_INTENT_PROXY_PORT,-1);
-        }
-        
-        
-        String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
-        
-        mPassword = pwExtra != null ? pwExtra
-                : c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
-        
-        
-        
-        
         isActive = c.getInt(c.getColumnIndexOrThrow(Imps.Account.ACTIVE)) == 1;
+
+        final String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
+        if (pwExtra != null) {
+        	mPassword = pwExtra;
+        } else {
+        	mPassword = c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
+        }
 
         c.close();
         
@@ -182,7 +163,7 @@ public class SigningInActivity extends Activity {
         }
         catch (Exception e)
         {
-        	log("bad things: " + e);
+        	Log.w(TAG, "bad things: " + e);
         }
     }
     
@@ -319,8 +300,17 @@ public class SigningInActivity extends Activity {
                 if (mApp.isBackgroundDataEnabled()) {
                     mConn = mApp.createConnection(mProviderId);
                     mConn.registerConnectionListener(mListener);
-                    
-                    mConn.setProxy(mProxyType, mProxyHost, mProxyPort);
+                    // TODO UsrTor should probably be set in the intent rather than fetched from the settings
+                    final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                            getContentResolver(),
+                            mProviderId,
+                            false /* don't keep updated */,
+                            null /* no handler */);
+                    if (settings.getUseTor()) {	
+                        mConn.setProxy("SOCKS5", "127.0.0.1", 9050);
+                    }
+                    settings.close();
+
                  	mConn.login(mAccountId, autoLoadContacts, autoRetryLogin);
                 } else {
                     promptForBackgroundDataSetting();

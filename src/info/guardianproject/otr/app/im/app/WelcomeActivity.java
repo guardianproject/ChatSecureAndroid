@@ -18,9 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -143,31 +141,20 @@ public class WelcomeActivity extends Activity {
     }
     
     private void signInAccountAtPosition(int position) {
-        Intent intent = null;
         mProviderCursor.moveToPosition(position);
 
-        if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            // add account
-            intent = getCreateAccountIntent();
-        } else {
+        if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
             int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
             if (state == Imps.ConnectionStatus.OFFLINE) {
                 boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-                boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
                 if (isKeepSignedIn) {
                     signIn(accountId);
-                } else if(isAccountEditible) {
-                    intent = getEditAccountIntent();
                 }
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
                 signIn(accountId);
             }
-        }
-
-        if (intent != null) {
-            startActivity(intent);
         }
     }
 

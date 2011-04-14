@@ -287,15 +287,8 @@ public class AccountActivity extends Activity {
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }
-
-                if (mUseTor.isChecked()) {	
-                	settings.setUseTor(true);
-                	// TODO move proxy settings to a central location
-                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_TYPE,"SOCKS5");
-                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_HOST,"127.0.0.1");
-                	intent.putExtra(ImApp.EXTRA_INTENT_PROXY_PORT,9050);
-                } else
-                	settings.setUseTor(false);
+                
+            	settings.setUseTor(mUseTor.isChecked());
 
                 if (mToAddress != null) {
                     intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
