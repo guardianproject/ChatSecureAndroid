@@ -109,7 +109,7 @@ public class AccountActivity extends Activity {
         String action = i.getAction();
         mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
         final String origUserName;
-        final long providerId = 1;  // TODO once we implement multiple IM protocols
+        final long providerId;
         final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
@@ -126,7 +126,7 @@ public class AccountActivity extends Activity {
         if(Intent.ACTION_INSERT.equals(action)) {
             origUserName = "";
             // TODO once we implement multiple IM protocols
-            //providerId = ContentUris.parseId(i.getData());
+            providerId = ContentUris.parseId(i.getData());
             provider = app.getProvider(providerId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
         } else if(Intent.ACTION_EDIT.equals(action)) {
@@ -150,8 +150,7 @@ public class AccountActivity extends Activity {
 
             setTitle(R.string.sign_in);
 
-            // TODO once we implement multiple IM protocols
-            //providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
+            providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = app.getProvider(providerId);
 
             origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN);
