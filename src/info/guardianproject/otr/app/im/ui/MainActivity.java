@@ -62,18 +62,6 @@ public class MainActivity extends Activity {
         user = prefs.getString("pref_account_user", null);
     }
 
-    private Intent getCreateAccountIntent() {
-		Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-        //Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_INSERT);
-
-        //mProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-        Log.i(TAG, " getCreateAccountIntent URI: " + ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId).toString());
-        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
-        //intent.addCategory(getProviderCategory(mProviderCursor));
-        return intent;
-    }
-    
     private void showUI () {
         setContentView(R.layout.splash_activity);
      
@@ -95,7 +83,9 @@ public class MainActivity extends Activity {
 	        {
 				@Override
 				public void onClick(View v) {
-					Intent intent = getCreateAccountIntent();
+					Intent intent = new Intent(getBaseContext(), AccountActivity.class);
+					intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
+			        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
 					intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
 					intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 					startActivityForResult(intent, 1);

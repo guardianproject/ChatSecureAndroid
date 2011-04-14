@@ -109,19 +109,27 @@ public class AccountActivity extends Activity {
         String action = i.getAction();
         mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
         final String origUserName;
-        final long providerId;
+        final long providerId = 1;  // TODO once we implement multiple IM protocols
         final ProviderDef provider;
+
+        ContentResolver cr = getContentResolver();
+		Uri uri = i.getData();
+		// check if there is account information and direct accordingly
+        if (Intent.ACTION_INSERT_OR_EDIT.equals(action)) {
+            if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
+        		action = Intent.ACTION_INSERT;
+            } else {
+        		action = Intent.ACTION_EDIT;
+            }
+        }
 
         if(Intent.ACTION_INSERT.equals(action)) {
             origUserName = "";
-            providerId = ContentUris.parseId(i.getData());
+            // TODO once we implement multiple IM protocols
+            //providerId = ContentUris.parseId(i.getData());
             provider = app.getProvider(providerId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
         } else if(Intent.ACTION_EDIT.equals(action)) {
-        	
-            ContentResolver cr = getContentResolver();
-            Uri uri = i.getData();
-
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
                 Log.w(ImApp.LOG_TAG, "<AccountActivity>Bad data");
                 return;
@@ -142,7 +150,8 @@ public class AccountActivity extends Activity {
 
             setTitle(R.string.sign_in);
 
-            providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
+            // TODO once we implement multiple IM protocols
+            //providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = app.getProvider(providerId);
 
             origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN);

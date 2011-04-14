@@ -90,7 +90,7 @@ public class AboutActivity extends Activity implements OnClickListener
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-						intent.setAction(Intent.ACTION_INSERT);
+						intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
 						intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
 						startActivity(intent);
 					}
