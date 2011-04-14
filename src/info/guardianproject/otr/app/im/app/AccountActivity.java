@@ -153,7 +153,12 @@ public class AccountActivity extends Activity {
             providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = app.getProvider(providerId);
 
-            origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN);
+    		ContentResolver contentResolver = getContentResolver();
+    		Imps.ProviderSettings.QueryMap settings = 
+    			new Imps.ProviderSettings.QueryMap(contentResolver,
+    					providerId, false, null);
+
+            origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@" + settings.getDomain();
             mEditName.setText(origUserName);
             mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
 
@@ -162,6 +167,9 @@ public class AccountActivity extends Activity {
             boolean keepSignIn = cursor.getInt(ACCOUNT_KEEP_SIGNED_IN_COLUMN) == 1;
             mKeepSignIn.setChecked(keepSignIn);
 
+            mUseTor.setChecked(settings.getUseTor());
+            
+            settings.close();
             cursor.close();
         } else {
             Log.w(ImApp.LOG_TAG, "<AccountActivity> unknown intent action " + action);
