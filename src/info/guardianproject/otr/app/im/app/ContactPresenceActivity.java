@@ -23,6 +23,7 @@ import com.google.zxing.integration.android.IntentResult;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import info.guardianproject.otr.app.im.R;
 

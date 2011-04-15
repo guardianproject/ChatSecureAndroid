@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.ArrayList;

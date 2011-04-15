@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import java.text.DateFormat;
 import java.util.Calendar;
