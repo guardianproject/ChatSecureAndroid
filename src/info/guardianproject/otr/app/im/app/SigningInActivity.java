@@ -87,7 +87,6 @@ public class SigningInActivity extends Activity {
       
     }
     
-    
     @Override
 	protected void onResume() {
     	
@@ -139,39 +138,27 @@ public class SigningInActivity extends Activity {
         mApp = ImApp.getApplication(this);
 
         IImConnection conn = mApp.getConnection(mProviderId);
-
-        try
-        {
-	        if (conn == null || (conn.getState() != ImConnection.LOGGED_IN))
-	        {
-	        	
-	        	 if (mPassword == null || mPassword.length() == 0)
-	        	 {
-	        		 //show password prompt
-	        		 showPasswordDialog();
-	        	 }
-	        	 else
-	        	 {
-	        		 gogo();
-	        	 }
-	        }
-	        else
-	        {
-	        	  gogo();
-	        }
-	      
-        }
-        catch (Exception e)
-        {
+        try {
+        	if (conn == null || (conn.getState() != ImConnection.LOGGED_IN)) {
+        		if (mPassword == null || mPassword.length() == 0) {
+        			//show password prompt
+        			showPasswordDialog();
+        		} else {
+        			gogo();
+        		}
+        	} else {
+        		conn.logout(); // in case we are already logged
+        		gogo();
+        	}
+        } catch (Exception e) {
         	Log.w(TAG, "bad things: " + e);
         }
     }
     
     ProgressDialog pbarDialog;
     
-    public void gogo()
-    {
-       
+    public void gogo() {
+    	
     	if (pbarDialog != null)
     		pbarDialog.dismiss();
     	

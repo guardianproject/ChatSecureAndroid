@@ -211,6 +211,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         mConn.logout();
                     }
                 } catch (RemoteException e) {
+                	Log.e(ImApp.LOG_TAG, e.getMessage());
                 }
                 return true;
         }
