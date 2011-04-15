@@ -125,7 +125,6 @@
     <string name="menu_plus">Menu+"</string>
 
     <!-- The title of a simple input dialog. Currently not used.-->
-    <string name="default_input_title">Input</string>
 
     <!-- Strings for the confirm dialogs-->
     <!-- The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
