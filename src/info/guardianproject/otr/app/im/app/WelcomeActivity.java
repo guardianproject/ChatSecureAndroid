@@ -109,7 +109,7 @@ public class WelcomeActivity extends Activity {
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
 
-        ImPluginHelper.getInstance(this).loadAvaiablePlugins();
+        ImPluginHelper.getInstance(this).loadAvailablePlugins();
     }
 
     @Override

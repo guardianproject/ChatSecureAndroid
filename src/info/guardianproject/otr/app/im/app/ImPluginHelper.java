@@ -68,19 +68,19 @@ public class ImPluginHelper {
 
     public ArrayList<ImPluginInfo> getPluginsInfo() {
         if (!mLoaded) {
-            loadAvaiablePlugins();
+            loadAvailablePlugins();
         }
         return mPluginsInfo;
     }
 
     public ArrayList<ImPlugin> getPluginObjects() {
         if (!mLoaded) {
-            loadAvaiablePlugins();
+            loadAvailablePlugins();
         }
         return mPluginObjects;
     }
 
-    public void loadAvaiablePlugins() {
+    public void loadAvailablePlugins() {
         if (mLoaded) {
             return;
         }
