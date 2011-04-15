@@ -257,16 +257,15 @@ public class AccountActivity extends Activity {
             		}
             	}
 
-            	// TODO move these strings to strings.xml
             	if (domain == null) {
             		isGood = false;
             		Toast.makeText(AccountActivity.this, 
-            				"You didn't enter an @hostname.com part for your account ID. Try again!",
+            				R.string.account_wizard_no_domain_warning,
             				Toast.LENGTH_LONG).show();
             	} else if (domain.indexOf(".") == -1) {
             		isGood = false;
             		Toast.makeText(AccountActivity.this, 
-            				"Your server hostname didn't have a .com, .net or similar appendix. Try again!",
+            				R.string.account_wizard_no_root_domain_warning,
             				Toast.LENGTH_LONG).show();
             	}
 

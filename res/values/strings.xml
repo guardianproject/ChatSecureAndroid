@@ -640,7 +640,7 @@
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 
-	<string name="signin_password_prompt">Enter your password:</string>
+	<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string><string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string><string name="signin_password_prompt">Enter your password:</string>
 
     <!-- Do not localize! Symbols for looking up preferences in Java code. -->
 
@@ -661,6 +661,8 @@
 	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
 	<string name="pref_notification_sound">pref_notification_sound</string>
 	<string name="pref_notification_ringtone">pref_notification_ringtone</string>
+	
+	
 
 
 </resources>
