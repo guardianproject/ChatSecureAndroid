@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package info.guardianproject.otr.app.im.imps;
+package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 

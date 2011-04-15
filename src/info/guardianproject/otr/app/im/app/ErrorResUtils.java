@@ -18,7 +18,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.imps.ImpsErrorInfo;
+import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 
 import info.guardianproject.otr.app.im.R;
 
