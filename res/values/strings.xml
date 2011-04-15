@@ -316,7 +316,6 @@
 
     <string name="account_setup_title">Account Setup</string>
     <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
-    <string name="setting_title">General settings</string>
     <string name="hide_offline_contacts">Hide offline contacts</string>
     <!-- This is a subtitle for the "Notification settings"  in the Setting screen. -->
     <string name="notification_group_title">Notification settings</string>
@@ -660,6 +659,7 @@
 	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
 	<string name="pref_notification_sound">pref_notification_sound</string>
 	<string name="pref_notification_ringtone">pref_notification_ringtone</string>
+	<string name="account_settings_title">Account Settings</string>
 	
 	
 

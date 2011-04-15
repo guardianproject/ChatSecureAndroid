@@ -17,11 +17,10 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-
-import info.guardianproject.otr.app.im.R;
-
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -33,7 +32,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -43,6 +41,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -57,6 +58,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class AccountActivity extends Activity {
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
+
+    private long mProviderId;
 
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
 
@@ -109,7 +112,6 @@ public class AccountActivity extends Activity {
         String action = i.getAction();
         mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
         final String origUserName;
-        final long providerId;
         final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
@@ -126,8 +128,8 @@ public class AccountActivity extends Activity {
         if(Intent.ACTION_INSERT.equals(action)) {
             origUserName = "";
             // TODO once we implement multiple IM protocols
-            providerId = ContentUris.parseId(i.getData());
-            provider = app.getProvider(providerId);
+            mProviderId = ContentUris.parseId(i.getData());
+            provider = app.getProvider(mProviderId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
         } else if(Intent.ACTION_EDIT.equals(action)) {
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
@@ -150,13 +152,13 @@ public class AccountActivity extends Activity {
 
             setTitle(R.string.sign_in);
 
-            providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
-            provider = app.getProvider(providerId);
+            mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
+            provider = app.getProvider(mProviderId);
 
     		ContentResolver contentResolver = getContentResolver();
     		Imps.ProviderSettings.QueryMap settings = 
     			new Imps.ProviderSettings.QueryMap(contentResolver,
-    					providerId, false, null);
+    					mProviderId, false, null);
 
             origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@" + settings.getDomain();
             mEditName.setText(origUserName);
@@ -177,7 +179,7 @@ public class AccountActivity extends Activity {
             return;
         }
 
-        final BrandingResources brandingRes = app.getBrandingResource(providerId);
+        final BrandingResources brandingRes = app.getBrandingResource(mProviderId);
         mKeepSignIn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 CheckBox keepSignIn = (CheckBox) v;
@@ -216,7 +218,7 @@ public class AccountActivity extends Activity {
                 	return;
                 }
                 
-                long accountId = ImApp.insertOrUpdateAccount(cr, providerId, username,
+                long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, username,
                         rememberPass ? pass : null);
                 
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
@@ -275,7 +277,7 @@ public class AccountActivity extends Activity {
             void signIn(boolean rememberPass, String pass) {
                 final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                         getContentResolver(),
-                        providerId,
+                        mProviderId,
                         false /* don't keep updated */,
                         null /* no handler */);
                 
@@ -298,6 +300,7 @@ public class AccountActivity extends Activity {
             }
         });
 
+        /*
         // Make link for signing up.
         String publicXmppServices = "http://xmpp.org/services/";
         	
@@ -308,6 +311,10 @@ public class AccountActivity extends Activity {
         TextView signUp = (TextView)findViewById(R.id.signUp);
         signUp.setText(builder);
         signUp.setMovementMethod(LinkMovementMethod.getInstance());
+         */
+        // repurposing R.id.signUp for short term kludge for account settings message
+        TextView signUp = (TextView)findViewById(R.id.signUp);
+        signUp.setText("For more account settings, press the Menu button.");
 
         updateWidgetState();
         
@@ -447,4 +454,24 @@ public class AccountActivity extends Activity {
         }
     };
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.account_settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.menu_account_settings:
+            Intent intent = new Intent(this, AccountSettingsActivity.class);
+            //Intent intent = new Intent(this, SettingActivity.class);
+            intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+            startActivity(intent);
+    		return true;
+    	}
+    	return super.onOptionsItemSelected(item);
+    }
 }

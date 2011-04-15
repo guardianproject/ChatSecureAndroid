@@ -226,6 +226,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".app.AccountSettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android-dir/imps-providerSettings" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".app.SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
