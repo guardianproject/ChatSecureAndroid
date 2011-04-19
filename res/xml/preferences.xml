@@ -21,7 +21,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <CheckBoxPreference android:key="@string/pref_hide_offline_contacts" android:title="@string/hide_offline_contacts" android:defaultValue="false" android:persistent="false" /><ListPreference android:title="Chat Encryption" android:key="@string/pref_security_otr_mode" android:dialogTitle="Chat Encryption" android:entryValues="@array/otr_options_values" android:entries="@array/otr_options" android:summary="how encrypted chats are started" android:defaultValue="auto"></ListPreference><EditTextPreference android:title="Resource" android:summary="to distinguish this connection from other clients that are also logged in" android:defaultValue="Gibberbot" android:key="@string/pref_account_xmpp_resource"></EditTextPreference>
+  <CheckBoxPreference android:key="@string/pref_hide_offline_contacts"
+    android:title="@string/hide_offline_contacts"
+    android:defaultValue="false" />
+
+  <ListPreference android:title="Chat Encryption"
+    android:key="@string/pref_security_otr_mode"
+    android:entryValues="@array/otr_options_values"
+    android:entries="@array/otr_options"
+    android:summary="how encrypted chats are started"
+    android:defaultValue="auto">
+  </ListPreference>
+
+  <EditTextPreference android:title="Resource"
+    android:summary="to distinguish this connection from other clients that are also logged in"
+    android:defaultValue="Gibberbot" 
+    android:key="@string/pref_account_xmpp_resource" />
 
     <PreferenceCategory android:title="@string/notification_group_title">
 
