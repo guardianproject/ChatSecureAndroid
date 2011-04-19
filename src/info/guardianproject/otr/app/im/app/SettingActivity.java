@@ -113,8 +113,6 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     	mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
     	mNotificationVibrate = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
     	mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
-
-    	setInitialValues();
     }
 
     @Override
