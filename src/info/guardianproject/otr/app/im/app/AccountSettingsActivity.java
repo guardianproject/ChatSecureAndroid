@@ -53,19 +53,19 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
         String text;
 
         text = settings.getXmppResource();
+        mXmppResource.setText(text);
         if (text != null) {
         	mXmppResource.setSummary(text);
-        	mXmppResource.setText(text);
         }
         text = Integer.toString(settings.getPort());
+        mPort.setText(text);
         if (text != null && text != "5222") {
             mPort.setSummary(text);
-            mPort.setText(text);
         }
         text = settings.getServer();
+        mServer.setText(text);
         if (text != null) {
         	mServer.setSummary(text);
-        	mServer.setText(text);
         }
         mOtrMode.setValue(settings.getOtrMode());
         mAllowPlainAuth.setChecked(settings.getAllowPlainAuth());
@@ -86,8 +86,8 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
 
     	if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
     		value = prefs.getString(key, null);
+    		settings.setXmppResource(value);
     		if (value != null) {
-        		settings.setXmppResource(value);
     			mXmppResource.setSummary(value);
     		}
     	} else if (key.equals(getString(R.string.pref_account_port))) {
@@ -102,8 +102,8 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     		if (value != "5222") mPort.setSummary(value);
     	} else if (key.equals(getString(R.string.pref_account_server))) {
     		value = prefs.getString(key, null);
+    		settings.setServer(value);
     		if (value != null) {
-        		settings.setServer(value);
     			mServer.setSummary(value);
     		}
     	} else if (key.equals(getString(R.string.pref_security_otr_mode))) {
