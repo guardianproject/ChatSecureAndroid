@@ -26,14 +26,14 @@
     <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference
-                android:key="@string/pref_enable_notifications"
+                android:key="@string/pref_enable_notification"
                 android:title="@string/notification_enabled_title"
                 android:summary="@string/notification_enabled_summary"
                 android:defaultValue="true" />
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="@string/pref_enable_notifications"
+                android:dependency="@string/pref_enable_notification"
                 android:key="@string/pref_notification_vibrate"
                 android:title="@string/notification_vibrate_title"
                 android:summary="@string/notification_vibrate_summary"
@@ -42,7 +42,7 @@
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="@string/pref_enable_notifications"
+                android:dependency="@string/pref_enable_notification"
                 android:key="@string/pref_notification_sound"
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary"

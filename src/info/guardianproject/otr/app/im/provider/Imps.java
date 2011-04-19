@@ -1675,7 +1675,7 @@ public class Imps {
         public static final String HIDE_OFFLINE_CONTACTS = "hide_offline_contacts";
 
         /** controls whether enable the IM notification */
-        public static final String ENABLE_NOTIFICATIONS = "enable_notification";
+        public static final String ENABLE_NOTIFICATION = "enable_notification";
 
         /** specifies whether to vibrate */
         public static final String NOTIFICATION_VIBRATE = "vibrate";
@@ -1993,7 +1993,7 @@ public class Imps {
          */
         public static void setEnableNotification(ContentResolver contentResolver, long providerId,
                 boolean enable) {
-            putBooleanValue(contentResolver, providerId, ENABLE_NOTIFICATIONS, enable);
+            putBooleanValue(contentResolver, providerId, ENABLE_NOTIFICATION, enable);
         }
 
         /**
@@ -2237,7 +2237,7 @@ public class Imps {
              * @return Whether or not enable the IM notification.
              */
             public boolean getEnableNotification() {
-                return getBoolean(ENABLE_NOTIFICATIONS,
+                return getBoolean(ENABLE_NOTIFICATION,
                         true/* by default enable the notification */);
             }
 

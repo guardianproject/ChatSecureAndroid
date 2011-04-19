@@ -57,8 +57,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         }
         mOtrMode.setValue(settings.getOtrMode());
         mHideOfflineContacts.setChecked(settings.getHideOfflineContacts());
-        // TODO setting mEnableNofitication causes null pointer exception
-        //mEnableNotification.setChecked(settings.getEnableNotification());
+        mEnableNotification.setChecked(settings.getEnableNotification());
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
         
@@ -83,7 +82,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     		settings.setOtrMode(prefs.getString(key, "auto"));
     	} else if (key.equals(getString(R.string.pref_hide_offline_contacts))) {
     		settings.setHideOfflineContacts(prefs.getBoolean(key, false));
-    	} else if (key.equals(getString(R.string.pref_enable_notifications))) {
+    	} else if (key.equals(getString(R.string.pref_enable_notification))) {
     		settings.setEnableNotification(prefs.getBoolean(key, true));
     	} else if (key.equals(getString(R.string.pref_notification_vibrate))) {
     		settings.setVibrate(prefs.getBoolean(key, true));
@@ -110,9 +109,11 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     	mHideOfflineContacts = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
     	mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
     	mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
-    	mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
+    	mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notification));
     	mNotificationVibrate = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
     	mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
+    	// TODO re-enable Ringtone preference
+    	//mNotificationRingtone = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
     }
 
     @Override
