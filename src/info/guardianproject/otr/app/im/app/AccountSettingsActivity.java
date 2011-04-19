@@ -138,8 +138,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     	mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
     	mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
     	mDoDnsSrv = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
-
-    	setInitialValues();
     }
 
     @Override
