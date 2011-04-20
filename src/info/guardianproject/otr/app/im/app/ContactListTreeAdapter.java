@@ -110,8 +110,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
         	
-        	String lastMessage = c.getString(ContactView.COLUMN_LAST_MESSAGE);
-        	Log.v("Foo","last message: " + lastMessage);
         	
         	/*
         	String[] thatCursor  = c.getColumnNames();
