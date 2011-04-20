@@ -238,13 +238,16 @@ public class WelcomeActivity extends Activity {
     }
 
     Intent getCreateAccountIntent() {
-		Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
+    	Intent intent = new Intent(getBaseContext(), AccountActivity.class);
+    	intent.setAction(Intent.ACTION_INSERT);
 
-        long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-        intent.addCategory(getProviderCategory(mProviderCursor));
-        return intent;
+    	// TODO fix for multiple account support
+    	//long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+    	long providerId = 1; // XMPP
+    	intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
+    	//TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
+    	//intent.addCategory(getProviderCategory(mProviderCursor));
+    	return intent;
     }
 
     Intent getEditAccountIntent() {
