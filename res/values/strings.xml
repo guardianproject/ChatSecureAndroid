@@ -543,7 +543,7 @@
 	<string name="app_name">Gibberbot</string>
     <string name="welcome_first">First time using Gibberbot?</string>
 	<string name="welcome_skip">Can\'t wait to get started?</string>
-    <string name="welcome_about">About Gibberbot</string>
+    <string name="welcome_about">Get Started</string>
     <string name="welcome_account">Account Setup</string>
 
 	<!-- About: Welcome -->

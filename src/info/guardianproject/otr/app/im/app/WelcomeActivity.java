@@ -84,6 +84,7 @@ public class WelcomeActivity extends Activity {
 			}
         });
         
+        /*
         Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
         btnSplashSetup.setOnClickListener(new OnClickListener()
         {
@@ -98,7 +99,7 @@ public class WelcomeActivity extends Activity {
 					startActivity(getEditAccountIntent());
 		        }
 			}
-        });
+        });*/
 
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
                 PROVIDER_PROJECTION,

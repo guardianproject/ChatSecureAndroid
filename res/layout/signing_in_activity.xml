@@ -22,7 +22,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_vertical"
-    android:background="@drawable/ic_splash_portrait"
+    android:background="@drawable/splash"
     >
 
 
