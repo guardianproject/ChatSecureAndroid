@@ -37,6 +37,8 @@
     <string name="landing_page_title">Chat - Select an account</string>
 
     <!-- Landing page screen menu and context menu items. -->
+	<string name="menu_about">About</string>
+
     <!-- Conext menu item: add a new account.-->
     <string name="menu_add_account">Add account</string>
     <!-- Conext menu item: edit an account.-->
@@ -73,7 +75,7 @@
     <string name="menu_view_blocked">Blocked</string>
     <!-- Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
-    <string name="menu_view_accounts">Account list</string>
+    <string name="menu_view_accounts">Account</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
     <string name="menu_settings">Settings</string>
     <!-- Screen menu item on the contact list to trigger search dialog -->
@@ -662,6 +664,6 @@
 	<string name="account_settings_title">Account Settings</string>
 	
 	
-
+	<string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
 
 </resources>

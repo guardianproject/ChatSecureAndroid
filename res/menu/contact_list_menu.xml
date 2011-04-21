@@ -37,7 +37,13 @@
 		android:title="@string/menu_search_contacts"
 		android:icon="@drawable/ic_menu_search" />
  -->
-    <item android:id="@+id/menu_sign_out"
-        android:title="@string/menu_sign_out" 
+ 
+  <item android:id="@+id/menu_view_accounts"
+        android:title="@string/menu_view_accounts"
+        android:icon="@drawable/ic_menu_sign_in"
+         />
+ 
+    <item android:id="@+id/menu_quit"
+        android:title="@string/bg_data_prompt_cancel" 
         android:icon="@drawable/ic_menu_sign_out" />
 </menu>

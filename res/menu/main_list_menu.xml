@@ -19,15 +19,17 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_sign_in"
-        android:title="@string/menu_sign_in"
+ <item android:id="@+id/menu_about"
+        android:title="@string/menu_about"
+         android:icon="@drawable/ic_menu_info"
+         />
+
+    <item android:id="@+id/menu_account_settings"
+        android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
          />
 
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-         android:icon="@drawable/ic_menu_settings"
-         />
+
          
          
 
