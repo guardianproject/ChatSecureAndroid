@@ -260,6 +260,7 @@ public class ContactListView extends LinearLayout {
         return isContactAtPosition(pos);
     }
 
+    /*
     public boolean isConversationAtPosition(long packedPosition) {
         int type = ExpandableListView.getPackedPositionType(packedPosition);
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
@@ -270,7 +271,7 @@ public class ContactListView extends LinearLayout {
     public boolean isConversationSelected () {
         long pos = mContactsList.getSelectedPosition();
         return isConversationAtPosition(pos);
-    }
+    }*/
 
     public boolean isContactsLoaded() {
         try {

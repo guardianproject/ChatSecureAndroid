@@ -401,7 +401,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.packedPosition;
             contactSelected = mContactListView.isContactAtPosition(info.packedPosition);
-            chatSelected = mContactListView.isConversationAtPosition(info.packedPosition);
             contactCursor = mContactListView.getContactAtPosition(info.packedPosition);
         }
 

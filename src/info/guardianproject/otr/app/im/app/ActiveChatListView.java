@@ -17,12 +17,14 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionListener;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ContactListListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactListManager;
@@ -56,14 +58,13 @@ public class ActiveChatListView extends LinearLayout {
     IImConnection mConn;
     SimpleAlertHandler mHandler;
     Context mContext;
-    private final IContactListListener mChatListListener;
+    private final IChatSessionListener mChatListListener;
 
     UserPresenceView mPresenceView;
     ListView mChatList;
     
-    private ChatListTreeAdapter mAdapter;//ChatListAdapter
-    private boolean mHideOfflineContacts;
-    private SavedState mSavedState;
+    private SavedState mSavedState; 
+    private ChatListAdapter mAdapter;//ChatListAdapter
     private boolean mAutoRefresh = true;
 
     public ActiveChatListView(Context screen, AttributeSet attrs) {
@@ -71,42 +72,29 @@ public class ActiveChatListView extends LinearLayout {
         mContext = screen;
         mScreen = (Activity)screen;
         mHandler = new SimpleAlertHandler(mScreen);
-        mChatListListener = new MyContactListListener(mHandler);
+        mChatListListener = new MyChatSessionListener(mHandler);
     }
 
-    private class MyContactListListener extends ContactListListenerAdapter {
-        public MyContactListListener(SimpleAlertHandler handler) {
-            super(handler);
+    private class MyChatSessionListener extends ChatSessionListenerAdapter {
+        public MyChatSessionListener(SimpleAlertHandler handler) {
+            super();
         }
 
-        @Override
-        public void onAllContactListsLoaded() {
-            if (mAdapter != null) {
-                mAdapter.startAutoRequery();
-            }
-        }
+		@Override
+		public void onChatSessionCreated(IChatSession session) {
+			
+			super.onChatSessionCreated(session);
+			mAdapter.startAutoRequery();
+		}
+
+		@Override
+		public void onChatSessionCreateError(String name, ImErrorInfo error) {
+			super.onChatSessionCreateError(name, error);
+		}
+
+        
     }
 
-    private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
-
-        public void onSubScriptionRequest(Contact from) {
-            querySubscription();
-        }
-
-        public void onSubscriptionApproved(String contact) {
-            querySubscription();
-        }
-
-        public void onSubscriptionDeclined(String contact) {
-            querySubscription();
-        }
-
-        private void querySubscription() {
-            if (mAdapter != null) {
-                mAdapter.startQuerySubscriptions();
-            }
-        }
-     };
 
     @Override
     protected void onFinishInflate() {
@@ -132,29 +120,18 @@ public class ActiveChatListView extends LinearLayout {
                 mPresenceView.setConnection(conn);
 
                 if (mAdapter == null) {
-                    mAdapter = new ChatListTreeAdapter(conn, mScreen);
-                    mAdapter.setHideOfflineContacts(mHideOfflineContacts);
+                    mAdapter = new ChatListAdapter(conn, mScreen);
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
                     
-                    /*
-                    if (mSavedState != null) {
-                        int[] expandedGroups = mSavedState.mExpandedGroups;
-                        if(expandedGroups != null) {
-                            for (int group : expandedGroups) {
-                                mChatList.expandGroup(group);
-                            }
-                        }
-                    }*/
                     
                 } else {
                     mAdapter.changeConnection(conn);
                 }
                 try {
-                    IContactListManager listMgr = conn.getContactListManager();
-                    if (listMgr.getState() == ContactListManager.LISTS_LOADED) {
-                        mAdapter.startAutoRequery();
-                    }
+                    IChatSessionManager listMgr = conn.getChatSessionManager();
+                    mAdapter.startAutoRequery();
+                    
                 } catch (RemoteException e) {
                     Log.e(ImApp.LOG_TAG, "Service died!");
                 }
@@ -164,13 +141,6 @@ public class ActiveChatListView extends LinearLayout {
         }
     }
 
-    public void setHideOfflineContacts(boolean hide) {
-        if (mAdapter != null) {
-            mAdapter.setHideOfflineContacts(hide);
-        } else {
-            mHideOfflineContacts = hide;
-        }
-    }
 
     /*
     public void startChat() {
@@ -411,9 +381,10 @@ public class ActiveChatListView extends LinearLayout {
 
     private void registerListeners() {
         try{
-            IContactListManager listManager = mConn.getContactListManager();
-            listManager.registerContactListListener(mChatListListener);
-            listManager.registerSubscriptionListener(mSubscriptionListener);
+        	IChatSessionManager chatManager = mConn.getChatSessionManager();
+        	
+        	chatManager.registerChatSessionListener(mChatListListener);
+            
         }catch(RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
@@ -421,9 +392,9 @@ public class ActiveChatListView extends LinearLayout {
 
     private void unregisterListeners() {
         try{
-            IContactListManager listManager = mConn.getContactListManager();
-            listManager.unregisterContactListListener(mChatListListener);
-            listManager.unregisterSubscriptionListener(mSubscriptionListener);
+        	IChatSessionManager chatManager = mConn.getChatSessionManager();
+        	
+        	chatManager.unregisterChatSessionListener(mChatListListener);
         }catch(RemoteException e) {
             mHandler.showServiceErrorAlert();
         }

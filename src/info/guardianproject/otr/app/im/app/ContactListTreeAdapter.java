@@ -65,7 +65,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     private LayoutInflater mInflate;
     private long mProviderId;
     long mAccountId;
-    Cursor mOngoingConversations;
     Cursor mSubscriptions;
     boolean mDataValid;
     ListTreeAdapter mAdapter;
@@ -77,7 +76,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     private ArrayList<Integer> mExpandedGroups;
 
     private static final int TOKEN_CONTACT_LISTS = -1;
-    private static final int TOKEN_ONGOING_CONVERSATION = -2;
+ //   private static final int TOKEN_ONGOING_CONVERSATION = -2;
     private static final int TOKEN_SUBSCRIPTION = -3;
 
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
@@ -137,10 +136,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             if (token == TOKEN_CONTACT_LISTS) {
                 mDataValid = true;
                 mAdapter.setGroupCursor(c);
-            } else if (token == TOKEN_ONGOING_CONVERSATION) {
-                setOngoingConversations(c);
-                notifyDataSetChanged();
-            } else if (token == TOKEN_SUBSCRIPTION) {
+            }  else if (token == TOKEN_SUBSCRIPTION) {
                 setSubscriptions(c);
                 notifyDataSetChanged();
             } else {
@@ -178,15 +174,11 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public void changeConnection(IImConnection conn) {
-        mQueryHandler.cancelOperation(TOKEN_ONGOING_CONVERSATION);
         mQueryHandler.cancelOperation(TOKEN_SUBSCRIPTION);
         mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
 
         synchronized (this) {
-            if (mOngoingConversations != null) {
-                mOngoingConversations.close();
-                mOngoingConversations = null;
-            }
+          
             if (mSubscriptions != null) {
                 mSubscriptions.close();
                 mSubscriptions = null;
@@ -201,7 +193,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             try {
                 mProviderId = conn.getProviderId();
                 mAccountId = conn.getAccountId();
-                startQueryOngoingConversations();
+          //      startQueryOngoingConversations();
                 startQueryContactLists();
                 startQuerySubscriptions();
             } catch (RemoteException e) {
@@ -224,7 +216,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         mAutoRequery = true;
         if (mRequeryPending) {
             mRequeryPending = false;
-            startQueryOngoingConversations();
+           // startQueryOngoingConversations();
         }
     }
 
@@ -241,6 +233,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 null, null, Imps.ContactList.DEFAULT_SORT_ORDER);
     }
 
+    /*
     void startQueryOngoingConversations() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
             log("startQueryOngoingConversations()");
@@ -250,9 +243,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
 
-        mQueryHandler.startQuery(TOKEN_ONGOING_CONVERSATION, null, uri,
-                ContactView.CONTACT_PROJECTION, null, null, Imps.Contacts.DEFAULT_SORT_ORDER);
-    }
+    }*/
 
     void startQuerySubscriptions() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
@@ -284,11 +275,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        if (isPosForOngoingConversation(groupPosition)) {
-            // No cursor exists for the "Empty" TextView item
-            if (getOngoingConversationCount() == 0) return null;
-            return moveTo(getOngoingConversations(), childPosition);
-        } else if (isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             return moveTo(getSubscriptions(), childPosition);
         } else {
             return mAdapter.getChild(getChildAdapterPosition(groupPosition), childPosition);
@@ -296,11 +283,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public long getChildId(int groupPosition, int childPosition) {
-        if (isPosForOngoingConversation(groupPosition)) {
-            // No cursor id exists for the "Empty" TextView item
-            if (getOngoingConversationCount() == 0) return 0;
-            return getId(getOngoingConversations(), childPosition);
-        } else if (isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             return getId(getSubscriptions(), childPosition);
         } else {
             return mAdapter.getChildId(getChildAdapterPosition(groupPosition), childPosition);
@@ -309,7 +292,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
             View convertView, ViewGroup parent) {
-        boolean isOngoingConversation = isPosForOngoingConversation(groupPosition);
+        boolean isOngoingConversation = false;
         boolean displayEmpty = isOngoingConversation && (getOngoingConversationCount() == 0);
         if (isOngoingConversation || isPosForSubscription(groupPosition)) {
             View view = null;
@@ -330,8 +313,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 }
             }
             if (!displayEmpty) {
-                Cursor cursor = isPosForOngoingConversation(groupPosition)
-                        ? getOngoingConversations() : getSubscriptions();
+                Cursor cursor =  getSubscriptions();
                 cursor.moveToPosition(childPosition);
                 ((ContactView) view).bind(cursor, null, isScrolling());
             }
@@ -346,14 +328,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         if (!mDataValid) {
             return 0;
         }
-        if (isPosForOngoingConversation(groupPosition)) {
-            // if there are no ongoing conversations, we want to display "empty" textview
-            int count = getOngoingConversationCount();
-            if (count == 0) {
-                count = 1;
-            }
-            return count;
-        } else if (isPosForSubscription(groupPosition)) {
+       if (isPosForSubscription(groupPosition)) {
             return getSubscriptionCount();
         } else {
             // XXX getChildrenCount() may be called with an invalid groupPosition that is larger
@@ -368,8 +343,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public Object getGroup(int groupPosition) {
-        if (isPosForOngoingConversation(groupPosition)
-                || isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             return null;
         } else {
             return mAdapter.getGroup(getChildAdapterPosition(groupPosition));
@@ -382,9 +356,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         }
         int count = mAdapter.getGroupCount();
 
-        // ongoing conversations
-        count++;
-
         if (getSubscriptionCount() > 0) {
             count++;
         }
@@ -393,7 +364,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public long getGroupId(int groupPosition) {
-        if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             return 0;
         } else {
             return mAdapter.getGroupId(getChildAdapterPosition(groupPosition));
@@ -402,7 +373,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
             ViewGroup parent) {
-        if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             View v;
             if (convertView != null) {
                 v = convertView;
@@ -415,27 +386,20 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
             Resources r = v.getResources();
             ImApp app = ImApp.getApplication(mActivity);
-            BrandingResources brandingRes = app.getBrandingResource(mProviderId);
-            String text = isPosForOngoingConversation(groupPosition) ?
-                    brandingRes.getString(
-                            BrandingResourceIDs.STRING_ONGOING_CONVERSATION,
-                            getOngoingConversationCount()) :
-                    r.getString(R.string.subscriptions);
+            String text =  r.getString(R.string.subscriptions);
             text1.setText(text);
             text2.setVisibility(View.GONE);
             return v;
         } else {
+        	
             return mAdapter.getGroupView(getChildAdapterPosition(groupPosition), isExpanded,
                     convertView, parent);
+        	
         }
     }
 
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        if (isPosForOngoingConversation(groupPosition)) {
-            // "Empty" TextView is not selectable
-            if (getOngoingConversationCount()==0) return false;
-            return true;
-        }
+       
         if (isPosForSubscription(groupPosition)) return true;
         return mAdapter.isChildSelectable(getChildAdapterPosition(groupPosition), childPosition);
     }
@@ -481,6 +445,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public int[] getExpandedGroups() {
+    	
         ArrayList<Integer> expandedGroups = mExpandedGroups;
         int size = expandedGroups.size();
         int[] res = new int[size];
@@ -502,27 +467,12 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         return mInflate.inflate(R.layout.group_view, parent, false);
     }
 
-    private synchronized Cursor getOngoingConversations() {
-        if (mOngoingConversations == null) {
-            startQueryOngoingConversations();
-        }
-        return mOngoingConversations;
-    }
+   
 
-    synchronized void setOngoingConversations(Cursor c) {
-        if (mOngoingConversations != null) {
-            mOngoingConversations.unregisterContentObserver(mContentObserver);
-            mOngoingConversations.unregisterDataSetObserver(mDataSetObserver);
-            mOngoingConversations.close();
-        }
-        c.registerContentObserver(mContentObserver);
-        c.registerDataSetObserver(mDataSetObserver);
-        mOngoingConversations = c;
-    }
+   
 
     private int getOngoingConversationCount() {
-        Cursor c = getOngoingConversations();
-        return c == null ? 0 : c.getCount();
+       return 0;
     }
 
     private synchronized Cursor getSubscriptions() {
@@ -548,19 +498,16 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         return c == null ? 0 : c.getCount();
     }
 
-    public boolean isPosForOngoingConversation(int groupPosition) {
-        return groupPosition == 0;
-    }
 
     public boolean isPosForSubscription(int groupPosition) {
-        return groupPosition == 1 && getSubscriptionCount() > 0;
+        return groupPosition == 0 && getSubscriptionCount() > 0;
     }
 
     private int getChildAdapterPosition(int groupPosition) {
         if (getSubscriptionCount() > 0) {
-            return groupPosition - 2;
+            return groupPosition;
         } else {
-            return groupPosition - 1;
+            return groupPosition;
         }
     }
 
@@ -711,7 +658,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 return;
             }
             if (mAutoRequery) {
-                startQueryOngoingConversations();
+             //   startQueryOngoingConversations();
             } else {
                 mRequeryPending = true;
             }

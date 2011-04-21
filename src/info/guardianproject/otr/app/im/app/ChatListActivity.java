@@ -133,8 +133,6 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                         finish();
                     } else {
                         mActiveChatListView.setConnection(mConn);
-                        mActiveChatListView.setHideOfflineContacts(
-                                mSettingMap.getHideOfflineContacts());
                     }
                 }
             }
@@ -146,8 +144,6 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         mSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
                 if (!mDestroyed) {
-                    mActiveChatListView.setHideOfflineContacts(
-                            mSettingMap.getHideOfflineContacts());
                 }
             }
         });
