@@ -48,7 +48,7 @@
         
         <!-- Brian's NEW Activities -->
         <activity android:name=".ui.TabbedContainer"
-        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        android:theme="@android:style/Theme.Black.NoTitleBar"
         />
         <activity android:name=".app.ChatListActivity"/>
         <activity android:name=".app.ActiveChatListView"/>
@@ -177,8 +177,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-		<activity android:name=".ui.ArtistsActivity">
-		</activity>
         <activity android:name=".app.ContactListActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -193,7 +191,9 @@
 
         <activity android:name=".app.NewChatActivity"
                 android:configChanges="orientation|keyboardHidden"
-                android:windowSoftInputMode="stateUnchanged">
+                android:windowSoftInputMode="stateUnchanged"
+                  android:theme="@android:style/Theme.Black.NoTitleBar"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
