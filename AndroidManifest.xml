@@ -69,7 +69,7 @@
             <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
                 android:value="XMPP"/>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
-                android:value="XMPP IM Provider"/>
+                android:value="@string/provider_full_name_xmpp"/>
             <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
                 android:value="http://xmpp.org/services/"/>
         </service>

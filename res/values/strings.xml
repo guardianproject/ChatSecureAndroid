@@ -314,6 +314,9 @@
     <!-- The label of the button on the Add Contact Screen to send the invitation. -->
     <string name="invite_label">Send invitation</string>
 
+	<!-- provider plugin names -->
+	<string name="provider_full_name_xmpp">Jabber/XMPP</string>
+
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
 
     <string name="account_setup_title">Account Setup</string>
@@ -567,13 +570,9 @@
     <string name="setup_passphrase_label2">Passphrase (again):</string>
 	
 	<!-- Account Setup: Account -->
-	<string name="account_setup_acct_subtitle">Account</string>
-    <string name="account_setup_acct_acctname_title">Account Name</string>
-    <string name="account_setup_acct_acctname_sub">Display name for this account</string>
-    <string name="account_setup_acct_username_title">Username (login)</string>
-    <string name="account_setup_acct_username_sub">Format: user@host:port</string>
-    <string name="account_setup_acct_password_title">Password</string>
-    <string name="account_setup_acct_password_sub">Password for authentication</string>
+    <string name="account_setup_example_email_address">user@domain.com</string>
+    <string name="account_setup_password">password</string>
+    <string name="account_setup_advanced_button">Advanced Account Settings</string>
 	
 	<!-- Account Setup: Persistence -->
 	<string name="account_setup_pers_sub">Persistence</string>
@@ -596,7 +595,6 @@
     <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
 	
 	<!-- Account Setup: Advanced -->
-	<string name="account_setup_advanced_sub">Advanced</string>
     <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
     <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
     <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
