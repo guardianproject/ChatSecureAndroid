@@ -16,15 +16,13 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
 
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
@@ -44,13 +42,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.CursorTreeAdapter;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListAdapter;
 
-public class ContactListTreeAdapter extends BaseExpandableListAdapter
-        implements AbsListView.OnScrollListener{
+public class ChatListTreeAdapter implements ListAdapter,
+        AbsListView.OnScrollListener{
 
     private static final String[] CONTACT_LIST_PROJECTION = {
             Imps.ContactList._ID,
@@ -109,27 +107,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
-        	
-        	
-        	/*
-        	String[] thatCursor  = c.getColumnNames();
-        	for (int i= 0; i< thatCursor.length ; i++ ){
-        		Log.v("That Column:" + i,thatCursor[i]);
-        		
-        		
-        			      //String data = c.getString(c.getColumnIndex("last_unread_message"));
-        			    
-        			
-        		
-        		/*if(c.isNull(c.getColumnIndex(thatCursor[i]))){
-        		break;
-        		}
-        		else{
-        			Log.v("That Column:" + i,thatCursor[i] + ":" + c.getString(c.getColumnIndex(thatCursor[i])));
-        		}
-        		
-        	}
-        	*/
             if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
                 log("onQueryComplete:token=" + token);
             }
@@ -139,10 +116,10 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 mAdapter.setGroupCursor(c);
             } else if (token == TOKEN_ONGOING_CONVERSATION) {
                 setOngoingConversations(c);
-                notifyDataSetChanged();
+              //  notifyDataSetChanged();
             } else if (token == TOKEN_SUBSCRIPTION) {
                 setSubscriptions(c);
-                notifyDataSetChanged();
+             //   notifyDataSetChanged();
             } else {
                 int count = mAdapter.getGroupCount();
                 for (int pos = 0; pos < count; pos++) {
@@ -162,7 +139,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     private boolean mAutoRequery;
     private boolean mRequeryPending;
 
-    public ContactListTreeAdapter(IImConnection conn, Activity activity) {
+    public ChatListTreeAdapter(IImConnection conn, Activity activity) {
         mActivity = activity;
         mInflate = activity.getLayoutInflater();
         mHandler = new SimpleAlertHandler(activity);
@@ -277,12 +254,14 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         }
 
         String selection = mHideOfflineContacts ? ONLINE_CONTACT_SELECTION : CONTACTS_SELECTION;
+        Log.v("Selection String value is: ", selection);
         String[] args = { Long.toString(listId) };
         int token = (int)listId;
         mQueryHandler.startQuery(token, null, Imps.Contacts.CONTENT_URI,
                 ContactView.CONTACT_PROJECTION, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
 
+    /*
     public Object getChild(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {
             // No cursor exists for the "Empty" TextView item
@@ -293,56 +272,82 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         } else {
             return mAdapter.getChild(getChildAdapterPosition(groupPosition), childPosition);
         }
-    }
+    }*/
 
     public long getChildId(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {
             // No cursor id exists for the "Empty" TextView item
-            if (getOngoingConversationCount() == 0) return 0;
+           if (getOngoingConversationCount() == 0) return 0;
             return getId(getOngoingConversations(), childPosition);
-        } else if (isPosForSubscription(groupPosition)) {
+        }
+        
+        return -1;
+        /* else if (isPosForSubscription(groupPosition)) {
             return getId(getSubscriptions(), childPosition);
         } else {
             return mAdapter.getChildId(getChildAdapterPosition(groupPosition), childPosition);
-        }
+        }*/
     }
-
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-            View convertView, ViewGroup parent) {
-        boolean isOngoingConversation = isPosForOngoingConversation(groupPosition);
-        boolean displayEmpty = isOngoingConversation && (getOngoingConversationCount() == 0);
-        if (isOngoingConversation || isPosForSubscription(groupPosition)) {
-            View view = null;
-            if (convertView != null) {
-                // use the convert view if it matches the type required by displayEmpty
-                if (displayEmpty && (convertView instanceof TextView)) {
-                    view = convertView;
-                    ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
-                } else if (!displayEmpty && (convertView instanceof ContactView)) {
-                     view = convertView;
-                }
-            }
-            if (view == null) {
-                if (displayEmpty) {
-                    view = newEmptyView(parent);
-                } else {
-                    view = newChildView(parent);
-                }
-            }
-            if (!displayEmpty) {
-                Cursor cursor = isPosForOngoingConversation(groupPosition)
-                        ? getOngoingConversations() : getSubscriptions();
-                cursor.moveToPosition(childPosition);
-                ((ContactView) view).bind(cursor, null, isScrolling());
-            }
-            return view;
-        } else {
-            return mAdapter.getChildView(getChildAdapterPosition(groupPosition), childPosition,
-                    isLastChild, convertView, parent);
-        }
-    }
+//
+//    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+//            View convertView, ViewGroup parent) {
+//        boolean isOngoingConversation = isPosForOngoingConversation(groupPosition);
+//        boolean displayEmpty = isOngoingConversation && (getOngoingConversationCount() == 0);
+//        if (isOngoingConversation || isPosForSubscription(groupPosition)) {
+//            View view = null;
+//            if (convertView != null) {
+//                // use the convert view if it matches the type required by displayEmpty
+//                if (displayEmpty && (convertView instanceof TextView)) {
+//                    view = convertView;
+//                    ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
+//                } else if (!displayEmpty && (convertView instanceof ContactView)) {
+//                     view = convertView;
+//                }
+//            }
+//            if (view == null) {
+//                if (displayEmpty) {
+//                    view = newEmptyView(parent);
+//                } else {
+//                    view = newChildView(parent);
+//                }
+//            }
+//            if (!displayEmpty) {
+//                Cursor cursor = isPosForOngoingConversation(groupPosition)
+//                        ? getOngoingConversations() : getSubscriptions();
+//                cursor.moveToPosition(childPosition);
+//               
+//                
+//               String[] myColumnString = cursor.getColumnNames(); 
+//               for(int i=0;i<myColumnString.length; i++){
+//            	   Log.v("Column:"+ i +"=", myColumnString[i]);   
+//            	   /*04-11 12:29:01.226: VERBOSE/Column:0=(2352): _id
+//					04-11 12:29:01.226: VERBOSE/Column:1=(2352): provider
+//					04-11 12:29:01.236: VERBOSE/Column:2=(2352): account
+//					04-11 12:29:01.236: VERBOSE/Column:3=(2352): username
+//					04-11 12:29:01.236: VERBOSE/Column:4=(2352): nickname
+//					04-11 12:29:01.236: VERBOSE/Column:5=(2352): type
+//					04-11 12:29:01.236: VERBOSE/Column:6=(2352): subscriptionType
+//					04-11 12:29:01.236: VERBOSE/Column:7=(2352): subscriptionStatus
+//					04-11 12:29:01.236: VERBOSE/Column:8=(2352): mode
+//					04-11 12:29:01.236: VERBOSE/Column:9=(2352): status
+//					04-11 12:29:01.236: VERBOSE/Column:10=(2352): last_message_date
+//					04-11 12:29:01.236: VERBOSE/Column:11=(2352): last_unread_message
+//					*/
+//               }
+//               
+//                ((ContactView) view).bind(cursor, null, isScrolling());
+//            }
+//            return view;
+//        } else {
+//            return mAdapter.getChildView(getChildAdapterPosition(groupPosition), childPosition,
+//                    isLastChild, convertView, parent);
+//        }
+//    }
 
     public int getChildrenCount(int groupPosition) {
+    	
+    	return 0;
+    	/*
         if (!mDataValid) {
             return 0;
         }
@@ -364,7 +369,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 return 0;
             }
             return mAdapter.getChildrenCount(position);
-        }
+        }*/
     }
 
     public Object getGroup(int groupPosition) {
@@ -375,33 +380,47 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             return mAdapter.getGroup(getChildAdapterPosition(groupPosition));
         }
     }
-
-    public int getGroupCount() {
-        if (!mDataValid) {
-            return 0;
-        }
-        int count = mAdapter.getGroupCount();
-
-        // ongoing conversations
-        count++;
-
-        if (getSubscriptionCount() > 0) {
-            count++;
-        }
-
-        return count;
-    }
-
-    public long getGroupId(int groupPosition) {
-        if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
-            return 0;
-        } else {
-            return mAdapter.getGroupId(getChildAdapterPosition(groupPosition));
-        }
-    }
-
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-            ViewGroup parent) {
+//
+//    public int getGroupCount() {
+//    	
+//    	//return 1;  //<-------This is the hack to display the ongoing conversations. 
+//    	
+//    	return getOngoingConversationCount();
+//    	
+//    	/*
+//        if (!mDataValid) {
+//            return 0;
+//        }
+//        int count = mAdapter.getGroupCount();
+//
+//        // ongoing conversations
+//        count++;
+//
+//        if (getSubscriptionCount() > 0) {
+//            count++;
+//        }
+//
+//        return count;
+//        */
+//    }
+//
+//    public long getGroupId(int groupPosition) {
+//    	
+//    	return getChildId(0, groupPosition);
+//    	/*
+//        if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
+//            return 0;
+//        } else {
+//            return mAdapter.getGroupId(getChildAdapterPosition(groupPosition));
+//        }*/
+//    }
+//
+//    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+//            ViewGroup parent) {
+//    	
+//    	return getChildView(0, groupPosition, false, convertView, parent);
+//    	
+    	/*
         if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
             View v;
             if (convertView != null) {
@@ -428,7 +447,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             return mAdapter.getGroupView(getChildAdapterPosition(groupPosition), isExpanded,
                     convertView, parent);
         }
-    }
+    }*/
 
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {
@@ -443,7 +462,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     public boolean stableIds() {
         return true;
     }
-
+/*
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
         mAdapter.registerDataSetObserver(observer);
@@ -489,7 +508,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         }
         return res;
     }
-
+*/
     View newChildView(ViewGroup parent) {
         return mInflate.inflate(R.layout.contact_view, parent, false);
     }
@@ -518,11 +537,23 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         c.registerContentObserver(mContentObserver);
         c.registerDataSetObserver(mDataSetObserver);
         mOngoingConversations = c;
+        
     }
 
     private int getOngoingConversationCount() {
         Cursor c = getOngoingConversations();
+       
+       /* String[] cColumnString = c.getColumnNames(); 
+        for(int i=0;i<cColumnString.length; i++){
+     	   Log.v("Column:"+ i +"=", cColumnString[i]);   
+     	  
+        }
+        */ 
         return c == null ? 0 : c.getCount();
+        
+        
+       
+        
     }
 
     private synchronized Cursor getSubscriptions() {
@@ -649,14 +680,14 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             if (cursor.getCount() == 0) {
                 return newEmptyView(parent);
             } else {
-                return ContactListTreeAdapter.this.newChildView(parent);
+                return ChatListTreeAdapter.this.newChildView(parent);
             }
         }
 
         @Override
         protected View newGroupView(Context context, Cursor cursor, boolean isExpanded,
                 ViewGroup parent) {
-            return ContactListTreeAdapter.this.newGroupView(parent);
+            return ChatListTreeAdapter.this.newGroupView(parent);
         }
 
         private int getOnlineChildCount(Cursor groupCursor) {
@@ -729,7 +760,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             }
 
             mDataValid = true;
-            notifyDataSetChanged();
+         //   notifyDataSetChanged();
         }
 
         @Override
@@ -739,7 +770,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             }
 
             mDataValid = false;
-            notifyDataSetInvalidated();
+       //     notifyDataSetInvalidated();
         }
     }
 
@@ -755,11 +786,139 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         //  If we just finished a fling then some items may not have an icon
         //  So force a full redraw now that the fling is complete
         if (oldState == OnScrollListener.SCROLL_STATE_FLING) {
-            notifyDataSetChanged();
+       //     notifyDataSetChanged();
         }
     }
 
     public boolean isScrolling() {
         return mScrollState == OnScrollListener.SCROLL_STATE_FLING;
     }
+
+	@Override
+	public int getCount() {
+		return this.getOngoingConversationCount();
+	}
+
+	@Override
+	public Object getItem(int position) {
+	
+		if (getOngoingConversationCount() == 0) return null;
+        return moveTo(getOngoingConversations(), position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		 // No cursor id exists for the "Empty" TextView item
+        if (getOngoingConversationCount() == 0) return 0;
+         return getId(getOngoingConversations(), position);
+		
+		
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		return 0;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		// boolean isOngoingConversation = isPosForOngoingConversation(0);
+	      boolean displayEmpty = (getOngoingConversationCount() == 0);
+		View view = null;
+         if (convertView != null) {
+             // use the convert view if it matches the type required by displayEmpty
+             if (displayEmpty && (convertView instanceof TextView)) {
+                 view = convertView;
+                 ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
+             } else if (!displayEmpty && (convertView instanceof ContactView)) {
+                  view = convertView;
+             }
+         }
+         if (view == null) {
+             if (displayEmpty) {
+                 view = newEmptyView(parent);
+             } else {
+                 view = newChildView(parent);
+             }
+         }
+         if (!displayEmpty) {
+        	 Cursor cursor = getOngoingConversations();
+        	 cursor.moveToPosition(position);
+        	 /*
+             Cursor cursor = isPosForOngoingConversation(groupPosition)
+                     ? getOngoingConversations() : getSubscriptions();
+             cursor.moveToPosition(childPosition);
+             */
+            
+             
+            String[] myColumnString = cursor.getColumnNames(); 
+            for(int i=0;i<myColumnString.length; i++){
+         	   Log.v("Column:"+ i +"=", myColumnString[i]);   
+         	   /*04-11 12:29:01.226: VERBOSE/Column:0=(2352): _id
+					04-11 12:29:01.226: VERBOSE/Column:1=(2352): provider
+					04-11 12:29:01.236: VERBOSE/Column:2=(2352): account
+					04-11 12:29:01.236: VERBOSE/Column:3=(2352): username
+					04-11 12:29:01.236: VERBOSE/Column:4=(2352): nickname
+					04-11 12:29:01.236: VERBOSE/Column:5=(2352): type
+					04-11 12:29:01.236: VERBOSE/Column:6=(2352): subscriptionType
+					04-11 12:29:01.236: VERBOSE/Column:7=(2352): subscriptionStatus
+					04-11 12:29:01.236: VERBOSE/Column:8=(2352): mode
+					04-11 12:29:01.236: VERBOSE/Column:9=(2352): status
+					04-11 12:29:01.236: VERBOSE/Column:10=(2352): last_message_date
+					04-11 12:29:01.236: VERBOSE/Column:11=(2352): last_unread_message
+					*/
+            }
+            
+             ((ContactView) view).bind(cursor, null, isScrolling());
+         }
+         return view;
+	}
+
+	@Override
+	public int getViewTypeCount() {
+		return 1;
+	}
+
+	@Override
+	public boolean hasStableIds() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		
+		return (this.getOngoingConversationCount() == 0);
+	}
+
+	@Override
+	public void registerDataSetObserver(DataSetObserver observer) {
+		 mAdapter.registerDataSetObserver(observer);
+	      
+	       
+		
+	}
+
+	@Override
+	public void unregisterDataSetObserver(DataSetObserver observer) {
+		mAdapter.unregisterDataSetObserver(observer);
+		    }
+
+		  
+		// TODO Auto-generated method stub
+		
+
+
+	@Override
+	public boolean areAllItemsEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

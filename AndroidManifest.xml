@@ -46,6 +46,13 @@
             </intent-filter>
         </activity>
         
+        <!-- Brian's NEW Activities -->
+        <activity android:name=".ui.TabbedContainer"/>
+        <activity android:name=".app.ChatListActivity"/>
+        <activity android:name=".app.ActiveChatListView"/>
+        
+        
+        
          <activity android:name=".ui.AboutActivity"/>
                  <activity android:name=".ui.AccountWizardActivity"/>
         
@@ -168,7 +175,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+		<activity android:name=".ui.ArtistsActivity">
+		</activity>
         <activity android:name=".app.ContactListActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

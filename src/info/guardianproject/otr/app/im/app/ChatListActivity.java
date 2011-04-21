@@ -16,14 +16,16 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.MainActivity;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.IImConnection;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -49,7 +51,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-public class ContactListActivity extends Activity implements View.OnCreateContextMenuListener{
+public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener{
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE       = Menu.FIRST + 1;
@@ -64,7 +66,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
-    ContactListView mContactListView;
+   ActiveChatListView mActiveChatListView;
     ContactListFilterView mFilterView;
     SimpleAlertHandler mHandler;
 
@@ -83,10 +85,10 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         setTheme(android.R.style.Theme_Black_NoTitleBar);
 
         LayoutInflater inflate = getLayoutInflater();
-        mContactListView = (ContactListView) inflate.inflate(
-                R.layout.contact_list_view, null);
+        mActiveChatListView = (ActiveChatListView) inflate.inflate(
+                R.layout.chat_list_view, null);
 
-        setContentView(mContactListView);
+        setContentView(mActiveChatListView);
 
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
@@ -132,8 +134,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         clearConnectionStatus();
                         finish();
                     } else {
-                        mContactListView.setConnection(mConn);
-                        mContactListView.setHideOfflineContacts(
+                        mActiveChatListView.setConnection(mConn);
+                        mActiveChatListView.setHideOfflineContacts(
                                 mSettingMap.getHideOfflineContacts());
                     }
                 }
@@ -141,12 +143,12 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         });
 
         mContextMenuHandler = new ContextMenuHandler();
-        mContactListView.getListView().setOnCreateContextMenuListener(this);
+        mActiveChatListView.getListView().setOnCreateContextMenuListener(this);
 
         mSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
                 if (!mDestroyed) {
-                    mContactListView.setHideOfflineContacts(
+                    mActiveChatListView.setHideOfflineContacts(
                             mSettingMap.getHideOfflineContacts());
                 }
             }
@@ -173,15 +175,15 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         switch (item.getItemId()) {
         
         //TODO make sure this works
-        
-            case R.id.menu_invite_user:
-                Intent i = new Intent(ContactListActivity.this, AddContactActivity.class);
-                i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
-                        mContactListView.getSelectedContactList());
-                startActivity(i);
-                return true;
+//        
+//            case R.id.menu_invite_user:
+//                Intent i = new Intent(ChatListActivity.this, AddContactActivity.class);
+//                i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+//                i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+//                i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
+//                        mActiveChatListView.getSelectedContactList());
+//                startActivity(i);
+//                return true;
 
         
 /*            case R.id.menu_blocked_contacts:
@@ -191,86 +193,32 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                 startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
                 return true;
 */
-
+/*
             case R.id.menu_view_accounts:
-            	startActivity(getEditAccountIntent());           
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setType(Imps.Provider.CONTENT_TYPE);
+                startActivity(intent);
+                finish();
                 return true;
-				
+*/				
             case R.id.menu_settings:
-                Intent sintent = new Intent(this, SettingActivity.class);
-                sintent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                startActivity(sintent);
+                Intent intent = new Intent(this, SettingActivity.class);
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                startActivity(intent);
                 return true;
 
-            case R.id.menu_quit:
-            	handleQuit();
-            	
+            case R.id.menu_sign_out:
+                try {
+                    if (mConn != null) {
+                        mConn.logout();
+                    }
+                } catch (RemoteException e) {
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    
-    private static final String[] PROVIDER_PROJECTION = {
-        Imps.Provider._ID,
-        Imps.Provider.NAME,
-        Imps.Provider.FULLNAME,
-        Imps.Provider.CATEGORY,
-        Imps.Provider.ACTIVE_ACCOUNT_ID,
-        Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-        Imps.Provider.ACTIVE_ACCOUNT_PW,
-        Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-        Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-        Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-        Imps.Provider.ACCOUNT_CONNECTION_STATUS,
-    };
-	
-	static final int PROVIDER_CATEGORY_COLUMN = 3;
-	static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
-	
-    Intent getEditAccountIntent() {
-        
-    	Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                 PROVIDER_PROJECTION,
-                 Imps.Provider.CATEGORY + "=?" /* selection */,
-                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                 Imps.Provider.DEFAULT_SORT_ORDER);
-    	mProviderCursor.moveToFirst();
-
-    	Intent intent = new Intent(Intent.ACTION_EDIT,
-                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
-                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
-        intent.addCategory(mProviderCursor.getString(PROVIDER_CATEGORY_COLUMN));
-        intent.putExtra("isSignedIn", true);
-        
-        return intent;
-    }
-    
-	private void handleQuit ()
-	{
-
-        try {
-            if (mConn != null) {
-                mConn.logout();
-              
-            }
-            
-            
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-           
-            finish();
-            
-        } catch (RemoteException e) {
-        	Log.e(ImApp.LOG_TAG, e.getMessage());
-        }
-        
-        
-        
-	}
-	
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -300,7 +248,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                 handled = true;
             }
         } else {
-            handled = mContactListView.dispatchKeyEvent(event);
+            handled = mActiveChatListView.dispatchKeyEvent(event);
             if (!handled && isReadable(keyCode, event)
                     && (KeyEvent.ACTION_DOWN == event.getAction())) {
                 showFilterView();
@@ -352,9 +300,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     void showContactListView() {
         if (mIsFiltering) {
-            setContentView(mContactListView);
-            mContactListView.requestFocus();
-            mContactListView.invalidate();
+            setContentView(mActiveChatListView);
+            mActiveChatListView.requestFocus();
+            mActiveChatListView.invalidate();
             mIsFiltering = false;
         }
     }
@@ -369,14 +317,14 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     protected void onResume() {
         super.onResume();
         mApp.registerForConnEvents(mHandler);
-        mContactListView.setAutoRefreshContacts(true);
+        mActiveChatListView.setAutoRefreshContacts(true);
     }
 
     @Override
     protected void onDestroy() {
         mDestroyed = true;
         // set connection to null to unregister listeners.
-        mContactListView.setConnection(null);
+        mActiveChatListView.setConnection(null);
         if (mSettingMap != null) {
             mSettingMap.close();
         }
@@ -384,7 +332,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     }
 
     static void log(String msg) {
-        Log.v(ImApp.LOG_TAG, "<ContactListActivity> " +msg);
+        Log.d(ImApp.LOG_TAG, "<ContactListActivity> " +msg);
     }
 
     @Override
@@ -400,9 +348,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         } else {
             ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.packedPosition;
-            contactSelected = mContactListView.isContactAtPosition(info.packedPosition);
-            chatSelected = mContactListView.isConversationAtPosition(info.packedPosition);
-            contactCursor = mContactListView.getContactAtPosition(info.packedPosition);
+            contactSelected = false;
+            chatSelected = mActiveChatListView.isConversationAtPosition(info.packedPosition);
+            contactCursor = null;
         }
 
         boolean allowBlock = true;
@@ -476,37 +424,37 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
-            Cursor c;
-            if (mIsFiltering) {
-                c = mFilterView.getContactAtPosition((int)mPosition);
-            } else {
-                c = mContactListView.getContactAtPosition(mPosition);
-            }
-
-            switch (item.getItemId()) {
-            case MENU_START_CONVERSATION:
-                mContactListView.startChat(c);
-                break;
-            case MENU_VIEW_PROFILE:
-                mContactListView.viewContactPresence(c);
-                break;
-            case MENU_BLOCK_CONTACT:
-                mContactListView.blockContact(c);
-                break;
-            case MENU_DELETE_CONTACT:
-                mContactListView.removeContact(c);
-                break;
-            case MENU_END_CONVERSATION:
-                mContactListView.endChat(c);
-                break;
-            default:
-                return false;
-            }
-
-            if (mIsFiltering) {
-                showContactListView();
-            }
-            return true;
+//            Cursor c;
+//            if (mIsFiltering) {
+//                c = mFilterView.getContactAtPosition((int)mPosition);
+//            } else {
+//                c = mActiveChatListView.getContactAtPosition(mPosition);
+//            }
+//
+//            switch (item.getItemId()) {
+//            case MENU_START_CONVERSATION:
+//                mActiveChatListView.startChat(c);
+//                break;
+//            case MENU_VIEW_PROFILE:
+//                mActiveChatListView.viewContactPresence(c);
+//                break;
+//            case MENU_BLOCK_CONTACT:
+//                mActiveChatListView.blockContact(c);
+//                break;
+//            case MENU_DELETE_CONTACT:
+//                mActiveChatListView.removeContact(c);
+//                break;
+//            case MENU_END_CONVERSATION:
+//                mActiveChatListView.endChat(c);
+//                break;
+//            default:
+//                return false;
+//            }
+//
+//            if (mIsFiltering) {
+//                showContactListView();
+//            }
+           return true;
         }
     }
 
@@ -529,9 +477,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     }
                   
                     //TODO Gibber manually launch back to main
-                	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                	Intent intent = new Intent(getBaseContext(), MainActivity.class);					
 					intent.putExtra("showSettings",false);
 					intent.putExtra("doSignIn",false);					
 					startActivity(intent);

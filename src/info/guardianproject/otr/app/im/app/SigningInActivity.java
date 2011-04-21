@@ -27,6 +27,8 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -434,7 +436,14 @@ public class SigningInActivity extends Activity {
             finish();
             try {
                 Intent intent;
+
                 mAccountId = mConn.getAccountId();
+
+                
+                /*#############################################################################
+                 * This (see below) intent is the one that needs to be passed to the tab Event 
+                 */
+                
 
                 if (mToAddress != null) {
                     IChatSessionManager manager = mConn.getChatSessionManager();
@@ -450,8 +459,9 @@ public class SigningInActivity extends Activity {
                     intent.addCategory(ImApp.IMPS_CATEGORY);
 
                 } else {
-                    intent = new Intent(this, ContactListActivity.class);
+                    intent = new Intent(this, TabbedContainer.class);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+
                     
                 }
                 startActivity(intent);

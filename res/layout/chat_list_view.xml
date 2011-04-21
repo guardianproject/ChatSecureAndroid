@@ -17,10 +17,10 @@
  * limitations under the License.
  */
 -->
-<info.guardianproject.otr.app.im.app.ContactListView xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.otr.app.im.app.ActiveChatListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/contactListView"
+    android:id="@+id/ActiveChatListView"
     android:orientation="vertical"
     android:background="@drawable/gibberbg">
 
@@ -28,13 +28,13 @@
         android:id="@+id/userPresence"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="0dip"
         android:layout_centerVertical="true"
-        android:paddingTop="0dip"
+        android:paddingTop="9dip"
         android:paddingLeft="5dip"
-        android:paddingBottom="0dip"
+        android:paddingBottom="5dip"
         android:paddingRight="5dip"
-        >
+        android:background="#D00000">	
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
 
     </info.guardianproject.otr.app.im.app.UserPresenceView>
 
-    <ExpandableListView android:id="@+id/contactsList"
+    <ListView android:id="@+id/chatsList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
          android:background="#00000000"
@@ -83,4 +83,4 @@
 
         />
 
-</info.guardianproject.otr.app.im.app.ContactListView>
+</info.guardianproject.otr.app.im.app.ActiveChatListView>
