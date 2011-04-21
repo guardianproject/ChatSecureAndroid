@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,9 +31,13 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class WelcomeActivity extends Activity {
     private static final String TAG = "WelcomeActivity";
@@ -74,6 +79,7 @@ public class WelcomeActivity extends Activity {
         super.onCreate(icicle);
 
         setContentView(R.layout.welcome_activity);
+        
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setOnClickListener(new OnClickListener()
         {
@@ -111,6 +117,8 @@ public class WelcomeActivity extends Activity {
         mHandler = new MyHandler(this);
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        
+
     }
 
     @Override
@@ -123,13 +131,46 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        
+        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_LONG).show();
+
 
         mHandler.registerForBroadcastEvents();
         
         if (allAccountsSignedOut() && ! mDidAutoLaunch) {
         	mDidAutoLaunch = true;
+        	showAccountSetup();
         	signInAll();
         }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_list_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        
+        
+
+            case R.id.menu_account_settings:
+                showAccountSetup();                
+                finish();
+                return true;
+                
+            case R.id.menu_about:
+                showAbout();
+                return true;
+
+            
+        }
+        return super.onOptionsItemSelected(item);
     }
     
     private void signInAll() {
@@ -176,6 +217,7 @@ public class WelcomeActivity extends Activity {
 
         Intent intent = new Intent(this, SigningInActivity.class);
         intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
+        finish();
         startActivity(intent);
     }
 
@@ -202,6 +244,23 @@ public class WelcomeActivity extends Activity {
         return true;
     }
 
+    private void showAccountSetup ()
+    {
+    	if (! mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
+            // add account
+			startActivity(getCreateAccountIntent());
+        } else {
+        	// edit existing account
+			startActivity(getEditAccountIntent());
+        }
+    }
+    
+    private void showAbout ()
+    {
+    	//TODO implement this about form
+    	Toast.makeText(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber", Toast.LENGTH_LONG).show();
+    }
+    
     private void signOutAll() {
         DialogInterface.OnClickListener confirmListener
                 = new DialogInterface.OnClickListener(){
