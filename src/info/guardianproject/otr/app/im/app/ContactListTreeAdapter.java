@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smackx.packet.VCard;
+
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
 
@@ -323,6 +326,9 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                     isLastChild, convertView, parent);
         }
     }
+    
+    
+   
 
     public int getChildrenCount(int groupPosition) {
         if (!mDataValid) {

@@ -15,6 +15,12 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -27,6 +33,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -37,7 +44,6 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -49,13 +55,12 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smackx.packet.VCard;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.os.Environment;
 import android.os.Parcel;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class XmppConnection extends ImConnection {
@@ -94,10 +99,49 @@ public class XmppConnection extends ImConnection {
 	
 		mConnection.sendPacket(msg);		
 	}
+	
+	 public VCard getVCard(String myJID) {
+	        
+
+		 android.os.Debug.waitForDebugger();
+		 
+	        VCard vCard = new VCard();
+	        
+	        try {       
+	            vCard.load(mConnection, myJID);
+	            
+	            // If VCard is loaded, then save the avatar to the personal folder.
+	            byte[] bytes = vCard.getAvatar();
+	            
+	            if (bytes != null)
+	            {
+	            	
+	            
+	            try {
+	            	String filename = vCard.getAvatarHash() + ".jpg";
+	                InputStream in = new ByteArrayInputStream(bytes);
+	                File sdCard = Environment.getExternalStorageDirectory();
+	                File file = new File(sdCard, filename);
+	                new FileOutputStream(file).write(bytes);
+	                /*
+	                BufferedImage bi = javax.imageio.ImageIO.read(in);
+	                File outputfile = new File("C://Avatar.jpg");
+	                ImageIO.write(bi, "jpg", outputfile);
+	                */
+	                }
+	                catch (Exception e){
+	                	e.printStackTrace();
+	                }
+	            }
+	                        
+	        } catch (XMPPException ex) {
+	            ex.printStackTrace();
+	        }
+	        return vCard;
+	    }
 
 	@Override
 	protected void doUpdateUserPresenceAsync(Presence presence) {
-		
 		
 		String statusText = presence.getStatusText();
         Type type = Type.available;
@@ -555,6 +599,7 @@ public class XmppConnection extends ImConnection {
 		if (contact == null) {
 			contact = makeContact(address);
 		}
+		
 		return contact;
 	}
 
@@ -564,6 +609,7 @@ public class XmppConnection extends ImConnection {
 
 	private static Contact makeContact(String address) {
 		Contact contact = new Contact(new XmppAddress(address), address);
+		
 		return contact;
 	}
 
@@ -658,6 +704,9 @@ public class XmppConnection extends ImConnection {
 				Contact contact = new Contact(xaddress, name);
 				contacts.add(contact);
 				
+				getVCard(xaddress.getFullName());
+
+				
 				
 			}
 			return contacts;
@@ -681,6 +730,7 @@ public class XmppConnection extends ImConnection {
 					mDefaultContactList = cl;
 				notifyContactListLoaded(cl);
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[0]));
+				
 				
 				processQueuedPresenceNotifications (contacts);
 				
@@ -715,6 +765,8 @@ public class XmppConnection extends ImConnection {
 			
 			
 		}
+		
+		
 
 		/*
 		 * iterators through a list of contacts to see if there were any Presence
