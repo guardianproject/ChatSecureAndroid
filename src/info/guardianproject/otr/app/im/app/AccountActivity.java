@@ -36,25 +36,18 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -85,7 +78,7 @@ public class AccountActivity extends Activity {
 
     Uri mAccountUri;
 
-    EditText mEditName;
+    EditText mEditUserAccount;
     EditText mEditPass;
     CheckBox mRememberPass;
   //  CheckBox mKeepSignIn; //n8fr8 removed 2011/04/20 
@@ -95,6 +88,12 @@ public class AccountActivity extends Activity {
     
     boolean isEdit = false;
     boolean isSignedIn = false;
+
+    String mUserName;
+    String mDomain;
+    int mPort;
+    private boolean mHaveSetUseTor = false;
+    private String mOriginalUserAccount;
     
    // String mToAddress;
 
@@ -105,7 +104,7 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
-        mEditName = (EditText)findViewById(R.id.edtName);
+        mEditUserAccount = (EditText)findViewById(R.id.edtName);
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
  //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
@@ -129,7 +128,6 @@ public class AccountActivity extends Activity {
         	isSignedIn = i.getBooleanExtra("isSignedIn", false);
         
     //    mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
-        final String origUserName;
         final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
@@ -144,7 +142,7 @@ public class AccountActivity extends Activity {
         }
 
         if(Intent.ACTION_INSERT.equals(action)) {
-            origUserName = "";
+            mOriginalUserAccount = "";
             // TODO once we implement multiple IM protocols
             mProviderId = ContentUris.parseId(i.getData());
             provider = app.getProvider(mProviderId);
@@ -182,8 +180,8 @@ public class AccountActivity extends Activity {
     			new Imps.ProviderSettings.QueryMap(contentResolver,
     					mProviderId, false, null);
 
-            origUserName = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@" + settings.getDomain();
-            mEditName.setText(origUserName);
+            mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@" + settings.getDomain();
+            mEditUserAccount.setText(mOriginalUserAccount);
             mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
 
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
@@ -234,7 +232,27 @@ public class AccountActivity extends Activity {
             }
         });
 
-        mEditName.addTextChangedListener(mTextWatcher);
+        mEditUserAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+        	@Override
+        	public void onFocusChange(View v, boolean hasFocus) {
+        		if (! hasFocus) {
+        			String username = mEditUserAccount.getText().toString();
+
+        			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+        			if (parseAccount(username)) {
+        				if (username != mOriginalUserAccount) {
+        					settingsForDomain(mDomain, mPort);
+        					mHaveSetUseTor = false;
+        				}
+        			} else {
+        				// TODO if bad account name, bump back to the account EditText
+        				//mEditUserAccount.requestFocus();
+        			}
+        		}
+        	}
+        });
+        mEditUserAccount.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 
         mBtnAdvanced.setOnClickListener(new OnClickListener() {
@@ -245,9 +263,6 @@ public class AccountActivity extends Activity {
         });
         
         mBtnSignIn.setOnClickListener(new OnClickListener() {
-        	String username;
-        	String domain;
-        	int port;
             public void onClick(View v) {
             	
             	
@@ -256,13 +271,13 @@ public class AccountActivity extends Activity {
 
                 ContentResolver cr = getContentResolver();
 
-                if (! parseAccount(mEditName.getText().toString())) {
-                	mEditName.selectAll();
-                	mEditName.requestFocus();
+                if (! parseAccount(mEditUserAccount.getText().toString())) {
+                	mEditUserAccount.selectAll();
+                	mEditUserAccount.requestFocus();
                 	return;
                 }
                 
-                long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, username,
+                long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
                         rememberPass ? pass : null);
                 
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
@@ -286,7 +301,7 @@ public class AccountActivity extends Activity {
                     values.put(Imps.Account.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
                     getContentResolver().update(mAccountUri, values, null, null);
                     
-	                if (!origUserName.equals(username) && shouldShowTermOfUse(brandingRes)) {
+	                if (!mOriginalUserAccount.equals(mUserName + mDomain) && shouldShowTermOfUse(brandingRes)) {
 	                    confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
 	                        public void onClick(DialogInterface dialog, int which) {
 	                            signIn(rememberPass, pass);
@@ -298,46 +313,6 @@ public class AccountActivity extends Activity {
                 }
             }
 
-            private boolean parseAccount(String userField) {
-            	boolean isGood = true;
-            	String[] splitAt = userField.split("@");
-            	username = splitAt[0];
-            	domain = null;
-            	port = 5222;
-
-            	if (splitAt.length > 1) {
-            		domain = splitAt[1].toLowerCase();
-            		String[] splitColon = domain.split(":");
-            		domain = splitColon[0];
-            		if(splitColon.length > 1) {
-            			try {
-            				port = Integer.parseInt(splitColon[1]);
-            			} catch (NumberFormatException e) {
-            				// TODO move these strings to strings.xml
-            				isGood = false;
-            				Toast.makeText(AccountActivity.this, 
-            						"The port value '" + splitColon[1] +
-            						"' after the : could not be parsed as a number!",
-            						Toast.LENGTH_LONG).show();
-            			}
-            		}
-            	}
-
-            	if (domain == null) {
-            		isGood = false;
-            		Toast.makeText(AccountActivity.this, 
-            				R.string.account_wizard_no_domain_warning,
-            				Toast.LENGTH_LONG).show();
-            	} else if (domain.indexOf(".") == -1) {
-            		isGood = false;
-            		Toast.makeText(AccountActivity.this, 
-            				R.string.account_wizard_no_root_domain_warning,
-            				Toast.LENGTH_LONG).show();
-            	}
-
-            	return isGood;
-            }
-
             void signIn(boolean rememberPass, String pass) {
                 final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                         getContentResolver(),
@@ -345,23 +320,25 @@ public class AccountActivity extends Activity {
                         false /* don't keep updated */,
                         null /* no handler */);
                 
-        		settingsForDomain(settings, domain, port);
+                if (!mHaveSetUseTor && mUseTor.isChecked()) {
+                	// if using Tor, disable DNS SRV to reduce anonymity leaks
+                	settings.setDoDnsSrv(false);
+                	mHaveSetUseTor = true;
+                }
+            	settings.setUseTor(mUseTor.isChecked());
+            	settings.close();
                 
                 Intent intent = new Intent(AccountActivity.this, SigningInActivity.class);
                 intent.setData(mAccountUri);
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }
-                
-            	settings.setUseTor(mUseTor.isChecked());
 
             	/*
                 if (mToAddress != null) {
                     intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
                 }*/
                 
-        		settings.close();
-        		
                 startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
@@ -384,7 +361,52 @@ public class AccountActivity extends Activity {
                 
     }
 
-    void settingsForDomain(Imps.ProviderSettings.QueryMap settings, String domain, int port) {
+    boolean parseAccount(String userField) {
+    	boolean isGood = true;
+    	String[] splitAt = userField.split("@");
+    	mUserName = splitAt[0];
+    	mDomain = null;
+    	mPort = 5222;
+
+    	if (splitAt.length > 1) {
+    		mDomain = splitAt[1].toLowerCase();
+    		String[] splitColon = mDomain.split(":");
+    		mDomain = splitColon[0];
+    		if(splitColon.length > 1) {
+    			try {
+    				mPort = Integer.parseInt(splitColon[1]);
+    			} catch (NumberFormatException e) {
+    				// TODO move these strings to strings.xml
+    				isGood = false;
+    				Toast.makeText(AccountActivity.this, 
+    						"The port value '" + splitColon[1] +
+    						"' after the : could not be parsed as a number!",
+    						Toast.LENGTH_LONG).show();
+    			}
+    		}
+    	}
+
+    	if (mDomain == null) {
+    		isGood = false;
+    		Toast.makeText(AccountActivity.this, 
+    				R.string.account_wizard_no_domain_warning,
+    				Toast.LENGTH_LONG).show();
+    	} else if (mDomain.indexOf(".") == -1) {
+    		isGood = false;
+    		Toast.makeText(AccountActivity.this, 
+    				R.string.account_wizard_no_root_domain_warning,
+    				Toast.LENGTH_LONG).show();
+    	}
+
+    	return isGood;
+    }
+
+    void settingsForDomain(String domain, int port) {
+    	final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+    			getContentResolver(),
+    			mProviderId,
+    			false /* don't keep updated */,
+    			null /* no handler */);
     	if (domain.equals("gmail.com")) {
 			// Google only supports a certain configuration for XMPP:
 			// http://code.google.com/apis/talk/open_communications.html
@@ -410,20 +432,15 @@ public class AccountActivity extends Activity {
     		settings.setServer(domain);
     		settings.setRequireTls(false);
     		settings.setTlsCertVerify(false);
-    	} 
-    	else
-    	{
-    		//we respect the advacned settings the user has set
-    	}
-    	/*
-    	else {
+    	} else {
     		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(port);
     		settings.setServer(null);
     		settings.setRequireTls(false);
     		settings.setTlsCertVerify(true);
-    	}*/
+    	}
+    	settings.close();
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -520,7 +537,7 @@ public class AccountActivity extends Activity {
           
         	
         	
-           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditName.getText()), Toast.LENGTH_LONG).show();
+           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditUserAccount.getText()), Toast.LENGTH_LONG).show();
            isSignedIn = false;
            
            mBtnSignIn.setText(getString(R.string.sign_in));
@@ -554,7 +571,7 @@ public class AccountActivity extends Activity {
     }*/
 
     void updateWidgetState() {
-        boolean goodUsername = mEditName.getText().length() > 0;
+        boolean goodUsername = mEditUserAccount.getText().length() > 0;
         boolean goodPassword = mEditPass.getText().length() > 0;
         boolean hasNameAndPassword = goodUsername && goodPassword;
 
@@ -595,12 +612,22 @@ public class AccountActivity extends Activity {
         }
     };
 
-    private void showAdvanced()
-    {
-    	 Intent intent = new Intent(this, AccountSettingsActivity.class);
-         //Intent intent = new Intent(this, SettingActivity.class);
-         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-         startActivity(intent);
+    private void showAdvanced() {
+    	// if using Tor, disable DNS SRV to reduce anonymity leaks
+    	if (!mHaveSetUseTor && mUseTor.isChecked()) {
+    		final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+    				getContentResolver(),
+    				mProviderId,
+    				false /* don't keep updated */,
+    				null /* no handler */);
+    		settings.setDoDnsSrv(false);
+    		mHaveSetUseTor = true;
+    		settings.setUseTor(mUseTor.isChecked());
+    		settings.close();
+    	}
+    	Intent intent = new Intent(this, AccountSettingsActivity.class);
+    	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+    	startActivity(intent);
     }
 /*
     @Override
