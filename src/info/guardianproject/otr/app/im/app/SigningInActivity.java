@@ -16,6 +16,7 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionListener;
@@ -294,7 +295,7 @@ public class SigningInActivity extends Activity {
                             false /* don't keep updated */,
                             null /* no handler */);
                     if (settings.getUseTor()) {	
-                        mConn.setProxy("SOCKS5", "127.0.0.1", 9050);
+                        mConn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST, TorProxyInfo.PROXY_PORT);
                     }
                     settings.close();
 
@@ -306,10 +307,10 @@ public class SigningInActivity extends Activity {
             }
 
         } catch (RemoteException e) {
-        	pbarDialog.dismiss();
-        	
+        	pbarDialog.dismiss();        	
             mHandler.showServiceErrorAlert();
             finish();
+            
         }
     }
 
