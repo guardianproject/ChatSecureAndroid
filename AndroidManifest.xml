@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.3.20110304b" android:versionCode="12">
+     android:versionName="0.0.3.20110304b-dev-debug" android:versionCode="12">
 
 <uses-sdk android:minSdkVersion="4"></uses-sdk>
 
@@ -35,7 +35,7 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false">
+             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true">
 
 
          <activity android:name=".app.WelcomeActivity">
