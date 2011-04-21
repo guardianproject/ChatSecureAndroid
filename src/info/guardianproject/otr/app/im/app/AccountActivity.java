@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -31,6 +32,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.RemoteException;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -60,7 +63,8 @@ public class AccountActivity extends Activity {
     private static final String ACCOUNT_URI_KEY = "accountUri";
 
     private long mProviderId;
-
+    private long mAccountId;
+    
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
 
     private static final String[] ACCOUNT_PROJECTION = {
@@ -69,23 +73,30 @@ public class AccountActivity extends Activity {
         Imps.Account.USERNAME,
         Imps.Account.PASSWORD,
         Imps.Account.KEEP_SIGNED_IN,
+        Imps.Account.LAST_LOGIN_STATE
     };
+    
 
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSWORD_COLUMN = 3;
     private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
+    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
 
     Uri mAccountUri;
 
     EditText mEditName;
     EditText mEditPass;
     CheckBox mRememberPass;
-    CheckBox mKeepSignIn;
+  //  CheckBox mKeepSignIn; //n8fr8 removed 2011/04/20 
     CheckBox mUseTor;
     Button   mBtnSignIn;
-
-    String mToAddress;
+    Button	 mBtnAdvanced;
+    
+    boolean isEdit = false;
+    boolean isSignedIn = false;
+    
+   // String mToAddress;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -97,9 +108,12 @@ public class AccountActivity extends Activity {
         mEditName = (EditText)findViewById(R.id.edtName);
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
-        mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
+ //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
         mUseTor = (CheckBox)findViewById(R.id.useTor);
         mBtnSignIn = (Button)findViewById(R.id.btnSignIn);
+        
+        mBtnAdvanced = (Button)findViewById(R.id.btnAdvanced);
+        
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
@@ -110,7 +124,11 @@ public class AccountActivity extends Activity {
         ImApp app = ImApp.getApplication(this);
         Intent i = getIntent();
         String action = i.getAction();
-        mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
+        
+        if (i.hasExtra("isSignedIn"))
+        	isSignedIn = i.getBooleanExtra("isSignedIn", false);
+        
+    //    mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
         final String origUserName;
         final ProviderDef provider;
 
@@ -136,6 +154,8 @@ public class AccountActivity extends Activity {
                 Log.w(ImApp.LOG_TAG, "<AccountActivity>Bad data");
                 return;
             }
+            
+            isEdit = true;
 
             Cursor cursor = cr.query(uri, ACCOUNT_PROJECTION, null, null, null);
 
@@ -152,6 +172,8 @@ public class AccountActivity extends Activity {
 
             setTitle(R.string.sign_in);
 
+            mAccountId = cursor.getLong(cursor.getColumnIndexOrThrow(Imps.Account._ID));
+
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = app.getProvider(mProviderId);
 
@@ -166,10 +188,12 @@ public class AccountActivity extends Activity {
 
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
 
-            boolean keepSignIn = cursor.getInt(ACCOUNT_KEEP_SIGNED_IN_COLUMN) == 1;
-            mKeepSignIn.setChecked(keepSignIn);
+//            boolean keepSignIn = cursor.getInt(ACCOUNT_KEEP_SIGNED_IN_COLUMN) == 1;
+ //           mKeepSignIn.setChecked(keepSignIn);
 
             mUseTor.setChecked(settings.getUseTor());
+            
+           
             
             settings.close();
             cursor.close();
@@ -179,7 +203,13 @@ public class AccountActivity extends Activity {
             return;
         }
 
+        if (isSignedIn)
+        {
+        	mBtnSignIn.setText(getString(R.string.menu_sign_out));
+        }
+        
         final BrandingResources brandingRes = app.getBrandingResource(mProviderId);
+        /*
         mKeepSignIn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 CheckBox keepSignIn = (CheckBox) v;
@@ -189,10 +219,15 @@ public class AccountActivity extends Activity {
                 }
             }
         });
+        */
+        
+        
         mRememberPass.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                CheckBox keepSignIn = (CheckBox) v;
-                if ( keepSignIn.isChecked() ) {
+            	
+                CheckBox mRememberPass = (CheckBox) v;
+                
+                if ( mRememberPass.isChecked() ) {
                     String msg = brandingRes.getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
                     Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
                 }
@@ -202,11 +237,20 @@ public class AccountActivity extends Activity {
         mEditName.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 
+        mBtnAdvanced.setOnClickListener(new OnClickListener() {
+        	
+        	public void onClick(View v) {
+        		showAdvanced();
+        	}
+        });
+        
         mBtnSignIn.setOnClickListener(new OnClickListener() {
         	String username;
         	String domain;
         	int port;
             public void onClick(View v) {
+            	
+            	
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
 
@@ -223,14 +267,34 @@ public class AccountActivity extends Activity {
                 
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
 
-                if (!origUserName.equals(username) && shouldShowTermOfUse(brandingRes)) {
-                    comfirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            signIn(rememberPass, pass);
-                        }
-                    });
-                } else {
-                    signIn(rememberPass, pass);
+                //if remember pass is true, set the "keep signed in" property to true
+            
+                
+                
+                if (isSignedIn)
+                {
+                	//if you are signing out, then we will deactive "auto" sign in
+                    ContentValues values = new ContentValues();
+                    values.put(Imps.Account.KEEP_SIGNED_IN, false ? 1 : 0);
+                    getContentResolver().update(mAccountUri, values, null, null);
+                    
+                	signOut();
+                }
+                else
+                {
+                    ContentValues values = new ContentValues();
+                    values.put(Imps.Account.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
+                    getContentResolver().update(mAccountUri, values, null, null);
+                    
+	                if (!origUserName.equals(username) && shouldShowTermOfUse(brandingRes)) {
+	                    confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
+	                        public void onClick(DialogInterface dialog, int which) {
+	                            signIn(rememberPass, pass);
+	                        }
+	                    });
+	                } else {
+	                    signIn(rememberPass, pass);
+	                }
                 }
             }
 
@@ -291,11 +355,13 @@ public class AccountActivity extends Activity {
                 
             	settings.setUseTor(mUseTor.isChecked());
 
+            	/*
                 if (mToAddress != null) {
                     intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
-                }
+                }*/
                 
         		settings.close();
+        		
                 startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
@@ -313,14 +379,9 @@ public class AccountActivity extends Activity {
         signUp.setMovementMethod(LinkMovementMethod.getInstance());
          */
         // repurposing R.id.signUp for short term kludge for account settings message
-        TextView signUp = (TextView)findViewById(R.id.signUp);
-        signUp.setText("For more account settings, press the Menu button.");
-
+       
         updateWidgetState();
-        
-        // TODO move this warning to strings.xml
-        String msg = "WARNING: This is an ALPHA release of Gibberbot that may still include security holes or bugs. Experimental use only!";
-        Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
+                
     }
 
     void settingsForDomain(Imps.ProviderSettings.QueryMap settings, String domain, int port) {
@@ -349,17 +410,23 @@ public class AccountActivity extends Activity {
     		settings.setServer(domain);
     		settings.setRequireTls(false);
     		settings.setTlsCertVerify(false);
-    	} else {
+    	} 
+    	else
+    	{
+    		//we respect the advacned settings the user has set
+    	}
+    	/*
+    	else {
     		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(port);
     		settings.setServer(null);
     		settings.setRequireTls(false);
     		settings.setTlsCertVerify(true);
-    	}
+    	}*/
     }
 
-    void comfirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
+    void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
         SpannableString message = new SpannableString(
                 res.getString(BrandingResourceIDs.STRING_TOU_MESSAGE));
         Linkify.addLinks(message, Linkify.ALL);
@@ -388,18 +455,89 @@ public class AccountActivity extends Activity {
         super.onSaveInstanceState(outState);
         outState.putParcelable(ACCOUNT_URI_KEY, mAccountUri);
     }
+    
+    
+    void signOutUsingActivity () {
+        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(),
+                mProviderId,
+                false /* don't keep updated */,
+                null /* no handler */);
+        
+        Intent intent = new Intent(AccountActivity.this, SignoutActivity.class);
+        intent.setData(mAccountUri);
+        
+		settings.close();
+	
+        startActivity(intent);
+    }
+    
+    
+    private Handler mHandler = new Handler();
+    private ImApp mApp = null;
+    
+    void signOut ()
+    {
+    	
+    	mApp = ImApp.getApplication(AccountActivity.this);
+    	
+        mApp.callWhenServiceConnected(mHandler, new Runnable() {
+            public void run() {
+              
+            	signOut(mProviderId, mAccountId);
+            }
+        });
+    	
+    }
+  
+    void signOut (long providerId, long accountId)
+    {
+
+        try {	
+        	
+       
+            IImConnection conn = mApp.getConnection(providerId);
+            if (conn != null) {
+                conn.logout();
+            } else {
+                // Normally, we can always get the connection when user chose to
+                // sign out. However, if the application crash unexpectedly, the
+                // status will never be updated. Clear the status in this case
+                // to make it recoverable from the crash.
+                ContentValues values = new ContentValues(2);
+                values.put(Imps.AccountStatus.PRESENCE_STATUS,
+                        Imps.Presence.OFFLINE);
+                values.put(Imps.AccountStatus.CONNECTION_STATUS,
+                        Imps.ConnectionStatus.OFFLINE);
+                String where = Imps.AccountStatus.ACCOUNT + "=?";
+                getContentResolver().update(Imps.AccountStatus.CONTENT_URI,
+                        values, where,
+                        new String[] { Long.toString(accountId) });
+            }
+        } catch (RemoteException ex) {
+            Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
+        } finally {
+          
+        	
+        	
+           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditName.getText()), Toast.LENGTH_LONG).show();
+           isSignedIn = false;
+           
+           mBtnSignIn.setText(getString(R.string.sign_in));
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    	
+    	
         if (requestCode == REQUEST_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                boolean keepSignIn = mKeepSignIn.isChecked();
-                updateKeepSignedIn(keepSignIn);
+             
                 finish();
             } else {
                 // sign in failed, disable keep sign in, clear the password.
-                mKeepSignIn.setChecked(false);
-                updateKeepSignedIn(false);
+                
                 mEditPass.setText("");
                 ContentValues values = new ContentValues();
                 values.put(Imps.Account.PASSWORD, (String) null);
@@ -408,11 +546,12 @@ public class AccountActivity extends Activity {
         }
     }
 
+    /*
     void updateKeepSignedIn(boolean keepSignIn) {
         ContentValues values = new ContentValues();
         values.put(Imps.Account.KEEP_SIGNED_IN, keepSignIn ? 1 : 0);
         getContentResolver().update(mAccountUri, values, null, null);
-    }
+    }*/
 
     void updateWidgetState() {
         boolean goodUsername = mEditName.getText().length() > 0;
@@ -432,11 +571,13 @@ public class AccountActivity extends Activity {
         mRememberPass.setEnabled(hasNameAndPassword);
         mRememberPass.setFocusable(hasNameAndPassword);
 
+        /*
         if (!rememberPass) {
             mKeepSignIn.setChecked(false);
         }
         mKeepSignIn.setEnabled(rememberPass);
         mKeepSignIn.setFocusable(rememberPass);
+        */
 
         mBtnSignIn.setEnabled(hasNameAndPassword);
         mBtnSignIn.setFocusable(hasNameAndPassword);
@@ -454,11 +595,24 @@ public class AccountActivity extends Activity {
         }
     };
 
-
+    private void showAdvanced()
+    {
+    	 Intent intent = new Intent(this, AccountSettingsActivity.class);
+         //Intent intent = new Intent(this, SettingActivity.class);
+         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+         startActivity(intent);
+    }
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.account_settings_menu, menu);
+        
+        if(isEdit) {
+        	//add delete menu option
+        	
+        }
+        
         return true;
     }
 
@@ -474,4 +628,5 @@ public class AccountActivity extends Activity {
     	}
     	return super.onOptionsItemSelected(item);
     }
+    */
 }

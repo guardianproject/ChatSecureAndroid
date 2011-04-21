@@ -191,33 +191,86 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                 startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
                 return true;
 */
-/*
+
             case R.id.menu_view_accounts:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setType(Imps.Provider.CONTENT_TYPE);
-                startActivity(intent);
-                finish();
+            	startActivity(getEditAccountIntent());           
                 return true;
-*/				
+				
             case R.id.menu_settings:
-                Intent intent = new Intent(this, SettingActivity.class);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                startActivity(intent);
+                Intent sintent = new Intent(this, SettingActivity.class);
+                sintent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                startActivity(sintent);
                 return true;
 
-            case R.id.menu_sign_out:
-                try {
-                    if (mConn != null) {
-                        mConn.logout();
-                    }
-                } catch (RemoteException e) {
-                	Log.e(ImApp.LOG_TAG, e.getMessage());
-                }
+            case R.id.menu_quit:
+            	handleQuit();
+            	
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    
+    private static final String[] PROVIDER_PROJECTION = {
+        Imps.Provider._ID,
+        Imps.Provider.NAME,
+        Imps.Provider.FULLNAME,
+        Imps.Provider.CATEGORY,
+        Imps.Provider.ACTIVE_ACCOUNT_ID,
+        Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+        Imps.Provider.ACTIVE_ACCOUNT_PW,
+        Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+        Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+        Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+        Imps.Provider.ACCOUNT_CONNECTION_STATUS,
+    };
+	
+	static final int PROVIDER_CATEGORY_COLUMN = 3;
+	static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+	
+    Intent getEditAccountIntent() {
+        
+    	Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+                 PROVIDER_PROJECTION,
+                 Imps.Provider.CATEGORY + "=?" /* selection */,
+                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+                 Imps.Provider.DEFAULT_SORT_ORDER);
+    	mProviderCursor.moveToFirst();
+
+    	Intent intent = new Intent(Intent.ACTION_EDIT,
+                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
+                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+        intent.addCategory(mProviderCursor.getString(PROVIDER_CATEGORY_COLUMN));
+        intent.putExtra("isSignedIn", true);
+        
+        return intent;
+    }
+    
+	private void handleQuit ()
+	{
+
+        try {
+            if (mConn != null) {
+                mConn.logout();
+              
+            }
+            
+            
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+           
+            finish();
+            
+        } catch (RemoteException e) {
+        	Log.e(ImApp.LOG_TAG, e.getMessage());
+        }
+        
+        
+        
+	}
+	
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

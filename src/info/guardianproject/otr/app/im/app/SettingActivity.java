@@ -34,7 +34,6 @@ import android.widget.Toast;
 public class SettingActivity extends android.preference.PreferenceActivity implements OnSharedPreferenceChangeListener {
 
     private long mProviderId;
-    private long mAccountId;
 
     EditTextPreference mXmppResource;
     ListPreference mOtrMode;
@@ -100,7 +99,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     	super.onCreate(savedInstanceState);
     	addPreferencesFromResource(R.xml.preferences);
     	Intent intent = getIntent();
-    	mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
+    
     	mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
     	if (mProviderId < 0) {
     		Log.e(ImApp.LOG_TAG,"SettingActivity intent requires provider id extra");
