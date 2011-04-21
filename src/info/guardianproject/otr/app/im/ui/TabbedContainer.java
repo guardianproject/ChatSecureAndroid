@@ -31,6 +31,15 @@ public class TabbedContainer extends  TabActivity {
 	    Intent intent;  // Reusable Intent for each tab
 
 	   
+	    // Do the same for the other tabs
+	    intent = new Intent().setClass(this, ContactListActivity.class);
+	    intent.putExtras(justPassingThrough);
+	    spec = tabHost.newTabSpec("contacts").setIndicator("Contacts",
+	                      res.getDrawable(R.drawable.ic_tab_contacts))
+	                  .setContent(intent);
+	    tabHost.addTab(spec);
+
+
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, ChatListActivity.class);
 	    intent.putExtras(justPassingThrough);
@@ -41,14 +50,7 @@ public class TabbedContainer extends  TabActivity {
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	    // Do the same for the other tabs
-	    intent = new Intent().setClass(this, ContactListActivity.class);
-	    intent.putExtras(justPassingThrough);
-	    spec = tabHost.newTabSpec("contacts").setIndicator("Contacts",
-	                      res.getDrawable(R.drawable.ic_tab_chats))
-	                  .setContent(intent);
-	    tabHost.addTab(spec);
-
+	    
 //Value in parathes controls which tab element to view 
 	    tabHost.setCurrentTab(0);
 	    

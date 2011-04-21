@@ -16,16 +16,14 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.otr.app.im.ui.MainActivity;
 
 import java.util.Observable;
 import java.util.Observer;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -39,6 +37,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +45,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
@@ -207,7 +205,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                 startActivity(intent);
                 return true;
 
-            case R.id.menu_sign_out:
+            case R.id.menu_quit:
                 try {
                     if (mConn != null) {
                         mConn.logout();
@@ -477,7 +475,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                     }
                   
                     //TODO Gibber manually launch back to main
-                	Intent intent = new Intent(getBaseContext(), MainActivity.class);					
+                	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);					
 					intent.putExtra("showSettings",false);
 					intent.putExtra("doSignIn",false);					
 					startActivity(intent);
