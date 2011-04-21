@@ -7,7 +7,6 @@
     >
 
 
-
 <TableLayout  android:stretchColumns="*" android:id="@+id/TableLayout01" android:layout_height="fill_parent" android:layout_width="wrap_content">
 <TableRow  android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent">
 	<TextView android:text="" android:textColor="#333333"  android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
