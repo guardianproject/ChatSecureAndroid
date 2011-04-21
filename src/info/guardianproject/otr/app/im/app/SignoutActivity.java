@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -28,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class SignoutActivity extends Activity {
@@ -88,7 +90,6 @@ public class SignoutActivity extends Activity {
         	
        
         	
-        	
             IImConnection conn = mApp.getConnection(providerId);
             if (conn != null) {
                 conn.logout();
@@ -110,10 +111,9 @@ public class SignoutActivity extends Activity {
         } catch (RemoteException ex) {
             Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
         } finally {
-           // finish();
+           finish();
         	
-        	returnToWelcomePage();
-        	
+           Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -123,17 +123,11 @@ public class SignoutActivity extends Activity {
 
         // always call finish here, because we don't want to be in the backlist ever, and
         // we don't handle onRestart()
-        returnToWelcomePage();
+     
     	
     }
 
-    private void returnToWelcomePage()
-    {
-    	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-		
-		intent.putExtra("doSignIn",false);
-		startActivityForResult(intent, 1);
-    }
+  
 
     static void log(String msg) {
         Log.d(ImApp.LOG_TAG, "[Signout] " + msg);
