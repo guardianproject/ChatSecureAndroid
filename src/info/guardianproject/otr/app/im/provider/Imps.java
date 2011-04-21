@@ -2159,7 +2159,8 @@ public class Imps {
             
             public boolean getRequireTls() {
                 return getBoolean(REQUIRE_TLS,
-                        false /* by default attempt TLS but don't require */);
+                        true /* by default attempt TLS but don't require */);
+                //n8fr8 2011/04/20 i think we should require it by default so i set to 'true'
             }
 
             public void setTlsCertVerify(boolean value) {
