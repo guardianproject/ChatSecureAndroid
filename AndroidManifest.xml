@@ -47,7 +47,9 @@
         </activity>
         
         <!-- Brian's NEW Activities -->
-        <activity android:name=".ui.TabbedContainer"/>
+        <activity android:name=".ui.TabbedContainer"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        />
         <activity android:name=".app.ChatListActivity"/>
         <activity android:name=".app.ActiveChatListView"/>
         
