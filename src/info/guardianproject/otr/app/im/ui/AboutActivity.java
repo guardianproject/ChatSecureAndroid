@@ -86,12 +86,15 @@ public class AboutActivity extends Activity implements OnClickListener
 					}
 				},
 				new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
+						finish();
 						Intent intent = new Intent(getBaseContext(), AccountActivity.class);
 						intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
 						intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
+						// clear the back stack of the wizard
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
 					}
 				}

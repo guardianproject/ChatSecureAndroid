@@ -460,9 +460,9 @@ public class SigningInActivity extends Activity {
 
                 } else {
                     intent = new Intent(this, TabbedContainer.class);
+                    // clear the back stack of the account setup
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-
-                    
                 }
                 startActivity(intent);
             } catch (RemoteException e) {

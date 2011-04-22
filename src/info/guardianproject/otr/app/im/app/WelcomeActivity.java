@@ -85,6 +85,7 @@ public class WelcomeActivity extends Activity {
         {
 			@Override
 			public void onClick(View v) {
+				finish();
 				Intent intent = new Intent(getBaseContext(), AboutActivity.class);
 				startActivity(intent);
 			}
@@ -139,6 +140,7 @@ public class WelcomeActivity extends Activity {
         
         if (allAccountsSignedOut() && ! mDidAutoLaunch) {
         	mDidAutoLaunch = true;
+        	finish();
         	showAccountSetup();
         	signInAll();
         }
@@ -156,19 +158,16 @@ public class WelcomeActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        
-        
-
             case R.id.menu_account_settings:
-                showAccountSetup();                
                 finish();
+                showAccountSetup();                
                 return true;
                 
             case R.id.menu_about:
+                finish();
                 showAbout();
                 return true;
 
-            
         }
         return super.onOptionsItemSelected(item);
     }
