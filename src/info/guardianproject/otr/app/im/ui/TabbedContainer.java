@@ -1,27 +1,25 @@
 package info.guardianproject.otr.app.im.ui;
 
-
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
-
-
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TabHost;
 
-public class TabbedContainer extends  TabActivity {
-	private TabHost tabHost;
+public class TabbedContainer extends TabActivity {
+	
+	@Override
 	public void onCreate(Bundle smurfy) {
 	    super.onCreate(smurfy);
 	    
 	    // Create an bundle  to recieve the intent sent in from the launching activity
-	    Bundle justPassingThrough = getIntent().getExtras();
-
-	
+	    String passThruAction = getIntent().getAction();
+	    Uri passThruData = getIntent().getData();
+	    Bundle passThruExtras = getIntent().getExtras();	
 	    
 	    setContentView(R.layout.tab_container);
 
@@ -33,7 +31,9 @@ public class TabbedContainer extends  TabActivity {
 	   
 	    // Do the same for the other tabs
 	    intent = new Intent().setClass(this, ContactListActivity.class);
-	    intent.putExtras(justPassingThrough);
+	    intent.setAction(passThruAction);
+	    intent.setData(passThruData);
+	    intent.putExtras(passThruExtras);
 	    spec = tabHost.newTabSpec("contacts").setIndicator("Contacts",
 	                      res.getDrawable(R.drawable.ic_tab_contacts))
 	                  .setContent(intent);
@@ -42,7 +42,9 @@ public class TabbedContainer extends  TabActivity {
 
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    intent = new Intent().setClass(this, ChatListActivity.class);
-	    intent.putExtras(justPassingThrough);
+	    intent.setAction(passThruAction);
+	    intent.setData(passThruData);
+	    intent.putExtras(passThruExtras);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("chats").setIndicator("Chats",
@@ -53,8 +55,5 @@ public class TabbedContainer extends  TabActivity {
 	    
 //Value in parathes controls which tab element to view 
 	    tabHost.setCurrentTab(0);
-	    
-	    
 	}
-
 }
