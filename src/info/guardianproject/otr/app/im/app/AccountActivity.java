@@ -204,6 +204,7 @@ public class AccountActivity extends Activity {
         if (isSignedIn)
         {
         	mBtnSignIn.setText(getString(R.string.menu_sign_out));
+        	mBtnSignIn.setBackgroundResource(R.drawable.btn_red);
         }
         
         final BrandingResources brandingRes = app.getBrandingResource(mProviderId);
@@ -541,6 +542,7 @@ public class AccountActivity extends Activity {
            isSignedIn = false;
            
            mBtnSignIn.setText(getString(R.string.sign_in));
+           mBtnSignIn.setBackgroundResource(R.drawable.btn_green);
         }
     }
 

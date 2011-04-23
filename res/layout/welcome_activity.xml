@@ -12,8 +12,22 @@
 	<TextView android:text="" android:textColor="#333333"  android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 
 </TableRow>
-<TableRow android:id="@+id/TableRow04" android:layout_width="wrap_content" android:layout_height="wrap_content">
-	<Button android:background="@drawable/btn_gray" android:text="@string/welcome_about" android:textColor="#333333" android:textSize="20dp" android:id="@+id/btnSplashAbout" android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+<TableRow android:id="@+id/TableRow04" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content">
+    <LinearLayout android:id="@+id/linearLayout1" 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="fill_parent"
+    	android:padding="10dp" >
+        <Button android:textSize="20dp" 
+        	android:background="@drawable/btn_gray" 
+        	android:layout_height="wrap_content" 
+        	android:id="@+id/btnSplashAbout" 
+        	android:layout_width="fill_parent" 
+        	android:textColor="#333333" 
+        	android:text="@string/welcome_about"
+        />
+    </LinearLayout>
 </TableRow>
 <TableRow  android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<TextView android:text="" android:textColor="#333333"  android:layout_width="wrap_content" android:layout_height="50dp"></TextView>

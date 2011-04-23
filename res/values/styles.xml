@@ -22,4 +22,24 @@
         <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    
+    <style name="btn_white">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#fff</item>
+    	<item name="android:textSize">16dip</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    <style name="btn_gray">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#b6b</item>
+    	<item name="android:textSize">16dip</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    <style name="btn_black">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#fff</item>
+    	<item name="android:textSize">16dip</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    
 </resources>
