@@ -704,7 +704,7 @@ public class XmppConnection extends ImConnection {
 				Contact contact = new Contact(xaddress, name);
 				contacts.add(contact);
 				
-				getVCard(xaddress.getFullName());
+				// getVCard(xaddress.getFullName());  // commented out to fix slow contact loading
 
 				
 				
