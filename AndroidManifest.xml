@@ -38,7 +38,9 @@
              android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true">
 
 
-         <activity android:name=".app.WelcomeActivity">
+         <activity android:name=".app.WelcomeActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+         	android:screenOrientation="portrait">
             
               <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,7 +57,8 @@
         
         
         
-         <activity android:name=".ui.AboutActivity"/>
+         <activity android:name=".ui.AboutActivity"
+         	android:theme="@android:style/Theme.Black.NoTitleBar" />
                  <activity android:name=".ui.AccountWizardActivity"/>
         
         <activity android:name=".ui.AppPassphraseActivity"/>

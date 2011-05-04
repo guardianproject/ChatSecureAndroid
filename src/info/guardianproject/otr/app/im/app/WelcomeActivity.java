@@ -36,6 +36,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -81,6 +82,8 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.welcome_activity);
         
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
+        btnSplashAbout.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
+        
         btnSplashAbout.setOnClickListener(new OnClickListener()
         {
 			@Override

@@ -22,7 +22,7 @@
     android:layout_height="fill_parent"
     android:id="@+id/contactListView"
     android:orientation="vertical"
-    android:background="@drawable/gibberbg">
+    android:background="@drawable/bkgd_gibberbot">
 
     <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"

@@ -21,7 +21,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chatView"
     android:orientation="vertical"
-    android:background="@drawable/gibberbg"
+    android:background="@drawable/bkgd_gibberbot"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
