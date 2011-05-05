@@ -153,7 +153,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     public boolean onCreateOptionsMenu(Menu menu) {
         
     	MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.contact_list_menu, menu);
+        inflater.inflate(R.menu.chat_list_menu, menu);
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         
@@ -169,17 +169,16 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         switch (item.getItemId()) {
         
         //TODO make sure this works
-//        
-//            case R.id.menu_invite_user:
-//                Intent i = new Intent(ChatListActivity.this, AddContactActivity.class);
-//                i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-//                i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-//                i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
-//                        mActiveChatListView.getSelectedContactList());
-//                startActivity(i);
-//                return true;
-
-        
+/*
+        case R.id.menu_invite_user:
+            Intent i = new Intent(ContactListActivity.this, AddContactActivity.class);
+            i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+            i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+            i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
+                    mContactListView.getSelectedContactList());
+            startActivity(i);
+            return true;
+*/     
 /*            case R.id.menu_blocked_contacts:
                 Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
                 ContentUris.appendId(builder, mProviderId);
@@ -187,14 +186,10 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                 startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
                 return true;
 */
-/*
-            case R.id.menu_view_accounts:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setType(Imps.Provider.CONTENT_TYPE);
-                startActivity(intent);
-                finish();
-                return true;
-*/				
+	        case R.id.menu_view_accounts:
+	        	startActivity(getEditAccountIntent());           
+	            return true;
+	            
             case R.id.menu_settings:
                 Intent intent = new Intent(this, SettingActivity.class);
                 intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
@@ -202,17 +197,73 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                 return true;
 
             case R.id.menu_quit:
-                try {
-                    if (mConn != null) {
-                        mConn.logout();
-                    }
-                } catch (RemoteException e) {
-                }
+            	handleQuit();
+            	
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    Intent getEditAccountIntent() {
+        
+    	Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+                 PROVIDER_PROJECTION,
+                 Imps.Provider.CATEGORY + "=?" /* selection */,
+                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+                 Imps.Provider.DEFAULT_SORT_ORDER);
+    	mProviderCursor.moveToFirst();
 
+    	Intent intent = new Intent(Intent.ACTION_EDIT,
+                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
+                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+        intent.addCategory(mProviderCursor.getString(PROVIDER_CATEGORY_COLUMN));
+        intent.putExtra("isSignedIn", true);
+        
+        return intent;
+    }
+
+    private static final String[] PROVIDER_PROJECTION = {
+        Imps.Provider._ID,
+        Imps.Provider.NAME,
+        Imps.Provider.FULLNAME,
+        Imps.Provider.CATEGORY,
+        Imps.Provider.ACTIVE_ACCOUNT_ID,
+        Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+        Imps.Provider.ACTIVE_ACCOUNT_PW,
+        Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+        Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+        Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+        Imps.Provider.ACCOUNT_CONNECTION_STATUS,
+    };
+	
+	static final int PROVIDER_CATEGORY_COLUMN = 3;
+	static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;    
+    
+	private void handleQuit ()
+	{
+
+        try {
+            if (mConn != null) {
+                mConn.logout();
+              
+            }
+            
+            
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+           
+            finish();
+            
+        } catch (RemoteException e) {
+        	Log.e(ImApp.LOG_TAG, e.getMessage());
+        }
+        
+        
+        
+	}
+    
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
