@@ -23,6 +23,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.HashMap;
 
+import org.jsoup.Jsoup;
+
 import info.guardianproject.otr.app.im.R;
 
 import android.app.Notification;
@@ -73,7 +75,9 @@ public class StatusBarNotifier {
             if (DBG) log("notification for chat " + username + " is not enabled");
             return;
         }
-
+        
+        msg = html2text(msg); // strip tags for html client inbound msgs
+        
         String title = nickname;
         String snippet = nickname + ": " + msg;
         Intent intent = new Intent(Intent.ACTION_VIEW,
@@ -323,5 +327,9 @@ public class StatusBarNotifier {
 
     private boolean shouldSuppressSoundNotification() {
         return (SystemClock.elapsedRealtime() - mLastSoundPlayedMs < SUPPRESS_SOUND_INTERVAL_MS);
+    }
+    
+    public static String html2text(String html) {
+    	return Jsoup.parse(html).text();
     }
 }
