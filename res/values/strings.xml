@@ -76,6 +76,8 @@
     <!-- Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
     <string name="menu_view_accounts">Account</string>
+    <!-- Screen menu item on active chat list to start new chat -->
+    <string name="menu_new_chat">New Chat</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
     <string name="menu_settings">Settings</string>
     <!-- Screen menu item on the contact list to trigger search dialog -->

@@ -48,6 +48,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.Toast;
 
 public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener{
 
@@ -169,23 +170,11 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         switch (item.getItemId()) {
         
         //TODO make sure this works
-/*
-        case R.id.menu_invite_user:
-            Intent i = new Intent(ContactListActivity.this, AddContactActivity.class);
-            i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-            i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-            i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
-                    mContactListView.getSelectedContactList());
-            startActivity(i);
+
+        case R.id.menu_new_chat:
+        		Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
             return true;
-*/     
-/*            case R.id.menu_blocked_contacts:
-                Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
-                ContentUris.appendId(builder, mProviderId);
-                ContentUris.appendId(builder, mAccountId);
-                startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
-                return true;
-*/
+     
 	        case R.id.menu_view_accounts:
 	        	startActivity(getEditAccountIntent());           
 	            return true;
