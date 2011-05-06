@@ -85,9 +85,12 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
         + Imps.Contacts.LAST_MESSAGE_DATE + " IS NULL) AND ("
         + Imps.Contacts.TYPE + "!=" + Imps.Contacts.TYPE_BLOCKED + ")";
+    
+    private static final String BLOCKED_CONTACTS = "("
+        + Imps.Contacts.TYPE + "!=" + Imps.Contacts.TYPE_BLOCKED + ")";
 
     private static final String CONTACTS_SELECTION = Imps.Contacts.CONTACTLIST
-            + "=? AND " + NON_CHAT_AND_BLOCKED_CONTACTS;
+            + "=? AND " + BLOCKED_CONTACTS;
 
     private static final String ONLINE_CONTACT_SELECTION = CONTACTS_SELECTION
             + " AND "+ Imps.Contacts.PRESENCE_STATUS + " != " + Imps.Presence.OFFLINE;
