@@ -295,31 +295,30 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
             View convertView, ViewGroup parent) {
-        boolean isOngoingConversation = false;
-        boolean displayEmpty = isOngoingConversation && (getOngoingConversationCount() == 0);
-        if (isOngoingConversation || isPosForSubscription(groupPosition)) {
+        
+        if (isPosForSubscription(groupPosition)) {
             View view = null;
+            
             if (convertView != null) {
                 // use the convert view if it matches the type required by displayEmpty
-                if (displayEmpty && (convertView instanceof TextView)) {
+                if ((convertView instanceof TextView)) {
                     view = convertView;
                     ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
-                } else if (!displayEmpty && (convertView instanceof ContactView)) {
+                } else if ((convertView instanceof ContactView)) {
                      view = convertView;
                 }
             }
             if (view == null) {
-                if (displayEmpty) {
-                    view = newEmptyView(parent);
-                } else {
-                    view = newChildView(parent);
-                }
+                view = newChildView(parent);
+                
             }
-            if (!displayEmpty) {
-                Cursor cursor =  getSubscriptions();
-                cursor.moveToPosition(childPosition);
-                ((ContactView) view).bind(cursor, null, isScrolling());
-            }
+            
+            Cursor cursor =  getSubscriptions();
+            cursor.moveToPosition(childPosition);
+            
+            if (view instanceof ContactView)
+            	((ContactView) view).bind(cursor, null, isScrolling());
+           
             return view;
         } else {
             return mAdapter.getChildView(getChildAdapterPosition(groupPosition), childPosition,
@@ -475,12 +474,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
    
 
-   
-
-    private int getOngoingConversationCount() {
-       return 0;
-    }
-
     private synchronized Cursor getSubscriptions() {
         if (mSubscriptions == null) {
             startQuerySubscriptions();
@@ -490,13 +483,17 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     synchronized void setSubscriptions(Cursor c) {
         if (mSubscriptions != null) {
+        	mSubscriptions.unregisterContentObserver(mContentObserver);
+        	mSubscriptions.unregisterDataSetObserver(mDataSetObserver);
             mSubscriptions.close();
         }
-        // we don't need to register observers on mSubscriptions because
-        // we already have observers on mOngoingConversations and they
-        // will be notified if there is any changes of subscription
-        // since the two cursors come from the same table.
+        
+        c.registerContentObserver(mContentObserver);
+        c.registerDataSetObserver(mDataSetObserver);
+        
         mSubscriptions = c;
+        
+        		
     }
 
     private int getSubscriptionCount() {

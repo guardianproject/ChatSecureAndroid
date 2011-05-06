@@ -153,16 +153,18 @@ public class ContactView extends LinearLayout {
                 }
             }
 
+            /*
             if (Imps.Contacts.TYPE_TEMPORARY == type) {
                 // Add a mark at the front of name if it's only a temporary
                 // contact.
+            	
                 SpannableStringBuilder str = new SpannableStringBuilder(
                         r.getText(R.string.unknown_contact));
                 str.setSpan(new RelativeSizeSpan(0.8f), 0, str.length(),
                         Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 str.append(line1);
                 line1 = str;
-            }
+            }*/
         }
         mLine1.setText(line1);
 

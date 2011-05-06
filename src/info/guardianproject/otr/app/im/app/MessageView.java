@@ -102,9 +102,15 @@ public class MessageView extends LinearLayout {
         //remove HTML tags since we can't display HTML
         body = body.replaceAll("\\<.*?\\>", "");
 
-
-        SpannableStringBuilder buf = new SpannableStringBuilder(contact);
-        buf.append(": ");
+        
+        SpannableStringBuilder buf = new SpannableStringBuilder();
+        
+        if (contact != null)
+        {
+        	buf.append(contact);
+        	buf.append(": ");
+        }
+        
         if (scrolling) {
             buf.append(body);
         } else {
