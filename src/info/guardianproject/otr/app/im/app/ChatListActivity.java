@@ -262,10 +262,12 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	/*
         boolean isFiltering = savedInstanceState.getBoolean(FILTER_STATE_KEY);
         if (isFiltering) {
             showFilterView();
-        }
+        }*/
+    	
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -274,6 +276,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         int keyCode = event.getKeyCode();
 
         boolean handled = false;
+        /*
         if (mIsFiltering) {
             handled = mFilterView.dispatchKeyEvent(event);
             if (!handled && (KeyEvent.KEYCODE_BACK == keyCode)
@@ -285,10 +288,10 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
             handled = mActiveChatListView.dispatchKeyEvent(event);
             if (!handled && isReadable(keyCode, event)
                     && (KeyEvent.ACTION_DOWN == event.getAction())) {
-                showFilterView();
+              //  showFilterView();
                 handled = mFilterView.dispatchKeyEvent(event);
             }
-        }
+        }*/
 
         if (!handled) {
             handled = super.dispatchKeyEvent(event);
@@ -315,7 +318,9 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         return true;
     }
 
+    /*
     private void showFilterView() {
+    	
         if (mFilterView == null ) {
             mFilterView = (ContactListFilterView)getLayoutInflater().inflate(
                     R.layout.contact_list_filter_view, null);
@@ -330,7 +335,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         setContentView(mFilterView);
         mFilterView.requestFocus();
         mIsFiltering = true;
-    }
+    }*/
 
     void showContactListView() {
         if (mIsFiltering) {

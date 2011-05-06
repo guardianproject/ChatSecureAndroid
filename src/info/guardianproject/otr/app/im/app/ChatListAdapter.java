@@ -64,19 +64,16 @@ public class ChatListAdapter implements ListAdapter,
     private long mProviderId;
     long mAccountId;
     Cursor mOngoingConversations;
-    Cursor mSubscriptions;
     boolean mDataValid;
     ListTreeAdapter mAdapter;
-    private boolean mHideOfflineContacts;
 
     final MyContentObserver mContentObserver;
     final MyDataSetObserver mDataSetObserver;
 
-    private ArrayList<Integer> mExpandedGroups;
 
-    private static final int TOKEN_CONTACT_LISTS = -1;
+ //   private static final int TOKEN_CONTACT_LISTS = -1;
     private static final int TOKEN_ONGOING_CONVERSATION = -2;
-    private static final int TOKEN_SUBSCRIPTION = -3;
+ //   private static final int TOKEN_SUBSCRIPTION = -3;
 
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
         + Imps.Contacts.LAST_MESSAGE_DATE + " IS NULL) AND ("
@@ -111,16 +108,13 @@ public class ChatListAdapter implements ListAdapter,
                 log("onQueryComplete:token=" + token);
             }
 
-            if (token == TOKEN_CONTACT_LISTS) {
-                mDataValid = true;
-                mAdapter.setGroupCursor(c);
-            } else if (token == TOKEN_ONGOING_CONVERSATION) {
+            if (token == TOKEN_ONGOING_CONVERSATION) {
                 setOngoingConversations(c);
-              //  notifyDataSetChanged();
-            } else if (token == TOKEN_SUBSCRIPTION) {
-                setSubscriptions(c);
-             //   notifyDataSetChanged();
-            } else {
+              // notifyDataSetChanged();
+               mAdapter.notifyDataSetChanged();
+               
+            } 
+            else {
                 int count = mAdapter.getGroupCount();
                 for (int pos = 0; pos < count; pos++) {
                     long listId = mAdapter.getGroupId(pos);
@@ -148,7 +142,6 @@ public class ChatListAdapter implements ListAdapter,
 
         mContentObserver = new MyContentObserver();
         mDataSetObserver = new MyDataSetObserver();
-        mExpandedGroups = new ArrayList<Integer>();
         mQueryHandler = new QueryHandler(activity);
 
         changeConnection(conn);
@@ -156,17 +149,13 @@ public class ChatListAdapter implements ListAdapter,
 
     public void changeConnection(IImConnection conn) {
         mQueryHandler.cancelOperation(TOKEN_ONGOING_CONVERSATION);
-        mQueryHandler.cancelOperation(TOKEN_SUBSCRIPTION);
-        mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
+  //      mQueryHandler.cancelOperation(TOKEN_SUBSCRIPTION);
+   //     mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
 
         synchronized (this) {
             if (mOngoingConversations != null) {
                 mOngoingConversations.close();
                 mOngoingConversations = null;
-            }
-            if (mSubscriptions != null) {
-                mSubscriptions.close();
-                mSubscriptions = null;
             }
             if (mOnlineContactsCountMap != null) {
                 mOnlineContactsCountMap.close();
@@ -179,18 +168,11 @@ public class ChatListAdapter implements ListAdapter,
                 mProviderId = conn.getProviderId();
                 mAccountId = conn.getAccountId();
                 startQueryOngoingConversations();
-                startQueryContactLists();
-                startQuerySubscriptions();
+              //  startQueryContactLists();
+              //  startQuerySubscriptions();
             } catch (RemoteException e) {
                 // Service died!
             }
-        }
-    }
-
-    public void setHideOfflineContacts(boolean hide) {
-        if (mHideOfflineContacts != hide) {
-            mHideOfflineContacts = hide;
-            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -204,7 +186,7 @@ public class ChatListAdapter implements ListAdapter,
             startQueryOngoingConversations();
         }
     }
-
+/*
     private void startQueryContactLists() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
             log("startQueryContactLists()");
@@ -217,7 +199,7 @@ public class ChatListAdapter implements ListAdapter,
         mQueryHandler.startQuery(TOKEN_CONTACT_LISTS, null, uri, CONTACT_LIST_PROJECTION,
                 null, null, Imps.ContactList.DEFAULT_SORT_ORDER);
     }
-
+*/
     void startQueryOngoingConversations() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
             log("startQueryOngoingConversations()");
@@ -240,14 +222,16 @@ public class ChatListAdapter implements ListAdapter,
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
 
+        /*
         mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri,
                 ContactView.CONTACT_PROJECTION,
                 String.format("%s=%d AND %s=%d",
                     Imps.Contacts.SUBSCRIPTION_STATUS, Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
                     Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
                 null,Imps.Contacts.DEFAULT_SORT_ORDER);
+                */
     }
-
+/*
     void startQueryContacts(long listId) {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
             log("startQueryContacts - listId=" + listId);
@@ -259,7 +243,7 @@ public class ChatListAdapter implements ListAdapter,
         int token = (int)listId;
         mQueryHandler.startQuery(token, null, Imps.Contacts.CONTENT_URI,
                 ContactView.CONTACT_PROJECTION, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
-    }
+    }*/
 
     /*
     public Object getChild(int groupPosition, int childPosition) {
@@ -373,8 +357,7 @@ public class ChatListAdapter implements ListAdapter,
     }
 
     public Object getGroup(int groupPosition) {
-        if (isPosForOngoingConversation(groupPosition)
-                || isPosForSubscription(groupPosition)) {
+        if (isPosForOngoingConversation(groupPosition)) {
             return null;
         } else {
             return mAdapter.getGroup(getChildAdapterPosition(groupPosition));
@@ -455,13 +438,15 @@ public class ChatListAdapter implements ListAdapter,
             if (getOngoingConversationCount()==0) return false;
             return true;
         }
-        if (isPosForSubscription(groupPosition)) return true;
+
         return mAdapter.isChildSelectable(getChildAdapterPosition(groupPosition), childPosition);
     }
 
     public boolean stableIds() {
         return true;
     }
+    
+    
 /*
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
@@ -556,43 +541,15 @@ public class ChatListAdapter implements ListAdapter,
         
     }
 
-    private synchronized Cursor getSubscriptions() {
-        if (mSubscriptions == null) {
-            startQuerySubscriptions();
-        }
-        return mSubscriptions;
-    }
-
-    synchronized void setSubscriptions(Cursor c) {
-        if (mSubscriptions != null) {
-            mSubscriptions.close();
-        }
-        // we don't need to register observers on mSubscriptions because
-        // we already have observers on mOngoingConversations and they
-        // will be notified if there is any changes of subscription
-        // since the two cursors come from the same table.
-        mSubscriptions = c;
-    }
-
-    private int getSubscriptionCount() {
-        Cursor c = getSubscriptions();
-        return c == null ? 0 : c.getCount();
-    }
 
     public boolean isPosForOngoingConversation(int groupPosition) {
         return groupPosition == 0;
     }
 
-    public boolean isPosForSubscription(int groupPosition) {
-        return groupPosition == 1 && getSubscriptionCount() > 0;
-    }
 
     private int getChildAdapterPosition(int groupPosition) {
-        if (getSubscriptionCount() > 0) {
-            return groupPosition - 2;
-        } else {
-            return groupPosition - 1;
-        }
+        return groupPosition - 1;
+        
     }
 
     private Cursor moveTo(Cursor cursor, int position) {
@@ -609,6 +566,7 @@ public class ChatListAdapter implements ListAdapter,
         return 0;
     }
 
+    
     class ListTreeAdapter extends CursorTreeAdapter {
 
         public ListTreeAdapter(Cursor cursor) {
@@ -669,7 +627,7 @@ public class ChatListAdapter implements ListAdapter,
         @Override
         protected Cursor getChildrenCursor(Cursor groupCursor) {
             long listId = groupCursor.getLong(COLUMN_CONTACT_LIST_ID);
-            startQueryContacts(listId);
+           // startQueryContacts(listId);
             return null;
         }
 
@@ -895,30 +853,22 @@ public class ChatListAdapter implements ListAdapter,
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
 		 mAdapter.registerDataSetObserver(observer);
-	      
-	       
-		
+
 	}
 
 	@Override
 	public void unregisterDataSetObserver(DataSetObserver observer) {
 		mAdapter.unregisterDataSetObserver(observer);
-		    }
-
-		  
-		// TODO Auto-generated method stub
-		
+	}
 
 
 	@Override
 	public boolean areAllItemsEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled(int position) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 }
