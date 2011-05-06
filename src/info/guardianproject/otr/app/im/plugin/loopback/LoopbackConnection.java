@@ -113,7 +113,7 @@ public class LoopbackConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(long accountId, long providerId, boolean retry) {
+	public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
 		ContentResolver contentResolver = mContext.getContentResolver();
 		String userName = Imps.Account.getUserName(contentResolver, accountId);
 		mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null, Presence.CLIENT_TYPE_DEFAULT);

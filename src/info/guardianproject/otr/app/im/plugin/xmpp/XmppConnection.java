@@ -83,6 +83,7 @@ public class XmppConnection extends ImConnection {
 	
 	private long mAccountId = -1;
 	private long mProviderId = -1;
+	private String mPasswordTemp;
 	
 	public XmppConnection(Context context) {
 		super(context);
@@ -217,8 +218,9 @@ public class XmppConnection extends ImConnection {
 	}
 
 	@Override
-	public void loginAsync(long accountId, long providerId, boolean retry) {
+	public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
 		mAccountId = accountId;
+		mPasswordTemp = passwordTemp;
 		mProviderId = providerId;
 		mRetryLogin = retry;
 		mExecutor.execute(new Runnable() {
@@ -242,6 +244,9 @@ public class XmppConnection extends ImConnection {
 		String userName = Imps.Account.getUserName(contentResolver, mAccountId);
 		String password = Imps.Account.getPassword(contentResolver, mAccountId);
 		String domain = providerSettings.getDomain();
+		
+		if (mPasswordTemp != null)
+			password = mPasswordTemp;
 		
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
@@ -504,6 +509,8 @@ public class XmppConnection extends ImConnection {
 				Log.i(TAG, "connection closed");
 			}
 		});
+        
+       // android.os.Debug.waitForDebugger();
         // dangerous debug statement below, prints password!
         //Log.i(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
         mConnection.login(userName, password, xmppResource);

@@ -284,7 +284,6 @@ public class AccountActivity extends Activity {
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
 
                 //if remember pass is true, set the "keep signed in" property to true
-            
                 
                 
                 if (isSignedIn)
@@ -331,6 +330,7 @@ public class AccountActivity extends Activity {
                 
                 Intent intent = new Intent(AccountActivity.this, SigningInActivity.class);
                 intent.setData(mAccountUri);
+                
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }

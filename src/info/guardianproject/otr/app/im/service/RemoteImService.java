@@ -235,7 +235,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             long providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             IImConnection conn = createConnection(providerId);
             try {
-                conn.login(accountId, true, true);
+                conn.login(accountId, null, true, true);
             } catch (RemoteException e) {
                 Log.w(TAG, "Logging error while automatically login!");
             }

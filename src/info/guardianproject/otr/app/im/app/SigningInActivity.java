@@ -301,7 +301,8 @@ public class SigningInActivity extends Activity {
                     }
                     settings.close();
 
-                 	mConn.login(mAccountId, autoLoadContacts, autoRetryLogin);
+                 	mConn.login(mAccountId, mPassword, autoLoadContacts, autoRetryLogin);
+                 	
                 } else {
                     promptForBackgroundDataSetting();
                     return;

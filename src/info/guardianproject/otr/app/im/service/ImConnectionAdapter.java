@@ -139,13 +139,14 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return builder.build();
     }
 
-    public void login(long accountId, boolean autoLoadContacts, boolean retry) {
+    public void login(long accountId, String passwordTemp, boolean autoLoadContacts, boolean retry) {
         mAccountId = accountId;
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
         mChatSessionManager = new ChatSessionManagerAdapter(this);
         mContactListManager = new ContactListManagerAdapter(this);
-        mConnection.loginAsync(mAccountId, mProviderId, retry);
+        
+        mConnection.loginAsync(mAccountId, passwordTemp, mProviderId, retry);
     }
     
     @Override
