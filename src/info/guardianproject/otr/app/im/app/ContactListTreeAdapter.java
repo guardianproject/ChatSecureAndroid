@@ -507,8 +507,9 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     private int getChildAdapterPosition(int groupPosition) {
+    	
         if (getSubscriptionCount() > 0) {
-            return groupPosition;
+            return groupPosition - 1;
         } else {
             return groupPosition;
         }
