@@ -25,7 +25,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingTop="2dip"
     android:paddingBottom="2dip"
-    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+    android:paddingLeft="9dip"
     android:paddingRight="9dip">
 
     <RelativeLayout
