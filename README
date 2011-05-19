@@ -1,3 +1,8 @@
-
-Gibberbot, an Android to support XMPP Jabber chat using OTR encryption
+Gibberbot, an Android app to support XMPP Jabber chat using OTR encryption
 https://guardianproject.info/apps/gibberbot
+
+It includes OTR4J:
+http://code.google.com/p/otr4j/
+
+and BouncyCastle for Java:
+http://www.bouncycastle.org/java.html
