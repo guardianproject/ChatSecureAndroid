@@ -1065,7 +1065,7 @@ public class XmppConnection extends ImConnection {
 		if (mPingCollector != null) {
 			IQ result = (IQ)mPingCollector.nextResult(0);
 			mPingCollector.cancel();
-			if (result == null)
+			if (result == null || result.getError() != null)
 			{
 				clearHeartbeat();
 				Log.e(TAG, "ping timeout");
@@ -1098,6 +1098,10 @@ public class XmppConnection extends ImConnection {
 			//this.getConfiguration().setSocketFactory(arg0)
 			
 		}
+		
+		public void shutdown() {
+			shutdown(new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unavailable));
+		}
 
 	}
 
@@ -1123,7 +1127,7 @@ public class XmppConnection extends ImConnection {
 			return;
 		if (mNeedReconnect)
 			return;
-		mConnection.disconnect();
+		mConnection.shutdown();
 		mNeedReconnect = true;
 		reconnect();
 	}
@@ -1137,6 +1141,7 @@ public class XmppConnection extends ImConnection {
 		Log.d(TAG, "maybe_reconnect mNeedReconnect=" + mNeedReconnect);
 		// for some reason the mNeedReconnect logic is flipped here, donno why.
 		// Added the mConnection test to stop NullPointerExceptions hans@eds.org
+		// This is checking whether we are already in the process of reconnecting --devrandom
 		if (mNeedReconnect || mConnection == null)
 			return;
 		mNeedReconnect = true;
