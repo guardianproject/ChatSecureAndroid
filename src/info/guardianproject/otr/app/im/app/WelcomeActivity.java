@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -146,9 +147,29 @@ public class WelcomeActivity extends Activity {
         	finish();
         	showAccountSetup();
         	signInAll();
+        } else {
+        	showActiveAccount();
         }
     }
-    
+
+    // Show active account if signed in
+    protected boolean showActiveAccount() {
+    	if (! mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN))
+    		return false;
+    	if (!isSignedIn(mProviderCursor))
+    		return false;
+
+        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+        finish();
+        Intent intent = new Intent(this, TabbedContainer.class);
+        // clear the back stack of the account setup
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+        startActivity(intent);
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -316,6 +337,7 @@ public class WelcomeActivity extends Activity {
         Intent intent = new Intent(Intent.ACTION_EDIT,
                 ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
                         mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+        intent.putExtra("isSignedIn", isSignedIn(mProviderCursor));
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
     }

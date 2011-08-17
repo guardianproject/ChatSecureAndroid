@@ -303,7 +303,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             Imps.Messages.DATE,
             Imps.Messages.TYPE,
         };
-        String selection = "messages.type=?";
+        String selection = Imps.Messages.TYPE + "=?";
 
         Cursor c = mContentResolver.query(mMessageURI, projection, selection,
                 new String[]{Integer.toString(Imps.MessageType.POSTPONED)}, null);
