@@ -63,7 +63,7 @@ public class ActiveChatListView extends LinearLayout {
     UserPresenceView mPresenceView;
     ListView mChatList;
     
-    private SavedState mSavedState; 
+    //TODO private SavedState mSavedState; 
     private ChatListAdapter mAdapter;//ChatListAdapter
     private boolean mAutoRefresh = true;
 
@@ -501,11 +501,11 @@ public class ActiveChatListView extends LinearLayout {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        SavedState ss = (SavedState) state;
+        //SavedState ss = (SavedState) state;
 
-        super.onRestoreInstanceState(ss.getSuperState());
+        super.onRestoreInstanceState(state); //ss.getSuperState());
 
-        mSavedState = ss;
+        //mSavedState = ss;
     }
 
     protected void setAutoRefreshContacts(boolean isRefresh) {
