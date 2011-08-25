@@ -427,13 +427,14 @@ public abstract class ContactListManager {
      */
     public synchronized boolean isBlocked(String address) throws ImException {
         if(mState < BLOCKED_LIST_LOADED) {
-            throw new ImException(ImErrorInfo.ILLEGAL_CONTACT_LIST_MANAGER_STATE,
-                "Blocked list hasn't been loaded");
-        }
-        for(Contact c : mBlockedList) {
-            if(c.getAddress().getFullName().equals(address)){
-                return true;
-            }
+           // throw new ImException(ImErrorInfo.ILLEGAL_CONTACT_LIST_MANAGER_STATE,
+             //   "Blocked list hasn't been loaded");
+       
+	        for(Contact c : mBlockedList) {
+	            if(c.getAddress().getFullName().equals(address)){
+	                return true;
+	            }
+	        }
         }
         return false;
     }
@@ -522,6 +523,7 @@ public abstract class ContactListManager {
         for (ContactListListener listener : mContactListListeners) {
             listener.onContactChange(ContactListListener.LIST_LOADED,
                     list, null);
+            
         }
     }
 

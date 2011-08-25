@@ -148,6 +148,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                 }
             }
         });
+        
+        c.close();
     }
 
     @Override
@@ -260,16 +262,17 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
     }
 
+    /*
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    	/*
+    	
         boolean isFiltering = savedInstanceState.getBoolean(FILTER_STATE_KEY);
         if (isFiltering) {
             showFilterView();
-        }*/
+        }
     	
         super.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -379,17 +382,31 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         boolean chatSelected = false;
         boolean contactSelected = false;
         Cursor contactCursor;
+        
         if (mIsFiltering) {
             AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.position;
             contactSelected = true;
             contactCursor = mFilterView.getContactAtPosition(info.position);
         } else {
-            ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
-            mContextMenuHandler.mPosition = info.packedPosition;
-            contactSelected = false;
-            chatSelected = mActiveChatListView.isConversationAtPosition(info.packedPosition);
-            contactCursor = null;
+        	
+        	if (menuInfo instanceof ExpandableListContextMenuInfo)
+        	{
+        		ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
+        		mContextMenuHandler.mPosition = info.packedPosition;
+        		contactSelected = false;
+        		chatSelected = mActiveChatListView.isConversationAtPosition(info.packedPosition);
+        		contactCursor = null;
+        	}
+        	else if (menuInfo instanceof AdapterContextMenuInfo)
+        	{
+        		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+                mContextMenuHandler.mPosition = info.position;
+                contactSelected = false;
+                contactCursor = null;                
+        	}
+        	else
+        		contactCursor = null;
         }
 
         boolean allowBlock = true;

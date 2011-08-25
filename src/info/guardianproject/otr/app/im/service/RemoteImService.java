@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.database.sqlcipher.SQLiteDatabase;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.NetworkConnectivityListener.State;
@@ -153,6 +154,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     @Override
     public void onCreate() {
+    	
+
         Log.d(TAG, "ImService started");
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();

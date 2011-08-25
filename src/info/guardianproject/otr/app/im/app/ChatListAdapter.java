@@ -519,8 +519,13 @@ public class ChatListAdapter implements ListAdapter,
             mOngoingConversations.unregisterDataSetObserver(mDataSetObserver);
             mOngoingConversations.close();
         }
-        c.registerContentObserver(mContentObserver);
-        c.registerDataSetObserver(mDataSetObserver);
+        
+        if (c != null)
+        {
+        	c.registerContentObserver(mContentObserver);
+        	c.registerDataSetObserver(mDataSetObserver);
+        }
+        
         mOngoingConversations = c;
         
     }

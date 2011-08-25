@@ -89,9 +89,12 @@ public class ContactList extends ImEntity {
             throw new NullPointerException();
         }
 
-        if (mManager.isBlocked(address)) {
-            throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
-                    "Contact has been blocked");
+        if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED)
+        {
+	        if (mManager.isBlocked(address)) {
+	            throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
+	                    "Contact has been blocked");
+	        }
         }
 
         if(containsContact(address)){

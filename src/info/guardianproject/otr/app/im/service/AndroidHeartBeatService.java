@@ -82,8 +82,19 @@ public class AndroidHeartBeatService extends BroadcastReceiver
                             .setDataAndType(data, HEARTBEAT_CONTENT_TYPE);
             alarm.mAlaramSender = PendingIntent.getBroadcast(mContext, 0, i, 0);
             if (mAlarms.size() == 0) {
-                mContext.registerReceiver(this, IntentFilter.create(
-                        HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
+
+            	try
+            	{
+            		mContext.registerReceiver(this, IntentFilter.create(
+            				HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
+            	}
+            	catch (Exception e)
+            	{
+            		mContext.unregisterReceiver(this);    
+            		
+            		mContext.registerReceiver(this, IntentFilter.create(
+            				HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
+            	}
             }
             mAlarms.append(id, alarm);
         }

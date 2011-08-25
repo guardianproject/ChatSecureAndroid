@@ -245,7 +245,8 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     public void loadContactLists() {
-        if(mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED){
+
+    	if(mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED){
             clearValidatedContactsAndLists();
             mAdaptee.loadContactListsAsync();
         }

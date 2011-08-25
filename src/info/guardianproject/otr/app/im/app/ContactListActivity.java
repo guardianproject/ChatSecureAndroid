@@ -113,6 +113,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         mHandler = new MyHandler(this);
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
+        c.close();
+        
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         setTitle(brandingRes.getString(
                 BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));

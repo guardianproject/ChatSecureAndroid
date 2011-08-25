@@ -22,11 +22,11 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
+import info.guardianproject.database.DatabaseUtils;
+import info.guardianproject.database.sqlcipher.SQLiteConstraintException;
+import info.guardianproject.database.sqlcipher.SQLiteDatabase;
+import info.guardianproject.database.sqlcipher.SQLiteOpenHelper;
+import info.guardianproject.database.sqlcipher.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
@@ -48,7 +48,7 @@ import java.util.HashMap;
  */
 public class ImpsProvider extends ContentProvider {
     private static final String LOG_TAG = "imProvider";
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private static final String AUTHORITY = "info.guardianproject.otr.app.im.provider.Imps";
 
@@ -207,7 +207,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String CONTACT_ID = TABLE_CONTACTS + '.' + Imps.Contacts._ID;
     private static final String PRESENCE_CONTACT_ID = TABLE_PRESENCE + '.' + Imps.Presence.CONTACT_ID;
 
-    protected SQLiteOpenHelper mOpenHelper;
+    protected static DatabaseHelper mOpenHelper;
     private final String mDatabaseName;
     private final int mDatabaseVersion;
 
@@ -242,17 +242,47 @@ public class ImpsProvider extends ContentProvider {
     // contact id query selection args 2
     private String[] mQueryContactIdSelectionArgs2 = new String[2];
 
-
-
     private class DatabaseHelper extends SQLiteOpenHelper {
 
-        DatabaseHelper(Context context) {
+    	private String password;
+    	private SQLiteDatabase dbRead;
+    	private SQLiteDatabase dbWrite;
+    	
+        private DatabaseHelper(Context context, String password) {
             super(context, mDatabaseName, null, mDatabaseVersion);
+            
+            this.password = password;
+        }
+                
+        public synchronized SQLiteDatabase getReadableDatabase ()
+        {
+        	
+        	if (dbRead == null)
+        	{
+        		if (DBG) log("DatabaseHelper.getReadableDatabase with password");
+        		dbRead = getReadableDatabase(password);
+        	}
+        	
+        	return dbRead;
+        }
+        
+        public synchronized SQLiteDatabase getWritableDatabase ()
+        {
+        	if (dbWrite == null)
+        	{
+            	if (DBG) log("DatabaseHelper.getWritableDatabase  with password");
+
+        		dbWrite = getWritableDatabase(password);
+        	}
+        	
+        	return dbWrite;
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
 
+//        	android.os.Debug.waitForDebugger();
+        	
             if (DBG) log("DatabaseHelper.onCreate");
 
             db.execSQL("CREATE TABLE " + TABLE_PROVIDERS + " (" +
@@ -327,7 +357,7 @@ public class ImpsProvider extends ContentProvider {
                     "ts INTEGER," +
                     "data TEXT" +
                     ");");
-
+            
             db.execSQL("create TABLE " + TABLE_LAST_RMQ_ID + " (" +
                     "_id INTEGER PRIMARY KEY," +
                     "rmq_id INTEGER" +
@@ -1009,7 +1039,13 @@ public class ImpsProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
+
+        if (mOpenHelper == null)
+        {
+        	SQLiteDatabase.loadLibs(getContext());       
+        	mOpenHelper = new DatabaseHelper(getContext(),"foo");
+        }
+        
         return true;
     }
 
@@ -1984,14 +2020,13 @@ public class ImpsProvider extends ContentProvider {
                     Log.e(LOG_TAG, "[ImProvider] updateBulkPresence: caught " + ex);
                 }
 
-                /*
+                
                 if (DBG) {
                     log("updateBulkPresence[" + i + "] username=" + username + ", priority=" +
                             priority + ", mode=" + mode + ", status=" + status + ", resource=" +
                             jidResource + ", clientType=" + clientType);
                 }
-                */
-
+                
                 if (modeArray != null) {
                     presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
                 }

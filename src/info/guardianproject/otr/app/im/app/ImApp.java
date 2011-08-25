@@ -294,6 +294,7 @@ public class ImApp extends Application {
             }
          
             Uri result = cr.insert(Imps.Account.CONTENT_URI, values);
+            c.close();
             return ContentUris.parseId(result);
         }
     }
