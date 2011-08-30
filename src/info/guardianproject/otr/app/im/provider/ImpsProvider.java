@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.content.ContentResolver;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import info.guardianproject.database.DatabaseUtils;
 import info.guardianproject.database.sqlcipher.SQLiteConstraintException;
@@ -1042,6 +1043,8 @@ public class ImpsProvider extends ContentProvider {
 
         if (mOpenHelper == null)
         {
+        	Context context = getContext().getApplicationContext();
+        	
         	SQLiteDatabase.loadLibs(getContext());       
         	mOpenHelper = new DatabaseHelper(getContext(),"foo");
         }
@@ -1050,6 +1053,11 @@ public class ImpsProvider extends ContentProvider {
     }
 
     @Override
+	public void onConfigurationChanged(Configuration newConfig) { 
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
     public final int update(final Uri url, final ContentValues values,
             final String selection, final String[] selectionArgs) {
 
