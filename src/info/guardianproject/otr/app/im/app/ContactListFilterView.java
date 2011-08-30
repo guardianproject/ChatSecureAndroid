@@ -45,6 +45,8 @@ public class ContactListFilterView extends LinearLayout {
 
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        
+        mContext = context;
     }
 
     @Override
