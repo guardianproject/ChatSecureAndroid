@@ -73,7 +73,6 @@
             android:textAppearance="?android:attr/textAppearanceMediumInverse"
             />
 
-<!-- 
         <TextView android:id="@+id/statusView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -83,7 +82,7 @@
             android:singleLine="true"
             android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
- -->
+
     </info.guardianproject.otr.app.im.app.UserPresenceView>
 
 </info.guardianproject.otr.app.im.app.ContactListView>
