@@ -339,6 +339,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         if (mFilterView == null ) {
             mFilterView = (ContactListFilterView)getLayoutInflater().inflate(
                     R.layout.contact_list_filter_view, null);
+            
+            mFilterView.setActivity(this);
+            
             mFilterView.getListView().setOnCreateContextMenuListener(this);
         }
         Uri uri = mSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY

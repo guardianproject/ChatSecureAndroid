@@ -176,7 +176,7 @@ public class UserPresenceView extends LinearLayout {
                             mContext.getContentResolver(), providerId,
                             ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE);
 
-      //  if ("true".equalsIgnoreCase(value)) {
+       if ("true".equalsIgnoreCase(value)) {
             EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
             statusEdit.setVisibility(View.VISIBLE);
             statusEdit.setOnKeyListener(new OnKeyListener() {
@@ -202,12 +202,12 @@ public class UserPresenceView extends LinearLayout {
             });
 
             return statusEdit;
-            /*
+            
         } else {
             TextView statusView = (TextView) findViewById(R.id.statusView);
             statusView.setVisibility(View.VISIBLE);
             return statusView;
-        }*/
+        }
     }
 
     void updatePresence(int status, String statusText) {

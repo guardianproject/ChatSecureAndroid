@@ -41,9 +41,12 @@ public class ContactListFilterView extends LinearLayout {
     private ContactAdapter mContactAdapter;
 
     private Uri mUri;
-    private Context mContext; // TODO
+    private Context mContext;
+    
+    private ContactListActivity mActivity;
+    
 
-    public ContactListFilterView(Context context, AttributeSet attrs) {
+	public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
         mContext = context;
@@ -58,13 +61,12 @@ public class ContactListFilterView extends LinearLayout {
         mContactListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View view, int position,
                     long id) {
-                if (mContext instanceof ContactListActivity) {
-                    ContactListActivity list = (ContactListActivity) mContext;
+              
                     mContactListView.setSelection(position);
                     Cursor c = (Cursor) mContactListView.getSelectedItem();
-                    list.mContactListView.startChat(c);
-                    list.showContactListView();
-                }
+                    mActivity.mContactListView.startChat(c);
+                    
+              
             }
         });
     }
@@ -135,5 +137,10 @@ public class ContactListFilterView extends LinearLayout {
             return ContactListFilterView.this.runQuery(constraint);
         }
     }
+    
+
+    public void setActivity(ContactListActivity mActivity) {
+		this.mActivity = mActivity;
+	}
 
 }
