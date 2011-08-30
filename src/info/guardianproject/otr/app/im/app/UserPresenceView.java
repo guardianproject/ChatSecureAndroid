@@ -176,7 +176,10 @@ public class UserPresenceView extends LinearLayout {
                             mContext.getContentResolver(), providerId,
                             ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE);
 
-       if ("true".equalsIgnoreCase(value)) {
+       boolean showEdit = true;
+        
+       //if ("true".equalsIgnoreCase(value)) {
+       if (showEdit) {
             EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
             statusEdit.setVisibility(View.VISIBLE);
             statusEdit.setOnKeyListener(new OnKeyListener() {
