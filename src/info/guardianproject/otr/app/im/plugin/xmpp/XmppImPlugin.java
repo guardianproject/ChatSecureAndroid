@@ -50,6 +50,7 @@ public class XmppImPlugin extends Service implements ImPlugin {
 		config.put(ImConfigNames.PROTOCOL_NAME, "XMPP");
 		config.put(ImConfigNames.PLUGIN_VERSION, "0.1");
 		config.put(ImpsConfigNames.HOST, "http://xmpp.org/services/");
+		config.put(ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE,"true");
 		config.put(ImpsConfigNames.CUSTOM_PRESENCE_MAPPING,
 		"info.guardianproject.otr.app.im.plugin.xmpp.XmppPresenceMapping");
 		return config;
