@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
@@ -303,11 +305,26 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             }
         } else {
             handled = mContactListView.dispatchKeyEvent(event);
-            if (!handled && isReadable(keyCode, event)
-                    && (KeyEvent.ACTION_DOWN == event.getAction())) {
+            
+            if (!handled && KeyEvent.KEYCODE_SEARCH == keyCode 
+            		&& (KeyEvent.ACTION_DOWN == event.getAction()))
+            {
+            	showFilterView();
+                
+            	InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            	inputMgr.toggleSoftInput(0, 0);
+            	
+            }
+            else  if (!handled && isReadable(keyCode, event)
+                    && (KeyEvent.ACTION_DOWN == event.getAction()) 		) {
                 showFilterView();
+                
                 handled = mFilterView.dispatchKeyEvent(event);
             }
+            
+
+            	
+            
         }
 
         if (!handled) {

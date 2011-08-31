@@ -208,7 +208,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String CONTACT_ID = TABLE_CONTACTS + '.' + Imps.Contacts._ID;
     private static final String PRESENCE_CONTACT_ID = TABLE_PRESENCE + '.' + Imps.Presence.CONTACT_ID;
 
-    protected static DatabaseHelper mOpenHelper;
+    protected static DatabaseHelper mDbHelper;
     private final String mDatabaseName;
     private final int mDatabaseVersion;
 
@@ -1041,16 +1041,20 @@ public class ImpsProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
 
-        if (mOpenHelper == null)
+    	  return true;
+    }
+    
+    private synchronized DatabaseHelper getDBHelper (String dbKey)
+    {
+        if (mDbHelper == null)
         {
-        	Context context = getContext().getApplicationContext();
-        	
         	SQLiteDatabase.loadLibs(getContext());       
-        	mOpenHelper = new DatabaseHelper(getContext(),"foo");
+        	mDbHelper = new DatabaseHelper(getContext(),dbKey);
         }
         
-        return true;
+        return mDbHelper;
     }
+    
 
     @Override
 	public void onConfigurationChanged(Configuration newConfig) { 
@@ -1062,7 +1066,7 @@ public class ImpsProvider extends ContentProvider {
             final String selection, final String[] selectionArgs) {
 
         int result = 0;
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
         db.beginTransaction();
         try {
             result = updateInternal(url, values, selection, selectionArgs);
@@ -1081,7 +1085,7 @@ public class ImpsProvider extends ContentProvider {
     public final int delete(final Uri url, final String selection,
             final String[] selectionArgs) {
         int result;
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
         db.beginTransaction();
         try {
             result = deleteInternal(url, selection, selectionArgs);
@@ -1099,7 +1103,7 @@ public class ImpsProvider extends ContentProvider {
     @Override
     public final Uri insert(final Uri url, final ContentValues values) {
         Uri result;
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
         db.beginTransaction();
         try {
             result = insertInternal(url, values);
@@ -1130,15 +1134,22 @@ public class ImpsProvider extends ContentProvider {
         }
         String groupBy = null;
         String limit = null;
+        
+        String dbKey = null;
+        if (sort != null && sort.startsWith("key="))
+        {
+        	dbKey = sort.substring(4);
+        	sort = null;
+        }
 
         // Generate the body of the query
         int match = mUrlMatcher.match(url);
 
         if (DBG) {
-            log("query " + url + ", match " + match + ", where " + selection);
+            //log("query " + url + ", match " + match + ", where " + selection);
             if (selectionArgs != null) {
                 for (String selectionArg : selectionArgs) {
-                    log("     selectionArg: " + selectionArg);
+                   // log("     selectionArg: " + selectionArg);
                 }
             }
         }
@@ -1291,7 +1302,7 @@ public class ImpsProvider extends ContentProvider {
 
                 // Put them together
                 final String query = qb.buildUnionQuery(new String[] {query1, query2}, sort, null);
-                final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
                 Cursor c = db.rawQueryWithFactory(null, query, null, TABLE_MESSAGES);
                 if ((c != null) && !isTemporary()) {
                     c.setNotificationUri(getContext().getContentResolver(), url);
@@ -1322,7 +1333,7 @@ public class ImpsProvider extends ContentProvider {
 
                 // Put them together
                 final String q3 = qb.buildUnionQuery(new String[] {q1, q2}, sort, null);
-                final SQLiteDatabase db2 = mOpenHelper.getWritableDatabase();
+                final SQLiteDatabase db2 = getDBHelper(null).getWritableDatabase();
                 Cursor c2 = db2.rawQueryWithFactory(null, q3, null, MESSAGE_JOIN_CONTACT_TABLE);
                 if ((c2 != null) && !isTemporary()) {
                     c2.setNotificationUri(getContext().getContentResolver(), url);
@@ -1439,7 +1450,7 @@ public class ImpsProvider extends ContentProvider {
         }
 
         // run the query
-        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        final SQLiteDatabase db = getDBHelper(dbKey).getReadableDatabase();
         Cursor c = null;
 
         try {
@@ -1603,7 +1614,7 @@ public class ImpsProvider extends ContentProvider {
         ArrayList<String> rejectedArray = getStringArrayList(values, Imps.Contacts.REJECTED);
         int sum = 0;
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         db.beginTransaction();
         try {
@@ -1763,7 +1774,7 @@ public class ImpsProvider extends ContentProvider {
                 getStringArrayList(values, Imps.Contacts.SUBSCRIPTION_TYPE);
         ArrayList<String> quickContactArray = getStringArrayList(values, Imps.Contacts.QUICK_CONTACT);
         ArrayList<String> rejectedArray = getStringArrayList(values, Imps.Contacts.REJECTED);
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -1870,7 +1881,7 @@ public class ImpsProvider extends ContentProvider {
 
         mQueryContactIdSelectionArgs1[0] = String.valueOf(account);
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
         db.beginTransaction();
 
         Cursor c = null;
@@ -1998,7 +2009,7 @@ public class ImpsProvider extends ContentProvider {
             }
         }
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -2093,7 +2104,7 @@ public class ImpsProvider extends ContentProvider {
         boolean notifyMessagesByThreadIdContentUri = false;
         boolean notifyProviderAccountContentUri = false;
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
         int match = mUrlMatcher.match(url);
 
         if (DBG) log("insert to " + url + ", match " + match);
@@ -2576,7 +2587,7 @@ public class ImpsProvider extends ContentProvider {
                     GROUP_MESSAGES_ID + '=' + CONTACT_ID + " where " + CONTACT_ID + " IS NULL)";
 
     private void performContactRemovalCleanup(long contactId) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         if (contactId > 0) {
             StringBuilder buf = new StringBuilder();
@@ -2652,7 +2663,7 @@ public class ImpsProvider extends ContentProvider {
 
         boolean backfillQuickSwitchSlots = false;
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         switch (match) {
             case MATCH_PROVIDERS:
@@ -3071,7 +3082,7 @@ public class ImpsProvider extends ContentProvider {
         boolean notifyProviderAccountContentUri = false;
 
         int match = mUrlMatcher.match(url);
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
 
         switch (match) {
             case MATCH_PROVIDERS_BY_ID:
@@ -3393,6 +3404,6 @@ public class ImpsProvider extends ContentProvider {
     }
 
     static void log(String message) {
-        Log.d(LOG_TAG, message);
+    //    Log.d(LOG_TAG, message);
     }
 }

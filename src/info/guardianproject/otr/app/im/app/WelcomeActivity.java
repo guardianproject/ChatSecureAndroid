@@ -83,7 +83,6 @@ public class WelcomeActivity extends Activity {
         
         SQLiteDatabase.loadLibs(this);
 
-
         setContentView(R.layout.welcome_activity);
         
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
@@ -99,6 +98,7 @@ public class WelcomeActivity extends Activity {
 			}
         });
         
+
         /*
         Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
         btnSplashSetup.setOnClickListener(new OnClickListener()
@@ -116,6 +116,11 @@ public class WelcomeActivity extends Activity {
 			}
         });*/
 
+        initCursor ("foo");
+    }
+    
+    private void initCursor (String dbKey)
+    {
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
                 PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
@@ -125,7 +130,7 @@ public class WelcomeActivity extends Activity {
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
 
-        ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        ImPluginHelper.getInstance(this, dbKey).loadAvailablePlugins();
         
 
     }
@@ -140,17 +145,21 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        
-        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_LONG).show();
-
+       
 
         mHandler.registerForBroadcastEvents();
         
-        if (allAccountsSignedOut() && ! mDidAutoLaunch) {
-        	mDidAutoLaunch = true;
-        	finish();
-        	showAccountSetup();
-        	signInAll();
+        if (allAccountsSignedOut()) {
+        	
+        	if (!mDidAutoLaunch)
+        	{
+        		mDidAutoLaunch = true;
+        		showWarning();
+        		signInAll();
+        		
+        	}
+        	
+        	
         } else {
         	showActiveAccount();
         }
@@ -165,12 +174,13 @@ public class WelcomeActivity extends Activity {
 
         long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-        finish();
+        
         Intent intent = new Intent(this, TabbedContainer.class);
         // clear the back stack of the account setup
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
+        finish();
         return true;
     }
 
@@ -201,15 +211,27 @@ public class WelcomeActivity extends Activity {
     }
     
     private void signInAll() {
+    	
+        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_SHORT).show();
+
     	Log.i(TAG, "signInAll");
     	mProviderCursor.moveToFirst();
+    	int activeCount = 0;
+    	
     	do {
     		int position = mProviderCursor.getPosition();
-    		signInAccountAtPosition(position);
+    		if (signInAccountAtPosition(position))
+    			activeCount++;
+    		
     	} while (mProviderCursor.moveToNext()) ;
+    	
+    	if (activeCount == 0)
+    	{
+    		showAccountSetup();
+    	}
     }
     
-    private void signInAccountAtPosition(int position) {
+    private boolean signInAccountAtPosition(int position) {
         mProviderCursor.moveToPosition(position);
 
         if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
@@ -220,11 +242,16 @@ public class WelcomeActivity extends Activity {
                 boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
                 if (isKeepSignedIn) {
                     signIn(accountId);
+                    return true;
                 }
+                
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
                 signIn(accountId);
+                return true;
             }
         }
+        
+        return false;
     }
 
     private void signIn(long accountId) {
@@ -243,9 +270,10 @@ public class WelcomeActivity extends Activity {
         }
 
         Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
-        finish();
+        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));       
         startActivity(intent);
+
+    	finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -280,6 +308,11 @@ public class WelcomeActivity extends Activity {
         	// edit existing account
 			startActivity(getEditAccountIntent());
         }
+    }
+    
+    private void showWarning ()
+    {
+        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_SHORT).show();
     }
     
     private void showAbout ()

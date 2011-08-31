@@ -147,20 +147,24 @@ public class SigningInActivity extends Activity {
         			//show password prompt
         			showPasswordDialog();
         		} else {
-        			gogo();
+        			connectService();
         		}
         	} else {
-        		conn.logout(); // in case we are already logged
-        		gogo();
+        		
+        		if (conn.getState() == ImConnection.LOGGED_IN)
+        			conn.logout(); // in case we are already logged
+        		
+        		connectService();
         	}
         } catch (Exception e) {
         	Log.w(TAG, "bad things: " + e);
+        	showPasswordDialog();
         }
     }
     
     ProgressDialog pbarDialog;
     
-    public void gogo() {
+    public void connectService() {
     	
     	if (pbarDialog != null)
     		pbarDialog.dismiss();
@@ -208,8 +212,9 @@ public class SigningInActivity extends Activity {
 	{
 		this.mPassword = pwd;
 		
-		gogo();
+		connectService();
 	}
+	
 	private void showPasswordDialog() {
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -302,6 +307,7 @@ public class SigningInActivity extends Activity {
                     settings.close();
 
                  	mConn.login(mAccountId, mPassword, autoLoadContacts, autoRetryLogin);
+                 	
                  	
                 } else {
                     promptForBackgroundDataSetting();
@@ -424,17 +430,18 @@ public class SigningInActivity extends Activity {
     }
 
     void handleConnectionEvent(int state, ImErrorInfo error) {
-        if (isFinishing()) {
+       
+    	/*
+    	if (isFinishing()) {
             return;
-        }
+        }*/
 
         if (state == ImConnection.LOGGED_IN) {
 
             if (pbarDialog != null)   	
             	pbarDialog.dismiss();
             
-            // sign in successfully, finish and switch to contact list
-            finish();
+          
             try {
                 Intent intent;
 
@@ -461,11 +468,18 @@ public class SigningInActivity extends Activity {
 
                 } else {
                     intent = new Intent(this, TabbedContainer.class);
+                    
                     // clear the back stack of the account setup
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    
+               //     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK && Intent.FLAG);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                 }
+                
                 startActivity(intent);
+                
+                // sign in successfully, finish and switch to contact list
+                finish();
+                
             } catch (RemoteException e) {
                 // Ouch!  Service died!  We'll just disappear.
                 Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared while signing in!");

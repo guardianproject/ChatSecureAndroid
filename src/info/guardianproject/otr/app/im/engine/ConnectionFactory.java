@@ -58,7 +58,7 @@ public class ConnectionFactory {
         	return new XmppConnection(context);
     	} 
     	/*else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
-    		return new LoopbackConnection();
+    		return new SMSConnection();
         } */
     	else {
             throw new ImException("Unsupported protocol");

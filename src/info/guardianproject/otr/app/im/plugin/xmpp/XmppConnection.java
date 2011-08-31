@@ -82,6 +82,8 @@ public class XmppConnection extends ImConnection {
 	private long mProviderId = -1;
 	private String mPasswordTemp;
 	
+	private int PING_TIMEOUT = 30000;
+	
 	public XmppConnection(Context context) {
 		super(context);
 		
@@ -1162,9 +1164,12 @@ public class XmppConnection extends ImConnection {
 			debug(TAG, "ping");
 			if (!sendPing()) {
 				if (getState() == LOGGED_IN)
+				{
 					setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
-				Log.w(TAG, "reconnect on ping failed");
-				force_reconnect();
+					Log.w(TAG, "reconnect on ping failed");
+					
+					force_reconnect();
+				}
 			}
 		}
 	}
@@ -1177,7 +1182,8 @@ public class XmppConnection extends ImConnection {
 	private boolean sendPing() {
 		// Check ping result from previous send
 		if (mPingCollector != null) {
-			IQ result = (IQ)mPingCollector.nextResult(0);
+			
+			IQ result = (IQ)mPingCollector.nextResult(PING_TIMEOUT);
 			mPingCollector.cancel();
 			if (result == null || result.getError() != null)
 			{
@@ -1192,6 +1198,7 @@ public class XmppConnection extends ImConnection {
 				return "<ping xmlns='urn:xmpp:ping'/>";
 			}
 		};
+		
 		req.setType(IQ.Type.GET);
 	    PacketFilter filter = new AndFilter(new PacketIDFilter(req.getPacketID()),
 	            new PacketTypeFilter(IQ.class));
@@ -1218,6 +1225,7 @@ public class XmppConnection extends ImConnection {
 			try
 			{
 				shutdown(new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.unavailable));
+			
 			}
 			catch (Exception e)
 			{
@@ -1249,9 +1257,12 @@ public class XmppConnection extends ImConnection {
 			return;
 		if (mNeedReconnect)
 			return;
-		
+				
 		if (mConnection != null)
-			mConnection.shutdown();
+		{
+			mConnection.disconnect();
+//			mConnection.shutdown();
+		}
 		
 		mNeedReconnect = true;
 		reconnect();

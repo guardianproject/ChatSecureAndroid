@@ -127,6 +127,8 @@ public class UserPresenceView extends LinearLayout {
         if (!newStatusText.equals(mLastStatusText)) {
             updatePresence(-1, newStatusText);
         }
+        
+        mStatusBar = initStatusBar(mProviderId, false);
     }
 
     public void setConnection(IImConnection conn) {
@@ -157,7 +159,7 @@ public class UserPresenceView extends LinearLayout {
         mLastStatusText = statusText;
 
         if (mStatusBar == null) {
-            mStatusBar = initStatusBar(mProviderId);
+            mStatusBar = initStatusBar(mProviderId, false);
         }
         mStatusBar.setText(statusText);
 
@@ -171,17 +173,24 @@ public class UserPresenceView extends LinearLayout {
         }
     }
 
-    private TextView initStatusBar(long providerId) {
+    private TextView initStatusBar(long providerId, boolean showEdit) {
+    	/*
         String value = Imps.ProviderSettings.getStringValue(
                             mContext.getContentResolver(), providerId,
                             ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE);
 
        boolean showEdit = true;
+       */
+    	
+        EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
+        statusEdit.setVisibility(View.GONE);
+        TextView statusView = (TextView) findViewById(R.id.statusView);
+        statusView.setVisibility(View.GONE);
         
-       //if ("true".equalsIgnoreCase(value)) {
-       if (showEdit) {
-            EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
-            statusEdit.setVisibility(View.VISIBLE);
+        if (showEdit)
+        {
+        
+           statusEdit.setVisibility(View.VISIBLE);
             statusEdit.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if (KeyEvent.ACTION_DOWN == event.getAction()) {
@@ -205,12 +214,30 @@ public class UserPresenceView extends LinearLayout {
             });
 
             return statusEdit;
-            
-        } else {
-            TextView statusView = (TextView) findViewById(R.id.statusView);
+        }
+        else
+        {
+        	if (mPresence != null)
+        	{
+        		statusView.setText(mPresence.getStatusText());
+        	}
+        	
             statusView.setVisibility(View.VISIBLE);
+            
+            statusView.setOnClickListener(new OnClickListener (){
+
+				@Override
+				public void onClick(View v) {
+					 mStatusBar = initStatusBar(mProviderId, true);
+					
+				}
+            	
+            	
+            });
+            
             return statusView;
         }
+
     }
 
     void updatePresence(int status, String statusText) {

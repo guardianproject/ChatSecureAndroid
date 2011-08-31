@@ -413,7 +413,7 @@ public class ImApp extends Application {
     }
 
     private void loadThirdPartyResources() {
-        ImPluginHelper helper = ImPluginHelper.getInstance(this);
+        ImPluginHelper helper = ImPluginHelper.getInstance(this, null);
         helper.loadAvailablePlugins();
         ArrayList<ImPlugin> pluginList = helper.getPluginObjects();
         ArrayList<ImPluginInfo> infoList = helper.getPluginsInfo();

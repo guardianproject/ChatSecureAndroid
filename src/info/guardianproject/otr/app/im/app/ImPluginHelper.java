@@ -53,10 +53,16 @@ public class ImPluginHelper {
     private boolean mLoaded;
 
     private static ImPluginHelper sInstance;
-    public static ImPluginHelper getInstance(Context context) {
+    
+    private String dbKey;
+    
+    public static ImPluginHelper getInstance(Context context, String dbKey) {
         if (sInstance == null) {
             sInstance = new ImPluginHelper(context);
+            
         }
+        
+        sInstance.dbKey = dbKey;
         return sInstance;
     }
 
@@ -129,7 +135,7 @@ public class ImPluginHelper {
             }
 
             try {
-                updateProviderDb(plugin, pluginInfo,providerFullName, signUpUrl);
+                updateProviderDb(plugin, pluginInfo,providerFullName, signUpUrl, dbKey);
             } catch (SQLiteFullException e) {
                 Log.e(TAG, "Storage full", e);
                 return;
@@ -178,7 +184,7 @@ public class ImPluginHelper {
     }
 
     private long updateProviderDb(ImPlugin plugin, ImPluginInfo info,
-            String providerFullName, String signUpUrl) {
+            String providerFullName, String signUpUrl, String dbKey) {
         Map<String, String> config = loadConfiguration(plugin, info);
         if (config == null) {
             return 0;
@@ -186,13 +192,15 @@ public class ImPluginHelper {
 
         long providerId = 0;
         ContentResolver cr = mContext.getContentResolver();
+        
         String where = Imps.Provider.NAME + "=?";
         String[] selectionArgs = new String[]{info.mProviderName};
+        
         Cursor c = cr.query(Imps.Provider.CONTENT_URI,
                 null /* projection */,
                 where,
                 selectionArgs,
-                null /* sort order */);
+                "key=" + dbKey /* sort order */);
 
         boolean pluginChanged;
         try {
