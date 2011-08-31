@@ -99,7 +99,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
 
-        ImPluginHelper.getInstance(this, null).loadAvailablePlugins();
+        ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
                 PROVIDER_PROJECTION,

@@ -173,7 +173,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         setBackgroundData(manager.getBackgroundDataSetting());
 
-        mPluginHelper = ImPluginHelper.getInstance(this, null);
+        mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
         AndroidSystemService.getInstance().initialize(this);
         AndroidSystemService.getInstance().getHeartbeatService().startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
