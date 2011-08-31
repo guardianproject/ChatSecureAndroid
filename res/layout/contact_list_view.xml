@@ -81,6 +81,7 @@
             android:paddingLeft="3dip"
             android:singleLine="true"
             android:visibility="gone"
+            android:background="#55999999"
             android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
 
     </info.guardianproject.otr.app.im.app.UserPresenceView>
