@@ -15,15 +15,13 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
@@ -31,7 +29,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -42,6 +39,7 @@ import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -55,7 +53,6 @@ import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.packet.VCard;
 
-import android.R;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
@@ -72,7 +69,10 @@ public class XmppConnection extends ImConnection {
 	private MyXMPPConnection mConnection;
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
+	
+	// True if we are in the process of reconnecting.  Reconnection is retried once per heartbeat heartbeat.
 	private boolean mNeedReconnect;
+	
 	private boolean mRetryLogin;
 	private Executor mExecutor;
 	
@@ -113,23 +113,17 @@ public class XmppConnection extends ImConnection {
 	            
 	            if (bytes != null)
 	            {
-	            	
-	            
-	            try {
-	            	String filename = vCard.getAvatarHash() + ".jpg";
-	                InputStream in = new ByteArrayInputStream(bytes);
-	                File sdCard = Environment.getExternalStorageDirectory();
-	                File file = new File(sdCard, filename);
-	                new FileOutputStream(file).write(bytes);
-	                /*
-	                BufferedImage bi = javax.imageio.ImageIO.read(in);
-	                File outputfile = new File("C://Avatar.jpg");
-	                ImageIO.write(bi, "jpg", outputfile);
-	                */
-	                }
-	                catch (Exception e){
-	                	e.printStackTrace();
-	                }
+	            	try {
+	            		String filename = vCard.getAvatarHash() + ".jpg";
+	            		File sdCard = Environment.getExternalStorageDirectory();
+	            		File file = new File(sdCard, filename);
+	            		OutputStream output = new FileOutputStream(file);
+	            		output.write(bytes);
+	            		output.close();
+	            	}
+	            	catch (Exception e){
+	            		e.printStackTrace();
+	            	}
 	            }
 	                        
 	        } catch (XMPPException ex) {
@@ -1315,7 +1309,7 @@ public class XmppConnection extends ImConnection {
 	
 	public void debug (String tag, String msg)
 	{
-	//	Log.d(tag, msg);
+		//Log.d(tag, msg);
 	}
 }
 
