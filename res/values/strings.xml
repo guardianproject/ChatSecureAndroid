@@ -96,6 +96,8 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
     
+    
+    
     <!--  OTRCHAT Adding in new menu options -->
     <string name="menu_otr_start">Start Encryption</string>
     <string name="menu_otr_stop">Stop Encryption</string>
@@ -665,5 +667,8 @@
 	
 	
 	<string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+
+	<!--  added 2011/09/01 -->
+	<string name="menu_view_groups">Groups</string>
 
 </resources>
