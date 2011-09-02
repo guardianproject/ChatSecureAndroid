@@ -85,10 +85,16 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         setTheme(android.R.style.Theme_Black_NoTitleBar);
 
         LayoutInflater inflate = getLayoutInflater();
-        mContactListView = (ContactListView) inflate.inflate(
-                R.layout.contact_list_view, null);
-
-        setContentView(mContactListView);
+          
+          mContactListView = (ContactListView) inflate.inflate(
+                  R.layout.contact_list_view, null);
+   	
+       mFilterView = (ContactListFilterView)getLayoutInflater().inflate(
+                    R.layout.contact_list_filter_view, null);
+            
+        mFilterView.setActivity(this);
+            
+        mFilterView.getListView().setOnCreateContextMenuListener(this);
 
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
@@ -155,6 +161,10 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                 }
             }
         });
+        
+
+        showFilterView();
+        
     }
 
     @Override
@@ -208,7 +218,10 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
             case R.id.menu_quit:
             	handleQuit();
+            	return true;
             	
+            case R.id.menu_view_groups:
+            	showContactListView();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -296,24 +309,24 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         int keyCode = event.getKeyCode();
 
         boolean handled = false;
-        if (mIsFiltering) {
+        
+        if (!mIsFiltering) {
             handled = mFilterView.dispatchKeyEvent(event);
             if (!handled && (KeyEvent.KEYCODE_BACK == keyCode)
                     && (KeyEvent.ACTION_DOWN == event.getAction())) {
-                showContactListView();
+                showFilterView();
                 handled = true;
             }
         } else {
+        	
             handled = mContactListView.dispatchKeyEvent(event);
             
             if (!handled && KeyEvent.KEYCODE_SEARCH == keyCode 
             		&& (KeyEvent.ACTION_DOWN == event.getAction()))
-            {
-            	showFilterView();
-                
+            {                
             	InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            	inputMgr.toggleSoftInput(0, 0);
-            	
+            	inputMgr.toggleSoftInput(0, 0);            	
+               	showFilterView();               
             }
             else  if (!handled && isReadable(keyCode, event)
                     && (KeyEvent.ACTION_DOWN == event.getAction()) 		) {
@@ -323,8 +336,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             }
             
 
-            	
-            
         }
 
         if (!handled) {
@@ -353,14 +364,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     }
 
     private void showFilterView() {
-        if (mFilterView == null ) {
-            mFilterView = (ContactListFilterView)getLayoutInflater().inflate(
-                    R.layout.contact_list_filter_view, null);
-            
-            mFilterView.setActivity(this);
-            
-            mFilterView.getListView().setOnCreateContextMenuListener(this);
-        }
+    	
+        
         Uri uri = mSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                 : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
@@ -373,12 +378,14 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     }
 
     void showContactListView() {
-        if (mIsFiltering) {
-            setContentView(mContactListView);
-            mContactListView.requestFocus();
-            mContactListView.invalidate();
-            mIsFiltering = false;
-        }
+    	
+    
+        
+        setContentView(mContactListView);
+        mContactListView.requestFocus();
+        mContactListView.invalidate();
+        mIsFiltering = false;
+        
     }
 
     @Override
@@ -392,6 +399,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         super.onResume();
         mApp.registerForConnEvents(mHandler);
         mContactListView.setAutoRefreshContacts(true);
+       
     }
 
     @Override

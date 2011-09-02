@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,7 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ContactListFilterView extends LinearLayout {
 
-    private ListView mContactListView;
+    private ListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -55,24 +56,24 @@ public class ContactListFilterView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
 
-        mContactListView = (ListView) findViewById(R.id.filteredList);
-        mContactListView.setTextFilterEnabled(true);
+    	mFilterList = (ListView) findViewById(R.id.filteredList);
+    	mFilterList.setTextFilterEnabled(true);
 
-        mContactListView.setOnItemClickListener(new OnItemClickListener() {
+    	mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View view, int position,
                     long id) {
-              
-                    mContactListView.setSelection(position);
-                    Cursor c = (Cursor) mContactListView.getSelectedItem();
+                                      	
+                    Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
                     mActivity.mContactListView.startChat(c);
                     
               
             }
         });
+    	
     }
 
     public ListView getListView() {
-        return mContactListView;
+        return mFilterList;
     }
 
     public Cursor getContactAtPosition(int position) {
@@ -88,7 +89,7 @@ public class ContactListFilterView extends LinearLayout {
             if (mContactAdapter == null) {
                 mContactAdapter = new ContactAdapter(mContext, contactCursor);
                 mFilter = mContactAdapter.getFilter();
-                mContactListView.setAdapter(mContactAdapter);
+                mFilterList.setAdapter(mContactAdapter);
             } else {
                 mContactAdapter.changeCursor(contactCursor);
             }
@@ -101,11 +102,12 @@ public class ContactListFilterView extends LinearLayout {
         StringBuilder buf = new StringBuilder();
 
         // exclude chatting contact
-        buf.append(Imps.Chats.LAST_MESSAGE_DATE);
-        buf.append(" IS NULL");
-
+     //   buf.append(Imps.Chats.LAST_MESSAGE_DATE);
+       // buf.append(" IS NULL");
+        //   buf.append(" AND ");
+        
         if (constraint != null) {
-            buf.append(" AND ");
+
             buf.append(Imps.Contacts.NICKNAME);
             buf.append(" LIKE ");
             DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");
