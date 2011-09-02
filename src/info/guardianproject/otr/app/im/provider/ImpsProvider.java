@@ -1485,6 +1485,9 @@ public class ImpsProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URL " + url);
         }
 
+        if (getDBHelper()==null)
+        	return null;
+        
         // run the query
         final SQLiteDatabase db = getDBHelper().getReadableDatabase();
         Cursor c = null;

@@ -456,8 +456,16 @@ public class XmppConnection extends ImConnection {
 			
 			@Override
 			public void reconnectionFailed(Exception e) {
-				Log.i(TAG, "reconnection failed", e);
-				forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				//Log.i(TAG, "reconnection failed", e);
+				//forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				
+				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				mExecutor.execute(new Runnable() {
+					@Override
+					public void run() {
+						reconnect();
+					}
+				});
 			}
 			
 			@Override
@@ -1310,16 +1318,36 @@ public class XmppConnection extends ImConnection {
 		
 		if (mConnection != null)
 		{
-			Log.i(TAG, "reconnect");
-			clearHeartbeat();
-			try {
+			
+			
+		
+			if (mConnection.isConnected())
+			{
+				try
+				{
+					mConnection.disconnect();
+				}
+				catch (Exception e)
+				{
+					//TODO: this shouldn't happen
+					Log.e(TAG, "NPE thrown on disconnected: " + e.getMessage());
+					
+				}
+			}
+			
+			try {				
 				mConnection.connect();
 				mNeedReconnect = false;
+				Log.i(TAG, "reconnect");
+				clearHeartbeat();
+				
 				Log.i(TAG, "reconnected");
 				setState(LOGGED_IN, null);
 				
-			} catch (XMPPException e) {
-				Log.e(TAG, "reconnection on network change failed", e);
+			} catch (Exception e) {
+				mNeedReconnect = true;
+
+				Log.w(TAG, "reconnection on network change failed: " + e.getMessage());
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 			}
 		}
