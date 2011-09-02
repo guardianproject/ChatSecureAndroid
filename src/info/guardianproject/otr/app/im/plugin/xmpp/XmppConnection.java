@@ -489,7 +489,7 @@ public class XmppConnection extends ImConnection {
 					mExecutor.execute(new Runnable() {
 						@Override
 						public void run() {
-							maybe_reconnect();
+							reconnect();
 						}
 					});
 				}
@@ -1258,10 +1258,16 @@ public class XmppConnection extends ImConnection {
 		if (mNeedReconnect)
 			return;
 				
-		if (mConnection != null)
+		try
 		{
-			mConnection.disconnect();
-//			mConnection.shutdown();
+			if (mConnection != null && mConnection.isConnected())
+			{
+				mConnection.disconnect();
+	//			mConnection.shutdown();
+			}
+		}
+		catch (Exception e) {
+			Log.w(TAG, "problem disconnecting on force_reconnect: " + e.getMessage());
 		}
 		
 		mNeedReconnect = true;
@@ -1271,6 +1277,7 @@ public class XmppConnection extends ImConnection {
 	/*
 	 * Reconnect unless we are already in the process of doing so.
 	 */
+	/*
 	private void maybe_reconnect() {
 		// If we already know we don't have a good connection, the heartbeat
 		// will take care of this
@@ -1283,7 +1290,8 @@ public class XmppConnection extends ImConnection {
 		mNeedReconnect = true;
 		reconnect();
 	}
-
+*/
+	
 	/*
 	 * Retry a reconnect on alarm event
 	 */
@@ -1309,6 +1317,7 @@ public class XmppConnection extends ImConnection {
 				mNeedReconnect = false;
 				Log.i(TAG, "reconnected");
 				setState(LOGGED_IN, null);
+				
 			} catch (XMPPException e) {
 				Log.e(TAG, "reconnection on network change failed", e);
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
