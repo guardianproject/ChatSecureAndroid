@@ -142,6 +142,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         clearConnectionStatus();
                         finish();
                     } else {
+
+                        mFilterView.mPresenceView.setConnection(mConn);
                         mContactListView.setConnection(mConn);
                         mContactListView.setHideOfflineContacts(
                                 mSettingMap.getHideOfflineContacts());

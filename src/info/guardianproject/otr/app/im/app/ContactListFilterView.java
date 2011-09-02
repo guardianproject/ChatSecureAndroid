@@ -44,6 +44,7 @@ public class ContactListFilterView extends LinearLayout {
     private Uri mUri;
     private Context mContext;
     
+    UserPresenceView mPresenceView;
     private ContactListActivity mActivity;
     
 
@@ -69,6 +70,8 @@ public class ContactListFilterView extends LinearLayout {
               
             }
         });
+    	
+    	 mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
     	
     }
 
