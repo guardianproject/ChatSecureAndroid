@@ -123,7 +123,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        	if (otrModeSelect.equals("auto"))
 	        	{
 	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
-	        		//autoStartOtr = true;
 	        	}
 	        	else if (otrModeSelect.equals("disabled"))
 	        	{
@@ -409,7 +408,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 conn.networkTypeChanged();
             }
         }
-
+        
         switch (state) {
             case CONNECTED:
                 if (mNeedCheckAutoLogin) {
