@@ -555,12 +555,14 @@ public class AccountActivity extends Activity {
              
                 finish();
             } else {
-                // sign in failed, disable keep sign in, clear the password.
-                
+                // sign in failed, let's show the screen!
+                /*
+                //n8fr8: 2011/09/02: removed password reset b/c it was annoying in cases where problem was network
                 mEditPass.setText("");
                 ContentValues values = new ContentValues();
                 values.put(Imps.Account.PASSWORD, (String) null);
                 getContentResolver().update(mAccountUri, values, null, null);
+                */
             }
         }
     }

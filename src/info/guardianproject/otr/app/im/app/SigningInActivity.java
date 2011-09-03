@@ -69,7 +69,6 @@ public class SigningInActivity extends Activity {
     private long mAccountId;
     private String mProviderName;
 
-    private String mPassword;
 
     private String mToAddress;
     
@@ -130,6 +129,8 @@ public class SigningInActivity extends Activity {
         isActive = c.getInt(c.getColumnIndexOrThrow(Imps.Account.ACTIVE)) == 1;
 
         final String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
+        String mPassword = null;
+        
         if (pwExtra != null) {
         	mPassword = pwExtra;
         } else {
@@ -147,14 +148,15 @@ public class SigningInActivity extends Activity {
         			//show password prompt
         			showPasswordDialog();
         		} else {
-        			connectService();
+        			connectService(mPassword);
         		}
-        	} else {
-        		
-        		if (conn.getState() == ImConnection.LOGGED_IN)
-        			conn.logout(); // in case we are already logged
-        		
-        		connectService();
+        	} else if (conn.getState() == ImConnection.LOGGED_IN)
+        	{
+        	
+        		 // assume we can sign in successfully.
+                setResult(RESULT_OK);
+        			//conn.logout(); // in case we are already logged
+        			//connectService();
         	}
         } catch (Exception e) {
         	Log.w(TAG, "bad things: " + e);
@@ -164,7 +166,7 @@ public class SigningInActivity extends Activity {
     
     ProgressDialog pbarDialog;
     
-    public void connectService() {
+    public void connectService(String password) {
     	
     	if (pbarDialog != null)
     		pbarDialog.dismiss();
@@ -193,27 +195,30 @@ public class SigningInActivity extends Activity {
         mHandler = new SimpleAlertHandler(this);
         mListener = new MyConnectionListener(mHandler);
         
-        mApp.callWhenServiceConnected(mHandler, new Runnable() {
-            public void run() {
-                if (mApp.serviceConnected()) {
-                    if (!isActive) {
-                        activateAccount(mProviderId, mAccountId);
-                    }
-                    signInAccount();
-                }
-            }
-        });
-
+        mApp.callWhenServiceConnected(mHandler, new ConnectHandler(password));
+        
         // assume we can sign in successfully.
         setResult(RESULT_OK);
     }
 
-	private void gotCredentials (String usr, String pwd)
-	{
-		this.mPassword = pwd;
-		
-		connectService();
-	}
+    class ConnectHandler implements Runnable
+    {
+    	String mPassword;
+    	
+    	ConnectHandler (String password)
+    	{
+    		mPassword = password;
+    	}
+    	
+    	public void run() {
+            if (mApp.serviceConnected()) {
+                if (!isActive) {
+                    activateAccount(mProviderId, mAccountId);
+                }
+                signInAccount(mPassword);
+            }
+        }
+    }
 	
 	private void showPasswordDialog() {
 		
@@ -235,14 +240,14 @@ public class SigningInActivity extends Activity {
 						Editor edit = prefs.edit();
 						edit.putString("pref_account_pass", pwd);
 						edit.commit();
-						gotCredentials(null, pwd);
+						connectService(pwd);
 					}
 				});
 
          alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {  
          public void onClick(DialogInterface dialog, int whichButton) {  
         	 String pwd = input.getText().toString();  
-        	 gotCredentials(null,pwd);
+        	 connectService(pwd);
            }  
          });  
 
@@ -257,7 +262,7 @@ public class SigningInActivity extends Activity {
         alert.show();  
 	}
 	
-    
+    /*
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -272,8 +277,9 @@ public class SigningInActivity extends Activity {
             finish();
         }
     }
-
-    void signInAccount() {
+*/
+	
+    private void signInAccount(String password) {
     	
     	boolean autoLoadContacts = true;
     	boolean autoRetryLogin = false;
@@ -306,7 +312,7 @@ public class SigningInActivity extends Activity {
                     }
                     settings.close();
 
-                 	mConn.login(mAccountId, mPassword, autoLoadContacts, autoRetryLogin);
+                 	mConn.login(mAccountId, password, autoLoadContacts, autoRetryLogin);
                  	
                  	
                 } else {
