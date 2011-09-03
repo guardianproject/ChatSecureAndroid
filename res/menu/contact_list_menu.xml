@@ -42,7 +42,8 @@
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
          />
- 
+         
+         
  <item android:id="@+id/menu_view_groups"
         android:title="@string/menu_view_groups"
         android:icon="@drawable/ic_menu_switch"

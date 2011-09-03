@@ -16,6 +16,7 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -26,6 +27,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -34,6 +36,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
@@ -48,6 +51,7 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
@@ -222,8 +226,13 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             	handleQuit();
             	return true;
             	
+            	
             case R.id.menu_view_groups:
-            	showContactListView();
+            	if (mIsFiltering)
+            		showContactListView();
+            	else
+            		showFilterView();
+            	
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -574,4 +583,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             super.handleMessage(msg);
         }
     }
+    
+   
 }

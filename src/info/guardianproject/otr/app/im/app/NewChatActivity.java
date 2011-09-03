@@ -70,6 +70,8 @@ public class NewChatActivity extends Activity {
     private ChatSwitcher mChatSwitcher;
 
     private LayoutInflater mInflater;
+    
+    private ProgressDialog pbarDialog;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -148,8 +150,9 @@ public class NewChatActivity extends Activity {
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
-        long providerId = mChatView.getProviderId();
         /*
+         *         long providerId = mChatView.getProviderId();
+
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
         
         menu.findItem(R.id.menu_view_friend_list).setTitle(
@@ -207,9 +210,11 @@ public class NewChatActivity extends Activity {
             mChatView.viewProfile();
             return true;
             
+            /*
         case R.id.menu_gen_key:
         	otrGenKey();
         	return true;
+        	*/
 /*            
         	case R.id.menu_view_friend_list:
                 finish();
@@ -286,74 +291,14 @@ public class NewChatActivity extends Activity {
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
 
-	ProgressDialog pbarDialog;
-
-    private void otrGenKey ()
-    {
-    	
-
-
-		pbarDialog = new ProgressDialog( this );
-    	
-
-    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    	pbarDialog.setMessage("Generating keypair...");
-    	pbarDialog.show();
-
-    	
-		KeyGenThread kgt = new KeyGenThread();
-		kgt.start();
-    	
-    }
-    
-    private class KeyGenThread extends Thread {
-
-    	IOtrKeyManager otrKeyManager;
-    	
-    	public KeyGenThread ()
-    	{
-    		otrKeyManager = mChatView.getOtrKeyManager();
-    	}
-
-        @Override
-        public void run() {         
-        	
-
-        	try {
-				otrKeyManager.generateLocalKeyPair();
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            handler.sendEmptyMessage(0);
-        }
-
-        private Handler handler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-             
-            	pbarDialog.dismiss();
-            	
-            	try {
-					String lFingerprint = otrKeyManager.getLocalFingerprint();
-					showToast("New fingerprint: " + lFingerprint);
-					
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            	
-            	
-            }
-        };
-    }
+	
     
     private void showToast (String msg)
     {
     	Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
     	toast.show();
     }
+    
     private void switchOtrState ()
     {
     	//TODO OTRCHAT switch state on/off

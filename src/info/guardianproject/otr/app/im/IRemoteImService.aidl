@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
+import info.guardianproject.otr.IOtrKeyManager;
 
 interface IRemoteImService {
 
@@ -58,4 +59,10 @@ interface IRemoteImService {
      * Dismiss notification for the specified chat.
      */
     void dismissChatNotification(long providerId, String username);
+    
+    
+     /**
+    * Get OTR Key Manager
+    */
+    IOtrKeyManager getOtrKeyManager(String accountId);
 }

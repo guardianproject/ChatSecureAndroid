@@ -45,10 +45,6 @@
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close" />
         
-         <item android:id="@+id/menu_gen_key"
-        android:title="@string/menu_gen_key"
-         android:icon="@drawable/ic_menu_key"
-         />
 
 <!--
 

@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -24,6 +25,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -33,6 +35,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -40,6 +43,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -48,6 +54,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -85,6 +92,7 @@ public class AccountActivity extends Activity {
     CheckBox mUseTor;
     Button   mBtnSignIn;
     Button	 mBtnAdvanced;
+    TextView mTxtFingerprint;
     
     boolean isEdit = false;
     boolean isSignedIn = false;
@@ -95,6 +103,9 @@ public class AccountActivity extends Activity {
     private boolean mHaveSetUseTor = false;
     private String mOriginalUserAccount;
     
+
+	IOtrKeyManager otrKeyManager;
+	
    // String mToAddress;
 
     @Override
@@ -120,7 +131,7 @@ public class AccountActivity extends Activity {
             }
         });
 
-        ImApp app = ImApp.getApplication(this);
+        mApp = ImApp.getApplication(this);
         Intent i = getIntent();
         String action = i.getAction();
         
@@ -145,7 +156,7 @@ public class AccountActivity extends Activity {
             mOriginalUserAccount = "";
             // TODO once we implement multiple IM protocols
             mProviderId = ContentUris.parseId(i.getData());
-            provider = app.getProvider(mProviderId);
+            provider = mApp.getProvider(mProviderId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
         } else if(Intent.ACTION_EDIT.equals(action)) {
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
@@ -173,7 +184,7 @@ public class AccountActivity extends Activity {
             mAccountId = cursor.getLong(cursor.getColumnIndexOrThrow(Imps.Account._ID));
 
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
-            provider = app.getProvider(mProviderId);
+            provider = mApp.getProvider(mProviderId);
 
     		ContentResolver contentResolver = getContentResolver();
     		Imps.ProviderSettings.QueryMap settings = 
@@ -186,12 +197,28 @@ public class AccountActivity extends Activity {
 
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
 
-//            boolean keepSignIn = cursor.getInt(ACCOUNT_KEEP_SIGNED_IN_COLUMN) == 1;
- //           mKeepSignIn.setChecked(keepSignIn);
-
             mUseTor.setChecked(settings.getUseTor());
             
-           
+            try
+            {
+            	otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
+            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
+            	String localFingerprint = otrKeyManager.getLocalFingerprint();
+            	if (localFingerprint != null)
+            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
+            	else
+            	{
+            		mTxtFingerprint.setText("");
+            		otrGenKey();
+            	}
+            	
+            	
+            	
+            }
+            catch (Exception e){
+            	e.printStackTrace();
+            	
+            }
             
             settings.close();
             cursor.close();
@@ -207,7 +234,7 @@ public class AccountActivity extends Activity {
         	mBtnSignIn.setBackgroundResource(R.drawable.btn_red);
         }
         
-        final BrandingResources brandingRes = app.getBrandingResource(mProviderId);
+        final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         /*
         mKeepSignIn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -240,7 +267,7 @@ public class AccountActivity extends Activity {
         		if (! hasFocus) {
         			String username = mEditUserAccount.getText().toString();
 
-        			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+        			//Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
         			if (parseAccount(username)) {
         				if (username != mOriginalUserAccount) {
         					settingsForDomain(mDomain, mPort);
@@ -633,7 +660,7 @@ public class AccountActivity extends Activity {
     	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
     	startActivity(intent);
     }
-/*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	MenuInflater inflater = getMenuInflater();
@@ -650,14 +677,96 @@ public class AccountActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
+
+        case R.id.menu_gen_key:
+        	otrGenKey();
+        	return true;
+        	/*
     	case R.id.menu_account_settings:
             Intent intent = new Intent(this, AccountSettingsActivity.class);
             //Intent intent = new Intent(this, SettingActivity.class);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
             startActivity(intent);
-    		return true;
+    		return true;*/
     	}
     	return super.onOptionsItemSelected(item);
     }
-    */
+    
+    
+    ProgressDialog pbarDialog;
+
+    private void otrGenKey ()
+    {
+    	
+
+
+		pbarDialog = new ProgressDialog( this );
+    	
+
+    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    	pbarDialog.setMessage(getString(R.string.otr_gen_key));
+    	pbarDialog.show();
+
+    	
+		KeyGenThread kgt = new KeyGenThread();
+		kgt.start();
+    	
+    }
+    
+    private class KeyGenThread extends Thread {
+
+    	
+    	public KeyGenThread ()
+    	{
+    		
+    	}
+
+        @Override
+        public void run() {         
+        	
+
+        	try {
+				otrKeyManager.generateLocalKeyPair();
+			} catch (RemoteException e) {
+				Log.e("OTR","could not gen local key pait",e);
+			}
+            handler.sendEmptyMessage(0);
+        }
+
+        private Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+             
+            	pbarDialog.dismiss();
+            	
+            	try {
+					String lFingerprint = otrKeyManager.getLocalFingerprint();
+					mTxtFingerprint.setText(processFingerprint(lFingerprint));
+					//showToast("New fingerprint: " + lFingerprint);
+					
+				} catch (Exception e) {
+				}
+            	
+            	
+            }
+        };
+    }
+    
+    private String processFingerprint (String fingerprint)
+    {
+    	StringBuffer out = new StringBuffer();
+    	
+    	for (int n = 0; n < fingerprint.length(); n++)
+    	{
+	    	for (int i = n; n < i+4; n++)
+	    	{
+	    		out.append(fingerprint.charAt(n));
+	    	}
+	    	
+	    	out.append(' ');
+    	}
+    	
+    	return out.toString();
+    }
 }

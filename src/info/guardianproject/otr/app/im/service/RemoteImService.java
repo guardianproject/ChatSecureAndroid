@@ -18,7 +18,9 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.database.sqlcipher.SQLiteDatabase;
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
@@ -493,6 +495,12 @@ public class RemoteImService extends Service implements OtrEngineListener {
         public void dismissChatNotification(long providerId, String username) {
             mStatusBarNotifier.dismissChatNotification(providerId, username);
         }
+
+		@Override
+		public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
+			
+			return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
+		}
     };
 
     private final class SettingsMonitor extends BroadcastReceiver {

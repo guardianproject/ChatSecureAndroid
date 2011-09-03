@@ -671,4 +671,6 @@
 	<!--  added 2011/09/01 -->
 	<string name="menu_view_groups">Groups</string>
 
+	<string name="otr_gen_key">Generating new OTR keypair...</string>
+	
 </resources>

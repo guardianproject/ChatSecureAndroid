@@ -75,7 +75,7 @@ public class ImApp extends Application {
 
     IRemoteImService mImService;
 
-    HashMap<Long, IImConnection> mConnections;
+	HashMap<Long, IImConnection> mConnections;
     MyConnListener mConnectionListener;
     HashMap<Long, ProviderDef> mProviders;
 
@@ -729,4 +729,11 @@ public class ImApp extends Application {
             }
         }
     }
+    
+
+    public IRemoteImService getRemoteImService() {
+		return mImService;
+	}
+
+
 }
