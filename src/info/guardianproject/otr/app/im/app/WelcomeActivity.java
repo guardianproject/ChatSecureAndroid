@@ -125,6 +125,33 @@ public class WelcomeActivity extends Activity {
       
     }
     
+    private boolean cursorUnlocked ()
+    {
+    	try
+    	{
+	    	 mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+	                 PROVIDER_PROJECTION,
+	                 Imps.Provider.CATEGORY + "=?" /* selection */,
+	                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+	                 Imps.Provider.DEFAULT_SORT_ORDER);
+	    	 
+	    	 mProviderCursor.moveToFirst();
+	    	 
+	    	 mApp = ImApp.getApplication(this);
+             mHandler = new MyHandler(this);
+        	ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        	
+	    	 
+	    	 return true;
+         
+    	}
+    	catch (Exception e)
+    	{
+    		//must need to be unlocked
+    		return false;
+    	}
+    }
+    
     private void initCursor (String dbKey)
     {
         
@@ -165,7 +192,7 @@ public class WelcomeActivity extends Activity {
     protected void onResume() {
         super.onResume();
      
-        if (mProviderCursor != null)
+        if (cursorUnlocked())
         {
         	doOnResume();
         }
@@ -364,7 +391,10 @@ public class WelcomeActivity extends Activity {
 
     private boolean isSignedIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        return connectionStatus == Imps.ConnectionStatus.ONLINE;
+        
+        return connectionStatus == Imps.ConnectionStatus.ONLINE || 
+        		 connectionStatus == Imps.ConnectionStatus.CONNECTING || 
+        				 connectionStatus == Imps.ConnectionStatus.SUSPENDED;
     }
 
     private boolean allAccountsSignedOut() {
