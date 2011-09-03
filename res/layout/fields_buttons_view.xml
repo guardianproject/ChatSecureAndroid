@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-            android:background="@drawable/gibberbg">
+            android:background="@drawable/bkgd_gibberbot">
             
  <TextView android:text="TITLE" android:textColor="#00ff00" 
  android:id="@+id/WizardTextTitle" android:textSize="14pt" 
