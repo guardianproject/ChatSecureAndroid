@@ -75,7 +75,7 @@
 	        android:textSize="13sp"
 	        android:text="@string/label_fingerprint_local"
 	        android:textAppearance="?android:attr/textAppearanceSmall"
-	        
+	        android:visibility="gone"
 	        />
 	 <TextView android:id="@+id/txtFingerprint"
 	        android:layout_width="fill_parent"
