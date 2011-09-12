@@ -17,7 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
@@ -212,7 +212,7 @@ public abstract class ImConnection {
      *             if session re-establishment is not supported by the
      *             underlying protocol.
      */
-    public abstract void reestablishSessionAsync(HashMap<String, String> sessionContext);
+    public abstract void reestablishSessionAsync(Map<String, String> sessionContext);
 
     /**
      * Log out from the IM server.
@@ -227,7 +227,7 @@ public abstract class ImConnection {
     /**
      * Gets the cookie of the current session. The client could store the
      * context and use it to re-establish the session by
-     * {@link #reestablishSessionAsync(HashMap)}}. The stored context MUST be
+     * {@link #reestablishSessionAsync(Map)}}. The stored context MUST be
      * removed upon the connection logout/disconnect.
      *
      * @return the context of the current session or <code>null</code> if the
@@ -236,7 +236,7 @@ public abstract class ImConnection {
      *             if session re-establishment is not supported by the
      *             underlying protocol.
      */
-    public abstract HashMap<String, String> getSessionContext();
+    public abstract Map<String, String> getSessionContext();
 
     /**
      * Gets the instance of ChatSessionManager for the connection.

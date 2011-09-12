@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.Map;
 
 import android.content.ContentResolver;
 import android.os.Parcel;
@@ -128,7 +128,7 @@ public class LoopbackConnection extends ImConnection {
 	}
 
 	@Override
-	public void reestablishSessionAsync(HashMap<String, String> sessionContext) {
+	public void reestablishSessionAsync(Map<String, String> sessionContext) {
 		// TODO Auto-generated method stub
 
 	}

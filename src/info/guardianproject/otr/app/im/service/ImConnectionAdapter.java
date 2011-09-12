@@ -118,7 +118,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
         ContentResolver cr = mService.getContentResolver();
         if ((mConnection.getCapability() & ImConnection.CAPABILITY_SESSION_REESTABLISHMENT) != 0) {
-            HashMap<String, String> cookie = querySessionCookie(cr);
+            Map<String, String> cookie = querySessionCookie(cr);
             if (cookie != null) {
                 Log.d(TAG, "re-establish session");
                 try {
@@ -287,7 +287,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     void saveSessionCookie(ContentResolver cr) {
-        HashMap<String, String> cookies = mConnection.getSessionContext();
+        Map<String, String> cookies = mConnection.getSessionContext();
 
         int i = 0;
         ContentValues[] valuesList = new ContentValues[cookies.size()];
