@@ -40,6 +40,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -48,6 +49,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -233,26 +236,7 @@ public class AccountActivity extends Activity {
             }
         });
 
-        mEditUserAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-        	@Override
-        	public void onFocusChange(View v, boolean hasFocus) {
-        		if (! hasFocus) {
-        			String username = mEditUserAccount.getText().toString();
-
-        			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-        			if (parseAccount(username)) {
-        				if (username != mOriginalUserAccount) {
-        					settingsForDomain(mDomain, mPort);
-        					mHaveSetUseTor = false;
-        				}
-        			} else {
-        				// TODO if bad account name, bump back to the account EditText
-        				//mEditUserAccount.requestFocus();
-        			}
-        		}
-        	}
-        });
+        
         mEditUserAccount.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 
@@ -266,6 +250,16 @@ public class AccountActivity extends Activity {
         mBtnSignIn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	
+            	String username = mEditUserAccount.getText().toString();
+            	if (username != mOriginalUserAccount) {
+            		if (parseAccount(username)) {
+            			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+            			settingsForDomain(mDomain, mPort);
+            			mHaveSetUseTor = false;
+            		}
+				}
+    			
+    			
             	
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
@@ -402,45 +396,57 @@ public class AccountActivity extends Activity {
     	return isGood;
     }
 
+    
     void settingsForDomain(String domain, int port) {
     	final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
     			getContentResolver(),
     			mProviderId,
     			false /* don't keep updated */,
     			null /* no handler */);
-    	if (domain.equals("gmail.com")) {
-			// Google only supports a certain configuration for XMPP:
-			// http://code.google.com/apis/talk/open_communications.html
-    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
-    		// then perhaps we could enable RequireTls
-    		settings.setDoDnsSrv(false);
-    		settings.setDomain(domain);
-    		settings.setPort(5222);
-    		settings.setServer("talk.google.com");
-    		settings.setRequireTls(false);
-    		settings.setTlsCertVerify(false);
-    	} else if (domain.equals("jabber.org")) {
-    		settings.setDoDnsSrv(false);
-    		settings.setDomain(domain);
-    		settings.setPort(5222);
-    		settings.setServer(null);
-    		settings.setRequireTls(true);
-    		settings.setTlsCertVerify(true);
-    	} else if (domain.equals("chat.facebook.com")) {
-    		settings.setDoDnsSrv(false);
-    		settings.setDomain(domain);
-    		settings.setPort(5222);
-    		settings.setServer(domain);
-    		settings.setRequireTls(false);
-    		settings.setTlsCertVerify(false);
-    	} else {
-    		settings.setDoDnsSrv(true);
-    		settings.setDomain(domain);
-    		settings.setPort(port);
-    		settings.setServer(null);
-    		settings.setRequireTls(false);
-    		settings.setTlsCertVerify(true);
-    	}
+    	
+
+		if (settings.getDomain() == null)
+		{
+	    	if (domain.equals("gmail.com")) {
+				// Google only supports a certain configuration for XMPP:
+				// http://code.google.com/apis/talk/open_communications.html
+	    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
+	    		// then perhaps we could enable RequireTls
+	    		settings.setDoDnsSrv(true);
+	    		settings.setDomain(domain);
+	    		settings.setPort(5222);
+	    		settings.setServer("gmail.com");
+	    		settings.setRequireTls(true);
+	    		settings.setTlsCertVerify(true);
+	    		settings.setAllowPlainAuth(false);
+	    		
+	    	} else if (domain.equals("jabber.org")) {
+	    		settings.setDoDnsSrv(false);
+	    		settings.setDomain(domain);
+	    		settings.setPort(5222);
+	    		settings.setServer(domain);
+	    		settings.setRequireTls(true);
+	    		settings.setTlsCertVerify(true);
+	    	} else if (domain.equals("chat.facebook.com")) {
+	    		settings.setDoDnsSrv(false);
+	    		settings.setDomain(domain);
+	    		settings.setPort(5222);
+	    		settings.setServer(domain);
+	    		settings.setRequireTls(false);
+	    		settings.setTlsCertVerify(false);
+	    	}    	
+	    	else {
+	    		
+    			settings.setDoDnsSrv(true);
+    			settings.setDomain(domain);
+    			settings.setPort(port);
+    			settings.setServer(domain);
+    			settings.setRequireTls(true);
+    			settings.setTlsCertVerify(true);
+    			
+	    	}
+		}
+		
     	settings.close();
     }
 
@@ -608,9 +614,12 @@ public class AccountActivity extends Activity {
 
         public void onTextChanged(CharSequence s, int start, int before, int after) {
             updateWidgetState();
+
+		
         }
 
         public void afterTextChanged(Editable s) {
+        	
         }
     };
 

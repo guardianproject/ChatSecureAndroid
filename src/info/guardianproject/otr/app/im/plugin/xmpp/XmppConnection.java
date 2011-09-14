@@ -296,24 +296,30 @@ public class XmppConnection extends ImConnection {
 			initConnection(userName, password, providerSettings);
 			
 		} catch (Exception e) {
+			
 			Log.e(TAG, "login failed", e);
 			mConnection = null;
 			ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
+			
 			if (e.getMessage().contains("not-authorized")) {
+				
 				Log.w(TAG, "not authorized - will not retry");
 				info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
 				disconnected(info);
 				mRetryLogin = false;
-			}
+			}/*
 			else if (mRetryLogin) {
 				Log.w(TAG, "will retry");
 				setState(LOGGING_IN, info);
-			}
+			}*/
 			else {
 				Log.w(TAG, "will not retry");
 				mConnection = null;
+				mRetryLogin = false;
 				disconnected(info);
 			}
+			
+			
 			return;
 		} finally {
 			mNeedReconnect = false;
@@ -363,6 +369,7 @@ public class XmppConnection extends ImConnection {
 		debug(TAG, "TLS required? " + requireTls);
 		debug(TAG, "Do SRV check? " + doDnsSrv);
 		debug(TAG, "cert verification? " + tlsCertVerify);
+		debug(TAG, "plain auth? " + allowPlainAuth);
     	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
@@ -380,12 +387,23 @@ public class XmppConnection extends ImConnection {
     	}
 
     	//mConfig.setDebuggerEnabled(true);
-    	mConfig.setSASLAuthenticationEnabled(true);
+    	
     	if (requireTls) {
     		mConfig.setSecurityMode(SecurityMode.required);
-    		// with TLS, use PLAIN first for best compatibility
-    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    		
+    		if(allowPlainAuth)
+    		{
+    			mConfig.setSASLAuthenticationEnabled(false);    	    
+    			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    		}
+    		else
+    		{
+    			mConfig.setSASLAuthenticationEnabled(true);  
+    			SASLAuthentication.unsupportSASLMechanism("PLAIN");
+    		}
+    		
     		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    		
     	} else {
     		// if it finds a cert, still use it, but don't check anything since 
     		// TLS errors are not expected by the user
@@ -395,10 +413,17 @@ public class XmppConnection extends ImConnection {
     		allowSelfSignedCerts = true;
     		// without TLS, use DIGEST-MD5 first
     		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
+    		
     		if(allowPlainAuth)
+    		{
+    			mConfig.setSASLAuthenticationEnabled(false);  
     			SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+    		}
     		else
+    		{
+    			mConfig.setSASLAuthenticationEnabled(true);
     			SASLAuthentication.unsupportSASLMechanism("PLAIN");
+    		}
     	}
     	// Android has no support for Kerberos or GSSAPI, so disable completely
     	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
@@ -657,7 +682,7 @@ public class XmppConnection extends ImConnection {
 				mNeedReconnect = false;
 				clearPing();
 				// Do not try to reconnect anymore if we were asked to suspend
-				mConnection.shutdown();
+				//mConnection.shutdown();
 			}
 		});
 	}
@@ -1276,10 +1301,13 @@ public class XmppConnection extends ImConnection {
 			
 		}
 		
+		/*
 		public void shutdown() {
 			
 			try
 			{
+				
+				
 				// Be forceful in shutting down since SSL can get stuck
 				try { socket.shutdownInput(); } catch (Exception e) {}
 				socket.close();
@@ -1290,8 +1318,8 @@ public class XmppConnection extends ImConnection {
 			{
 				Log.e(TAG, "error on shutdown()",e);
 			}
-		}
-
+		}*/
+		
 	}
 
 	@Override
@@ -1383,7 +1411,8 @@ public class XmppConnection extends ImConnection {
 				// we are not authenticated.
 				if (!mConnection.isAuthenticated()) {
 					Log.e(TAG, "authentication failed in connect() - shutdown and retry later");
-					mConnection.shutdown();
+					
+					setState(DISCONNECTED, null);
 				}
 			} catch (XMPPException e) {
 				Log.e(TAG, "reconnection attempt failed", e);
@@ -1408,7 +1437,7 @@ public class XmppConnection extends ImConnection {
 
 	public void debug (String tag, String msg)
 	{
-		//Log.d(tag, msg);
+		Log.d(tag, msg);
 	}
 }
 

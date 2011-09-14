@@ -51,7 +51,7 @@ public class WelcomeActivity extends Activity {
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
 
-    private static final String[] PROVIDER_PROJECTION = {
+    static final String[] PROVIDER_PROJECTION = {
             Imps.Provider._ID,
             Imps.Provider.NAME,
             Imps.Provider.FULLNAME,

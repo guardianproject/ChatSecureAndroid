@@ -50,6 +50,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -79,6 +80,7 @@ public class SigningInActivity extends Activity {
 
     private Dialog dl = null;
     
+    private Uri accountData = null;
     
     @Override
     protected void onCreate(Bundle icicle) {
@@ -98,8 +100,8 @@ public class SigningInActivity extends Activity {
 		  Intent intent = getIntent();
 	        mToAddress = intent.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
 
-	        Uri data = intent.getData();
-	        if (data == null) {
+	   accountData = intent.getData();
+	        if (accountData == null) {
 	            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
 	                log("Need account data to sign in");
 	            }
@@ -108,17 +110,17 @@ public class SigningInActivity extends Activity {
 	        }
 	
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(data, null, null, null, null);
+        Cursor c = cr.query(accountData, null, null, null, null);
         if (c == null) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("Query fail:" + data);
+                log("Query fail:" + accountData);
             }
             finish();
             return;
         }
         if (!c.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("No data for " + data);
+                log("No data for " + accountData);
             }
             c.close();
             finish();
@@ -162,20 +164,7 @@ public class SigningInActivity extends Activity {
         }
     }
     
-    ProgressDialog pbarDialog;
-    
     public void connectService() {
-    	
-    	if (pbarDialog != null)
-    		pbarDialog.dismiss();
-    	
-    	pbarDialog = new ProgressDialog( this );
-    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    	
-    	String message = getString(R.string.signing_in_wait);
-    	
-    	pbarDialog.setMessage(message);
-    	pbarDialog.show();
     	
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
@@ -248,7 +237,7 @@ public class SigningInActivity extends Activity {
 
          alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {  
          public void onClick(DialogInterface dialog, int whichButton) {  
-        	 
+        	 showAccount();
         	 finish();
              return;
            }  
@@ -316,7 +305,6 @@ public class SigningInActivity extends Activity {
             }
 
         } catch (RemoteException e) {
-        	pbarDialog.dismiss();        	
             mHandler.showServiceErrorAlert();
             finish();
             
@@ -343,8 +331,6 @@ public class SigningInActivity extends Activity {
     protected void onStop() {
         super.onStop();
         
-        if (pbarDialog != null)   	
-        	pbarDialog.dismiss();
 
 
         if (mApp != null) {
@@ -383,13 +369,8 @@ public class SigningInActivity extends Activity {
                 try {
                     if (mConn.getState() == ImConnection.LOGGING_IN) {
                         
-                    	if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                            log("Cancelling sign in");
-                        }
-                        
-                    	mConn.cancelLogin();
-                    
-                        finish();
+                    	cancelSignIn();
+                    	
                     }
                 } catch (RemoteException e) {
                     Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared!");
@@ -438,9 +419,6 @@ public class SigningInActivity extends Activity {
 
         if (state == ImConnection.LOGGED_IN) {
 
-            if (pbarDialog != null)   	
-            	pbarDialog.dismiss();
-            
           
             try {
                 Intent intent;
@@ -486,10 +464,6 @@ public class SigningInActivity extends Activity {
             }
         } else if (state == ImConnection.DISCONNECTED) {
         	
-
-            if (pbarDialog != null)   	
-            	pbarDialog.dismiss();
-            
             // sign in failed
             Resources r = getResources();
             new AlertDialog.Builder(this)
@@ -500,6 +474,7 @@ public class SigningInActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 setResult(RESULT_CANCELED);
+                                showAccount();
                                 finish();
                             }
                         })
@@ -522,5 +497,63 @@ public class SigningInActivity extends Activity {
                 int state, ImErrorInfo error) {
             handleConnectionEvent(state, error);
         }
+    }
+    
+    @Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	      
+	    	cancelSignIn();
+	    
+	    	
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+
+    private void cancelSignIn ()
+    {
+
+    	try
+    	{
+    		log("canceling login");
+    		if (mConn != null)
+    			mConn.cancelLogin();
+    		
+    		showAccount();
+    		finish();
+    	}
+    	catch (Exception e)
+    	{
+    		Log.e(ImApp.LOG_TAG,"error on cancel",e);
+    	}
+    }
+    
+    private void showAccount() 
+    {
+        ContentResolver cr = getContentResolver();
+        
+        Cursor c = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+                WelcomeActivity.PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" /* selection */,
+                new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        
+
+        if (!c.moveToFirst()) {
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+                log("No data for " + accountData);
+            }
+            c.close();
+            finish();
+            return;
+        }
+
+    	 Intent intent = new Intent(Intent.ACTION_EDIT,
+                 ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
+                         c.getLong(WelcomeActivity.ACTIVE_ACCOUNT_ID_COLUMN)));
+         intent.putExtra("isSignedIn", false);
+         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
+         startActivity(intent);
+
     }
 }
