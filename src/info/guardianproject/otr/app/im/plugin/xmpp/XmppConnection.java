@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -31,10 +32,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -43,7 +44,6 @@ import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -83,8 +83,6 @@ public class XmppConnection extends ImConnection {
 	private boolean mRetryLogin;
 	private Executor mExecutor;
 
-	private PacketCollector mPingCollector;
-
 	private ProxyInfo mProxyInfo = null;
 	
 	private long mAccountId = -1;
@@ -94,8 +92,6 @@ public class XmppConnection extends ImConnection {
 	private final static int SOTIMEOUT = 15000;
 	private final static String TRUSTSTORE_TYPE = "BKS";
 	private final static String TRUSTSTORE_PATH = "/system/etc/security/cacerts.bks";
-	
-	private final static int SOTIMEOUT = 15000;
 	
 	private PacketCollector mPingCollector;
 
@@ -567,20 +563,32 @@ public class XmppConnection extends ImConnection {
 							disconnect();
 							disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
 									"logged in from another location"));
-						};
-					});
-				}
-				else if (!mNeedReconnect) {
-					execute(new Runnable() {
-						@Override
-						public void run() {
-							if (getState() == LOGGED_IN)
-								setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-							maybe_reconnect();
-						//	reconnect();
 						}
 					});
 				}
+				else if (!mNeedReconnect) {
+					disconnect();
+					disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
+							"logged in from another location"));
+				}
+				/*
+					execute(new Runnable() {
+						@Override
+						public void run() {
+							
+						}
+					});
+					*/
+				
+					/*
+					 * 		if (getState() == LOGGED_IN)
+								setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,null));
+							
+							//maybe_reconnect();
+							reconnect();
+					
+					 */
+				
 			}
 			
 			@Override
@@ -679,7 +687,6 @@ public class XmppConnection extends ImConnection {
 
 	
 	@Override
-/*
 	public void reestablishSessionAsync(Map<String, String> sessionContext) {
 		execute(new Runnable() {
 			@Override
@@ -687,9 +694,12 @@ public class XmppConnection extends ImConnection {
 				if (getState() == SUSPENDED) {
 					debug(TAG, "reestablish");
 					setState(LOGGING_IN, null);
-					maybe_reconnect();
+					XmppConnection.this.reconnect();
 				}
-*/
+			}
+		});
+	}
+	
 	public void reestablishSessionAsync(HashMap<String, String> sessionContext) {
 		mExecutor.execute(new Runnable() {
 			@Override
@@ -1469,13 +1479,18 @@ public class XmppConnection extends ImConnection {
 				// XMPP errors are swallowed during authentication, so kill the connection here if
 				// we are not authenticated.
 				if (!mConnection.isAuthenticated()) {
-					Log.e(TAG, "authentication failed in connect() - shutdown and retry later");
-					
+					Log.e(TAG, "authentication failed in connect() - shutdown and retry later");					
 					setState(DISCONNECTED, null);
 				}
+				
 			} catch (XMPPException e) {
+			
 				Log.e(TAG, "reconnection attempt failed", e);
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+			
+				
+			}
+		}
 /*
 		clearHeartbeat();
 		
@@ -1525,5 +1540,6 @@ public class XmppConnection extends ImConnection {
 	{
 		Log.d(tag, msg);
 	}
+
 }
 

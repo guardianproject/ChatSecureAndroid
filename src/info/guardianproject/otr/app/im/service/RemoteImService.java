@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.service;
 
-import info.guardianproject.database.sqlcipher.SQLiteDatabase;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrKeyManagerAdapter;

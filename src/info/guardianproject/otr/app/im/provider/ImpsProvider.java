@@ -16,23 +16,7 @@
 
 package info.guardianproject.otr.app.im.provider;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.UriMatcher;
-import android.content.ContentResolver;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import info.guardianproject.database.DatabaseUtils;
-import info.guardianproject.database.sqlcipher.SQLiteConstraintException;
-import info.guardianproject.database.sqlcipher.SQLiteDatabase;
-import info.guardianproject.database.sqlcipher.SQLiteOpenHelper;
-import info.guardianproject.database.sqlcipher.SQLiteQueryBuilder;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.text.TextUtils;
-import android.util.Log;
-
+import info.guardianproject.otr.app.im.app.ImApp;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -43,6 +27,23 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.UriMatcher;
+import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * A content provider for IM
@@ -245,15 +246,15 @@ public class ImpsProvider extends ContentProvider {
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
-    	private SQLiteDatabase dbRead;
+		private SQLiteDatabase dbRead;
     	private SQLiteDatabase dbWrite;
     	
-        private DatabaseHelper(Context context, String password) throws Exception
+        private DatabaseHelper(Context context) throws Exception
         {
             super(context, mDatabaseName, null, mDatabaseVersion);
             
-    		dbRead = getReadableDatabase(password);
-    		dbWrite = getWritableDatabase(password);
+            dbRead = getReadableDatabase();
+            dbWrite = getWritableDatabase();
 
         }
                 
@@ -1045,10 +1046,8 @@ public class ImpsProvider extends ContentProvider {
     	  return true;
     }
     
-    private synchronized DatabaseHelper initDBHelper (String dbKey) throws Exception
+    private synchronized DatabaseHelper initDBHelper () throws Exception
     {
-    	SQLiteDatabase.loadLibs(getContext());
-    	
     	
         if (mDbHelper != null)
         {
@@ -1056,7 +1055,7 @@ public class ImpsProvider extends ContentProvider {
         }
         
                
-        return (mDbHelper = new DatabaseHelper(getContext(),dbKey));
+        return (mDbHelper = new DatabaseHelper(getContext()));
         
         
     }
@@ -1146,7 +1145,17 @@ public class ImpsProvider extends ContentProvider {
         String groupBy = null;
         String limit = null;
         
-        String dbKey = null;
+        try
+        {
+        	initDBHelper();
+        }
+        catch (Exception e)
+        {
+        	Log.e(ImApp.LOG_TAG,e.getMessage(),e);
+        }
+        
+        /*
+         * String dbKey = null;
         if (sort != null && sort.startsWith("key="))
         {
         	if (sort.length() > 4)
@@ -1154,7 +1163,6 @@ public class ImpsProvider extends ContentProvider {
         		dbKey = sort.substring(4);
         		sort = Imps.Provider.DEFAULT_SORT_ORDER;
         	
-
         		try
         		{
         			initDBHelper(dbKey);
@@ -1168,16 +1176,15 @@ public class ImpsProvider extends ContentProvider {
         	}
         	else
         	{
-        		if (mDbHelper != null)
-        		{
-        			mDbHelper.close();
-        			
-        		}
-        		
         		return null;
         	}
         }
-
+        else
+    	{
+    		return null;
+    	}
+	*/
+        
         // Generate the body of the query
         int match = mUrlMatcher.match(url);
 

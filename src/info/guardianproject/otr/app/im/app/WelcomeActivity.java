@@ -16,7 +16,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.database.sqlcipher.SQLiteDatabase;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -86,8 +85,6 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        
-        SQLiteDatabase.loadLibs(this);
 
         setContentView(R.layout.welcome_activity);
         
@@ -161,12 +158,15 @@ public class WelcomeActivity extends Activity {
                 PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                "key=" + dbKey);
+                null);
+              //  "key=" + dbKey);
         
         if (mProviderCursor == null)
         {
-        	Toast.makeText(this, "passphrase error", Toast.LENGTH_SHORT).show();
-        	this.showPasscodeEntry();
+        	Toast.makeText(this, "database error", Toast.LENGTH_SHORT).show();
+        	showPasscodeEntry();
+        	
+        	
         }
         else
         {
@@ -198,7 +198,7 @@ public class WelcomeActivity extends Activity {
         }
         else
         {
-        	showPasscodeEntry ();
+        	showPasscodeEntry ();        	
         }
     }
     
