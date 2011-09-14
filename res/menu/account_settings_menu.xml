@@ -19,7 +19,15 @@
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_account_settings" 
+   
+   <!--  <item android:id="@+id/menu_account_settings" 
     android:title="@string/account_settings_title" />
+     -->
+    
+         <item android:id="@+id/menu_gen_key"
+        android:title="@string/menu_gen_key"
+         android:icon="@drawable/ic_menu_key"
+         />
+ 
 
 </menu>

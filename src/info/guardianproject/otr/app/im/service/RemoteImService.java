@@ -18,7 +18,9 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.database.sqlcipher.SQLiteDatabase;
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
@@ -123,7 +125,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        	if (otrModeSelect.equals("auto"))
 	        	{
 	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
-	        		//autoStartOtr = true;
 	        	}
 	        	else if (otrModeSelect.equals("disabled"))
 	        	{
@@ -173,7 +174,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         setBackgroundData(manager.getBackgroundDataSetting());
 
-        mPluginHelper = ImPluginHelper.getInstance(this, null);
+        mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
         AndroidSystemService.getInstance().initialize(this);
         AndroidSystemService.getInstance().getHeartbeatService().startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
@@ -409,7 +410,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 conn.networkTypeChanged();
             }
         }
-
+        
         switch (state) {
             case CONNECTED:
                 if (mNeedCheckAutoLogin) {
@@ -494,6 +495,12 @@ public class RemoteImService extends Service implements OtrEngineListener {
         public void dismissChatNotification(long providerId, String username) {
             mStatusBarNotifier.dismissChatNotification(providerId, username);
         }
+
+		@Override
+		public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
+			
+			return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
+		}
     };
 
     private final class SettingsMonitor extends BroadcastReceiver {

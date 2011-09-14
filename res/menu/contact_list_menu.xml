@@ -42,6 +42,12 @@
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
          />
+         
+         
+ <item android:id="@+id/menu_view_groups"
+        android:title="@string/menu_view_groups"
+        android:icon="@drawable/ic_menu_switch"
+         />
  
     <item android:id="@+id/menu_quit"
         android:title="@string/bg_data_prompt_cancel" 

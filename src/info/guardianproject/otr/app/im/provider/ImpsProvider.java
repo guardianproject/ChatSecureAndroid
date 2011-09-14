@@ -245,36 +245,25 @@ public class ImpsProvider extends ContentProvider {
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
-    	private String password;
     	private SQLiteDatabase dbRead;
     	private SQLiteDatabase dbWrite;
     	
-        private DatabaseHelper(Context context, String password) {
+        private DatabaseHelper(Context context, String password) throws Exception
+        {
             super(context, mDatabaseName, null, mDatabaseVersion);
             
-            this.password = password;
+    		dbRead = getReadableDatabase(password);
+    		dbWrite = getWritableDatabase(password);
+
         }
                 
-        public synchronized SQLiteDatabase getReadableDatabase ()
+        public SQLiteDatabase getReadableDatabase ()
         {
-        	
-        	if (dbRead == null)
-        	{
-        		if (DBG) log("DatabaseHelper.getReadableDatabase with password");
-        		dbRead = getReadableDatabase(password);
-        	}
-        	
         	return dbRead;
         }
         
-        public synchronized SQLiteDatabase getWritableDatabase ()
+        public SQLiteDatabase getWritableDatabase ()
         {
-        	if (dbWrite == null)
-        	{
-            	if (DBG) log("DatabaseHelper.getWritableDatabase  with password");
-
-        		dbWrite = getWritableDatabase(password);
-        	}
         	
         	return dbWrite;
         }
@@ -789,6 +778,18 @@ public class ImpsProvider extends ContentProvider {
                     ");");
 
         }
+
+		@Override
+		public synchronized void close() {
+
+			if (dbRead != null && dbRead.isOpen())
+				dbRead.close();
+			
+			if (dbWrite != null && dbWrite.isOpen())
+				dbWrite.close();
+			
+			super.close();
+		}
     }
 
     static {
@@ -1044,15 +1045,25 @@ public class ImpsProvider extends ContentProvider {
     	  return true;
     }
     
-    private synchronized DatabaseHelper getDBHelper (String dbKey)
+    private synchronized DatabaseHelper initDBHelper (String dbKey) throws Exception
     {
-        if (mDbHelper == null)
+    	SQLiteDatabase.loadLibs(getContext());
+    	
+    	
+        if (mDbHelper != null)
         {
-        	SQLiteDatabase.loadLibs(getContext());       
-        	mDbHelper = new DatabaseHelper(getContext(),dbKey);
+        	mDbHelper.close();
         }
         
-        return mDbHelper;
+               
+        return (mDbHelper = new DatabaseHelper(getContext(),dbKey));
+        
+        
+    }
+    
+    private DatabaseHelper getDBHelper ()
+    {
+    	  return mDbHelper;
     }
     
 
@@ -1066,7 +1077,7 @@ public class ImpsProvider extends ContentProvider {
             final String selection, final String[] selectionArgs) {
 
         int result = 0;
-        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        SQLiteDatabase db = getDBHelper().getWritableDatabase();
         db.beginTransaction();
         try {
             result = updateInternal(url, values, selection, selectionArgs);
@@ -1085,7 +1096,7 @@ public class ImpsProvider extends ContentProvider {
     public final int delete(final Uri url, final String selection,
             final String[] selectionArgs) {
         int result;
-        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        SQLiteDatabase db = getDBHelper().getWritableDatabase();
         db.beginTransaction();
         try {
             result = deleteInternal(url, selection, selectionArgs);
@@ -1103,7 +1114,7 @@ public class ImpsProvider extends ContentProvider {
     @Override
     public final Uri insert(final Uri url, final ContentValues values) {
         Uri result;
-        SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        SQLiteDatabase db = getDBHelper().getWritableDatabase();
         db.beginTransaction();
         try {
             result = insertInternal(url, values);
@@ -1138,8 +1149,33 @@ public class ImpsProvider extends ContentProvider {
         String dbKey = null;
         if (sort != null && sort.startsWith("key="))
         {
-        	dbKey = sort.substring(4);
-        	sort = null;
+        	if (sort.length() > 4)
+        	{
+        		dbKey = sort.substring(4);
+        		sort = Imps.Provider.DEFAULT_SORT_ORDER;
+        	
+
+        		try
+        		{
+        			initDBHelper(dbKey);
+        		
+        		}
+        		catch (Exception se)
+        		{
+        			//passcode must be incorrect or other db issue
+        			return null;
+        		}
+        	}
+        	else
+        	{
+        		if (mDbHelper != null)
+        		{
+        			mDbHelper.close();
+        			
+        		}
+        		
+        		return null;
+        	}
         }
 
         // Generate the body of the query
@@ -1302,7 +1338,7 @@ public class ImpsProvider extends ContentProvider {
 
                 // Put them together
                 final String query = qb.buildUnionQuery(new String[] {query1, query2}, sort, null);
-                final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+                final SQLiteDatabase db = getDBHelper().getWritableDatabase();
                 Cursor c = db.rawQueryWithFactory(null, query, null, TABLE_MESSAGES);
                 if ((c != null) && !isTemporary()) {
                     c.setNotificationUri(getContext().getContentResolver(), url);
@@ -1333,7 +1369,7 @@ public class ImpsProvider extends ContentProvider {
 
                 // Put them together
                 final String q3 = qb.buildUnionQuery(new String[] {q1, q2}, sort, null);
-                final SQLiteDatabase db2 = getDBHelper(null).getWritableDatabase();
+                final SQLiteDatabase db2 = getDBHelper().getWritableDatabase();
                 Cursor c2 = db2.rawQueryWithFactory(null, q3, null, MESSAGE_JOIN_CONTACT_TABLE);
                 if ((c2 != null) && !isTemporary()) {
                     c2.setNotificationUri(getContext().getContentResolver(), url);
@@ -1449,8 +1485,11 @@ public class ImpsProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URL " + url);
         }
 
+        if (getDBHelper()==null)
+        	return null;
+        
         // run the query
-        final SQLiteDatabase db = getDBHelper(dbKey).getReadableDatabase();
+        final SQLiteDatabase db = getDBHelper().getReadableDatabase();
         Cursor c = null;
 
         try {
@@ -1614,7 +1653,7 @@ public class ImpsProvider extends ContentProvider {
         ArrayList<String> rejectedArray = getStringArrayList(values, Imps.Contacts.REJECTED);
         int sum = 0;
 
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         db.beginTransaction();
         try {
@@ -1774,7 +1813,7 @@ public class ImpsProvider extends ContentProvider {
                 getStringArrayList(values, Imps.Contacts.SUBSCRIPTION_TYPE);
         ArrayList<String> quickContactArray = getStringArrayList(values, Imps.Contacts.QUICK_CONTACT);
         ArrayList<String> rejectedArray = getStringArrayList(values, Imps.Contacts.REJECTED);
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -1881,7 +1920,7 @@ public class ImpsProvider extends ContentProvider {
 
         mQueryContactIdSelectionArgs1[0] = String.valueOf(account);
 
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
         db.beginTransaction();
 
         Cursor c = null;
@@ -2009,7 +2048,7 @@ public class ImpsProvider extends ContentProvider {
             }
         }
 
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -2104,7 +2143,7 @@ public class ImpsProvider extends ContentProvider {
         boolean notifyMessagesByThreadIdContentUri = false;
         boolean notifyProviderAccountContentUri = false;
 
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
         int match = mUrlMatcher.match(url);
 
         if (DBG) log("insert to " + url + ", match " + match);
@@ -2587,7 +2626,7 @@ public class ImpsProvider extends ContentProvider {
                     GROUP_MESSAGES_ID + '=' + CONTACT_ID + " where " + CONTACT_ID + " IS NULL)";
 
     private void performContactRemovalCleanup(long contactId) {
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         if (contactId > 0) {
             StringBuilder buf = new StringBuilder();
@@ -2663,7 +2702,7 @@ public class ImpsProvider extends ContentProvider {
 
         boolean backfillQuickSwitchSlots = false;
 
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         switch (match) {
             case MATCH_PROVIDERS:
@@ -3082,7 +3121,7 @@ public class ImpsProvider extends ContentProvider {
         boolean notifyProviderAccountContentUri = false;
 
         int match = mUrlMatcher.match(url);
-        final SQLiteDatabase db = getDBHelper(null).getWritableDatabase();
+        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         switch (match) {
             case MATCH_PROVIDERS_BY_ID:

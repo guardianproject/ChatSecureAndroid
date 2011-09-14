@@ -18,7 +18,9 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 
 	private SessionID _sessionId;
 	
-	public OtrKeyManagerAdapter (OtrAndroidKeyManagerImpl keyManager, SessionID sessionId)
+	private String _accountId;
+	
+	public OtrKeyManagerAdapter (OtrAndroidKeyManagerImpl keyManager, SessionID sessionId, String accountId)
 	{
 		
 		
@@ -27,10 +29,29 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 		
 		_sessionId = sessionId;
 		
+		_accountId = accountId;
+	}	
+	
+	public OtrKeyManagerAdapter (OtrAndroidKeyManagerImpl keyManager)
+	{
+		
+		
+		_keyManager = keyManager;
+		
+		
 	}	
 	
 
 
+
+
+	public void setSessionId(SessionID _sessionId) {
+		this._sessionId = _sessionId;
+	}
+
+	public void setAccountId(String _accountId) {
+		this._accountId = _accountId;
+	}
 
 	/* (non-Javadoc)
 	 * @see info.guardianproject.otr.IOtrKeyManager#verifyKey(java.lang.String)
@@ -67,8 +88,12 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 	@Override
 	public String getLocalFingerprint() throws RemoteException {
 		
-		return _keyManager.getLocalFingerprint(_sessionId);
-		
+		if (_sessionId != null)
+			return _keyManager.getLocalFingerprint(_sessionId);
+		else if (_accountId != null)
+			return _keyManager.getLocalFingerprint(_accountId);
+		else
+			return null;
 	}
 
 	/* (non-Javadoc)
@@ -86,8 +111,10 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 	@Override
 	public void generateLocalKeyPair() throws RemoteException {
 		
-		_keyManager.generateLocalKeyPair(_sessionId);
-
+		if (_sessionId != null)
+			_keyManager.generateLocalKeyPair(_sessionId);
+		else if (_accountId != null)
+			_keyManager.generateLocalKeyPair(_accountId);
 	}
 
 }

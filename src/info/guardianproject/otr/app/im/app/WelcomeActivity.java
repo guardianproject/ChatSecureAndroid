@@ -28,11 +28,16 @@ import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +45,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class WelcomeActivity extends Activity {
@@ -116,28 +122,68 @@ public class WelcomeActivity extends Activity {
 			}
         });*/
 
-        initCursor ("foo");
+      
+    }
+    
+    private boolean cursorUnlocked ()
+    {
+    	try
+    	{
+	    	 mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+	                 PROVIDER_PROJECTION,
+	                 Imps.Provider.CATEGORY + "=?" /* selection */,
+	                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+	                 Imps.Provider.DEFAULT_SORT_ORDER);
+	    	 
+	    	 mProviderCursor.moveToFirst();
+	    	 
+	    	 mApp = ImApp.getApplication(this);
+             mHandler = new MyHandler(this);
+        	ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        	
+	    	 
+	    	 return true;
+         
+    	}
+    	catch (Exception e)
+    	{
+    		//must need to be unlocked
+    		return false;
+    	}
     }
     
     private void initCursor (String dbKey)
     {
+        
+       
+        
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
                 PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
+                "key=" + dbKey);
         
-        mApp = ImApp.getApplication(this);
-        mHandler = new MyHandler(this);
-
-        ImPluginHelper.getInstance(this, dbKey).loadAvailablePlugins();
-        
+        if (mProviderCursor == null)
+        {
+        	Toast.makeText(this, "passphrase error", Toast.LENGTH_SHORT).show();
+        	this.showPasscodeEntry();
+        }
+        else
+        {
+        	 mApp = ImApp.getApplication(this);
+             mHandler = new MyHandler(this);
+        	ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        	
+        	doOnResume();
+        }
 
     }
 
     @Override
     protected void onPause() {
-        mHandler.unregisterForBroadcastEvents();
+    	
+    	if (mHandler != null)
+    		mHandler.unregisterForBroadcastEvents();
         
         super.onPause();
     }
@@ -145,7 +191,69 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-       
+     
+        if (cursorUnlocked())
+        {
+        	doOnResume();
+        }
+        else
+        {
+        	showPasscodeEntry ();
+        }
+    }
+    
+    private void showPasscodeEntry ()
+    {
+		String dialogMessage;
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		boolean firstTime = prefs.getBoolean("first_time",true);
+		
+		if (firstTime)
+		{
+			dialogMessage = "Please choose a passphrase to protect your local application data.";
+			Editor pEdit = prefs.edit();
+			pEdit.putBoolean("first_time",false);
+			pEdit.commit();
+		}
+		else
+			dialogMessage = "Enter passphrase";
+
+		
+    	 // This example shows how to add a custom layout to an AlertDialog
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.app_name))
+            .setView(textEntryView)
+            .setMessage(dialogMessage)
+            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                	EditText eText = ((android.widget.EditText)textEntryView.findViewById(R.id.password_edit));
+                	String password = eText.getText().toString();
+                	
+                	initCursor(password);
+                	
+                	
+                	eText.setText("");
+                	System.gc();
+                	
+                }
+            })
+            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    /* User clicked cancel so do some stuff */
+                	finish();
+                }
+            })
+            .create().show();
+    }
+    
+    private void doOnResume ()
+    {
 
         mHandler.registerForBroadcastEvents();
         
@@ -283,7 +391,10 @@ public class WelcomeActivity extends Activity {
 
     private boolean isSignedIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        return connectionStatus == Imps.ConnectionStatus.ONLINE;
+        
+        return connectionStatus == Imps.ConnectionStatus.ONLINE || 
+        		 connectionStatus == Imps.ConnectionStatus.CONNECTING || 
+        				 connectionStatus == Imps.ConnectionStatus.SUSPENDED;
     }
 
     private boolean allAccountsSignedOut() {
@@ -397,4 +508,19 @@ public class WelcomeActivity extends Activity {
             super.handleMessage(msg);
         }
     }
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
 }

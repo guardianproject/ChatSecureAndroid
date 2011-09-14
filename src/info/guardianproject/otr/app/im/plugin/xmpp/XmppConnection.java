@@ -34,6 +34,7 @@ import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -81,14 +82,18 @@ public class XmppConnection extends ImConnection {
 	
 	private boolean mRetryLogin;
 	private Executor mExecutor;
-	
+
+	private PacketCollector mPingCollector;
+
 	private ProxyInfo mProxyInfo = null;
 	
 	private long mAccountId = -1;
 	private long mProviderId = -1;
 	private String mPasswordTemp;
 	
-	private int PING_TIMEOUT = 30000;
+	private final static int SOTIMEOUT = 15000;
+	private final static String TRUSTSTORE_TYPE = "BKS";
+	private final static String TRUSTSTORE_PATH = "/system/etc/security/cacerts.bks";
 	
 	private final static int SOTIMEOUT = 15000;
 	
@@ -107,7 +112,9 @@ public class XmppConnection extends ImConnection {
 		
 		// Create a single threaded executor.  This will serialize actions on the underlying connection.
 		
-		mExecutor = Executors.newSingleThreadExecutor();
+		//mExecutor = Executors.newSingleThreadExecutor();
+		
+		mExecutor = Executors.newCachedThreadPool();
 	}
 	
 	private boolean execute(Runnable runnable) {
@@ -133,6 +140,8 @@ public class XmppConnection extends ImConnection {
 				mConnection.sendPacket(packet);		
 			}
 		});
+		//if (mConnection != null)
+		//	mConnection.sendPacket(msg);		
 	}
 	
 	 public VCard getVCard(String myJID) {
@@ -435,11 +444,9 @@ public class XmppConnection extends ImConnection {
     	mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
     	
     	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
-		mConfig.setTruststoreType("BKS");
-		mConfig.setTruststorePath("/system/etc/security/cacerts.bks");
 	     // this should probably be set to our own, if we are going to save self-signed certs
-	     //mConfig.setKeystoreType("bks");
-	     //mConfig.setKeystorePath("/system/etc/security/cacerts.bks");
+		mConfig.setTruststoreType(TRUSTSTORE_TYPE);
+		mConfig.setTruststorePath(TRUSTSTORE_PATH);
 
 		
 		if (allowSelfSignedCerts) {
@@ -523,6 +530,17 @@ public class XmppConnection extends ImConnection {
 			public void reconnectionFailed(Exception e) {
 				// We are not using the reconnection manager
 				throw new UnsupportedOperationException();
+				//Log.i(TAG, "reconnection failed", e);
+				//forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+			/*	
+				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+				mExecutor.execute(new Runnable() {
+					@Override
+					public void run() {
+						reconnect();
+					}
+				});
+*/
 			}
 			
 			@Override
@@ -559,6 +577,7 @@ public class XmppConnection extends ImConnection {
 							if (getState() == LOGGED_IN)
 								setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 							maybe_reconnect();
+						//	reconnect();
 						}
 					});
 				}
@@ -658,7 +677,9 @@ public class XmppConnection extends ImConnection {
 		mRetryLogin = false;
 	}
 
+	
 	@Override
+/*
 	public void reestablishSessionAsync(Map<String, String> sessionContext) {
 		execute(new Runnable() {
 			@Override
@@ -668,10 +689,17 @@ public class XmppConnection extends ImConnection {
 					setState(LOGGING_IN, null);
 					maybe_reconnect();
 				}
+*/
+	public void reestablishSessionAsync(HashMap<String, String> sessionContext) {
+		mExecutor.execute(new Runnable() {
+			@Override
+			public void run() {
+				reconnect();
 			}
 		});
 	}
-
+	
+	
 	@Override
 	public void suspend() {
 		execute(new Runnable() {
@@ -685,6 +713,7 @@ public class XmppConnection extends ImConnection {
 				//mConnection.shutdown();
 			}
 		});
+
 	}
 
 	private ChatSession findOrCreateSession(String address) {
@@ -1265,6 +1294,8 @@ public class XmppConnection extends ImConnection {
 		// Check ping result from previous send
 		if (mPingCollector != null) {
 			IQ result = (IQ)mPingCollector.pollResult();
+			
+		//	IQ result = (IQ)mPingCollector.nextResult(SOTIMEOUT);
 			mPingCollector.cancel();
 			if (result == null || result.getError() != null)
 			{
@@ -1324,7 +1355,24 @@ public class XmppConnection extends ImConnection {
 
 	@Override
 	public void networkTypeChanged() {
+		
 		super.networkTypeChanged();
+		//android.os.Debug.waitForDebugger();
+		Log.w(TAG, "reconnect on network change");
+
+		/*
+		if (getState() == LOGGED_IN)
+			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network changed"));
+		
+		if (getState() != LOGGED_IN && getState() != LOGGING_IN)
+			return;
+		
+		if (mNeedReconnect)
+			return;
+		Log.w(TAG, "reconnect on network change");
+		force_reconnect();
+		*/
+		
 	}
 
 	/*
@@ -1342,12 +1390,21 @@ public class XmppConnection extends ImConnection {
 		mNeedReconnect = true;
 
 		if (mConnection != null)
+		try
 		{
-			mConnection.disconnect();
-//			mConnection.shutdown();
+			if (mConnection != null && mConnection.isConnected())
+			{
+				mConnection.disconnect();
+	//			mConnection.shutdown();
+			}
+		}
+		catch (Exception e) {
+			Log.w(TAG, "problem disconnecting on force_reconnect: " + e.getMessage());
 		}
 		
 		reconnect();
+		mNeedReconnect = true;
+		do_login();
 	}
 
 	/*
@@ -1355,6 +1412,7 @@ public class XmppConnection extends ImConnection {
 	 * 
 	 * Runs in executor thread.
 	 */
+	/*
 	private void maybe_reconnect() {
 		debug(TAG, "maybe_reconnect mNeedReconnect=" + mNeedReconnect + " state=" + getState() +
 				" connection?=" + (mConnection != null));
@@ -1373,7 +1431,8 @@ public class XmppConnection extends ImConnection {
 		mNeedReconnect = true;
 		reconnect();
 	}
-
+*/
+	
 	/*
 	 * Retry connecting
 	 * 
@@ -1417,7 +1476,33 @@ public class XmppConnection extends ImConnection {
 			} catch (XMPPException e) {
 				Log.e(TAG, "reconnection attempt failed", e);
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+/*
+		clearHeartbeat();
+		
+		if (mConnection != null)
+		{
+			
+			if (!mConnection.isConnected())
+			{
+				try {				
+					mConnection.connect();
+					
+				} catch (Exception e) {
+					mNeedReconnect = true;
+	
+					Log.w(TAG, "reconnection on network change failed: " + e.getMessage());
+					setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+					return;
+				}
 			}
+			
+			mNeedReconnect = false;
+			Log.i(TAG, "reconnect");
+		
+			
+			Log.i(TAG, "reconnected");
+			setState(LOGGED_IN, null);
+			
 		}
 		else
 		{
@@ -1427,6 +1512,7 @@ public class XmppConnection extends ImConnection {
 			
 			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "reconnection on network change failed"));
 		}
+*/
 	}
 	
 	@Override

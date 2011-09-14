@@ -817,7 +817,7 @@ public class ChatListAdapter implements ListAdapter,
              
             String[] myColumnString = cursor.getColumnNames(); 
             for(int i=0;i<myColumnString.length; i++){
-         	   Log.v("Column:"+ i +"=", myColumnString[i]);   
+         	  // Log.v("Column:"+ i +"=", myColumnString[i]);   
          	   /*04-11 12:29:01.226: VERBOSE/Column:0=(2352): _id
 					04-11 12:29:01.226: VERBOSE/Column:1=(2352): provider
 					04-11 12:29:01.236: VERBOSE/Column:2=(2352): account

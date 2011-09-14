@@ -58,7 +58,7 @@ public class ContactListView extends LinearLayout {
     Context mContext;
     private final IContactListListener mContactListListener;
 
-    UserPresenceView mPresenceView;
+    //UserPresenceView mPresenceView;
     ExpandableListView mContactsList;
     private ContactListTreeAdapter mAdapter;
     private boolean mHideOfflineContacts;
@@ -110,7 +110,7 @@ public class ContactListView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
+       // mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
         mContactsList = (ExpandableListView) findViewById(R.id.contactsList);
         mContactsList.setOnChildClickListener(mOnChildClickListener);
     }
@@ -128,7 +128,7 @@ public class ContactListView extends LinearLayout {
 
             if (conn != null) {
                 registerListeners();
-                mPresenceView.setConnection(conn);
+                
 
                 if (mAdapter == null) {
                     mAdapter = new ContactListTreeAdapter(conn, mScreen);

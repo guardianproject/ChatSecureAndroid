@@ -75,7 +75,7 @@ public class ImApp extends Application {
 
     IRemoteImService mImService;
 
-    HashMap<Long, IImConnection> mConnections;
+	HashMap<Long, IImConnection> mConnections;
     MyConnListener mConnectionListener;
     HashMap<Long, ProviderDef> mProviders;
 
@@ -413,7 +413,7 @@ public class ImApp extends Application {
     }
 
     private void loadThirdPartyResources() {
-        ImPluginHelper helper = ImPluginHelper.getInstance(this, null);
+        ImPluginHelper helper = ImPluginHelper.getInstance(this);
         helper.loadAvailablePlugins();
         ArrayList<ImPlugin> pluginList = helper.getPluginObjects();
         ArrayList<ImPluginInfo> infoList = helper.getPluginsInfo();
@@ -729,4 +729,11 @@ public class ImApp extends Application {
             }
         }
     }
+    
+
+    public IRemoteImService getRemoteImService() {
+		return mImService;
+	}
+
+
 }
