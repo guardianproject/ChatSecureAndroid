@@ -278,7 +278,6 @@ public class ImpsProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-//        	android.os.Debug.waitForDebugger();
         	
             if (DBG) log("DatabaseHelper.onCreate");
 
@@ -1150,7 +1149,6 @@ public class ImpsProvider extends ContentProvider {
         String groupBy = null;
         String limit = null;
         
-      //  android.os.Debug.waitForDebugger();
         
         try
         {
