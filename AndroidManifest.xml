@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.5" android:versionCode="15">
+     android:versionName="0.0.5-20110915" android:versionCode="16">
 
 <uses-sdk android:minSdkVersion="4"></uses-sdk>
 
@@ -190,6 +190,8 @@
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.dir/imps-contacts"/>
             </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                   android:resource="@xml/searchable"/>
         </activity>
 
         <activity android:name=".app.AddContactActivity"
