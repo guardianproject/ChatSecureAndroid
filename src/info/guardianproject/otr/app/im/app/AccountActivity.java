@@ -105,6 +105,7 @@ public class AccountActivity extends Activity {
     private boolean mHaveSetUseTor = false;
     private String mOriginalUserAccount;
     
+    private final static int DEFAULT_PORT = 5222;
 
 	IOtrKeyManager otrKeyManager;
 	
@@ -201,26 +202,8 @@ public class AccountActivity extends Activity {
 
             mUseTor.setChecked(settings.getUseTor());
             
-            try
-            {
-            	otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
-            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
-            	String localFingerprint = otrKeyManager.getLocalFingerprint();
-            	if (localFingerprint != null)
-            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
-            	else
-            	{
-            		mTxtFingerprint.setText("");
-            		otrGenKey();
-            	}
-            	
-            	
-            	
-            }
-            catch (Exception e){
-            	e.printStackTrace();
-            	
-            }
+            getOTRKeyInfo();
+            
             
             settings.close();
             cursor.close();
@@ -262,6 +245,7 @@ public class AccountActivity extends Activity {
             }
         });
 
+        /*
         mEditUserAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
 
         	@Override
@@ -269,19 +253,24 @@ public class AccountActivity extends Activity {
         		if (! hasFocus) {
         			String username = mEditUserAccount.getText().toString();
 
-        			//Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-        			if (parseAccount(username)) {
-        				if (username != mOriginalUserAccount) {
-        					settingsForDomain(mDomain, mPort);
-        					mHaveSetUseTor = false;
-        				}
-        			} else {
-        				// TODO if bad account name, bump back to the account EditText
-        				//mEditUserAccount.requestFocus();
+        			if (mOriginalUserAccount != username)
+        			{
+	        			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+	        			if (parseAccount(username)) {
+	        				if (username != mOriginalUserAccount) {
+	        					settingsForDomain(mDomain, mPort);
+	        					mHaveSetUseTor = false;
+	        				}
+	        			} else {
+	        				// TODO if bad account name, bump back to the account EditText
+	        				//mEditUserAccount.requestFocus();
+	        			}
         			}
         		}
         	}
         });
+        */
+        
         mEditUserAccount.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 
@@ -296,7 +285,8 @@ public class AccountActivity extends Activity {
             public void onClick(View v) {
             	
             	String username = mEditUserAccount.getText().toString();
-            	if (username != mOriginalUserAccount) {
+            	
+            	if (!username.equals(mOriginalUserAccount)) {
             		if (parseAccount(username)) {
             			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
             			settingsForDomain(mDomain, mPort);
@@ -340,7 +330,7 @@ public class AccountActivity extends Activity {
                     values.put(Imps.Account.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
                     getContentResolver().update(mAccountUri, values, null, null);
                     
-	                if (!mOriginalUserAccount.equals(mUserName + mDomain) && shouldShowTermOfUse(brandingRes)) {
+	                if (!mOriginalUserAccount.equals(mUserName + '@' + mDomain) && shouldShowTermOfUse(brandingRes)) {
 	                    confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
 	                        public void onClick(DialogInterface dialog, int which) {
 	                            signIn(rememberPass, pass);
@@ -400,6 +390,38 @@ public class AccountActivity extends Activity {
         updateWidgetState();
                 
     }
+    
+    private void getOTRKeyInfo ()
+    {
+
+        if (mApp != null && mApp.getRemoteImService() != null)
+        {
+            try
+            {
+            	otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
+            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
+            	
+            	String localFingerprint = otrKeyManager.getLocalFingerprint();
+            	if (localFingerprint != null)
+            	{
+            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);            	
+            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
+            	}
+            	else
+            	{
+            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
+            		mTxtFingerprint.setText("");            		
+            	}
+            	            	
+            	
+            }
+            catch (Exception e){
+            	Log.e(ImApp.LOG_TAG, "error on create", e);
+            	
+            }
+        }
+        
+    }
 
     boolean parseAccount(String userField) {
     	boolean isGood = true;
@@ -450,47 +472,45 @@ public class AccountActivity extends Activity {
     			null /* no handler */);
     	
 
-		if (settings.getDomain() == null)
-		{
-	    	if (domain.equals("gmail.com")) {
-				// Google only supports a certain configuration for XMPP:
-				// http://code.google.com/apis/talk/open_communications.html
-	    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
-	    		// then perhaps we could enable RequireTls
-	    		settings.setDoDnsSrv(true);
-	    		settings.setDomain(domain);
-	    		settings.setPort(5222);
-	    		settings.setServer("gmail.com");
-	    		settings.setRequireTls(true);
-	    		settings.setTlsCertVerify(true);
-	    		settings.setAllowPlainAuth(false);
-	    		
-	    	} else if (domain.equals("jabber.org")) {
-	    		settings.setDoDnsSrv(false);
-	    		settings.setDomain(domain);
-	    		settings.setPort(5222);
-	    		settings.setServer(domain);
-	    		settings.setRequireTls(true);
-	    		settings.setTlsCertVerify(true);
-	    	} else if (domain.equals("chat.facebook.com")) {
-	    		settings.setDoDnsSrv(false);
-	    		settings.setDomain(domain);
-	    		settings.setPort(5222);
-	    		settings.setServer(domain);
-	    		settings.setRequireTls(false);
-	    		settings.setTlsCertVerify(false);
-	    	}    	
-	    	else {
-	    		
-    			settings.setDoDnsSrv(true);
-    			settings.setDomain(domain);
-    			settings.setPort(port);
-    			settings.setServer(domain);
-    			settings.setRequireTls(true);
-    			settings.setTlsCertVerify(true);
-    			
-	    	}
-		}
+    	if (domain.equals("gmail.com")) {
+			// Google only supports a certain configuration for XMPP:
+			// http://code.google.com/apis/talk/open_communications.html
+    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
+    		// then perhaps we could enable RequireTls
+    		settings.setDoDnsSrv(true);
+    		settings.setDomain(domain);
+    		settings.setPort(DEFAULT_PORT);
+    		//settings.setServer("gmail.com"); //SRV lookup will find this
+    		settings.setRequireTls(true);
+    		settings.setTlsCertVerify(true);
+    		settings.setAllowPlainAuth(true);
+    		
+    	} else if (domain.equals("jabber.org")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain(domain);
+    		settings.setPort(DEFAULT_PORT);
+    		settings.setServer(domain);
+    		settings.setRequireTls(true);
+    		settings.setTlsCertVerify(true);
+    	} else if (domain.equals("chat.facebook.com")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain(domain);
+    		settings.setPort(DEFAULT_PORT);
+    		settings.setServer(domain);
+    		settings.setRequireTls(false);
+    		settings.setTlsCertVerify(false);
+    		settings.setAllowPlainAuth(false);
+    	}    	
+    	else {
+    		
+			settings.setDoDnsSrv(true);
+			settings.setDomain(domain);
+			settings.setPort(port);
+			settings.setServer(domain);
+			settings.setRequireTls(true);
+			settings.setTlsCertVerify(true);
+			
+    	}	
 		
     	settings.close();
     }
