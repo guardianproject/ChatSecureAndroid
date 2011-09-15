@@ -144,6 +144,7 @@ public class WelcomeActivity extends Activity {
     	}
     	catch (Exception e)
     	{
+    		Log.e(ImApp.LOG_TAG, e.getMessage(),e);
     		//must need to be unlocked
     		return false;
     	}
@@ -161,6 +162,7 @@ public class WelcomeActivity extends Activity {
                 null);
               //  "key=" + dbKey);
         
+        /*
         if (mProviderCursor == null)
         {
         	Toast.makeText(this, "database error", Toast.LENGTH_SHORT).show();
@@ -169,13 +171,10 @@ public class WelcomeActivity extends Activity {
         	
         }
         else
-        {
-        	 mApp = ImApp.getApplication(this);
-             mHandler = new MyHandler(this);
-        	ImPluginHelper.getInstance(this).loadAvailablePlugins();
-        	
+        {*/
+        
         	doOnResume();
-        }
+        //}
 
     }
 
@@ -191,7 +190,11 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-     
+        
+        cursorUnlocked();
+        doOnResume();
+        
+        /*
         if (cursorUnlocked())
         {
         	doOnResume();
@@ -199,9 +202,10 @@ public class WelcomeActivity extends Activity {
         else
         {
         	showPasscodeEntry ();        	
-        }
+        }*/
     }
     
+    /*
     private void showPasscodeEntry ()
     {
 		String dialogMessage;
@@ -245,16 +249,22 @@ public class WelcomeActivity extends Activity {
             .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    /* User clicked cancel so do some stuff */
                 	finish();
                 }
             })
             .create().show();
-    }
+    }*/
     
     private void doOnResume ()
     {
 
+    	if (mApp == null)
+    	{
+    		mApp = ImApp.getApplication(this);
+    		mHandler = new MyHandler(this);
+    		ImPluginHelper.getInstance(this).loadAvailablePlugins();
+    	}
+	
         mHandler.registerForBroadcastEvents();
         
         if (allAccountsSignedOut()) {
