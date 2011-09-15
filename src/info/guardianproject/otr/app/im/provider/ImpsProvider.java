@@ -249,22 +249,28 @@ public class ImpsProvider extends ContentProvider {
 		private SQLiteDatabase dbRead;
     	private SQLiteDatabase dbWrite;
     	
-        private DatabaseHelper(Context context) throws Exception
+        DatabaseHelper(Context context) throws Exception
         {
             super(context, mDatabaseName, null, mDatabaseVersion);
             
-            dbRead = getReadableDatabase();
-            dbWrite = getWritableDatabase();
+          //  dbRead = super.getReadableDatabase();
+//            dbWrite = super.getWritableDatabase();
 
         }
-                
+
+        
         public SQLiteDatabase getReadableDatabase ()
         {
+        	if (dbRead == null)
+        		 dbRead = super.getReadableDatabase();
+        	
         	return dbRead;
         }
         
         public SQLiteDatabase getWritableDatabase ()
         {
+        	if (dbWrite == null)
+        		dbWrite = super.getWritableDatabase();
         	
         	return dbWrite;
         }
@@ -1049,13 +1055,12 @@ public class ImpsProvider extends ContentProvider {
     private synchronized DatabaseHelper initDBHelper () throws Exception
     {
     	
-        if (mDbHelper != null)
-        {
-        	mDbHelper.close();
+        if (mDbHelper == null)
+        {               
+        	mDbHelper = new DatabaseHelper(getContext());
         }
         
-               
-        return (mDbHelper = new DatabaseHelper(getContext()));
+        return mDbHelper;
         
         
     }
@@ -1144,6 +1149,8 @@ public class ImpsProvider extends ContentProvider {
         }
         String groupBy = null;
         String limit = null;
+        
+      //  android.os.Debug.waitForDebugger();
         
         try
         {
