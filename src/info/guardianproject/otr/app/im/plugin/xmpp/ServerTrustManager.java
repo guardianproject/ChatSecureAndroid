@@ -20,6 +20,8 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
  * limitations under the License.
  */
 
+import info.guardianproject.otr.app.im.R;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -79,7 +81,7 @@ class ServerTrustManager implements X509TrustManager {
             if (new File(configuration.getTruststorePath()).exists())
             	in = new FileInputStream(configuration.getTruststorePath());
             else
-            	in =  context.getAssets().open(configuration.getTruststorePath());
+            	in = context.getResources().openRawResource(R.raw.cacerts);
             	
             trustStore.load(in, configuration.getTruststorePassword().toCharArray());
         }
@@ -150,49 +152,25 @@ class ServerTrustManager implements X509TrustManager {
             // Verify that the the last certificate in the chain was issued
             // by a third-party that the client trusts.
             boolean trusted = false;
-            
-            if (nSize > 1)
-            {
-	            try {
-	            	
-	                boolean foundCARoot = trustStore.getCertificateAlias(x509Certificates[nSize - 1]) != null;
-	                
-	                if (foundCARoot)
-	                {
-	                	try
-	                	{
-	                		x509Certificates[0].verify(x509Certificates[nSize - 1].getPublicKey());
-	                	}
-	                	catch (Exception e)
-	                	{
-	                		trusted = false;
-	                	}
-	                }
-	                else if (configuration.isSelfSignedCertificateEnabled())
-	                {
-	                    System.out.println("Accepting self-signed certificate of remote server: " +
-	                            peerIdentities);
-	                    trusted = true;
-	                }
-	            }
-	            catch (KeyStoreException e) {
-	                e.printStackTrace();
-	            }
-            }
-            else
-            {
+           
+            try {
             	
-            	
-            	try
+            	if (configuration.isSelfSignedCertificateEnabled())
+                {
+                    System.out.println("Accepting self-signed certificate of remote server: " +
+                            peerIdentities);
+                    trusted = true;
+                }
+            	else
             	{
-            		Enumeration<String> enumAliases = trustStore.aliases();
+	            	Enumeration<String> enumAliases = trustStore.aliases();
             		while (enumAliases.hasMoreElements())
             		{
             			X509Certificate cert = (X509Certificate)trustStore.getCertificate(enumAliases.nextElement());
 
             			try
             			{
-            				x509Certificates[0].verify(cert.getPublicKey());            				
+            				x509Certificates[nSize - 1].verify(cert.getPublicKey());            				
             				trusted = true;
             				System.out.println("verified by: " + cert.getSubjectDN().getName());
             			}
@@ -206,12 +184,15 @@ class ServerTrustManager implements X509TrustManager {
             				break;
             			}
             		}
-            		
-            	 }
-	            catch (KeyStoreException e) {
-	                e.printStackTrace();
-	            }
+            	}
+            	
+                
             }
+            catch (KeyStoreException e) {
+                e.printStackTrace();
+            }
+            
+            
             
             if (!trusted) {
                 throw new CertificateException("root certificate not trusted of " + peerIdentities);
