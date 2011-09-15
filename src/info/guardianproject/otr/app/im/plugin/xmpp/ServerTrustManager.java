@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
  * limitations under the License.
  */
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +45,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 
+import android.content.Context;
 import android.util.Log;
 
 /**
@@ -66,14 +68,19 @@ class ServerTrustManager implements X509TrustManager {
     private String server;
     private KeyStore trustStore;
 
-    public ServerTrustManager(String server, ConnectionConfiguration configuration) {
+    public ServerTrustManager(Context context, String server, ConnectionConfiguration configuration) {
         this.configuration = configuration;
         this.server = server;
 
         InputStream in = null;
         try {
             trustStore = KeyStore.getInstance(configuration.getTruststoreType());
-            in = new FileInputStream(configuration.getTruststorePath());
+         
+            if (new File(configuration.getTruststorePath()).exists())
+            	in = new FileInputStream(configuration.getTruststorePath());
+            else
+            	in =  context.getAssets().open(configuration.getTruststorePath());
+            	
             trustStore.load(in, configuration.getTruststorePassword().toCharArray());
         }
         catch (Exception e) {
@@ -104,7 +111,6 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
-    	android.os.Debug.waitForDebugger();
     	
         int nSize = x509Certificates.length;
 

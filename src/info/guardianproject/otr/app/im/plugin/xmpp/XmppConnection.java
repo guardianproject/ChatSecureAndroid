@@ -99,7 +99,8 @@ public class XmppConnection extends ImConnection {
 	
 	private final static int SOTIMEOUT = 15000;
 	private final static String TRUSTSTORE_TYPE = "BKS";
-	private final static String TRUSTSTORE_PATH = "/system/etc/security/cacerts.bks";
+	//private final static String TRUSTSTORE_PATH = "/system/etc/security/cacerts.bks";
+	private final static String TRUSTSTORE_PATH = "cacerts.bks";
 	private final static String TRUSTSTORE_PASS = "changeit";
 	
 	private PacketCollector mPingCollector;
@@ -107,10 +108,14 @@ public class XmppConnection extends ImConnection {
 	private ServerTrustManager sTrustManager;
 	private SSLContext sslContext;
 	
+	private Context aContext; 
+	
 	public XmppConnection(Context context) {
 		super(context);
 		
 		Log.w(TAG, "created");
+	
+		aContext = context;
 		
 		// The reconnection manager is not reliable - we use our own Android based heartbeat
 		//ReconnectionManager.activate();
@@ -155,8 +160,6 @@ public class XmppConnection extends ImConnection {
 	 public VCard getVCard(String myJID) {
 	        
 
-		// android.os.Debug.waitForDebugger();
-		 
 	        VCard vCard = new VCard();
 	        
 	        try {       
@@ -288,7 +291,6 @@ public class XmppConnection extends ImConnection {
 	// Runs in executor thread
 	private void do_login() {
 		
-		//android.os.Debug.waitForDebugger();
 		
 		if (mConnection != null) {
 			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
@@ -652,9 +654,7 @@ public class XmppConnection extends ImConnection {
 			}
 		});
         
-       // android.os.Debug.waitForDebugger();
-        // dangerous debug statement below, prints password!
-        //Log.i(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
+        //Log.i(TAG, "mConnection.login("+userName+","+xmppResource+");");
         mConnection.login(userName, password, xmppResource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
@@ -665,7 +665,6 @@ public class XmppConnection extends ImConnection {
 
 	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
 	{
-		android.os.Debug.waitForDebugger();
 		KeyStore ks = null;
         KeyManager[] kms = null;
 
@@ -686,7 +685,7 @@ public class XmppConnection extends ImConnection {
 	     }
 	     
 	     sslContext = SSLContext.getInstance("TLS");
-	     sTrustManager = new ServerTrustManager(server, config);
+	     sTrustManager = new ServerTrustManager(aContext, server, config);
 	     
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},
@@ -955,7 +954,6 @@ public class XmppConnection extends ImConnection {
 			Roster roster = mConnection.getRoster();
 			
 			//Set<String> seen = new HashSet<String>();
-			//android.os.Debug.waitForDebugger();
 			
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 
@@ -1131,7 +1129,6 @@ public class XmppConnection extends ImConnection {
 		
 		private void handlePresenceChanged (org.jivesoftware.smack.packet.Presence presence)
 		{
-	//		android.os.Debug.waitForDebugger();
 			
 			String name = parseAddressName(presence.getFrom());
 			String address = parseAddressBase(presence.getFrom());
@@ -1438,7 +1435,6 @@ public class XmppConnection extends ImConnection {
 	public void networkTypeChanged() {
 		
 		super.networkTypeChanged();
-		//android.os.Debug.waitForDebugger();
 		Log.w(TAG, "reconnect on network change");
 
 		/*
