@@ -16,8 +16,12 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +34,10 @@ import java.util.Stack;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
@@ -92,9 +100,13 @@ public class XmppConnection extends ImConnection {
 	private final static int SOTIMEOUT = 15000;
 	private final static String TRUSTSTORE_TYPE = "BKS";
 	private final static String TRUSTSTORE_PATH = "/system/etc/security/cacerts.bks";
+	private final static String TRUSTSTORE_PASS = "changeit";
 	
 	private PacketCollector mPingCollector;
 
+	private ServerTrustManager sTrustManager;
+	private SSLContext sslContext;
+	
 	public XmppConnection(Context context) {
 		super(context);
 		
@@ -275,6 +287,9 @@ public class XmppConnection extends ImConnection {
 	
 	// Runs in executor thread
 	private void do_login() {
+		
+		//android.os.Debug.waitForDebugger();
+		
 		if (mConnection != null) {
 			setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "still trying..."));
 			return;
@@ -302,11 +317,18 @@ public class XmppConnection extends ImConnection {
 			
 		} catch (Exception e) {
 			
-			Log.e(TAG, "login failed", e);
+			Log.w(TAG, "login failed", e);
 			mConnection = null;
 			ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
 			
-			if (e.getMessage().contains("not-authorized")) {
+			if (e == null || e.getMessage() == null)
+			{
+				Log.w(TAG, "will not retry");
+				mConnection = null;
+				mRetryLogin = false;
+				disconnected(info);
+			}
+			else if (e.getMessage().contains("not-authorized")) {
 				
 				Log.w(TAG, "not authorized - will not retry");
 				info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
@@ -354,14 +376,13 @@ public class XmppConnection extends ImConnection {
 	
 	// Runs in executor thread
 	private void initConnection(String userName, final String password, 
-			Imps.ProviderSettings.QueryMap providerSettings) throws XMPPException {
+			Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
 		boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
 		boolean requireTls = providerSettings.getRequireTls();
 		boolean doDnsSrv = providerSettings.getDoDnsSrv();
 		boolean tlsCertVerify = providerSettings.getTlsCertVerify();
 		boolean allowSelfSignedCerts = !tlsCertVerify;
-		boolean doVerifyDomain = tlsCertVerify;
 
 		// TODO this should be reorged as well as the gmail.com section below
 		String domain = providerSettings.getDomain();
@@ -369,33 +390,44 @@ public class XmppConnection extends ImConnection {
 		String xmppResource = providerSettings.getXmppResource();
 		int serverPort = providerSettings.getPort();
 		
+		boolean doVerifyDomain = (domain.equals(server));
+
 		providerSettings.close(); // close this, which was opened in do_login()
 		
 		debug(TAG, "TLS required? " + requireTls);
 		debug(TAG, "Do SRV check? " + doDnsSrv);
 		debug(TAG, "cert verification? " + tlsCertVerify);
+		debug(TAG, "allow self-signed? " + allowSelfSignedCerts);
+
 		debug(TAG, "plain auth? " + allowPlainAuth);
+		debug(TAG, "domain matching? " + doVerifyDomain);
     	
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
 
     	// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
     	if (doDnsSrv) {
-    		debug(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
-    		mConfig = new ConnectionConfiguration(domain, mProxyInfo);
+    		debug(TAG, "(DNS SRV) ConnectionConfiguration("+domain+");");
+    		mConfig = new ConnectionConfiguration(domain);
+    		
+    		
     	} else if (server == null) { // no server specified in prefs, use the domain
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
+
     	} else {	
     		debug(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
+
     	}
+    	
+    	
 
     	//mConfig.setDebuggerEnabled(true);
     	
     	if (requireTls) {
     		mConfig.setSecurityMode(SecurityMode.required);
-    		
+
     		if(allowPlainAuth)
     		{
     			mConfig.setSASLAuthenticationEnabled(false);    	    
@@ -409,13 +441,12 @@ public class XmppConnection extends ImConnection {
     		
     		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
     		
+    		
     	} else {
     		// if it finds a cert, still use it, but don't check anything since 
     		// TLS errors are not expected by the user
     		mConfig.setSecurityMode(SecurityMode.enabled);
-    		tlsCertVerify = false;
-    		doVerifyDomain = false;
-    		allowSelfSignedCerts = true;
+    		
     		// without TLS, use DIGEST-MD5 first
     		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
     		
@@ -443,26 +474,36 @@ public class XmppConnection extends ImConnection {
 	     // this should probably be set to our own, if we are going to save self-signed certs
 		mConfig.setTruststoreType(TRUSTSTORE_TYPE);
 		mConfig.setTruststorePath(TRUSTSTORE_PATH);
-
+		mConfig.setTruststorePassword(TRUSTSTORE_PASS);
+		
 		
 		if (allowSelfSignedCerts) {
 			Log.i(TAG, "allowing self-signed certs");
 			mConfig.setSelfSignedCertificateEnabled(true);
 		}
     	
+		
 		//reconnect please
-		mConfig.setReconnectionAllowed(false);		
+		mConfig.setReconnectionAllowed(false);	//we don't XMPP to do the reconnecting, we can handle it in Android
+		
 		mConfig.setSendPresence(true);
 		mConfig.setRosterLoadedAtLogin(true);
 		
 		//Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
 		
-		mConnection = new MyXMPPConnection(mConfig);
+		mConnection = new MyXMPPConnection(mConfig);		
 		
 		Roster roster = mConnection.getRoster();
 		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
 		getContactListManager().listenToRoster(roster);
 		
+
+		if (server == null)
+			initSSLContext(domain, mConfig);
+		else
+    		initSSLContext(server, mConfig);
+
+
         mConnection.connect();
         
         //Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
@@ -622,6 +663,38 @@ public class XmppConnection extends ImConnection {
 
 	}
 
+	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
+	{
+		android.os.Debug.waitForDebugger();
+		KeyStore ks = null;
+        KeyManager[] kms = null;
+
+		ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
+         try {
+             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
+         }
+         catch(Exception e) {
+             ks = null;
+         }
+     
+	     KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+	     try {
+	    	 kmf.init(ks, TRUSTSTORE_PASS.toCharArray());    	 
+	         kms = kmf.getKeyManagers();
+	     } catch (NullPointerException npe) {
+	         kms = null;
+	     }
+	     
+	     sslContext = SSLContext.getInstance("TLS");
+	     sTrustManager = new ServerTrustManager(server, config);
+	     
+	     sslContext.init(kms,
+                 new javax.net.ssl.TrustManager[]{sTrustManager},
+                 new java.security.SecureRandom());
+
+	     config.setCustomSSLContext(sslContext);
+	}
+	
 	void disconnected(ImErrorInfo info) {
 		Log.w(TAG, "disconnected");
 		setState(DISCONNECTED, info);
@@ -1337,8 +1410,6 @@ public class XmppConnection extends ImConnection {
 
 		public MyXMPPConnection(ConnectionConfiguration config) {
 			super(config);
-			
-			//this.getConfiguration().setSocketFactory(arg0)
 			
 		}
 		
