@@ -101,6 +101,11 @@ public class ContactListFilterView extends LinearLayout {
         }
     }
 
+    public void doFilter(String filterString) {
+         mFilter.filter(filterString);
+        
+    }
+    
     Cursor runQuery(CharSequence constraint) {
         StringBuilder buf = new StringBuilder();
 

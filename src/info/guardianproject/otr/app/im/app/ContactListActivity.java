@@ -28,6 +28,7 @@ import java.util.Observer;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -171,6 +172,16 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         showFilterView();
         
+        // Get the intent, verify the action and get the query
+        
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+          if (mIsFiltering)
+			{
+				String filterText = intent.getStringExtra(SearchManager.QUERY);
+
+				mFilterView.doFilter(filterText);
+			}
+        }
     }
 
     @Override
@@ -336,13 +347,19 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             		&& (KeyEvent.ACTION_DOWN == event.getAction()))
             {                
             	InputMethodManager inputMgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            	inputMgr.toggleSoftInput(0, 0);            	
-               	showFilterView();               
+            	inputMgr.toggleSoftInput(0, 0);   
+            	
+            	if (!mIsFiltering)
+            		showFilterView();
+            	
+               	onSearchRequested();
             }
             else  if (!handled && isReadable(keyCode, event)
                     && (KeyEvent.ACTION_DOWN == event.getAction()) 		) {
-                showFilterView();
                 
+            	if (!mIsFiltering)
+            		showFilterView();
+            	
                 handled = mFilterView.dispatchKeyEvent(event);
             }
             
@@ -355,7 +372,33 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         return handled;
     }
+    
+    /*
+	@Override
+	public boolean onSearchRequested() {
+		// Open up the search/go dialog
+		startSearch("", true, null, false);
+		return true;
+	}*/
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+
+		// The user has probably entered a URL into "Go"
+
+		String action = intent.getAction();
+		if (Intent.ACTION_SEARCH.equals(action)) {
+			
+			if (mIsFiltering)
+			{
+				String filterText = intent.getStringExtra(SearchManager.QUERY);
+
+				mFilterView.doFilter(filterText);
+			}
+		}
+	}
+
+	
     private static boolean isReadable(int keyCode, KeyEvent event) {
         if (KeyEvent.isModifierKey(keyCode) || event.isSystem()) {
             return false;
