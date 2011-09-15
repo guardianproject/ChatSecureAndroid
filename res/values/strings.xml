@@ -673,4 +673,9 @@
 
 	<string name="otr_gen_key">Generating new OTR keypair...</string>
 	
+	<string name="search_label">Contact</string>
+	<string name="search_hint">type the name of a contact to chat with</string>
+	<string name="search_button_text">Go</string>
+    
+	
 </resources>
