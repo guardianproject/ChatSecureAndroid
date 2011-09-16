@@ -486,14 +486,16 @@ public class AccountActivity extends Activity {
     		settings.setAllowPlainAuth(true);
     		
     	} else if (domain.equals("jabber.org")) {
-    		settings.setDoDnsSrv(false);
+    		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(DEFAULT_PORT);
     		settings.setServer(domain);
     		settings.setRequireTls(true);
     		settings.setTlsCertVerify(true);
+    		settings.setAllowPlainAuth(false);
+
     	} else if (domain.equals("chat.facebook.com")) {
-    		settings.setDoDnsSrv(false);
+    		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(DEFAULT_PORT);
     		settings.setServer(domain);
@@ -509,7 +511,8 @@ public class AccountActivity extends Activity {
 			settings.setServer(domain);
 			settings.setRequireTls(true);
 			settings.setTlsCertVerify(true);
-			
+    		settings.setAllowPlainAuth(true);
+
     	}	
 		
     	settings.close();
