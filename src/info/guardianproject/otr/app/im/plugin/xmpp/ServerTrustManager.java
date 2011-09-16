@@ -185,8 +185,7 @@ class ServerTrustManager implements X509TrustManager {
             			}
             		}
             	}
-            	
-                
+               
             }
             catch (KeyStoreException e) {
                 e.printStackTrace();

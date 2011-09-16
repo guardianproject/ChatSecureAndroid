@@ -14,6 +14,7 @@ import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.DNSUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -102,6 +103,8 @@ public class XmppConnection extends ImConnection {
 	
 	private ServerTrustManager sTrustManager;
 	private SSLContext sslContext;	
+	private KeyStore ks = null;
+    private KeyManager[] kms = null;
 	private Context aContext;
 	
 	public XmppConnection(Context context) {
@@ -363,14 +366,32 @@ public class XmppConnection extends ImConnection {
 
     	// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
     	if (doDnsSrv) {
+    		
+    		//java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
+    		//java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
+    		
     		debug(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
-    		mConfig = new ConnectionConfiguration(domain, mProxyInfo);
-    	} else if (server == null) { // no server specified in prefs, use the domain
+    	//	mConfig = new ConnectionConfiguration(domain, mProxyInfo);
+    		DNSUtil.HostAddress srvHost = DNSUtil.resolveXMPPDomain(domain);
+    		server = srvHost.getHost();
+    		serverPort = srvHost.getPort();
+    		
+    	}
+    	
+    	if (server == null) { // no server specified in prefs, use the domain
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
+
+    		//if domain of login user is the same as server
+    		if (domain.equals(server))
+    			doVerifyDomain = true;
+    		else
+    			doVerifyDomain = false;    		
+    		
     	} else {	
     		debug(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
+    		
     	}
 
     	//mConfig.setDebuggerEnabled(true);
@@ -393,11 +414,6 @@ public class XmppConnection extends ImConnection {
     		
     		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
 
-    		//if domain of login user is the same as server
-    		if (server == null && domain.equals(server))
-    			doVerifyDomain = true;
-    		else
-    			doVerifyDomain = false;
     		
     	} else {
     		// if it finds a cert, still use it, but don't check anything since 
@@ -591,17 +607,17 @@ public class XmppConnection extends ImConnection {
 	
 	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
 	{
-		KeyStore ks = null;
-        KeyManager[] kms = null;
 
-		ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
-         try {
-             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
-         }
-         catch(Exception e) {
-             ks = null;
-         }
-     
+        if (ks != null)
+        {
+			ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
+	         try {
+	             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
+	         }
+	         catch(Exception e) {
+	             ks = null;
+	         }
+        
 	     KeyManagerFactory kmf = KeyManagerFactory.getInstance(KEYMANAGER_TYPE);
 	     try {
 	    	 kmf.init(ks, TRUSTSTORE_PASS.toCharArray());    	 
@@ -616,6 +632,9 @@ public class XmppConnection extends ImConnection {
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},
                  new java.security.SecureRandom());
+
+        }
+        
 
 	     config.setCustomSSLContext(sslContext);
 	}
@@ -1453,6 +1472,6 @@ public class XmppConnection extends ImConnection {
 	
 	public void debug (String tag, String msg)
 	{
-	//	Log.d(tag, msg);
+		Log.d(tag, msg);
 	}
 }
