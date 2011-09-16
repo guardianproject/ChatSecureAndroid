@@ -320,7 +320,7 @@ public class XmppConnection extends ImConnection {
 		String xmppName = userName + '@' + domain;
 		mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
 		setState(LOGGED_IN, null);
-		Log.i(TAG, "logged in");
+		debug(TAG, "logged in");
 	}
 
 	// TODO shouldn't setProxy be handled in Imps/settings?
@@ -446,7 +446,7 @@ public class XmppConnection extends ImConnection {
 		
 		
 		if (allowSelfSignedCerts) {
-			Log.i(TAG, "allowing self-signed certs");
+			debug(TAG, "allowing self-signed certs");
 			mConfig.setSelfSignedCertificateEnabled(true);
 		}
     	
@@ -464,7 +464,7 @@ public class XmppConnection extends ImConnection {
 
 		mConnection = new MyXMPPConnection(mConfig);
 
-		//Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
+		//debug(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
 		
 		Roster roster = mConnection.getRoster();
 		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
@@ -472,8 +472,8 @@ public class XmppConnection extends ImConnection {
 		
         mConnection.connect();
         
-        //Log.i(TAG,"is secure connection? " + mConnection.isSecureConnection());
-        //Log.i(TAG,"is using TLS? " + mConnection.isUsingTLS());
+        //debug(TAG,"is secure connection? " + mConnection.isSecureConnection());
+        //debug(TAG,"is using TLS? " + mConnection.isUsingTLS());
         
         mConnection.addPacketListener(new PacketListener() {
 			
@@ -503,7 +503,7 @@ public class XmppConnection extends ImConnection {
 
 				
 				if (presence.getType() == Type.subscribe) {
-					Log.i(TAG, "sub request from " + address);
+					debug(TAG, "sub request from " + address);
 					mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
 				}
 				else 
@@ -519,13 +519,13 @@ public class XmppConnection extends ImConnection {
         mConnection.addConnectionListener(new ConnectionListener() {
 			@Override
 			public void reconnectionSuccessful() {
-				Log.i(TAG, "reconnection success");
+				debug(TAG, "reconnection success");
 				setState(LOGGED_IN, null);
 			}
 			
 			@Override
 			public void reconnectionFailed(Exception e) {
-				//Log.i(TAG, "reconnection failed", e);
+				//debug(TAG, "reconnection failed", e);
 				//forced_disconnect(new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 				
 				setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
@@ -544,7 +544,7 @@ public class XmppConnection extends ImConnection {
 				 * - due to network error
 				 * - but not if connectionClosed is fired
 				 */
-				Log.i(TAG, "reconnecting in " + seconds);
+				debug(TAG, "reconnecting in " + seconds);
 				setState(LOGGING_IN, null);
 			}
 			
@@ -556,7 +556,7 @@ public class XmppConnection extends ImConnection {
 				 * - Stream compression failed
 				 * - TLS fails but is required
 				 */
-				Log.i(TAG, "reconnect on error", e);
+				Log.e(TAG, "reconnect on error", e);
 				if (e.getMessage().contains("conflict")) {
 					disconnect();
 					disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "logged in from another location"));
@@ -590,13 +590,13 @@ public class XmppConnection extends ImConnection {
 				 *   - in forced disconnect
 				 *   - due to login failing
 				 */
-				Log.i(TAG, "connection closed");
+				debug(TAG, "connection closed");
 			}
 		});
         
        // android.os.Debug.waitForDebugger();
         // dangerous debug statement below, prints password!
-        //Log.i(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
+        //debug(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
         mConnection.login(userName, password, xmppResource);
         org.jivesoftware.smack.packet.Presence presence = 
         	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
@@ -1143,14 +1143,14 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doDeleteContactListAsync(ContactList list) {
 			// TODO delete contact list
-			Log.i(TAG, "delete contact list " + list.getName());
+			debug(TAG, "delete contact list " + list.getName());
 		}
 
 		@Override
 		protected void doCreateContactListAsync(String name,
 				Collection<Contact> contacts, boolean isDefault) {
 			// TODO create contact list
-			Log.i(TAG, "create contact list " + name + " default " + isDefault);
+			debug(TAG, "create contact list " + name + " default " + isDefault);
 		}
 
 		@Override
@@ -1162,7 +1162,7 @@ public class XmppConnection extends ImConnection {
 		@Override
 		protected void doAddContactToListAsync(String address, ContactList list)
 				throws ImException {
-			Log.i(TAG, "add contact to " + list.getName());
+			debug(TAG, "add contact to " + list.getName());
 			org.jivesoftware.smack.packet.Presence response =
 				new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.subscribed);
 			response.setTo(address);
@@ -1266,7 +1266,7 @@ public class XmppConnection extends ImConnection {
 	
 	public void doHeartbeat() {
 		if (mConnection == null && mRetryLogin) {
-			Log.i(TAG, "reconnect with login");
+			debug(TAG, "reconnect with login");
 			do_login();
 		}
 		if (mConnection == null)
@@ -1450,10 +1450,10 @@ public class XmppConnection extends ImConnection {
 			}
 			
 			mNeedReconnect = false;
-			Log.i(TAG, "reconnect");
+			debug(TAG, "reconnect");
 		
 			
-			Log.i(TAG, "reconnected");
+			debug(TAG, "reconnected");
 			setState(LOGGED_IN, null);
 			
 		}
@@ -1461,7 +1461,7 @@ public class XmppConnection extends ImConnection {
 		{
 			mNeedReconnect = true;
 
-			Log.d(TAG, "reconnection on network change failed");
+			debug(TAG, "reconnection on network change failed");
 			
 			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "reconnection on network change failed"));
 		}
@@ -1469,6 +1469,6 @@ public class XmppConnection extends ImConnection {
 	
 	public void debug (String tag, String msg)
 	{
-		Log.d(tag, msg);
+	//	Log.d(tag, msg);
 	}
 }
