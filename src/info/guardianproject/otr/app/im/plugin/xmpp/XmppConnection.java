@@ -378,21 +378,20 @@ public class XmppConnection extends ImConnection {
     		debug(TAG, "(DNS SRV) resolved: "+domain+"=" + server + ":" + serverPort);
     		
     	}
-    	
+
     	if (server == null) { // no server specified in prefs, use the domain
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
-
-    		//if domain of login user is the same as server
-    		if (domain.equals(server))
-    			doVerifyDomain = true;
-    		else
-    			doVerifyDomain = false;    		
+  		
     		
     	} else {	
     		debug(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
     		mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
+
+    		//if domain of login user is the same as server
+    		doVerifyDomain = (domain.equals(server));
     		
+        	
     	}
 
     	//mConfig.setDebuggerEnabled(true);
@@ -457,19 +456,19 @@ public class XmppConnection extends ImConnection {
 		mConfig.setSendPresence(true);
 		mConfig.setRosterLoadedAtLogin(true);
 		
-		//Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
-		
-		mConnection = new MyXMPPConnection(mConfig);
-		
-		Roster roster = mConnection.getRoster();
-		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
-		getContactListManager().listenToRoster(roster);
 		
 		if (server == null)
 			initSSLContext(domain, mConfig);
 		else
     		initSSLContext(server, mConfig);
 
+		mConnection = new MyXMPPConnection(mConfig);
+
+		//Log.i(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
+		
+		Roster roster = mConnection.getRoster();
+		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
+		getContactListManager().listenToRoster(roster);
 		
         mConnection.connect();
         
@@ -609,15 +608,14 @@ public class XmppConnection extends ImConnection {
 	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
 	{
 
-        if (ks != null)
-        {
-			ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
-	         try {
-	             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
-	         }
-	         catch(Exception e) {
-	             ks = null;
-	         }
+       
+		ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
+         try {
+             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
+         }
+         catch(Exception e) {
+             ks = null;
+         }
         
 	     KeyManagerFactory kmf = KeyManagerFactory.getInstance(KEYMANAGER_TYPE);
 	     try {
@@ -633,11 +631,9 @@ public class XmppConnection extends ImConnection {
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},
                  new java.security.SecureRandom());
-
-        }
         
-
-	     config.setCustomSSLContext(sslContext);
+	    config.setCustomSSLContext(sslContext);
+	    
 	}
 
 	void disconnected(ImErrorInfo info) {
