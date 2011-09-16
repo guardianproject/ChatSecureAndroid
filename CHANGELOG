@@ -1,6 +1,17 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+2011-09-15
+- 0.0.5 RC1 release
+- Replaced Smack's TLS TrustManager with custom imp for Android / BKS keystore
+- Bundled in own cacert.bks keystore file to manage trusted Root CAs sep from device-wide version
+- Fixed support for DNS SRV record lookups
+- Stopped using Smack's reconnection manager, and now use custom Android reconn/status code
+- Changed primary contact/buddy UI to filter list mode
+- Added back in status selector and message edit text field
+- Improved support for OTR, including fingerprint display on activity screen, and auto-attempt on connect
+- Upgraded to Smack 3.2.1 release
+
 2011-02-28 
 - 0.0.3 RC1 release
 - Major overhaul of the user interface, including new setup wizard, and key verification display
