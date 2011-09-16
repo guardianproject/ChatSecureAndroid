@@ -370,11 +370,12 @@ public class XmppConnection extends ImConnection {
     		//java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
     		//java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
     		
-    		debug(TAG, "(DNS SRV) ConnectionConfiguration("+domain+", mProxyInfo);");
+    		debug(TAG, "(DNS SRV) resolving: "+domain);
     	//	mConfig = new ConnectionConfiguration(domain, mProxyInfo);
     		DNSUtil.HostAddress srvHost = DNSUtil.resolveXMPPDomain(domain);
     		server = srvHost.getHost();
-    		serverPort = srvHost.getPort();
+    		//serverPort = srvHost.getPort();
+    		debug(TAG, "(DNS SRV) resolved: "+domain+"=" + server + ":" + serverPort);
     		
     	}
     	
