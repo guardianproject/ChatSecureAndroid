@@ -78,9 +78,11 @@ class ServerTrustManager implements X509TrustManager {
         try {
             trustStore = KeyStore.getInstance(configuration.getTruststoreType());
          
+            /*
             if (new File(configuration.getTruststorePath()).exists())
             	in = new FileInputStream(configuration.getTruststorePath());
             else
+            */
             	in = context.getResources().openRawResource(R.raw.cacerts);
             	
             trustStore.load(in, configuration.getTruststorePassword().toCharArray());
