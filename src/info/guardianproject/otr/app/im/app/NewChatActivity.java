@@ -209,24 +209,13 @@ public class NewChatActivity extends Activity {
         case R.id.menu_view_profile:
             mChatView.viewProfile();
             return true;
-            
+ 
             /*
-        case R.id.menu_gen_key:
-        	otrGenKey();
-        	return true;
-        	*/
-/*            
         	case R.id.menu_view_friend_list:
                 finish();
                 showRosterScreen();
                 return true;
- */              
-                /*
-            case R.id.menu_insert_smiley:
-                showSmileyDialog();
-                return true;
-				*/
-             
+              */
             case R.id.menu_end_conversation:
                 mChatView.closeChatSession();
                 return true;
@@ -292,12 +281,6 @@ public class NewChatActivity extends Activity {
     }
 
 	
-    
-    private void showToast (String msg)
-    {
-    	Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
-    	toast.show();
-    }
     
     private void switchOtrState ()
     {

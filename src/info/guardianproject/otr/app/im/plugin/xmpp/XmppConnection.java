@@ -321,6 +321,7 @@ public class XmppConnection extends ImConnection {
 		mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
 		setState(LOGGED_IN, null);
 		debug(TAG, "logged in");
+		
 	}
 
 	// TODO shouldn't setProxy be handled in Imps/settings?
@@ -557,7 +558,17 @@ public class XmppConnection extends ImConnection {
 				 * - TLS fails but is required
 				 */
 				Log.e(TAG, "reconnect on error", e);
-				if (e.getMessage().contains("conflict")) {
+				if (e == null || e.getMessage() == null)
+				{
+					setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+					mExecutor.execute(new Runnable() {
+						@Override
+						public void run() {
+							reconnect();
+						}
+					});
+				}
+				else if (e.getMessage().contains("conflict")) {
 					disconnect();
 					disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, "logged in from another location"));
 				}
@@ -1450,9 +1461,6 @@ public class XmppConnection extends ImConnection {
 			}
 			
 			mNeedReconnect = false;
-			debug(TAG, "reconnect");
-		
-			
 			debug(TAG, "reconnected");
 			setState(LOGGED_IN, null);
 			
