@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.5-20110915" android:versionCode="16">
+     android:versionName="0.0.5-20110919-alpha" android:versionCode="17">
 
 <uses-sdk android:minSdkVersion="4"></uses-sdk>
 
@@ -36,7 +36,6 @@
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false">
-
 
          <activity android:name=".app.WelcomeActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar"
