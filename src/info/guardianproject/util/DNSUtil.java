@@ -124,12 +124,14 @@ public class DNSUtil {
 		HostAddress result = resolveSRV("_xmpp-client._tcp." + domain);
 		
 		if (result == null) {
+			result = resolveSRV("_jabber._tcp." + domain);
+		}
+		
+
+		if (result == null) {
 			result = resolveSRV("_xmpp-server._tcp." + domain);
 		}
 		
-		if (result == null) {
-			result = resolveSRV("_jabber._tcp." + domain);
-		}
 		
 		if (result == null) {
 			result = new HostAddress(domain, 5222);
@@ -174,6 +176,9 @@ public class DNSUtil {
 		HostAddress result = resolveSRV("_xmpp-server._tcp." + domain);
 		if (result == null) {
 			result = resolveSRV("_jabber._tcp." + domain);
+		}
+		if (result == null) {
+			result = resolveSRV("_xmpp-client._tcp." + domain);
 		}
 		if (result == null) {
 			result = new HostAddress(domain, 5269);
