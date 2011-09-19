@@ -113,6 +113,29 @@ public class StatusBarNotifier {
         notify(username, title, message, message, providerId, accountId, intent, false);
     }
 
+    public void notifyLoggedIn(long providerId, long accountId)
+    {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        String username = "";
+        String title = mContext.getString(R.string.app_name);
+        String message = mContext.getString(R.string.presence_available);
+        notify(username, title, message, message, providerId, accountId, intent, false);
+    }
+    
+    public void notifyDisconnected(long providerId, long accountId)
+    {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        String username = "";
+        String title = mContext.getString(R.string.app_name);
+        String message = mContext.getString(R.string.presence_offline);
+        notify(username, title, message, message, providerId, accountId, intent, false);
+    }
+    
+   
     public void dismissNotifications(long providerId) {
         synchronized (mNotificationInfos) {
             NotificationInfo info = mNotificationInfos.get(providerId);
