@@ -78,12 +78,16 @@ class ServerTrustManager implements X509TrustManager {
         try {
             trustStore = KeyStore.getInstance(configuration.getTruststoreType());
          
+          //TODO add the ability to load  custom cacerts file from SDCard
             /*
+             *
             if (new File(configuration.getTruststorePath()).exists())
             	in = new FileInputStream(configuration.getTruststorePath());
             else
             */
-            	in = context.getResources().openRawResource(R.raw.cacerts);
+            
+            //load our bundled cacerts from raw assets
+            in = context.getResources().openRawResource(R.raw.cacerts);
             	
             trustStore.load(in, configuration.getTruststorePassword().toCharArray());
         }
@@ -155,6 +159,7 @@ class ServerTrustManager implements X509TrustManager {
             // by a third-party that the client trusts.
             boolean trusted = false;
            
+           
             try {
             	
             	if (configuration.isSelfSignedCertificateEnabled())
@@ -165,21 +170,41 @@ class ServerTrustManager implements X509TrustManager {
                 }
             	else
             	{
+            		
+            		X509Certificate certFinal = x509Certificates[nSize - 1];
+            		
 	            	Enumeration<String> enumAliases = trustStore.aliases();
             		while (enumAliases.hasMoreElements())
             		{
             			X509Certificate cert = (X509Certificate)trustStore.getCertificate(enumAliases.nextElement());
 
-            			try
+            			String caSubject = cert.getSubjectDN().getName();
+            			String issuerSubject = certFinal.getIssuerDN().getName();
+            			
+            			 Matcher matcher = cnPattern.matcher(caSubject);
+            	            if (matcher.find()) {
+            	            	caSubject = matcher.group(2);
+            	            }
+            	            
+            	            matcher = cnPattern.matcher(issuerSubject);
+            	            if (matcher.find()) {
+            	            	issuerSubject = matcher.group(2);
+            	            }
+            			
+            			if (caSubject.equals(issuerSubject))
             			{
-            				x509Certificates[nSize - 1].verify(cert.getPublicKey());            				
-            				trusted = true;
-            				System.out.println("verified by: " + cert.getSubjectDN().getName());
+	            			try
+	            			{
+	            				certFinal.verify(cert.getPublicKey());            				
+	            				trusted = true;
+	            				System.out.println("verified by: " + cert.getSubjectDN().getName());
+	            			}
+	            			catch (Exception e)
+	            			{            				
+	            			}
+            			     
             			}
-            			catch (Exception e)
-            			{            				
-            			}
-            			            			
+            			
             			if (trusted)
             			{
             				System.out.println("TRUSTED!");
@@ -258,6 +283,8 @@ class ServerTrustManager implements X509TrustManager {
         }
         return names;
     }
+    
+   
 
     /**
      * Returns the JID representation of an XMPP entity contained as a SubjectAltName extension
