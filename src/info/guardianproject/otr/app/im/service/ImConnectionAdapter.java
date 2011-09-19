@@ -382,6 +382,10 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 for (ChatSessionAdapter session : mChatSessionManager.mActiveChatSessionAdapters.values()) {
                     session.sendPostponedMessages();
                 }
+                
+                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
+
+                
             } else if (state == ImConnection.LOGGING_OUT) {
                 // The engine has started to logout the connection, remove it
                 // from the active connection list.
@@ -399,11 +403,15 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     mChatSessionManager.closeAllChatSessions();
                 }
 
+                mService.getStatusBarNotifier().notifyDisconnected(mProviderId, mAccountId);
+
                 mConnectionState = state;
             } else if(state == ImConnection.SUSPENDED && error != null) {
                 // re-establish failed, schedule to retry
                 // TODO increase delay after retry failed.
-                mService.scheduleReconnect(15000);
+                mService.scheduleReconnect(5000);
+                
+
             }
 
             updateAccountStatusInDb();
