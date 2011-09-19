@@ -494,11 +494,11 @@ public class AccountActivity extends Activity {
     		settings.setTlsCertVerify(true);
     		settings.setAllowPlainAuth(false);
 
-    	} else if (domain.equals("chat.facebook.com")) {
-    		settings.setDoDnsSrv(true);
-    		settings.setDomain(domain);
+    	} else if (domain.equals("facebook.com")) {
+    		settings.setDoDnsSrv(false);
+    		settings.setDomain("chat.facebook.com");
     		settings.setPort(DEFAULT_PORT);
-    		settings.setServer(domain);
+    		settings.setServer("chat.facebook.com");
     		settings.setRequireTls(false);
     		settings.setTlsCertVerify(false);
     		settings.setAllowPlainAuth(false);
