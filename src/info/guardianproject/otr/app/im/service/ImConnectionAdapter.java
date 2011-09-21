@@ -351,6 +351,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     final class ConnectionListenerAdapter implements ConnectionListener{
         public void onStateChanged(final int state, final ImErrorInfo error) {
+        	
+        	
             synchronized (this) {
                 if (state == ImConnection.LOGGED_IN
                         && mConnectionState == ImConnection.LOGGING_OUT) {
@@ -407,10 +409,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
                 mConnectionState = state;
             } else if(state == ImConnection.SUSPENDED && error != null) {
+            	
                 // re-establish failed, schedule to retry
-                // TODO increase delay after retry failed.
                 mService.scheduleReconnect(5000);
-                
 
             }
 
