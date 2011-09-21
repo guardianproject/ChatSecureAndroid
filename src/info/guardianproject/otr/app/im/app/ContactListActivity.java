@@ -140,7 +140,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         mApp.callWhenServiceConnected(mHandler, new Runnable(){
             public void run() {
                 if (!mDestroyed) {
-                    mApp.dismissNotifications(mProviderId);
+                   // mApp.dismissNotifications(mProviderId);
                     mConn = mApp.getConnection(mProviderId);
                     if (mConn == null) {
                         Log.e(ImApp.LOG_TAG, "The connection has disappeared!");
