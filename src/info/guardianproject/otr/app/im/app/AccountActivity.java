@@ -485,7 +485,6 @@ public class AccountActivity extends Activity {
     		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(DEFAULT_PORT);
-    		//settings.setServer("gmail.com"); //SRV lookup will find this
     		settings.setRequireTls(true);
     		settings.setTlsCertVerify(true);
     		settings.setAllowPlainAuth(true);
@@ -498,6 +497,7 @@ public class AccountActivity extends Activity {
     		settings.setRequireTls(true);
     		settings.setTlsCertVerify(true);
     		settings.setAllowPlainAuth(false);
+    		settings.setDoDnsSrv(false);
 
     	} else if (domain.equals("facebook.com")) {
     		settings.setDoDnsSrv(false);
@@ -513,10 +513,10 @@ public class AccountActivity extends Activity {
 			settings.setDoDnsSrv(true);
 			settings.setDomain(domain);
 			settings.setPort(port);
-			settings.setServer(domain);
 			settings.setRequireTls(true);
 			settings.setTlsCertVerify(true);
-    		settings.setAllowPlainAuth(true);
+    		settings.setAllowPlainAuth(false);
+    		settings.setDoDnsSrv(true);
 
     	}	
 		
