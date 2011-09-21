@@ -674,8 +674,11 @@ public class AccountActivity extends Activity {
         mKeepSignIn.setFocusable(rememberPass);
         */
 
-        mBtnSignIn.setEnabled(hasNameAndPassword);
-        mBtnSignIn.setFocusable(hasNameAndPassword);
+        if (!isSignedIn)
+        {
+        	mBtnSignIn.setEnabled(hasNameAndPassword);
+        	mBtnSignIn.setFocusable(hasNameAndPassword);
+        }
     }
 
     private final TextWatcher mTextWatcher = new TextWatcher() {
