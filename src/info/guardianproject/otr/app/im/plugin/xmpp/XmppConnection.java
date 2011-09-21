@@ -285,7 +285,7 @@ public class XmppConnection extends ImConnection {
 			initConnection(userName, password, providerSettings);
 			
 		} catch (Exception e) {
-			Log.e(TAG, "login failed", e);
+			Log.w(TAG, "login failed");
 			mConnection = null;
 			ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
 			
@@ -405,15 +405,18 @@ public class XmppConnection extends ImConnection {
     		{
     			mConfig.setSASLAuthenticationEnabled(false);    	    
     			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+
+        		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
     		}
     		else
     		{
     			mConfig.setSASLAuthenticationEnabled(true);  
     			SASLAuthentication.unsupportSASLMechanism("PLAIN");
+
+        		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
     		}
     		
     		
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
 
     		
     	} else {
@@ -437,31 +440,25 @@ public class XmppConnection extends ImConnection {
     	mConfig.setVerifyChainEnabled(tlsCertVerify);
     	mConfig.setVerifyRootCAEnabled(tlsCertVerify);
     	mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
-    	mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain);
+    	mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain && (!allowSelfSignedCerts));
+    	mConfig.setSelfSignedCertificateEnabled(allowSelfSignedCerts);
     	
-    	 // Android doesn't support the default "jks" Java Key Store, it uses "bks" instead
-	     // this should probably be set to our own, if we are going to save self-signed certs
 		mConfig.setTruststoreType(TRUSTSTORE_TYPE);
 		mConfig.setTruststorePath(TRUSTSTORE_PATH);
 		mConfig.setTruststorePassword(TRUSTSTORE_PASS);
-		
-		
-		if (allowSelfSignedCerts) {
-			debug(TAG, "allowing self-signed certs");
-			mConfig.setSelfSignedCertificateEnabled(true);
-		}
-    	
-		//reconnect please, or no?
-		mConfig.setReconnectionAllowed(false);
-		
-		mConfig.setSendPresence(true);
-		mConfig.setRosterLoadedAtLogin(true);
 		
 		
 		if (server == null)
 			initSSLContext(domain, mConfig);
 		else
     		initSSLContext(server, mConfig);
+		
+
+		//reconnect please, or no?
+		mConfig.setReconnectionAllowed(false);
+		
+		mConfig.setSendPresence(true);
+		mConfig.setRosterLoadedAtLogin(true);
 
 		mConnection = new MyXMPPConnection(mConfig);
 
@@ -1367,18 +1364,18 @@ public class XmppConnection extends ImConnection {
 		//android.os.Debug.waitForDebugger();
 		Log.w(TAG, "reconnect on network change");
 
-		/*
 		if (getState() == LOGGED_IN)
 			setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network changed"));
 		
 		if (getState() != LOGGED_IN && getState() != LOGGING_IN)
 			return;
 		
-		if (mNeedReconnect)
+		if (!mNeedReconnect)
 			return;
+		
 		Log.w(TAG, "reconnect on network change");
-		force_reconnect();
-		*/
+		reconnect();
+	
 		
 	}
 
