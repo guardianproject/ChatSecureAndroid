@@ -159,7 +159,6 @@ class ServerTrustManager implements X509TrustManager {
             // by a third-party that the client trusts.
             boolean trusted = false;
            
-           
             try {
             	
             	if (configuration.isSelfSignedCertificateEnabled())
