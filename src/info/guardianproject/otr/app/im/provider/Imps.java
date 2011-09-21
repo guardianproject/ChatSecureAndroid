@@ -2125,7 +2125,7 @@ public class Imps {
             }
 
             public void setPort(int port) {
-                ProviderSettings.setHeartbeatInterval(mContentResolver, mProviderId, port);
+                ProviderSettings.setPort(mContentResolver, mProviderId, port);
             }
 
             public int getPort() {
