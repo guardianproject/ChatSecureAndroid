@@ -1,6 +1,14 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+2011-09-20
+- 0.0.5 RC2 release
+- turning TLS verify off now also turns of domain name checking in self-signed certs
+- fixed custom port persistence issue; you can use 5223 to your hearts content
+- UI tweaks around enabling/disabling based on logged in and OTR state
+- added in matching of Root CA common name with verification against cacerts.bks
+- default now to PLAIN AUTH off
+
 2011-09-15
 - 0.0.5 RC1 release
 - Replaced Smack's TLS TrustManager with custom imp for Android / BKS keystore
