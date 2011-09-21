@@ -323,6 +323,7 @@ public class AccountActivity extends Activity {
                     getContentResolver().update(mAccountUri, values, null, null);
                     
                 	signOut();
+                	isSignedIn = false;
                 }
                 else
                 {
@@ -339,7 +340,11 @@ public class AccountActivity extends Activity {
 	                } else {
 	                    signIn(rememberPass, pass);
 	                }
+	                
+	                isSignedIn = true;
                 }
+                
+                updateWidgetState();
             }
 
             void signIn(boolean rememberPass, String pass) {
@@ -673,7 +678,12 @@ public class AccountActivity extends Activity {
         mKeepSignIn.setEnabled(rememberPass);
         mKeepSignIn.setFocusable(rememberPass);
         */
-
+        
+        mEditUserAccount.setEnabled(!isSignedIn);
+        mEditPass.setEnabled(!isSignedIn);
+        mBtnAdvanced.setEnabled(!isSignedIn);
+        mUseTor.setEnabled(!isSignedIn);
+        
         if (!isSignedIn)
         {
         	mBtnSignIn.setEnabled(hasNameAndPassword);
