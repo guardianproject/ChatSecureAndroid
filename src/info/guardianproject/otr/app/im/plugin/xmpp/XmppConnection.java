@@ -400,23 +400,18 @@ public class XmppConnection extends ImConnection {
     	if (requireTls) {
     		mConfig.setSecurityMode(SecurityMode.required);
     		
-    		
     		if(allowPlainAuth)
     		{
     			mConfig.setSASLAuthenticationEnabled(false);    	    
     			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-
         		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
     		}
     		else
     		{
     			mConfig.setSASLAuthenticationEnabled(true);  
     			SASLAuthentication.unsupportSASLMechanism("PLAIN");
-
         		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
     		}
-    		
-    		
 
     		
     	} else {
