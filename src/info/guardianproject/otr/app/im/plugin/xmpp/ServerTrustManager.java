@@ -60,7 +60,10 @@ import android.util.Log;
  */
 class ServerTrustManager implements X509TrustManager {
 
-    private static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
+    private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
+    private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
+    private final static Pattern ouPattern = Pattern.compile("(?i)(ou=)([^,]*)");
+    
 
     private ConnectionConfiguration configuration;
 
@@ -119,6 +122,7 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
+    	//android.os.Debug.waitForDebugger();
     	
         int nSize = x509Certificates.length;
 
@@ -180,15 +184,15 @@ class ServerTrustManager implements X509TrustManager {
             			String caSubject = cert.getSubjectDN().getName();
             			String issuerSubject = certFinal.getIssuerDN().getName();
             			
-            			 Matcher matcher = cnPattern.matcher(caSubject);
-            	            if (matcher.find()) {
-            	            	caSubject = matcher.group(2);
-            	            }
-            	            
-            	            matcher = cnPattern.matcher(issuerSubject);
-            	            if (matcher.find()) {
-            	            	issuerSubject = matcher.group(2);
-            	            }
+            			 Matcher matcher = oPattern.matcher(caSubject);
+        	            if (matcher.find()) {
+        	            	caSubject = matcher.group(2);
+        	            }
+        	            
+        	            matcher = oPattern.matcher(issuerSubject);
+        	            if (matcher.find()) {
+        	            	issuerSubject = matcher.group(2);
+        	            }
             			
             			if (caSubject.equals(issuerSubject))
             			{
