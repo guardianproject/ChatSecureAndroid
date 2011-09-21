@@ -69,9 +69,7 @@ public class ContactPresenceActivity extends Activity {
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
-        TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
-        TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
-        TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
+  
 
         Intent i = getIntent();
         Uri uri = i.getData();
@@ -80,6 +78,7 @@ public class ContactPresenceActivity extends Activity {
             finish();
             return;
         }
+        
 
         if (i.getExtras() != null)
         {
@@ -89,22 +88,12 @@ public class ContactPresenceActivity extends Activity {
 	        {
 	        	remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
 	        	localFingerprint = i.getExtras().getString("localFingerprint");
-	        
-	        	txtFingerprintRemote.setText(remoteFingerprint);
-	        	
-	        	if (remoteFingerprintVerified)
-	        	{
-	        		lblFingerprintRemote.setText("Their Fingerprint (Verified)");
-	        		txtFingerprintRemote.setBackgroundColor(Color.GREEN);
-	        	}
-	        	else
-	        		txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
-
-	        	txtFingerprintRemote.setTextColor(Color.BLACK);
-	        	
-	        	txtFingerprintLocal.setText(localFingerprint);
 	        }
+	        
+	        
         }
+        
+        updateUI();
         
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(uri, null, null, null, null);
@@ -159,6 +148,43 @@ public class ContactPresenceActivity extends Activity {
         }
         c.close();
     }
+    
+    private void updateUI ()
+    {
+       
+        TextView lblFingerprintLocal = (TextView) findViewById(R.id.labelFingerprintLocal);
+        TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
+        TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
+        TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
+
+
+        if (remoteFingerprint != null)
+        {
+        	txtFingerprintRemote.setText(remoteFingerprint);
+        	
+        	if (remoteFingerprintVerified)
+        	{
+        		lblFingerprintRemote.setText("Their Fingerprint (Verified)");
+        		txtFingerprintRemote.setBackgroundColor(Color.GREEN);
+        	}
+        	else
+        		txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
+
+        	txtFingerprintRemote.setTextColor(Color.BLACK);
+        	
+        	txtFingerprintLocal.setText(localFingerprint);
+        }
+        else
+        {
+        	txtFingerprintRemote.setVisibility(View.GONE);
+        	txtFingerprintLocal.setVisibility(View.GONE);
+        	lblFingerprintRemote.setVisibility(View.GONE);
+        	lblFingerprintLocal.setVisibility(View.GONE);
+	     }
+        
+        
+       
+    }
 
     private String getClientTypeString(int clientType) {
         Resources res = getResources();
@@ -191,6 +217,8 @@ public class ContactPresenceActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		updateUI();
                 
     }
     
@@ -226,20 +254,12 @@ public class ContactPresenceActivity extends Activity {
     
     public boolean onCreateOptionsMenu(Menu menu) {
     	
-    	MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.contact_info_menu, menu);
-        
-    	/*
-    	super.onCreateOptionsMenu(menu);
-        
-        MenuItem mItem = null;
-        
-        mItem = menu.add(0, 1, Menu.NONE, "Scan Fingerprint");
-        
-        mItem = menu.add(0, 2, Menu.NONE, "Your Fingerprint");
-        
-        mItem = menu.add(0, 3, Menu.NONE, "Verify Fingerprint");
-        */
+    	if (remoteFingerprint != null)
+    	{
+    		MenuInflater inflater = getMenuInflater();
+    		inflater.inflate(R.menu.contact_info_menu, menu);
+    	}
+    	
        
         return true;
     }
@@ -278,11 +298,13 @@ public class ContactPresenceActivity extends Activity {
 	        	return true;
 	
 	        case R.id.menu_fingerprint:
-	            displayQRCode(localFingerprint);
+	        	if (remoteFingerprint!=null)
+	        		displayQRCode(localFingerprint);
 	            return true;
 	            
 	        case R.id.menu_verify:
-	        	verifyRemoteFingerprint();
+	        	if (remoteFingerprint!=null)
+	        		verifyRemoteFingerprint();
 	        	return true;
 	        }
         return super.onOptionsItemSelected(item);
