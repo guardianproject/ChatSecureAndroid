@@ -313,7 +313,7 @@ public class SigningInActivity extends Activity {
 
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
-            finish();
+           
             
         }
     }
