@@ -73,10 +73,13 @@ class ServerTrustManager implements X509TrustManager {
     private String server;
     private KeyStore trustStore;
 
-    public ServerTrustManager(Context context, String server, ConnectionConfiguration configuration) {
+    private XmppConnection xmppConnection;
+    
+    public ServerTrustManager(Context context, String server, ConnectionConfiguration configuration, XmppConnection xmppConnection) {
         this.configuration = configuration;
         this.server = server;
-
+        this.xmppConnection = xmppConnection;
+        
         InputStream in = null;
         try {
             trustStore = KeyStore.getInstance(configuration.getTruststoreType());
@@ -122,8 +125,7 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
-    	//android.os.Debug.waitForDebugger();
-    	
+    		
         int nSize = x509Certificates.length;
 
         List<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
@@ -220,7 +222,6 @@ class ServerTrustManager implements X509TrustManager {
             catch (KeyStoreException e) {
                 e.printStackTrace();
             }
-            
             
             
             if (!trusted) {

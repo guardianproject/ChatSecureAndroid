@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.ArrayList;
@@ -38,8 +39,13 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
+import org.apache.harmony.javax.security.auth.callback.Callback;
+import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
+import org.apache.harmony.javax.security.auth.callback.UnsupportedCallbackException;
+import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
+import org.jivesoftware.smack.ConnectionCreationListener;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -72,7 +78,8 @@ import android.os.Environment;
 import android.os.Parcel;
 import android.util.Log;
 
-public class XmppConnection extends ImConnection {
+public class XmppConnection extends ImConnection implements CallbackHandler
+{
 
 	private final static String TAG = "Gibberbot.XmppConnection";
 	private XmppContactList mContactListManager;
@@ -357,7 +364,6 @@ public class XmppConnection extends ImConnection {
 		
 		providerSettings.close(); // close this, which was opened in do_login()
 		
-		
 		debug(TAG, "TLS required? " + requireTls);
 		debug(TAG, "Do SRV check? " + doDnsSrv);
 		debug(TAG, "cert verification? " + tlsCertVerify);
@@ -448,15 +454,14 @@ public class XmppConnection extends ImConnection {
 		else
     		initSSLContext(server, mConfig);
 		
-
 		//reconnect please, or no?
-		mConfig.setReconnectionAllowed(false);
-		
+		mConfig.setReconnectionAllowed(true);		
 		mConfig.setSendPresence(true);
 		mConfig.setRosterLoadedAtLogin(true);
 
 		mConnection = new MyXMPPConnection(mConfig);
 
+		
 		//debug(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
 		
 		Roster roster = mConnection.getRoster();
@@ -597,6 +602,16 @@ public class XmppConnection extends ImConnection {
 			}
 		});
         
+        Connection.addConnectionCreationListener(new ConnectionCreationListener (){
+
+			@Override
+			public void connectionCreated(Connection arg0) {
+				debug (TAG, "connection created!");
+				
+			}
+        	
+        });
+        
        // android.os.Debug.waitForDebugger();
         // dangerous debug statement below, prints password!
         //debug(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
@@ -629,14 +644,21 @@ public class XmppConnection extends ImConnection {
 	     }
 	     
 	     sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-	     sTrustManager = new ServerTrustManager(aContext, server, config);
+	     sTrustManager = new ServerTrustManager(aContext, server, config, this);
 	     
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},
                  new java.security.SecureRandom());
+	     
         
 	    config.setCustomSSLContext(sslContext);
+	    config.setCallbackHandler(this);
 	    
+	}
+	
+	void sslCertificateError ()
+	{
+		this.disconnect();
 	}
 
 	void disconnected(ImErrorInfo info) {
@@ -1356,7 +1378,6 @@ public class XmppConnection extends ImConnection {
 	public void networkTypeChanged() {
 		
 		super.networkTypeChanged();
-		//android.os.Debug.waitForDebugger();
 		Log.w(TAG, "reconnect on network change");
 
 		if (getState() == LOGGED_IN)
@@ -1369,7 +1390,7 @@ public class XmppConnection extends ImConnection {
 			return;
 		
 		Log.w(TAG, "reconnect on network change");
-		reconnect();
+		force_reconnect();
 	
 		
 	}
@@ -1469,6 +1490,18 @@ public class XmppConnection extends ImConnection {
 	
 	public void debug (String tag, String msg)
 	{
-	//	Log.d(tag, msg);
+		Log.d(tag, msg);
+	}
+
+
+	@Override
+	public void handle(Callback[] arg0) throws IOException,
+			UnsupportedCallbackException {
+		
+		for (Callback cb : arg0)
+		{
+			debug(TAG, cb.toString());
+		}
+		
 	}
 }

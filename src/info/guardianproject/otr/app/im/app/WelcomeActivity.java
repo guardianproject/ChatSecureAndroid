@@ -402,11 +402,9 @@ public class WelcomeActivity extends Activity {
     private boolean isSignedIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
         
-        return connectionStatus == Imps.ConnectionStatus.ONLINE || 
-        		 connectionStatus == Imps.ConnectionStatus.CONNECTING || 
-        				 connectionStatus == Imps.ConnectionStatus.SUSPENDED;
+        return connectionStatus == Imps.ConnectionStatus.ONLINE;
     }
-
+    
     private boolean allAccountsSignedOut() {
         if(!mProviderCursor.moveToFirst()) {
             return false;
