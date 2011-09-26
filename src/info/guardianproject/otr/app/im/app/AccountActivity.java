@@ -480,24 +480,23 @@ public class AccountActivity extends Activity {
     	if (domain.equals("gmail.com")) {
 			// Google only supports a certain configuration for XMPP:
 			// http://code.google.com/apis/talk/open_communications.html
-    		// TODO we should probably use DNS SRV for gmail.com so we can validate the cert
-    		// then perhaps we could enable RequireTls
     		settings.setDoDnsSrv(true);
+    		settings.setServer("");
     		settings.setDomain(domain);
     		settings.setPort(DEFAULT_PORT);
     		settings.setRequireTls(true);
     		settings.setTlsCertVerify(true);
-    		settings.setAllowPlainAuth(true);
+    		settings.setAllowPlainAuth(false);
     		
     	} else if (domain.equals("jabber.org")) {
     		settings.setDoDnsSrv(true);
     		settings.setDomain(domain);
     		settings.setPort(DEFAULT_PORT);
-    		settings.setServer(domain);
+    		settings.setServer("");
     		settings.setRequireTls(true);
     		settings.setTlsCertVerify(true);
     		settings.setAllowPlainAuth(false);
-    		settings.setDoDnsSrv(false);
+    		settings.setDoDnsSrv(true);
 
     	} else if (domain.equals("facebook.com")) {
     		settings.setDoDnsSrv(false);
@@ -513,6 +512,7 @@ public class AccountActivity extends Activity {
 			settings.setDoDnsSrv(true);
 			settings.setDomain(domain);
 			settings.setPort(port);
+    		settings.setServer("");
 			settings.setRequireTls(true);
 			settings.setTlsCertVerify(true);
     		settings.setAllowPlainAuth(false);

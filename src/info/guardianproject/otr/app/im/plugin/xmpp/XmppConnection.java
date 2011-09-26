@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -38,10 +37,10 @@ import java.util.concurrent.Executors;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
-import org.apache.harmony.javax.security.auth.callback.UnsupportedCallbackException;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
@@ -49,7 +48,6 @@ import org.jivesoftware.smack.ConnectionCreationListener;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -69,14 +67,17 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smack.sasl.SASLDigestMD5Mechanism;
+import org.jivesoftware.smack.sasl.SASLMechanism;
+import org.jivesoftware.smack.util.Base64;
 import org.jivesoftware.smackx.packet.VCard;
 
-import android.R;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Parcel;
 import android.util.Log;
+import de.measite.smack.Sasl;
 
 public class XmppConnection extends ImConnection implements CallbackHandler
 {
@@ -114,6 +115,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     private KeyManager[] kms = null;
 	private Context aContext;
 	
+	private final static String IS_GOOGLE = "google";
+	
 	public XmppConnection(Context context) {
 		super(context);
 		aContext = context;
@@ -132,7 +135,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	 public VCard getVCard(String myJID) {
 	        
 
-		// android.os.Debug.waitForDebugger();
 		 
 	        VCard vCard = new VCard();
 	        
@@ -292,7 +294,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			initConnection(userName, password, providerSettings);
 			
 		} catch (Exception e) {
-			Log.w(TAG, "login failed");
+			Log.w(TAG, "login failed", e);
 			mConnection = null;
 			ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
 			
@@ -318,7 +320,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				mConnection = null;
 				disconnected(info);
 			}
+			
 			return;
+			
 		} finally {
 			mNeedReconnect = false;
 		}
@@ -349,14 +353,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private void initConnection(String userName, final String password, 
 			Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
+//		android.os.Debug.waitForDebugger();
+		
 		boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
 		boolean requireTls = providerSettings.getRequireTls();
 		boolean doDnsSrv = providerSettings.getDoDnsSrv();
 		boolean tlsCertVerify = providerSettings.getTlsCertVerify();
 		boolean allowSelfSignedCerts = !tlsCertVerify;
 		boolean doVerifyDomain = tlsCertVerify;
-
-		// TODO this should be reorged as well as the gmail.com section below
+		
+		boolean useSASL = true;//!allowPlainAuth;
+		
 		String domain = providerSettings.getDomain();
 		String server = providerSettings.getServer();
 		String xmppResource = providerSettings.getXmppResource();
@@ -371,29 +378,35 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
 
-    	// TODO try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
+    	// try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
     	if (doDnsSrv) {
     		
     		//java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
     		//java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
     		
     		debug(TAG, "(DNS SRV) resolving: "+domain);
-    	//	mConfig = new ConnectionConfiguration(domain, mProxyInfo);
     		DNSUtil.HostAddress srvHost = DNSUtil.resolveXMPPDomain(domain);
     		server = srvHost.getHost();
-    		//serverPort = srvHost.getPort();
+    		//serverPort = srvHost.getPort(); //ignore port right now, as we are always a client
     		debug(TAG, "(DNS SRV) resolved: "+domain+"=" + server + ":" + serverPort);
     		
     	}
 
     	if (server == null) { // no server specified in prefs, use the domain
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
-    		mConfig = new ConnectionConfiguration(domain, serverPort, domain, mProxyInfo);
-  		
+    		
+    		if (mProxyInfo == null)
+    			mConfig = new ConnectionConfiguration(domain, serverPort);
+    		else
+    			mConfig = new ConnectionConfiguration(domain, serverPort, mProxyInfo);
     		
     	} else {	
     		debug(TAG, "(use server) ConnectionConfiguration("+server+", "+serverPort+", "+domain+", mProxyInfo);");
-    		mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
+    		
+    		if (mProxyInfo == null)
+    			mConfig = new ConnectionConfiguration(server, serverPort, domain);
+    		else
+    			mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
 
     		//if domain of login user is the same as server
     		doVerifyDomain = (domain.equals(server));
@@ -401,38 +414,36 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         	
     	}
 
-    	//mConfig.setDebuggerEnabled(true);
-    	mConfig.setSASLAuthenticationEnabled(true);
+    	mConfig.setDebuggerEnabled(true);
+    	mConfig.setSASLAuthenticationEnabled(useSASL);   
+    	
+    	
     	if (requireTls) {
+    		
     		mConfig.setSecurityMode(SecurityMode.required);
+    		
+    		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
+    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    		
+	
+    	} else {
+    		// if it finds a cert, still use it, but don't check anything since 
+    		// TLS errors are not expected by the user
+    		mConfig.setSecurityMode(SecurityMode.enabled);    		
     		
     		if(allowPlainAuth)
     		{
-    			mConfig.setSASLAuthenticationEnabled(false);    	    
     			SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-        		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    			SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
+    			
     		}
     		else
     		{
-    			mConfig.setSASLAuthenticationEnabled(true);  
     			SASLAuthentication.unsupportSASLMechanism("PLAIN");
         		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
     		}
 
     		
-    	} else {
-    		// if it finds a cert, still use it, but don't check anything since 
-    		// TLS errors are not expected by the user
-    		mConfig.setSecurityMode(SecurityMode.enabled);
-    		tlsCertVerify = false;
-    		doVerifyDomain = false;
-    		allowSelfSignedCerts = true;
-    		// without TLS, use DIGEST-MD5 first
-    		SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-    		if(allowPlainAuth)
-    			SASLAuthentication.supportSASLMechanism("PLAIN", 1);
-    		else
-    			SASLAuthentication.unsupportSASLMechanism("PLAIN");
     	}
     	// Android has no support for Kerberos or GSSAPI, so disable completely
     	SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
@@ -460,16 +471,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mConfig.setRosterLoadedAtLogin(true);
 
 		mConnection = new MyXMPPConnection(mConfig);
+		
 
-		
-		//debug(TAG, "ConnnectionConfiguration.getHost: " + mConfig.getHost() + " getPort: " + mConfig.getPort() + " getServiceName: " + mConfig.getServiceName());
-		
-		Roster roster = mConnection.getRoster();
-		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
-		getContactListManager().listenToRoster(roster);
-		
+
         mConnection.connect();
         
+
         //debug(TAG,"is secure connection? " + mConnection.isSecureConnection());
         //debug(TAG,"is using TLS? " + mConnection.isUsingTLS());
         
@@ -612,14 +619,24 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         	
         });
         
-       // android.os.Debug.waitForDebugger();
-        // dangerous debug statement below, prints password!
-        //debug(TAG, "mConnection.login("+userName+", "+password+", "+xmppResource+");");
-        mConnection.login(userName, password, xmppResource);
-        org.jivesoftware.smack.packet.Presence presence = 
-        	new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
-        mConnection.sendPacket(presence);
         
+        if (server.contains(IS_GOOGLE))
+        {
+        	//google talk requires the @ domain with SASL Plain
+        	mConnection.login(userName + '@' + domain, password, xmppResource);
+        }
+        else
+        {
+        	mConnection.login(userName, password, xmppResource);	
+        }
+        
+    	org.jivesoftware.smack.packet.Presence presence = 
+    			new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
+    	mConnection.sendPacket(presence);
+    
+		Roster roster = mConnection.getRoster();
+		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
+		getContactListManager().listenToRoster(roster);
 
 	}
 	
@@ -910,7 +927,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			Roster roster = mConnection.getRoster();
 			
 			//Set<String> seen = new HashSet<String>();
-			//android.os.Debug.waitForDebugger();
 			
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 
@@ -1086,7 +1102,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 		private void handlePresenceChanged (org.jivesoftware.smack.packet.Presence presence)
 		{
-	//		android.os.Debug.waitForDebugger();
 			
 			String name = parseAddressName(presence.getFrom());
 			String address = parseAddressBase(presence.getFrom());
@@ -1495,8 +1510,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 
 	@Override
-	public void handle(Callback[] arg0) throws IOException,
-			UnsupportedCallbackException {
+	public void handle(Callback[] arg0) throws IOException {
 		
 		for (Callback cb : arg0)
 		{
@@ -1504,4 +1518,87 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		}
 		
 	}
+	
+	/*
+	public class MySASLDigestMD5Mechanism extends SASLMechanism
+	{
+		 
+	    public MySASLDigestMD5Mechanism(SASLAuthentication saslAuthentication)
+	    {
+	        super(saslAuthentication);
+	    }
+	 
+	    protected void authenticate()
+	        throws IOException, XMPPException
+	    {
+	        String mechanisms[] = {
+	            getName()
+	        };
+	        java.util.Map props = new HashMap();
+	        sc = Sasl.createSaslClient(mechanisms, null, "xmpp", hostname, props, this);
+	        super.authenticate();
+	    }
+	 
+	    public void authenticate(String username, String host, String password)
+	        throws IOException, XMPPException
+	    {
+	        authenticationId = username;
+	        this.password = password;
+	        hostname = host;
+	        String mechanisms[] = {
+	            getName()
+	        };
+	        java.util.Map props = new HashMap();
+	        sc = Sasl.createSaslClient(mechanisms, null, "xmpp", host, props, this);
+	        super.authenticate();
+	    }
+	 
+	    public void authenticate(String username, String host, CallbackHandler cbh)
+	        throws IOException, XMPPException
+	    {
+	        String mechanisms[] = {
+	            getName()
+	        };
+	        java.util.Map props = new HashMap();
+	        sc = Sasl.createSaslClient(mechanisms, null, "xmpp", host, props, cbh);
+	        super.authenticate();
+	    }
+	 
+	    protected String getName()
+	    {
+	        return "DIGEST-MD5";
+	    }
+	 
+	    public void challengeReceived(String challenge)
+	        throws IOException
+	    {
+	        //StringBuilder stanza = new StringBuilder();
+	        byte response[];
+	        if(challenge != null)
+	            response = sc.evaluateChallenge(Base64.decode(challenge));
+	        else
+	            //response = sc.evaluateChallenge(null);
+	            response = sc.evaluateChallenge(new byte[0]);
+	        //String authenticationText = "";
+	        Packet responseStanza;
+	        //if(response != null)
+	        //{
+	            //authenticationText = Base64.encodeBytes(response, 8);
+	            //if(authenticationText.equals(""))
+	                //authenticationText = "=";
+	           
+	            if (response == null){
+	                responseStanza = new Response();
+	            } else {
+	                responseStanza = new Response(Base64.encodeBytes(response,Base64.DONT_BREAK_LINES));   
+	            }
+	        //}
+	        //stanza.append("<response xmlns=\"urn:ietf:params:xml:ns:xmpp-sasl\">");
+	        //stanza.append(authenticationText);
+	        //stanza.append("</response>");
+	        //getSASLAuthentication().send(stanza.toString());
+	        getSASLAuthentication().send(responseStanza);
+	    }
+	}
+	 */
 }
