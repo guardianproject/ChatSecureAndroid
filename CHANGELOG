@@ -1,5 +1,10 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
+2011-09-26
+- 0.0.5 RC3/5 release
+- updated cacerts file to include CACerts.org root
+- used correct version of asmack library for Android
+- tweaked support of Gmail and Facebook specific login/auth weirdness
 
 2011-09-20
 - 0.0.5 RC2 release
