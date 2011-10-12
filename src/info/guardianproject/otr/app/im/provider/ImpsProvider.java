@@ -36,10 +36,10 @@ import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
+import info.guardianproject.database.sqlcipher.SQLiteConstraintException;
+import info.guardianproject.database.sqlcipher.SQLiteDatabase;
+import info.guardianproject.database.sqlcipher.SQLiteOpenHelper;
+import info.guardianproject.database.sqlcipher.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
@@ -249,12 +249,13 @@ public class ImpsProvider extends ContentProvider {
 		private SQLiteDatabase dbRead;
     	private SQLiteDatabase dbWrite;
     	
+    	private String key;
+    	
         DatabaseHelper(Context context) throws Exception
         {
             super(context, mDatabaseName, null, mDatabaseVersion);
             
-          //  dbRead = super.getReadableDatabase();
-//            dbWrite = super.getWritableDatabase();
+            key = "foo";
 
         }
 
@@ -262,7 +263,7 @@ public class ImpsProvider extends ContentProvider {
         public SQLiteDatabase getReadableDatabase ()
         {
         	if (dbRead == null)
-        		 dbRead = super.getReadableDatabase();
+        		 dbRead = super.getReadableDatabase(key);
         	
         	return dbRead;
         }
@@ -270,7 +271,7 @@ public class ImpsProvider extends ContentProvider {
         public SQLiteDatabase getWritableDatabase ()
         {
         	if (dbWrite == null)
-        		dbWrite = super.getWritableDatabase();
+        		dbWrite = super.getWritableDatabase(key);
         	
         	return dbWrite;
         }
@@ -1056,7 +1057,9 @@ public class ImpsProvider extends ContentProvider {
     	
         if (mDbHelper == null)
         {               
-        	mDbHelper = new DatabaseHelper(getContext());
+        	Context ctx =getContext();
+            SQLiteDatabase.loadLibs(ctx);
+        	mDbHelper = new DatabaseHelper(ctx);
         }
         
         return mDbHelper;
