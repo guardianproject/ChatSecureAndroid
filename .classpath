@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="libs/commons-codec.jar"/>
 	<classpathentry kind="lib" path="libs/guava-r09.jar"/>
 	<classpathentry kind="lib" path="libs/asmack-android-4.jar"/>
+	<classpathentry kind="lib" path="libs/sqlcipher.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
