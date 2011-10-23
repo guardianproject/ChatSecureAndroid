@@ -52,6 +52,9 @@ public class ErrorResUtils {
             case ImErrorInfo.NETWORK_ERROR:
                 return R.string.network_error;
 
+            case ImErrorInfo.INVALID_USERNAME:
+            	return R.string.invalid_password;
+
             case ImpsErrorInfo.SERVICE_NOT_SUPPORTED:
                 return R.string.service_not_support;
 

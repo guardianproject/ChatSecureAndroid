@@ -305,7 +305,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				disconnected(info);
 				mRetryLogin = false;
 			}
-			else if (e.getMessage().contains("not-authorized")) {
+			else if (e.getMessage().contains("not-authorized")||e.getMessage().contains("authentication failed")) {
 				Log.w(TAG, "not authorized - will not retry");
 				info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
 				disconnected(info);
