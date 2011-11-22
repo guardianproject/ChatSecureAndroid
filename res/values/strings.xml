@@ -128,7 +128,7 @@
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
      be appended to the end of this.  -->
-    <string name="menu_plus">Menu+"</string>
+    <string name="menu_plus">Menu+</string>
 
     <!-- The title of a simple input dialog. Currently not used.-->
 
@@ -642,7 +642,9 @@
 	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 
-	<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string><string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string><string name="signin_password_prompt">Enter your password:</string>
+	<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+    <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+    <string name="signin_password_prompt">Enter your password:</string>
 
     <!-- Do not localize! Symbols for looking up preferences in Java code. -->
 
@@ -679,3 +681,4 @@
     
 	
 </resources>
+
