@@ -112,7 +112,7 @@
     <string name="menu_insert_smiley">Smiley einfügen</string>
 
 	<!-- Strings for the contact info screen -->
-    <string name="menu_scan">Fingerprint scannen</string>***
+    <string name="menu_scan">Fingerprint scannen ****</string>
     <string name="menu_fingerprint">Ihr Fingerprint</string>
     <string name="menu_verify">Fingerprint überprüfen</string>
 
@@ -145,9 +145,9 @@
     <string name="no">Abbrechen</string>
 
     <!-- This is the toast message displayed when the user has been signed out of the service.-->
-    <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g> wurde abgemeldet.</string>**
+    <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g> wurde abgemeldet.**</string>
     <!-- This is the toast message displayed when the user has been signed out of the service due to an error.-->
-    <string name="signed_out_prompt_with_error"><xliff:g id="ACCOUNT">%1$s</xliff:g> wurde abgemeldet, weil: <xliff:g id="REASON">%2$s</xliff:g>.</string>**
+    <string name="signed_out_prompt_with_error"><xliff:g id="ACCOUNT">%1$s</xliff:g> wurde abgemeldet, weil: <xliff:g id="REASON">%2$s</xliff:g>.**</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
@@ -172,7 +172,7 @@
 
     <!-- These strings are displayed the sign in progress screen.-->
     <!-- The title of the sign-in progress screen.  -->
-    <string name="signing_in_to">Anmeldung von <xliff:g id="ACCOUNT">%1$s</xliff:g> wird ausgeführt.</string>**
+    <string name="signing_in_to">Anmeldung von <xliff:g id="ACCOUNT">%1$s</xliff:g> wird ausgeführt.**</string>
     <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
     <string name="signing_in_wait">Anmeldung wird ausgeführt\u2026</string>
     <!-- Dialog title -->
@@ -196,7 +196,7 @@
     <!-- Displays the number of online contacts in a list.-->
     <string name="online_count"><xliff:g id="number">%1$d</xliff:g> online</string>
     <!-- The title of the subscription request group if there is any.-->
-    <string name="subscriptions">Freundschaftseinladungen</string>**
+    <string name="subscriptions">Freundschaftseinladungen**</string>
     <!-- Prefix of the contact if he/she is not in the user's list.-->
     <string name="unknown_contact">(<i>Unbekannt</i>)</string>
     <!-- Displayed as a child item of the contact list if it's empty.-->
@@ -264,11 +264,11 @@
     <!-- Inline status message in the chat history list, when receiving a "offline" status update. -->
     <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> ist offline</string>
     <!-- Inline status message in the chat history list, when a friend joined the chat. -->
-    <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> hat Teilnahme begonnen.</string>**
+    <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> hat Teilnahme begonnen.**</string>
     <!-- Inline status message in the chat history list, when a friend left the chat. -->
     <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> hat Chat verlassen.</string>
     <!-- Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-    <string name="time_stamp"format="date" >'Gesendet um '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>' am '<xliff:g id="DATE">EEEE</xliff:g></string>
+    <string name="time_stamp" format="date" >Gesendet um <xliff:g id="HOUR">hh</xliff:g>:<xliff:g id="MINUTE">mm</xliff:g> <xliff:g id="AMPM">a</xliff:g> am <xliff:g id="DATE">EEEE</xliff:g></string>
     <!-- The send button on the chat screen. -->
     <string name="send">Senden</string>
     <!-- Error message when a chat failed to be sent.-->
@@ -511,11 +511,11 @@
 	<!-- About: OTR -->
     <string name="about_otr_title">Wie funktioniert die Sicherheit?</string>
     <string name="about_otr">\'Off-the-Record Messaging\' ist ein Sicherheitssystem entwickelt, um Privatsphäre, indem sie die Eigenschaften von einem privaten Gespräch in der realen Welt, einschließlich der Verschlüsselung, Authentifizierung, Abstreitbarkeit und Forward Secrecy.\n\nThe OTR-Protokoll zu aktivieren ist kompatibel mit Desktop-Chat-Clients wie Adiumoder Pidgin.</string>
-    <string name="about_otr">\'Off-the-Record Messaging\' schützt Ihre Privatsphäre, indem die Eigenschaften von einem privaten Gespräch in der realen Welt nachgebildet werden: Authentifizierung, Abstreitbarkeit und Forward Secrecy.\n\nDas implementierte OTR-Protokoll ist kompatibel mit Desktop-Chat-Clients wie Adium oder Pidgin.</string>
+    <string name="about_otr1">\'Off-the-Record Messaging\' schützt Ihre Privatsphäre, indem die Eigenschaften von einem privaten Gespräch in der realen Welt nachgebildet werden: Authentifizierung, Abstreitbarkeit und Forward Secrecy.\n\nDas implementierte OTR-Protokoll ist kompatibel mit Desktop-Chat-Clients wie Adium oder Pidgin.</string>
 
 	<!-- About: Security -->
     <string name="about_security_title">Sind meine Chats sicher?</string>
-**    <string name="about_security">Gibberbot\'s Verschlüsselung funktioniert nur, wenn Messaging mit anderen über ein kompatibles app oder das Programm, so sollten Sie Ihre Kontakte gewährleisten verwenden Gibberbot für mobile und Adium oder Pidgin für den Desktop. Sie können eine Feinabstimmung genau, wie und wann Gibberbot versucht, Ihre Chats in Acco verschlüsselnunt Settings.\n\nLet\'s los!</string>
+    <string name="about_security">Gibberbot\'s Verschlüsselung funktioniert nur, wenn Messaging mit anderen über ein kompatibles app oder das Programm, so sollten Sie Ihre Kontakte gewährleisten verwenden Gibberbot für mobile und Adium oder Pidgin für den Desktop. Sie können eine Feinabstimmung genau, wie und wann Gibberbot versucht, Ihre Chats in Acco verschlüsselnunt Settings.\n\nLet\'s los!**</string>
 
 	<!-- Setup: Passphrase-->
     <string name="setup_passphrase_title">Passphrase-Setup</string>
@@ -566,7 +566,7 @@
     <string name="label_fingerprint_remote">Fingerprint des Gegenübers</string>
     <string name="label_fingerprint_local">Ihr Fingerprint</string>
     <string name="menu_sign_in">Anmelden</string>
-    <string name="menu_gen_key">Neuen Schlüssel erzeugen</string>**
+    <string name="menu_gen_key">Neuen Schlüssel erzeugen**</string>
 
     <string name="error_suspended_connection">Gibberbot hat die Verbindung zum Netzwerk verloren.</string>
     <string name="error_reestablish_connection">Gibberbot versucht die Verbindung wieder aufzubauen.</string>
@@ -581,7 +581,7 @@
     <string name="account_wizard_ready_title">Sind Sie bereit?</string>
 	
 	
-**    <string name="account_wizard_setup_body">Geben Sie Ihre Account-ID automatisch zu konfigurieren Gibberbot für Sie service.\n\nIt Chat wahrscheinlich sieht aus wie eine E-Mail-Adresse - so yourname@gmail.com oder someone@jabber.org, zum Beispiel.</string>
+    <string name="account_wizard_setup_body">Geben Sie Ihre Account-ID automatisch zu konfigurieren Gibberbot für Sie service.\n\nIt Chat wahrscheinlich sieht aus wie eine E-Mail-Adresse - so yourname@gmail.com oder someone@jabber.org, zum Beispiel.**</string>
     <string name="account_wizard_account_body">Bitte geben Sie Ihre Konto-ID ein (user@hostname):</string>
     <string name="account_wizard_host_body">Bitte geben Sie Namne und Port des Jabber/XMPP-Servers ein (5222 ist Standard).</string>
     <string name="account_wizard_ready_body">Gibberbot ist nun eingerichtet. Jetzt ist es an der Zeit online zu gehen und anzufangen sicher und privat zu chatten.</string>
