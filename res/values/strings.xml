@@ -677,5 +677,22 @@
 	<string name="search_hint">type the name of a contact to chat with</string>
 	<string name="search_button_text">Go</string>
     
-	
+	<string name="menu_locale">Language</string>
+	<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+	<string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+	<string name="do_srv_lookup">Do SRV Lookup</string>
+	<string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+	<string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+	<string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+	<string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+	<string name="tls_verification">TLS Verification</string>
+	<string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+	<string name="transport_encryption">Transport Encryption</string>
+	<string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+	<string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+	<string name="connect_server">Connect Server</string>
+	<string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+	<string name="server_port">Server Port</string>
+	<string name="xmpp_resource">XMPP Resource</string>
+	<string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
 </resources>

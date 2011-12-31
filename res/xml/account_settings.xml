@@ -22,16 +22,16 @@
 	android:title="@string/account_settings_title">
 
 	<EditTextPreference android:key="@string/pref_account_xmpp_resource"
-		android:summary="to distinguish this connection from other clients that are also logged in"
+		android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
 		android:defaultValue="Gibberbot"
-		android:title="XMPP Resource" />
+		android:title="@string/xmpp_resource" />
 	<EditTextPreference android:key="@string/pref_account_port"
-		android:title="Server Port"
+		android:title="@string/server_port"
 		android:defaultValue="5222"
-		android:summary="TCP Port for XMPP Server" />
+		android:summary="@string/tcp_port_for_xmpp_server" />
 	<EditTextPreference android:key="@string/pref_account_server"
-		android:title="Connect Server"
-		android:summary="The server to connect to, if needed" />
+		android:title="@string/connect_server"
+		android:summary="@string/the_server_to_connect_to_if_needed" />
 
 	<PreferenceCategory android:title="@string/encryption_and_anonymity_title">
 
@@ -39,31 +39,31 @@
 			android:key="@string/pref_security_otr_mode"
 			android:entryValues="@array/otr_options_values"
 			android:entries="@array/otr_options"
-			android:summary="how encrypted chats are started"
+			android:summary="@string/how_encrypted_chats_are_started"
 			android:defaultValue="auto" />
 			
 		<CheckBoxPreference android:key="@string/pref_security_require_tls"
 			android:defaultValue="true"
-			android:title="Transport Encryption"
-			android:summary="Require TLS/SSL connection"
+			android:title="@string/transport_encryption"
+			android:summary="@string/require_tls_ssl_connection"
 			android:enabled="true" />
 
 		<CheckBoxPreference android:key="@string/pref_security_tls_cert_verify"
-			android:title="TLS Verification"
+			android:title="@string/tls_verification"
 			android:defaultValue="true"
 			android:enabled="true"
-			android:summary="Verify that the certificate is trusted" />
+			android:summary="@string/verify_that_the_certificate_is_trusted" />
 			
 		<CheckBoxPreference android:key="@string/pref_security_allow_plain_auth"
 			android:enabled="true"
 			android:defaultValue="false"
-			android:title="Allow Plain Text Auth"
-			android:summary="Allow the username and password to be sent as plain text when using an unencrypted transport" />
+			android:title="@string/allow_plain_text_auth"
+			android:summary="@string/allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport" />
 
 		<CheckBoxPreference android:key="@string/pref_security_do_dns_srv"
-			android:title="Do SRV Lookup"
+			android:title="@string/do_srv_lookup"
 			android:enabled="true"
-			android:summary="Use DNS SRV to find actual XMPP server from domain name"
+			android:summary="@string/use_dns_srv_to_find_actual_xmpp_server_from_domain_name"
 			android:defaultValue="true" />
 
 	</PreferenceCategory>

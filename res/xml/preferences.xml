@@ -29,12 +29,12 @@
     android:key="@string/pref_security_otr_mode"
     android:entryValues="@array/otr_options_values"
     android:entries="@array/otr_options"
-    android:summary="how encrypted chats are started"
+    android:summary="@string/how_encrypted_chats_are_started"
     android:defaultValue="auto">
   </ListPreference>
 
   <EditTextPreference android:title="Resource"
-    android:summary="to distinguish this connection from other clients that are also logged in"
+    android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
     android:defaultValue="Gibberbot" 
     android:key="@string/pref_account_xmpp_resource" />
 

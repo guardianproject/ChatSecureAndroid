@@ -28,6 +28,11 @@
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
          />
+    
+     <item android:id="@+id/menu_locale"
+        android:title="@string/menu_locale"
+        android:icon="@drawable/ic_menu_settings"
+         />
 
 
          

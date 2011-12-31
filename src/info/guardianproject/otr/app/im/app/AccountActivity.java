@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.Locale;
+
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -31,6 +33,9 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -404,20 +409,27 @@ public class AccountActivity extends Activity {
             try
             {
             	otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
-            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
             	
-            	String localFingerprint = otrKeyManager.getLocalFingerprint();
-            	if (localFingerprint != null)
+            	if (otrKeyManager == null)
             	{
-            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);            	
-            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
+	            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
+	            	
+	            	String localFingerprint = otrKeyManager.getLocalFingerprint();
+	            	if (localFingerprint != null)
+	            	{
+	            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);            	
+	            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
+	            	}
+	            	else
+	            	{
+	            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
+	            		mTxtFingerprint.setText("");            		
+	            	}
             	}
             	else
             	{
-            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
-            		mTxtFingerprint.setText("");            		
+            		Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
             	}
-            	            	
             	
             }
             catch (Exception e){
@@ -744,6 +756,10 @@ public class AccountActivity extends Activity {
         case R.id.menu_gen_key:
         	otrGenKey();
         	return true;
+        	
+        case R.id.menu_locale:
+            showLocaleDialog();
+            return true;
         	/*
     	case R.id.menu_account_settings:
             Intent intent = new Intent(this, AccountSettingsActivity.class);
@@ -789,11 +805,23 @@ public class AccountActivity extends Activity {
         	
 
         	try {
-				otrKeyManager.generateLocalKeyPair();
-			} catch (RemoteException e) {
-				Log.e("OTR","could not gen local key pait",e);
+        		if (otrKeyManager != null)
+        		{
+        			otrKeyManager.generateLocalKeyPair();
+        			
+        		}
+        		else
+        		{
+        			Toast.makeText(AccountActivity.this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
+        		}
+			} catch (Exception e) {
+				Log.e("OTR","could not gen local key pair",e);
 			}
-            handler.sendEmptyMessage(0);
+        	finally
+        	{
+        		 handler.sendEmptyMessage(0);
+        	}
+           
         }
 
         private Handler handler = new Handler() {
@@ -804,11 +832,15 @@ public class AccountActivity extends Activity {
             	pbarDialog.dismiss();
             	
             	try {
-					String lFingerprint = otrKeyManager.getLocalFingerprint();
-					mTxtFingerprint.setText(processFingerprint(lFingerprint));
-					//showToast("New fingerprint: " + lFingerprint);
+            		if (otrKeyManager != null)
+            		{
+            			String lFingerprint = otrKeyManager.getLocalFingerprint();
+            			mTxtFingerprint.setText(processFingerprint(lFingerprint));
+            		}
+					
 					
 				} catch (Exception e) {
+					Log.e("OTR","could not gen local key pair",e);
 				}
             	
             	
@@ -832,4 +864,56 @@ public class AccountActivity extends Activity {
     	
     	return out.toString();
     }
+    
+private Locale[] locales;
+    
+    private void showLocaleDialog ()
+    {
+    	AlertDialog.Builder ad = new AlertDialog.Builder(this);
+    	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
+    	
+    	locales = Locale.getAvailableLocales();
+
+    	CharSequence[] langs = new CharSequence[locales.length];
+    	int i = 0;
+    	for (Locale locale : locales)
+    	{
+    		langs[i++] = locale.getDisplayName();
+    	}
+    	
+    	ad.setItems(langs, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setNewLocale(locales[which]);
+				
+			}
+		});
+    	
+    	AlertDialog alert = ad.create();
+    	alert.show();
+  	}
+    
+	private boolean setNewLocale(Locale locale) {
+		
+		
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+		Log.d(TAG,"locale = " + locale.getDisplayName());
+
+		SharedPreferences preferences = getSharedPreferences(WelcomeActivity.PREF_DEFAULT_LOCALE,
+	                Activity.MODE_PRIVATE);
+		
+		Editor prefEdit = preferences.edit();
+		
+		prefEdit.putString(WelcomeActivity.PREF_DEFAULT_LOCALE, locale.getISO3Language());
+		prefEdit.commit();
+		
+		Intent intent = getIntent();
+		finish();
+		startActivity(intent);
+		
+		return true;
+	}
 }

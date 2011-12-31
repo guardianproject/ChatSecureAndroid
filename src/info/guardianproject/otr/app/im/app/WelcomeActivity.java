@@ -16,6 +16,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.Locale;
+
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -56,6 +58,11 @@ public class WelcomeActivity extends Activity {
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
 
+    public final static String PREF_DEFAULT_LOCALE = "defLoc";
+
+    private Locale[] locales;
+    
+    
     static final String[] PROVIDER_PROJECTION = {
             Imps.Provider._ID,
             Imps.Provider.NAME,
@@ -272,9 +279,25 @@ public class WelcomeActivity extends Activity {
         	if (!mDidAutoLaunch)
         	{
         		mDidAutoLaunch = true;
-        		showWarning();
         		signInAll();
         		
+        	}
+        	else {
+        		
+        	final SharedPreferences preferences = getSharedPreferences(PREF_DEFAULT_LOCALE,
+      	                Activity.MODE_PRIVATE);
+      		  
+        	String defaultLocale = preferences.getString(PREF_DEFAULT_LOCALE, null);
+        	
+      	        if (defaultLocale != null) {
+      		
+      	        	setNewLocale(new Locale(defaultLocale));
+        		
+      	        }
+      	        else
+      	        {
+      	        	showLocaleDialog();
+      	        }
         	}
         	
         	
@@ -322,6 +345,10 @@ public class WelcomeActivity extends Activity {
             case R.id.menu_about:
                 finish();
                 showAbout();
+                return true;
+            
+            case R.id.menu_locale:
+                showLocaleDialog();
                 return true;
 
         }
@@ -429,11 +456,6 @@ public class WelcomeActivity extends Activity {
         }
     }
     
-    private void showWarning ()
-    {
-        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_SHORT).show();
-    }
-    
     private void showAbout ()
     {
     	//TODO implement this about form
@@ -517,6 +539,56 @@ public class WelcomeActivity extends Activity {
         }
     }
 
+    private void showLocaleDialog ()
+    {
+    	AlertDialog.Builder ad = new AlertDialog.Builder(this);
+    	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
+    	
+    	locales = Locale.getAvailableLocales();
+
+    	CharSequence[] langs = new CharSequence[locales.length];
+    	int i = 0;
+    	for (Locale locale : locales)
+    	{
+    		langs[i++] = locale.getDisplayName();
+    	}
+    	
+    	ad.setItems(langs, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				setNewLocale(locales[which]);
+				
+			}
+		});
+    	
+    	AlertDialog alert = ad.create();
+    	alert.show();
+  	}
+    
+	private boolean setNewLocale(Locale locale) {
+		
+		
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+		Log.d(TAG,"locale = " + locale.getDisplayName());
+
+		SharedPreferences preferences = getSharedPreferences(PREF_DEFAULT_LOCALE,
+	                Activity.MODE_PRIVATE);
+		
+		Editor prefEdit = preferences.edit();
+		
+		prefEdit.putString(PREF_DEFAULT_LOCALE, locale.getISO3Language());
+		prefEdit.commit();
+		
+		Intent intent = getIntent();
+		finish();
+		startActivity(intent);
+		
+		return true;
+	}
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
