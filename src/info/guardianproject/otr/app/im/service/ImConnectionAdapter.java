@@ -385,7 +385,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     session.sendPostponedMessages();
                 }
                 
-                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
+//                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
 
                 
             } else if (state == ImConnection.LOGGING_OUT) {
@@ -405,7 +405,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     mChatSessionManager.closeAllChatSessions();
                 }
 
-                mService.getStatusBarNotifier().notifyDisconnected(mProviderId, mAccountId);
+   //             mService.getStatusBarNotifier().notifyDisconnected(mProviderId, mAccountId);
 
                 mConnectionState = state;
             } else if(state == ImConnection.SUSPENDED && error != null) {
