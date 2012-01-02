@@ -1,253 +1,337 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="ro_perm_label">قراءة الرسائل الفورية</string>
-    <string name="ro_perm_desc">يسمح للتطبيقات لقراءة البيانات من مزود محتوى الرسائل الفورية.</string>
-    <string name="wo_perm_label">كتابة رسائل فورية</string>
-    <string name="wo_perm_desc">يسمح للتطبيقات لكتابة البيانات إلى مزود محتوى الرسائل الفورية.</string>
-    <string name="landing_page_title">دردشة -- حدد حساب</string>
-    <string name="menu_add_account">إضافة حساب</string>
-    <string name="menu_edit_account">تحرير حساب</string>
-    <string name="menu_remove_account">إزالة حساب</string>
-    <string name="menu_sign_out_all">الخروج من جميع</string>
-    <string name="choose_account_title">دردشة -- حدد حساب</string>
-    <string name="menu_cancel_signin">إلغاء اتفاقية الخدمة</string>
-    <string name="menu_add_contact">إضافة اسم</string>
-    <string name="menu_remove_contact">حذف الاتصال</string>
-    <string name="menu_block_contact">كتلة الاتصال</string>
-    <string name="menu_view_blocked">حظر</string>
-    <string name="menu_view_accounts">قائمة الحساب</string>
-    <string name="menu_settings">إعدادات</string>
-    <string name="menu_search_contacts">البحث الاتصالات</string>
-    <string name="menu_start_chat">تبدأ الدردشة</string>
-    <string name="menu_sign_out">تسجيل الخروج</string>
-    <string name="menu_view_profile">تحقق</string>
-    <string name="menu_otr_start">بدء التشفير</string>
-    <string name="menu_otr_stop">وقف التشفير</string>
-    <string name="menu_clear_chat">واضح دردشة</string>
-    <string name="menu_end_conversation">نهاية دردشة</string>
-    <string name="menu_view_contact_list">قائمة الاتصال</string>
-    <string name="menu_switch_chats">دردشات التبديل</string>
-    <string name="menu_insert_smiley">إدراج مبتسم</string>
-    <string name="menu_scan">مسح بصمات الأصابع</string>
-    <string name="menu_fingerprint">البصمة الخاصة بك</string>
-    <string name="menu_verify">تحقق من البصمات</string>
-    <string name="menu_plus">القائمة + "</string>
-    <string name="default_input_title">مساهمة</string>
-    <string name="confirm">تأكيد</string>
-    <string name="signout_all_confirm_message">هل تريد الخروج من جميع الخدمات؟</string>
-    <string name="ok">موافق</string>
-    <string name="cancel">إلغاء</string>
-    <string name="yes">موافق</string>
-    <string name="no">إلغاء</string>
-    <string name="signed_out_prompt_with_error">لقد تم إخراجك من<xliff:g id="account">٪ 1 $ ق</xliff:g>لأن<xliff:g id="reason">٪ 2 $ ليالي</xliff:g>.</string>
-    <string name="label_username">المستخدم @ المضيف</string>
-    <string name="label_password">Password:</string>
-    <string name="remember_password">تذكر كلمة السر الخاصة بي.</string>
-    <string name="keep_me_signed_in">تسجيل دخولي تلقائيا.</string>
-    <string name="sign_up">Don\u2019t لديك حساب؟</string>
-    <string name="check_auto_sign_in">هذا الخيار علامات تلقائيا في كل مرة تفتح فيها هذا التطبيق. لتعطيل الخيار ، تسجيل الخروج ، ثم مسح \ "قم لي في automatically\" خانة الاختيار.</string>
-    <string name="sign_in">تسجيل الدخول</string>
-    <string name="signing_in_to">الحصول على Gibberbot ذاهب...</string>
-    <string name="signing_in_wait">توقيع in\u2026</string>
-    <string name="bg_data_prompt_title">البيانات الأساسية المعوقين</string>
-    <string name="bg_data_prompt_ok">تمكين</string>
-    <string name="bg_data_prompt_cancel">استقال</string>
-    <string name="subscriptions">دعوات صديق</string>
-    <string name="empty_contact_group">فارغة</string>
-    <string name="empty_conversation_group">لا توجد محادثات</string>
-    <string name="contacts_picker_title">حدد الاتصال (ق) للدعوة</string>
-    <string name="contact_filter_hint">العثور على نوع الاتصال</string>
-    <string name="empty_contact_list">لم يتم العثور على الاتصالات.</string>
-    <string name="no_blocked_contact">لا توجد أسماء محظورة.</string>
-    <string name="contact_profile_title">الاتصال الشخصي</string>
-    <string name="label_status">Status:</string>
-    <string name="label_client_type">العميل type:</string>
-    <string name="client_type_computer">الكمبيوتر</string>
-    <string name="client_type_mobile">المحمول</string>
-    <string name="presence_available">على الانترنت</string>
-    <string name="presence_busy">مشغول</string>
-    <string name="presence_away">بعيدا</string>
-    <string name="presence_idle">خامل</string>
-    <string name="presence_offline">حاليا</string>
-    <string name="presence_invisible">الظهور دون اتصال</string>
-    <string name="data_channel_label">بيانات القناة</string>
-    <string name="data_encoding_label">تشفير البيانات</string>
-    <string name="cir_channel_label">قناة سي آي آر</string>
-    <string name="host_label">استضافة</string>
-    <string name="msisdn_label">MSISDN</string>
-    <string name="http">النص المتشعب</string>
-    <string name="sms">الرسائل القصيرة</string>
-    <string name="tcp">برنامج التعاون الفني</string>
-    <string name="xml">إكس إم إل</string>
-    <string name="wbxml">WBXML</string>
-    <string name="save">حفظ</string>
-    <string name="me">لي</string>
-    <string name="compose_hint">اكتب لإنشاء</string>
-    <string name="send">إرسال</string>
-    <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
-    <string name="disconnected_warning">فقد الاتصال بالخادم. وسوف ترسل رسائل عندما عبر الإنترنت.</string>
-    <string name="select_link_title">حدد الارتباط</string>
-    <string name="empty_chat_list">لا محادثات نشطة.</string>
-    <string name="add_contact_title">إضافة اسم</string>
-    <string name="input_contact_label">عنوان البريد الإلكتروني من شخص كنت ترغب في invite:</string>
-    <string name="choose_list_label">اختيار list:</string>
-    <string name="invite_instruction">اكتب اسما لإضافة من الأسماء.</string>
-    <string name="invite_label">إرسال دعوة</string>
-    <string name="setting_title">الإعدادات العامة</string>
-    <string name="hide_offline_contacts">الاتصالات إخفاء حاليا</string>
-    <string name="notification_group_title">إعدادات الإخطار</string>
-    <string name="notification_enabled_title">الإخطارات الدردشة</string>
-    <string name="notification_enabled_summary">يخطر في شريط الحالة عند وصول الرسائل الفورية</string>
-    <string name="notification_vibrate_title">تذبذب</string>
-    <string name="notification_vibrate_summary">يهتز أيضا عند وصول الرسائل الفورية</string>
-    <string name="notification_sound_title">الصوت</string>
-    <string name="notification_sound_summary">كما يلعب النغمة عندما يصل الدردشة</string>
-    <string name="notification_ringtone_title">حدد النغمة</string>
-    <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
-    <string name="accept_invitation">قبول</string>
-    <string name="decline_invitation">انخفاض</string>
-    <string name="approve_subscription">قبول</string>
-    <string name="decline_subscription">انخفاض</string>
-    <string name="notify_groupchat_label">مجموعة دعوة دردشة</string>
-    <string name="group_chat_invite_notify_text">مجموعة جديدة من دعوة دردشة<xliff:g id="user">ق ٪</xliff:g>
-    </string>
-    <string name="perm_label">بدء تشغيل خدمة المراسلة الفورية</string>
-    <string name="perm_desc">يسمح للتطبيقات لبدء تشغيل خدمة الدردشة عن طريق القصد.</string>
-    <string name="error">الاهتمام</string>
-    <string name="add_list_failed">لم يتم إضافة القائمة.</string>
-    <string name="block_contact_failed">وكان لا يتم حظر الاتصال.</string>
-    <string name="unblock_contact_failed">لم يكن الافراج الاتصال.</string>
-    <string name="select_contact">الرجاء تحديد أول اتصال.</string>
-    <string name="disconnected">قطع! \n</string>
-    <string name="service_error">خدمة خطأ!</string>
-    <string name="load_contact_list_failed">لم يتم تحميل قائمة الاتصال.</string>
-    <string name="cant_connect_to_server">لا يمكن الاتصال بالخادم. يرجى التحقق من اتصالك.</string>
-    <string name="contact_not_loaded">الرجاء الانتظار بينما يقوم بتحميل قائمة الاتصال الخاصة بك.</string>
-    <string name="network_error">حدث خطأ في الشبكة.</string>
-    <string name="service_not_support">الخادم لا يدعم هذه الوظيفة.</string>
-    <string name="invalid_password">كلمة السر التي أدخلتها غير صالحة.</string>
-    <string name="internal_server_error">واجه الخادم خطأ.</string>
-    <string name="not_implemented">الخادم لا يدعم هذه الوظيفة.</string>
-    <string name="service_unavaiable">الملقم غير متوفر حاليا.</string>
-    <string name="timeout">انتهت مهلة للخادم.</string>
-    <string name="version_not_supported">الخادم لا يدعم الإصدار الحالي.</string>
-    <string name="message_queue_full">قائمة انتظار الرسائل ممتلئ.</string>
-    <string name="domain_not_supported">الخادم لا يدعم إعادة توجيه إلى المجال.</string>
-    <string name="unknown_user">لم يتم التعرف على اسم المستخدم الذي أدخلته.</string>
-    <string name="recipient_blocked_the_user">عذرا ، يتم حظر لك من قبل المستخدم.</string>
-    <string name="session_expired">انتهت الدورة ، الرجاء تسجيل الدخول مرة أخرى.</string>
-    <string name="forced_logout">كنت قد وقعت في من عميل آخر.</string>
-    <string name="already_logged_in">كنت قد وقعت بالفعل في من عميل آخر.</string>
-    <string name="msisdn_error">عذرا ، لا يمكن أن يقرأ رقم الهاتف من البطاقة. يرجى الاتصال بمشغل الشبكة للحصول على مساعدة.</string>
-    <string name="not_signed_in">أنت لست وقعت فيها.</string>
-    <string-array name="default_smiley_names">
-        <item>سعيد</item>
-        <item>حزين</item>
-        <item>الرمش</item>
-        <item>اللسان تخرج</item>
-        <item>مندهش</item>
-        <item>تقبيل</item>
-        <item>صراخ</item>
-        <item>بارد</item>
-        <item>المال الفم</item>
-        <item>قدم في الفم</item>
-        <item>بالحرج</item>
-        <item>ملاك</item>
-        <item>بعد</item>
-        <item>بكاء</item>
-        <item>شفاه مغلقة</item>
-        <item>يضحك</item>
-        <item>الخلط</item>
-    </string-array>
-    <string-array name="smiley_names">
-        <item>سعيد</item>
-        <item>حزين</item>
-        <item>الرمش</item>
-        <item>اللسان تخرج</item>
-        <item>مندهش</item>
-        <item>تقبيل</item>
-        <item>صراخ</item>
-        <item>بارد</item>
-        <item>المال الفم</item>
-        <item>قدم في الفم</item>
-        <item>بالحرج</item>
-        <item>ملاك</item>
-        <item>بعد</item>
-        <item>بكاء</item>
-        <item>شفاه مغلقة</item>
-        <item>يضحك</item>
-        <item>الخلط</item>
-    </string-array>
-    <string name="check_save_password">للأمن الخاص ، وإذا فقدت أو سرقت الهاتف ، انتقل إلى موقع ويب على جهاز الكمبيوتر الخاص بك وتغيير كلمة السر الخاصة بك.</string>
-    <string name="menu_contact_list">قائمة الاتصال</string>
-    <string name="menu_view_encrypt_chat">تشفير On/Off</string>
-    <string name="use_tor">تواصل عبر تور (يتطلب التطبيق Orbot)</string>
-    <string name="app_name">Gibberbot</string>
-    <string name="welcome_first">أول مرة باستخدام Gibberbot؟</string>
-    <string name="welcome_skip">Can\'t الانتظار للحصول على فقط؟</string>
-    <string name="welcome_about">حول Gibberbot</string>
-    <string name="welcome_account">إعداد الحساب</string>
-    <string name="about_welcome_title">مرحبا بكم في Gibberbot</string>
-    <string name="about_welcome">Gibberbot هو التطبيق الفوري المحمول الرسائل التي توفر ميزات الأمان الإضافية التي تمنع الآخرين من التطفل على المحادثات الخاصة بك والتطبيق communications.\n\nThe تدعم أي خدمة الدردشة التي تستخدم بروتوكول XMPP أو الثرثار ، مثل غوغل أو [غتلك Jabber.org.</string>
-    <string name="about_otr_title">كيف هو آمن؟</string>
-    <string name="about_otr">\'Off النشر لMessaging \'هو نظام أمان تم تصميمها لتمكين الخصوصية عن طريق محاكاة الخصائص المميزة للمحادثة خاصة في العالم الحقيقي ، بما في ذلك التشفير ، والتوثيق ، وإعادة توجيه الإنكار Secrecy.\n\nThe وتر ببروتوكول متوافق مع سطح المكتب دردشة العملاء مثل Adiumأو بجين.</string>
-    <string name="about_security_title">ودردشات بلدي الآمنة؟</string>
-    <string name="about_security">Gibberbot\ ميزة للتشفير قنوات لا تعمل إلا عندما المراسلة مع الآخرين باستخدام التطبيق أو البرنامج متوافق ، لذا يجب التأكد جهات الاتصال الخاصة بك تستخدم Gibberbot للجوال وAdium أو بجين لسطح المكتب. يمكنك ضبط بالضبط كيف ومتى Gibberbot محاولات لتشفير الدردشات في Accoتبدأ ليالي Settings.\n\nLet\ الاتحاد الوطني للعمال!</string>
-    <string name="setup_passphrase_title">كلمة المرور الإعداد</string>
-    <string name="setup_passphrase">قبل أن تبدأ الرجاء اختيار كلمة المرور آمن لحماية البيانات من الوصول Gibberbot ظالم.</string>
-    <string name="setup_passphrase_label1">Passphrase:</string>
-    <string name="setup_passphrase_label2">كلمة المرور (مرة أخرى) :</string>
-    <string name="account_setup_acct_subtitle">حساب</string>
-    <string name="account_setup_acct_acctname_title">اسم الحساب</string>
-    <string name="account_setup_acct_acctname_sub">اسم العرض لهذا الحساب</string>
-    <string name="account_setup_acct_username_title">اسم المستخدم (دخول)</string>
-    <string name="account_setup_acct_username_sub">Format: host:port المستخدم @</string>
-    <string name="account_setup_acct_password_title">كلمة السر</string>
-    <string name="account_setup_acct_password_sub">كلمة السر للمصادقة</string>
-    <string name="account_setup_pers_sub">إصرار</string>
-    <string name="account_setup_pers_pw_title">تذكر كلمة المرور</string>
-    <string name="account_setup_pers_pw_on">كلمة السر مؤقتا</string>
-    <string name="account_setup_pers_pw_off">كلمة السر مؤقتا لا</string>
-    <string name="account_setup_pers_auto_title">تسجيل الدخول تلقائيا</string>
-    <string name="account_setup_pers_auto_on">تواصل Gibberbot في البدء</string>
-    <string name="account_setup_pers_auto_off">Don\'t تواصل Gibberbot في البدء</string>
-    <string name="account_setup_pers_now_title">تسجيل الدخول الآن</string>
-    <string name="account_setup_pers_now_on">تواصل التالية إعداد حساب</string>
-    <string name="account_setup_pers_now_off">Don\'t تواصل التالية إعداد حساب</string>
-    <string name="account_setup_personal_sub">شخصية (اختياري)</string>
-    <string name="account_setup_personal_alias_title">حساب الاسم المستعار (الاسم)</string>
-    <string name="account_setup_personal_alias_sub">كيف حسابك تظهر على الانترنت</string>
-    <string name="account_setup_personal_profile_title">الملف الشخصي</string>
-    <string name="account_setup_personal_profile_sub">دعاية مغالى فيها موجزة عن نفسك</string>
-    <string name="account_setup_advanced_sub">متقدم</string>
-    <string name="account_setup_advanced_enc_force">قوة التشفير / مشفر رفض</string>
-    <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، دردشات تشفير تلقائيا</string>
-    <string name="account_setup_advanced_enc_req">دردشات تشفير على النحو المطلوب</string>
-    <string name="account_setup_advanced_enc_off">تعطيل الدردشة التشفير</string>
-    <string name="account_setup_signin_a">التحقق من صحة وثائق التفويض...</string>
-    <string name="account_setup_signin_b">توليد keypair...</string>
-    <string name="account_setup_signin_c">توقيع ب...</string>
-    <string name="account_setup_error_validating">واجه Gibberbot خطأ أثناء التحقق من صحة اسم المستخدم أو كلمة السر -- يرجى التحقق منها وحاول مرة أخرى.</string>
-    <string name="account_setup_error_keypair">واجه Gibberbot خطأ أثناء توليد keypair.</string>
-    <string name="account_setup_error_server">واجه Gibberbot خطأ أثناء الاتصال خادم دردشة -- يرجى التأكد من التكوين الخاص بك وحاول مرة أخرى.</string>
-    <string name="account_setup_error_connectivity">واجه Gibberbot خطأ أثناء الاتصال -- يرجى doublecheck اتصال الشبكة وحاول مرة أخرى.</string>
-    <string name="label_fingerprint_remote">من بصمات الأصابع</string>
-    <string name="label_fingerprint_local">البصمة الخاصة بك</string>
-    <string name="menu_sign_in">تسجيل الدخول</string>
-    <string name="menu_gen_key">مغذي الرئيسية</string>
-    <string name="error_suspended_connection">فقد Gibberbot اتصال إلى شبكة</string>
-    <string name="error_reestablish_connection">Gibberbot تحاول restablish اتصال</string>
-    <string name="otr_session_status_plaintext">Warning: هذه الدردشة غير مشفرة</string>
-    <string name="otr_session_status_encrypted">هذه الدردشة آمنة ولكن لا يكون التحقق من هويات المشاركين تم</string>
-    <string name="otr_session_status_finished">تم إيقاف Warning: التشفير الدردشة.</string>
-    <string name="otr_session_status_verified">هذه الدردشة هو المضمون والتحقق منها</string>
-    <string name="account_wizard_setup_title">حساب معالج</string>
-    <string name="account_wizard_account_title">رقم حسابك</string>
-    <string name="account_wizard_host_title">تكوين ملقم</string>
-    <string name="account_wizard_ready_title">هل أنت مستعد؟</string>
-    <string name="account_wizard_setup_body">أدخل رقم حسابك لتكوين تلقائيا Gibberbot لك دردشة service.\n\nIt ربما يبدو مثل عنوان بريد إلكتروني -- حتى yourname@gmail.com ، أو someone@jabber.org ، على سبيل المثال.</string>
-    <string name="account_wizard_account_body">الرجاء إدخال رقم حسابك (اسم المستخدم @ المضيف) :</string>
-    <string name="account_wizard_host_body">الرجاء إدخال أو تحرير jabber/xmpp الدردشة المضيف الملقم ورقم المنفذ (5222 هو الافتراضي).</string>
-    <string name="account_wizard_ready_body">تم تكوين Gibberbot ، والآن حان الوقت للتواصل لخدمة الخاص ، والبدء في الدردشة بسلام وأمان والقطاع الخاص!</string>
-    <string name="signin_password_prompt">أدخل password: الخاص</string>
+  <string name="ro_perm_label">قراءة الرسائل الفورية</string>
+  <string name="ro_perm_desc">يسمح للتطبيقات لقراءة البيانات من مزود محتوى الرسائل الفورية.</string>
+  <string name="wo_perm_label">كتابة رسائل فورية</string>
+  <string name="wo_perm_desc">يسمح للتطبيقات لكتابة البيانات إلى مزود محتوى الرسائل الفورية.</string>
+  <string name="im_label">جيبربوت</string>
+  <string name="landing_page_title">دردشة -- حدد حساب</string>
+  <string name="menu_about">عن جيبربوت</string>
+  <string name="menu_add_account">إضافة حساب</string>
+  <string name="menu_edit_account">تحرير حساب</string>
+  <string name="menu_remove_account">إزالة حساب</string>
+  <string name="menu_sign_out_all">الخروج من الجميع</string>
+  <string name="choose_account_title">دردشة -- حدد حساب</string>
+  <string name="conversations"></string>
+  <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
+  <string name="menu_add_contact">إضافة اسم</string>
+  <string name="menu_remove_contact">حذف الاتصال</string>
+  <string name="menu_block_contact">حجب الاتصال</string>
+  <string name="menu_view_blocked">محجوب</string>
+  <string name="menu_view_accounts"> الحساب</string>
+  <string name="menu_new_chat">محادثة جديدة</string>
+  <string name="menu_settings">إعدادات</string>
+  <string name="menu_search_contacts">ابحث بالأسماء</string>
+  <string name="menu_start_chat">إبدأ الدردشة</string>
+  <string name="menu_sign_out">تسجيل الخروج</string>
+  <string name="menu_view_profile">تحقق</string>
+  <string name="menu_otr_start">بدء التشفير</string>
+  <string name="menu_otr_stop">وقف التشفير</string>
+  <string name="menu_clear_chat">امسح سجل المحادثة</string>
+  <string name="menu_end_conversation">نهاية دردشة</string>
+  <string name="menu_view_contact_list">قائمة الاتصال</string>
+  <string name="menu_invite_contact">دعوة</string>
+  <string name="menu_switch_chats">انتقل بين المحادثات</string>
+  <string name="menu_insert_smiley">أدخل ابتسامة</string>
+  <string name="menu_scan">مسح بصمة المفتاح</string>
+  <string name="menu_fingerprint">البصمة الخاصة بمفتاحك</string>
+  <string name="menu_verify">تحقق من البصمات</string>
+  <string name="menu_plus">القائمة + \"</string>
+  <string name="confirm">تأكيد</string>
+  <string name="signout_all_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات؟</string>
+  <string name="confirm_delete_contact"> سيتم حذف<xliff:g id="user">%1$s</xliff:g></string>
+  <string name="confirm_block_contact">سيتم حجب <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="ok">موافق</string>
+  <string name="cancel">إلغاء</string>
+  <string name="yes">موافق</string>
+  <string name="no">إلغاء</string>
+  <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
+  <string name="signed_out_prompt_with_error">لقد تم إخراجك من <xliff:g id="account">%1$s</xliff:g> لأن <xliff:g id="reason">%2$s</xliff:g>.</string>
+  <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
+  <string name="label_username">المستخدم @ المضيف</string>
+  <string name="label_password">كلمة السر:</string>
+  <string name="remember_password">تذكر كلمة السر الخاصة بي.</string>
+  <string name="keep_me_signed_in">تسجيل دخولي تلقائيا.</string>
+  <string name="sign_up">ليس لديك حساب؟</string>
+  <string name="check_save_password">لأمنك الخاص ، وإذا فقد أو سرق هاتفك ، انتقل إلى الموقع على جهاز الكمبيوتر الخاص بك و غير كلمة السر الخاصة بك.</string>
+  <string name="check_auto_sign_in">هذا الخيار يقوم بتسجيل الدخول تلقائياً كل مرة تفتح فيها هذا التطبيق. لتعطيل الخيار ،قم بتسجيل الخروج ثم امسح اختيار تسجيل الدخول التلقائي.</string>
+  <string name="sign_in">تسجيل الدخول</string>
+  <string name="signing_in_to">انطلق يا جيبربوت!</string>
+  <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
+  <string name="bg_data_prompt_title">تم تعطيل البيانات الخلفية</string>
+  <string name="bg_data_prompt_message">⏎ <xliff:g id="provider">%1$s</xliff:g> يحتاج لمعلومات خلفية ليتم التفعيل. ⏎ </string>
+  <string name="bg_data_prompt_ok">تمكين</string>
+  <string name="bg_data_prompt_cancel">خروج</string>
+  <string name="ongoing_conversation">المحادثات الصادرة (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$s</xliff:g> متصل</string>
+  <string name="subscriptions">دعوات الإضافة</string>
+  <string name="unknown_contact"></string>
+  <string name="empty_contact_group">فارغة</string>
+  <string name="empty_conversation_group">لا توجد محادثات</string>
+  <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
+  <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
+  <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.</string>
+  <string name="blocked_list_title">الأسماء المحجوبة <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">لا توجد أسماء محظورة.</string>
+  <string name="contact_profile_title">معلومات جهة الاتصال</string>
+  <string name="label_status">الحالة:</string>
+  <string name="label_client_type">نوعية العميل:</string>
+  <string name="client_type_computer">الكمبيوتر</string>
+  <string name="client_type_mobile">جوال</string>
+  <string name="presence_available">متصل</string>
+  <string name="presence_busy">مشغول</string>
+  <string name="presence_away">بعيدا</string>
+  <string name="presence_idle">خامل</string>
+  <string name="presence_offline">غير متصل</string>
+  <string name="presence_invisible">الظهور دون اتصال</string>
+  <string name="preference_title">إعدادات <xliff:g id="provider">%1$s</xliff:g> (للمطورين فقط)</string>
+  <string name="data_channel_label">قناة البيانات</string>
+  <string name="data_encoding_label">ترميز البيانات</string>
+  <string name="cir_channel_label">قناة سي آي آر</string>
+  <string name="host_label">العنوان</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">الرسائل القصيرة</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">إكس إم إل</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">حفظ</string>
+  <string name="chat_with">تحدث مع <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="me">أنا</string>
+  <string name="compose_hint">اكتب</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> متصل</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> بالخارج</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> مشغول</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> غير متصل.</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> قام بالدخول</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> قام بالخروج</string>
+  <string name="time_stamp"></string>
+  <string name="send">إرسال</string>
+  <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
+  <string name="disconnected_warning">فقد الاتصال بمزود الخدمة. سوف ترسل الرسائل عندما يعود الاتصال.</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> غير موجود بقائمة الأسماء لديك.</string>
+  <string name="select_link_title">حدد الرابط</string>
+  <string name="empty_chat_list">لا توجد محادثات حالياً.</string>
+  <string name="add_contact_title">إضافة اسم</string>
+  <string name="input_contact_label">عنوان البريد الإلكتروني للشخص الذي ترغب بإضافته:</string>
+  <string name="choose_list_label">إختر قائمة:</string>
+  <string name="invite_instruction">اكتب اسماً لإضافته من قائمة الأسماء.</string>
+  <string name="invite_label">إرسال دعوة</string>
+  <string name="provider_full_name_xmpp">جابر\ إكس أم بي بي</string>
+  <string name="account_setup_title">إعداد الحساب</string>
+  <string name="encryption_and_anonymity_title">التشفير و الخصوصية</string>
+  <string name="hide_offline_contacts">اخفاء الأسماء الغير متصلة بالشبكة</string>
+  <string name="notification_group_title">إعدادات التنبيهات</string>
+  <string name="notification_enabled_title">تنبيهات المحادثة</string>
+  <string name="notification_enabled_summary">قم بالتنبيه بشريط التنبيه العلوي عندما تصل رسالة</string>
+  <string name="notification_vibrate_title">اهتز</string>
+  <string name="notification_vibrate_summary">اهتز أيضا عند وصول الرسائل الفورية</string>
+  <string name="notification_sound_title">الصوت</string>
+  <string name="notification_sound_summary">كما يلعب النغمة عندما يصل الدردشة</string>
+  <string name="notification_ringtone_title">حدد النغمة</string>
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لمحادثة جماعية.</string>
+  <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
+  <string name="accept_invitation">قبول</string>
+  <string name="decline_invitation">انخفاض</string>
+  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لتكون بقائمة أسمائه.</string>
+  <string name="approve_subscription">قبول</string>
+  <string name="decline_subscription">انخفاض</string>
+  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
+  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
+  <string name="newMessages_label">رسائل جديدة من <xliff:g id="provider">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> محادثة جديدة</string>
+  <string name="subscription_notify_text"> دعوة إضافة جديدة من <xliff:g id="user">%s</xliff:g></string>
+  <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
+  <string name="group_chat_invite_notify_text">دعوة محادثة جماعية من <xliff:g id="user">%s</xliff:g></string>
+  <string name="add_contact_success">تمت إضافة \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="delete_contact_success">تم حذف \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="block_contact_success">تم حجب \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="unblock_contact_success">أزيل الحجب عن \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="perm_label">بدء تشغيل خدمة المراسلة الفورية</string>
+  <string name="perm_desc">يسمح للتطبيقات ببدء تشغيل خدمة المحادثة عن طريق الIntent.</string>
+  <string name="error">انتباه</string>
+  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى <xliff:g id="service">%1$s</xliff:g> . حاول مرة أخرى لاحقاً. التفاصيل:    <xliff:g id="description">%2$s</xliff:g>
+</string>
+  <string name="add_list_failed">لم يتم إضافة القائمة.</string>
+  <string name="block_contact_failed">لم يتم حظر جهة الاتصال</string>
+  <string name="unblock_contact_failed">لم تتم إزالة الحظر عن جهة الاتصال</string>
+  <string name="select_contact">اختر جهة إتصال أولاً</string>
+  <string name="disconnected">قطع الاتصال!</string>
+  <string name="service_error">خطأ بالخدمة!</string>
+  <string name="load_contact_list_failed">لم يتم تحميل قائمة الاتصال.</string>
+  <string name="cant_connect_to_server">لا يمكن الاتصال بالموقع. يرجى التحقق من اتصالك.</string>
+  <string name="contact_already_exist"><xliff:g id="user">%1$s</xliff:g> موجود بقائمة الأسماء لديك.</string>
+  <string name="contact_blocked">تم حجب \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="contact_not_loaded">الرجاء الانتظار بينما نقوم بتحميل قائمة الاتصال الخاصة بك.</string>
+  <string name="network_error">حدث خطأ في الشبكة.</string>
+  <string name="service_not_support">الموقع لا يدعم هذه الوظيفة.</string>
+  <string name="invalid_password">كلمة السر التي أدخلتها غير صالحة.</string>
+  <string name="internal_server_error">حصل خطأ بالموقع</string>
+  <string name="not_implemented">الموقع لا يدعم هذه الوظيفة.</string>
+  <string name="service_unavaiable">الموقع غير متوفر حاليا.</string>
+  <string name="timeout">لم يتم تنفيذ الطلب بالوقت المحدد</string>
+  <string name="version_not_supported">الموقع لا يدعم الإصدار الحالي.</string>
+  <string name="message_queue_full">قائمة انتظار الرسائل ممتلئة</string>
+  <string name="domain_not_supported">الموقع لا يدعم إعادة التوجيه لاسم النطاق</string>
+  <string name="unknown_user">لم يتم التعرف على اسم المستخدم الذي أدخلته.</string>
+  <string name="recipient_blocked_the_user">عذرا ، تم حظر لك من قبل هذا المستخدم.</string>
+  <string name="session_expired">انتهت فترة الاتصال، الرجاء تسجيل الدخول مرة أخرى.</string>
+  <string name="forced_logout">قمت بتسجيل الدخول ببرنامج آخر</string>
+  <string name="already_logged_in">لقد قمت بتسجيل الدخول من برنامج آخر</string>
+  <string name="msisdn_error">عذرا ، تعذرت قراءة رقم الهاتف من البطاقة. يرجى الاتصال بمشغل الشبكة للحصول على مساعدة.</string>
+  <string name="not_signed_in">لم تقم بتسجيل الدخول</string>
+  <string name="general_error">رمز الخطأ: <xliff:g id="code">%1$d</xliff:g></string>
+  <string-array name="default_smiley_names"><item>سعيد</item>
+<item>حزين</item>
+<item>الرمش</item>
+<item>اللسان تخرج</item>
+<item>مندهش</item>
+<item>تقبيل</item>
+<item>صراخ</item>
+<item>بارد</item>
+<item>المال الفم</item>
+<item>قدم في الفم</item>
+<item>بالحرج</item>
+<item>ملاك</item>
+<item>بعد</item>
+<item>بكاء</item>
+<item>شفاه مغلقة</item>
+<item>يضحك</item>
+<item>الخلط</item>
+</string-array>
+  <string-array name="default_smiley_texts"></string-array>
+  <string-array name="smiley_names"><item>سعيد</item>
+<item>حزين</item>
+<item>الرمش</item>
+<item>اللسان تخرج</item>
+<item>مندهش</item>
+<item>تقبيل</item>
+<item>صراخ</item>
+<item>بارد</item>
+<item>المال الفم</item>
+<item>قدم في الفم</item>
+<item>بالحرج</item>
+<item>ملاك</item>
+<item>بعد</item>
+<item>بكاء</item>
+<item>شفاه مغلقة</item>
+<item>يضحك</item>
+<item>الخلط</item>
+</string-array>
+  <string-array name="smiley_texts"></string-array>
+  <string name="buddy_list_title">قائمة الاتصال - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_contact_list">قائمة الاتصال</string>
+  <string name="menu_view_encrypt_chat">تشفير On/Off</string>
+  <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">هل هذه أول مرة تستخدم بها جيبربوت؟</string>
+  <string name="welcome_skip">غير قادر على الانتظار؟</string>
+  <string name="welcome_about">إبدأ</string>
+  <string name="welcome_account">إعداد الحساب</string>
+  <string name="about_welcome_title">عن جيبربوت</string>
+  <string name="about_welcome">جيبربوت هو تطبيق للرسائل الفورية يقوم بتوفير مميزات أمنية كثيرة تمنع الآخرين من التنصت على محادثاتك و اتصالاتك. يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك.</string>
+  <string name="about_otr_title">ما هي المميزات الأمنية؟</string>
+  <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة و ضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك و أمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر. </string>
+  <string name="about_security_title">هل محادثاتي آمنة؟</string>
+  <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل) ، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهة. 
+
+هل أنت جاهز للتحدث بكامل الخصوصية و الأمان؟ هيا بنا!</string>
+  <string name="setup_passphrase_title">إعداد كلمة السر</string>
+  <string name="setup_passphrase">قبل أن نبدأ باستخدام جيبربوت، يرجى إدخال كلمة سر آمنة و محكمة حتى تمنع الدخول غير المصرح به على بيانات جيبربوت لديك.</string>
+  <string name="setup_passphrase_label1">كلمة السر:</string>
+  <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
+  <string name="account_setup_example_email_address">الاسم@العنوان.كوم</string>
+  <string name="account_setup_password">كلمة السر</string>
+  <string name="account_setup_advanced_button">إعدادات الحساب المتقدمة</string>
+  <string name="account_setup_pers_sub">إصرار</string>
+  <string name="account_setup_pers_pw_title">تذكر كلمة المرور</string>
+  <string name="account_setup_pers_pw_on">تم حفظ كلمة السر مؤقتاً</string>
+  <string name="account_setup_pers_pw_off">لم يتم حفظ كلمة السر مؤقتاً</string>
+  <string name="account_setup_pers_auto_title">تسجيل الدخول تلقائيا</string>
+  <string name="account_setup_pers_auto_on">قم بالاتصال تلقائياً عند تشغيل جيبربوت</string>
+  <string name="account_setup_pers_auto_off">لا تقم بالاتصال تلقائياً عند تشغيل جيبربوت</string>
+  <string name="account_setup_pers_now_title">تسجيل الدخول الآن</string>
+  <string name="account_setup_pers_now_on">قم بالاتصال بعد الانتهاء من إعداد الحساب</string>
+  <string name="account_setup_pers_now_off">لا تقم بالاتصال تلقائياً بعد إعداد الحساب</string>
+  <string name="account_setup_personal_sub">معلومات شخصية (اختياري):</string>
+  <string name="account_setup_personal_alias_title">الاسم المستعار</string>
+  <string name="account_setup_personal_alias_sub">كيف تظهر حالة الحساب على الانترنت</string>
+  <string name="account_setup_personal_profile_title">الملف الشخصي</string>
+  <string name="account_setup_personal_profile_sub">نبذة موجزة عن نفسك</string>
+  <string name="account_setup_advanced_enc_force">أوجب استخدام التشفير، لا ترضى بالتحدث دون تشفير</string>
+  <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي</string>
+  <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
+  <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
+  <string name="account_setup_signin_a">التحقق من صحة البيانات...</string>
+  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية...</string>
+  <string name="account_setup_signin_c">تسجيل الدخول...</string>
+  <string name="account_setup_error_validating">واجه جيبربوت خطاً أثناء محاولة التحقق من البيانات، تأكد من صحتها ثم حاول مرة أخرى</string>
+  <string name="account_setup_error_keypair">حصل خطأ أثناء توليد زوج المفاتيح السرية.</string>
+  <string name="account_setup_error_server">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من إعدادات الاتصال ثم حاول مرة أخرى</string>
+  <string name="account_setup_error_connectivity">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من اتصالك بالانترنت ثم حاول مرة أخرى</string>
+  <string name="label_fingerprint_remote">بصمة مفتاح الطرف الآخر</string>
+  <string name="label_fingerprint_local">بصمة مفتاحك</string>
+  <string name="menu_sign_in">تسجيل الدخول</string>
+  <string name="menu_gen_key">أعد توليد المفتاح</string>
+  <string name="error_suspended_connection">تم فقد الاتصال بالشبكة</string>
+  <string name="error_reestablish_connection">نقوم الآن بمحاولة إعادة الاتصال</string>
+  <string name="otr_session_status_plaintext">تحذير: هذه المحادثة غير مشفرة</string>
+  <string name="otr_session_status_encrypted">هذه المحادثة مشفرة لكن لم يتم بعد التحقق من هويات المشاركين بها </string>
+  <string name="otr_session_status_finished">تحذير: تم إيقاف تشفير المحادثة</string>
+  <string name="otr_session_status_verified">هذه المحادثة مشفرة و قد تم التحقق من هويات المشاركين بها</string>
+  <string name="account_wizard_setup_title">المساعدة بإعداد الحساب</string>
+  <string name="account_wizard_account_title">رقم حسابك</string>
+  <string name="account_wizard_host_title">إعداد الموقع</string>
+  <string name="account_wizard_ready_title">هل أنت مستعد؟</string>
+  <string name="account_wizard_setup_body">أدخل رقم حسابك لتضبيط جيبربوت للاتصال بموقع المحادثة. رقم الحساب يشبه صيغة الايميل الالكتروني:</string>
+  <string name="account_wizard_account_body">الرجاء إدخال رقم حسابك (اسم المستخدم @ الموقع) :</string>
+  <string name="account_wizard_host_body">أدخل اسم موقع مقدم خدمة المحادثة و رقم المنفذ (رقم المنفذ الافتراضي هو 5222).</string>
+  <string name="account_wizard_ready_body">تم إعداد جيبربوت، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
+  <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
+  <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
+  <string name="signin_password_prompt">أدخل كلمة السر:</string>
+  <string name="pref_account_user"></string>
+  <string name="pref_account_pass"></string>
+  <string name="pref_account_domain"></string>
+  <string name="pref_account_xmpp_resource"></string>
+  <string name="pref_account_port"></string>
+  <string name="pref_account_server"></string>
+  <string name="pref_security_allow_plain_auth"></string>
+  <string name="pref_security_require_tls"></string>
+  <string name="pref_security_tls_cert_verify"></string>
+  <string name="pref_security_otr_mode"></string>
+  <string name="pref_security_use_tor"></string>
+  <string name="pref_security_do_dns_srv"></string>
+  <string name="pref_hide_offline_contacts"></string>
+  <string name="pref_enable_notification"></string>
+  <string name="pref_notification_vibrate"></string>
+  <string name="pref_notification_sound"></string>
+  <string name="pref_notification_ringtone"></string>
+  <string name="account_settings_title">إعدادات الحساب</string>
+  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من جيبربوت و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
+  <string name="menu_view_groups">المجموعات</string>
+  <string name="otr_gen_key">يتم إنشاء زوج من مفاتيح التشفير خارج السجل OTR</string>
+  <string name="search_label">اتصال</string>
+  <string name="search_hint">أدخل الاسم المراد التحدث معه</string>
+  <string name="search_button_text">انطلق</string>
+  <string name="menu_locale">اللغة</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">اللغات</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">أي لغة تريد أن تعرض في InTheClear ؟</string>
+  <string name="do_srv_lookup">تفقد سجل SRV</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">استخدم نظام الأسماء للبحث عن خادم أكس أم بي بي من اسم النطاق</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">اسمح بإرسال إسم المستخدم و كلمة السر دون حماية عند استخدام الاتصال غير المشفر</string>
+  <string name="allow_plain_text_auth">اسمح بالتحقق من الهوية دون تشفير</string>
+  <string name="verify_that_the_certificate_is_trusted">تأكد من صلاحية الشهادة الإلكترونية</string>
+  <string name="tls_verification">تأكيد TLS</string>
+  <string name="require_tls_ssl_connection">وجوب استخدام تشفير TLS/SSL</string>
+  <string name="transport_encryption">تشفير الاتصال</string>
+  <string name="how_encrypted_chats_are_started">كيف يتم ابتداء المحادثات المشفرة</string>
+  <string name="the_server_to_connect_to_if_needed">الموقع الذي يتم الاتصال به، إذا دعت الحاجة</string>
+  <string name="connect_server">موقع الاتصال</string>
+  <string name="tcp_port_for_xmpp_server">منفذ ال TCP  لخادم الإكس أم بي بي</string>
+  <string name="server_port">منفذ الموقع</string>
+  <string name="xmpp_resource">مصدر إكس أم بي بي XMPP</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ليتم تمييز هذا الاتصال من الاتصالات الأخرى التي سجلت الدخول</string>
 </resources>
