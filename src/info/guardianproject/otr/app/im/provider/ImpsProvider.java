@@ -36,10 +36,10 @@ import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import info.guardianproject.database.sqlcipher.SQLiteConstraintException;
-import info.guardianproject.database.sqlcipher.SQLiteDatabase;
-import info.guardianproject.database.sqlcipher.SQLiteOpenHelper;
-import info.guardianproject.database.sqlcipher.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
@@ -263,7 +263,7 @@ public class ImpsProvider extends ContentProvider {
         public SQLiteDatabase getReadableDatabase ()
         {
         	if (dbRead == null)
-        		 dbRead = super.getReadableDatabase(key);
+        		 dbRead = super.getReadableDatabase();
         	
         	return dbRead;
         }
@@ -271,7 +271,7 @@ public class ImpsProvider extends ContentProvider {
         public SQLiteDatabase getWritableDatabase ()
         {
         	if (dbWrite == null)
-        		dbWrite = super.getWritableDatabase(key);
+        		dbWrite = super.getWritableDatabase();
         	
         	return dbWrite;
         }
@@ -1058,7 +1058,7 @@ public class ImpsProvider extends ContentProvider {
         if (mDbHelper == null)
         {               
         	Context ctx =getContext();
-            SQLiteDatabase.loadLibs(ctx);
+           // SQLiteDatabase.loadLibs(ctx);
         	mDbHelper = new DatabaseHelper(ctx);
         }
         
