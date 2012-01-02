@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.5-RC5" android:versionCode="21">
-
+     android:versionName="0.0.6-alpha" android:versionCode="22">
+     
+    <supports-screens
+android:smallScreens="true"
+android:normalScreens="true"
+android:largeScreens="true"
+android:anyDensity="true"
+/>
 <uses-sdk android:minSdkVersion="4"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
@@ -35,11 +41,17 @@
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false">
+             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false"
+             android:configChanges="locale"
+         	
+             >
 
          <activity android:name=".app.WelcomeActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar"
-         	android:screenOrientation="portrait">
+         	android:screenOrientation="portrait"
+         	android:configChanges="locale"
+         	
+         	>
             
               <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,18 +62,38 @@
         <!-- Brian's NEW Activities -->
         <activity android:name=".ui.TabbedContainer"
         android:theme="@android:style/Theme.Black.NoTitleBar"
+        android:configChanges="locale"
+         	
         />
-        <activity android:name=".app.ChatListActivity"/>
-        <activity android:name=".app.ActiveChatListView"/>
+        <activity android:name=".app.ChatListActivity"
+            android:configChanges="locale"
+         	
+            />
+        <activity android:name=".app.ActiveChatListView"
+            android:configChanges="locale"
+         	
+            />
         
         
         
          <activity android:name=".ui.AboutActivity"
-         	android:theme="@android:style/Theme.Black.NoTitleBar" />
-                 <activity android:name=".ui.AccountWizardActivity"/>
+         	android:theme="@android:style/Theme.Black.NoTitleBar"
+         	android:configChanges="locale"
+         	
+         	 />
+                 <activity android:name=".ui.AccountWizardActivity"
+                     android:configChanges="locale"
+         	
+                     />
         
-        <activity android:name=".ui.AppPassphraseActivity"/>
-         <activity android:name=".ui.SettingsActivity"/>
+        <activity android:name=".ui.AppPassphraseActivity"
+            android:configChanges="locale"
+         	
+            />
+         <activity android:name=".ui.SettingsActivity"
+             android:configChanges="locale"
+         	
+             />
         
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
@@ -113,7 +145,10 @@
             android:grantUriPermissions="true" />
 
         <activity android:name=".app.ChooseAccountActivity"
-                android:theme="@android:style/Theme.NoDisplay">
+                android:theme="@android:style/Theme.NoDisplay"
+                android:configChanges="locale"
+         	
+                >
         </activity>
         
 <!-- 
@@ -152,7 +187,7 @@
 -->
 
         <activity android:name=".app.AccountActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="orientation|keyboardHidden|locale"
             android:windowSoftInputMode="stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -169,20 +204,27 @@
       
 
         <activity android:name=".app.SigningInActivity"
-            android:configChanges="orientation|keyboardHidden">
+            android:configChanges="orientation|keyboardHidden|locale"
+         	
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.SignoutActivity">
+        <activity android:name=".app.SignoutActivity"
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.ContactListActivity" android:launchMode="singleTop">
+        <activity android:name=".app.ContactListActivity" android:launchMode="singleTop"
+            
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -194,10 +236,13 @@
         </activity>
 
         <activity android:name=".app.AddContactActivity"
-            android:label="@string/add_contact_title"/>
+            android:label="@string/add_contact_title"
+            
+            android:configChanges="locale"
+            />
 
         <activity android:name=".app.NewChatActivity"
-                android:configChanges="orientation|keyboardHidden"
+                android:configChanges="orientation|keyboardHidden|locale"
                 android:windowSoftInputMode="stateUnchanged"
                   android:theme="@android:style/Theme.Black.NoTitleBar"
                 >
@@ -219,7 +264,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.ContactsPickerActivity" android:label="@string/contacts_picker_title">
+        <activity android:name=".app.ContactsPickerActivity" android:label="@string/contacts_picker_title"
+            
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -227,7 +275,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.BlockedContactsActivity" android:label="@string/blocked_list_title">
+        <activity android:name=".app.BlockedContactsActivity" android:label="@string/blocked_list_title"
+            
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -235,7 +286,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.ContactPresenceActivity">
+        <activity android:name=".app.ContactPresenceActivity" 
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -243,7 +295,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.AccountSettingsActivity">
+        <activity android:name=".app.AccountSettingsActivity" 
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
@@ -252,7 +305,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.SettingActivity">
+        <activity android:name=".app.SettingActivity" 
+            android:configChanges="locale">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />

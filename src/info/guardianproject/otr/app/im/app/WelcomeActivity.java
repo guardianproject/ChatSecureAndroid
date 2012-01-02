@@ -58,8 +58,8 @@ public class WelcomeActivity extends Activity {
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
 
-    public final static String PREF_DEFAULT_LOCALE = "defLoc";
-
+    private String mDefaultLocale;
+    
     private Locale[] locales;
     
     
@@ -92,7 +92,11 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);    
+        		
         setContentView(R.layout.welcome_activity);
         
         Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
@@ -276,29 +280,23 @@ public class WelcomeActivity extends Activity {
         
         if (allAccountsSignedOut()) {
         	
-        	if (!mDidAutoLaunch)
-        	{
-        		mDidAutoLaunch = true;
-        		signInAll();
-        		
-        	}
-        	else {
-        		
-        	final SharedPreferences preferences = getSharedPreferences(PREF_DEFAULT_LOCALE,
-      	                Activity.MODE_PRIVATE);
-      		  
-        	String defaultLocale = preferences.getString(PREF_DEFAULT_LOCALE, null);
+	        if (mDefaultLocale != null) 
+	        {
+		
+	        	if (!mDidAutoLaunch)
+	        	{
+	        		mDidAutoLaunch = true;
+	        		signInAll();
+	        		
+	        	}
         	
-      	        if (defaultLocale != null) {
-      		
-      	        	setNewLocale(new Locale(defaultLocale));
+	        }
+	        else
+	        {
+	        	showLocaleDialog();
+	        }
         		
-      	        }
-      	        else
-      	        {
-      	        	showLocaleDialog();
-      	        }
-        	}
+        	
         	
         	
         } else {
@@ -361,19 +359,13 @@ public class WelcomeActivity extends Activity {
 
     	Log.i(TAG, "signInAll");
     	mProviderCursor.moveToFirst();
-    	int activeCount = 0;
     	
     	do {
     		int position = mProviderCursor.getPosition();
-    		if (signInAccountAtPosition(position))
-    			activeCount++;
+    		signInAccountAtPosition(position);
     		
     	} while (mProviderCursor.moveToNext()) ;
     	
-    	if (activeCount == 0)
-    	{
-    		showAccountSetup();
-    	}
     }
     
     private boolean signInAccountAtPosition(int position) {
@@ -557,7 +549,12 @@ public class WelcomeActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				setNewLocale(locales[which]);
+				
+				ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locales[which]);
+				
+				Intent intent = getIntent();
+				finish();
+				startActivity(intent);
 				
 			}
 		});
@@ -566,41 +563,6 @@ public class WelcomeActivity extends Activity {
     	alert.show();
   	}
     
-	private boolean setNewLocale(Locale locale) {
-		
-		
-		Configuration config = new Configuration();
-		config.locale = locale;
-		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-		Log.d(TAG,"locale = " + locale.getDisplayName());
-
-		SharedPreferences preferences = getSharedPreferences(PREF_DEFAULT_LOCALE,
-	                Activity.MODE_PRIVATE);
-		
-		Editor prefEdit = preferences.edit();
-		
-		prefEdit.putString(PREF_DEFAULT_LOCALE, locale.getISO3Language());
-		prefEdit.commit();
-		
-		Intent intent = getIntent();
-		finish();
-		startActivity(intent);
-		
-		return true;
-	}
 	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
+	
 }

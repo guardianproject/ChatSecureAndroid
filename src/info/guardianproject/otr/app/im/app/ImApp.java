@@ -18,6 +18,10 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.Broadcaster;
+import info.guardianproject.otr.app.im.IConnectionCreationListener;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.IRemoteImService;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
@@ -31,12 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IConnectionCreationListener;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.IRemoteImService;
 
 import android.app.Activity;
 import android.app.Application;
@@ -47,8 +47,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -57,6 +60,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ImApp extends Application {
@@ -70,6 +74,11 @@ public class ImApp extends Application {
     public static final String EXTRA_INTENT_PROXY_PORT = "proxy.port";
 
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
+    
+    public final static String PREF_DEFAULT_LOCALE = "defLoc";
+
+    
+    private Locale locale = null;
 
     private static ImApp sImApp;
 
@@ -171,10 +180,38 @@ public class ImApp extends Application {
         sImApp = this;
     }
 
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        if (locale != null)
+        {
+            newConfig.locale = locale;
+            Locale.setDefault(locale);
+            getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
+
+    
     @Override
     public void onCreate() {
         super.onCreate();
         mBroadcaster = new Broadcaster();
+        
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Configuration config = getBaseContext().getResources().getConfiguration();
+
+        String lang = settings.getString(PREF_DEFAULT_LOCALE, "");
+        if (! "".equals(lang) && ! config.locale.getLanguage().equals(lang))
+        {
+            locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        
         loadDefaultBrandingRes();
     }
 
@@ -735,5 +772,24 @@ public class ImApp extends Application {
 		return mImService;
 	}
 
+	public static boolean setNewLocale(Context context, Locale locale) {
+		
+		
+		Configuration config = context.getResources().getConfiguration();
+		config.locale = locale;
+		Locale.setDefault(locale);
+		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+		
+		Log.d("Gibberbot","locale = " + locale.getDisplayName());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		Editor prefEdit = prefs.edit();
+		
+		prefEdit.putString(ImApp.PREF_DEFAULT_LOCALE, locale.getISO3Language());
+		prefEdit.commit();
+		
+		return true;
+	}
 
 }

@@ -42,6 +42,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -885,7 +886,12 @@ private Locale[] locales;
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				setNewLocale(locales[which]);
+				
+				ImApp.setNewLocale(AccountActivity.this.getBaseContext(),locales[which]);
+				
+				Intent intent = getIntent();
+				finish();
+				startActivity(intent);
 				
 			}
 		});
@@ -894,26 +900,5 @@ private Locale[] locales;
     	alert.show();
   	}
     
-	private boolean setNewLocale(Locale locale) {
-		
-		
-		Configuration config = new Configuration();
-		config.locale = locale;
-		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-		Log.d(TAG,"locale = " + locale.getDisplayName());
-
-		SharedPreferences preferences = getSharedPreferences(WelcomeActivity.PREF_DEFAULT_LOCALE,
-	                Activity.MODE_PRIVATE);
-		
-		Editor prefEdit = preferences.edit();
-		
-		prefEdit.putString(WelcomeActivity.PREF_DEFAULT_LOCALE, locale.getISO3Language());
-		prefEdit.commit();
-		
-		Intent intent = getIntent();
-		finish();
-		startActivity(intent);
-		
-		return true;
-	}
+	
 }
