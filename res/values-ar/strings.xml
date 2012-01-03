@@ -47,7 +47,7 @@
   <string name="yes">موافق</string>
   <string name="no">إلغاء</string>
   <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
-  <string name="signed_out_prompt_with_error">لقد تم إخراجك من <xliff:g id="account">%1$s</xliff:g> لأن <xliff:g id="reason">%2$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">لقد تم إخراجك من <xliff:g id="account">%1$s</xliff:g></string>
   <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
   <string name="label_username">المستخدم @ المضيف</string>
   <string name="label_password">كلمة السر:</string>
@@ -292,23 +292,7 @@
   <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
   <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
   <string name="signin_password_prompt">أدخل كلمة السر:</string>
-  <string name="pref_account_user"></string>
-  <string name="pref_account_pass"></string>
-  <string name="pref_account_domain"></string>
-  <string name="pref_account_xmpp_resource"></string>
-  <string name="pref_account_port"></string>
-  <string name="pref_account_server"></string>
-  <string name="pref_security_allow_plain_auth"></string>
-  <string name="pref_security_require_tls"></string>
-  <string name="pref_security_tls_cert_verify"></string>
-  <string name="pref_security_otr_mode"></string>
-  <string name="pref_security_use_tor"></string>
-  <string name="pref_security_do_dns_srv"></string>
-  <string name="pref_hide_offline_contacts"></string>
-  <string name="pref_enable_notification"></string>
-  <string name="pref_notification_vibrate"></string>
-  <string name="pref_notification_sound"></string>
-  <string name="pref_notification_ringtone"></string>
+
   <string name="account_settings_title">إعدادات الحساب</string>
   <string name="warning_alpha">تحذير: هذه نسخة تجريبية من جيبربوت و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
   <string name="menu_view_groups">المجموعات</string>
@@ -334,4 +318,6 @@
   <string name="server_port">منفذ الموقع</string>
   <string name="xmpp_resource">مصدر إكس أم بي بي XMPP</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ليتم تمييز هذا الاتصال من الاتصالات الأخرى التي سجلت الدخول</string>
+
+  <string name="title_chats">المحادثات</string>
 </resources>

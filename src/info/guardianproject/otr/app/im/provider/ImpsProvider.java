@@ -1200,7 +1200,7 @@ public class ImpsProvider extends ContentProvider {
             //log("query " + url + ", match " + match + ", where " + selection);
             if (selectionArgs != null) {
                 for (String selectionArg : selectionArgs) {
-                   // log("     selectionArg: " + selectionArg);
+                    log("     selectionArg: " + selectionArg);
                 }
             }
         }

@@ -185,6 +185,7 @@ public class ImApp extends Application {
     public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
+       
         if (locale != null)
         {
             newConfig.locale = locale;
@@ -777,7 +778,7 @@ public class ImApp extends Application {
 		
 		Configuration config = context.getResources().getConfiguration();
 		config.locale = locale;
-		Locale.setDefault(locale);
+		//Locale.setDefault(locale);
 		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 		
 		Log.d("Gibberbot","locale = " + locale.getDisplayName());

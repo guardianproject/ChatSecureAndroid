@@ -697,5 +697,10 @@
 	<string name="server_port">Server Port</string>
 	<string name="xmpp_resource">XMPP Resource</string>
 	<string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+
+	<string name="btn_next">Next</string>
+	<string name="btn_back">Back</string>
+	
+	<string name="title_chats">Conversations</string>
 </resources>
 

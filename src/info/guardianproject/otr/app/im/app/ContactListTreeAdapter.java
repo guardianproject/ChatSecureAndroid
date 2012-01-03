@@ -20,6 +20,7 @@ import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -262,7 +263,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri,
                 ContactView.CONTACT_PROJECTION,
-                String.format("%s=%d AND %s=%d",
+                String.format(Locale.US, "%s=%d AND %s=%d",
                     Imps.Contacts.SUBSCRIPTION_STATUS, Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
                     Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
                 null,Imps.Contacts.DEFAULT_SORT_ORDER);

@@ -32,14 +32,6 @@ public class AboutActivity extends Activity implements OnClickListener
 			R.string.setup_passphrase
 	};
 	
-	private String buttons[][] =
-	{
-			{null,"Next"},
-			{"Back","Next"},
-			{"Back","Next"},
-			{"Back","Next"},
-			
-	};
 	
 	private View.OnClickListener listener[][] =
 	{
@@ -140,6 +132,17 @@ public class AboutActivity extends Activity implements OnClickListener
 	
 	private void showContent (int contentIdx)
 	{
+
+		String buttons[][] =
+		{
+				
+				{null,getString(R.string.btn_next)},
+				{ getString(R.string.btn_back),getString(R.string.btn_next)},
+				{ getString(R.string.btn_back),getString(R.string.btn_next)},
+				{ getString(R.string.btn_back),getString(R.string.btn_next)},
+				
+		};
+		
 		TextView txtTitle  = ((TextView)findViewById(R.id.WizardTextTitle));
 		txtTitle.setText(getString(title[contentIdx]));
         

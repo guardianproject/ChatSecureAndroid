@@ -34,7 +34,7 @@ public class TabbedContainer extends TabActivity {
 	    intent.setAction(passThruAction);
 	    intent.setData(passThruData);
 	    intent.putExtras(passThruExtras);
-	    spec = tabHost.newTabSpec("contacts").setIndicator("Contacts",
+	    spec = tabHost.newTabSpec("contacts").setIndicator(getString(R.string.menu_contact_list),
 	                      res.getDrawable(R.drawable.ic_tab_contacts))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
@@ -47,7 +47,7 @@ public class TabbedContainer extends TabActivity {
 	    intent.putExtras(passThruExtras);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("chats").setIndicator("Chats",
+	    spec = tabHost.newTabSpec("chats").setIndicator(getString(R.string.title_chats),
 	                      res.getDrawable(R.drawable.ic_tab_chats))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
