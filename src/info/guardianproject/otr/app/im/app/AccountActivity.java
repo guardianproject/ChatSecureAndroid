@@ -866,28 +866,18 @@ public class AccountActivity extends Activity {
     	return out.toString();
     }
     
-private Locale[] locales;
-    
     private void showLocaleDialog ()
     {
     	AlertDialog.Builder ad = new AlertDialog.Builder(this);
     	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
     	
-    	locales = Locale.getAvailableLocales();
-
-    	CharSequence[] langs = new CharSequence[locales.length];
-    	int i = 0;
-    	for (Locale locale : locales)
-    	{
-    		langs[i++] = locale.getDisplayName();
-    	}
-    	
-    	ad.setItems(langs, new DialogInterface.OnClickListener() {
+    	ad.setItems(getResources().getStringArray(R.array.languages) , new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				ImApp.setNewLocale(AccountActivity.this.getBaseContext(),locales[which]);
+				Locale locale = new Locale(getResources().getStringArray(R.array.languages_values)[which]);
+				ImApp.setNewLocale(AccountActivity.this.getBaseContext(), locale);
 				
 				Intent intent = getIntent();
 				finish();
@@ -899,6 +889,7 @@ private Locale[] locales;
     	AlertDialog alert = ad.create();
     	alert.show();
   	}
+    
     
 	
 }

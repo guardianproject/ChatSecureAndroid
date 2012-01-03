@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.ui.TabbedContainer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,9 +60,6 @@ public class WelcomeActivity extends Activity {
     private SimpleAlertHandler mHandler;
 
     private String mDefaultLocale;
-    
-    private Locale[] locales;
-    
     
     static final String[] PROVIDER_PROJECTION = {
             Imps.Provider._ID,
@@ -112,23 +110,6 @@ public class WelcomeActivity extends Activity {
 			}
         });
         
-
-        /*
-        Button btnSplashSetup = ((Button)findViewById(R.id.btnSplashSetup));
-        btnSplashSetup.setOnClickListener(new OnClickListener()
-        {
-			@Override
-			public void onClick(View v) {
-				// TODO change for multiple account support	        
-		        if (! mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-		            // add account
-					startActivity(getCreateAccountIntent());
-		        } else {
-		        	// edit existing account
-					startActivity(getEditAccountIntent());
-		        }
-			}
-        });*/
 
       
     }
@@ -202,9 +183,13 @@ public class WelcomeActivity extends Activity {
     protected void onResume() {
         super.onResume();
         
-        cursorUnlocked();
-        doOnResume();
-        
+        if (mDefaultLocale == null)
+        	showLocaleDialog();
+        else
+        {
+        	cursorUnlocked();
+        	doOnResume();
+        } 
         /*
         if (cursorUnlocked())
         {
@@ -280,22 +265,12 @@ public class WelcomeActivity extends Activity {
         
         if (allAccountsSignedOut()) {
         	
-	        if (mDefaultLocale != null) 
-	        {
-		
-	        	if (!mDidAutoLaunch)
-	        	{
-	        		mDidAutoLaunch = true;
-	        		signInAll();
-	        		
-	        	}
-        	
-	        }
-	        else
-	        {
-	        	showLocaleDialog();
-	        }
+	       if (!mDidAutoLaunch)
+        	{
+        		mDidAutoLaunch = true;
+        		signInAll();
         		
+        	}
         	
         	
         	
@@ -536,21 +511,13 @@ public class WelcomeActivity extends Activity {
     	AlertDialog.Builder ad = new AlertDialog.Builder(this);
     	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
     	
-    	locales = Locale.getAvailableLocales();
-
-    	CharSequence[] langs = new CharSequence[locales.length];
-    	int i = 0;
-    	for (Locale locale : locales)
-    	{
-    		langs[i++] = locale.getDisplayName();
-    	}
-    	
-    	ad.setItems(langs, new DialogInterface.OnClickListener() {
+    	ad.setItems(getResources().getStringArray(R.array.languages) , new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locales[which]);
+				Locale locale = new Locale(getResources().getStringArray(R.array.languages_values)[which]);
+				ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
 				
 				Intent intent = getIntent();
 				finish();

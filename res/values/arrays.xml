@@ -18,15 +18,13 @@
     </string-array>
     
     <string-array name="languages">
-		<item>English (US)</item>
-		<item>Espanol (ES)</item>
+		<item>English</item>
 		<item>العربية</item>
 		<item>پارسی</item>
 		<item>中文(简体)</item>
 	</string-array>
 	<string-array name="languages_values">
 		<item>en_us</item>
-		<item>es</item>
 		<item>ar</item>
 		<item>fa</item>
 		<item>zh</item>
