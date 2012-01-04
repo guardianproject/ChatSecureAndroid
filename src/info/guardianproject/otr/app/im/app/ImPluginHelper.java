@@ -83,6 +83,11 @@ public class ImPluginHelper {
         return mPluginObjects;
     }
 
+    // For testing
+    public void skipLoadingPlugins() {
+    	mLoaded = true;
+    }
+    
     public void loadAvailablePlugins() {
         if (mLoaded) {
             return;

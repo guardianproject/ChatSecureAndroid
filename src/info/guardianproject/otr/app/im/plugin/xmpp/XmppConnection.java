@@ -37,7 +37,6 @@ import java.util.concurrent.Executors;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -67,9 +66,6 @@ import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
-import org.jivesoftware.smack.sasl.SASLDigestMD5Mechanism;
-import org.jivesoftware.smack.sasl.SASLMechanism;
-import org.jivesoftware.smack.util.Base64;
 import org.jivesoftware.smackx.packet.VCard;
 
 import android.content.ContentResolver;
@@ -77,7 +73,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Parcel;
 import android.util.Log;
-import de.measite.smack.Sasl;
 
 public class XmppConnection extends ImConnection implements CallbackHandler
 {
@@ -348,6 +343,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			ProxyInfo.ProxyType pType = ProxyType.valueOf(type);
 			mProxyInfo = new ProxyInfo(pType, host, port,"","");
 		}
+	}
+	
+	public void initConnection(MyXMPPConnection connection, Contact user, int state) {
+		mConnection = connection;
+		mUser = user;
+		setState(state, null);
 	}
 	
 	private void initConnection(String userName, final String password, 
@@ -832,7 +833,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		return mSessionManager.createChatSession(contact);
 	}
 
-	private final class XmppContactList extends ContactListManager {
+	public class XmppContactList extends ContactListManager {
 		
 		//private Hashtable<String, org.jivesoftware.smack.packet.Presence> unprocdPresence = new Hashtable<String, org.jivesoftware.smack.packet.Presence>();
 		
@@ -869,6 +870,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			
 		}
 
+		// For testing
+		public void loadContactLists() {
+			do_loadContactLists();
+		}
 		/**
 		 *  Create new list of contacts from roster entries.
 		 *
@@ -927,7 +932,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			Roster roster = mConnection.getRoster();
 			
 			//Set<String> seen = new HashSet<String>();
-			
+
+			// This group will also contain all the unfiled contacts.  We will create it locally if it
+			// does not exist.
+			String generalGroupName = "Buddies";
+
 			for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 
 				RosterGroup group = giter.next();
@@ -937,40 +946,37 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 				Collection<Contact> contacts = fillContacts(group.getEntries(), null);
 				
+				if (group.getName().equals(generalGroupName) && roster.getUnfiledEntryCount() > 0) {
+					Collection<Contact>	unfiled = fillContacts(roster.getUnfiledEntries(), null);
+					contacts.addAll(unfiled);
+				}
+				
 				ContactList cl =
-						new ContactList(mUser.getAddress(), group.getName(), false, contacts, this);
+						new ContactList(mUser.getAddress(), group.getName(), group.getName().equals(generalGroupName), contacts, this);
 				
 				notifyContactListCreated(cl);
 				
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
-		
-			//	for (Contact contact : contacts)
-				//	notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_ADDED, contact);
-
-				//notifyContactListLoaded(cl);
 			}			
 			
+			Collection<Contact> contacts;
 			if (roster.getUnfiledEntryCount() > 0) {
-				
-				String generalGroupName = "Buddies";
+				contacts = fillContacts(roster.getUnfiledEntries(), null);
+			} else {
+				contacts = new ArrayList<Contact>();
+			}
 
-				Collection<Contact> contacts = fillContacts(roster.getUnfiledEntries(), null);
+			ContactList cl = getContactList(generalGroupName);
 
-				ContactList cl =
-						new ContactList(mUser.getAddress(), generalGroupName, true, contacts, this);
-				
-			
+			// We might have already created the Buddies contact list above
+			if (cl == null) {
+				cl = new ContactList(mUser.getAddress(), generalGroupName, true, contacts, this);
 				notifyContactListCreated(cl);
 
 				notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
-
-
-				//for (Contact contact : contacts)
-					//notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_ADDED, contact);
-						
-
 			}
-			
+
+
 			notifyContactListsLoaded();
 			
 			
@@ -1211,13 +1217,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			Roster roster = mConnection.getRoster();
 			String[] groups = new String[] { list.getName() };
 			try {
-				roster.createEntry(address, parseAddressName(address), groups);
+				final String name = parseAddressName(address);
+				roster.createEntry(address, name, groups);
+
+				// If contact exists locally, don't create another copy
+				Contact contact = makeContact(name, address);
+				if (!containsContact(contact))
+					notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
+				else
+					debug(TAG, "skip adding existing contact locally " + name);
 			} catch (XMPPException e) {
 				throw new RuntimeException(e);
 			}
-			
-			Contact contact = makeContact(parseAddressName(address),address);
-			notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
 		}
 
 		@Override
@@ -1233,13 +1244,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		@Override
 		public void approveSubscriptionRequest(String contact) {
 			debug(TAG, "approve subscription");
-            try {
-            	// FIXME maybe need to check if already in another contact list
+			try {
 				mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
 			} catch (ImException e) {
 				Log.e(TAG, "failed to add " + contact + " to default list");
 			}
-            mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
+			mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
 		}
 
 		@Override
@@ -1365,7 +1375,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	// org.jivesoftware.smack.XMPPConnection
 	//    - vs -
 	// info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection
-	static class MyXMPPConnection extends XMPPConnection {
+	public static class MyXMPPConnection extends XMPPConnection {
 
 		public MyXMPPConnection(ConnectionConfiguration config) {
 			super(config);
@@ -1386,7 +1396,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				Log.e(TAG, "error on shutdown()",e);
 			}
 		}
-
 	}
 
 	@Override

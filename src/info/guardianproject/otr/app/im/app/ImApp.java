@@ -332,11 +332,17 @@ public class ImApp extends Application {
             }
          
             Uri result = cr.insert(Imps.Account.CONTENT_URI, values);
-            c.close();
+            if (c != null)
+            	c.close();
             return ContentUris.parseId(result);
         }
     }
 
+    // For testing
+    public void setImProviderSettings(HashMap<Long, ProviderDef> providers) {
+    	mProviders = providers;
+    }
+    
     private void loadImProviderSettings() {
         if (mProviders != null) {
             return;

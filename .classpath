@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="libs/jsoup-1.5.2.jar"/>
 	<classpathentry kind="lib" path="libs/commons-codec.jar"/>
 	<classpathentry kind="lib" path="libs/guava-r09.jar"/>
-	<classpathentry kind="lib" path="libs/asmack-android-4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/asmack-android-4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
