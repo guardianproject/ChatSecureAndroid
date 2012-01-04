@@ -190,7 +190,7 @@ public class ImApp extends Application {
         {
             newConfig.locale = locale;
             Locale.setDefault(locale);
-            getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+            getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
         }
     }
 
@@ -202,7 +202,7 @@ public class ImApp extends Application {
         
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Configuration config = getBaseContext().getResources().getConfiguration();
+        Configuration config = getResources().getConfiguration();
 
         String lang = settings.getString(PREF_DEFAULT_LOCALE, "");
         if (! "".equals(lang) && ! config.locale.getLanguage().equals(lang))
@@ -210,7 +210,7 @@ public class ImApp extends Application {
             locale = new Locale(lang);
             Locale.setDefault(locale);
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
         
         loadDefaultBrandingRes();

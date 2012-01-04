@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/easymock-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/objenesis-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/javassist-3.14.0-GA.jar"/>
-	<classpathentry kind="lib" path="lib/robolectric-1.1-20111223.015427-20-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="lib/robolectric-1.1-20111223.015427-20-jar-with-dependencies.jar" sourcepath="lib/robolectric-1.1-20120103.221228-21-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Android"/>
 	<classpathentry kind="output" path="bin"/>
