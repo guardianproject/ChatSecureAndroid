@@ -14,32 +14,39 @@
  */
 
 
-package info.guardianproject.otr.app.im.app.test;
+package info.guardianproject.otr.app.im.app;
 
-import android.test.ActivityInstrumentationTestCase2;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
+
+import com.xtremelabs.robolectric.RobolectricTestRunner;
+
 import android.view.View;
 
+import info.guardianproject.otr.app.TestUtils;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.WelcomeActivity;
+
 
 /**
  * @author devrandom
  */
-public class WelcomeActivityTest extends ActivityInstrumentationTestCase2<WelcomeActivity> {
+@RunWith(RobolectricTestRunner.class)
+public class WelcomeActivityTest {
   private WelcomeActivity mActivity;
   private View mView;
 
-  public WelcomeActivityTest() {
-    super("info.guardianproject.otr.app.im", WelcomeActivity.class);
-  }
-  
-  @Override
-  protected void setUp() throws Exception {
-      super.setUp();
-      mActivity = this.getActivity();
+  @Before
+  public void setUp() throws Exception {
+      mActivity = new WelcomeActivity();
+	  TestUtils.setUpApplication(mActivity);
+      mActivity.onCreate(null);
+      
       mView = mActivity.findViewById(R.id.relativeLayout1);
   }
-  
+
+  @Test
   public void testPreconditions() {
     assertNotNull(mView);
   }

@@ -19,3 +19,11 @@ https://guardianproject.info/code/sqlcipher/
 6. In Eclipse, right-click on the project root and select Run As > Android Application. Run on your favorite debug-enabled Android device or emulator!
 
 That's it! Generally speaking, this should be an easy project to build locally for anyone who's used Eclipse and/or ADT before. If you have any questions, don't be afraid to jump into IRC for real-time help at #guardianproject on freenode or OFTC.
+
+*** Test Instructions
+
+`mvn test`
+
+See robo-tests/README.md for eclipse instructions.
+
+Currently the instrumented target tests (to be run on a device) in the directory `tests` are empty.
