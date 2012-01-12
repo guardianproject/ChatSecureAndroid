@@ -83,6 +83,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 {
 
 	private final static String TAG = "Gibberbot.XmppConnection";
+	private final static boolean DEBUG_ENABLED = false;
+	
 	private XmppContactList mContactListManager;
 	private Contact mUser;
 	
@@ -414,7 +416,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         	
     	}
 
-    	mConfig.setDebuggerEnabled(true);
+    	mConfig.setDebuggerEnabled(DEBUG_ENABLED);
     	mConfig.setSASLAuthenticationEnabled(useSASL);   
     	
     	
