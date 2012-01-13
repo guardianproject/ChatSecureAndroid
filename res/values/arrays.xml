@@ -22,12 +22,15 @@
 		<item>العربية</item>
 		<item>پارسی</item>
 		<item>中文(简体)</item>
+		<item>System Locale</item>
+		
 	</string-array>
 	<string-array name="languages_values">
 		<item>en_us</item>
 		<item>ar</item>
 		<item>fa</item>
 		<item>zh</item>
+		<item>xx</item>
 	</string-array>
     
 </resources>
