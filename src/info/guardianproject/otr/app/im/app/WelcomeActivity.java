@@ -516,13 +516,17 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				Locale locale = new Locale(getResources().getStringArray(R.array.languages_values)[which]);
-				ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
+				String[] locs = getResources().getStringArray(R.array.languages_values);
 				
-				Intent intent = getIntent();
-				finish();
-				startActivity(intent);
-				
+				if (which < locs.length)
+				{
+					Locale locale = new Locale(locs[which]);
+					ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
+					
+					Intent intent = getIntent();
+					finish();
+					startActivity(intent);
+				}	
 			}
 		});
     	
