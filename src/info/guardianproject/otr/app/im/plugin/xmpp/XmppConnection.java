@@ -31,7 +31,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
@@ -95,7 +97,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private boolean mNeedReconnect;
 	
 	private boolean mRetryLogin;
-	private ExecutorService mExecutor;
+	private ThreadPoolExecutor mExecutor;
 
 	private ProxyInfo mProxyInfo = null;
 	
@@ -131,7 +133,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 		
 		// Create a single threaded executor.  This will serialize actions on the underlying connection.
-		mExecutor = Executors.newSingleThreadExecutor();
+		createExecutor();
+	}
+
+	private void createExecutor() {
+		mExecutor = new ThreadPoolExecutor(1, 1,
+				0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue< Runnable >());
 	}
 	
 	private boolean execute(Runnable runnable) {
@@ -143,9 +151,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		return true;
 	}
 	
+	// Execute a runnable only if we are idle
+	private boolean executeIfIdle(Runnable runnable) {
+		if (mExecutor.getActiveCount() + mExecutor.getQueue().size() == 0) {
+			return execute(runnable);
+		}
+		return false;
+	}
+	
 	public void join() throws InterruptedException {
 		ExecutorService oldExecutor = mExecutor;
-		mExecutor = Executors.newSingleThreadExecutor();
+		createExecutor();
 		oldExecutor.shutdown();
 		oldExecutor.awaitTermination(10, TimeUnit.SECONDS);
 	}
@@ -741,6 +757,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	@Override
 	public void logoutAsync() {
+		// TODO invoke join() here?
 		execute(new Runnable() {
 			@Override
 			public void run() {
@@ -1342,13 +1359,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	 * @see info.guardianproject.otr.app.im.engine.ImConnection#sendHeartbeat()
 	 */
 	public void sendHeartbeat() {
-		execute(new Runnable() {
+		// Don't let heartbeats queue up if we have long running tasks - only
+		// do the heartbeat if executor is idle.
+		boolean success = executeIfIdle(new Runnable() {
 			@Override
 			public void run() {
 				debug(TAG, "heartbeat state = " + getState());
 				doHeartbeat();
 			}
 		});
+		
+		if (!success) {
+			debug(TAG, "failed to schedule heartbeat state = " + getState());
+		}
 	}
 	
 	// Runs in executor thread
