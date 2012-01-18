@@ -330,9 +330,7 @@ public class WelcomeActivity extends Activity {
     
     private void signInAll() {
     	
-        Toast.makeText(this, getString(R.string.warning_alpha), Toast.LENGTH_SHORT).show();
-
-    	Log.i(TAG, "signInAll");
+        Log.i(TAG, "signInAll");
     	mProviderCursor.moveToFirst();
     	
     	do {
