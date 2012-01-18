@@ -73,6 +73,7 @@ public class XmppConnectionTest extends EasyMockSupport {
 		contactListManager.setSubscriptionRequestListener(subscriptionRequestListener);
 		listener = createMock(ContactListListener.class);
 		contactListManager.addContactListListener(listener);
+		expect(smackCon.isConnected()).andStubReturn(true);
 	}
 
 	@Test
@@ -99,6 +100,7 @@ public class XmppConnectionTest extends EasyMockSupport {
 		contactListManager.approveSubscriptionRequest(TEST_CONTACT);
 		assertEquals(1, contactListManager.getContactLists().size());
 		assertNotNull(contactListManager.getContactList(DEFAULT_GROUP_NAME));
+		con.join();
 		verifyAll();
 	}
 
@@ -130,6 +132,7 @@ public class XmppConnectionTest extends EasyMockSupport {
 		contactListManager.approveSubscriptionRequest(TEST_CONTACT);
 		assertEquals(1, contactListManager.getContactLists().size());
 		assertNotNull(contactListManager.getContactList(DEFAULT_GROUP_NAME));
+		con.join();
 		verifyAll();
 	}
 
