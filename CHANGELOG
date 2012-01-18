@@ -1,5 +1,14 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
+
+0.0.7 / 2012-01-17
+- major fixes to connection stability by devrandom
+- user interface clean-ness aka "turn to the light side" by n8fr8
+- removed unintentional low level debug output
+- added new sasl auth mechanism support
+- added locale selection menu option
+- improved translations for arabic, german, spanish and dutch
+
 2011-09-26
 - 0.0.5 RC3/5 release
 - updated cacerts file to include CACerts.org root
