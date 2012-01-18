@@ -198,6 +198,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mUserPresence = presence;
         notifyUserPresenceUpdated();
 	}
+	
 
 	@Override
 	public int getCapability() {
