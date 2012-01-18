@@ -50,7 +50,7 @@ android:anyDensity="true"
          <activity android:name=".app.WelcomeActivity"
          	android:screenOrientation="portrait"
          	android:configChanges="locale"
-         	
+         	 android:theme="@android:style/Theme.NoTitleBar"
          	>
             
               <intent-filter>
@@ -62,7 +62,7 @@ android:anyDensity="true"
         <!-- Brian's NEW Activities -->
         <activity android:name=".ui.TabbedContainer"
         android:configChanges="locale"
-         	
+         	 android:theme="@android:style/Theme.NoTitleBar"
         />
         <activity android:name=".app.ChatListActivity"
             android:configChanges="locale"
