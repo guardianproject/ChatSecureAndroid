@@ -29,25 +29,26 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+
 import net.java.otr4j.io.OtrInputStream;
 import net.java.otr4j.io.OtrOutputStream;
 import net.java.otr4j.io.SerializationUtils;
 
 
-class SMState{
-	BigInteger secret, x2, x3, g1, g2, g3, g3o, p, q, pab, qab;
-	int nextExpected;
-	int receivedQuestion;
-	int smProgState;
-	
-	public SMState(){
-		g1 = new BigInteger(1, SM.GENERATOR_S);
-		smProgState = SM.PROG_OK;
-	}
-}
-
 public class SM {
-	static class SMException extends Exception {
+    static public class SMState{
+        BigInteger secret, x2, x3, g1, g2, g3, g3o, p, q, pab, qab;
+        public int nextExpected;
+        int receivedQuestion;
+        public int smProgState;
+        
+        public SMState(){
+            g1 = new BigInteger(1, SM.GENERATOR_S);
+            smProgState = SM.PROG_OK;
+        }
+    }
+
+	static public class SMException extends Exception {
 		private static final long serialVersionUID = 1L;
 
 		public SMException()
@@ -403,7 +404,7 @@ public class SM {
 	    bstate.g3o=msg1[3];
 	    
 	    /* Verify Alice's proofs */
-	    if(checkKnowLog(msg1[1], msg1[2], bstate.g1, msg1[0], 1)!=0
+	    if (checkKnowLog(msg1[1], msg1[2], bstate.g1, msg1[0], 1)!=0
 	    	||checkKnowLog(msg1[4], msg1[5], bstate.g1, msg1[3], 2)!=0) {
 	        throw new SMException("Proof checking failed");
 	    }
@@ -643,7 +644,7 @@ public class SM {
 	    //Util.checkBytes("rab", rab.getValue());
 	    //Util.checkBytes("pab", astate.pab.getValue());
 	    int comp = rab.compareTo(astate.pab);
-	    if(comp!=0){
+	    if (comp!=0){
 	    	//System.out.println("checking failed");
 	    }
 
@@ -651,6 +652,9 @@ public class SM {
 
 	    return;
 	}
+
+	// ***************************************************
+	// Session stuff - perhaps factor out
 	
 	public static void main(String[] args) throws SMException {
 		BigInteger res = SM.MODULUS_MINUS_2.subtract(SM.MODULUS_S).mod(SM.MODULUS_S);
@@ -668,5 +672,4 @@ public class SM {
 		byte[] msg4 = SM.step4(b, msg3);
 		SM.step5(a, msg4);
 	}
-	
 }

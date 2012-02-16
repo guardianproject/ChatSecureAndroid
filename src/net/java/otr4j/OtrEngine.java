@@ -1,9 +1,12 @@
 package net.java.otr4j;
 
 import java.security.PublicKey;
+import java.util.List;
 
+import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
+import net.java.otr4j.session.TLV;
 
 /**
  * 
@@ -36,6 +39,18 @@ public interface OtrEngine {
 	public abstract String transformSending(SessionID sessionID, String content) throws OtrException;
 
 	/**
+	 * 
+	 * @param sessionID
+	 *            The session identifier.
+	 * @param content
+	 *            The message content to be transformed.
+	 * @param tlvs The TLVs to attach.
+	 * @return The transformed message content.
+	 * @throws OtrException 
+	 */
+	public abstract String transformSending(SessionID sessionID, String content, List<TLV> tlvs) throws OtrException;
+
+	/**
 	 * Starts an Off-the-Record session, if there is no active one.
 	 * 
 	 * @param sessionID
@@ -44,6 +59,9 @@ public interface OtrEngine {
 	 */
 	public abstract void startSession(SessionID sessionID) throws OtrException;
 
+	/** Get an OTR session. */
+	public abstract Session getSession(SessionID sessionID) throws OtrException;
+	
 	/**
 	 * Ends the Off-the-Record session, if exists.
 	 * 

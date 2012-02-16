@@ -353,6 +353,12 @@ public class OtrCryptoEngineImpl implements OtrCryptoEngine {
 	}
 
 	public String getFingerprint(PublicKey pubKey) throws OtrCryptoException {
+		byte[] b = getFingerprintRaw(pubKey);
+		return this.byteArrayToHexString(b);
+	}
+
+	public byte[] getFingerprintRaw(PublicKey pubKey)
+			throws OtrCryptoException {
 		byte[] b;
 		try {
 			byte[] bRemotePubKey = SerializationUtils.writePublicKey(pubKey);
@@ -366,7 +372,7 @@ public class OtrCryptoEngineImpl implements OtrCryptoEngine {
 		} catch (IOException e) {
 			throw new OtrCryptoException(e);
 		}
-		return this.byteArrayToHexString(b);
+		return b;
 	}
 
 	private String byteArrayToHexString(byte in[]) {

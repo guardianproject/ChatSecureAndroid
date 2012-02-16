@@ -17,47 +17,46 @@ package net.java.otr4j.crypto;
 
 import static org.junit.Assert.*;
 
+import net.java.otr4j.crypto.SM.SMState;
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class SMTest {
-
 	private byte[] secret1;
 	private byte[] secret2;
+	private SMState state_a;
+	private SMState state_b;
 
 	@Before
 	public void setUp() throws Exception {
 		secret1 = "abcdef".getBytes();
 		secret2 = "abCdef".getBytes();
+		this.state_a = new SMState();
+		this.state_b = new SMState();
 	}
 
 	@Test
 	public void testSuccess() throws Exception {
-		SMState a = new SMState();
-		SMState b = new SMState();
-
-		byte[] msg1 = SM.step1(a, secret1);
-		SM.step2a(b, msg1, 123);
-		byte[] msg2 = SM.step2b(b, secret1);
-		byte[] msg3 = SM.step3(a, msg2);
-		byte[] msg4 = SM.step4(b, msg3);
-		SM.step5(a, msg4);
-		assertEquals(SM.PROG_SUCCEEDED, a.smProgState);
-		assertEquals(SM.PROG_SUCCEEDED, b.smProgState);
+		byte[] msg1 = SM.step1(state_a, secret1);
+		SM.step2a(state_b, msg1, 123);
+		byte[] msg2 = SM.step2b(state_b, secret1);
+		byte[] msg3 = SM.step3(state_a, msg2);
+		byte[] msg4 = SM.step4(state_b, msg3);
+		SM.step5(state_a, msg4);
+		assertEquals(SM.PROG_SUCCEEDED, state_a.smProgState);
+		assertEquals(SM.PROG_SUCCEEDED, state_b.smProgState);
 	}
 
 	@Test
 	public void testFail() throws Exception {
-		SMState a = new SMState();
-		SMState b = new SMState();
-
-		byte[] msg1 = SM.step1(a, secret1);
-		SM.step2a(b, msg1, 123);
-		byte[] msg2 = SM.step2b(b, secret2);
-		byte[] msg3 = SM.step3(a, msg2);
-		byte[] msg4 = SM.step4(b, msg3);
-		SM.step5(a, msg4);
-		assertEquals(SM.PROG_FAILED, a.smProgState);
-		assertEquals(SM.PROG_FAILED, b.smProgState);
+		byte[] msg1 = SM.step1(state_a, secret1);
+		SM.step2a(state_b, msg1, 123);
+		byte[] msg2 = SM.step2b(state_b, secret2);
+		byte[] msg3 = SM.step3(state_a, msg2);
+		byte[] msg4 = SM.step4(state_b, msg3);
+		SM.step5(state_a, msg4);
+		assertEquals(SM.PROG_FAILED, state_a.smProgState);
+		assertEquals(SM.PROG_FAILED, state_b.smProgState);
 	}
 }
