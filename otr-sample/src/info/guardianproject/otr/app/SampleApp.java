@@ -11,6 +11,7 @@ import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrKeyManagerImpl;
+import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.OtrSm;
@@ -44,10 +45,14 @@ public class SampleApp implements OtrSmEngineHost {
 				String from = smackMessage.getFrom();
 				try {
 					body = otrEngine.transformReceiving(sessionID, body);
+					List<TLV> tlvs = otrSm.getPendingTlvs();
+					if (tlvs != null) {
+						sendMessage(from, otrEngine.transformSending(sessionID, "", tlvs));
+					}
 				} catch (OtrException ex) {
 					ex.printStackTrace();
 				}
-				if (body != null) {
+				if (body != null && !body.isEmpty()) {
 					System.out.println(from + " : " + body);
 				}
 			}
@@ -56,6 +61,11 @@ public class SampleApp implements OtrSmEngineHost {
 		con.connect();
 		con.login(user, pass);
 		otrKeyManager = new OtrKeyManagerImpl("/tmp/sample-keystore");
+		otrKeyManager.addListener(new OtrKeyManagerListener() {
+			public void verificationStatusChanged(SessionID session) {
+				System.out.println(session + ": verification status=" + otrKeyManager.isVerified(session));
+			}
+		});
 		otrPolicy = new OtrPolicyImpl();
 		otrPolicy.setEnableAlways(true);
 		sessionID = new SessionID("default", peer, "xmpp");
@@ -137,7 +147,11 @@ public class SampleApp implements OtrSmEngineHost {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SampleApp app = new SampleApp("hyper.to", args[0], args[1], args[2]);
+		if (args.length != 4) {
+			System.err.println("Usage: SampleApp DOMAIN USER PASS PEER_ADDRESS");
+			return;
+		}
+		SampleApp app = new SampleApp(args[0], args[1], args[2], args[3]);
 		app.run();
 	}
 
@@ -155,7 +169,18 @@ public class SampleApp implements OtrSmEngineHost {
 			}
 			else if (line.startsWith("/smpr")) {
 				String secret = line.substring("/smpr ".length());
-				otrSm.initRespondSmp(null, secret, false);
+				List<TLV> tlvs = otrSm.initRespondSmp(null, secret, false);
+				String encrypted = otrEngine.transformSending(sessionID, "", tlvs);
+				sendMessage(peer, encrypted);
+			}
+			else if (line.startsWith("/smpa")) {
+				if (otrEngine.getSessionStatus(sessionID) != SessionStatus.ENCRYPTED) {
+					System.err.println("Not currently encrypted - use /otr");
+					continue;
+				}
+				List<TLV> tlvs = otrSm.abortSmp();
+				String encrypted = otrEngine.transformSending(sessionID, "", tlvs);
+				sendMessage(peer, encrypted);
 			}
 			else if (line.startsWith("/smp")) {
 				if (otrEngine.getSessionStatus(sessionID) != SessionStatus.ENCRYPTED) {
@@ -163,26 +188,32 @@ public class SampleApp implements OtrSmEngineHost {
 					continue;
 				}
 				String[] splits = line.split(" ", 3);
+				if (splits.length < 2) {
+					System.err.println("missing arguments");
+					continue;
+				}
 				List<TLV> tlvs;
 				if (splits.length == 3) {
 					tlvs = otrSm.initRespondSmp(splits[1], splits[2], true);
 				} else {
 					tlvs = otrSm.initRespondSmp(null, splits[1], true);
 				}
-				otrEngine.transformSending(sessionID, "", tlvs);
+				String encrypted = otrEngine.transformSending(sessionID, "", tlvs);
+				sendMessage(peer, encrypted);
 			}
 			else if ("/help".equals(line)) {
 				System.out.println("/quit");
 				System.out.println("/otr");
 				System.out.println("/smpr SECRET - SMP response");
 				System.out.println("/smp [QUESTION] SECRET - SMP initiation");
+				System.out.println("/smpa - SMP abort");
 			}
 			else if (line.startsWith("/")) {
 				System.err.println("Unknown command");
 			}
 			else {
-				line = otrEngine.transformSending(sessionID, line, null);
-				sendMessage(peer, line);
+				String encrypted = otrEngine.transformSending(sessionID, line, null);
+				sendMessage(peer, encrypted);
 			}
 		}
 	}

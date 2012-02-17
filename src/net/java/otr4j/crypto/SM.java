@@ -356,7 +356,7 @@ public class SM {
 	{
 	    /* Initialize the sm state or update the secret */
 		//Util.checkBytes("secret", secret);
-	    BigInteger secret_mpi = new BigInteger(secret);
+	    BigInteger secret_mpi = new BigInteger(1, secret);
 
 	    astate.secret = secret_mpi;
 	    astate.receivedQuestion = 0;
@@ -438,7 +438,7 @@ public class SM {
 	{
 	    /* Convert the given secret to the proper form and store it */
 		//Util.checkBytes("secret", secret);
-		BigInteger secret_mpi = new BigInteger(secret);
+		BigInteger secret_mpi = new BigInteger(1, secret);
 		bstate.secret = secret_mpi;
 
 	    BigInteger[] msg2 = new BigInteger[11];

@@ -1,5 +1,6 @@
 package net.java.otr4j.session;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.List;
@@ -42,5 +43,5 @@ public interface Session {
 
 	public abstract void addTlvHandler(OtrTlvHandler handler);
 
-	public abstract SessionKeys getEncryptionSessionKeys();
+	public abstract BigInteger getS();
 }

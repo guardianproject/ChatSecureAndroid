@@ -95,16 +95,10 @@ public class OtrSmTest extends EasyMockSupport {
         session_b = createMock(Session.class);
 		AuthContextImpl ca = new AuthContextImpl(session_a);
         AuthContextImpl cb = new AuthContextImpl(session_b);
-        SessionKeys sessionKeys_a = new SessionKeysImpl(0, 0);
-        SessionKeys sessionKeys_b = new SessionKeysImpl(0, 0);
-        sessionKeys_a.setLocalPair(ca.getLocalDHKeyPair(), 0);
-        sessionKeys_b.setLocalPair(cb.getLocalDHKeyPair(), 0);
-        sessionKeys_a.setRemoteDHPublicKey((DHPublicKey)cb.getLocalDHKeyPair().getPublic(), 0);
-        sessionKeys_b.setRemoteDHPublicKey((DHPublicKey)ca.getLocalDHKeyPair().getPublic(), 0);
-        EasyMock.expect(session_a.getEncryptionSessionKeys()).andStubReturn(sessionKeys_a);
-        EasyMock.expect(session_b.getEncryptionSessionKeys()).andStubReturn(sessionKeys_b);
         ca.setRemoteDHPublicKey((DHPublicKey)cb.getLocalDHKeyPair().getPublic());
         cb.setRemoteDHPublicKey((DHPublicKey)ca.getLocalDHKeyPair().getPublic());
+        EasyMock.expect(session_a.getS()).andStubReturn(ca.getS());
+        EasyMock.expect(session_b.getS()).andStubReturn(cb.getS());
         sessionId_a = new SessionID("a1", "ua", "xmpp");
         sessionId_b = new SessionID("a1", "ub", "xmpp");
         manager_a.generateLocalKeyPair(sessionId_a);
@@ -173,28 +167,28 @@ public class OtrSmTest extends EasyMockSupport {
     }
 
     private void runMiddleOfProtocol(List<TLV> tlvs) throws SMException, OtrException {
-        tlvs = sm_b.processTlv(tlvs.get(0));
+        sm_b.processTlv(tlvs.get(0));
         assertEquals(SM.EXPECT1, sm_b.smstate.nextExpected);
-        assertNull(tlvs);
+        assertNull(sm_b.getPendingTlvs());
 
         tlvs = sm_b.initRespondSmp(null, "xyz", false);
         assertEquals(SM.EXPECT3, sm_b.smstate.nextExpected);
         assertEquals(1, tlvs.size());
 
-        tlvs = sm_a.processTlv(tlvs.get(0));
+        sm_a.processTlv(tlvs.get(0));
         assertEquals(SM.EXPECT4, sm_a.smstate.nextExpected);
-        assertEquals(1, tlvs.size());
+        assertEquals(1, sm_a.getPendingTlvs().size());
 
         assertFalse(manager_a.isVerified(sessionId_a));
         assertFalse(manager_b.isVerified(sessionId_b));
 
-        tlvs = sm_b.processTlv(tlvs.get(0));
+        sm_b.processTlv(sm_a.getPendingTlvs().get(0));
         assertEquals(SM.EXPECT1, sm_b.smstate.nextExpected);
-        assertEquals(1, tlvs.size());
+        assertEquals(1, sm_b.getPendingTlvs().size());
 
-        tlvs = sm_a.processTlv(tlvs.get(0));
+        sm_a.processTlv(sm_b.getPendingTlvs().get(0));
         assertEquals(SM.EXPECT1, sm_a.smstate.nextExpected);
 
-        assertNull(tlvs);
+        assertNull(sm_a.getPendingTlvs());
     }
 }

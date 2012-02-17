@@ -7,5 +7,5 @@ import net.java.otr4j.session.TLV;
 
 public interface OtrTlvHandler {
 	/** process an incoming TLV and optionally return an array of TLVs to send back */
-	List<TLV> processTlv(TLV tlv) throws OtrException;
+	void processTlv(TLV tlv) throws OtrException;
 }

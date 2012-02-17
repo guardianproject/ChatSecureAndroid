@@ -1,14 +1,12 @@
 package net.java.otr4j.session;
 
-import java.security.GeneralSecurityException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.crypto.KeyAgreement;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrException;
@@ -18,6 +16,8 @@ import net.java.otr4j.crypto.OtrTlvHandler;
 import net.java.otr4j.crypto.SM;
 import net.java.otr4j.crypto.SM.SMException;
 import net.java.otr4j.crypto.SM.SMState;
+import net.java.otr4j.io.OtrOutputStream;
+import net.java.otr4j.io.SerializationUtils;
 
 public class OtrSm implements OtrTlvHandler {
     public static interface OtrSmEngineHost extends OtrEngineHost {
@@ -29,6 +29,7 @@ public class OtrSm implements OtrTlvHandler {
     private OtrKeyManager keyManager;
     private OtrSmEngineHost engineHost;
 	private Session session;
+	private List<TLV> pendingTlvs;
 
 	/**
 	 * Construct an OTR Socialist Millionaire handler object.
@@ -48,27 +49,20 @@ public class OtrSm implements OtrTlvHandler {
 	}
 
 	/* Compute secret session ID as hash of agreed secret */
-	private static byte[] computeSessionId(PrivateKey privKey, PublicKey pubKey) throws SMException {
-		KeyAgreement ka;
+	private static byte[] computeSessionId(BigInteger s) throws SMException {
+		byte[] sdata;
 		try {
-			ka = KeyAgreement.getInstance("DH");
-			ka.init(privKey);
-			ka.doPhase(pubKey, true);
-		} catch (GeneralSecurityException ex) {
-			throw new SMException(ex);
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			OtrOutputStream oos = new OtrOutputStream(out);
+			oos.write(0x00);
+			oos.writeBigInt(s);
+			sdata = out.toByteArray();
+			oos.close();
+		} catch (IOException e1) {
+			throw new SMException(e1);
 		}
 
-		byte[] secret = ka.generateSecret();
-
-		byte[] sdata = new byte[5 + secret.length];
-		sdata[1] = (byte) ((secret.length >> 24) & 0xff);
-		sdata[2] = (byte) ((secret.length >> 16) & 0xff);
-		sdata[3] = (byte) ((secret.length >> 8) & 0xff);
-		sdata[4] = (byte) (secret.length & 0xff);
-		System.arraycopy(secret, 0, sdata, 5, secret.length);
-
 		/* Calculate the session id */
-		sdata[0] = 0x00;
 		MessageDigest sha256;
 		try {
 			sha256 = MessageDigest.getInstance("SHA-256");
@@ -103,11 +97,9 @@ public class OtrSm implements OtrTlvHandler {
 		byte[] our_fp = new OtrCryptoEngineImpl().getFingerprintRaw(keyManager.loadLocalKeyPair(sessionID).getPublic());
 		byte[] their_fp = new OtrCryptoEngineImpl().getFingerprintRaw(keyManager.loadRemotePublicKey(sessionID));
 
-		final SessionKeys keys = session.getEncryptionSessionKeys();
-
 		byte[] sessionId;
 		try {
-			sessionId = computeSessionId(keys.getLocalPair().getPrivate(), keys.getRemoteKey());
+			sessionId = computeSessionId(session.getS());
 		} catch (SMException ex) {
 			throw new OtrException(ex);
 		}
@@ -164,16 +156,19 @@ public class OtrSm implements OtrTlvHandler {
 	 *  
 	 *  @return TLVs to send to the peer
 	 */
-	public List<TLV> abortSmp() throws SMException {
+	public List<TLV> abortSmp() throws OtrException {
 		TLV sendtlv = new TLV(TLV.SMP_ABORT, new byte[0]);
 		smstate.nextExpected = SM.EXPECT1;
         return makeTlvList(sendtlv);
 	}
 
+	public List<TLV> getPendingTlvs() {
+		return pendingTlvs;
+	}
 	/** Process an incoming TLV and optionally send back TLVs to peer. */
-	public List<TLV> processTlv(TLV tlv) throws OtrException {
+	public void processTlv(TLV tlv) throws OtrException {
 		try {
-			return doProcessTlv(tlv);
+			pendingTlvs = doProcessTlv(tlv);
 		} catch (SMException ex) {
 			throw new OtrException(ex);
 		}
@@ -202,7 +197,7 @@ public class OtrSm implements OtrTlvHandler {
 			byte[] plainq = new byte[qlen];
 			System.arraycopy(question, 0, plainq, 0, qlen);
 			if (smstate.smProgState != SM.PROG_CHEATED){
-			    engineHost.askForSecret(sessionID, new String(question));
+			    engineHost.askForSecret(sessionID, new String(plainq));
 			} else {
 			    engineHost.showError(sessionID, "Peer attempted to cheat during verification");
 				smstate.nextExpected = SM.EXPECT1;
