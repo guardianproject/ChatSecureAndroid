@@ -80,4 +80,7 @@ public interface OtrCryptoEngine {
 
 	public abstract String getFingerprint(PublicKey pubKey)
 			throws OtrCryptoException;
+
+	public abstract byte[] getFingerprintRaw(PublicKey pubKey)
+			throws OtrCryptoException;
 }

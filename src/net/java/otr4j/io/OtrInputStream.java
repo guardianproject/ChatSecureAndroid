@@ -108,7 +108,7 @@ public class OtrInputStream extends FilterInputStream implements
 	}
 
 	public byte[] readTlvData() throws IOException {
-		int len = readNumber(TYPE_LEN_BYTE);
+		int len = readNumber(TYPE_LEN_SHORT);
 
 		byte[] b = new byte[len];
 		in.read(b);
