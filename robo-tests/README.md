@@ -1,10 +1,16 @@
 This sub-project contains JUnit-4 tests for Gibberbot.
 
-To grab jars that this project depends on, do:
+Grab the robolectric 1.1-SNAPSHOT-jar-with-dependencies jar here:
 
-   `cd ..`
-   `mvn dependency:copy-dependencies`
-   `mv target/dependency/*.jar robo-tests/libs`
+https://oss.sonatype.org/index.html#nexus-search;quick~robolectric
+
+and put it in robo-tests/libs/lib/robolectric-1.1-jar-with-dependencies.jar
+
+To grab the other jars that this project depends on, do:
+
+    cd ..
+    mvn dependency:copy-dependencies
+    mv target/dependency/*.jar robo-tests/libs
 
 and add maps.jar and android.jar from the android SDK, level 10.
 

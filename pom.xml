@@ -81,7 +81,7 @@
       <artifactId>robolectric</artifactId>
       <version>1.1.0</version>
       <scope>system</scope>
-      <systemPath>${basedir}/${robo.dir}/lib/robolectric-1.1-20111223.015427-20-jar-with-dependencies.jar</systemPath>
+      <systemPath>${basedir}/${robo.dir}/lib/robolectric-1.1-jar-with-dependencies.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>asmack</groupId>
