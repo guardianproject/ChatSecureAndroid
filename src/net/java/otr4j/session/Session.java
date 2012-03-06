@@ -1,5 +1,6 @@
 package net.java.otr4j.session;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.List;
@@ -7,8 +8,8 @@ import java.util.List;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
+import net.java.otr4j.crypto.OtrTlvHandler;
 import net.java.otr4j.io.messages.AbstractMessage;
-import net.java.otr4j.session.SessionImpl.TLV;
 
 public interface Session {
 
@@ -39,4 +40,8 @@ public interface Session {
 	public abstract void addOtrEngineListener(OtrEngineListener l);
 
 	public abstract void removeOtrEngineListener(OtrEngineListener l);
+
+	public abstract void addTlvHandler(OtrTlvHandler handler);
+
+	public abstract BigInteger getS();
 }

@@ -216,7 +216,7 @@ class AuthContextImpl implements AuthContext {
 		return r;
 	}
 
-	private void setRemoteDHPublicKey(DHPublicKey dhPublicKey) {
+	public void setRemoteDHPublicKey(DHPublicKey dhPublicKey) {
 		// Verifies that Alice's gy is a legal value (2 <= gy <= modulus-2)
 		if (dhPublicKey.getY().compareTo(OtrCryptoEngine.MODULUS_MINUS_TWO) > 0) {
 			throw new IllegalArgumentException(

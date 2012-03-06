@@ -11,13 +11,16 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import javax.crypto.interfaces.DHPublicKey;
 
 import net.java.otr4j.OtrEngineHost;
@@ -26,14 +29,15 @@ import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.crypto.OtrCryptoEngine;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrTlvHandler;
 import net.java.otr4j.io.OtrInputStream;
 import net.java.otr4j.io.OtrOutputStream;
 import net.java.otr4j.io.SerializationConstants;
 import net.java.otr4j.io.SerializationUtils;
-import net.java.otr4j.io.messages.DataMessage;
 import net.java.otr4j.io.messages.AbstractEncodedMessage;
-import net.java.otr4j.io.messages.ErrorMessage;
 import net.java.otr4j.io.messages.AbstractMessage;
+import net.java.otr4j.io.messages.DataMessage;
+import net.java.otr4j.io.messages.ErrorMessage;
 import net.java.otr4j.io.messages.MysteriousT;
 import net.java.otr4j.io.messages.PlainTextMessage;
 import net.java.otr4j.io.messages.QueryMessage;
@@ -44,32 +48,6 @@ import net.java.otr4j.io.messages.QueryMessage;
  */
 public class SessionImpl implements Session {
 
-	class TLV {
-		public TLV(int type, byte[] value) {
-			this.setType(type);
-			this.setValue(value);
-		}
-
-		public void setType(int type) {
-			this.type = type;
-		}
-
-		public int getType() {
-			return type;
-		}
-
-		public void setValue(byte[] value) {
-			this.value = value;
-		}
-
-		public byte[] getValue() {
-			return value;
-		}
-
-		private int type;
-		private byte[] value;
-	}
-
 	private SessionID sessionID;
 	private OtrEngineHost host;
 	private SessionStatus sessionStatus;
@@ -78,6 +56,8 @@ public class SessionImpl implements Session {
 	private Vector<byte[]> oldMacKeys;
 	private static Logger logger = Logger
 			.getLogger(SessionImpl.class.getName());
+	private static List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
+	private BigInteger ess;
 
 	public SessionImpl(SessionID sessionID, OtrEngineHost listener) {
 
@@ -90,7 +70,16 @@ public class SessionImpl implements Session {
 		// -> client application calls OtrEngine.getSessionStatus()
 		this.sessionStatus = SessionStatus.PLAINTEXT;
 	}
+	
+	@Override
+	public void addTlvHandler(OtrTlvHandler handler) {
+	    tlvHandlers.add(handler);
+	}
 
+	public BigInteger getS() {
+		return ess;
+	}
+	
 	private SessionKeys getEncryptionSessionKeys() {
 		logger.finest("Getting encryption keys");
 		return getSessionKeysByIndex(SessionKeys.Previous, SessionKeys.Current);
@@ -219,6 +208,7 @@ public class SessionImpl implements Session {
 		switch (sessionStatus) {
 		case ENCRYPTED:
 			AuthContext auth = this.getAuthContext();
+			ess = auth.getS();
 			logger.finest("Setting most recent session keys from auth.");
 			for (int i = 0; i < this.getSessionKeys()[0].length; i++) {
 				SessionKeys current = getSessionKeysByIndex(0, i);
@@ -491,11 +481,13 @@ public class SessionImpl implements Session {
 			if (tlvs != null && tlvs.size() > 0) {
 				for (TLV tlv : tlvs) {
 					switch (tlv.getType()) {
-					case 1:
+					case TLV.DISCONNECTED:
 						this.setSessionStatus(SessionStatus.FINISHED);
 						return null;
 					default:
-						return decryptedMsgContent;
+					    for (OtrTlvHandler handler : tlvHandlers) {
+					    	handler.processTlv(tlv);
+					    }
 					}
 				}
 			}
