@@ -1,253 +1,378 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="ro_perm_label">خواندن پیغام های فوری</string>
-    <string name="ro_perm_desc">اجازه می دهد برنامه های کاربردی به خواندن اطلاعات از ارائه دهنده محتوا فوری.</string>
-    <string name="wo_perm_label">نوشتن پیام های فوری</string>
-    <string name="wo_perm_desc">اجازه می دهد برنامه های کاربردی برای نوشتن داده ها به ارائه محتوای فوری.</string>
-    <string name="landing_page_title">چت -- انتخاب یک حساب کاربری</string>
-    <string name="menu_add_account">اضافه کردن حساب</string>
-    <string name="menu_edit_account">ویرایش حساب</string>
-    <string name="menu_remove_account">گزارش حساب</string>
-    <string name="menu_sign_out_all">ثبت نام از همه</string>
-    <string name="choose_account_title">چت -- انتخاب یک حساب کاربری</string>
-    <string name="menu_cancel_signin">هنرهای انصراف</string>
-    <string name="menu_add_contact">افزودن مخاطب</string>
-    <string name="menu_remove_contact">تماس با حذف</string>
-    <string name="menu_block_contact">تماس با بلوک</string>
-    <string name="menu_view_blocked">مسدود شده</string>
-    <string name="menu_view_accounts">لیست حساب کاربری</string>
-    <string name="menu_settings">تنظیمات</string>
-    <string name="menu_search_contacts">تماس با ما جستجو</string>
-    <string name="menu_start_chat">شروع چت</string>
-    <string name="menu_sign_out">خروج</string>
-    <string name="menu_view_profile">نگارش دوباره</string>
-    <string name="menu_otr_start">شروع رمزگذاری</string>
-    <string name="menu_otr_stop">توقف رمزگذاری</string>
-    <string name="menu_clear_chat">پاک چت</string>
-    <string name="menu_end_conversation">پایان گفتگو</string>
-    <string name="menu_view_contact_list">لیست تماس</string>
-    <string name="menu_switch_chats">چت سوئیچ</string>
-    <string name="menu_insert_smiley">درج پذیری</string>
-    <string name="menu_scan">اسکن اثر انگشت</string>
-    <string name="menu_fingerprint">اثر انگشت شما</string>
-    <string name="menu_verify">نگارش دوباره اثر انگشت</string>
-    <string name="menu_plus">منو + "</string>
-    <string name="default_input_title">ورودی</string>
-    <string name="confirm">تکرار</string>
-    <string name="signout_all_confirm_message">آیا می خواهید خارج شوید همه خدمات؟</string>
-    <string name="ok">خوب</string>
-    <string name="cancel">انصراف</string>
-    <string name="yes">خوب</string>
-    <string name="no">انصراف</string>
-    <string name="signed_out_prompt_with_error">شما شده اند از امضا<xliff:g id="account">٪ 1 $ ثانیه</xliff:g>چون<xliff:g id="reason">٪ 2 $ ثانیه</xliff:g>.</string>
-    <string name="label_username">کاربر میزبان @</string>
-    <string name="label_password">Password:</string>
-    <string name="remember_password">به یاد داشته باش رمز عبور من را.</string>
-    <string name="keep_me_signed_in">ورود اتوماتیک</string>
-    <string name="sign_up">Don\u2019t یک حساب کاربری؟</string>
-    <string name="check_auto_sign_in">این گزینه به طور خودکار علائم شما را در هر بار باز کردن این برنامه. برای غیر فعال کردن این گزینه ، خارج شوید ، سپس روشن \ چک باکس "من در automatically\ ثبت نام" # :.</string>
-    <string name="sign_in">ثبت نام</string>
-    <string name="signing_in_to">گرفتن Gibberbot رفتن...</string>
-    <string name="signing_in_wait">امضای in\u2026</string>
-    <string name="bg_data_prompt_title">داده ها پس زمینه غیر فعال</string>
-    <string name="bg_data_prompt_ok">فعال</string>
-    <string name="bg_data_prompt_cancel">ترک</string>
-    <string name="subscriptions">دعوت دوستان</string>
-    <string name="empty_contact_group">خالی</string>
-    <string name="empty_conversation_group">بدون گفتگو</string>
-    <string name="contacts_picker_title">تماس با انتخاب (ها) به دعوت</string>
-    <string name="contact_filter_hint">برای پیدا کردن نوع تماس</string>
-    <string name="empty_contact_list">بدون تماس در بر داشت.</string>
-    <string name="no_blocked_contact">شماره تماس با ما مسدود شده است.</string>
-    <string name="contact_profile_title">مشخصات تماس</string>
-    <string name="label_status">Status:</string>
-    <string name="label_client_type">کارفرما type:</string>
-    <string name="client_type_computer">کامپیوتر</string>
-    <string name="client_type_mobile">موبایل</string>
-    <string name="presence_available">آنلاین</string>
-    <string name="presence_busy">مشغول</string>
-    <string name="presence_away">دور</string>
-    <string name="presence_idle">تنبل</string>
-    <string name="presence_offline">آفلاین</string>
-    <string name="presence_invisible">نظر می رسد نیست.</string>
-    <string name="data_channel_label">مجرای دادهها</string>
-    <string name="data_encoding_label">رمزگذاری داده ها</string>
-    <string name="cir_channel_label">کانال CIR</string>
-    <string name="host_label">میزبان</string>
-    <string name="msisdn_label">MSISDN</string>
-    <string name="http">HTTP</string>
-    <string name="sms">اس ام اس</string>
-    <string name="tcp">تیسیپی</string>
-    <string name="xml">کاپرفیلد</string>
-    <string name="wbxml">WBXML</string>
-    <string name="save">ذخیره</string>
-    <string name="me">من</string>
-    <string name="compose_hint">به نوع نوشتن</string>
-    <string name="send">ارسال</string>
-    <string name="msg_sent_failed">این پیام نمی تواند فرستاده شده است.</string>
-    <string name="disconnected_warning">در حین اتصال به سرور. پیام های فرستاده خواهد شد زمانی که آنلاین هستند.</string>
-    <string name="select_link_title">لینک را انتخاب کنید</string>
-    <string name="empty_chat_list">بدون فعال چت.</string>
-    <string name="add_contact_title">افزودن مخاطب</string>
-    <string name="input_contact_label">نشانی پست الکترونیکی شخصی که میخواهید invite:</string>
-    <string name="choose_list_label">را انتخاب کنید list:</string>
-    <string name="invite_instruction">نوع نام برای اضافه کردن از تماس ها.</string>
-    <string name="invite_label">ارسال دعوت نامه</string>
-    <string name="setting_title">تنظیمات عمومی</string>
-    <string name="hide_offline_contacts">تماس با ما مخفی نیست.</string>
-    <string name="notification_group_title">هشدار از طریق تنظیمات</string>
-    <string name="notification_enabled_title">اطلاعیه فوری</string>
-    <string name="notification_enabled_summary">با خبر سازی در نوار وضعیت مسنجر وقتی که وارد</string>
-    <string name="notification_vibrate_title">ارتعاش داشتن</string>
-    <string name="notification_vibrate_summary">همچنین هنگامی که وارد چت ارتعاش</string>
-    <string name="notification_sound_title">صدا</string>
-    <string name="notification_sound_summary">همچنین زمانی که آهنگ زنگ پیام رسانی فوری می رسد بازی</string>
-    <string name="notification_ringtone_title">انتخاب آهنگ زنگ</string>
-    <string name="invitation_sent_prompt">دعوت نامه فرستاده شده است<xliff:g id="user">٪ 1 $ ثانیه</xliff:g>.</string>
-    <string name="accept_invitation">پذیرفتن</string>
-    <string name="decline_invitation">کاهش</string>
-    <string name="approve_subscription">پذیرفتن</string>
-    <string name="decline_subscription">کاهش</string>
-    <string name="notify_groupchat_label">چت گروهی دعوت نامه</string>
-    <string name="group_chat_invite_notify_text">گروه جدید چت دعوت از<xliff:g id="user">٪ ثانیه</xliff:g>
+  <string name="ro_perm_label">خواندن پیغام های فوری</string>
+  <string name="ro_perm_desc">اجازه می دهد برنامه های کاربردی به خواندن اطلاعات از ارائه دهنده محتوا فوری.</string>
+  <string name="wo_perm_label">نوشتن پیام های فوری</string>
+  <string name="wo_perm_desc">اجازه می دهد برنامه های کاربردی برای نوشتن داده ها به ارائه محتوای فوری.</string>
+  <string name="im_label">Gibberbot</string>
+  <string name="landing_page_title">چت -- انتخاب یک حساب کاربری</string>
+  <string name="menu_about">About</string>
+  <string name="menu_add_account">اضافه کردن حساب</string>
+  <string name="menu_edit_account">ویرایش حساب</string>
+  <string name="menu_remove_account">گزارش حساب</string>
+  <string name="menu_sign_out_all">ثبت نام از همه</string>
+  <string name="choose_account_title">چت -- انتخاب یک حساب کاربری</string>
+  <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="menu_cancel_signin">هنرهای انصراف</string>
+  <string name="menu_add_contact">افزودن مخاطب</string>
+  <string name="menu_remove_contact">تماس با حذف</string>
+  <string name="menu_block_contact">تماس با بلوک</string>
+  <string name="menu_view_blocked">مسدود شده</string>
+  <string name="menu_view_accounts">لیست حساب کاربری</string>
+  <string name="menu_new_chat">New Chat</string>
+  <string name="menu_settings">تنظیمات</string>
+  <string name="menu_search_contacts">تماس با ما جستجو</string>
+  <string name="menu_start_chat">شروع چت</string>
+  <string name="menu_sign_out">خروج</string>
+  <string name="menu_view_profile">نگارش دوباره</string>
+  <string name="menu_otr_start">شروع رمزگذاری</string>
+  <string name="menu_otr_stop">توقف رمزگذاری</string>
+  <string name="menu_clear_chat">پاک چت</string>
+  <string name="menu_end_conversation">پایان گفتگو</string>
+  <string name="menu_view_contact_list">لیست تماس</string>
+  <string name="menu_invite_contact">Invite\u2026</string>
+  <string name="menu_switch_chats">چت سوئیچ</string>
+  <string name="menu_insert_smiley">درج پذیری</string>
+  <string name="menu_scan">اسکن اثر انگشت</string>
+  <string name="menu_fingerprint">اثر انگشت شما</string>
+  <string name="menu_verify">نگارش دوباره اثر انگشت</string>
+  <string name="menu_plus">منو + \"</string>
+  <string name="confirm">تکرار</string>
+  <string name="signout_all_confirm_message">آیا می خواهید خارج شوید همه خدمات؟</string>
+  <string name="confirm_delete_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be deleted.</string>
+  <string name="confirm_block_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be blocked.</string>
+  <string name="confirm_unblock_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be unblocked.</string>
+  <string name="ok">خوب</string>
+  <string name="cancel">انصراف</string>
+  <string name="yes">خوب</string>
+  <string name="no">انصراف</string>
+  <string name="signed_out_prompt">You have been signed out of &lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">شما شده اند از امضا<xliff:g id="account">٪ 1 $ ثانیه</xliff:g>چون<xliff:g id="reason">٪ 2 $ ثانیه</xliff:g>.</string>
+  <string name="add_account">Add &lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt; account</string>
+  <string name="label_username">کاربر میزبان @</string>
+  <string name="label_password">Password:</string>
+  <string name="remember_password">به یاد داشته باش رمز عبور من را.</string>
+  <string name="keep_me_signed_in">ورود اتوماتیک</string>
+  <string name="sign_up">Don\u2019t یک حساب کاربری؟</string>
+  <string name="check_save_password">برای امنیت بیشتر خود را ، اگر گوشی شما گم یا دزدیده شده ، به وب سایت بر روی کامپیوتر خود مراجعه کنید و رمز عبور خود را تغییر دهید.</string>
+  <string name="check_auto_sign_in">این گزینه به طور خودکار علائم شما را در هر بار باز کردن این برنامه. برای غیر فعال کردن این گزینه ، خارج شوید ، سپس روشن \ چک باکس \"من در automatically\ ثبت نام\" # :.</string>
+  <string name="sign_in">ثبت نام</string>
+  <string name="signing_in_to">گرفتن Gibberbot رفتن...</string>
+  <string name="signing_in_wait">امضای in\u2026</string>
+  <string name="bg_data_prompt_title">داده ها پس زمینه غیر فعال</string>
+  <string name="bg_data_prompt_message">
+         &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; needs background data to be enabled.
     </string>
-    <string name="perm_label">شروع سرویس پیام رسانی فوری</string>
-    <string name="perm_desc">اجازه می دهد برنامه های کاربردی برای شروع از طریق سرویس پیام رسانی فوری قصد.</string>
-    <string name="error">توجه</string>
-    <string name="add_list_failed">لیست به آنها اضافه شده است.</string>
-    <string name="block_contact_failed">تماس با مسدود شده بود نیست.</string>
-    <string name="unblock_contact_failed">تماس با شد unblocked نیست.</string>
-    <string name="select_contact">لطفا انتخاب کنید اولین تماس.</string>
-    <string name="disconnected">قطع! \n</string>
-    <string name="service_error">خدمات خطا!</string>
-    <string name="load_contact_list_failed">لیست تماس با بود بار نیست.</string>
-    <string name="cant_connect_to_server">تواند اتصال به سرور نیست. لطفا بررسی ارتباط خود را.</string>
-    <string name="contact_not_loaded">لطفا صبر کنید در حالی که خود را تماس با بارهای لیست.</string>
-    <string name="network_error">خطا در شبکه رخ داده است.</string>
-    <string name="service_not_support">سرور آیا این قابلیت را پشتیبانی نمی کند.</string>
-    <string name="invalid_password">رمز عبور وارد شده معتبر نیست.</string>
-    <string name="internal_server_error">سرور مواجه خطا.</string>
-    <string name="not_implemented">سرور آیا این قابلیت را پشتیبانی نمی کند.</string>
-    <string name="service_unavaiable">سرور در حال حاضر در دسترس نیست.</string>
-    <string name="timeout">سرور به پایان رسیده.</string>
-    <string name="version_not_supported">سرور نشانی از نسخه فعلی را پشتیبانی نمی کند.</string>
-    <string name="message_queue_full">صف پیام پر است.</string>
-    <string name="domain_not_supported">سرور پشتیبانی نمی کند حمل و نقل به دامنه.</string>
-    <string name="unknown_user">نام کاربری که وارد کرده اید به رسمیت شناخته نشده.</string>
-    <string name="recipient_blocked_the_user">با عرض پوزش ، شما توسط این کاربر مسدود شده است.</string>
-    <string name="session_expired">جلسه تمام شده است ، لطفا دوباره وارد شوید.</string>
-    <string name="forced_logout">شما در از دیگر مشتری را امضا کردند.</string>
-    <string name="already_logged_in">شما در حال حاضر در یکی دیگر از مشتری را امضا کردند.</string>
-    <string name="msisdn_error">با عرض پوزش ، شماره تلفن می تواند از سیم کارت شما خوانده نمی شود. لطفا با اپراتور خود را برای کمک کند.</string>
-    <string name="not_signed_in">شما در حال حاضر هنوز وارد سایت نشده امضا</string>
-    <string-array name="default_smiley_names">
-        <item>خوشحال</item>
-        <item>غمگین</item>
-        <item>حرکت</item>
-        <item>زبان چسبیده</item>
-        <item>متعجب</item>
-        <item>بوسه</item>
-        <item>فریاد</item>
-        <item>خنک</item>
-        <item>دهان پول</item>
-        <item>پا در دهان</item>
-        <item>خجل</item>
-        <item>فرشته</item>
-        <item>سکوت بی تفاوت</item>
-        <item>گریه</item>
-        <item>لب مهر و موم شده</item>
-        <item>خندان</item>
-        <item>گیج</item>
-    </string-array>
-    <string-array name="smiley_names">
-        <item>خوشحال</item>
-        <item>غمگین</item>
-        <item>حرکت</item>
-        <item>زبان چسبیده</item>
-        <item>متعجب</item>
-        <item>بوسه</item>
-        <item>فریاد</item>
-        <item>خنک</item>
-        <item>دهان پول</item>
-        <item>پا در دهان</item>
-        <item>خجل</item>
-        <item>فرشته</item>
-        <item>سکوت بی تفاوت</item>
-        <item>گریه</item>
-        <item>لب مهر و موم شده</item>
-        <item>خندان</item>
-        <item>گیج</item>
-    </string-array>
-    <string name="check_save_password">برای امنیت بیشتر خود را ، اگر گوشی شما گم یا دزدیده شده ، به وب سایت بر روی کامپیوتر خود مراجعه کنید و رمز عبور خود را تغییر دهید.</string>
-    <string name="menu_contact_list">لیست تماس</string>
-    <string name="menu_view_encrypt_chat">رمزبندی On/Off</string>
-    <string name="use_tor">اتصال از طریق تر (نیاز به برنامه Orbot)</string>
-    <string name="app_name">Gibberbot</string>
-    <string name="welcome_first">اولین بار با استفاده از Gibberbot؟</string>
-    <string name="welcome_skip">Can\'t صبر کنید برای شروع؟</string>
-    <string name="welcome_about">درباره Gibberbot</string>
-    <string name="welcome_account">راه اندازی حساب کاربری</string>
-    <string name="about_welcome_title">خوش آمدید به Gibberbot</string>
-    <string name="about_welcome">Gibberbot موبایل برنامه پیام رسانی فوری فراهم می کند که ویژگی های امنیتی فوق العاده است که به دیگران جلوگیری از snooping در مکالمات خود و برنامه communications.\n\nThe پشتیبانی هر سرویس چت استفاده می کند که پرحرفی یا پروتکل XMPP ، مانند گوگل یا GTalk Jabber.org است.</string>
-    <string name="about_otr_title">چگونه آن را امن؟</string>
-    <string name="about_otr">\'Off - ضبط - Messaging\' سیستم های امنیتی طراحی شده برای فعال کردن حریم خصوصی توسط تقلید از ویژگی های گفتگوی خصوصی در دنیای واقعی ، از جمله رمزگذاری ، ورود و خروج ، Deniability و جلو Secrecy.\n\nThe OTR - پروتکل سازگار با دسکتاپ چت و گفتگوی اینترنتی مانند Adiumیا پیجین.</string>
-    <string name="about_security_title">آیا این شاخه به زبانهای من امن؟</string>
-    <string name="about_security">چت Gibberbot\ قابلیت رمزگذاری را تنها با این نسخهها کار هنگامی که پیام با دیگران با استفاده از برنامه های سازگار و یا برنامه ، بنابراین شما باید مخاطبین خود را با استفاده از Gibberbot برای موبایل و Adium یا پیجین برای دسکتاپ تضمین می کند. شما می توانید ریز لحن دقیقا چگونه و چه وقت Gibberbot تلاش برای رمز کردن چت های خود را در Accoثانیه Settings.\n\nLet\ unt \'شروع کنید!</string>
-    <string name="setup_passphrase_title">راه اندازی عبارت گذر</string>
-    <string name="setup_passphrase">قبل از اینکه شروع کنید لطفا انتخاب کنید عبارت گذر امن برای محافظت از خود را داده Gibberbot از دسترسی غیر عادلانه.</string>
-    <string name="setup_passphrase_label1">Passphrase:</string>
-    <string name="setup_passphrase_label2">عبارت گذر (دوباره) :</string>
-    <string name="account_setup_acct_subtitle">حساب کاربری</string>
-    <string name="account_setup_acct_acctname_title">نام حساب</string>
-    <string name="account_setup_acct_acctname_sub">نام صفحه نمایش برای این حساب</string>
-    <string name="account_setup_acct_username_title">نام کاربری (ورود به سایت)</string>
-    <string name="account_setup_acct_username_sub">Format: کاربر host:port @</string>
-    <string name="account_setup_acct_password_title">رمز عبور</string>
-    <string name="account_setup_acct_password_sub">رمز عبور را برای احراز هویت</string>
-    <string name="account_setup_pers_sub">اصرار</string>
-    <string name="account_setup_pers_pw_title">یاد آوری کلمه عبور</string>
-    <string name="account_setup_pers_pw_on">ذخیره سازی رمز عبور</string>
-    <string name="account_setup_pers_pw_off">ذخیره سازی رمز عبور شما هنوز</string>
-    <string name="account_setup_pers_auto_title">به صورت خودکار در ثبت نام</string>
-    <string name="account_setup_pers_auto_on">در تماس باشید در Gibberbot راه اندازی</string>
-    <string name="account_setup_pers_auto_off">Don\'t در تماس باشید در Gibberbot راه اندازی</string>
-    <string name="account_setup_pers_now_title">ثبت نام کنید</string>
-    <string name="account_setup_pers_now_on">راه اندازی حساب های زیر در تماس باشید</string>
-    <string name="account_setup_pers_now_off">Don\'t زیر در تماس باشید راه اندازی حساب کاربری</string>
-    <string name="account_setup_personal_sub">شخصی (انتخابی)</string>
-    <string name="account_setup_personal_alias_title">حساب کاربری نام مستعار (نام شما)</string>
-    <string name="account_setup_personal_alias_sub">چگونه حساب کاربری خود شوید به نظر می رسد (آنلاین)</string>
-    <string name="account_setup_personal_profile_title">مشخصات</string>
-    <string name="account_setup_personal_profile_sub">تقریظ یا اعلان مبالغه امیز کوتاه درباره خودتان</string>
-    <string name="account_setup_advanced_sub">جستجوی پیشرفته</string>
-    <string name="account_setup_advanced_enc_force">رمزگذاری نیروی / پروندههای متنی ساده رد</string>
-    <string name="account_setup_advanced_enc_auto">هنگامی که ممکن است ، به طور خودکار رمزنگاری چت</string>
-    <string name="account_setup_advanced_enc_req">چت رمزبندی به عنوان درخواست</string>
-    <string name="account_setup_advanced_enc_off">غیر فعال کردن چت رمزگذاری</string>
-    <string name="account_setup_signin_a">اعتبار قبول...</string>
-    <string name="account_setup_signin_b">جفت کلید تولید...</string>
-    <string name="account_setup_signin_c">امضای اید..</string>
-    <string name="account_setup_error_validating">Gibberbot مواجه خطا در حین اعتباری نام کاربری یا رمز ورود خود -- لطفا به آنها و دوباره سعی کنید.</string>
-    <string name="account_setup_error_keypair">Gibberbot مواجه خطا در حین تولید جفت کلید.</string>
-    <string name="account_setup_error_server">Gibberbot مواجه خطا در حین اتصال به چت سرور -- لطفا تنظیماتتان را بررسی کنید و دوباره سعی کنید.</string>
-    <string name="account_setup_error_connectivity">Gibberbot مواجه خطا در حین اتصال -- لطفا doublecheck اتصال به شبکه شما و دوباره سعی کنید.</string>
-    <string name="label_fingerprint_remote">اثر انگشت آنها</string>
-    <string name="label_fingerprint_local">اثر انگشت شما</string>
-    <string name="menu_sign_in">ثبت نام</string>
-    <string name="menu_gen_key">Regen کلیدی</string>
-    <string name="error_suspended_connection">Gibberbot تا به اتصال به شبکه از دست رفته</string>
-    <string name="error_reestablish_connection">Gibberbot در تلاش است تا restablish اتصال</string>
-    <string name="otr_session_status_plaintext">Warning: این چت نیست رمزگذاری</string>
-    <string name="otr_session_status_encrypted">این چت امن است اما هویت این افراد را نداشته باشند تأیید شده است</string>
-    <string name="otr_session_status_finished">Warning: چت رمزگذاری شده است متوقف شده است.</string>
-    <string name="otr_session_status_verified">این چت امن و تایید</string>
-    <string name="account_wizard_setup_title">حساب جادوگر</string>
-    <string name="account_wizard_account_title">حساب شما شناسه</string>
-    <string name="account_wizard_host_title">پیکربندی سرور</string>
-    <string name="account_wizard_ready_title">آیا شما آماده؟</string>
-    <string name="account_wizard_setup_body">شناسه را وارد حساب خود را به طور خودکار پیکربندی Gibberbot برای service.\n\nIt شما چت احتمالا به نظر می رسد مانند آدرس ایمیل -- yourname@gmail.com چنین است ، یا someone@jabber.org ، به عنوان مثال.</string>
-    <string name="account_wizard_account_body">لطفا وارد حساب کاربری خود شوید آیدی (کاربر @ نام میزبان) :</string>
-    <string name="account_wizard_host_body">لطفا وارد و یا ویرایش jabber/xmpp چت شما نام هاست سرور و شماره پورت (5،222 پیش فرض است).</string>
-    <string name="account_wizard_ready_body">Gibberbot پیکربندی شده است ، و اکنون وقت آن است که برای اتصال به خدمات شما ، و شروع به چت با خیال راحت ، ایمن و خصوصی!</string>
-    <string name="signin_password_prompt">password: خود را وارد کنید</string>
+  <string name="bg_data_prompt_ok">فعال</string>
+  <string name="bg_data_prompt_cancel">ترک</string>
+  <string name="ongoing_conversation">Ongoing chats (&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; online</string>
+  <string name="subscriptions">دعوت دوستان</string>
+  <string name="unknown_contact">(<i>Unknown</i>) </string>
+  <string name="empty_contact_group">خالی</string>
+  <string name="empty_conversation_group">بدون گفتگو</string>
+  <string name="contacts_picker_title">تماس با انتخاب (ها) به دعوت</string>
+  <string name="contact_filter_hint">برای پیدا کردن نوع تماس</string>
+  <string name="empty_contact_list">بدون تماس در بر داشت.</string>
+  <string name="blocked_list_title">Blocked contacts - &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">شماره تماس با ما مسدود شده است.</string>
+  <string name="contact_profile_title">مشخصات تماس</string>
+  <string name="label_status">Status:</string>
+  <string name="label_client_type">کارفرما type:</string>
+  <string name="client_type_computer">کامپیوتر</string>
+  <string name="client_type_mobile">موبایل</string>
+  <string name="presence_available">آنلاین</string>
+  <string name="presence_busy">مشغول</string>
+  <string name="presence_away">دور</string>
+  <string name="presence_idle">تنبل</string>
+  <string name="presence_offline">آفلاین</string>
+  <string name="presence_invisible">نظر می رسد نیست.</string>
+  <string name="preference_title">&lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
+  <string name="data_channel_label">مجرای دادهها</string>
+  <string name="data_encoding_label">رمزگذاری داده ها</string>
+  <string name="cir_channel_label">کانال CIR</string>
+  <string name="host_label">میزبان</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">اس ام اس</string>
+  <string name="tcp">تیسیپی</string>
+  <string name="xml">کاپرفیلد</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">ذخیره</string>
+  <string name="chat_with">Chat with &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="me">من</string>
+  <string name="compose_hint">به نوع نوشتن</string>
+  <string name="contact_online">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is online</string>
+  <string name="contact_away">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is away</string>
+  <string name="contact_busy">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is busy</string>
+  <string name="contact_offline">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is offline</string>
+  <string name="contact_joined">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has joined</string>
+  <string name="contact_left">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has left</string>
+  <string name="time_stamp">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+  <string name="send">ارسال</string>
+  <string name="msg_sent_failed">این پیام نمی تواند فرستاده شده است.</string>
+  <string name="disconnected_warning">در حین اتصال به سرور. پیام های فرستاده خواهد شد زمانی که آنلاین هستند.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is offline. Messages you send will be delivered when &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; comes online.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is not in your Contact list.</string>
+  <string name="select_link_title">لینک را انتخاب کنید</string>
+  <string name="empty_chat_list">بدون فعال چت.</string>
+  <string name="add_contact_title">افزودن مخاطب</string>
+  <string name="input_contact_label">نشانی پست الکترونیکی شخصی که میخواهید invite:</string>
+  <string name="choose_list_label">را انتخاب کنید list:</string>
+  <string name="invite_instruction">نوع نام برای اضافه کردن از تماس ها.</string>
+  <string name="invite_label">ارسال دعوت نامه</string>
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="account_setup_title">Account Setup</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">تماس با ما مخفی نیست.</string>
+  <string name="notification_group_title">هشدار از طریق تنظیمات</string>
+  <string name="notification_enabled_title">اطلاعیه فوری</string>
+  <string name="notification_enabled_summary">با خبر سازی در نوار وضعیت مسنجر وقتی که وارد</string>
+  <string name="notification_vibrate_title">ارتعاش داشتن</string>
+  <string name="notification_vibrate_summary">همچنین هنگامی که وارد چت ارتعاش</string>
+  <string name="notification_sound_title">صدا</string>
+  <string name="notification_sound_summary">همچنین زمانی که آهنگ زنگ پیام رسانی فوری می رسد بازی</string>
+  <string name="notification_ringtone_title">انتخاب آهنگ زنگ</string>
+  <string name="invitation_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has invited you to join a group chat.</string>
+  <string name="invitation_sent_prompt">دعوت نامه فرستاده شده است<xliff:g id="user">٪ 1 $ ثانیه</xliff:g>.</string>
+  <string name="accept_invitation">پذیرفتن</string>
+  <string name="decline_invitation">کاهش</string>
+  <string name="subscription_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has invited you to be on their Contact list.</string>
+  <string name="approve_subscription">پذیرفتن</string>
+  <string name="decline_subscription">کاهش</string>
+  <string name="approve_subscription_error">Unable to approve subscription from &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</string>
+  <string name="decline_subscription_error">Unable to decline subscription from &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</string>
+  <string name="newMessages_label">New &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; messages</string>
+  <string name="num_unread_chats">
+        &lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; unread chats
+    </string>
+  <string name="subscription_notify_text">
+        New friend invitation from <xliff:g id="user">%s</xliff:g>
+    </string>
+  <string name="notify_groupchat_label">چت گروهی دعوت نامه</string>
+  <string name="group_chat_invite_notify_text">گروه جدید چت دعوت از<xliff:g id="user">٪ ثانیه</xliff:g>
+    </string>
+  <string name="add_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" added.</string>
+  <string name="delete_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" deleted.</string>
+  <string name="block_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" blocked.</string>
+  <string name="unblock_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" unblocked.</string>
+  <string name="perm_label">شروع سرویس پیام رسانی فوری</string>
+  <string name="perm_desc">اجازه می دهد برنامه های کاربردی برای شروع از طریق سرویس پیام رسانی فوری قصد.</string>
+  <string name="error">توجه</string>
+  <string name="login_service_failed">Unable to sign in to the &lt;xliff:g id=\"service\"&gt;%1$s&lt;/xliff:g&gt; service. Please try again later.\n(Detail: &lt;xliff:g id=\"description\"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="add_list_failed">لیست به آنها اضافه شده است.</string>
+  <string name="block_contact_failed">تماس با مسدود شده بود نیست.</string>
+  <string name="unblock_contact_failed">تماس با شد unblocked نیست.</string>
+  <string name="select_contact">لطفا انتخاب کنید اولین تماس.</string>
+  <string name="disconnected">قطع! \n</string>
+  <string name="service_error">خدمات خطا!</string>
+  <string name="load_contact_list_failed">لیست تماس با بود بار نیست.</string>
+  <string name="cant_connect_to_server">تواند اتصال به سرور نیست. لطفا بررسی ارتباط خود را.</string>
+  <string name="contact_already_exist">\"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" already exists in your Contact list.</string>
+  <string name="contact_blocked">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" has been blocked.</string>
+  <string name="contact_not_loaded">لطفا صبر کنید در حالی که خود را تماس با بارهای لیست.</string>
+  <string name="network_error">خطا در شبکه رخ داده است.</string>
+  <string name="service_not_support">سرور آیا این قابلیت را پشتیبانی نمی کند.</string>
+  <string name="invalid_password">رمز عبور وارد شده معتبر نیست.</string>
+  <string name="internal_server_error">سرور مواجه خطا.</string>
+  <string name="not_implemented">سرور آیا این قابلیت را پشتیبانی نمی کند.</string>
+  <string name="service_unavaiable">سرور در حال حاضر در دسترس نیست.</string>
+  <string name="timeout">سرور به پایان رسیده.</string>
+  <string name="version_not_supported">سرور نشانی از نسخه فعلی را پشتیبانی نمی کند.</string>
+  <string name="message_queue_full">صف پیام پر است.</string>
+  <string name="domain_not_supported">سرور پشتیبانی نمی کند حمل و نقل به دامنه.</string>
+  <string name="unknown_user">نام کاربری که وارد کرده اید به رسمیت شناخته نشده.</string>
+  <string name="recipient_blocked_the_user">با عرض پوزش ، شما توسط این کاربر مسدود شده است.</string>
+  <string name="session_expired">جلسه تمام شده است ، لطفا دوباره وارد شوید.</string>
+  <string name="forced_logout">شما در از دیگر مشتری را امضا کردند.</string>
+  <string name="already_logged_in">شما در حال حاضر در یکی دیگر از مشتری را امضا کردند.</string>
+  <string name="msisdn_error">با عرض پوزش ، شماره تلفن می تواند از سیم کارت شما خوانده نمی شود. لطفا با اپراتور خود را برای کمک کند.</string>
+  <string name="not_signed_in">شما در حال حاضر هنوز وارد سایت نشده امضا</string>
+  <string name="general_error">Error code &lt;xliff:g id=\"code\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string-array name="default_smiley_names"><item>خوشحال</item>
+<item>غمگین</item>
+<item>حرکت</item>
+<item>زبان چسبیده</item>
+<item>متعجب</item>
+<item>بوسه</item>
+<item>فریاد</item>
+<item>خنک</item>
+<item>دهان پول</item>
+<item>پا در دهان</item>
+<item>خجل</item>
+<item>فرشته</item>
+<item>سکوت بی تفاوت</item>
+<item>گریه</item>
+<item>لب مهر و موم شده</item>
+<item>خندان</item>
+<item>گیج</item>
+</string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string-array name="smiley_names"><item>خوشحال</item>
+<item>غمگین</item>
+<item>حرکت</item>
+<item>زبان چسبیده</item>
+<item>متعجب</item>
+<item>بوسه</item>
+<item>فریاد</item>
+<item>خنک</item>
+<item>دهان پول</item>
+<item>پا در دهان</item>
+<item>خجل</item>
+<item>فرشته</item>
+<item>سکوت بی تفاوت</item>
+<item>گریه</item>
+<item>لب مهر و موم شده</item>
+<item>خندان</item>
+<item>گیج</item>
+</string-array>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">Contact List - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_contact_list">لیست تماس</string>
+  <string name="menu_view_encrypt_chat">رمزبندی On/Off</string>
+  <string name="use_tor">اتصال از طریق تر (نیاز به برنامه Orbot)</string>
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">اولین بار با استفاده از Gibberbot؟</string>
+  <string name="welcome_skip">Can\'t صبر کنید برای شروع؟</string>
+  <string name="welcome_about">درباره Gibberbot</string>
+  <string name="welcome_account">راه اندازی حساب کاربری</string>
+  <string name="about_welcome_title">خوش آمدید به Gibberbot</string>
+  <string name="about_welcome">Gibberbot موبایل برنامه پیام رسانی فوری فراهم می کند که ویژگی های امنیتی فوق العاده است که به دیگران جلوگیری از snooping در مکالمات خود و برنامه communications.\n\nThe پشتیبانی هر سرویس چت استفاده می کند که پرحرفی یا پروتکل XMPP ، مانند گوگل یا GTalk Jabber.org است.</string>
+  <string name="about_otr_title">چگونه آن را امن؟</string>
+  <string name="about_otr">\'Off - ضبط - Messaging\' سیستم های امنیتی طراحی شده برای فعال کردن حریم خصوصی توسط تقلید از ویژگی های گفتگوی خصوصی در دنیای واقعی ، از جمله رمزگذاری ، ورود و خروج ، Deniability و جلو Secrecy.\n\nThe OTR - پروتکل سازگار با دسکتاپ چت و گفتگوی اینترنتی مانند Adiumیا پیجین.</string>
+  <string name="about_security_title">آیا این شاخه به زبانهای من امن؟</string>
+  <string name="about_security">چت Gibberbot\ قابلیت رمزگذاری را تنها با این نسخهها کار هنگامی که پیام با دیگران با استفاده از برنامه های سازگار و یا برنامه ، بنابراین شما باید مخاطبین خود را با استفاده از Gibberbot برای موبایل و Adium یا پیجین برای دسکتاپ تضمین می کند. شما می توانید ریز لحن دقیقا چگونه و چه وقت Gibberbot تلاش برای رمز کردن چت های خود را در Accoثانیه Settings.\n\nLet\ unt \'شروع کنید!</string>
+  <string name="setup_passphrase_title">راه اندازی عبارت گذر</string>
+  <string name="setup_passphrase">قبل از اینکه شروع کنید لطفا انتخاب کنید عبارت گذر امن برای محافظت از خود را داده Gibberbot از دسترسی غیر عادلانه.</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">عبارت گذر (دوباره) :</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">password</string>
+  <string name="account_setup_advanced_button">Advanced Account Settings</string>
+  <string name="account_setup_pers_sub">اصرار</string>
+  <string name="account_setup_pers_pw_title">یاد آوری کلمه عبور</string>
+  <string name="account_setup_pers_pw_on">ذخیره سازی رمز عبور</string>
+  <string name="account_setup_pers_pw_off">ذخیره سازی رمز عبور شما هنوز</string>
+  <string name="account_setup_pers_auto_title">به صورت خودکار در ثبت نام</string>
+  <string name="account_setup_pers_auto_on">در تماس باشید در Gibberbot راه اندازی</string>
+  <string name="account_setup_pers_auto_off">Don\'t در تماس باشید در Gibberbot راه اندازی</string>
+  <string name="account_setup_pers_now_title">ثبت نام کنید</string>
+  <string name="account_setup_pers_now_on">راه اندازی حساب های زیر در تماس باشید</string>
+  <string name="account_setup_pers_now_off">Don\'t زیر در تماس باشید راه اندازی حساب کاربری</string>
+  <string name="account_setup_personal_sub">شخصی (انتخابی)</string>
+  <string name="account_setup_personal_alias_title">حساب کاربری نام مستعار (نام شما)</string>
+  <string name="account_setup_personal_alias_sub">چگونه حساب کاربری خود شوید به نظر می رسد (آنلاین)</string>
+  <string name="account_setup_personal_profile_title">مشخصات</string>
+  <string name="account_setup_personal_profile_sub">تقریظ یا اعلان مبالغه امیز کوتاه درباره خودتان</string>
+  <string name="account_setup_advanced_enc_force">رمزگذاری نیروی / پروندههای متنی ساده رد</string>
+  <string name="account_setup_advanced_enc_auto">هنگامی که ممکن است ، به طور خودکار رمزنگاری چت</string>
+  <string name="account_setup_advanced_enc_req">چت رمزبندی به عنوان درخواست</string>
+  <string name="account_setup_advanced_enc_off">غیر فعال کردن چت رمزگذاری</string>
+  <string name="account_setup_signin_a">اعتبار قبول...</string>
+  <string name="account_setup_signin_b">جفت کلید تولید...</string>
+  <string name="account_setup_signin_c">امضای اید..</string>
+  <string name="account_setup_error_validating">Gibberbot مواجه خطا در حین اعتباری نام کاربری یا رمز ورود خود -- لطفا به آنها و دوباره سعی کنید.</string>
+  <string name="account_setup_error_keypair">Gibberbot مواجه خطا در حین تولید جفت کلید.</string>
+  <string name="account_setup_error_server">Gibberbot مواجه خطا در حین اتصال به چت سرور -- لطفا تنظیماتتان را بررسی کنید و دوباره سعی کنید.</string>
+  <string name="account_setup_error_connectivity">Gibberbot مواجه خطا در حین اتصال -- لطفا doublecheck اتصال به شبکه شما و دوباره سعی کنید.</string>
+  <string name="label_fingerprint_remote">اثر انگشت آنها</string>
+  <string name="label_fingerprint_local">اثر انگشت شما</string>
+  <string name="menu_sign_in">ثبت نام</string>
+  <string name="menu_gen_key">Regen کلیدی</string>
+  <string name="error_suspended_connection">Gibberbot تا به اتصال به شبکه از دست رفته</string>
+  <string name="error_reestablish_connection">Gibberbot در تلاش است تا restablish اتصال</string>
+  <string name="otr_session_status_plaintext">Warning: این چت نیست رمزگذاری</string>
+  <string name="otr_session_status_encrypted">این چت امن است اما هویت این افراد را نداشته باشند تأیید شده است</string>
+  <string name="otr_session_status_finished">Warning: چت رمزگذاری شده است متوقف شده است.</string>
+  <string name="otr_session_status_verified">این چت امن و تایید</string>
+  <string name="account_wizard_setup_title">حساب جادوگر</string>
+  <string name="account_wizard_account_title">حساب شما شناسه</string>
+  <string name="account_wizard_host_title">پیکربندی سرور</string>
+  <string name="account_wizard_ready_title">آیا شما آماده؟</string>
+  <string name="account_wizard_setup_body">شناسه را وارد حساب خود را به طور خودکار پیکربندی Gibberbot برای service.\n\nIt شما چت احتمالا به نظر می رسد مانند آدرس ایمیل -- yourname@gmail.com چنین است ، یا someone@jabber.org ، به عنوان مثال.</string>
+  <string name="account_wizard_account_body">لطفا وارد حساب کاربری خود شوید آیدی (کاربر @ نام میزبان) :</string>
+  <string name="account_wizard_host_body">لطفا وارد و یا ویرایش jabber/xmpp چت شما نام هاست سرور و شماره پورت (5،222 پیش فرض است).</string>
+  <string name="account_wizard_ready_body">Gibberbot پیکربندی شده است ، و اکنون وقت آن است که برای اتصال به خدمات شما ، و شروع به چت با خیال راحت ، ایمن و خصوصی!</string>
+  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+  <string name="signin_password_prompt">password: خود را وارد کنید</string>
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
+  <string name="account_settings_title">Account Settings</string>
+  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+  <string name="menu_view_groups">Groups</string>
+  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">type the name of a contact to chat with</string>
+  <string name="search_button_text">Go</string>
+  <string name="menu_locale">Language</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+  <string name="tls_verification">TLS Verification</string>
+  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+  <string name="connect_server">Connect Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="btn_next">Next</string>
+  <string name="btn_back">Back</string>
+  <string name="title_chats">Conversations</string>
 </resources>

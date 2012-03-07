@@ -1,302 +1,371 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2009 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string msgid="146078926243968887" name="menu_cancel_signin">"ログインをキャンセル"</string>
-    <string msgid="6315091944808434095" name="menu_add_contact">"連絡先を追加"</string>
-    <string msgid="3306468526492774925" name="menu_remove_contact">"連絡先を削除"</string>
-    <string msgid="727204732836017804" name="menu_block_contact">"連絡先をブロック"</string>
-    <string msgid="7567355003496935631" name="menu_view_blocked">"ブロック"</string>
-    <string msgid="2876518557188672305" name="menu_view_accounts">"チャットアカウント一覧"</string>
-    <string msgid="4609084900756093288" name="menu_settings">"設定"</string>
-    <string msgid="6188262479212139863" name="menu_start_chat">"チャットを始める"</string>
-    <string msgid="2456603636849489202" name="menu_sign_out">"ログアウト"</string>
-    <string msgid="5883288134525529119" name="menu_view_profile">"プロフィールを表示"</string>
-    <string msgid="3556567768336552622" name="menu_end_conversation">"チャット終了"</string>
-    <string msgid="4630377976475003130" name="menu_view_contact_list">"連絡先リスト"</string>
-    <string msgid="4669830812552484236" name="menu_invite_contact">"招待..."</string>
-    <string msgid="5113455126377025717" name="menu_switch_chats">"チャットを切り替え"</string>
-    <string msgid="2555290958985391105" name="menu_insert_smiley">"絵文字を挿入"</string>
-    <string msgid="5000617247235760106" name="menu_plus">"Menu+"</string>
-    <string msgid="6182729628894599563" name="default_input_title">"入力"</string>
-    <string msgid="3229086014444547636" name="confirm">"確認"</string>
-    <string msgid="1364595657359357114" name="confirm_delete_contact">"連絡先「<xliff:g id="USER">%1$s</xliff:g>」を削除します。"</string>
-    <string msgid="2490910366424078491" name="confirm_block_contact">"連絡先「<xliff:g id="USER">%1$s</xliff:g>」をブロックします。"</string>
-    <string msgid="2194464819104507216" name="confirm_unblock_contact">"連絡先「<xliff:g id="USER">%1$s</xliff:g>」のブロックを解除します。"</string>
-    <string msgid="1521940081498188645" name="ok">"OK"</string>
-    <string msgid="5115511021657936211" name="cancel">"キャンセル"</string>
-    <string msgid="4042588907115698888" name="yes">"OK"</string>
-    <string msgid="1791024164361629713" name="no">"キャンセル"</string>
-    <string msgid="8832702403969474634" name="signed_out_prompt">"既に<xliff:g id="ACCOUNT">%1$s</xliff:g>をログアウトしています。"</string>
-    <string msgid="7747094436931805456" name="signed_out_prompt_with_error">"既に<xliff:g id="ACCOUNT">%1$s</xliff:g>をログアウトしています。理由:<xliff:g id="REASON">%2$s</xliff:g>"</string>
-    <string msgid="3402105687785864337" name="add_account">"<xliff:g id="ACCOUNT">%1$s</xliff:g>アカウント"</string>
-    <string msgid="8704597829337399952" name="label_username">"ユーザー名:"</string>
-    <string msgid="7809879599377131899" name="label_password">"パスワード"</string>
-    <string msgid="4090719436666073946" name="remember_password">"パスワードを保存する"</string>
-    <string msgid="2883914867912933061" name="keep_me_signed_in">"自動ログイン"</string>
-    <string msgid="7071654280992136839" name="sign_up">"アカウントがない場合"</string>
-    <string msgid="308461891031463647" name="check_auto_sign_in">"このオプションをONにするとこのアプリケーションを開くたびに自動的にこのアカウントでログインします。このオプションをOFFにするにはログアウトしてから[自動ログイン]をOFFにしてください。"</string>
-    <string msgid="6204326200860136567" name="sign_in">"ログイン"</string>
-    <string msgid="2689649632858697221" name="signing_in_to">"<xliff:g id="ACCOUNT">%1$s</xliff:g>にログインしています"</string>
-    <string msgid="987357161364666888" name="signing_in_wait">"ログインしています..."</string>
-    <string msgid="4861800723853178111" name="bg_data_prompt_title">"バックグラウンドデータが無効です"</string>
-    <string msgid="2343305645142823544" name="bg_data_prompt_message">"<xliff:g id="PROVIDER">%1$s</xliff:g>ではバックグラウンドデータを有効にする必要があります。"</string>
-    <string msgid="3443385427882751532" name="bg_data_prompt_ok">"有効にする"</string>
-    <string msgid="7206105589826174638" name="bg_data_prompt_cancel">"終了"</string>
-    <string msgid="6523428329676936109" name="ongoing_conversation">"チャット中（<xliff:g id="NUMBER">%1$d</xliff:g>）"</string>
-    <string msgid="5007781327712739543" name="online_count">"オンライン<xliff:g id="NUMBER">%1$d</xliff:g>人"</string>
-    <string msgid="2039801939162848292" name="subscriptions">"友だちの招待"</string>
-    <string msgid="3493840718873032803" name="unknown_contact">"（"<i>"不明"</i>"）"</string>
-    <string msgid="5944413281854480292" name="empty_contact_group">"未登録"</string>
-    <string msgid="3207190506591856738" name="empty_conversation_group">"チャットなし"</string>
-    <string msgid="6681084488289812125" name="contacts_picker_title">"招待する連絡先を選択してください"</string>
-    <string msgid="7138176974380705986" name="contact_filter_hint">"検索する連絡先を入力"</string>
-    <string msgid="1974715213398195818" name="empty_contact_list">"連絡先がありません。"</string>
-    <string msgid="1107985939407422906" name="blocked_list_title">"ブロックしている連絡先-<xliff:g id="USER">%1$s</xliff:g>"</string>
-    <string msgid="8733015382744327205" name="no_blocked_contact">"ブロック中のユーザーはいません。"</string>
-    <string msgid="3403866015406342297" name="contact_profile_title">"連絡先プロファイル"</string>
-    <string msgid="3228165483618856922" name="label_status">"ステータス:"</string>
-    <string msgid="2498423521352545451" name="label_client_type">"クライアントタイプ:"</string>
-    <string msgid="5636516646543615981" name="client_type_computer">"パソコン"</string>
-    <string msgid="8405440352829124713" name="client_type_mobile">"モバイル"</string>
-    <string msgid="7514162178730233803" name="presence_available">"オンライン"</string>
-    <string msgid="3425926873862063910" name="presence_busy">"取り込み中"</string>
-    <string msgid="2893687249265559744" name="presence_away">"退席中"</string>
-    <string msgid="3127526059878228229" name="presence_idle">"アイドル状態"</string>
-    <string msgid="7946842914359044731" name="presence_offline">"オフライン"</string>
-    <string msgid="1485652711495491831" name="presence_invisible">"オフラインとして表示"</string>
-    <string msgid="8562954189958846831" name="chat_with">"<xliff:g id="USER">%1$s</xliff:g>とチャット"</string>
-    <string msgid="8421609599685404593" name="me">"自分"</string>
-    <string msgid="1735533889811320962" name="compose_hint">"メッセージを入力"</string>
-    <string msgid="4241843267436748586" name="contact_online">"<xliff:g id="USER">%1$s</xliff:g>さんはオンラインです"</string>
-    <string msgid="2333627320542883164" name="contact_away">"<xliff:g id="USER">%1$s</xliff:g>さんは退席中です"</string>
-    <string msgid="9175172991334146704" name="contact_busy">"<xliff:g id="USER">%1$s</xliff:g>さんは取り込み中です"</string>
-    <string msgid="7054903259540426223" name="contact_offline">"<xliff:g id="USER">%1$s</xliff:g>さんはオフラインです"</string>
-    <string msgid="6713312815095658394" name="contact_joined">"<xliff:g id="USER">%1$s</xliff:g>さんが参加しました"</string>
-    <string msgid="3020686291216941829" name="contact_left">"<xliff:g id="USER">%1$s</xliff:g>さんが退出しました"</string>
-    <string format="date" msgid="8952691401963972802" name="time_stamp">"<xliff:g id="DATE">EEEE</xliff:g>' '<xliff:g id="HOUR">hh</xliff:g>':'<xliff:g id="MINUTE">mm</xliff:g>' '<xliff:g id="AMPM">a</xliff:g>'送信'"</string>
-    <string msgid="2726588254020771734" name="send">"送信"</string>
-    <string msgid="4209970218075996979" name="msg_sent_failed">"メッセージを送信できませんでした。"</string>
-    <string msgid="6798248948843269795" name="disconnected_warning">"サーバーとの接続が失われました。オンラインになり次第メッセージを送信します。"</string>
-    <string msgid="8822964251595561504" name="contact_offline_warning">"<xliff:g id="USER_0">%1$s</xliff:g>さんはオフラインです。<xliff:g id="USER_1">%1$s</xliff:g>さんがオンラインになったら、メッセージを送信します。"</string>
-    <string msgid="2411313232707156524" name="contact_not_in_list_warning">"<xliff:g id="USER">%1$s</xliff:g>さんは連絡先リストに登録されていません。"</string>
-    <string msgid="5020179468567358399" name="select_link_title">"リンクを選択"</string>
-    <string msgid="7268903855432844937" name="empty_chat_list">"アクティブなチャットはありません。"</string>
-    <string msgid="8541795892456911186" name="add_contact_title">"連絡先を追加"</string>
-    <string msgid="395294356081431462" name="input_contact_label">"招待する人のメールアドレス:"</string>
-    <string msgid="1430489448508574145" name="choose_list_label">"リストを選択:"</string>
-    <string msgid="8262403243657760155" name="invite_instruction">"連絡先から追加する名前を入力してください。"</string>
-    <string msgid="6229798754682424899" name="invite_label">"招待状を送る"</string>
-    <string msgid="6676157178613673420" name="setting_title">"全般設定"</string>
-    <string msgid="8017909244732772990" name="hide_offline_contacts">"オフラインの連絡先を表示しない"</string>
-    <string msgid="4944275706770811080" name="notification_group_title">"通知設定"</string>
-    <string msgid="6447889693376465773" name="notification_enabled_title">"チャットの通知"</string>
-    <string msgid="2090889893066171466" name="notification_enabled_summary">"チャット受信: ステータスバーで通知"</string>
-    <string msgid="5603532186091800924" name="notification_vibrate_title">"バイブレーション"</string>
-    <string msgid="1875275321875946598" name="notification_vibrate_summary">"チャット受信: バイブレーションON"</string>
-    <string msgid="8367990268592958299" name="notification_sound_title">"サウンド"</string>
-    <string msgid="3634976543811200858" name="notification_sound_summary">"チャット受信: 着信音ON"</string>
-    <string msgid="4847700898968990954" name="notification_ringtone_title">"着信音を選択"</string>
-    <string msgid="1776461436395016582" name="invitation_prompt">"<xliff:g id="USER">%1$s</xliff:g>さんからグループチャットに招待されました。"</string>
-    <string msgid="2542342110609014148" name="invitation_sent_prompt">"招待状を<xliff:g id="USER">%1$s</xliff:g>さんに送りました。"</string>
-    <string msgid="8852207669114500346" name="accept_invitation">"承認"</string>
-    <string msgid="3039909785911592632" name="decline_invitation">"拒否"</string>
-    <string msgid="1915974310850760232" name="subscription_prompt">"<xliff:g id="USER">%1$s</xliff:g>さんが連絡先リストへの登録にあなたを招待しました。"</string>
-    <string msgid="2035288988418082224" name="approve_subscription">"承認"</string>
-    <string msgid="3069941120905061191" name="decline_subscription">"拒否"</string>
-    <string msgid="7653225198395861289" name="approve_subscription_error">"<xliff:g id="USER">%1$s</xliff:g>さんからの登録依頼を承認できませんでした。しばらくしてからもう一度試してください。"</string>
-    <string msgid="7593921535412836089" name="decline_subscription_error">"<xliff:g id="USER">%1$s</xliff:g>さんからの登録依頼を拒否できませんでした。しばらくしてからもう一度試してください。"</string>
-    <string msgid="2180971062715087738" name="newMessages_label">"新しい<xliff:g id="PROVIDER">%1$s</xliff:g>メッセージが届きました"</string>
-    <string msgid="728064925131396221" name="num_unread_chats">"未読のチャットが<xliff:g id="NUMBER">%1$d</xliff:g>件あります。"</string>
-    <string msgid="6742004636596633323" name="subscription_notify_text">"<xliff:g id="USER">%s</xliff:g>さんから招待状が届きました"</string>
-    <string msgid="4200552751080182984" name="notify_groupchat_label">"グループチャットの招待"</string>
-    <string msgid="2115253984204158370" name="group_chat_invite_notify_text">"<xliff:g id="USER">%s</xliff:g>さんからグループチャットの招待状が届きました"</string>
-    <string msgid="6760968462242659207" name="add_contact_success">"「<xliff:g id="USER">%1$s</xliff:g>」を追加しました。"</string>
-    <string msgid="4451989113378349412" name="delete_contact_success">"「<xliff:g id="USER">%1$s</xliff:g>」を削除しました。"</string>
-    <string msgid="301279568695040166" name="block_contact_success">"「<xliff:g id="USER">%1$s</xliff:g>」をブロックしました。"</string>
-    <string msgid="5506870117106713456" name="unblock_contact_success">"「<xliff:g id="USER">%1$s</xliff:g>」のブロックを解除しました。"</string>
-    <string msgid="203411797893865789" name="perm_label">"IM/チャットの起動"</string>
-    <string msgid="6978187394092498941" name="perm_desc">"intent経由でのIMサービスの開始をアプリケーションに許可します。"</string>
-    <string msgid="4778856523246532623" name="error">"注意"</string>
-    <string msgid="3883751713470046349" name="login_service_failed">"<xliff:g id="SERVICE">%1$s</xliff:g>サービスにログインできませんでした。しばらくしてからやり直してください。"\n"（詳細:<xliff:g id="DESCRIPTION">%2$s</xliff:g>）"</string>
-    <string msgid="5659371594032378190" name="add_list_failed">"リストを追加できませんでした。"</string>
-    <string msgid="5870952543258608424" name="block_contact_failed">"連絡先をブロックできませんでした。"</string>
-    <string msgid="7761060327693183076" name="unblock_contact_failed">"連絡先のブロックを解除できませんでした。"</string>
-    <string msgid="5804415466346460387" name="select_contact">"まず連絡先を選択してください。"</string>
-    <string msgid="7731840958629349414" name="disconnected">"切断されました。"\n</string>
-    <string msgid="4578570332742070464" name="service_error">"サービスエラー"</string>
-    <string msgid="6395594768879404874" name="load_contact_list_failed">"連絡先リストをロードできませんでした。"</string>
-    <string msgid="3188697382173578199" name="cant_connect_to_server">"サーバーに接続できません。接続を確認してください。"</string>
-    <string msgid="4982433960953410393" name="contact_already_exist">"<xliff:g id="USER">%1$s</xliff:g>さんは既に連絡先リストに登録されています。"</string>
-    <string msgid="11602144969098173" name="contact_blocked">"「<xliff:g id="USER">%1$s</xliff:g>」はブロックされています。"</string>
-    <string msgid="3739109817357036832" name="contact_not_loaded">"連絡先リストを読み込んでいます。しばらくお待ちください。"</string>
-    <string msgid="1971556432619053394" name="network_error">"ネットワークエラーが発生しました。"</string>
-    <string msgid="6552484838382542900" name="service_not_support">"この機能はサーバーでサポートされていません。"</string>
-    <string msgid="4406190708977805393" name="invalid_password">"入力されたパスワードは無効です。"</string>
-    <string msgid="5659759443966908703" name="internal_server_error">"サーバーでエラーが発生しました。"</string>
-    <string msgid="845369556603815808" name="not_implemented">"この機能はサーバーでサポートされていません。"</string>
-    <string msgid="4948915878388282443" name="service_unavaiable">"現在サーバーを使用できません。"</string>
-    <string msgid="8160218318070765661" name="timeout">"サーバーがタイムアウトしました。"</string>
-    <string msgid="4342010736606775264" name="version_not_supported">"現在のバージョンはサーバーでサポートされていません。"</string>
-    <string msgid="7501019992527859517" name="message_queue_full">"メッセージキューがいっぱいです。"</string>
-    <string msgid="7715663042901606605" name="domain_not_supported">"このドメインへの転送はサーバーでサポートされていません。"</string>
-    <string msgid="6680215792586778118" name="unknown_user">"入力されたユーザー名を認識できません。"</string>
-    <string msgid="8438323314518151118" name="recipient_blocked_the_user">"ユーザーによってブロックされています。"</string>
-    <string msgid="1999103420742299764" name="session_expired">"セッションは期限切れになりました。もう一度ログインしてください。"</string>
-    <string msgid="4914497176506037105" name="forced_logout">"別のクライアントからログインしています。"</string>
-    <string msgid="1907391913706263174" name="already_logged_in">"別のクライアントから既にログインしています。"</string>
-    <string msgid="1477099919088266968" name="msisdn_error">"SIMカードから電話番号を読み取れませんでした。オペレータにお問い合わせください。"</string>
-    <string msgid="8894662143178849906" name="not_signed_in">"現在ログインしていません。"</string>
-    <string msgid="2784900425265121080" name="general_error">"エラーコード<xliff:g id="CODE">%1$d</xliff:g>"</string>
-  <string-array name="default_smiley_names">
-    <item msgid="1496436377093882868">"ハッピー"</item>
-    <item msgid="4535010061202018372">"悲しい"</item>
-    <item msgid="9126439186030536335">"ウィンク"</item>
-    <item msgid="850866187116359823">"アッカンベー"</item>
-    <item msgid="394905071090547502">"びっくり"</item>
-    <item msgid="154223719974718360">"キス"</item>
-    <item msgid="7922997411177141520">"激怒"</item>
-    <item msgid="2507841103887006866">"クール"</item>
-    <item msgid="7305800612774038776">"気持ち悪い"</item>
-    <item msgid="8019801991256267534">"しまった"</item>
-    <item msgid="6054214980935551183">"恥ずかしい"</item>
-    <item msgid="6425740366789820735">"天使"</item>
-    <item msgid="6790879686860830930">"迷う"</item>
-    <item msgid="8487432187298106600">"泣く"</item>
-    <item msgid="1697327406585784541">"お口にチャック"</item>
-    <item msgid="4623875498872672218">"笑顔"</item>
-    <item msgid="6044435333460205962">"混乱"</item>
-  </string-array>
-<string name="ro_perm_label">インスタントメッセージを読む</string>
-    <string name="ro_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーからデータを読み取ります。</string>
-    <string name="wo_perm_label">インスタントメッセージを書く</string>
-    <string name="wo_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーにデータを書き込む。</string>
-    <string name="landing_page_title">チャット - 選択してアカウント</string>
-    <string name="menu_add_account">アカウントを追加します。</string>
-    <string name="menu_edit_account">アカウントを編集</string>
-    <string name="menu_remove_account">アカウントを削除する</string>
-    <string name="menu_sign_out_all">すべてのアウトしましょう</string>
-    <string name="choose_account_title">チャット - 選択してアカウント</string>
-    <string name="menu_search_contacts">検索連絡先</string>
-    <string name="menu_otr_start">[スタート]暗号化</string>
-    <string name="menu_otr_stop">停止暗号化</string>
-    <string name="menu_clear_chat">クリアチャット</string>
-    <string name="menu_scan">スキャン指紋</string>
-    <string name="menu_fingerprint">あなたの指紋</string>
-    <string name="menu_verify">確認指紋</string>
-    <string name="signout_all_confirm_message">あなたはすべてのサービスをログアウトしますか？</string>
-    <string name="data_channel_label">データチャネル</string>
-    <string name="data_encoding_label">データのエンコード</string>
-    <string name="cir_channel_label">CIRのチャンネル</string>
-    <string name="host_label">ホスト</string>
-    <string name="msisdn_label">MSISDNは</string>
-    <string name="http">HTTPの</string>
-    <string name="sms">SMSの</string>
-    <string name="tcp">TCPの</string>
-    <string name="xml">XMLの</string>
-    <string name="wbxml">wbxmlの</string>
-    <string name="save">名前を付けて保存</string>
-    <string-array name="smiley_names">
-        <item>幸せ</item>
-        <item>悲しい</item>
-        <item>ウィンク</item>
-        <item>舌を突き出し</item>
-        <item>びっくりした</item>
-        <item>キス</item>
-        <item>叫び</item>
-        <item>クール</item>
-        <item>金口</item>
-        <item>足口</item>
-        <item>恥ずかしい</item>
-        <item>エンジェル</item>
-        <item>未定</item>
-        <item>クライング</item>
-        <item>唇が封止されている</item>
-        <item>笑う</item>
-        <item>混乱</item>
-    </string-array>
-    <string name="check_save_password">セキュリティ保護のため、お使いの携帯電話が失われたり盗まれたり、コンピュータ上のWebサイトにアクセスし、パスワードを変更してください。</string>
-    <string name="menu_contact_list">お問い合わせ一覧</string>
-    <string name="menu_view_encrypt_chat">暗号化On/Off</string>
-    <string name="use_tor">Torを介して接続します（Orbotアプリが必要です）</string>
-    <string name="app_name">Gibberbot</string>
-    <string name="welcome_first">最初の時間がGibberbotを使用して？</string>
-    <string name="welcome_skip">Can\'tを始めるために待つのか？</string>
-    <string name="welcome_about">についてGibberbot</string>
-    <string name="welcome_account">アカウントセットアップ</string>
-    <string name="about_welcome_title">ようこそGibberbotに</string>
-    <string name="about_welcome">Gibberbotは、会話でIGMPスヌーピングcommunications.\n\nTheアプリは、任意のは、Google GTalkのかJabber.orgなどのJabberまたはXMPPのプロトコルを使用するサービスをチャットをサポートしているから、他のを防止する追加のセキュリティ機能を提供するモバイルインスタントメッセージングアプリケーションです。</string>
-    <string name="about_otr_title">どのように安全ですか？</string>
-    <string name="about_otr">\'Off -レコードMessaging\'は、暗号化、認証、否認およびForward Secrecy.\n\nThe otrのプロトコルなど、現実世界では、プライベートな会話の特性を模倣することでプライバシーを有効にするために設計されたセキュリティシステム、デスクトップクライアントをチャットに対応していますAdiumのようなまたはピジン。</string>
-    <string name="about_security_title">私のチャットは安全ですか？</string>
-    <string name="about_security">Gibberbot\のチャットの暗号化機能は、モバイルやAdiumやPidginのデスクトップ用Gibberbotを使用している連絡先を確認する必要がありますので、互換性のあるアプリケーションやプログラムを使用して他のユーザーとメッセージングときに機能します。細かく調整することができます正確にどのようにGibberbotはアコでチャットを暗号化しようとすると、UNTはSettings.\n\nLet\'sが開始する！</string>
-    <string name="setup_passphrase_title">パスフレーズのセットアップ</string>
-    <string name="setup_passphrase">あなたが始める前に不正なアクセスからGibberbotデータを保護するために安全なパスフレーズを選択してください。</string>
-    <string name="setup_passphrase_label1">Passphrase:</string>
-    <string name="setup_passphrase_label2">パスフレーズ（再び）:</string>
-    <string name="account_setup_acct_subtitle">アカウント</string>
-    <string name="account_setup_acct_acctname_title">アカウント名</string>
-    <string name="account_setup_acct_acctname_sub">このアカウントの表示名</string>
-    <string name="account_setup_acct_username_title">ユーザ名（ログイン）</string>
-    <string name="account_setup_acct_username_sub">Format:ユーザー@ host:port</string>
-    <string name="account_setup_acct_password_title">パスワード</string>
-    <string name="account_setup_acct_password_sub">認証用のパスワード</string>
-    <string name="account_setup_pers_sub">永続性</string>
-    <string name="account_setup_pers_pw_title">パスワードを記憶する</string>
-    <string name="account_setup_pers_pw_on">パスワードがキャッシュされて</string>
-    <string name="account_setup_pers_pw_off">パスワードがキャッシュされて</string>
-    <string name="account_setup_pers_auto_title">自動的にサインイン</string>
-    <string name="account_setup_pers_auto_on">Gibberbotで接続して起動</string>
-    <string name="account_setup_pers_auto_off">Don\'tはGibberbotで登録起動</string>
-    <string name="account_setup_pers_now_title">で今すぐしましょう</string>
-    <string name="account_setup_pers_now_on">次のアカウントのセットアップを接続してください</string>
-    <string name="account_setup_pers_now_off">Don\'tは、アカウントのセットアッププログラムの指示に従って登録</string>
-    <string name="account_setup_personal_sub">パーソナル（オプション）</string>
-    <string name="account_setup_personal_alias_title">アカウントエイリアス（あなたの名前）</string>
-    <string name="account_setup_personal_alias_sub">アカウントをオンラインで表示される方法</string>
-    <string name="account_setup_personal_profile_title">プロフィール</string>
-    <string name="account_setup_personal_profile_sub">自分自身についての簡単な宣伝</string>
-    <string name="account_setup_advanced_sub">高度な</string>
-    <string name="account_setup_advanced_enc_force">強制的に暗号化/ごみの平文</string>
-    <string name="account_setup_advanced_enc_auto">可能な場合は、暗号化チャットを自動的に</string>
-    <string name="account_setup_advanced_enc_req">暗号化チャットは、要求された</string>
-    <string name="account_setup_advanced_enc_off">無効にする暗号化チャット</string>
-    <string name="account_setup_signin_a">検証の資格...</string>
-    <string name="account_setup_signin_b">生成鍵ペア...</string>
-    <string name="account_setup_signin_c">ログイン署名..</string>
-    <string name="account_setup_error_validating">ユーザー名またはパスワードを検証中Gibberbotにエラーが発生しました - それらを確認してから、もう一度試してみてください。</string>
-    <string name="account_setup_error_keypair">鍵ペアを生成中にGibberbotにエラーが発生しました。</string>
-    <string name="account_setup_error_server">設定を確認してから、もう一度試してみてください - チャットサーバーへの接続中にGibberbotにエラーが発生しました。</string>
-    <string name="account_setup_error_connectivity">ネットワーク接続をdoublecheckしてください、再試行してください - 接続中Gibberbotにエラーが発生しました。</string>
-    <string name="label_fingerprint_remote">自分の指紋</string>
-    <string name="label_fingerprint_local">あなたの指紋</string>
-    <string name="menu_sign_in">サインイン</string>
-    <string name="menu_gen_key">レーゲンキー</string>
-    <string name="error_suspended_connection">Gibberbotは、ネットワークへの接続を失っている</string>
-    <string name="error_reestablish_connection">Gibberbot接続をrestablishしようとしている</string>
-    <string name="otr_session_status_plaintext">このチャットはWarning:しない暗号化されている</string>
-    <string name="otr_session_status_encrypted">これは、チャットが安全である参加者の身元は検証されている</string>
-    <string name="otr_session_status_finished">Warning:チャット暗号化が停止されています。</string>
-    <string name="otr_session_status_verified">これは固定され、検証チャット</string>
-    <string name="account_wizard_setup_title">アカウントウィザード</string>
-    <string name="account_wizard_account_title">アカウントIDを</string>
-    <string name="account_wizard_host_title">サーバーの構成</string>
-    <string name="account_wizard_ready_title">準備ができている？</string>
-    <string name="account_wizard_setup_body">おそらく、Eメールアドレスのように見えますがservice.\n\nItチャットを自動的にGibberbotを設定するには、アカウントIDを入力してください - のでyourname@gmail.com、またはsomeone@jabber.org~~V、例えば。</string>
-    <string name="account_wizard_account_body">:アカウントID（ユーザ@ホスト名）を入力してください</string>
-    <string name="account_wizard_host_body">（5222がデフォルトです）を入力するか、あなたのjabber/xmppを編集するチャットサーバーのホスト名とポート番号をしてください。</string>
-    <string name="account_wizard_ready_body">Gibberbotは、設定されている今、あなたのサービスに接続するために、安全にチャットを開始、しっかりと、そして個人の時間です！</string>
-    <string name="signin_password_prompt">あなたのpassword:を入力してください</string>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="ro_perm_label">インスタントメッセージを読む</string>
+  <string name="ro_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーからデータを読み取ります。</string>
+  <string name="wo_perm_label">インスタントメッセージを書く</string>
+  <string name="wo_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーにデータを書き込む。</string>
+  <string name="im_label">Gibberbot</string>
+  <string name="landing_page_title">チャット - 選択してアカウント</string>
+  <string name="menu_about">About</string>
+  <string name="menu_add_account">アカウントを追加します。</string>
+  <string name="menu_edit_account">アカウントを編集</string>
+  <string name="menu_remove_account">アカウントを削除する</string>
+  <string name="menu_sign_out_all">すべてのアウトしましょう</string>
+  <string name="choose_account_title">チャット - 選択してアカウント</string>
+  <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="menu_cancel_signin">ログインをキャンセル</string>
+  <string name="menu_add_contact">連絡先を追加</string>
+  <string name="menu_remove_contact">連絡先を削除</string>
+  <string name="menu_block_contact">連絡先をブロック</string>
+  <string name="menu_view_blocked">ブロック</string>
+  <string name="menu_view_accounts">チャットアカウント一覧</string>
+  <string name="menu_new_chat">New Chat</string>
+  <string name="menu_settings">設定</string>
+  <string name="menu_search_contacts">検索連絡先</string>
+  <string name="menu_start_chat">チャットを始める</string>
+  <string name="menu_sign_out">ログアウト</string>
+  <string name="menu_view_profile">プロフィールを表示</string>
+  <string name="menu_otr_start">[スタート]暗号化</string>
+  <string name="menu_otr_stop">停止暗号化</string>
+  <string name="menu_clear_chat">クリアチャット</string>
+  <string name="menu_end_conversation">チャット終了</string>
+  <string name="menu_view_contact_list">連絡先リスト</string>
+  <string name="menu_invite_contact">招待...</string>
+  <string name="menu_switch_chats">チャットを切り替え</string>
+  <string name="menu_insert_smiley">絵文字を挿入</string>
+  <string name="menu_scan">スキャン指紋</string>
+  <string name="menu_fingerprint">あなたの指紋</string>
+  <string name="menu_verify">確認指紋</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="confirm">確認</string>
+  <string name="signout_all_confirm_message">あなたはすべてのサービスをログアウトしますか？</string>
+  <string name="confirm_delete_contact">連絡先「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」を削除します。</string>
+  <string name="confirm_block_contact">連絡先「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」をブロックします。</string>
+  <string name="confirm_unblock_contact">連絡先「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」のブロックを解除します。</string>
+  <string name="ok">OK</string>
+  <string name="cancel">キャンセル</string>
+  <string name="yes">OK</string>
+  <string name="no">キャンセル</string>
+  <string name="signed_out_prompt">既に&lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;をログアウトしています。</string>
+  <string name="signed_out_prompt_with_error">既に&lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;をログアウトしています。理由:&lt;xliff:g id=\"REASON\"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="add_account">&lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;アカウント</string>
+  <string name="label_username">ユーザー名:</string>
+  <string name="label_password">パスワード</string>
+  <string name="remember_password">パスワードを保存する</string>
+  <string name="keep_me_signed_in">自動ログイン</string>
+  <string name="sign_up">アカウントがない場合</string>
+  <string name="check_save_password">セキュリティ保護のため、お使いの携帯電話が失われたり盗まれたり、コンピュータ上のWebサイトにアクセスし、パスワードを変更してください。</string>
+  <string name="check_auto_sign_in">このオプションをONにするとこのアプリケーションを開くたびに自動的にこのアカウントでログインします。このオプションをOFFにするにはログアウトしてから[自動ログイン]をOFFにしてください。</string>
+  <string name="sign_in">ログイン</string>
+  <string name="signing_in_to">&lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;にログインしています</string>
+  <string name="signing_in_wait">ログインしています...</string>
+  <string name="bg_data_prompt_title">バックグラウンドデータが無効です</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt;ではバックグラウンドデータを有効にする必要があります。</string>
+  <string name="bg_data_prompt_ok">有効にする</string>
+  <string name="bg_data_prompt_cancel">終了</string>
+  <string name="ongoing_conversation">チャット中（&lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;）</string>
+  <string name="online_count">オンライン&lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;人</string>
+  <string name="subscriptions">友だちの招待</string>
+  <string name="unknown_contact">（\"<i>\"不明\"</i>\"）</string>
+  <string name="empty_contact_group">未登録</string>
+  <string name="empty_conversation_group">チャットなし</string>
+  <string name="contacts_picker_title">招待する連絡先を選択してください</string>
+  <string name="contact_filter_hint">検索する連絡先を入力</string>
+  <string name="empty_contact_list">連絡先がありません。</string>
+  <string name="blocked_list_title">ブロックしている連絡先-&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">ブロック中のユーザーはいません。</string>
+  <string name="contact_profile_title">連絡先プロファイル</string>
+  <string name="label_status">ステータス:</string>
+  <string name="label_client_type">クライアントタイプ:</string>
+  <string name="client_type_computer">パソコン</string>
+  <string name="client_type_mobile">モバイル</string>
+  <string name="presence_available">オンライン</string>
+  <string name="presence_busy">取り込み中</string>
+  <string name="presence_away">退席中</string>
+  <string name="presence_idle">アイドル状態</string>
+  <string name="presence_offline">オフライン</string>
+  <string name="presence_invisible">オフラインとして表示</string>
+  <string name="preference_title">&lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
+  <string name="data_channel_label">データチャネル</string>
+  <string name="data_encoding_label">データのエンコード</string>
+  <string name="cir_channel_label">CIRのチャンネル</string>
+  <string name="host_label">ホスト</string>
+  <string name="msisdn_label">MSISDNは</string>
+  <string name="http">HTTPの</string>
+  <string name="sms">SMSの</string>
+  <string name="tcp">TCPの</string>
+  <string name="xml">XMLの</string>
+  <string name="wbxml">wbxmlの</string>
+  <string name="save">名前を付けて保存</string>
+  <string name="chat_with">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;とチャット</string>
+  <string name="me">自分</string>
+  <string name="compose_hint">メッセージを入力</string>
+  <string name="contact_online">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんはオンラインです</string>
+  <string name="contact_away">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんは退席中です</string>
+  <string name="contact_busy">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんは取り込み中です</string>
+  <string name="contact_offline">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんはオフラインです</string>
+  <string name="contact_joined">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんが参加しました</string>
+  <string name="contact_left">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんが退出しました</string>
+  <string name="time_stamp"><xliff:g id="DATE">EEEE</xliff:g>\' \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g>\'送信\'</string>
+  <string name="send">送信</string>
+  <string name="msg_sent_failed">メッセージを送信できませんでした。</string>
+  <string name="disconnected_warning">サーバーとの接続が失われました。オンラインになり次第メッセージを送信します。</string>
+  <string name="contact_offline_warning">&lt;xliff:g id=\"USER_0\"&gt;%1$s&lt;/xliff:g&gt;さんはオフラインです。&lt;xliff:g id=\"USER_1\"&gt;%1$s&lt;/xliff:g&gt;さんがオンラインになったら、メッセージを送信します。</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんは連絡先リストに登録されていません。</string>
+  <string name="select_link_title">リンクを選択</string>
+  <string name="empty_chat_list">アクティブなチャットはありません。</string>
+  <string name="add_contact_title">連絡先を追加</string>
+  <string name="input_contact_label">招待する人のメールアドレス:</string>
+  <string name="choose_list_label">リストを選択:</string>
+  <string name="invite_instruction">連絡先から追加する名前を入力してください。</string>
+  <string name="invite_label">招待状を送る</string>
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="account_setup_title">Account Setup</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">オフラインの連絡先を表示しない</string>
+  <string name="notification_group_title">通知設定</string>
+  <string name="notification_enabled_title">チャットの通知</string>
+  <string name="notification_enabled_summary">チャット受信: ステータスバーで通知</string>
+  <string name="notification_vibrate_title">バイブレーション</string>
+  <string name="notification_vibrate_summary">チャット受信: バイブレーションON</string>
+  <string name="notification_sound_title">サウンド</string>
+  <string name="notification_sound_summary">チャット受信: 着信音ON</string>
+  <string name="notification_ringtone_title">着信音を選択</string>
+  <string name="invitation_prompt">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんからグループチャットに招待されました。</string>
+  <string name="invitation_sent_prompt">招待状を&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんに送りました。</string>
+  <string name="accept_invitation">承認</string>
+  <string name="decline_invitation">拒否</string>
+  <string name="subscription_prompt">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんが連絡先リストへの登録にあなたを招待しました。</string>
+  <string name="approve_subscription">承認</string>
+  <string name="decline_subscription">拒否</string>
+  <string name="approve_subscription_error">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんからの登録依頼を承認できませんでした。しばらくしてからもう一度試してください。</string>
+  <string name="decline_subscription_error">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんからの登録依頼を拒否できませんでした。しばらくしてからもう一度試してください。</string>
+  <string name="newMessages_label">新しい&lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt;メッセージが届きました</string>
+  <string name="num_unread_chats">未読のチャットが&lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;件あります。</string>
+  <string name="subscription_notify_text"><xliff:g id="USER">%s</xliff:g>さんから招待状が届きました</string>
+  <string name="notify_groupchat_label">グループチャットの招待</string>
+  <string name="group_chat_invite_notify_text"><xliff:g id="USER">%s</xliff:g>さんからグループチャットの招待状が届きました</string>
+  <string name="add_contact_success">「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」を追加しました。</string>
+  <string name="delete_contact_success">「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」を削除しました。</string>
+  <string name="block_contact_success">「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」をブロックしました。</string>
+  <string name="unblock_contact_success">「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」のブロックを解除しました。</string>
+  <string name="perm_label">IM/チャットの起動</string>
+  <string name="perm_desc">intent経由でのIMサービスの開始をアプリケーションに許可します。</string>
+  <string name="error">注意</string>
+  <string name="login_service_failed">&lt;xliff:g id=\"SERVICE\"&gt;%1$s&lt;/xliff:g&gt;サービスにログインできませんでした。しばらくしてからやり直してください。\"\n\"（詳細:&lt;xliff:g id=\"DESCRIPTION\"&gt;%2$s&lt;/xliff:g&gt;）</string>
+  <string name="add_list_failed">リストを追加できませんでした。</string>
+  <string name="block_contact_failed">連絡先をブロックできませんでした。</string>
+  <string name="unblock_contact_failed">連絡先のブロックを解除できませんでした。</string>
+  <string name="select_contact">まず連絡先を選択してください。</string>
+  <string name="disconnected">\"切断されました。\"\n</string>
+  <string name="service_error">サービスエラー</string>
+  <string name="load_contact_list_failed">連絡先リストをロードできませんでした。</string>
+  <string name="cant_connect_to_server">サーバーに接続できません。接続を確認してください。</string>
+  <string name="contact_already_exist">&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;さんは既に連絡先リストに登録されています。</string>
+  <string name="contact_blocked">「&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;」はブロックされています。</string>
+  <string name="contact_not_loaded">連絡先リストを読み込んでいます。しばらくお待ちください。</string>
+  <string name="network_error">ネットワークエラーが発生しました。</string>
+  <string name="service_not_support">この機能はサーバーでサポートされていません。</string>
+  <string name="invalid_password">入力されたパスワードは無効です。</string>
+  <string name="internal_server_error">サーバーでエラーが発生しました。</string>
+  <string name="not_implemented">この機能はサーバーでサポートされていません。</string>
+  <string name="service_unavaiable">現在サーバーを使用できません。</string>
+  <string name="timeout">サーバーがタイムアウトしました。</string>
+  <string name="version_not_supported">現在のバージョンはサーバーでサポートされていません。</string>
+  <string name="message_queue_full">メッセージキューがいっぱいです。</string>
+  <string name="domain_not_supported">このドメインへの転送はサーバーでサポートされていません。</string>
+  <string name="unknown_user">入力されたユーザー名を認識できません。</string>
+  <string name="recipient_blocked_the_user">ユーザーによってブロックされています。</string>
+  <string name="session_expired">セッションは期限切れになりました。もう一度ログインしてください。</string>
+  <string name="forced_logout">別のクライアントからログインしています。</string>
+  <string name="already_logged_in">別のクライアントから既にログインしています。</string>
+  <string name="msisdn_error">SIMカードから電話番号を読み取れませんでした。オペレータにお問い合わせください。</string>
+  <string name="not_signed_in">現在ログインしていません。</string>
+  <string name="general_error">エラーコード&lt;xliff:g id=\"CODE\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string-array name="default_smiley_names"><item>ハッピー</item>
+<item>悲しい</item>
+<item>ウィンク</item>
+<item>アッカンベー</item>
+<item>びっくり</item>
+<item>キス</item>
+<item>激怒</item>
+<item>クール</item>
+<item>気持ち悪い</item>
+<item>しまった</item>
+<item>恥ずかしい</item>
+<item>天使</item>
+<item>迷う</item>
+<item>泣く</item>
+<item>お口にチャック</item>
+<item>笑顔</item>
+<item>混乱</item>
+</string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string-array name="smiley_names"><item>幸せ</item>
+<item>悲しい</item>
+<item>ウィンク</item>
+<item>舌を突き出し</item>
+<item>びっくりした</item>
+<item>キス</item>
+<item>叫び</item>
+<item>クール</item>
+<item>金口</item>
+<item>足口</item>
+<item>恥ずかしい</item>
+<item>エンジェル</item>
+<item>未定</item>
+<item>クライング</item>
+<item>唇が封止されている</item>
+<item>笑う</item>
+<item>混乱</item>
+</string-array>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">Contact List - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_contact_list">お問い合わせ一覧</string>
+  <string name="menu_view_encrypt_chat">暗号化On/Off</string>
+  <string name="use_tor">Torを介して接続します（Orbotアプリが必要です）</string>
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">最初の時間がGibberbotを使用して？</string>
+  <string name="welcome_skip">Can\'tを始めるために待つのか？</string>
+  <string name="welcome_about">についてGibberbot</string>
+  <string name="welcome_account">アカウントセットアップ</string>
+  <string name="about_welcome_title">ようこそGibberbotに</string>
+  <string name="about_welcome">Gibberbotは、会話でIGMPスヌーピングcommunications.\n\nTheアプリは、任意のは、Google GTalkのかJabber.orgなどのJabberまたはXMPPのプロトコルを使用するサービスをチャットをサポートしているから、他のを防止する追加のセキュリティ機能を提供するモバイルインスタントメッセージングアプリケーションです。</string>
+  <string name="about_otr_title">どのように安全ですか？</string>
+  <string name="about_otr">\'Off -レコードMessaging\'は、暗号化、認証、否認およびForward Secrecy.\n\nThe otrのプロトコルなど、現実世界では、プライベートな会話の特性を模倣することでプライバシーを有効にするために設計されたセキュリティシステム、デスクトップクライアントをチャットに対応していますAdiumのようなまたはピジン。</string>
+  <string name="about_security_title">私のチャットは安全ですか？</string>
+  <string name="about_security">Gibberbot\のチャットの暗号化機能は、モバイルやAdiumやPidginのデスクトップ用Gibberbotを使用している連絡先を確認する必要がありますので、互換性のあるアプリケーションやプログラムを使用して他のユーザーとメッセージングときに機能します。細かく調整することができます正確にどのようにGibberbotはアコでチャットを暗号化しようとすると、UNTはSettings.\n\nLet\'sが開始する！</string>
+  <string name="setup_passphrase_title">パスフレーズのセットアップ</string>
+  <string name="setup_passphrase">あなたが始める前に不正なアクセスからGibberbotデータを保護するために安全なパスフレーズを選択してください。</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">パスフレーズ（再び）:</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">password</string>
+  <string name="account_setup_advanced_button">Advanced Account Settings</string>
+  <string name="account_setup_pers_sub">永続性</string>
+  <string name="account_setup_pers_pw_title">パスワードを記憶する</string>
+  <string name="account_setup_pers_pw_on">パスワードがキャッシュされて</string>
+  <string name="account_setup_pers_pw_off">パスワードがキャッシュされて</string>
+  <string name="account_setup_pers_auto_title">自動的にサインイン</string>
+  <string name="account_setup_pers_auto_on">Gibberbotで接続して起動</string>
+  <string name="account_setup_pers_auto_off">Don\'tはGibberbotで登録起動</string>
+  <string name="account_setup_pers_now_title">で今すぐしましょう</string>
+  <string name="account_setup_pers_now_on">次のアカウントのセットアップを接続してください</string>
+  <string name="account_setup_pers_now_off">Don\'tは、アカウントのセットアッププログラムの指示に従って登録</string>
+  <string name="account_setup_personal_sub">パーソナル（オプション）</string>
+  <string name="account_setup_personal_alias_title">アカウントエイリアス（あなたの名前）</string>
+  <string name="account_setup_personal_alias_sub">アカウントをオンラインで表示される方法</string>
+  <string name="account_setup_personal_profile_title">プロフィール</string>
+  <string name="account_setup_personal_profile_sub">自分自身についての簡単な宣伝</string>
+  <string name="account_setup_advanced_enc_force">強制的に暗号化/ごみの平文</string>
+  <string name="account_setup_advanced_enc_auto">可能な場合は、暗号化チャットを自動的に</string>
+  <string name="account_setup_advanced_enc_req">暗号化チャットは、要求された</string>
+  <string name="account_setup_advanced_enc_off">無効にする暗号化チャット</string>
+  <string name="account_setup_signin_a">検証の資格...</string>
+  <string name="account_setup_signin_b">生成鍵ペア...</string>
+  <string name="account_setup_signin_c">ログイン署名..</string>
+  <string name="account_setup_error_validating">ユーザー名またはパスワードを検証中Gibberbotにエラーが発生しました - それらを確認してから、もう一度試してみてください。</string>
+  <string name="account_setup_error_keypair">鍵ペアを生成中にGibberbotにエラーが発生しました。</string>
+  <string name="account_setup_error_server">設定を確認してから、もう一度試してみてください - チャットサーバーへの接続中にGibberbotにエラーが発生しました。</string>
+  <string name="account_setup_error_connectivity">ネットワーク接続をdoublecheckしてください、再試行してください - 接続中Gibberbotにエラーが発生しました。</string>
+  <string name="label_fingerprint_remote">自分の指紋</string>
+  <string name="label_fingerprint_local">あなたの指紋</string>
+  <string name="menu_sign_in">サインイン</string>
+  <string name="menu_gen_key">レーゲンキー</string>
+  <string name="error_suspended_connection">Gibberbotは、ネットワークへの接続を失っている</string>
+  <string name="error_reestablish_connection">Gibberbot接続をrestablishしようとしている</string>
+  <string name="otr_session_status_plaintext">このチャットはWarning:しない暗号化されている</string>
+  <string name="otr_session_status_encrypted">これは、チャットが安全である参加者の身元は検証されている</string>
+  <string name="otr_session_status_finished">Warning:チャット暗号化が停止されています。</string>
+  <string name="otr_session_status_verified">これは固定され、検証チャット</string>
+  <string name="account_wizard_setup_title">アカウントウィザード</string>
+  <string name="account_wizard_account_title">アカウントIDを</string>
+  <string name="account_wizard_host_title">サーバーの構成</string>
+  <string name="account_wizard_ready_title">準備ができている？</string>
+  <string name="account_wizard_setup_body">おそらく、Eメールアドレスのように見えますがservice.\n\nItチャットを自動的にGibberbotを設定するには、アカウントIDを入力してください - のでyourname@gmail.com、またはsomeone@jabber.org~~V、例えば。</string>
+  <string name="account_wizard_account_body">:アカウントID（ユーザ@ホスト名）を入力してください</string>
+  <string name="account_wizard_host_body">（5222がデフォルトです）を入力するか、あなたのjabber/xmppを編集するチャットサーバーのホスト名とポート番号をしてください。</string>
+  <string name="account_wizard_ready_body">Gibberbotは、設定されている今、あなたのサービスに接続するために、安全にチャットを開始、しっかりと、そして個人の時間です！</string>
+  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+  <string name="signin_password_prompt">あなたのpassword:を入力してください</string>
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
+  <string name="account_settings_title">Account Settings</string>
+  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+  <string name="menu_view_groups">Groups</string>
+  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">type the name of a contact to chat with</string>
+  <string name="search_button_text">Go</string>
+  <string name="menu_locale">Language</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+  <string name="tls_verification">TLS Verification</string>
+  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+  <string name="connect_server">Connect Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="btn_next">Next</string>
+  <string name="btn_back">Back</string>
+  <string name="title_chats">Conversations</string>
 </resources>

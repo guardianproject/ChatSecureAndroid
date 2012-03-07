@@ -1,253 +1,378 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="ro_perm_label">prečítaných správ</string>
-    <string name="ro_perm_desc">Umožňuje aplikáciám čítať dáta od poskytovateľa obsahu chatu.</string>
-    <string name="wo_perm_label">písať správy chatu</string>
-    <string name="wo_perm_desc">Umožňuje aplikáciám zapisovať dáta na poskytovateľa obsahu chatu.</string>
-    <string name="landing_page_title">Chat - Vyberte konto</string>
-    <string name="menu_add_account">Pridať účet</string>
-    <string name="menu_edit_account">Upraviť účet</string>
-    <string name="menu_remove_account">Odobrať účet</string>
-    <string name="menu_sign_out_all">Odhlásiť všetky</string>
-    <string name="choose_account_title">Chat - Vyberte konto</string>
-    <string name="menu_cancel_signin">Zrušiť prihlásenie</string>
-    <string name="menu_add_contact">Pridať kontakt</string>
-    <string name="menu_remove_contact">Odstrániť kontakt</string>
-    <string name="menu_block_contact">Blokovať kontakt</string>
-    <string name="menu_view_blocked">Blokované</string>
-    <string name="menu_view_accounts">Zoznam účtov</string>
-    <string name="menu_settings">Nastavenie</string>
-    <string name="menu_search_contacts">Vyhľadávanie Kontakty</string>
-    <string name="menu_start_chat">Štart chat</string>
-    <string name="menu_sign_out">Odhlásiť sa</string>
-    <string name="menu_view_profile">Overte</string>
-    <string name="menu_otr_start">Štart Šifrovanie</string>
-    <string name="menu_otr_stop">Stop Šifrovanie</string>
-    <string name="menu_clear_chat">Jasné Chat</string>
-    <string name="menu_end_conversation">Koniec chat</string>
-    <string name="menu_view_contact_list">Zoznam kontaktov</string>
-    <string name="menu_switch_chats">Switch chaty</string>
-    <string name="menu_insert_smiley">Vložiť smejka</string>
-    <string name="menu_scan">Scan odtlačkov prstov</string>
-    <string name="menu_fingerprint">Váš odtlačok prsta</string>
-    <string name="menu_verify">Overte odtlačkov prstov</string>
-    <string name="menu_plus">Menu + "</string>
-    <string name="default_input_title">Vstupné</string>
-    <string name="confirm">Potvrdiť</string>
-    <string name="signout_all_confirm_message">Chcete sa odhlásiť všetky služby?</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Zrušiť</string>
-    <string name="yes">OK</string>
-    <string name="no">Zrušiť</string>
-    <string name="signed_out_prompt_with_error">Boli ste odhlásení zo<xliff:g id="account">% 1 $ s</xliff:g>pretože<xliff:g id="reason">% 2 $ s</xliff:g>.</string>
-    <string name="label_username">User @ host</string>
-    <string name="label_password">Password:</string>
-    <string name="remember_password">Pamätaj si moje heslo.</string>
-    <string name="keep_me_signed_in">Prihlasovať automaticky.</string>
-    <string name="sign_up">Don\u2019t máte účet?</string>
-    <string name="check_auto_sign_in">Táto možnosť automaticky prihlasovať pri každom otvorení tejto aplikácie. Ak chcete zakázať možnosť, odhláste sa, potom jasné \ "Prihlásiť ma automatically\" políčko.</string>
-    <string name="sign_in">Prihlásiť sa</string>
-    <string name="signing_in_to">dostať Gibberbot deje ...</string>
-    <string name="signing_in_wait">Podpisovanie in\u2026</string>
-    <string name="bg_data_prompt_title">Pozadie zdravotne dáta</string>
-    <string name="bg_data_prompt_ok">Umožňujú</string>
-    <string name="bg_data_prompt_cancel">Prestať</string>
-    <string name="subscriptions">Priateľ pozvánky</string>
-    <string name="empty_contact_group">Prázdny</string>
-    <string name="empty_conversation_group">Žiadne konverzácie</string>
-    <string name="contacts_picker_title">Vyberte kontakt (y) vyzvať</string>
-    <string name="contact_filter_hint">Typ nájsť kontakt</string>
-    <string name="empty_contact_list">Neboli nájdené žiadne kontakty.</string>
-    <string name="no_blocked_contact">Č blokovaných kontaktov.</string>
-    <string name="contact_profile_title">Kontakt profil</string>
-    <string name="label_status">Status:</string>
-    <string name="label_client_type">Klient type:</string>
-    <string name="client_type_computer">Počítače</string>
-    <string name="client_type_mobile">Mobilný</string>
-    <string name="presence_available">On-line</string>
-    <string name="presence_busy">Zaneprázdnený</string>
-    <string name="presence_away">Preč</string>
-    <string name="presence_idle">Nečinný</string>
-    <string name="presence_offline">Offline</string>
-    <string name="presence_invisible">Zobrazí offline</string>
-    <string name="data_channel_label">Dátový kanál</string>
-    <string name="data_encoding_label">Kódovanie dát</string>
-    <string name="cir_channel_label">CIR kanál</string>
-    <string name="host_label">Hostiteľské</string>
-    <string name="msisdn_label">MSISDN</string>
-    <string name="http">HTTP</string>
-    <string name="sms">SMS</string>
-    <string name="tcp">TCP</string>
-    <string name="xml">XML</string>
-    <string name="wbxml">WBXML</string>
-    <string name="save">Uložiť</string>
-    <string name="me">Mňa</string>
-    <string name="compose_hint">Typ skladať</string>
-    <string name="send">Poslať</string>
-    <string name="msg_sent_failed">Túto správu sa nepodarilo odoslať.</string>
-    <string name="disconnected_warning">Došlo k strate spojenia so serverom. Správy budú odoslané pri on-line.</string>
-    <string name="select_link_title">Vyberte odkaz</string>
-    <string name="empty_chat_list">Žiadne aktívne chaty.</string>
-    <string name="add_contact_title">Pridať kontakt</string>
-    <string name="input_contact_label">E-mailovú adresu osoby, ktorej chcete invite:</string>
-    <string name="choose_list_label">Vyberte list:</string>
-    <string name="invite_instruction">Zadajte názov pre pridanie z kontaktov.</string>
-    <string name="invite_label">Poslať pozvánku</string>
-    <string name="setting_title">Všeobecné nastavenia</string>
-    <string name="hide_offline_contacts">Skryť offline kontakty</string>
-    <string name="notification_group_title">Nastavenie upozornenia</string>
-    <string name="notification_enabled_title">IM oznámenia</string>
-    <string name="notification_enabled_summary">Oznámi v stavovom riadku, keď príde IM</string>
-    <string name="notification_vibrate_title">Vibrovať</string>
-    <string name="notification_vibrate_summary">Tiež vibrácie pri prijatí správy IM</string>
-    <string name="notification_sound_title">Zvuk</string>
-    <string name="notification_sound_summary">Tiež hrať zvonenie pri chate dorazí</string>
-    <string name="notification_ringtone_title">Vyberte zvonenie</string>
-    <string name="invitation_sent_prompt">Pozvánka bola zaslaná<xliff:g id="user">% 1 $ s</xliff:g>.</string>
-    <string name="accept_invitation">Prijať</string>
-    <string name="decline_invitation">Pokles</string>
-    <string name="approve_subscription">Prijať</string>
-    <string name="decline_subscription">Pokles</string>
-    <string name="notify_groupchat_label">Skupina pozvánky do chatu</string>
-    <string name="group_chat_invite_notify_text">Nová skupina chat pozvanie od<xliff:g id="user">% S</xliff:g>
+  <string name="ro_perm_label">prečítaných správ</string>
+  <string name="ro_perm_desc">Umožňuje aplikáciám čítať dáta od poskytovateľa obsahu chatu.</string>
+  <string name="wo_perm_label">písať správy chatu</string>
+  <string name="wo_perm_desc">Umožňuje aplikáciám zapisovať dáta na poskytovateľa obsahu chatu.</string>
+  <string name="im_label">Gibberbot</string>
+  <string name="landing_page_title">Chat - Vyberte konto</string>
+  <string name="menu_about">About</string>
+  <string name="menu_add_account">Pridať účet</string>
+  <string name="menu_edit_account">Upraviť účet</string>
+  <string name="menu_remove_account">Odobrať účet</string>
+  <string name="menu_sign_out_all">Odhlásiť všetky</string>
+  <string name="choose_account_title">Chat - Vyberte konto</string>
+  <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="menu_cancel_signin">Zrušiť prihlásenie</string>
+  <string name="menu_add_contact">Pridať kontakt</string>
+  <string name="menu_remove_contact">Odstrániť kontakt</string>
+  <string name="menu_block_contact">Blokovať kontakt</string>
+  <string name="menu_view_blocked">Blokované</string>
+  <string name="menu_view_accounts">Zoznam účtov</string>
+  <string name="menu_new_chat">New Chat</string>
+  <string name="menu_settings">Nastavenie</string>
+  <string name="menu_search_contacts">Vyhľadávanie Kontakty</string>
+  <string name="menu_start_chat">Štart chat</string>
+  <string name="menu_sign_out">Odhlásiť sa</string>
+  <string name="menu_view_profile">Overte</string>
+  <string name="menu_otr_start">Štart Šifrovanie</string>
+  <string name="menu_otr_stop">Stop Šifrovanie</string>
+  <string name="menu_clear_chat">Jasné Chat</string>
+  <string name="menu_end_conversation">Koniec chat</string>
+  <string name="menu_view_contact_list">Zoznam kontaktov</string>
+  <string name="menu_invite_contact">Invite\u2026</string>
+  <string name="menu_switch_chats">Switch chaty</string>
+  <string name="menu_insert_smiley">Vložiť smejka</string>
+  <string name="menu_scan">Scan odtlačkov prstov</string>
+  <string name="menu_fingerprint">Váš odtlačok prsta</string>
+  <string name="menu_verify">Overte odtlačkov prstov</string>
+  <string name="menu_plus">Menu + \"</string>
+  <string name="confirm">Potvrdiť</string>
+  <string name="signout_all_confirm_message">Chcete sa odhlásiť všetky služby?</string>
+  <string name="confirm_delete_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be deleted.</string>
+  <string name="confirm_block_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be blocked.</string>
+  <string name="confirm_unblock_contact">The contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" will be unblocked.</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Zrušiť</string>
+  <string name="yes">OK</string>
+  <string name="no">Zrušiť</string>
+  <string name="signed_out_prompt">You have been signed out of &lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">Boli ste odhlásení zo<xliff:g id="account">% 1 $ s</xliff:g>pretože<xliff:g id="reason">% 2 $ s</xliff:g>.</string>
+  <string name="add_account">Add &lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt; account</string>
+  <string name="label_username">User @ host</string>
+  <string name="label_password">Password:</string>
+  <string name="remember_password">Pamätaj si moje heslo.</string>
+  <string name="keep_me_signed_in">Prihlasovať automaticky.</string>
+  <string name="sign_up">Don\u2019t máte účet?</string>
+  <string name="check_save_password">Pre vašu bezpečnosť, ak váš telefón stratený alebo ukradnutý, prejdite na webový server na vašom počítači a zmeniť heslo.</string>
+  <string name="check_auto_sign_in">Táto možnosť automaticky prihlasovať pri každom otvorení tejto aplikácie. Ak chcete zakázať možnosť, odhláste sa, potom jasné \ \"Prihlásiť ma automatically\" políčko.</string>
+  <string name="sign_in">Prihlásiť sa</string>
+  <string name="signing_in_to">dostať Gibberbot deje ...</string>
+  <string name="signing_in_wait">Podpisovanie in\u2026</string>
+  <string name="bg_data_prompt_title">Pozadie zdravotne dáta</string>
+  <string name="bg_data_prompt_message">
+         &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; needs background data to be enabled.
     </string>
-    <string name="perm_label">štart IM službu</string>
-    <string name="perm_desc">Umožňuje, aby aplikácia spustiť IM služby prostredníctvom zámeru.</string>
-    <string name="error">Pozor</string>
-    <string name="add_list_failed">Zoznam nebol pridaný.</string>
-    <string name="block_contact_failed">Kontakt nebol blokovaný.</string>
-    <string name="unblock_contact_failed">Kontakt nebol odblokovaný.</string>
-    <string name="select_contact">Prosím, vyberte kontakt ako prvý.</string>
-    <string name="disconnected">Odpojený! \n</string>
-    <string name="service_error">Chyba služby!</string>
-    <string name="load_contact_list_failed">Zoznam kontaktov ani načítať.</string>
-    <string name="cant_connect_to_server">Nedá sa pripojiť k serveru. Skontrolujte prosím svoje pripojenie.</string>
-    <string name="contact_not_loaded">Počkajte prosím, zoznamu kontaktov zaťaženie.</string>
-    <string name="network_error">Došlo k chybe siete.</string>
-    <string name="service_not_support">Tento server nepodporuje túto funkciu.</string>
-    <string name="invalid_password">Zadané heslo nie je platné.</string>
-    <string name="internal_server_error">Na serveri došlo k chybe.</string>
-    <string name="not_implemented">Tento server nepodporuje túto funkciu.</string>
-    <string name="service_unavaiable">Tento server je momentálne nedostupný.</string>
-    <string name="timeout">Tento server vypršal.</string>
-    <string name="version_not_supported">Tento server nepodporuje aktuálnu verziu.</string>
-    <string name="message_queue_full">Fronty správ je plná.</string>
-    <string name="domain_not_supported">Tento server nepodporuje presmerovanie do domény.</string>
-    <string name="unknown_user">Zadané používateľské meno nie je rozpoznaný.</string>
-    <string name="recipient_blocked_the_user">Ospravedlňujeme sa, ste zablokované užívateľom.</string>
-    <string name="session_expired">Relácia vypršala, prosím prihláste sa znovu.</string>
-    <string name="forced_logout">Prihlásili ste sa z iného klienta.</string>
-    <string name="already_logged_in">už ste prihlásení od iného klienta.</string>
-    <string name="msisdn_error">Ospravedlňujeme sa, telefónne číslo, nedá čítať z karty SIM. Prosím, kontaktujte svojho operátora o pomoc.</string>
-    <string name="not_signed_in">Nachádzate sa v súčasnosti nie sú prihlásení</string>
-    <string-array name="default_smiley_names">
-        <item>Šťastný</item>
-        <item>Smutný</item>
-        <item>Žmurkanie</item>
-        <item>Vyplazený jazyk</item>
-        <item>Prekvapený</item>
-        <item>Bozkávanie</item>
-        <item>Kričí</item>
-        <item>Chladný</item>
-        <item>Peniaze ústa</item>
-        <item>Nôh v ústach</item>
-        <item>V rozpakoch</item>
-        <item>Anjel</item>
-        <item>Nerozhodný</item>
-        <item>Plač</item>
-        <item>Ústa sú zapečatená</item>
-        <item>Smavý</item>
-        <item>Zmätený</item>
-    </string-array>
-    <string-array name="smiley_names">
-        <item>Šťastný</item>
-        <item>Smutný</item>
-        <item>Žmurkanie</item>
-        <item>Vyplazený jazyk</item>
-        <item>Prekvapený</item>
-        <item>Bozkávanie</item>
-        <item>Kričí</item>
-        <item>Chladný</item>
-        <item>Peniaze ústa</item>
-        <item>Nôh v ústach</item>
-        <item>V rozpakoch</item>
-        <item>Anjel</item>
-        <item>Nerozhodný</item>
-        <item>Plač</item>
-        <item>Ústa sú zapečatená</item>
-        <item>Smavý</item>
-        <item>Zmätený</item>
-    </string-array>
-    <string name="check_save_password">Pre vašu bezpečnosť, ak váš telefón stratený alebo ukradnutý, prejdite na webový server na vašom počítači a zmeniť heslo.</string>
-    <string name="menu_contact_list">Zoznam kontaktov</string>
-    <string name="menu_view_encrypt_chat">Šifrovať On/Off</string>
-    <string name="use_tor">Pripojenie cez Tor (vyžaduje Orbot app)</string>
-    <string name="app_name">Gibberbot</string>
-    <string name="welcome_first">Prvýkrát pomocou Gibberbot?</string>
-    <string name="welcome_skip">Can\'t čakať začať?</string>
-    <string name="welcome_about">O Gibberbot</string>
-    <string name="welcome_account">Nastavenie účtu</string>
-    <string name="about_welcome_title">Vitajte na Gibberbot</string>
-    <string name="about_welcome">Gibberbot je mobilný instant messaging aplikácia, ktorá poskytuje ďalšie bezpečnostné prvky, ktoré bránia ostatným snooping na svoje rozhovory a communications.\n\nThe app podporuje všetky sluľbe chatu, ktorá používa Jabber alebo XMPP protokol, ako je Google alebo Gtalk Jabber.org.</string>
-    <string name="about_otr_title">Ako je to bezpečné?</string>
-    <string name="about_otr">\'Off - Record Messaging \'je bezpečnostný systém navrhnutý tak, aby súkromní napodobovaním vlastnosti súkromného rozhovoru v reálnom svete, vrátane šifrovania, autentifikácie, deniability a Vpred Secrecy.\n\nThe OTR-protokol je kompatibilný s desktop chat klientmi ako Adiumalebo Pidgin.</string>
-    <string name="about_security_title">My sa Chaty bezpečne?</string>
-    <string name="about_security">Gibberbot\ chatu šifrovacie funkcie funguje iba pri komunikácii s ostatnými pomocou kompatibilného aplikácie alebo program, takže by mali zabezpečiť, vaše kontakty sú pomocou Gibberbot pre mobilné a Adium alebo Pidgin pre desktop. Môžete jemne doladiť-presne, ako a kedy Gibberbot pokusy o šifrovanie chaty v Accos UNT Settings.\n\nLet \'začať!</string>
-    <string name="setup_passphrase_title">Nastavenie heslo</string>
-    <string name="setup_passphrase">Predtým, než začnete prosím vyberte bezpečné heslo pre ochranu Gibberbot dáta z nespravodlivého prístupu.</string>
-    <string name="setup_passphrase_label1">Passphrase:</string>
-    <string name="setup_passphrase_label2">Heslo (znovu) :</string>
-    <string name="account_setup_acct_subtitle">Účet</string>
-    <string name="account_setup_acct_acctname_title">Názov účtu</string>
-    <string name="account_setup_acct_acctname_sub">Zobrazovaný názov pre tento účet</string>
-    <string name="account_setup_acct_username_title">Užívateľské meno (login)</string>
-    <string name="account_setup_acct_username_sub">Format: užívateľ @ host:port</string>
-    <string name="account_setup_acct_password_title">Heslo</string>
-    <string name="account_setup_acct_password_sub">Heslo pre autentizáciu</string>
-    <string name="account_setup_pers_sub">Perzistencia</string>
-    <string name="account_setup_pers_pw_title">Zapamätať heslo</string>
-    <string name="account_setup_pers_pw_on">Heslo medzipamäte</string>
-    <string name="account_setup_pers_pw_off">Heslo nie je medzipamäte</string>
-    <string name="account_setup_pers_auto_title">Automaticky prihlásiť</string>
-    <string name="account_setup_pers_auto_on">Pripojte sa Gibberbot start-up</string>
-    <string name="account_setup_pers_auto_off">Don\'t pripojiť na Gibberbot start-up</string>
-    <string name="account_setup_pers_now_title">Prihlásiť sa teraz</string>
-    <string name="account_setup_pers_now_on">Pripojte nasledujúce nastavenia účtu</string>
-    <string name="account_setup_pers_now_off">Don\'t pripojiť nasledujúce nastavenia účtu</string>
-    <string name="account_setup_personal_sub">Osobné (nepovinné)</string>
-    <string name="account_setup_personal_alias_title">Alias účet (Vaše meno)</string>
-    <string name="account_setup_personal_alias_sub">Ako vyzerá váš účet on-line</string>
-    <string name="account_setup_personal_profile_title">Profil</string>
-    <string name="account_setup_personal_profile_sub">Stručný reklama o sebe</string>
-    <string name="account_setup_advanced_sub">Rozšírené</string>
-    <string name="account_setup_advanced_enc_force">Vynútiť šifrovanie / odmietnuť holého</string>
-    <string name="account_setup_advanced_enc_auto">Pokiaľ je to možné, šifrovať chaty automaticky</string>
-    <string name="account_setup_advanced_enc_req">Šifrovať chaty ako to žiadala</string>
-    <string name="account_setup_advanced_enc_off">Zakázať chat šifrovanie</string>
-    <string name="account_setup_signin_a">Overovanie poverovacích listín ...</string>
-    <string name="account_setup_signin_b">Generovanie páru kľúčov ...</string>
-    <string name="account_setup_signin_c">Podpisovanie v. ..</string>
-    <string name="account_setup_error_validating">Gibberbot došlo k chybe pri overovaní svoje užívateľské meno alebo heslo - skontrolujte a skúste to znova.</string>
-    <string name="account_setup_error_keypair">Gibberbot došlo k chybe pri generovaní páru kľúčov.</string>
-    <string name="account_setup_error_server">Gibberbot došlo k chybe pri pripájaní k serveru chatu - prosím skontrolujte vaše nastavenia a skúste to znova.</string>
-    <string name="account_setup_error_connectivity">Gibberbot došlo k chybe pri pripájaní - Skontrolujte prosím pripojenie k sieti a skúste to znova.</string>
-    <string name="label_fingerprint_remote">Ich odtlačok prsta</string>
-    <string name="label_fingerprint_local">Váš odtlačok prsta</string>
-    <string name="menu_sign_in">Prihlásiť sa</string>
-    <string name="menu_gen_key">Regen Key</string>
-    <string name="error_suspended_connection">Gibberbot stratil pripojenie k sieti</string>
-    <string name="error_reestablish_connection">Gibberbot sa pokúša restablish pripojenie</string>
-    <string name="otr_session_status_plaintext">Warning: Tento chat nie je šifrovaná</string>
-    <string name="otr_session_status_encrypted">Tento chat je bezpečné, ale totožnosť účastníkov nebola overená</string>
-    <string name="otr_session_status_finished">Warning: chat šifrovanie bola zastavená.</string>
-    <string name="otr_session_status_verified">Tento chat je zabezpečené a overený</string>
-    <string name="account_wizard_setup_title">Sprievodca účet</string>
-    <string name="account_wizard_account_title">Vaše ID účtu</string>
-    <string name="account_wizard_host_title">Konfigurácia servera</string>
-    <string name="account_wizard_ready_title">Ste pripravení?</string>
-    <string name="account_wizard_setup_body">Zadajte svoj účet číslo pre automatickú konfiguráciu Gibberbot pre vás chat service.\n\nIt pravdepodobne vyzerá ako e-mailové adresy - tak yourname@gmail.com, alebo someone@jabber.org, napríklad.</string>
-    <string name="account_wizard_account_body">Prosím, zadajte svoje ID účtu (user @ hostname) :</string>
-    <string name="account_wizard_host_body">Prosím, zadajte alebo upravte jabber/xmpp chatu servera meno počítača a číslo portu (predvolené je 5222).</string>
-    <string name="account_wizard_ready_body">Gibberbot bola nastavená, a teraz je čas sa pripojiť k vašim službám, a začnite bezpečne, spoľahlivo a súkromne!</string>
-    <string name="signin_password_prompt">Zadajte svoje password:</string>
+  <string name="bg_data_prompt_ok">Umožňujú</string>
+  <string name="bg_data_prompt_cancel">Prestať</string>
+  <string name="ongoing_conversation">Ongoing chats (&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; online</string>
+  <string name="subscriptions">Priateľ pozvánky</string>
+  <string name="unknown_contact">(<i>Unknown</i>) </string>
+  <string name="empty_contact_group">Prázdny</string>
+  <string name="empty_conversation_group">Žiadne konverzácie</string>
+  <string name="contacts_picker_title">Vyberte kontakt (y) vyzvať</string>
+  <string name="contact_filter_hint">Typ nájsť kontakt</string>
+  <string name="empty_contact_list">Neboli nájdené žiadne kontakty.</string>
+  <string name="blocked_list_title">Blocked contacts - &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">Č blokovaných kontaktov.</string>
+  <string name="contact_profile_title">Kontakt profil</string>
+  <string name="label_status">Status:</string>
+  <string name="label_client_type">Klient type:</string>
+  <string name="client_type_computer">Počítače</string>
+  <string name="client_type_mobile">Mobilný</string>
+  <string name="presence_available">On-line</string>
+  <string name="presence_busy">Zaneprázdnený</string>
+  <string name="presence_away">Preč</string>
+  <string name="presence_idle">Nečinný</string>
+  <string name="presence_offline">Offline</string>
+  <string name="presence_invisible">Zobrazí offline</string>
+  <string name="preference_title">&lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
+  <string name="data_channel_label">Dátový kanál</string>
+  <string name="data_encoding_label">Kódovanie dát</string>
+  <string name="cir_channel_label">CIR kanál</string>
+  <string name="host_label">Hostiteľské</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">SMS</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">XML</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">Uložiť</string>
+  <string name="chat_with">Chat with &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="me">Mňa</string>
+  <string name="compose_hint">Typ skladať</string>
+  <string name="contact_online">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is online</string>
+  <string name="contact_away">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is away</string>
+  <string name="contact_busy">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is busy</string>
+  <string name="contact_offline">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is offline</string>
+  <string name="contact_joined">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has joined</string>
+  <string name="contact_left">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has left</string>
+  <string name="time_stamp">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+  <string name="send">Poslať</string>
+  <string name="msg_sent_failed">Túto správu sa nepodarilo odoslať.</string>
+  <string name="disconnected_warning">Došlo k strate spojenia so serverom. Správy budú odoslané pri on-line.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is offline. Messages you send will be delivered when &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; comes online.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; is not in your Contact list.</string>
+  <string name="select_link_title">Vyberte odkaz</string>
+  <string name="empty_chat_list">Žiadne aktívne chaty.</string>
+  <string name="add_contact_title">Pridať kontakt</string>
+  <string name="input_contact_label">E-mailovú adresu osoby, ktorej chcete invite:</string>
+  <string name="choose_list_label">Vyberte list:</string>
+  <string name="invite_instruction">Zadajte názov pre pridanie z kontaktov.</string>
+  <string name="invite_label">Poslať pozvánku</string>
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="account_setup_title">Account Setup</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">Skryť offline kontakty</string>
+  <string name="notification_group_title">Nastavenie upozornenia</string>
+  <string name="notification_enabled_title">IM oznámenia</string>
+  <string name="notification_enabled_summary">Oznámi v stavovom riadku, keď príde IM</string>
+  <string name="notification_vibrate_title">Vibrovať</string>
+  <string name="notification_vibrate_summary">Tiež vibrácie pri prijatí správy IM</string>
+  <string name="notification_sound_title">Zvuk</string>
+  <string name="notification_sound_summary">Tiež hrať zvonenie pri chate dorazí</string>
+  <string name="notification_ringtone_title">Vyberte zvonenie</string>
+  <string name="invitation_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has invited you to join a group chat.</string>
+  <string name="invitation_sent_prompt">Pozvánka bola zaslaná<xliff:g id="user">% 1 $ s</xliff:g>.</string>
+  <string name="accept_invitation">Prijať</string>
+  <string name="decline_invitation">Pokles</string>
+  <string name="subscription_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; has invited you to be on their Contact list.</string>
+  <string name="approve_subscription">Prijať</string>
+  <string name="decline_subscription">Pokles</string>
+  <string name="approve_subscription_error">Unable to approve subscription from &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</string>
+  <string name="decline_subscription_error">Unable to decline subscription from &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;. Please try again later.</string>
+  <string name="newMessages_label">New &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; messages</string>
+  <string name="num_unread_chats">
+        &lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; unread chats
+    </string>
+  <string name="subscription_notify_text">
+        New friend invitation from <xliff:g id="user">%s</xliff:g>
+    </string>
+  <string name="notify_groupchat_label">Skupina pozvánky do chatu</string>
+  <string name="group_chat_invite_notify_text">Nová skupina chat pozvanie od<xliff:g id="user">% S</xliff:g>
+    </string>
+  <string name="add_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" added.</string>
+  <string name="delete_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" deleted.</string>
+  <string name="block_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" blocked.</string>
+  <string name="unblock_contact_success">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" unblocked.</string>
+  <string name="perm_label">štart IM službu</string>
+  <string name="perm_desc">Umožňuje, aby aplikácia spustiť IM služby prostredníctvom zámeru.</string>
+  <string name="error">Pozor</string>
+  <string name="login_service_failed">Unable to sign in to the &lt;xliff:g id=\"service\"&gt;%1$s&lt;/xliff:g&gt; service. Please try again later.\n(Detail: &lt;xliff:g id=\"description\"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="add_list_failed">Zoznam nebol pridaný.</string>
+  <string name="block_contact_failed">Kontakt nebol blokovaný.</string>
+  <string name="unblock_contact_failed">Kontakt nebol odblokovaný.</string>
+  <string name="select_contact">Prosím, vyberte kontakt ako prvý.</string>
+  <string name="disconnected">Odpojený! \n</string>
+  <string name="service_error">Chyba služby!</string>
+  <string name="load_contact_list_failed">Zoznam kontaktov ani načítať.</string>
+  <string name="cant_connect_to_server">Nedá sa pripojiť k serveru. Skontrolujte prosím svoje pripojenie.</string>
+  <string name="contact_already_exist">\"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" already exists in your Contact list.</string>
+  <string name="contact_blocked">Contact \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\" has been blocked.</string>
+  <string name="contact_not_loaded">Počkajte prosím, zoznamu kontaktov zaťaženie.</string>
+  <string name="network_error">Došlo k chybe siete.</string>
+  <string name="service_not_support">Tento server nepodporuje túto funkciu.</string>
+  <string name="invalid_password">Zadané heslo nie je platné.</string>
+  <string name="internal_server_error">Na serveri došlo k chybe.</string>
+  <string name="not_implemented">Tento server nepodporuje túto funkciu.</string>
+  <string name="service_unavaiable">Tento server je momentálne nedostupný.</string>
+  <string name="timeout">Tento server vypršal.</string>
+  <string name="version_not_supported">Tento server nepodporuje aktuálnu verziu.</string>
+  <string name="message_queue_full">Fronty správ je plná.</string>
+  <string name="domain_not_supported">Tento server nepodporuje presmerovanie do domény.</string>
+  <string name="unknown_user">Zadané používateľské meno nie je rozpoznaný.</string>
+  <string name="recipient_blocked_the_user">Ospravedlňujeme sa, ste zablokované užívateľom.</string>
+  <string name="session_expired">Relácia vypršala, prosím prihláste sa znovu.</string>
+  <string name="forced_logout">Prihlásili ste sa z iného klienta.</string>
+  <string name="already_logged_in">už ste prihlásení od iného klienta.</string>
+  <string name="msisdn_error">Ospravedlňujeme sa, telefónne číslo, nedá čítať z karty SIM. Prosím, kontaktujte svojho operátora o pomoc.</string>
+  <string name="not_signed_in">Nachádzate sa v súčasnosti nie sú prihlásení</string>
+  <string name="general_error">Error code &lt;xliff:g id=\"code\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string-array name="default_smiley_names"><item>Šťastný</item>
+<item>Smutný</item>
+<item>Žmurkanie</item>
+<item>Vyplazený jazyk</item>
+<item>Prekvapený</item>
+<item>Bozkávanie</item>
+<item>Kričí</item>
+<item>Chladný</item>
+<item>Peniaze ústa</item>
+<item>Nôh v ústach</item>
+<item>V rozpakoch</item>
+<item>Anjel</item>
+<item>Nerozhodný</item>
+<item>Plač</item>
+<item>Ústa sú zapečatená</item>
+<item>Smavý</item>
+<item>Zmätený</item>
+</string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string-array name="smiley_names"><item>Šťastný</item>
+<item>Smutný</item>
+<item>Žmurkanie</item>
+<item>Vyplazený jazyk</item>
+<item>Prekvapený</item>
+<item>Bozkávanie</item>
+<item>Kričí</item>
+<item>Chladný</item>
+<item>Peniaze ústa</item>
+<item>Nôh v ústach</item>
+<item>V rozpakoch</item>
+<item>Anjel</item>
+<item>Nerozhodný</item>
+<item>Plač</item>
+<item>Ústa sú zapečatená</item>
+<item>Smavý</item>
+<item>Zmätený</item>
+</string-array>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">Contact List - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_contact_list">Zoznam kontaktov</string>
+  <string name="menu_view_encrypt_chat">Šifrovať On/Off</string>
+  <string name="use_tor">Pripojenie cez Tor (vyžaduje Orbot app)</string>
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">Prvýkrát pomocou Gibberbot?</string>
+  <string name="welcome_skip">Can\'t čakať začať?</string>
+  <string name="welcome_about">O Gibberbot</string>
+  <string name="welcome_account">Nastavenie účtu</string>
+  <string name="about_welcome_title">Vitajte na Gibberbot</string>
+  <string name="about_welcome">Gibberbot je mobilný instant messaging aplikácia, ktorá poskytuje ďalšie bezpečnostné prvky, ktoré bránia ostatným snooping na svoje rozhovory a communications.\n\nThe app podporuje všetky sluľbe chatu, ktorá používa Jabber alebo XMPP protokol, ako je Google alebo Gtalk Jabber.org.</string>
+  <string name="about_otr_title">Ako je to bezpečné?</string>
+  <string name="about_otr">\'Off - Record Messaging \'je bezpečnostný systém navrhnutý tak, aby súkromní napodobovaním vlastnosti súkromného rozhovoru v reálnom svete, vrátane šifrovania, autentifikácie, deniability a Vpred Secrecy.\n\nThe OTR-protokol je kompatibilný s desktop chat klientmi ako Adiumalebo Pidgin.</string>
+  <string name="about_security_title">My sa Chaty bezpečne?</string>
+  <string name="about_security">Gibberbot\ chatu šifrovacie funkcie funguje iba pri komunikácii s ostatnými pomocou kompatibilného aplikácie alebo program, takže by mali zabezpečiť, vaše kontakty sú pomocou Gibberbot pre mobilné a Adium alebo Pidgin pre desktop. Môžete jemne doladiť-presne, ako a kedy Gibberbot pokusy o šifrovanie chaty v Accos UNT Settings.\n\nLet \'začať!</string>
+  <string name="setup_passphrase_title">Nastavenie heslo</string>
+  <string name="setup_passphrase">Predtým, než začnete prosím vyberte bezpečné heslo pre ochranu Gibberbot dáta z nespravodlivého prístupu.</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">Heslo (znovu) :</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">password</string>
+  <string name="account_setup_advanced_button">Advanced Account Settings</string>
+  <string name="account_setup_pers_sub">Perzistencia</string>
+  <string name="account_setup_pers_pw_title">Zapamätať heslo</string>
+  <string name="account_setup_pers_pw_on">Heslo medzipamäte</string>
+  <string name="account_setup_pers_pw_off">Heslo nie je medzipamäte</string>
+  <string name="account_setup_pers_auto_title">Automaticky prihlásiť</string>
+  <string name="account_setup_pers_auto_on">Pripojte sa Gibberbot start-up</string>
+  <string name="account_setup_pers_auto_off">Don\'t pripojiť na Gibberbot start-up</string>
+  <string name="account_setup_pers_now_title">Prihlásiť sa teraz</string>
+  <string name="account_setup_pers_now_on">Pripojte nasledujúce nastavenia účtu</string>
+  <string name="account_setup_pers_now_off">Don\'t pripojiť nasledujúce nastavenia účtu</string>
+  <string name="account_setup_personal_sub">Osobné (nepovinné)</string>
+  <string name="account_setup_personal_alias_title">Alias účet (Vaše meno)</string>
+  <string name="account_setup_personal_alias_sub">Ako vyzerá váš účet on-line</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Stručný reklama o sebe</string>
+  <string name="account_setup_advanced_enc_force">Vynútiť šifrovanie / odmietnuť holého</string>
+  <string name="account_setup_advanced_enc_auto">Pokiaľ je to možné, šifrovať chaty automaticky</string>
+  <string name="account_setup_advanced_enc_req">Šifrovať chaty ako to žiadala</string>
+  <string name="account_setup_advanced_enc_off">Zakázať chat šifrovanie</string>
+  <string name="account_setup_signin_a">Overovanie poverovacích listín ...</string>
+  <string name="account_setup_signin_b">Generovanie páru kľúčov ...</string>
+  <string name="account_setup_signin_c">Podpisovanie v. ..</string>
+  <string name="account_setup_error_validating">Gibberbot došlo k chybe pri overovaní svoje užívateľské meno alebo heslo - skontrolujte a skúste to znova.</string>
+  <string name="account_setup_error_keypair">Gibberbot došlo k chybe pri generovaní páru kľúčov.</string>
+  <string name="account_setup_error_server">Gibberbot došlo k chybe pri pripájaní k serveru chatu - prosím skontrolujte vaše nastavenia a skúste to znova.</string>
+  <string name="account_setup_error_connectivity">Gibberbot došlo k chybe pri pripájaní - Skontrolujte prosím pripojenie k sieti a skúste to znova.</string>
+  <string name="label_fingerprint_remote">Ich odtlačok prsta</string>
+  <string name="label_fingerprint_local">Váš odtlačok prsta</string>
+  <string name="menu_sign_in">Prihlásiť sa</string>
+  <string name="menu_gen_key">Regen Key</string>
+  <string name="error_suspended_connection">Gibberbot stratil pripojenie k sieti</string>
+  <string name="error_reestablish_connection">Gibberbot sa pokúša restablish pripojenie</string>
+  <string name="otr_session_status_plaintext">Warning: Tento chat nie je šifrovaná</string>
+  <string name="otr_session_status_encrypted">Tento chat je bezpečné, ale totožnosť účastníkov nebola overená</string>
+  <string name="otr_session_status_finished">Warning: chat šifrovanie bola zastavená.</string>
+  <string name="otr_session_status_verified">Tento chat je zabezpečené a overený</string>
+  <string name="account_wizard_setup_title">Sprievodca účet</string>
+  <string name="account_wizard_account_title">Vaše ID účtu</string>
+  <string name="account_wizard_host_title">Konfigurácia servera</string>
+  <string name="account_wizard_ready_title">Ste pripravení?</string>
+  <string name="account_wizard_setup_body">Zadajte svoj účet číslo pre automatickú konfiguráciu Gibberbot pre vás chat service.\n\nIt pravdepodobne vyzerá ako e-mailové adresy - tak yourname@gmail.com, alebo someone@jabber.org, napríklad.</string>
+  <string name="account_wizard_account_body">Prosím, zadajte svoje ID účtu (user @ hostname) :</string>
+  <string name="account_wizard_host_body">Prosím, zadajte alebo upravte jabber/xmpp chatu servera meno počítača a číslo portu (predvolené je 5222).</string>
+  <string name="account_wizard_ready_body">Gibberbot bola nastavená, a teraz je čas sa pripojiť k vašim službám, a začnite bezpečne, spoľahlivo a súkromne!</string>
+  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+  <string name="signin_password_prompt">Zadajte svoje password:</string>
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
+  <string name="account_settings_title">Account Settings</string>
+  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+  <string name="menu_view_groups">Groups</string>
+  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">type the name of a contact to chat with</string>
+  <string name="search_button_text">Go</string>
+  <string name="menu_locale">Language</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+  <string name="tls_verification">TLS Verification</string>
+  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+  <string name="connect_server">Connect Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="btn_next">Next</string>
+  <string name="btn_back">Back</string>
+  <string name="title_chats">Conversations</string>
 </resources>

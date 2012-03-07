@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">قراءة الرسائل الفورية</string>
   <string name="ro_perm_desc">يسمح للتطبيقات لقراءة البيانات من مزود محتوى الرسائل الفورية.</string>
@@ -12,7 +12,7 @@
   <string name="menu_remove_account">إزالة حساب</string>
   <string name="menu_sign_out_all">الخروج من الجميع</string>
   <string name="choose_account_title">دردشة -- حدد حساب</string>
-  <string name="conversations"></string>
+  <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
   <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
   <string name="menu_add_contact">إضافة اسم</string>
   <string name="menu_remove_contact">حذف الاتصال</string>
@@ -39,16 +39,16 @@
   <string name="menu_plus">القائمة + \"</string>
   <string name="confirm">تأكيد</string>
   <string name="signout_all_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات؟</string>
-  <string name="confirm_delete_contact"> سيتم حذف<xliff:g id="user">%1$s</xliff:g></string>
-  <string name="confirm_block_contact">سيتم حجب <xliff:g id="user">%1$s</xliff:g></string>
-  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="confirm_delete_contact">سيتم حذف \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
+  <string name="confirm_block_contact">سيتم حجب \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
+  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
   <string name="ok">موافق</string>
   <string name="cancel">إلغاء</string>
   <string name="yes">موافق</string>
   <string name="no">إلغاء</string>
-  <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
-  <string name="signed_out_prompt_with_error">لقد تم إخراجك من <xliff:g id="account">%1$s</xliff:g></string>
-  <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
+  <string name="signed_out_prompt">&lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt; تم تسجيل خروجك من</string>
+  <string name="signed_out_prompt_with_error">لقد تم إخراجك من &lt;xliff:g id=\"account\"&gt;٪ 1 $ ق&lt;/xliff:g&gt;لأن&lt;xliff:g id=\"reason\"&gt;٪ 2 $ ليالي&lt;/xliff:g&gt;.</string>
+  <string name="add_account">أضف حساب (&lt;xliff:g id=\"account\"&gt;%1$s&lt;/xliff:g&gt;)</string>
   <string name="label_username">المستخدم @ المضيف</string>
   <string name="label_password">كلمة السر:</string>
   <string name="remember_password">تذكر كلمة السر الخاصة بي.</string>
@@ -60,19 +60,19 @@
   <string name="signing_in_to">انطلق يا جيبربوت!</string>
   <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
   <string name="bg_data_prompt_title">تم تعطيل البيانات الخلفية</string>
-  <string name="bg_data_prompt_message">⏎ <xliff:g id="provider">%1$s</xliff:g> يحتاج لمعلومات خلفية ليتم التفعيل. ⏎ </string>
+  <string name="bg_data_prompt_message">⏎ &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; يحتاج لمعلومات خلفية ليتم التفعيل. ⏎ </string>
   <string name="bg_data_prompt_ok">تمكين</string>
   <string name="bg_data_prompt_cancel">خروج</string>
-  <string name="ongoing_conversation">المحادثات الصادرة (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$s</xliff:g> متصل</string>
+  <string name="ongoing_conversation">المحادثات الصادرة (&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; متصل</string>
   <string name="subscriptions">دعوات الإضافة</string>
-  <string name="unknown_contact"></string>
+  <string name="unknown_contact">(<i>غير معروف</i>) </string>
   <string name="empty_contact_group">فارغة</string>
   <string name="empty_conversation_group">لا توجد محادثات</string>
   <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
   <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
   <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.</string>
-  <string name="blocked_list_title">الأسماء المحجوبة <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="blocked_list_title">الأسماء المحجوبة &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">لا توجد أسماء محظورة.</string>
   <string name="contact_profile_title">معلومات جهة الاتصال</string>
   <string name="label_status">الحالة:</string>
@@ -85,7 +85,7 @@
   <string name="presence_idle">خامل</string>
   <string name="presence_offline">غير متصل</string>
   <string name="presence_invisible">الظهور دون اتصال</string>
-  <string name="preference_title">إعدادات <xliff:g id="provider">%1$s</xliff:g> (للمطورين فقط)</string>
+  <string name="preference_title">إعدادات &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; (للمطورين فقط)</string>
   <string name="data_channel_label">قناة البيانات</string>
   <string name="data_encoding_label">ترميز البيانات</string>
   <string name="cir_channel_label">قناة سي آي آر</string>
@@ -97,21 +97,21 @@
   <string name="xml">إكس إم إل</string>
   <string name="wbxml">WBXML</string>
   <string name="save">حفظ</string>
-  <string name="chat_with">تحدث مع <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">تحدث مع &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">أنا</string>
   <string name="compose_hint">اكتب</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> متصل</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> بالخارج</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> مشغول</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> غير متصل.</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> قام بالدخول</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> قام بالخروج</string>
-  <string name="time_stamp"></string>
+  <string name="contact_online">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; متصل</string>
+  <string name="contact_away">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; بالخارج</string>
+  <string name="contact_busy">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; مشغول</string>
+  <string name="contact_offline">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; غير متصل.</string>
+  <string name="contact_joined">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; قام بالدخول</string>
+  <string name="contact_left">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; قام بالخروج</string>
+  <string name="time_stamp">\'ارسل في\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
   <string name="send">إرسال</string>
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
   <string name="disconnected_warning">فقد الاتصال بمزود الخدمة. سوف ترسل الرسائل عندما يعود الاتصال.</string>
-  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> غير موجود بقائمة الأسماء لديك.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; غير متصل. أي رسائل ترسلها ستصل إلى &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; عندما يقوم بالاتصال.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; غير موجود بقائمة الأسماء لديك.</string>
   <string name="select_link_title">حدد الرابط</string>
   <string name="empty_chat_list">لا توجد محادثات حالياً.</string>
   <string name="add_contact_title">إضافة اسم</string>
@@ -131,28 +131,28 @@
   <string name="notification_sound_title">الصوت</string>
   <string name="notification_sound_summary">كما يلعب النغمة عندما يصل الدردشة</string>
   <string name="notification_ringtone_title">حدد النغمة</string>
-  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لمحادثة جماعية.</string>
+  <string name="invitation_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; يدعوك لمحادثة جماعية.</string>
   <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
   <string name="accept_invitation">قبول</string>
   <string name="decline_invitation">انخفاض</string>
-  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لتكون بقائمة أسمائه.</string>
+  <string name="subscription_prompt">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; يدعوك لتكون بقائمة أسمائه.</string>
   <string name="approve_subscription">قبول</string>
   <string name="decline_subscription">انخفاض</string>
-  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
-  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
-  <string name="newMessages_label">رسائل جديدة من <xliff:g id="provider">%1$s</xliff:g></string>
-  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> محادثة جديدة</string>
+  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى.</string>
+  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من &lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى.</string>
+  <string name="newMessages_label">رسائل جديدة من &lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">&lt;xliff:g id=\"number\"&gt;%1$d&lt;/xliff:g&gt; محادثة جديدة</string>
   <string name="subscription_notify_text"> دعوة إضافة جديدة من <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
   <string name="group_chat_invite_notify_text">دعوة محادثة جماعية من <xliff:g id="user">%s</xliff:g></string>
-  <string name="add_contact_success">تمت إضافة \"<xliff:g id="user">%1$s</xliff:g>\"</string>
-  <string name="delete_contact_success">تم حذف \"<xliff:g id="user">%1$s</xliff:g>\"</string>
-  <string name="block_contact_success">تم حجب \"<xliff:g id="user">%1$s</xliff:g>\"</string>
-  <string name="unblock_contact_success">أزيل الحجب عن \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="add_contact_success">تمت إضافة \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
+  <string name="delete_contact_success">تم حذف \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
+  <string name="block_contact_success">تم حجب \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
+  <string name="unblock_contact_success">أزيل الحجب عن \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
   <string name="perm_label">بدء تشغيل خدمة المراسلة الفورية</string>
   <string name="perm_desc">يسمح للتطبيقات ببدء تشغيل خدمة المحادثة عن طريق الIntent.</string>
   <string name="error">انتباه</string>
-  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى <xliff:g id="service">%1$s</xliff:g> . حاول مرة أخرى لاحقاً. التفاصيل:    <xliff:g id="description">%2$s</xliff:g>
+  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى &lt;xliff:g id=\"service\"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى لاحقاً. التفاصيل:    &lt;xliff:g id=\"description\"&gt;%2$s&lt;/xliff:g&gt;
 </string>
   <string name="add_list_failed">لم يتم إضافة القائمة.</string>
   <string name="block_contact_failed">لم يتم حظر جهة الاتصال</string>
@@ -162,8 +162,8 @@
   <string name="service_error">خطأ بالخدمة!</string>
   <string name="load_contact_list_failed">لم يتم تحميل قائمة الاتصال.</string>
   <string name="cant_connect_to_server">لا يمكن الاتصال بالموقع. يرجى التحقق من اتصالك.</string>
-  <string name="contact_already_exist"><xliff:g id="user">%1$s</xliff:g> موجود بقائمة الأسماء لديك.</string>
-  <string name="contact_blocked">تم حجب \"<xliff:g id="user">%1$s</xliff:g>\"</string>
+  <string name="contact_already_exist">&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt; موجود بقائمة الأسماء لديك.</string>
+  <string name="contact_blocked">تم حجب \"&lt;xliff:g id=\"user\"&gt;%1$s&lt;/xliff:g&gt;\"</string>
   <string name="contact_not_loaded">الرجاء الانتظار بينما نقوم بتحميل قائمة الاتصال الخاصة بك.</string>
   <string name="network_error">حدث خطأ في الشبكة.</string>
   <string name="service_not_support">الموقع لا يدعم هذه الوظيفة.</string>
@@ -182,7 +182,7 @@
   <string name="already_logged_in">لقد قمت بتسجيل الدخول من برنامج آخر</string>
   <string name="msisdn_error">عذرا ، تعذرت قراءة رقم الهاتف من البطاقة. يرجى الاتصال بمشغل الشبكة للحصول على مساعدة.</string>
   <string name="not_signed_in">لم تقم بتسجيل الدخول</string>
-  <string name="general_error">رمز الخطأ: <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="general_error">رمز الخطأ: &lt;xliff:g id=\"code\"&gt;%1$d&lt;/xliff:g&gt;</string>
   <string-array name="default_smiley_names"><item>سعيد</item>
 <item>حزين</item>
 <item>الرمش</item>
@@ -201,7 +201,24 @@
 <item>يضحك</item>
 <item>الخلط</item>
 </string-array>
-  <string-array name="default_smiley_texts"></string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
   <string-array name="smiley_names"><item>سعيد</item>
 <item>حزين</item>
 <item>الرمش</item>
@@ -220,8 +237,25 @@
 <item>يضحك</item>
 <item>الخلط</item>
 </string-array>
-  <string-array name="smiley_texts"></string-array>
-  <string name="buddy_list_title">قائمة الاتصال - <xliff:g id="username">%1$s</xliff:g></string>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">قائمة الاتصال - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_contact_list">قائمة الاتصال</string>
   <string name="menu_view_encrypt_chat">تشفير On/Off</string>
   <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
@@ -292,7 +326,23 @@
   <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
   <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
   <string name="signin_password_prompt">أدخل كلمة السر:</string>
-
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
   <string name="account_settings_title">إعدادات الحساب</string>
   <string name="warning_alpha">تحذير: هذه نسخة تجريبية من جيبربوت و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
   <string name="menu_view_groups">المجموعات</string>
@@ -318,6 +368,7 @@
   <string name="server_port">منفذ الموقع</string>
   <string name="xmpp_resource">مصدر إكس أم بي بي XMPP</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ليتم تمييز هذا الاتصال من الاتصالات الأخرى التي سجلت الدخول</string>
-
+  <string name="btn_next">التالي</string>
+  <string name="btn_back">عودة</string>
   <string name="title_chats">المحادثات</string>
 </resources>

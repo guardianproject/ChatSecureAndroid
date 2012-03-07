@@ -1,304 +1,373 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2009 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string msgid="146078926243968887" name="menu_cancel_signin">Отмена входа</string>
-    <string msgid="6315091944808434095" name="menu_add_contact">Добавить контакт</string>
-    <string msgid="3306468526492774925" name="menu_remove_contact">Удалить контакт</string>
-    <string msgid="727204732836017804" name="menu_block_contact">Заблокировать контакт</string>
-    <string msgid="7567355003496935631" name="menu_view_blocked">Заблокированные</string>
-    <string msgid="2876518557188672305" name="menu_view_accounts">Список аккаунтов</string>
-    <string msgid="4609084900756093288" name="menu_settings">Настройки</string>
-    <string msgid="6188262479212139863" name="menu_start_chat">Начать чат</string>
-    <string msgid="2456603636849489202" name="menu_sign_out">Выход</string>
-    <string msgid="5883288134525529119" name="menu_view_profile">Просмотреть профиль</string>
-    <string msgid="3556567768336552622" name="menu_end_conversation">Закончить чат</string>
-    <string msgid="4630377976475003130" name="menu_view_contact_list">Список контактов</string>
-    <string msgid="4669830812552484236" name="menu_invite_contact">Пригласить пользователя...</string>
-    <string msgid="5113455126377025717" name="menu_switch_chats">Сменить чат</string>
-    <string msgid="2555290958985391105" name="menu_insert_smiley">Вставить смайлик</string>
-    <string msgid="5000617247235760106" name="menu_plus">Мenu+</string>
-    <string msgid="6182729628894599563" name="default_input_title">Ввод</string>
-    <string msgid="3229086014444547636" name="confirm">Подтвердить</string>
-    <string msgid="1364595657359357114" name="confirm_delete_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" будет удален.</string>
-    <string msgid="2490910366424078491" name="confirm_block_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" будет заблокирован.</string>
-    <string msgid="2194464819104507216" name="confirm_unblock_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" будет разблокирован.</string>
-    <string msgid="1521940081498188645" name="ok">ОК</string>
-    <string msgid="5115511021657936211" name="cancel">Отмена</string>
-    <string msgid="4042588907115698888" name="yes">ОК</string>
-    <string msgid="1791024164361629713" name="no">Отмена</string>
-    <string msgid="8832702403969474634" name="signed_out_prompt">Вы вышли из службы: <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
-    <string msgid="7747094436931805456" name="signed_out_prompt_with_error">Вы вышли из службы: <xliff:g id="ACCOUNT">%1$s</xliff:g>. Причина: <xliff:g id="REASON">%2$s</xliff:g>.</string>
-    <string msgid="3402105687785864337" name="add_account">Добавить аккаунт <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
-    <string msgid="8704597829337399952" name="label_username">Имя пользователя:</string>
-    <string msgid="7809879599377131899" name="label_password">Пароль:</string>
-    <string msgid="4090719436666073946" name="remember_password">Запомнить пароль.</string>
-    <string msgid="2883914867912933061" name="keep_me_signed_in">Входить автоматически.</string>
-    <string msgid="7071654280992136839" name="sign_up">У вас нет аккаунта?</string>
-    <string msgid="308461891031463647" name="check_auto_sign_in">Этот параметр позволяет пользователю автоматически входить в систему при каждом запуске приложения. Чтобы отключить этот параметр, выйдите из системы, а затем снимите флажок \"Входить автоматически\".</string>
-    <string msgid="6204326200860136567" name="sign_in">Вход</string>
-    <string msgid="2689649632858697221" name="signing_in_to">Вход в <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
-    <string msgid="987357161364666888" name="signing_in_wait">Выполняется вход...</string>
-    <string msgid="4861800723853178111" name="bg_data_prompt_title">Исходные данные отключены</string>
-    <string msgid="2343305645142823544" name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> требует, чтобы использование фоновых данных было разрешено</string>
-    <string msgid="3443385427882751532" name="bg_data_prompt_ok">Включить</string>
-    <string msgid="7206105589826174638" name="bg_data_prompt_cancel">Выйти</string>
-    <string msgid="6523428329676936109" name="ongoing_conversation">Текущих чатов: (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-    <string msgid="5007781327712739543" name="online_count">Пользователей в сети: <xliff:g id="NUMBER">%1$d</xliff:g></string>
-    <string msgid="2039801939162848292" name="subscriptions">Приглашения от друзей</string>
-    <string msgid="3493840718873032803" name="unknown_contact">(<i>Неизвестный</i>)</string>
-    <string msgid="5944413281854480292" name="empty_contact_group">Пусто</string>
-    <string msgid="3207190506591856738" name="empty_conversation_group">Нет разговоров</string>
-    <string msgid="6681084488289812125" name="contacts_picker_title">Выберите контакты людей, которых нужно пригласить</string>
-    <string msgid="7138176974380705986" name="contact_filter_hint">Введите текст для поиска контакта</string>
-    <string msgid="1974715213398195818" name="empty_contact_list">Контакты не найдены.</string>
-    <string msgid="1107985939407422906" name="blocked_list_title">Заблокированные контакты – <xliff:g id="USER">%1$s</xliff:g></string>
-    <string msgid="8733015382744327205" name="no_blocked_contact">Нет заблокированных контактов.</string>
-    <string msgid="3403866015406342297" name="contact_profile_title">Профиль контакта</string>
-    <string msgid="3228165483618856922" name="label_status">Статус:</string>
-    <string msgid="2498423521352545451" name="label_client_type">Тип клиента:</string>
-    <string msgid="5636516646543615981" name="client_type_computer">Компьютер</string>
-    <string msgid="8405440352829124713" name="client_type_mobile">Клиент для мобильных устройств</string>
-    <string msgid="7514162178730233803" name="presence_available">В сети</string>
-    <string msgid="3425926873862063910" name="presence_busy">Не беспокоить</string>
-    <string msgid="2893687249265559744" name="presence_away">Отсутствует</string>
-    <string msgid="3127526059878228229" name="presence_idle">Нет на месте</string>
-    <string msgid="7946842914359044731" name="presence_offline">Не в сети</string>
-    <string msgid="1485652711495491831" name="presence_invisible">Невидимый</string>
-    <string msgid="8562954189958846831" name="chat_with">Чат с пользователем <xliff:g id="USER">%1$s</xliff:g></string>
-    <string msgid="8421609599685404593" name="me">Я</string>
-    <string msgid="1735533889811320962" name="compose_hint">Введите текст</string>
-    <string msgid="4241843267436748586" name="contact_online">Пользователь <xliff:g id="USER">%1$s</xliff:g> в сети</string>
-    <string msgid="2333627320542883164" name="contact_away">Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует</string>
-    <string msgid="9175172991334146704" name="contact_busy">Пользователь <xliff:g id="USER">%1$s</xliff:g> занят</string>
-    <string msgid="7054903259540426223" name="contact_offline">Пользователь <xliff:g id="USER">%1$s</xliff:g> не в сети</string>
-    <string msgid="6713312815095658394" name="contact_joined">Пользователь <xliff:g id="USER">%1$s</xliff:g> присоединился к чату</string>
-    <string msgid="3020686291216941829" name="contact_left">Пользователь <xliff:g id="USER">%1$s</xliff:g> покинул чат</string>
-    <string format="date" msgid="8952691401963972802" name="time_stamp">\'Отправлено в \'<xliff:g id="HOUR">hh</xliff:g>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="ro_perm_label">читать мгновенные сообщения</string>
+  <string name="ro_perm_desc">Позволяет приложениям для чтения данных из контент-провайдер мгновенных сообщений.</string>
+  <string name="wo_perm_label">написать мгновенные сообщения</string>
+  <string name="wo_perm_desc">Позволяет приложениям для записи данных на контент-провайдер мгновенных сообщений.</string>
+  <string name="im_label">Gibberbot</string>
+  <string name="landing_page_title">Чат - выберите учетную запись</string>
+  <string name="menu_about">About</string>
+  <string name="menu_add_account">Добавить аккаунт</string>
+  <string name="menu_edit_account">Изменить счет</string>
+  <string name="menu_remove_account">Удалить учетную запись</string>
+  <string name="menu_sign_out_all">Выйти из всех</string>
+  <string name="choose_account_title">Чат - выберите учетную запись</string>
+  <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="menu_cancel_signin">Отмена входа</string>
+  <string name="menu_add_contact">Добавить контакт</string>
+  <string name="menu_remove_contact">Удалить контакт</string>
+  <string name="menu_block_contact">Заблокировать контакт</string>
+  <string name="menu_view_blocked">Заблокированные</string>
+  <string name="menu_view_accounts">Список аккаунтов</string>
+  <string name="menu_new_chat">New Chat</string>
+  <string name="menu_settings">Настройки</string>
+  <string name="menu_search_contacts">Поиск Контакты</string>
+  <string name="menu_start_chat">Начать чат</string>
+  <string name="menu_sign_out">Выход</string>
+  <string name="menu_view_profile">Просмотреть профиль</string>
+  <string name="menu_otr_start">Начало шифрования</string>
+  <string name="menu_otr_stop">Остановить шифрования</string>
+  <string name="menu_clear_chat">Очистить чат</string>
+  <string name="menu_end_conversation">Закончить чат</string>
+  <string name="menu_view_contact_list">Список контактов</string>
+  <string name="menu_invite_contact">Пригласить пользователя...</string>
+  <string name="menu_switch_chats">Сменить чат</string>
+  <string name="menu_insert_smiley">Вставить смайлик</string>
+  <string name="menu_scan">Сканирование отпечатков пальцев</string>
+  <string name="menu_fingerprint">Отпечатки пальцев</string>
+  <string name="menu_verify">Проверка отпечатков пальцев</string>
+  <string name="menu_plus">Мenu+</string>
+  <string name="confirm">Подтвердить</string>
+  <string name="signout_all_confirm_message">Вы хотите выйти из всех услуг?</string>
+  <string name="confirm_delete_contact">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" будет удален.</string>
+  <string name="confirm_block_contact">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" будет заблокирован.</string>
+  <string name="confirm_unblock_contact">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" будет разблокирован.</string>
+  <string name="ok">ОК</string>
+  <string name="cancel">Отмена</string>
+  <string name="yes">ОК</string>
+  <string name="no">Отмена</string>
+  <string name="signed_out_prompt">Вы вышли из службы: &lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">Вы вышли из службы: &lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;. Причина: &lt;xliff:g id=\"REASON\"&gt;%2$s&lt;/xliff:g&gt;.</string>
+  <string name="add_account">Добавить аккаунт &lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="label_username">Имя пользователя:</string>
+  <string name="label_password">Пароль:</string>
+  <string name="remember_password">Запомнить пароль.</string>
+  <string name="keep_me_signed_in">Входить автоматически.</string>
+  <string name="sign_up">У вас нет аккаунта?</string>
+  <string name="check_save_password">Для вашей безопасности, если телефон потерян или украден, перейдите на веб-сайт на вашем компьютере и изменить пароль.</string>
+  <string name="check_auto_sign_in">Этот параметр позволяет пользователю автоматически входить в систему при каждом запуске приложения. Чтобы отключить этот параметр, выйдите из системы, а затем снимите флажок \"Входить автоматически\".</string>
+  <string name="sign_in">Вход</string>
+  <string name="signing_in_to">Вход в &lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="signing_in_wait">Выполняется вход...</string>
+  <string name="bg_data_prompt_title">Исходные данные отключены</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt; требует, чтобы использование фоновых данных было разрешено</string>
+  <string name="bg_data_prompt_ok">Включить</string>
+  <string name="bg_data_prompt_cancel">Выйти</string>
+  <string name="ongoing_conversation">Текущих чатов: (&lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">Пользователей в сети: &lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="subscriptions">Приглашения от друзей</string>
+  <string name="unknown_contact">(<i>Неизвестный</i>)</string>
+  <string name="empty_contact_group">Пусто</string>
+  <string name="empty_conversation_group">Нет разговоров</string>
+  <string name="contacts_picker_title">Выберите контакты людей, которых нужно пригласить</string>
+  <string name="contact_filter_hint">Введите текст для поиска контакта</string>
+  <string name="empty_contact_list">Контакты не найдены.</string>
+  <string name="blocked_list_title">Заблокированные контакты – &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">Нет заблокированных контактов.</string>
+  <string name="contact_profile_title">Профиль контакта</string>
+  <string name="label_status">Статус:</string>
+  <string name="label_client_type">Тип клиента:</string>
+  <string name="client_type_computer">Компьютер</string>
+  <string name="client_type_mobile">Клиент для мобильных устройств</string>
+  <string name="presence_available">В сети</string>
+  <string name="presence_busy">Не беспокоить</string>
+  <string name="presence_away">Отсутствует</string>
+  <string name="presence_idle">Нет на месте</string>
+  <string name="presence_offline">Не в сети</string>
+  <string name="presence_invisible">Невидимый</string>
+  <string name="preference_title">&lt;xliff:g id=\"provider\"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
+  <string name="data_channel_label">Данные канала</string>
+  <string name="data_encoding_label">Кодирование данных</string>
+  <string name="cir_channel_label">CIR канала</string>
+  <string name="host_label">Принимающей</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">SMS</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">XML</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">Сохранить</string>
+  <string name="chat_with">Чат с пользователем &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="me">Я</string>
+  <string name="compose_hint">Введите текст</string>
+  <string name="contact_online">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; в сети</string>
+  <string name="contact_away">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; отсутствует</string>
+  <string name="contact_busy">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; занят</string>
+  <string name="contact_offline">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; не в сети</string>
+  <string name="contact_joined">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; присоединился к чату</string>
+  <string name="contact_left">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; покинул чат</string>
+  <string name="time_stamp">\'Отправлено в \'<xliff:g id="HOUR">hh</xliff:g>
         <xliff:g id="MINUTE">mm</xliff:g>
         <xliff:g id="AMPM">a</xliff:g>\', \'<xliff:g id="DATE">EEEE</xliff:g></string>
-    <string msgid="2726588254020771734" name="send">Отправить</string>
-    <string msgid="4209970218075996979" name="msg_sent_failed">Не удалось отправить сообщение.</string>
-    <string msgid="6798248948843269795" name="disconnected_warning">Соединение с сервером потеряно. Сообщения будут отправлены после входа в сеть.</string>
-    <string msgid="8822964251595561504" name="contact_offline_warning">Пользователь <xliff:g id="USER_0">%1$s</xliff:g> не в сети. Отправленные сообщения будут доставлены, когда пользователь <xliff:g id="USER_1">%1$s</xliff:g> выйдет в сеть.</string>
-    <string msgid="2411313232707156524" name="contact_not_in_list_warning">Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует в списке контактов.</string>
-    <string msgid="5020179468567358399" name="select_link_title">Выберите ссылку</string>
-    <string msgid="7268903855432844937" name="empty_chat_list">Нет активных чатов.</string>
-    <string msgid="8541795892456911186" name="add_contact_title">Добавить контакт</string>
-    <string msgid="395294356081431462" name="input_contact_label">Адрес электронной почты человека, которого вы хотите пригласить:</string>
-    <string msgid="1430489448508574145" name="choose_list_label">Выберите список:</string>
-    <string msgid="8262403243657760155" name="invite_instruction">Чтобы добавить абонента из списка контактов, укажите его имя.</string>
-    <string msgid="6229798754682424899" name="invite_label">Отправить приглашение</string>
-    <string msgid="6676157178613673420" name="setting_title">Общие настройки</string>
-    <string msgid="8017909244732772990" name="hide_offline_contacts">Скрыть контакты, отсутствующие в сети</string>
-    <string msgid="4944275706770811080" name="notification_group_title">Настройки уведомлений</string>
-    <string msgid="6447889693376465773" name="notification_enabled_title">Уведомления чата</string>
-    <string msgid="2090889893066171466" name="notification_enabled_summary">Уведомлять о получении сообщения чата в строке состояния</string>
-    <string msgid="5603532186091800924" name="notification_vibrate_title">Вибрация</string>
-    <string msgid="1875275321875946598" name="notification_vibrate_summary">Сигнал вибрации при получении сообщения чата</string>
-    <string msgid="8367990268592958299" name="notification_sound_title">Звуковой сигнал</string>
-    <string msgid="3634976543811200858" name="notification_sound_summary">Воспроизводить мелодию звонка при получении сообщения чата</string>
-    <string msgid="4847700898968990954" name="notification_ringtone_title">Выбрать мелодию звонка</string>
-    <string msgid="1776461436395016582" name="invitation_prompt">Пользователь <xliff:g id="USER">%1$s</xliff:g> приглашает вас в групповой чат.</string>
-    <string msgid="2542342110609014148" name="invitation_sent_prompt">Приглашение отправлено пользователю <xliff:g id="USER">%1$s</xliff:g>.</string>
-    <string msgid="8852207669114500346" name="accept_invitation">Принять</string>
-    <string msgid="3039909785911592632" name="decline_invitation">Отклонить</string>
-    <string msgid="1915974310850760232" name="subscription_prompt">Пользователь <xliff:g id="USER">%1$s</xliff:g> хочет добавить вас в свой список контактов.</string>
-    <string msgid="2035288988418082224" name="approve_subscription">Принять</string>
-    <string msgid="3069941120905061191" name="decline_subscription">Отклонить</string>
-    <string msgid="7653225198395861289" name="approve_subscription_error">Не удалось одобрить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже.</string>
-    <string msgid="7593921535412836089" name="decline_subscription_error">Не удалось отклонить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже.</string>
-    <string msgid="2180971062715087738" name="newMessages_label">Новые сообщения пользователя: <xliff:g id="PROVIDER">%1$s</xliff:g></string>
-    <string msgid="728064925131396221" name="num_unread_chats">Непрочитанных чатов: <xliff:g id="NUMBER">%1$d</xliff:g></string>
-    <string msgid="6742004636596633323" name="subscription_notify_text">Новое приглашение от пользователя <xliff:g id="USER">%s</xliff:g></string>
-    <string msgid="4200552751080182984" name="notify_groupchat_label">Приглашение в групповой чат</string>
-    <string msgid="2115253984204158370" name="group_chat_invite_notify_text">Новое приглашение в групповой чат от пользователя <xliff:g id="USER">%s</xliff:g></string>
-    <string msgid="6760968462242659207" name="add_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" добавлен.</string>
-    <string msgid="4451989113378349412" name="delete_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" удален.</string>
-    <string msgid="301279568695040166" name="block_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" заблокирован.</string>
-    <string msgid="5506870117106713456" name="unblock_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" разблокирован.</string>
-    <string msgid="203411797893865789" name="perm_label">Включить чат</string>
-    <string msgid="6978187394092498941" name="perm_desc">Разрешает приложениям включать чат через Intent.</string>
-    <string msgid="4778856523246532623" name="error">Внимание</string>
-    <string msgid="3883751713470046349" name="login_service_failed">Не удается выполнить вход в службу: <xliff:g id="SERVICE">%1$s</xliff:g>. Повторите попытку позже."\n"(Подробности: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
-    <string msgid="5659371594032378190" name="add_list_failed">Список не был добавлен.</string>
-    <string msgid="5870952543258608424" name="block_contact_failed">Не удалось заблокировать контакт.</string>
-    <string msgid="7761060327693183076" name="unblock_contact_failed">Не удалось разблокировать контакт.</string>
-    <string msgid="5804415466346460387" name="select_contact">Сначала выберите контакт.</string>
-    <string msgid="7731840958629349414" name="disconnected">Соединение потеряно! "\n</string>
-    <string msgid="4578570332742070464" name="service_error">Ошибка чата.</string>
-    <string msgid="6395594768879404874" name="load_contact_list_failed">Список контактов не был загружен.</string>
-    <string msgid="3188697382173578199" name="cant_connect_to_server">Не удается подключиться к серверу. Проверьте соединение.</string>
-    <string msgid="4982433960953410393" name="contact_already_exist">Пользователь <xliff:g id="USER">%1$s</xliff:g> уже внесен в список контактов.</string>
-    <string msgid="11602144969098173" name="contact_blocked">Контакт \<xliff:g id="USER">%1$s</xliff:g>\" заблокирован.</string>
-    <string msgid="3739109817357036832" name="contact_not_loaded">Дождитесь окончания загрузки списка контактов.</string>
-    <string msgid="1971556432619053394" name="network_error">Произошла ошибка сети.</string>
-    <string msgid="6552484838382542900" name="service_not_support">Эта функция не поддерживается сервером.</string>
-    <string msgid="4406190708977805393" name="invalid_password">Указанный пароль недействителен.</string>
-    <string msgid="5659759443966908703" name="internal_server_error">Произошла ошибка сервера.</string>
-    <string msgid="845369556603815808" name="not_implemented">Эта функция не поддерживается сервером.</string>
-    <string msgid="4948915878388282443" name="service_unavaiable">В настоящий момент сервер недоступен.</string>
-    <string msgid="8160218318070765661" name="timeout">Время ожидания сервера истекло.</string>
-    <string msgid="4342010736606775264" name="version_not_supported">Текущая версия не поддерживается сервером.</string>
-    <string msgid="7501019992527859517" name="message_queue_full">Очередь сообщений переполнена.</string>
-    <string msgid="7715663042901606605" name="domain_not_supported">Сервер не поддерживает переадресацию на домен.</string>
-    <string msgid="6680215792586778118" name="unknown_user">Указанное имя пользователя не опознано.</string>
-    <string msgid="8438323314518151118" name="recipient_blocked_the_user">К сожалению, пользователь вас заблокировал.</string>
-    <string msgid="1999103420742299764" name="session_expired">Сеанс завершен, войдите в систему еще раз.</string>
-    <string msgid="4914497176506037105" name="forced_logout">вы вошли с использованием другого клиента.</string>
-    <string msgid="1907391913706263174" name="already_logged_in">вы уже вошли с использованием другого клиента.</string>
-    <string msgid="1477099919088266968" name="msisdn_error">Не удается получить номер телефона с SIM-карты. Обратитесь к своему оператору.</string>
-    <string msgid="8894662143178849906" name="not_signed_in">В настоящий момент вход в систему не выполнен.</string>
-    <string msgid="2784900425265121080" name="general_error">Код ошибки: <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string-array name="default_smiley_names">
-    <item msgid="1496436377093882868">Радость</item>
-    <item msgid="4535010061202018372">Грусть</item>
-    <item msgid="9126439186030536335">Подмигивает</item>
-    <item msgid="850866187116359823">Показывает язык</item>
-    <item msgid="394905071090547502">Удивление</item>
-    <item msgid="154223719974718360">Поцелуй</item>
-    <item msgid="7922997411177141520">Кричит</item>
-    <item msgid="2507841103887006866">Крутой</item>
-    <item msgid="7305800612774038776">Молчание – золото</item>
-    <item msgid="8019801991256267534">В замешательстве</item>
-    <item msgid="6054214980935551183">Смущение</item>
-    <item msgid="6425740366789820735">Ангел</item>
-    <item msgid="6790879686860830930">Нерешительный</item>
-    <item msgid="8487432187298106600">Плачет</item>
-    <item msgid="1697327406585784541">Не скажу</item>
-    <item msgid="4623875498872672218">Смех</item>
-    <item msgid="6044435333460205962">Озадаченный</item>
-  </string-array>
-<string name="ro_perm_label">читать мгновенные сообщения</string>
-    <string name="ro_perm_desc">Позволяет приложениям для чтения данных из контент-провайдер мгновенных сообщений.</string>
-    <string name="wo_perm_label">написать мгновенные сообщения</string>
-    <string name="wo_perm_desc">Позволяет приложениям для записи данных на контент-провайдер мгновенных сообщений.</string>
-    <string name="landing_page_title">Чат - выберите учетную запись</string>
-    <string name="menu_add_account">Добавить аккаунт</string>
-    <string name="menu_edit_account">Изменить счет</string>
-    <string name="menu_remove_account">Удалить учетную запись</string>
-    <string name="menu_sign_out_all">Выйти из всех</string>
-    <string name="choose_account_title">Чат - выберите учетную запись</string>
-    <string name="menu_search_contacts">Поиск Контакты</string>
-    <string name="menu_otr_start">Начало шифрования</string>
-    <string name="menu_otr_stop">Остановить шифрования</string>
-    <string name="menu_clear_chat">Очистить чат</string>
-    <string name="menu_scan">Сканирование отпечатков пальцев</string>
-    <string name="menu_fingerprint">Отпечатки пальцев</string>
-    <string name="menu_verify">Проверка отпечатков пальцев</string>
-    <string name="signout_all_confirm_message">Вы хотите выйти из всех услуг?</string>
-    <string name="data_channel_label">Данные канала</string>
-    <string name="data_encoding_label">Кодирование данных</string>
-    <string name="cir_channel_label">CIR канала</string>
-    <string name="host_label">Принимающей</string>
-    <string name="msisdn_label">MSISDN</string>
-    <string name="http">HTTP</string>
-    <string name="sms">SMS</string>
-    <string name="tcp">TCP</string>
-    <string name="xml">XML</string>
-    <string name="wbxml">WBXML</string>
-    <string name="save">Сохранить</string>
-    <string-array name="smiley_names">
-        <item>Счастливы</item>
-        <item>Печальный</item>
-        <item>Подмигивание</item>
-        <item>Высунутый язык</item>
-        <item>Удивленный</item>
-        <item>Целующий</item>
-        <item>Кричит</item>
-        <item>Прохладно</item>
-        <item>Деньги рот</item>
-        <item>Ноги в рот</item>
-        <item>Смущенный</item>
-        <item>Ангел</item>
-        <item>Нерешенный</item>
-        <item>Плач</item>
-        <item>Lips Are Sealed</item>
-        <item>Смеясь</item>
-        <item>Спутанный</item>
-    </string-array>
-    <string name="check_save_password">Для вашей безопасности, если телефон потерян или украден, перейдите на веб-сайт на вашем компьютере и изменить пароль.</string>
-    <string name="menu_contact_list">Список контактов</string>
-    <string name="menu_view_encrypt_chat">Шифрование On/Off</string>
-    <string name="use_tor">Подключение через Tor (требуется Orbot приложение)</string>
-    <string name="app_name">Gibberbot</string>
-    <string name="welcome_first">Первое время, используя Gibberbot?</string>
-    <string name="welcome_skip">Can\'t ждать, чтобы начать?</string>
-    <string name="welcome_about">О Gibberbot</string>
-    <string name="welcome_account">Создание учетной записи</string>
-    <string name="about_welcome_title">Добро пожаловать в Gibberbot</string>
-    <string name="about_welcome">Gibberbot является мобильных приложений обмена мгновенными сообщениями, что обеспечивает дополнительные функции безопасности, которые мешают другим Snooping на разговоры и communications.\n\nThe приложение поддерживает любой чат сервис, использующий Jabber или XMPP протокол, такой как Google GTalk или Jabber.org.</string>
-    <string name="about_otr_title">Как это безопасно?</string>
-    <string name="about_otr">\'Off-Рекорд Messaging\ "является система безопасности предназначена для позволяют конфиденциальности, имитируя характеристики частной беседе в реальном мире, в том числе шифрование, аутентификация, отрицания" и "Вперед Secrecy.\n\nThe OTR-протокола совместима с настольными чат-клиентов таких как Adiumили Pidgin.</string>
-    <string name="about_security_title">Are My Чаты безопасности?</string>
-    <string name="about_security">Чат функцией шифрования Gibberbot\ работает только когда сообщениями с другими с помощью совместимого приложения или программы, поэтому вы должны убедиться, ваши контакты используют Gibberbot для мобильных и Adium или Pidgin для рабочего стола. Вы можете настроить, как именно и когда Gibberbot попытки для шифрования чатов в АккоS ЕНТ Settings.\n\nLet\ "начать!</string>
-    <string name="setup_passphrase_title">Ключевая фраза установки</string>
-    <string name="setup_passphrase">Перед началом работы выберите безопасный пароль для защиты ваших данных от Gibberbot несправедливо доступа.</string>
-    <string name="setup_passphrase_label1">Passphrase:</string>
-    <string name="setup_passphrase_label2">Ключевая фраза (опять же) :</string>
-    <string name="account_setup_acct_subtitle">Счет</string>
-    <string name="account_setup_acct_acctname_title">Название счета</string>
-    <string name="account_setup_acct_acctname_sub">Краткое имя для этой учетной записи</string>
-    <string name="account_setup_acct_username_title">Имя пользователя (Логин)</string>
-    <string name="account_setup_acct_username_sub">Format: пользователь @ host:port</string>
-    <string name="account_setup_acct_password_title">Пароль</string>
-    <string name="account_setup_acct_password_sub">Пароль для аутентификации</string>
-    <string name="account_setup_pers_sub">Настойчивость</string>
-    <string name="account_setup_pers_pw_title">Запомнить пароль</string>
-    <string name="account_setup_pers_pw_on">Пароль кэшированных</string>
-    <string name="account_setup_pers_pw_off">Пароль не кэшируются</string>
-    <string name="account_setup_pers_auto_title">Автоматически Войдите в систему,</string>
-    <string name="account_setup_pers_auto_on">Подключиться на Gibberbot запуска</string>
-    <string name="account_setup_pers_auto_off">Don\'t связаться в Gibberbot запуска</string>
-    <string name="account_setup_pers_now_title">Войдите в систему, теперь</string>
-    <string name="account_setup_pers_now_on">Подключите следующие настройки учетной записи</string>
-    <string name="account_setup_pers_now_off">Don\'t связаться следующие настройки учетной записи</string>
-    <string name="account_setup_personal_sub">Личный (опционально)</string>
-    <string name="account_setup_personal_alias_title">Псевдоним (ваше имя)</string>
-    <string name="account_setup_personal_alias_sub">Как ваш счет появляется в Интернете</string>
-    <string name="account_setup_personal_profile_title">Профиль</string>
-    <string name="account_setup_personal_profile_sub">Краткая аннотация о себе</string>
-    <string name="account_setup_advanced_sub">Расширенный</string>
-    <string name="account_setup_advanced_enc_force">Принудительное шифрование / отказаться текста</string>
-    <string name="account_setup_advanced_enc_auto">Когда это возможно, шифровать чаты автоматически</string>
-    <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
-    <string name="account_setup_advanced_enc_off">Отключить чат шифрования</string>
-    <string name="account_setup_signin_a">Проверка полномочий ...</string>
-    <string name="account_setup_signin_b">Создание пары ключей ...</string>
-    <string name="account_setup_signin_c">Подписание дюйма ..</string>
-    <string name="account_setup_error_validating">Gibberbot произошла ошибка при проверке ваше имя пользователя или пароль - проверьте их и попробуйте снова.</string>
-    <string name="account_setup_error_keypair">Gibberbot произошла ошибка при генерации ключей.</string>
-    <string name="account_setup_error_server">Gibberbot произошла ошибка при подключении к чат-сервера - Пожалуйста, проверьте настройки и попробуйте еще раз.</string>
-    <string name="account_setup_error_connectivity">Gibberbot произошла ошибка при подключении - пожалуйста, перепроверить вашего подключения к сети и повторите попытку.</string>
-    <string name="label_fingerprint_remote">Их отпечатков пальцев</string>
-    <string name="label_fingerprint_local">Отпечатки пальцев</string>
-    <string name="menu_sign_in">Войдите в систему,</string>
-    <string name="menu_gen_key">Дождь Ключевые</string>
-    <string name="error_suspended_connection">Gibberbot потерял соединение с сетью</string>
-    <string name="error_reestablish_connection">Gibberbot пытается restablish связи</string>
-    <string name="otr_session_status_plaintext">Warning: Этот чат не шифруется</string>
-    <string name="otr_session_status_encrypted">Этот чат является безопасным, но личности участников не были проверены</string>
-    <string name="otr_session_status_finished">Warning: чат шифрования была остановлена.</string>
-    <string name="otr_session_status_verified">Этот чат обеспеченных и проверено</string>
-    <string name="account_wizard_setup_title">Мастер учетных записей</string>
-    <string name="account_wizard_account_title">Ваш аккаунт ID</string>
-    <string name="account_wizard_host_title">Настройка сервера</string>
-    <string name="account_wizard_ready_title">Готовы ли вы?</string>
-    <string name="account_wizard_setup_body">Введите идентификатор учетной записи для автоматической настройки Gibberbot для вас чат service.\n\nIt, вероятно, выглядит как адрес электронной почты - так yourname@gmail.com, или someone@jabber.org, например.</string>
-    <string name="account_wizard_account_body">Пожалуйста, введите Ваш идентификатор учетной записи (пользователь @ имя хоста) :</string>
-    <string name="account_wizard_host_body">Пожалуйста, введите или измените jabber/xmpp чат имя сервера и номер порта (5222 по умолчанию).</string>
-    <string name="account_wizard_ready_body">Gibberbot была настроена, и теперь пришло время для подключения к вашим услугам, и начинайте общаться безопасно, надежно и конфиденциально!</string>
-    <string name="signin_password_prompt">Введите password:</string>
+  <string name="send">Отправить</string>
+  <string name="msg_sent_failed">Не удалось отправить сообщение.</string>
+  <string name="disconnected_warning">Соединение с сервером потеряно. Сообщения будут отправлены после входа в сеть.</string>
+  <string name="contact_offline_warning">Пользователь &lt;xliff:g id=\"USER_0\"&gt;%1$s&lt;/xliff:g&gt; не в сети. Отправленные сообщения будут доставлены, когда пользователь &lt;xliff:g id=\"USER_1\"&gt;%1$s&lt;/xliff:g&gt; выйдет в сеть.</string>
+  <string name="contact_not_in_list_warning">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; отсутствует в списке контактов.</string>
+  <string name="select_link_title">Выберите ссылку</string>
+  <string name="empty_chat_list">Нет активных чатов.</string>
+  <string name="add_contact_title">Добавить контакт</string>
+  <string name="input_contact_label">Адрес электронной почты человека, которого вы хотите пригласить:</string>
+  <string name="choose_list_label">Выберите список:</string>
+  <string name="invite_instruction">Чтобы добавить абонента из списка контактов, укажите его имя.</string>
+  <string name="invite_label">Отправить приглашение</string>
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="account_setup_title">Account Setup</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">Скрыть контакты, отсутствующие в сети</string>
+  <string name="notification_group_title">Настройки уведомлений</string>
+  <string name="notification_enabled_title">Уведомления чата</string>
+  <string name="notification_enabled_summary">Уведомлять о получении сообщения чата в строке состояния</string>
+  <string name="notification_vibrate_title">Вибрация</string>
+  <string name="notification_vibrate_summary">Сигнал вибрации при получении сообщения чата</string>
+  <string name="notification_sound_title">Звуковой сигнал</string>
+  <string name="notification_sound_summary">Воспроизводить мелодию звонка при получении сообщения чата</string>
+  <string name="notification_ringtone_title">Выбрать мелодию звонка</string>
+  <string name="invitation_prompt">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; приглашает вас в групповой чат.</string>
+  <string name="invitation_sent_prompt">Приглашение отправлено пользователю &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="accept_invitation">Принять</string>
+  <string name="decline_invitation">Отклонить</string>
+  <string name="subscription_prompt">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; хочет добавить вас в свой список контактов.</string>
+  <string name="approve_subscription">Принять</string>
+  <string name="decline_subscription">Отклонить</string>
+  <string name="approve_subscription_error">Не удалось одобрить запрос подписки от пользователя &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
+  <string name="decline_subscription_error">Не удалось отклонить запрос подписки от пользователя &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
+  <string name="newMessages_label">Новые сообщения пользователя: &lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">Непрочитанных чатов: &lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="subscription_notify_text">Новое приглашение от пользователя <xliff:g id="USER">%s</xliff:g></string>
+  <string name="notify_groupchat_label">Приглашение в групповой чат</string>
+  <string name="group_chat_invite_notify_text">Новое приглашение в групповой чат от пользователя <xliff:g id="USER">%s</xliff:g></string>
+  <string name="add_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" добавлен.</string>
+  <string name="delete_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" удален.</string>
+  <string name="block_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" заблокирован.</string>
+  <string name="unblock_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" разблокирован.</string>
+  <string name="perm_label">Включить чат</string>
+  <string name="perm_desc">Разрешает приложениям включать чат через Intent.</string>
+  <string name="error">Внимание</string>
+  <string name="login_service_failed">Не удается выполнить вход в службу: &lt;xliff:g id=\"SERVICE\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.\"\n\"(Подробности: &lt;xliff:g id=\"DESCRIPTION\"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="add_list_failed">Список не был добавлен.</string>
+  <string name="block_contact_failed">Не удалось заблокировать контакт.</string>
+  <string name="unblock_contact_failed">Не удалось разблокировать контакт.</string>
+  <string name="select_contact">Сначала выберите контакт.</string>
+  <string name="disconnected">Соединение потеряно! \"\n</string>
+  <string name="service_error">Ошибка чата.</string>
+  <string name="load_contact_list_failed">Список контактов не был загружен.</string>
+  <string name="cant_connect_to_server">Не удается подключиться к серверу. Проверьте соединение.</string>
+  <string name="contact_already_exist">Пользователь &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt; уже внесен в список контактов.</string>
+  <string name="contact_blocked">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" заблокирован.</string>
+  <string name="contact_not_loaded">Дождитесь окончания загрузки списка контактов.</string>
+  <string name="network_error">Произошла ошибка сети.</string>
+  <string name="service_not_support">Эта функция не поддерживается сервером.</string>
+  <string name="invalid_password">Указанный пароль недействителен.</string>
+  <string name="internal_server_error">Произошла ошибка сервера.</string>
+  <string name="not_implemented">Эта функция не поддерживается сервером.</string>
+  <string name="service_unavaiable">В настоящий момент сервер недоступен.</string>
+  <string name="timeout">Время ожидания сервера истекло.</string>
+  <string name="version_not_supported">Текущая версия не поддерживается сервером.</string>
+  <string name="message_queue_full">Очередь сообщений переполнена.</string>
+  <string name="domain_not_supported">Сервер не поддерживает переадресацию на домен.</string>
+  <string name="unknown_user">Указанное имя пользователя не опознано.</string>
+  <string name="recipient_blocked_the_user">К сожалению, пользователь вас заблокировал.</string>
+  <string name="session_expired">Сеанс завершен, войдите в систему еще раз.</string>
+  <string name="forced_logout">вы вошли с использованием другого клиента.</string>
+  <string name="already_logged_in">вы уже вошли с использованием другого клиента.</string>
+  <string name="msisdn_error">Не удается получить номер телефона с SIM-карты. Обратитесь к своему оператору.</string>
+  <string name="not_signed_in">В настоящий момент вход в систему не выполнен.</string>
+  <string name="general_error">Код ошибки: &lt;xliff:g id=\"CODE\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string-array name="default_smiley_names"><item>Радость</item>
+<item>Грусть</item>
+<item>Подмигивает</item>
+<item>Показывает язык</item>
+<item>Удивление</item>
+<item>Поцелуй</item>
+<item>Кричит</item>
+<item>Крутой</item>
+<item>Молчание – золото</item>
+<item>В замешательстве</item>
+<item>Смущение</item>
+<item>Ангел</item>
+<item>Нерешительный</item>
+<item>Плачет</item>
+<item>Не скажу</item>
+<item>Смех</item>
+<item>Озадаченный</item>
+</string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string-array name="smiley_names"><item>Счастливы</item>
+<item>Печальный</item>
+<item>Подмигивание</item>
+<item>Высунутый язык</item>
+<item>Удивленный</item>
+<item>Целующий</item>
+<item>Кричит</item>
+<item>Прохладно</item>
+<item>Деньги рот</item>
+<item>Ноги в рот</item>
+<item>Смущенный</item>
+<item>Ангел</item>
+<item>Нерешенный</item>
+<item>Плач</item>
+<item>Lips Are Sealed</item>
+<item>Смеясь</item>
+<item>Спутанный</item>
+</string-array>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">Contact List - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_contact_list">Список контактов</string>
+  <string name="menu_view_encrypt_chat">Шифрование On/Off</string>
+  <string name="use_tor">Подключение через Tor (требуется Orbot приложение)</string>
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">Первое время, используя Gibberbot?</string>
+  <string name="welcome_skip">Can\'t ждать, чтобы начать?</string>
+  <string name="welcome_about">О Gibberbot</string>
+  <string name="welcome_account">Создание учетной записи</string>
+  <string name="about_welcome_title">Добро пожаловать в Gibberbot</string>
+  <string name="about_welcome">Gibberbot является мобильных приложений обмена мгновенными сообщениями, что обеспечивает дополнительные функции безопасности, которые мешают другим Snooping на разговоры и communications.\n\nThe приложение поддерживает любой чат сервис, использующий Jabber или XMPP протокол, такой как Google GTalk или Jabber.org.</string>
+  <string name="about_otr_title">Как это безопасно?</string>
+  <string name="about_otr">\'Off-Рекорд Messaging\ \"является система безопасности предназначена для позволяют конфиденциальности, имитируя характеристики частной беседе в реальном мире, в том числе шифрование, аутентификация, отрицания\" и \"Вперед Secrecy.\n\nThe OTR-протокола совместима с настольными чат-клиентов таких как Adiumили Pidgin.</string>
+  <string name="about_security_title">Are My Чаты безопасности?</string>
+  <string name="about_security">Чат функцией шифрования Gibberbot\ работает только когда сообщениями с другими с помощью совместимого приложения или программы, поэтому вы должны убедиться, ваши контакты используют Gibberbot для мобильных и Adium или Pidgin для рабочего стола. Вы можете настроить, как именно и когда Gibberbot попытки для шифрования чатов в АккоS ЕНТ Settings.\n\nLet\ \"начать!</string>
+  <string name="setup_passphrase_title">Ключевая фраза установки</string>
+  <string name="setup_passphrase">Перед началом работы выберите безопасный пароль для защиты ваших данных от Gibberbot несправедливо доступа.</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">Ключевая фраза (опять же) :</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">password</string>
+  <string name="account_setup_advanced_button">Advanced Account Settings</string>
+  <string name="account_setup_pers_sub">Настойчивость</string>
+  <string name="account_setup_pers_pw_title">Запомнить пароль</string>
+  <string name="account_setup_pers_pw_on">Пароль кэшированных</string>
+  <string name="account_setup_pers_pw_off">Пароль не кэшируются</string>
+  <string name="account_setup_pers_auto_title">Автоматически Войдите в систему,</string>
+  <string name="account_setup_pers_auto_on">Подключиться на Gibberbot запуска</string>
+  <string name="account_setup_pers_auto_off">Don\'t связаться в Gibberbot запуска</string>
+  <string name="account_setup_pers_now_title">Войдите в систему, теперь</string>
+  <string name="account_setup_pers_now_on">Подключите следующие настройки учетной записи</string>
+  <string name="account_setup_pers_now_off">Don\'t связаться следующие настройки учетной записи</string>
+  <string name="account_setup_personal_sub">Личный (опционально)</string>
+  <string name="account_setup_personal_alias_title">Псевдоним (ваше имя)</string>
+  <string name="account_setup_personal_alias_sub">Как ваш счет появляется в Интернете</string>
+  <string name="account_setup_personal_profile_title">Профиль</string>
+  <string name="account_setup_personal_profile_sub">Краткая аннотация о себе</string>
+  <string name="account_setup_advanced_enc_force">Принудительное шифрование / отказаться текста</string>
+  <string name="account_setup_advanced_enc_auto">Когда это возможно, шифровать чаты автоматически</string>
+  <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
+  <string name="account_setup_advanced_enc_off">Отключить чат шифрования</string>
+  <string name="account_setup_signin_a">Проверка полномочий ...</string>
+  <string name="account_setup_signin_b">Создание пары ключей ...</string>
+  <string name="account_setup_signin_c">Подписание дюйма ..</string>
+  <string name="account_setup_error_validating">Gibberbot произошла ошибка при проверке ваше имя пользователя или пароль - проверьте их и попробуйте снова.</string>
+  <string name="account_setup_error_keypair">Gibberbot произошла ошибка при генерации ключей.</string>
+  <string name="account_setup_error_server">Gibberbot произошла ошибка при подключении к чат-сервера - Пожалуйста, проверьте настройки и попробуйте еще раз.</string>
+  <string name="account_setup_error_connectivity">Gibberbot произошла ошибка при подключении - пожалуйста, перепроверить вашего подключения к сети и повторите попытку.</string>
+  <string name="label_fingerprint_remote">Их отпечатков пальцев</string>
+  <string name="label_fingerprint_local">Отпечатки пальцев</string>
+  <string name="menu_sign_in">Войдите в систему,</string>
+  <string name="menu_gen_key">Дождь Ключевые</string>
+  <string name="error_suspended_connection">Gibberbot потерял соединение с сетью</string>
+  <string name="error_reestablish_connection">Gibberbot пытается restablish связи</string>
+  <string name="otr_session_status_plaintext">Warning: Этот чат не шифруется</string>
+  <string name="otr_session_status_encrypted">Этот чат является безопасным, но личности участников не были проверены</string>
+  <string name="otr_session_status_finished">Warning: чат шифрования была остановлена.</string>
+  <string name="otr_session_status_verified">Этот чат обеспеченных и проверено</string>
+  <string name="account_wizard_setup_title">Мастер учетных записей</string>
+  <string name="account_wizard_account_title">Ваш аккаунт ID</string>
+  <string name="account_wizard_host_title">Настройка сервера</string>
+  <string name="account_wizard_ready_title">Готовы ли вы?</string>
+  <string name="account_wizard_setup_body">Введите идентификатор учетной записи для автоматической настройки Gibberbot для вас чат service.\n\nIt, вероятно, выглядит как адрес электронной почты - так yourname@gmail.com, или someone@jabber.org, например.</string>
+  <string name="account_wizard_account_body">Пожалуйста, введите Ваш идентификатор учетной записи (пользователь @ имя хоста) :</string>
+  <string name="account_wizard_host_body">Пожалуйста, введите или измените jabber/xmpp чат имя сервера и номер порта (5222 по умолчанию).</string>
+  <string name="account_wizard_ready_body">Gibberbot была настроена, и теперь пришло время для подключения к вашим услугам, и начинайте общаться безопасно, надежно и конфиденциально!</string>
+  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+  <string name="signin_password_prompt">Введите password:</string>
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
+  <string name="account_settings_title">Account Settings</string>
+  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+  <string name="menu_view_groups">Groups</string>
+  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">type the name of a contact to chat with</string>
+  <string name="search_button_text">Go</string>
+  <string name="menu_locale">Language</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+  <string name="tls_verification">TLS Verification</string>
+  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+  <string name="connect_server">Connect Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="btn_next">Next</string>
+  <string name="btn_back">Back</string>
+  <string name="title_chats">Conversations</string>
 </resources>
