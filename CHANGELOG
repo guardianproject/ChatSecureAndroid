@@ -2,6 +2,7 @@ Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
 0.0.7 / 2012-01-17
+- updated translation strings
 - major fixes to connection stability by devrandom
 - user interface clean-ness aka "turn to the light side" by n8fr8
 - removed unintentional low level debug output

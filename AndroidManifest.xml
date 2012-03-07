@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.7-RC1" android:versionCode="25">
-     
+     android:versionName="0.0.7-RC2" android:versionCode="26"
+          android:installLocation="auto"     
+     >     
     <supports-screens
 android:smallScreens="true"
 android:normalScreens="true"
@@ -43,9 +44,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false"
              android:configChanges="locale"
-             android:theme="@android:style/Theme.Light"
-             
-             >
+             android:theme="@android:style/Theme.Light">
 
          <activity android:name=".app.WelcomeActivity"
          	android:screenOrientation="portrait"
