@@ -137,7 +137,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        	}
 	        	else if (otrModeSelect.equals("requested"))
 	        	{
-	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
+	        		otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
 	        	}
 	        			
 	        	
