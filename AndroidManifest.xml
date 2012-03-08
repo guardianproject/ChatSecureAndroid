@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.7-RC2" android:versionCode="26"
-          android:installLocation="auto"     
+     android:versionName="0.0.8-alpha"
+     android:versionCode="27"
+     android:installLocation="auto"     
      >     
     <supports-screens
 android:smallScreens="true"
@@ -10,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="11"></uses-sdk>
+<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
