@@ -7,7 +7,7 @@ import javax.crypto.interfaces.DHPublicKey;
 
 import net.java.otr4j.OtrException;
 
-interface SessionKeys {
+public interface SessionKeys {
 
 	public static final int Previous = 0;
 	public static final int Current = 1;

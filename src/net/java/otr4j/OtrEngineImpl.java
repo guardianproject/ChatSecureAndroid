@@ -17,6 +17,7 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
 import net.java.otr4j.session.SessionStatus;
+import net.java.otr4j.session.TLV;
 
 /**
  * 
@@ -35,7 +36,7 @@ public class OtrEngineImpl implements OtrEngine {
 	private OtrEngineHost host;
 	private Map<SessionID, Session> sessions;
 
-	private Session getSession(SessionID sessionID) {
+	public Session getSession(SessionID sessionID) {
 
 		if (sessionID == null || sessionID.equals(SessionID.Empty))
 			throw new IllegalArgumentException();
@@ -71,6 +72,11 @@ public class OtrEngineImpl implements OtrEngine {
 	public String transformSending(SessionID sessionID, String msgText)
 			throws OtrException {
 		return this.getSession(sessionID).transformSending(msgText, null);
+	}
+
+	public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs)
+			throws OtrException {
+		return this.getSession(sessionID).transformSending(msgText, tlvs);
 	}
 
 	public void endSession(SessionID sessionID) throws OtrException {
