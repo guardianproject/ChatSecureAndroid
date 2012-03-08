@@ -24,7 +24,13 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.packet.Packet;
+
+import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
+import net.java.otr4j.session.TLV;
 
 import android.util.Log;
 
@@ -68,6 +74,10 @@ public class ChatSession {
 
     public void setOtrChatManager(OtrChatManager otrChatManager) {
         mOtrChatManager = otrChatManager;
+    }
+    
+    public OtrChatManager getOtrChatManager () {
+    	return mOtrChatManager;
     }
     /**
      * Adds a MessageListener so that it can be notified of any new message in
@@ -148,6 +158,8 @@ public class ChatSession {
         for (MessageListener listener : mListeners) {
             listener.onIncomingMessage(this, message);
         }
+        
+        
     }
 
     /**

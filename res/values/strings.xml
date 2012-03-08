@@ -122,7 +122,8 @@
 	<!-- Strings for the contact info screen -->
 	<string name="menu_scan">Scan Fingerprint</string>
 	<string name="menu_fingerprint">Your Fingerprint</string>
-	<string name="menu_verify">Verify Fingerprint</string>
+	<string name="menu_verify_fingerprint">Verify Fingerprint</string>
+	<string name="menu_verify_secret">Verify Secret</string>	
 
     <!-- This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of

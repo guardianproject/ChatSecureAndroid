@@ -13,10 +13,12 @@ import java.security.PublicKey;
 import java.util.Date;
 
 import net.java.otr4j.OtrEngineHost;
+import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 /* OtrEngineHostImpl is the connects this app and the OtrEngine
  * http://code.google.com/p/otr4j/wiki/QuickStart
@@ -24,7 +26,7 @@ import android.util.Log;
 public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	private ImConnectionAdapter mConnection;
-	private OtrPolicy policy;
+	private OtrPolicy mPolicy;
     
 	private OtrAndroidKeyManagerImpl mOtrKeyManager;
 
@@ -32,13 +34,26 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	private final static String TAG = "OtrEngineHostImpl";
 	
+	private Context mContext;
+	
 	public OtrEngineHostImpl(OtrPolicy policy, Context context) throws IOException 
 	{
-		this.policy = policy;
+		mPolicy = policy;
+		mContext = context;
 		
-		File storeFile = new File(context.getFilesDir(), OTR_KEYSTORE_PATH);
-		
+		File storeFile = new File(context.getFilesDir(), OTR_KEYSTORE_PATH);		
 		mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile.getAbsolutePath());
+		
+		mOtrKeyManager.addListener(new OtrKeyManagerListener() {
+			public void verificationStatusChanged(SessionID session) {
+				
+				String msg = session + ": verification status=" + mOtrKeyManager.isVerified(session);
+				
+				Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+			
+				Log.d(TAG, msg);
+			}
+		});
 	}
 	
 	public void setConnection (ImConnectionAdapter imConnectionAdapter)
@@ -87,12 +102,12 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public OtrPolicy getSessionPolicy(SessionID sessionID) {
-		return this.policy;
+		return mPolicy;
 	}
 	
 	public void setSessionPolicty (OtrPolicy policy)
 	{
-		this.policy = policy;
+		mPolicy = policy;
 	}
 	
 	private void sendMessage (SessionID sessionID, String body)

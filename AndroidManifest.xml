@@ -10,7 +10,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-<uses-sdk android:minSdkVersion="4"></uses-sdk>
+<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="11"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -42,7 +42,7 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="false"
+             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true"
              android:configChanges="locale"
              android:theme="@android:style/Theme.Light">
 
@@ -311,5 +311,11 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
 
+         <activity android:name=".app.SmpResponseActivity"
+            android:configChanges="locale"
+         	android:theme="@android:style/Theme.Dialog"
+         	 android:taskAffinity=""
+            />
+        
     </application>
 </manifest>

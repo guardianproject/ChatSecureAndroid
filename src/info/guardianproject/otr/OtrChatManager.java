@@ -2,36 +2,49 @@ package info.guardianproject.otr;
 
 //Originally: package com.zadov.beem;
 
+import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
+import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.Hashtable;
+import java.util.List;
 
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
+import net.java.otr4j.session.OtrSm;
+import net.java.otr4j.session.OtrSm.OtrSmEngineHost;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
+import net.java.otr4j.session.TLV;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.text.Editable;
 import android.util.Log;
+import android.widget.EditText;
 
 /* OtrChatManager keeps track of the status of chats and their OTR stuff
  */
-public class OtrChatManager implements OtrEngineListener {
+public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
 	//the singleton instance
-	private static OtrChatManager _instance;
-	
+	private static OtrChatManager mInstance;	
 	
 	private final static String TAG = "OtrChatManager";
 	
 	private OtrEngineHostImpl mOtrEngineHost;
 	private OtrEngineImpl mOtrEngine;	
-	private Hashtable<String,SessionID> sessions;
+	private OtrSm mOtrSm;
+	private Hashtable<String,SessionID> mSessions;
+	private Context mContext;
+		
 	
 	private OtrChatManager (int otrPolicy,Context context) throws Exception
 	{
@@ -40,18 +53,20 @@ public class OtrChatManager implements OtrEngineListener {
 		mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
 		mOtrEngine.addOtrEngineListener(this);
 		
-		sessions = new Hashtable<String,SessionID>();
+		mSessions = new Hashtable<String,SessionID>();
+		
+		mContext = context;
 	}
 	
 	
 	public static synchronized OtrChatManager getInstance(int otrPolicy, Context context) throws Exception
 	{
-		if (_instance == null)
+		if (mInstance == null)
 		{
-			_instance = new OtrChatManager(otrPolicy, context);
+			mInstance = new OtrChatManager(otrPolicy, context);
 		}
 		
-		return _instance;
+		return mInstance;
 	}
 	
 	public void setConnection (ImConnectionAdapter imConnectionAdapter)
@@ -82,12 +97,12 @@ public class OtrChatManager implements OtrEngineListener {
 	{
 		String sessionIdKey = processUserId(localUserId)+"+"+processUserId(remoteUserId);
 		
-		SessionID sessionId = sessions.get(sessionIdKey);
+		SessionID sessionId = mSessions.get(sessionIdKey);
 		
 		if (sessionId == null)
 		{
 			sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
-			sessions.put(sessionIdKey, sessionId);
+			mSessions.put(sessionIdKey, sessionId);
 		}
 		
 		return sessionId;
@@ -171,9 +186,21 @@ public class OtrChatManager implements OtrEngineListener {
 
 		if(mOtrEngine != null && sessionId != null){
 			try {
-				plain = mOtrEngine.transformReceiving(sessionId, msg);
-			} catch (OtrException e) {
-				// TODO Auto-generated catch block
+
+				plain = mOtrEngine.transformReceiving(sessionId, msg);					
+
+				List<TLV> tlvs = mOtrSm.getPendingTlvs();
+				if (tlvs != null) {
+					String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
+	    			mOtrEngineHost.injectMessage(sessionId, encrypted);
+	    			
+				}
+				
+				if (plain != null && plain.length() == 0)
+					return null;
+				
+				
+			} catch (OtrException e) { 
 				Log.e(TAG,"error decrypting message",e);
 			}
 
@@ -181,23 +208,25 @@ public class OtrChatManager implements OtrEngineListener {
 		return plain;
 	}
 	
+	/*
 	public void processMessageReceiving(String localUserId, String remoteUserId, String msg)
 	{
 
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
+		//Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
 
 		if(mOtrEngine != null && sessionId != null){
 			try {
 				mOtrEngine.transformReceiving(sessionId, msg);
+				
+				
 			} catch (OtrException e) {
-				// TODO Auto-generated catch block
 				Log.e(TAG,"error decrypting message",e);
 			}
 
 		}
-	}
+	}*/
 	
 	public String encryptMessage(String localUserId, String remoteUserId, String msg){
 		
@@ -225,9 +254,12 @@ public class OtrChatManager implements OtrEngineListener {
 		if (sStatus == SessionStatus.ENCRYPTED)
 		{
 			
-			PublicKey remoteKey = this.mOtrEngine.getRemotePublicKey(sessionID);
+			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 			
+			// SMP handler - make sure we only add this once per session!
+			mOtrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(), sessionID, OtrChatManager.this);
+			mOtrEngine.getSession(sessionID).addTlvHandler(mOtrSm);
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
@@ -238,6 +270,7 @@ public class OtrChatManager implements OtrEngineListener {
 		{
 			
 		}
+		
 	}
 	
 	public String getLocalKeyFingerprint (String localUserId, String remoteUserId)
@@ -258,6 +291,87 @@ public class OtrChatManager implements OtrEngineListener {
 			Log.i(TAG,"remote key fingerprint: " + rkFingerprint);
 		}
 		return rkFingerprint;
+	}
+
+
+	@Override
+	public void injectMessage(SessionID sessionID, String msg) {
+		
+		mOtrEngineHost.injectMessage(sessionID, msg);
+	}
+
+
+	@Override
+	public void showWarning(SessionID sessionID, String warning) {
+		
+		mOtrEngineHost.showWarning(sessionID, warning);
+		
+	}
+
+
+	@Override
+	public void showError(SessionID sessionID, String error) {
+		mOtrEngineHost.showError(sessionID, error);
+		
+	}
+
+
+	@Override
+	public OtrPolicy getSessionPolicy(SessionID sessionID) {
+		
+		return mOtrEngineHost.getSessionPolicy(sessionID);
+	}
+
+
+	@Override
+	public KeyPair getKeyPair(SessionID sessionID) { 
+		return mOtrEngineHost.getKeyPair(sessionID);
+	}
+
+	
+	@Override
+	public void askForSecret(SessionID sessionID, String question) {
+		
+		android.os.Debug.waitForDebugger();
+				
+		Intent dialog = new Intent(mContext, SmpResponseActivity.class);
+		dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		dialog.putExtra("q", question);
+		dialog.putExtra("sid", sessionID.getUserID());
+		
+		mContext.startActivity(dialog);
+		
+
+	}
+	
+	public void respondSmp  (SessionID sessionID, String secret) throws OtrException
+	{
+
+		
+		List<TLV> tlvs;
+		
+		tlvs = mOtrSm.initRespondSmp(null, secret, false);
+		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
+		mOtrEngineHost.injectMessage(sessionID, encrypted);
+		
+	}
+	
+	public void initSmp (SessionID sessionID, String question, String secret) throws OtrException
+	{
+		List<TLV> tlvs;		
+		tlvs = mOtrSm.initRespondSmp(question, secret, true);
+		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);		
+		mOtrEngineHost.injectMessage(sessionID, encrypted);
+
+	}
+	
+	public void abortSmp (SessionID sessionID) throws OtrException
+	{
+		List<TLV> tlvs = mOtrSm.abortSmp();
+		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
+		mOtrEngineHost.injectMessage(sessionID, encrypted);
+
 	}
 
 }

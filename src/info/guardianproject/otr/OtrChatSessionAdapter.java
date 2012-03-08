@@ -1,8 +1,13 @@
 package info.guardianproject.otr;
 
+import java.util.List;
+
 import info.guardianproject.otr.IOtrChatSession.Stub;
+import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
+import net.java.otr4j.session.TLV;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class OtrChatSessionAdapter extends Stub {
 
@@ -40,5 +45,34 @@ public class OtrChatSessionAdapter extends Stub {
 		return _chatManager.getSessionStatus(_localUser, _remoteUser) == SessionStatus.ENCRYPTED;
 		
 	}
+
+	@Override
+	public void initSmpVerification(String question, String secret)
+			throws RemoteException {
+
+		
+		try {
+			_chatManager.initSmp(_chatManager.getSessionId(_localUser, _remoteUser), question, secret);
+		} catch (OtrException e) {
+			e.printStackTrace();
+			throw new RemoteException ();
+		}
+	}
+
+	@Override
+	public void respondSmpVerification(String answer)
+			throws RemoteException {
+		
+
+		try {
+			_chatManager.respondSmp(_chatManager.getSessionId(_localUser, _remoteUser), answer);
+		} catch (OtrException e) {
+			e.printStackTrace();
+			throw new RemoteException ();
+		}
+	}
+	
+	
+	
 
 }

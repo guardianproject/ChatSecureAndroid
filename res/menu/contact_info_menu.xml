@@ -29,9 +29,14 @@
          android:icon="@drawable/ic_menu_fingerprint"
          />
 
-    <item android:id="@+id/menu_verify"
-        android:title="@string/menu_verify"
+    <item android:id="@+id/menu_verify_fingerprint"
+        android:title="@string/menu_verify_fingerprint"
          android:icon="@drawable/ic_menu_verify"
          />
 
+    <item android:id="@+id/menu_verify_secret"
+        android:title="@string/menu_verify_secret"
+         android:icon="@drawable/ic_menu_verify"
+         />
+    
 </menu>

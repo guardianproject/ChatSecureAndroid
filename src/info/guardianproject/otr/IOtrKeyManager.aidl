@@ -35,5 +35,6 @@ interface IOtrKeyManager {
      * generate a new local private/public key pair.
      */
     void generateLocalKeyPair();
+        
 
 }

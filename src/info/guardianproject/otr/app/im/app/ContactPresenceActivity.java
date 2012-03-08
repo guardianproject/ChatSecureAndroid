@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -28,7 +29,9 @@ import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -37,6 +40,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
@@ -212,7 +216,7 @@ public class ContactPresenceActivity extends Activity {
 		try {
 			okm = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
 	    	okm.verifyKey(remoteAddress);
-
+	    	
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -264,32 +268,6 @@ public class ContactPresenceActivity extends Activity {
         return true;
     }
     
-    /* When a menu item is selected launch the appropriate view or activity
-     * (non-Javadoc)
-	 * @see android.app.Activity#onMenuItemSelected(int, android.view.MenuItem)
-	 */
-    /*
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		
-		super.onMenuItemSelected(featureId, item);
-		
-		if (item.getItemId() == 1)
-		{
-			startScan();
-		}
-		else if (item.getItemId() == 2)
-		{
-			displayQRCode(localFingerprint);
-		}
-		else if (item.getItemId() == 3)
-		{
-			verifyRemoteFingerprint();
-		}
-		
-		
-        return true;
-	}
-	*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -302,11 +280,55 @@ public class ContactPresenceActivity extends Activity {
 	        		displayQRCode(localFingerprint);
 	            return true;
 	            
-	        case R.id.menu_verify:
+	        case R.id.menu_verify_fingerprint:
 	        	if (remoteFingerprint!=null)
 	        		verifyRemoteFingerprint();
 	        	return true;
+
+	        case R.id.menu_verify_secret:
+	        	if (remoteFingerprint!=null)
+	        		initSmpUI();
+	        	return true;
 	        }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void initSmpUI ()
+    {
+    	// Set an EditText view to get user input 
+    	final EditText input = new EditText(this);
+    	String message = "Enter a question? and an answer.";
+    	
+    	new AlertDialog.Builder(this)
+        .setTitle("OTR Q&A Verification")
+        .setMessage(message)
+        .setView(input)
+        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String[] value = input.getText().toString().split("\\?"); 
+                String question = value[0].trim();
+                String secret = value[1].trim();
+                initSmp (question, secret);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        }).show();
+    }
+    
+    private void initSmp (String question, String answer)
+    {
+     	ImApp app = ImApp.getApplication(this);
+
+     	IOtrChatSession iOtrSession;
+ 		try {
+ 			iOtrSession = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
+ 			iOtrSession.initSmpVerification(question, answer);
+ 	    	
+ 		} catch (RemoteException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
     }
 }
