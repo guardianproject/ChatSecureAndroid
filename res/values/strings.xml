@@ -703,5 +703,8 @@
 	<string name="btn_back">Back</string>
 	
 	<string name="title_chats">Conversations</string>
+	
+	<string name="account_setup_acct_acctname_sub">Visualización del nombre de esta cuenta</string>
+	
 </resources>
 
