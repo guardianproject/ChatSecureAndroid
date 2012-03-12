@@ -64,11 +64,16 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.PacketExtension;
+import org.jivesoftware.smack.packet.UnknownPacket;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
+import org.jivesoftware.smack.provider.PacketExtensionProvider;
+import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.packet.VCard;
+import org.xmlpull.v1.XmlPullParser;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -79,7 +84,7 @@ import android.util.Log;
 public class XmppConnection extends ImConnection implements CallbackHandler
 {
 
-	private final static String TAG = "Gibberbot.XmppConnection";
+	final static String TAG = "Gibberbot.XmppConnection";
 	private final static boolean DEBUG_ENABLED = false;
 	
 	private XmppContactList mContactListManager;
@@ -88,6 +93,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	// watch out, this is a different XMPPConnection class than XmppConnection! ;)
 	// Synchronized by executor thread
 	private MyXMPPConnection mConnection;
+	private XmppStreamHandler mStreamHandler;
 
 	private XmppChatSessionManager mSessionManager;
 	private ConnectionConfiguration mConfig;
@@ -134,6 +140,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 		// Create a single threaded executor.  This will serialize actions on the underlying connection.
 		createExecutor();
+		
+		XmppStreamHandler.addExtensionProviders();
 	}
 
 	private void createExecutor() {
@@ -530,9 +538,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 
 
-        mConnection.connect();
-        
-
         //debug(TAG,"is secure connection? " + mConnection.isSecureConnection());
         //debug(TAG,"is using TLS? " + mConnection.isUsingTLS());
         
@@ -576,6 +581,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				}
 			}
 		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
+        
+        mConnection.connect();
         
         mConnection.addConnectionListener(new ConnectionListener() {
         	/**
@@ -677,7 +684,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
         this.mPassword = password;
         this.mResource = xmppResource;
+
+        mStreamHandler = new XmppStreamHandler(mConnection);
         mConnection.login(mUsername, mPassword, mResource);
+        mStreamHandler.notifyInitialLogin();
 
         org.jivesoftware.smack.packet.Presence presence = 
         		new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
@@ -1554,21 +1564,26 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			Log.i(TAG, "reconnect");
 			clearPing();
 			try {
-				mConnection.connect();
-				if (!mConnection.isAuthenticated()) {
-					// This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
-					// It can also happen if auth exception was swallowed by smack.
-					// Try to login manually.
-					
-					Log.e(TAG, "authentication did not happen in connect() - login manually");
-					mConnection.login(mUsername, mPassword, mResource);
-					
-					// Make sure
-					if (!mConnection.isAuthenticated())
-						throw new XMPPException("manual auth failed");
-					// Manually set the state since manual auth doesn't notify listeners
-					mNeedReconnect = false;
-					setState(LOGGED_IN, null);
+				if (mStreamHandler.isResumePossible()) {
+					// Connect without binding, will automatically trigger a resume
+					mConnection.connect(false);
+				} else {
+					mConnection.connect();
+					if (!mConnection.isAuthenticated()) {
+						// This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
+						// It can also happen if auth exception was swallowed by smack.
+						// Try to login manually.
+						
+						Log.e(TAG, "authentication did not happen in connect() - login manually");
+						mConnection.login(mUsername, mPassword, mResource);
+						
+						// Make sure
+						if (!mConnection.isAuthenticated())
+							throw new XMPPException("manual auth failed");
+						// Manually set the state since manual auth doesn't notify listeners
+						mNeedReconnect = false;
+						setState(LOGGED_IN, null);
+					}
 				}
 			} catch (XMPPException e) {
 				mConnection.shutdown();
@@ -1594,7 +1609,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		super.setState(state, error);
 	}
 
-	public void debug (String tag, String msg)
+	public static void debug (String tag, String msg)
 	{
 		Log.d(tag, msg);
 	}
