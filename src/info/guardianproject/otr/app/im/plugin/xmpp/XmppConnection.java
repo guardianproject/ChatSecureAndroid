@@ -684,6 +684,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
         this.mPassword = password;
         this.mResource = xmppResource;
+
+        mStreamHandler = new XmppStreamHandler(mConnection);
         mConnection.login(mUsername, mPassword, mResource);
         mStreamHandler.notifyInitialLogin();
 
