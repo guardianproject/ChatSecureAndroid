@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11"></uses-sdk>
+<uses-sdk android:minSdkVersion="4" ></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -43,14 +43,12 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" android:debuggable="true"
-             android:configChanges="locale"
-             android:theme="@android:style/Theme.Light">
+             android:taskAffinity="info.guardianproject.otr.app.task.im" 
+             android:debuggable="true"
+             android:configChanges="locale">
 
          <activity android:name=".app.WelcomeActivity"
-         	android:screenOrientation="portrait"
          	android:configChanges="locale"
-         	 android:theme="@android:style/Theme.NoTitleBar"
          	>
             
               <intent-filter>
@@ -62,7 +60,6 @@ android:anyDensity="true"
         <!-- Brian's NEW Activities -->
         <activity android:name=".ui.TabbedContainer"
         android:configChanges="locale"
-         	 android:theme="@android:style/Theme.NoTitleBar"
         />
         <activity android:name=".app.ChatListActivity"
             android:configChanges="locale"
