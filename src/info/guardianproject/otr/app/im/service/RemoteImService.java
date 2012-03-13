@@ -81,7 +81,6 @@ public class RemoteImService extends Service implements OtrEngineListener {
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSOWRD_COLUMN = 3;
 
-    static final String TAG = "ImService";
 
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
@@ -103,11 +102,24 @@ public class RemoteImService extends Service implements OtrEngineListener {
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners
             = new RemoteCallbackList<IConnectionCreationListener>();
 
+    
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
 	}
 	
-	private void initOtr()
+	private static final String TAG = "Gibberbot.ImService";
+
+	public static void debug (String msg)
+	{
+		//Log.d(TAG, msg);
+	}
+	
+	public static void debug (String msg, Exception e)
+	{
+		Log.e(TAG, msg, e);
+	}
+	
+	private synchronized void initOtr()
 	{
 		
 		if (mOtrChatManager == null)
@@ -139,15 +151,14 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        	{
 	        		otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
 	        	}
-	        			
-	        	
+	        				        	
 		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
 		        mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
 		        mOtrChatManager.addOtrEngineListener(this);
 	        }
 	        catch (Exception e)
 	        {
-	        	Log.e(TAG, "can't get otr manager",e);
+	        	debug( "can't get otr manager",e);
 	        }
 		}
     }
@@ -156,7 +167,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     public void onCreate() {
     	
 
-        Log.d(TAG, "ImService started");
+        debug( "ImService started");
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
         mNetworkConnectivityListener = new NetworkConnectivityListener();
@@ -189,7 +200,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 		public long sendHeartbeat() {
 			try {
 				if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
-					Log.d(TAG, "autoLogin from heartbeat");
+					debug( "autoLogin from heartbeat");
 					autoLogin();
 				}
 				for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter
@@ -210,7 +221,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         super.onStart(intent, startId);
         mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, false);
 
-        Log.d(TAG, "ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent + " startId =" + startId);
+        debug( "ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent + " startId =" + startId);
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
@@ -222,7 +233,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     }
 
     private void autoLogin() {
-        Log.d(TAG, "Scaning accounts and login automatically");
+        debug( "Scaning accounts and login automatically");
 
         ContentResolver resolver = getContentResolver();
 
@@ -314,7 +325,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
 	public OtrChatManager getOtrChatManager() {
 		initOtr();
-		Log.i(TAG, "getOtrChatManager");
+		
 		return mOtrChatManager;
 	}
 
@@ -359,7 +370,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             
             return imConnectionAdapter;
         } catch (ImException e) {
-            Log.e(TAG, "Error creating connection", e);
+            debug( "Error creating connection", e);
             return null;
         }
     }
@@ -395,7 +406,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
         NetworkInfo.State state = networkInfo.getState();
 
-        Log.d(TAG, "networkStateChanged:" + state);
+        debug( "networkStateChanged:" + state);
 
         int oldType = mNetworkType;
         mNetworkType = networkInfo.getType();
