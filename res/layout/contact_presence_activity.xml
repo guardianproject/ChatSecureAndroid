@@ -17,25 +17,19 @@
  * limitations under the License.
  */
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
-
     <LinearLayout
-        android:paddingLeft="15dip"
-        android:paddingTop="15dip"
-        android:paddingRight="15dip"
-        android:paddingBottom="15dip"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+         android:padding="10dip"
         android:orientation="vertical" >
-
+<!-- 
         <ImageView android:id="@+id/imgAvatar"
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:padding="2dip"
             android:background="@drawable/picture_frame_background" />
-<!-- 
+
         <TextView android:id="@+id/labelName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -47,7 +41,7 @@
         <TextView android:id="@+id/txtName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="14pt"
+            android:textSize="40dip"
             android:text="name here"/>
 
         <TextView android:id="@+id/labelStatus"
@@ -115,4 +109,3 @@
 
     </LinearLayout>
 
-</ScrollView>

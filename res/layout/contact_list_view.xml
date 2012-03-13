@@ -22,7 +22,6 @@
     android:layout_height="fill_parent"
     android:id="@+id/contactListView"
     android:orientation="vertical"
-     android:background="@drawable/bkgd_gibberbot"
     >
 
     <ExpandableListView android:id="@+id/contactsList"

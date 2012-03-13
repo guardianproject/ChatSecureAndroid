@@ -21,12 +21,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chatView"
     android:orientation="vertical"
-    android:background="@drawable/bkgd_gibberbot"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <!-- The title bar -->
-    <LinearLayout style="?android:attr/windowTitleBackgroundStyle"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -39,7 +38,6 @@
             android:scaleType="fitCenter" />
 
         <TextView android:id="@+id/title"
-            style="?android:attr/windowTitleStyle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -153,8 +151,7 @@
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:background="@drawable/background_textfield">
+        android:orientation="horizontal">
 
         <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
