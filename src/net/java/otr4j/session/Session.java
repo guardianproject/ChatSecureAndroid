@@ -43,5 +43,7 @@ public interface Session {
 
 	public abstract void addTlvHandler(OtrTlvHandler handler);
 
+	public abstract void removeTlvHandler(OtrTlvHandler handler);
+
 	public abstract BigInteger getS();
 }

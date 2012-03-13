@@ -263,11 +263,34 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
+			if (mOtrSm != null)
+			{
+				try {
+					mOtrEngine.getSession(sessionID).removeTlvHandler(mOtrSm);
+					mOtrSm.abortSmp();
+					
+				} catch (OtrException e) {
+					Log.e(TAG, "error aborting SMP",e);
+				}
+			}
 			
+			mOtrSm = null;
 			
 		}
 		else if (sStatus == SessionStatus.FINISHED)
 		{
+
+			if (mOtrSm != null)
+			{
+				try {
+					mOtrEngine.getSession(sessionID).removeTlvHandler(mOtrSm);
+					mOtrSm.abortSmp();
+				} catch (OtrException e) {
+					Log.e(TAG, "error aborting SMP",e);
+				}
+			}
+			
+			mOtrSm = null;
 			
 		}
 		

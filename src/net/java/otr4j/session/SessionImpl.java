@@ -75,6 +75,11 @@ public class SessionImpl implements Session {
 	public void addTlvHandler(OtrTlvHandler handler) {
 	    tlvHandlers.add(handler);
 	}
+	
+	@Override
+	public void removeTlvHandler(OtrTlvHandler handler) {
+	    tlvHandlers.remove(handler);
+	}
 
 	public BigInteger getS() {
 		return ess;
