@@ -32,8 +32,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	private final static String OTR_KEYSTORE_PATH ="otr_keystore";
 	
-	private final static String TAG = "OtrEngineHostImpl";
-	
 	private Context mContext;
 	
 	public OtrEngineHostImpl(OtrPolicy policy, Context context) throws IOException 
@@ -51,7 +49,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 				
 				Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
 			
-				Log.d(TAG, msg);
+				OtrDebugLogger.log( msg);
 			}
 		});
 	}
@@ -128,7 +126,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	@Override
 	public void injectMessage(SessionID sessionID, String text) {
 		
-		Log.i(TAG, sessionID.toString() + ": injecting message: " + text);
+		OtrDebugLogger.log( sessionID.toString() + ": injecting message: " + text);
 		
 		sendMessage(sessionID,text);
 		
@@ -136,14 +134,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public void showError(SessionID sessionID, String error) {
-		Log.e(TAG, sessionID.toString() + ": " + error);
+		OtrDebugLogger.log( sessionID.toString() + ": " + error);
 		
 		sendMessage(sessionID,error);
 	}
 
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
-		Log.w(TAG, sessionID.toString() + ": " +  warning);
+		OtrDebugLogger.log( sessionID.toString() + ": " +  warning);
 		
 		sendMessage(sessionID,warning);
     

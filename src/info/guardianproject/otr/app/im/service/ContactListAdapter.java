@@ -45,7 +45,7 @@ public class ContactListAdapter extends info.guardianproject.otr.app.im.IContact
 
     public int addContact(String address) {
         if (address == null) {
-            Log.e(RemoteImService.TAG, "Address can't be null!");
+        	RemoteImService.debug( "Address can't be null!");
             return ImErrorInfo.ILLEGAL_CONTACT_ADDRESS;
         }
 
@@ -89,7 +89,7 @@ public class ContactListAdapter extends info.guardianproject.otr.app.im.IContact
 
     public void setName(String name) {
         if (name == null) {
-            Log.e(RemoteImService.TAG, "Name can't be null!");
+        	RemoteImService.debug( "Name can't be null!");
             return;
         }
 

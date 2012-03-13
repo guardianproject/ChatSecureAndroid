@@ -85,7 +85,6 @@ public class SigningInActivity extends Activity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        //setTheme(android.R.style.Theme_Dialog);
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.signing_in_activity);
       

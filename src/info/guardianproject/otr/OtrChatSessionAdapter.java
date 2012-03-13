@@ -54,7 +54,7 @@ public class OtrChatSessionAdapter extends Stub {
 		try {
 			_chatManager.initSmp(_chatManager.getSessionId(_localUser, _remoteUser), question, secret);
 		} catch (OtrException e) {
-			e.printStackTrace();
+			OtrDebugLogger.log("initSmp",e);
 			throw new RemoteException ();
 		}
 	}
@@ -67,7 +67,7 @@ public class OtrChatSessionAdapter extends Stub {
 		try {
 			_chatManager.respondSmp(_chatManager.getSessionId(_localUser, _remoteUser), answer);
 		} catch (OtrException e) {
-			e.printStackTrace();
+			OtrDebugLogger.log("respondSmp",e);
 			throw new RemoteException ();
 		}
 	}

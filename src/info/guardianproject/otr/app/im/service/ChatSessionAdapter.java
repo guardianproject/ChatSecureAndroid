@@ -60,7 +60,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             + "!=" + Imps.MessageType.INCOMING + " AND " + Imps.Messages.TYPE
             + "!=" + Imps.MessageType.OUTGOING;
 
-    static final String TAG = RemoteImService.TAG;
 
     /**
      * The registered remote listeners.
@@ -308,7 +307,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         Cursor c = mContentResolver.query(mMessageURI, projection, selection,
                 new String[]{Integer.toString(Imps.MessageType.POSTPONED)}, null);
         if (c == null) {
-            Log.e(TAG, "Query error while querying postponed messages");
+        	RemoteImService.debug( "Query error while querying postponed messages");
             return;
         }
 

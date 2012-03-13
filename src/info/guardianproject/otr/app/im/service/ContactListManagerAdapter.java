@@ -56,7 +56,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.IContactListManager.Stub {
-    static final String TAG = RemoteImService.TAG;
 
     ImConnectionAdapter mConn;
     ContentResolver     mResolver;
@@ -200,7 +199,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         try {
             mAdaptee.unblockContactAsync(address);
         } catch (ImException e) {
-            Log.e(TAG, e.getMessage());
+        	RemoteImService.debug( e.getMessage());
             return e.getImError().getCode();
         }
 
@@ -211,7 +210,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         try {
             return mAdaptee.isBlocked(address);
         } catch (ImException e) {
-            Log.e(TAG, e.getMessage());
+        	RemoteImService.debug( e.getMessage());
             return false;
         }
     }
@@ -539,7 +538,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
                 break;
 
             default:
-                Log.e(TAG, "Unknown list update event!");
+            	RemoteImService.debug( "Unknown list update event!");
                 break;
             }
 
@@ -762,7 +761,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         Cursor cursor = mResolver.query(mContactUrl, new String[]{ Imps.Contacts._ID },
                 Imps.Contacts.USERNAME + "=?", new String[]{username}, null);
         if (cursor == null) {
-            Log.w(TAG, "query contact " + username + " failed");
+        	RemoteImService.debug("query contact " + username + " failed");
             return null;
         }
 
@@ -1088,7 +1087,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         // impossible...
-        Log.e(TAG, "Illegal presence status value " + presence.getStatus());
+        RemoteImService.debug( "Illegal presence status value " + presence.getStatus());
         return Imps.Presence.AVAILABLE;
     }
 

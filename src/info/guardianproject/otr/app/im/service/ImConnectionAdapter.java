@@ -47,7 +47,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConnection.Stub {
-    private static final String TAG = RemoteImService.TAG;
 
     private static final String[] SESSION_COOKIE_PROJECTION = {
         Imps.SessionCookies.NAME,
@@ -120,11 +119,11 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         if ((mConnection.getCapability() & ImConnection.CAPABILITY_SESSION_REESTABLISHMENT) != 0) {
             Map<String, String> cookie = querySessionCookie(cr);
             if (cookie != null) {
-                Log.d(TAG, "re-establish session");
+                RemoteImService.debug("re-establish session");
                 try {
                     mConnection.reestablishSessionAsync(cookie);
                 } catch (IllegalArgumentException e) {
-                    Log.e(TAG, "Invalid session cookie, probably modified by others.");
+                	RemoteImService.debug( "Invalid session cookie, probably modified by others.");
                     clearSessionCookie(cr);
                 }
             }
@@ -483,8 +482,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     return;
                 }
             } catch (RemoteException e) {
-                Log.i(TAG, "onGroupInvitation: dead listener "
-                        + mRemoteListener +"; removing");
+            	RemoteImService.debug( "onGroupInvitation: dead listener "
+                        + mRemoteListener +"; removing",e);
                 mRemoteListener = null;
             }
             // No listener registered or failed to notify the listener, send a

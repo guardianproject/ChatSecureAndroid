@@ -87,7 +87,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         super.onCreate(icicle);
 
        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-        setTheme(android.R.style.Theme_Black_NoTitleBar);
 
         LayoutInflater inflate = getLayoutInflater();
           

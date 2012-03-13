@@ -13,7 +13,6 @@ public class OtrChatListener implements MessageListener {
 	private OtrChatManager mOtrChatManager;
 	private MessageListener mMessageListener;
 
-	private final static String TAG = "OtrChatListener";
 	// we want to support OTR v2 only since v1 has security issues
 	//private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
 	//private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
@@ -28,7 +27,7 @@ public class OtrChatListener implements MessageListener {
 	@Override
 	public void onIncomingMessage(ChatSession session, Message msg) {
 		
-		Log.d(TAG, "processing incoming message: " + msg.getID());
+		OtrDebugLogger.log( "processing incoming message: " + msg.getID());
 		
 		String body = msg.getBody();
 		String from = msg.getFrom().getFullName();
@@ -44,7 +43,7 @@ public class OtrChatListener implements MessageListener {
 		 
 			if (otrStatus == SessionStatus.ENCRYPTED)
 	        {
-				Log.d(TAG, "session status: encrypted");
+				OtrDebugLogger.log( "session status: encrypted");
 
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 
@@ -57,7 +56,7 @@ public class OtrChatListener implements MessageListener {
 			}
 			else if (otrStatus == SessionStatus.PLAINTEXT || otrStatus == SessionStatus.FINISHED)
 			{
-				Log.d(TAG, "session status: plaintext");
+				OtrDebugLogger.log( "session status: plaintext");
 
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
@@ -74,7 +73,7 @@ public class OtrChatListener implements MessageListener {
 			}
 			else if (otrStatus == SessionStatus.FINISHED)
 			{
-				Log.d(TAG, "session status: finished");
+				OtrDebugLogger.log( "session status: finished");
 
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
@@ -101,6 +100,6 @@ public class OtrChatListener implements MessageListener {
 			ImErrorInfo error) {
 		
 		mMessageListener.onSendMessageError(session, msg, error);
-		Log.i(TAG, "onSendMessageError: " + msg.toString());
+		OtrDebugLogger.log( "onSendMessageError: " + msg.toString());
 	}
 }

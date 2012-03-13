@@ -1596,7 +1596,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	public void debug (String tag, String msg)
 	{
-		Log.d(tag, msg);
+		//Log.d(tag, msg);
 	}
 
 

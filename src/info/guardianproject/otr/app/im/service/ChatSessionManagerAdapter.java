@@ -43,7 +43,6 @@ import android.util.Log;
  * manages the chat sessions for a given protocol
  */
 public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.IChatSessionManager.Stub {
-    static final String TAG = RemoteImService.TAG;
 
     ImConnectionAdapter mConnection;
     ChatSessionManager mChatSessionManager;
@@ -93,9 +92,9 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         ChatSession session = mChatSessionManager.createChatSession(contact);
         
         if (mOtrChatManager == null) {
-        	Log.i(TAG, "mOtrChatManager == null");
+        	RemoteImService.debug("mOtrChatManager == null");
         } else {
-        	Log.i(TAG, "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
+        	RemoteImService.debug( "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
         	mOtrChatManager.startSession(userName, contactAddress);
         }
         return getChatSessionAdapter(session);

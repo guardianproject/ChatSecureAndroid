@@ -66,10 +66,9 @@ public class ContactPresenceActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setTheme(android.R.style.Theme_Dialog);
         setContentView(R.layout.contact_presence_activity);
 
-        ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
+     //   ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
@@ -122,11 +121,12 @@ public class ContactPresenceActivity extends Activity {
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
                     c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
+            /*
             if (avatar != null) {
                 imgAvatar.setImageDrawable(avatar);
             } else {
                 imgAvatar.setImageResource(R.drawable.avatar_unknown);
-            }
+            }*/
 
             txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
 
@@ -205,12 +205,32 @@ public class ContactPresenceActivity extends Activity {
         Log.w(ImApp.LOG_TAG, "<ContactPresenceActivity> " + msg);
     }
     
+    private void confirmVerify ()
+    {
+    	// Set an EditText view to get user input 
+    	final EditText input = new EditText(this);
+    	String message = "Are you sure you want to confirm this key?";
+    	
+    	new AlertDialog.Builder(this)
+        .setTitle("Verify key?")
+        .setMessage(message)
+        .setView(input)
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                verifyRemoteFingerprint();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        }).show();
+    }
+    
     private void verifyRemoteFingerprint ()
     {
     	Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT).show();
     	
         ImApp app = ImApp.getApplication(this);
-
 
     	IOtrKeyManager okm;
 		try {
@@ -282,7 +302,7 @@ public class ContactPresenceActivity extends Activity {
 	            
 	        case R.id.menu_verify_fingerprint:
 	        	if (remoteFingerprint!=null)
-	        		verifyRemoteFingerprint();
+	        		confirmVerify();
 	        	return true;
 
 	        case R.id.menu_verify_secret:

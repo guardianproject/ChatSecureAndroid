@@ -38,8 +38,6 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 	private OtrCryptoEngineImpl cryptoEngine;
 	
-	private final static String TAG = "OtrAndroidKeyManagerImpl";
-	
 	private final static String KEY_ALG = "DSA";
 	private final static int KEY_SIZE = 1024;
 	
@@ -91,7 +89,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			}
 			catch (FileNotFoundException fnfe)
 			{
-				Log.e(TAG,"Properties store file not found: First time?");
+				OtrDebugLogger.log("Properties store file not found: First time?");
 				mStoreFile.getParentFile().mkdirs();
 				
 				try
@@ -100,13 +98,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 				}
 				catch (Exception ioe)
 				{
-					Log.e(TAG,"Properties store error",ioe);
+					OtrDebugLogger.log("Properties store error",ioe);
 				}
 				
 			}
 			catch (IOException ioe)
 			{
-				Log.e(TAG,"Properties store error",ioe);
+				OtrDebugLogger.log("Properties store error",ioe);
 			}
 		}
 
@@ -116,14 +114,14 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try {
 				this.store();
 			} catch (Exception e) {
-				Log.e(TAG,"Properties store error",e);
+				OtrDebugLogger.log("Properties store error",e);
 			}
 		}
 
 		private void store() throws FileNotFoundException, IOException {
 			
 			
-			Log.d(TAG,"saving otr keystore to: " + filepath);
+			//Log.d(TAG,"saving otr keystore to: " + filepath);
 			
 
 			FileOutputStream fos = new FileOutputStream(mStoreFile);
@@ -140,7 +138,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			try {
 				this.store();
 			} catch (Exception e) {
-				Log.e(TAG,"store not saved",e);
+				OtrDebugLogger.log("store not saved",e);
 			}
 		}
 
@@ -194,7 +192,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	
 	public void generateLocalKeyPair(String accountID) {
 
-		Log.d(TAG, "generating local key pair for: " + accountID);
+		OtrDebugLogger.log( "generating local key pair for: " + accountID);
 		
 		KeyPair keyPair;
 		try {
@@ -204,11 +202,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			keyPair = kpg.genKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			Log.e(TAG, "no such algorithm",e);
+			OtrDebugLogger.log("no such algorithm",e);
 			return;
 		}
 
-		Log.d(TAG, "SUCCESS! generating local key pair for: " + accountID);
+		OtrDebugLogger.log( "SUCCESS! generating local key pair for: " + accountID);
 
 		// Store Public Key.
 		PublicKey pubKey = keyPair.getPublic();
@@ -242,7 +240,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		try {
 			String fingerprint = cryptoEngine.getFingerprint(pubKey);
 			
-			Log.d(TAG, "got fingerprint for: " + userId + "=" + fingerprint);
+			OtrDebugLogger.log("got fingerprint for: " + userId + "=" + fingerprint);
 			
 			return fingerprint;
 			

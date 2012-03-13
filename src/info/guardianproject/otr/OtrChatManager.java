@@ -37,7 +37,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	//the singleton instance
 	private static OtrChatManager mInstance;	
 	
-	private final static String TAG = "OtrChatManager";
 	
 	private OtrEngineHostImpl mOtrEngineHost;
 	private OtrEngineImpl mOtrEngine;	
@@ -135,7 +134,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		try {
 			mOtrEngine.refreshSession(getSessionId(localUserId,remoteUserId));
 		} catch (OtrException e) {
-			Log.e(TAG, "refreshSession", e);
+			OtrDebugLogger.log("refreshSession", e);
 		}
 	}
 	
@@ -155,7 +154,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			return sessionId;
 			
 		} catch (OtrException e) {
-			Log.e(TAG, "startSession", e);
+			OtrDebugLogger.log("startSession", e);
 
 		}
 		
@@ -169,7 +168,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		
 			mOtrEngine.endSession(sessionId);
 		} catch (OtrException e) {
-			Log.e(TAG, "endSession", e);
+			OtrDebugLogger.log( "endSession", e);
 		}
 	}
 
@@ -182,7 +181,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		String plain = null;
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
+		OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
 
 		if(mOtrEngine != null && sessionId != null){
 			try {
@@ -201,7 +200,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 				
 				
 			} catch (OtrException e) { 
-				Log.e(TAG,"error decrypting message",e);
+				OtrDebugLogger.log("error decrypting message",e);
 			}
 
 		}
@@ -232,13 +231,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 
-		Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
+		OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
 
 		if(mOtrEngine != null && sessionId != null) {
 			try {
 				msg = mOtrEngine.transformSending(sessionId, msg);
 			} catch (OtrException e) {
-				Log.d(TAG, "error encrypting", e);
+				OtrDebugLogger.log( "error encrypting", e);
 			}	
 		}
 		return msg;
@@ -249,7 +248,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	public void sessionStatusChanged(SessionID sessionID) {
 		SessionStatus sStatus = mOtrEngine.getSessionStatus(sessionID);
 		
-		Log.i(TAG,"session status changed: " + sStatus);
+		OtrDebugLogger.log("session status changed: " + sStatus);
 		
 		if (sStatus == SessionStatus.ENCRYPTED)
 		{
@@ -270,7 +269,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 					mOtrSm.abortSmp();
 					
 				} catch (OtrException e) {
-					Log.e(TAG, "error aborting SMP",e);
+					OtrDebugLogger.log( "error aborting SMP",e);
 				}
 			}
 			
@@ -286,7 +285,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 					mOtrEngine.getSession(sessionID).removeTlvHandler(mOtrSm);
 					mOtrSm.abortSmp();
 				} catch (OtrException e) {
-					Log.e(TAG, "error aborting SMP",e);
+					OtrDebugLogger.log( "error aborting SMP",e);
 				}
 			}
 			
@@ -311,7 +310,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 			rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
-			Log.i(TAG,"remote key fingerprint: " + rkFingerprint);
+			OtrDebugLogger.log("remote key fingerprint: " + rkFingerprint);
 		}
 		return rkFingerprint;
 	}
@@ -355,7 +354,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	@Override
 	public void askForSecret(SessionID sessionID, String question) {
 		
-		android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 				
 		Intent dialog = new Intent(mContext, SmpResponseActivity.class);
 		dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

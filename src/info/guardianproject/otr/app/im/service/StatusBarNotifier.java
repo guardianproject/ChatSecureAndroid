@@ -343,7 +343,7 @@ public class StatusBarNotifier {
     }
 
     private static void log(String msg) {
-        Log.d(RemoteImService.TAG, "[StatusBarNotify] " + msg);
+        RemoteImService.debug( "[StatusBarNotify] " + msg);
     }
 
     private boolean shouldSuppressSoundNotification() {

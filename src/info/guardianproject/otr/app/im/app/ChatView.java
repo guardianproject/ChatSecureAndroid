@@ -342,6 +342,19 @@ public class ChatView extends LinearLayout {
         Button approveSubscription = (Button)findViewById(R.id.btnApproveSubscription);
         Button declineSubscription = (Button)findViewById(R.id.btnDeclineSubscription);
 
+        mWarningText.setOnTouchListener(new OnTouchListener()
+        {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+
+				viewProfile();
+				
+				return false;
+			}
+        	
+        });
+        
         acceptInvitation.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 acceptInvitation();
@@ -1541,6 +1554,11 @@ public class ChatView extends LinearLayout {
 
             return t2 - t1;
         }
+
+		public int getType(int arg0) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
     }
 
     private class MessageAdapter extends CursorAdapter implements AbsListView.OnScrollListener {
