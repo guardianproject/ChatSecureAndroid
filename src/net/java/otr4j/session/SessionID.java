@@ -6,6 +6,8 @@
  */
 package net.java.otr4j.session;
 
+import java.util.Date;
+
 /**
  * 
  * @author George Politis
@@ -22,6 +24,9 @@ public final class SessionID {
 	private String accountID;
 	private String userID;
 	private String protocolName;
+	
+	private String sessionId;
+	
 	public static final SessionID Empty = new SessionID(null, null, null);
 
 	public void setAccountID(String accountID) {
@@ -48,9 +53,15 @@ public final class SessionID {
 		return protocolName;
 	}
 
-	public String toString() {
-		return this.getAccountID() + "_" + this.getProtocolName() + "_"
-				+ this.getUserID();
+	public synchronized String toString() {
+		if (sessionId == null)
+		{
+		  sessionId = getAccountID() + '-' + this.getProtocolName() + '-'
+				+ this.getUserID() + '-' + new Date().getTime();
+		}
+		
+		return sessionId;
+		
 	}
 
 	public boolean equals(Object obj) {
