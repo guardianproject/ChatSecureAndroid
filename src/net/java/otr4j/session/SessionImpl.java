@@ -506,6 +506,7 @@ public class SessionImpl implements Session {
 
 			injectMessage(new ErrorMessage(AbstractMessage.MESSAGE_ERROR,
 					"You sent me an unreadable encrypted message.."));
+			
 			break;
 		}
 

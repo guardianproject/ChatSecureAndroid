@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
@@ -16,6 +17,9 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -121,6 +125,23 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		msg.setDateTime(new Date());
 		msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+		
+	}
+	
+	private void sendLocalMessage (SessionID sessionID, String body)
+	{
+		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
+		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
+		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
+		
+		Message msg = new Message(body);
+		
+		msg.setTo(mConnection.getLoginUser().getAddress());
+		msg.setFrom(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
+		msg.setDateTime(new Date());
+		msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
+		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+	
 	}
 	
 	@Override
@@ -134,17 +155,46 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public void showError(SessionID sessionID, String error) {
-		OtrDebugLogger.log( sessionID.toString() + ": " + error);
+		OtrDebugLogger.log( sessionID.toString() + ": ERROR=" + error);
 		
-		sendMessage(sessionID,error);
+    	showToolbarNotification(error, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
+
 	}
 
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
-		OtrDebugLogger.log( sessionID.toString() + ": " +  warning);
+		OtrDebugLogger.log( sessionID.toString() + ": WARNING=" +  warning);
 		
-		sendMessage(sessionID,warning);
+    	showToolbarNotification(warning, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
     
+	}
+	
+	private int DEFAULT_NOTIFY_ID = 11;
+	
+	private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags)
+	{
+	
+		
+		NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		
+		CharSequence tickerText = notifyMsg;
+		long when = System.currentTimeMillis();
+
+		Notification notification = new Notification(icon, tickerText, when);
+		//notification.flags |= flags;
+
+		CharSequence contentTitle = mContext.getString(R.string.app_name);
+		CharSequence contentText = notifyMsg;
+		
+		//Intent notificationIntent = new Intent(context, WelcomeActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, null, 0);
+
+		notification.setLatestEventInfo(mContext, contentTitle, contentText, contentIntent);
+
+		mNotificationManager.notify(notifyId, notification);
+
+
 	}
 
 }
