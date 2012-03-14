@@ -51,8 +51,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 				
 				String msg = session + ": verification status=" + mOtrKeyManager.isVerified(session);
 				
-				Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
-			
 				OtrDebugLogger.log( msg);
 			}
 		});

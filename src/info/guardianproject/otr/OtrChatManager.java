@@ -195,9 +195,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	    			
 				}
 				
-				if (plain != null && plain.length() == 0)
-					return null;
-				
+				//if (plain != null && plain.length() == 0)
+					//return null;
+				return plain;
 				
 			} catch (OtrException e) { 
 				OtrDebugLogger.log("error decrypting message",e);
@@ -256,24 +256,16 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 			
-			// SMP handler - make sure we only add this once per session!
-			mOtrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(), sessionID, OtrChatManager.this);
-			mOtrEngine.getSession(sessionID).addTlvHandler(mOtrSm);
+			if (mOtrSm == null)
+			{
+				// SMP handler - make sure we only add this once per session!
+				mOtrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(), sessionID, OtrChatManager.this);
+				mOtrEngine.getSession(sessionID).addTlvHandler(mOtrSm);
+			}
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
-			if (mOtrSm != null)
-			{
-				try {
-					mOtrEngine.getSession(sessionID).removeTlvHandler(mOtrSm);
-					mOtrSm.abortSmp();
-					
-				} catch (OtrException e) {
-					OtrDebugLogger.log( "error aborting SMP",e);
-				}
-			}
 			
-			mOtrSm = null;
 			
 		}
 		else if (sStatus == SessionStatus.FINISHED)
@@ -354,8 +346,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	@Override
 	public void askForSecret(SessionID sessionID, String question) {
 		
-		//android.os.Debug.waitForDebugger();
-				
 		Intent dialog = new Intent(mContext, SmpResponseActivity.class);
 		dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		

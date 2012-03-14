@@ -16,9 +16,9 @@ import java.util.Date;
 public final class SessionID {
 
 	public SessionID(String accountID, String userID, String protocolName) {
-		this.setAccountID(accountID);
-		this.setUserID(userID);
-		this.setProtocolName(protocolName);
+		this.accountID = accountID;
+		this.userID = userID;
+		this.protocolName = protocolName;
 	}
 
 	private String accountID;
@@ -29,25 +29,16 @@ public final class SessionID {
 	
 	public static final SessionID Empty = new SessionID(null, null, null);
 
-	public void setAccountID(String accountID) {
-		this.accountID = accountID;
-	}
-
 	public String getAccountID() {
 		return accountID;
 	}
 
-	private void setUserID(String userID) {
-		this.userID = userID;
-	}
-
+	
 	public String getUserID() {
 		return userID;
 	}
 
-	private void setProtocolName(String protocolName) {
-		this.protocolName = protocolName;
-	}
+	
 
 	public String getProtocolName() {
 		return protocolName;
@@ -65,6 +56,7 @@ public final class SessionID {
 	}
 
 	public boolean equals(Object obj) {
+		
 		if (obj == this)
 			return true;
 		if (obj == null || obj.getClass() != this.getClass())
@@ -75,7 +67,8 @@ public final class SessionID {
 		return this.toString().equals(sessionID.toString());
 	}
 
+	/*
 	public int hashCode() {
 		return this.toString().hashCode();
-	}
+	}*/
 }

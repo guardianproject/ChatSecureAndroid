@@ -111,7 +111,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
 	public static void debug (String msg)
 	{
-		//Log.d(TAG, msg);
+		Log.d(TAG, msg);
 	}
 	
 	public static void debug (String msg, Exception e)

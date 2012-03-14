@@ -38,7 +38,7 @@ public class OtrChatListener implements MessageListener {
  		String remoteUserId = OtrChatManager.processUserId(from);
 		 SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
 
-		 //	        	mOtrChatManager.refreshSession(localUserId, remoteUserId);
+		// mOtrChatManager.refreshSession(localUserId, remoteUserId);
 
 		 
 			if (otrStatus == SessionStatus.ENCRYPTED)
@@ -49,8 +49,7 @@ public class OtrChatListener implements MessageListener {
 
 				if (body != null)
 				{
-					msg.setBody(body);
-				
+					msg.setBody(body);				
 					mMessageListener.onIncomingMessage(session, msg);
 				}
 			}
@@ -63,11 +62,9 @@ public class OtrChatListener implements MessageListener {
 				
 				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
 				
-				//if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
 				if (body != null)
 				{
 					msg.setBody(body);
-				
 					mMessageListener.onIncomingMessage(session, msg);
 				}
 			}
@@ -84,7 +81,6 @@ public class OtrChatListener implements MessageListener {
 				if (body != null)
 				{
 					msg.setBody(body);
-				
 					mMessageListener.onIncomingMessage(session, msg);
 				}
 			}
