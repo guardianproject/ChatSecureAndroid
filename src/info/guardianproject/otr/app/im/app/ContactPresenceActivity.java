@@ -207,14 +207,11 @@ public class ContactPresenceActivity extends Activity {
     
     private void confirmVerify ()
     {
-    	// Set an EditText view to get user input 
-    	final EditText input = new EditText(this);
     	String message = "Are you sure you want to confirm this key?";
     	
     	new AlertDialog.Builder(this)
         .setTitle("Verify key?")
         .setMessage(message)
-        .setView(input)
         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 verifyRemoteFingerprint();
@@ -236,6 +233,8 @@ public class ContactPresenceActivity extends Activity {
 		try {
 			okm = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
 	    	okm.verifyKey(remoteAddress);
+	    	remoteFingerprintVerified = true;
+	    	updateUI ();
 	    	
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

@@ -36,7 +36,7 @@
 
     <item android:id="@+id/menu_verify_secret"
         android:title="@string/menu_verify_secret"
-         android:icon="@drawable/ic_menu_verify"
+         android:icon="@drawable/ic_menu_key"
          />
     
 </menu>
