@@ -304,12 +304,12 @@ class ServerTrustManager implements X509TrustManager {
 		long when = System.currentTimeMillis();
 
 		Notification notification = new Notification(icon, tickerText, when);
-		notification.flags |= flags;
+		//notification.flags |= flags;
 
 		CharSequence contentTitle = context.getString(R.string.app_name);
 		CharSequence contentText = notifyMsg;
 		
-		Intent notificationIntent = new Intent(context, WelcomeActivity.class);
+		//Intent notificationIntent = new Intent(context, WelcomeActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, null, 0);
 
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
