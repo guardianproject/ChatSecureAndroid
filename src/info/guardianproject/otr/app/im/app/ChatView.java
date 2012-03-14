@@ -1155,6 +1155,10 @@ public class ChatView extends LinearLayout {
             			message = mContext.getString(R.string.otr_session_status_plaintext);
             		}
             			
+            		
+            		ImageView imgSec = (ImageView)findViewById(R.id.composeSecureIcon);
+            		
+            		imgSec.setImageResource(R.drawable.ic_menu_encrypt);
 					
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -1163,6 +1167,10 @@ public class ChatView extends LinearLayout {
         	}
         	else
     		{
+
+        		ImageView imgSec = (ImageView)findViewById(R.id.composeSecureIcon);
+        		imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
+        		
     			mWarningText.setTextColor(Color.WHITE);
     			mWarningText.setBackgroundColor(Color.RED);
     			message = mContext.getString(R.string.otr_session_status_plaintext);
@@ -1619,7 +1627,8 @@ public class ChatView extends LinearLayout {
 
             switch (type) {
                 case Imps.MessageType.INCOMING:
-                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
+                	if (body != null)
+                		messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
                     
                     break;
 

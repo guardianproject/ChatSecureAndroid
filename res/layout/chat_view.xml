@@ -46,6 +46,31 @@
             android:scrollHorizontally="true"
             android:layout_marginRight="20dip" />
     </LinearLayout>
+    
+    
+    <LinearLayout android:id="@+id/warning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:background="#ffeeeeee"
+        android:visibility="gone">
+
+        <ImageView android:id="@+id/warningIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_im_message_not_sent" />
+
+        <TextView android:id="@+id/warningText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dip"
+            android:textColor="#ffff0000"
+            android:text="@string/disconnected_warning"
+           
+             />
+
+    </LinearLayout>
 
     <View android:layout_width="fill_parent"
         android:layout_height="1dip"
@@ -124,34 +149,20 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/warning"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:background="#ffeeeeee"
-        android:visibility="gone">
-
-        <ImageView android:id="@+id/warningIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:src="@drawable/ic_im_message_not_sent" />
-
-        <TextView android:id="@+id/warningText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dip"
-            android:textColor="#ffff0000"
-            android:text="@string/disconnected_warning"
-           
-             />
-
-    </LinearLayout>
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal">
+        
+        
+        <ImageView android:id="@+id/composeSecureIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_unencrypt"
+            android:padding="3dip"
+             />
+        
 
         <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
