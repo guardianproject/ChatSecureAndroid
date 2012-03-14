@@ -21,6 +21,9 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
  */
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.WelcomeActivity;
+import info.guardianproject.otr.app.im.service.RemoteImService;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,8 +50,13 @@ import javax.net.ssl.X509TrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Trust manager that checks all certificates presented by the server. This class
@@ -75,8 +83,12 @@ class ServerTrustManager implements X509TrustManager {
 
     private XmppConnection xmppConnection;
     
+    private Context context;
+    
     public ServerTrustManager(Context context, String server, ConnectionConfiguration configuration, XmppConnection xmppConnection) {
-        this.configuration = configuration;
+    
+    	this.context = context;
+    	this.configuration = configuration;
         this.server = server;
         this.xmppConnection = xmppConnection;
         
@@ -125,7 +137,7 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
-    		
+    	
         int nSize = x509Certificates.length;
 
         List<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
@@ -147,11 +159,15 @@ class ServerTrustManager implements X509TrustManager {
                             x509Certificates[i].verify(publickey);
                         }
                         catch (GeneralSecurityException generalsecurityexception) {
+                        	showMessage("signature verification failed of " + peerIdentities);
+
                             throw new CertificateException(
                                     "signature verification failed of " + peerIdentities);
                         }
                     }
                     else {
+                    	showMessage("subject/issuer verification failed of " + peerIdentities);
+
                         throw new CertificateException(
                                 "subject/issuer verification failed of " + peerIdentities);
                     }
@@ -169,8 +185,9 @@ class ServerTrustManager implements X509TrustManager {
             	
             	if (configuration.isSelfSignedCertificateEnabled())
                 {
-                    System.out.println("Accepting self-signed certificate of remote server: " +
+                    showMessage("Self-signed certificate: " +
                             peerIdentities);
+                    
                     trusted = true;
                 }
             	else
@@ -202,17 +219,19 @@ class ServerTrustManager implements X509TrustManager {
 	            			{
 	            				certFinal.verify(cert.getPublicKey());            				
 	            				trusted = true;
-	            				System.out.println("verified by: " + cert.getSubjectDN().getName());
+	            				showMessage( "SSL verified: " + cert.getSubjectDN().getName());
+
 	            			}
 	            			catch (Exception e)
 	            			{            				
+	            				RemoteImService.debug("error on ssl verify", e);
 	            			}
             			     
             			}
             			
             			if (trusted)
             			{
-            				System.out.println("TRUSTED!");
+            				//System.out.println("TRUSTED!");
             				break;
             			}
             		}
@@ -225,6 +244,7 @@ class ServerTrustManager implements X509TrustManager {
             
             
             if (!trusted) {
+            	showMessage("root certificate not trusted of " + peerIdentities);
                 throw new CertificateException("root certificate not trusted of " + peerIdentities);
             }
         }
@@ -255,6 +275,7 @@ class ServerTrustManager implements X509TrustManager {
                     x509Certificates[i].checkValidity(date);
                 }
                 catch (GeneralSecurityException generalsecurityexception) {
+                	showMessage("certificate expired for " + server);
                     throw new CertificateException("invalid date of " + server);
                 }
             }
@@ -262,6 +283,41 @@ class ServerTrustManager implements X509TrustManager {
 
     }
 
+    private int DEFAULT_NOTIFY_ID = 10;
+    
+    private void showMessage (String msg)
+    {
+    	
+		RemoteImService.debug(msg);
+    	showToolbarNotification(msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
+
+    }
+    
+    private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags)
+	{
+	
+		
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		
+		CharSequence tickerText = notifyMsg;
+		long when = System.currentTimeMillis();
+
+		Notification notification = new Notification(icon, tickerText, when);
+		notification.flags |= flags;
+
+		CharSequence contentTitle = context.getString(R.string.app_name);
+		CharSequence contentText = notifyMsg;
+		
+		Intent notificationIntent = new Intent(context, WelcomeActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, null, 0);
+
+		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+		mNotificationManager.notify(notifyId, notification);
+
+
+	}
     /**
      * Returns the identity of the remote server as defined in the specified certificate. The
      * identity is defined in the subjectDN of the certificate and it can also be defined in

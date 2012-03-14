@@ -806,7 +806,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		});
 	}
 	
-	
 	@Override
 	public void suspend() {
 		execute(new Runnable() {
