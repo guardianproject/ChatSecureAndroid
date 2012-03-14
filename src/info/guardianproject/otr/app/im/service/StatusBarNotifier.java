@@ -79,7 +79,7 @@ public class StatusBarNotifier {
         msg = html2text(msg); // strip tags for html client inbound msgs
         
         String title = nickname;
-        String snippet = nickname + ": " + msg;
+        String snippet = mContext.getString(R.string.new_messages_notify) + ' ' + nickname;// + ": " + msg;
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, chatId));
         intent.addCategory(info.guardianproject.otr.app.im.app.ImApp.IMPS_CATEGORY);
