@@ -289,12 +289,19 @@ class ServerTrustManager implements X509TrustManager {
     {
     	
 		RemoteImService.debug(msg);
-    	showToolbarNotification(msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
-
+		
+		try
+		{
+			showToolbarNotification(msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
+		}
+		catch (Exception e)
+		{
+			RemoteImService.debug("could not show notification",e);
+		}
     }
     
-    private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags)
-	{
+    private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags) throws Exception
+	{ 
 	
 		
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
