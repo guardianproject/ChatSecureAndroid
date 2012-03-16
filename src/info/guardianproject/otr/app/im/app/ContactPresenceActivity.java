@@ -31,6 +31,7 @@ import info.guardianproject.otr.app.im.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -45,6 +46,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,6 +63,8 @@ public class ContactPresenceActivity extends Activity {
 	private String remoteAddress;
 	
 	private String localFingerprint;
+	
+	private final static String TAG = "Gibberbot";
 	
     @Override
     public void onCreate(Bundle icicle) {
@@ -237,8 +241,7 @@ public class ContactPresenceActivity extends Activity {
 	    	updateUI ();
 	    	
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "error verifying remote fingerprint",e);
 		}
 		
 		updateUI();
@@ -315,19 +318,23 @@ public class ContactPresenceActivity extends Activity {
     private void initSmpUI ()
     {
     	// Set an EditText view to get user input 
-    	final EditText input = new EditText(this);
+    	//final EditText input = new EditText(this);
     	String message = "Enter a question? and an answer.";
     	
+    	LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+    	final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
+
     	new AlertDialog.Builder(this)
         .setTitle("OTR Q&A Verification")
-        .setMessage(message)
-        .setView(input)
-        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        .setView(viewSmp)
+        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String[] value = input.getText().toString().split("\\?"); 
-                String question = value[0].trim();
-                String secret = value[1].trim();
-                initSmp (question, secret);
+          
+            	EditText eiQuestion = (EditText)viewSmp.findViewById(R.id.editSmpQuestion);
+            	EditText eiAnswer = (EditText)viewSmp.findViewById(R.id.editSmpAnswer);
+            	 String question = eiQuestion.getText().toString();
+                 String answer = eiAnswer.getText().toString();
+                initSmp (question, answer);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -346,8 +353,8 @@ public class ContactPresenceActivity extends Activity {
  			iOtrSession.initSmpVerification(question, answer);
  	    	
  		} catch (RemoteException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
+			Log.e(TAG, "error init SMP",e);
+
  		}
     }
 }

@@ -704,8 +704,13 @@
 	
 	<string name="title_chats">Conversations</string>
 	
-	<string name="account_setup_acct_acctname_sub">Visualización del nombre de esta cuenta</string>
 	
 	<string name="new_messages_notify">New message(s) from</string>
+	
+	<string name="smp_question_title">Authentication</string>
+	<string name="smp_question_summary">Enter a question to send to your contact, and the answer you expect them to give, in order to verify they are who they claim to be.</string>
+	
+	<string name="smp_question_hint">the question to ask</string>
+	<string name="qmp_answer_hint">the expected answer</string>
 </resources>
 

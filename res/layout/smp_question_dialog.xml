@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+<TableLayout android:id="@+id/TableLayout01" android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
+
+<TableRow android:id="@+id/TableRow01"  android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<ScrollView android:id="@+id/helpscrollview" 
+		android:orientation="vertical"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		 android:layout_span="3">    
+
+<TableLayout android:stretchColumns="*" android:layout_height="fill_parent" android:layout_width="wrap_content">
+
+<TableRow android:padding="6sp" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+			<TextView android:text="@string/smp_question_summary"  android:id="@+id/WizardTextBody" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+</TableRow>
+<TableRow  android:padding="6sp"  android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+ <EditText android:text="" android:hint="@string/smp_question_hint" android:id="@+id/editSmpQuestion" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+   
+</TableRow>
+<TableRow android:padding="6sp" android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+ <EditText android:text="" android:hint="@string/qmp_answer_hint" android:id="@+id/editSmpAnswer" android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+   
+</TableRow>
+</TableLayout>
+		</ScrollView>
+		
+</TableRow>
+<!-- 
+<TableRow  android:layout_width="fill_parent" android:layout_height="wrap_content">
+	   	<Button android:text="@string/send" android:id="@+id/btnSmpQuestionOk" android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+    	<Button android:text="@string/cancel" android:id="@+id/btnSmpQuestionCancel"  android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>	    
+</TableRow>
+ -->			
+</TableLayout>
+</LinearLayout>
+
+
