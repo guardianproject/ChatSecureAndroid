@@ -1,6 +1,8 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.CertDisplayActivity;
+import info.guardianproject.otr.app.im.app.WarningDialogActivity;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
@@ -21,6 +23,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -153,46 +156,36 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public void showError(SessionID sessionID, String error) {
+		
+		injectMessage(sessionID,error);
+
 		OtrDebugLogger.log( sessionID.toString() + ": ERROR=" + error);
 		
-    	showToolbarNotification(error, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
-
+    	showDialog ("Encryption Error", error);
 	}
 
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
+		
+		injectMessage(sessionID,warning);
+		
 		OtrDebugLogger.log( sessionID.toString() + ": WARNING=" +  warning);
 		
-    	showToolbarNotification(warning, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
-    
+    	showDialog ("Encryption Warning", warning);
+
 	}
 	
-	private int DEFAULT_NOTIFY_ID = 11;
-	
-	private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags)
+	private void showDialog (String title, String msg)
 	{
-	
+
+		Intent nIntent = new Intent(mContext, WarningDialogActivity.class);
+		nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		nIntent.putExtra("title", title);
+		nIntent.putExtra("msg", msg);
 		
-		NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
+		mContext.startActivity(nIntent);
 		
-		CharSequence tickerText = notifyMsg;
-		long when = System.currentTimeMillis();
-
-		Notification notification = new Notification(icon, tickerText, when);
-		//notification.flags |= flags;
-
-		CharSequence contentTitle = mContext.getString(R.string.app_name);
-		CharSequence contentText = notifyMsg;
-		
-		//Intent notificationIntent = new Intent(context, WelcomeActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, null, 0);
-
-		notification.setLatestEventInfo(mContext, contentTitle, contentText, contentIntent);
-
-		mNotificationManager.notify(notifyId, notification);
-
-
 	}
 
 }

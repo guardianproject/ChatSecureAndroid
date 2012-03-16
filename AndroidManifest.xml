@@ -320,6 +320,12 @@ android:anyDensity="true"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
+          
+          <activity android:name=".app.WarningDialogActivity"
+            android:configChanges="locale"
+         	android:theme="@android:style/Theme.Dialog"
+         	 android:taskAffinity=""
+            />
         
     </application>
 </manifest>

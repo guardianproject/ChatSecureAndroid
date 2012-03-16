@@ -13,7 +13,6 @@ public class CertDisplayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String msg = getIntent().getStringExtra("msg");
 		String issuer = getIntent().getStringExtra("issuer");
 		String fingerprint = getIntent().getStringExtra("fingerprint");
 		String subject = getIntent().getStringExtra("subject");
@@ -21,7 +20,7 @@ public class CertDisplayActivity extends Activity {
 		String expiresOn = getIntent().getStringExtra("expires");
 		
 
-		showDialog (msg + "\nIssued by: " + issuer  + "\nIssued to: "  + subject  + "\nSHA1 Fingerprint: " + fingerprint
+		showDialog ("Issued by: " + issuer  + "\nIssued to: "  + subject  + "\nSHA1 Fingerprint: " + fingerprint
 				+ "\nIssued on: " + issuedOn + "\nExpires on" + expiresOn
 				);
 	}

@@ -47,14 +47,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	
 	private OtrChatManager (int otrPolicy,Context context) throws Exception
 	{
-		mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy), context);
+		mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy), context.getApplicationContext());
 		
 		mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
 		mOtrEngine.addOtrEngineListener(this);
 		
 		mSessions = new Hashtable<String,SessionID>();
 		mOtrSms = new Hashtable<SessionID,OtrSm>();
-		mContext = context;
 	}
 	
 	
@@ -167,6 +166,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			SessionID sessionId = getSessionId(localUserId,remoteUserId);
 		
 			mOtrEngine.endSession(sessionId);
+			
+			
 		} catch (OtrException e) {
 			OtrDebugLogger.log( "endSession", e);
 		}
@@ -199,9 +200,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 					}
 				}
 				
-				//if (plain != null && plain.length() == 0)
-					//return null;
-				return plain;
+				if (plain != null && plain.length() == 0)
+					return null;
 				
 			} catch (OtrException e) { 
 				OtrDebugLogger.log("error decrypting message",e);
@@ -272,11 +272,20 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		else if (sStatus == SessionStatus.PLAINTEXT)
 		{
 			
+			try {
+				mOtrEngine.endSession(sessionID);
+			} catch (OtrException e) {
+				OtrDebugLogger.log("error ending session", e);
+			}
 			
 		}
 		else if (sStatus == SessionStatus.FINISHED)
 		{
-
+			try {
+				mOtrEngine.endSession(sessionID);
+			} catch (OtrException e) {
+				OtrDebugLogger.log("error ending session", e);
+			}
 			mOtrSms.remove(sessionID);
 			
 		}
