@@ -21,17 +21,16 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
  */
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.WelcomeActivity;
+import info.guardianproject.otr.app.im.app.CertDisplayActivity;
 import info.guardianproject.otr.app.im.service.RemoteImService;
-import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
@@ -56,7 +55,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Trust manager that checks all certificates presented by the server. This class
@@ -72,6 +70,7 @@ class ServerTrustManager implements X509TrustManager {
     private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
     private final static Pattern ouPattern = Pattern.compile("(?i)(ou=)([^,]*)");
     
+    private final static String FINGERPRINT_TYPE = "SHA1";
 
     private ConnectionConfiguration configuration;
 
@@ -149,6 +148,9 @@ class ServerTrustManager implements X509TrustManager {
             Principal principalLast = null;
             for (int i = nSize -1; i >= 0 ; i--) {
                 X509Certificate x509certificate = x509Certificates[i];
+                
+                
+                
                 Principal principalIssuer = x509certificate.getIssuerDN();
                 Principal principalSubject = x509certificate.getSubjectDN();
                 if (principalLast != null) {
@@ -158,18 +160,19 @@ class ServerTrustManager implements X509TrustManager {
                                     x509Certificates[i + 1].getPublicKey();
                             x509Certificates[i].verify(publickey);
                         }
+                        
                         catch (GeneralSecurityException generalsecurityexception) {
-                        	showMessage("signature verification failed of " + peerIdentities);
+                        	showCertMessage("signature verification failed", principalIssuer.getName(), x509Certificates[i]);
 
                             throw new CertificateException(
-                                    "signature verification failed of " + peerIdentities);
+                                    "signature verification failed of " + principalIssuer.getName());
                         }
                     }
                     else {
-                    	showMessage("subject/issuer verification failed of " + peerIdentities);
+                    	showCertMessage("subject/issuer verification failed", principalIssuer.getName(), x509Certificates[i]);
 
                         throw new CertificateException(
-                                "subject/issuer verification failed of " + peerIdentities);
+                                "subject/issuer verification failed of " + principalIssuer.getName());
                     }
                 }
                 principalLast = principalSubject;
@@ -185,8 +188,8 @@ class ServerTrustManager implements X509TrustManager {
             	
             	if (configuration.isSelfSignedCertificateEnabled())
                 {
-                    showMessage("Self-signed certificate: " +
-                            peerIdentities);
+            		showCertMessage("Self-signed certificate",
+                            getFingerprint(x509Certificates[0],FINGERPRINT_TYPE), x509Certificates[0]);
                     
                     trusted = true;
                 }
@@ -198,6 +201,7 @@ class ServerTrustManager implements X509TrustManager {
 	            	Enumeration<String> enumAliases = trustStore.aliases();
             		while (enumAliases.hasMoreElements())
             		{
+            			
             			X509Certificate cert = (X509Certificate)trustStore.getCertificate(enumAliases.nextElement());
 
             			String caSubject = cert.getSubjectDN().getName();
@@ -219,7 +223,8 @@ class ServerTrustManager implements X509TrustManager {
 	            			{
 	            				certFinal.verify(cert.getPublicKey());            				
 	            				trusted = true;
-	            				showMessage( "SSL verified: " + cert.getSubjectDN().getName());
+	            				
+	            				showCertMessage( "TLS/SSL Certificate Verified", getFingerprint(certFinal,FINGERPRINT_TYPE), certFinal);
 
 	            			}
 	            			catch (Exception e)
@@ -244,7 +249,7 @@ class ServerTrustManager implements X509TrustManager {
             
             
             if (!trusted) {
-            	showMessage("root certificate not trusted of " + peerIdentities);
+            	showCertMessage("root certificate not trusted", getFingerprint(x509Certificates[0],FINGERPRINT_TYPE), x509Certificates[0]);
                 throw new CertificateException("root certificate not trusted of " + peerIdentities);
             }
         }
@@ -258,10 +263,14 @@ class ServerTrustManager implements X509TrustManager {
                 String peerIdentity = peerIdentities.get(0).replace("*.", "");
                 // Check if the requested subdomain matches the certified domain
                 if (!server.endsWith(peerIdentity)) {
+                	showCertMessage("domain check failed", peerIdentities.get(0) + " is not " + server, x509Certificates[0]);
+
                     throw new CertificateException("target verification failed of " + peerIdentities);
                 }
             }
             else if (!peerIdentities.contains(server)) {
+            	showCertMessage("domain check failed", peerIdentities.get(0) + " is not " + server, x509Certificates[0]);
+
                 throw new CertificateException("target verification failed of " + peerIdentities);
             }
         }
@@ -275,7 +284,7 @@ class ServerTrustManager implements X509TrustManager {
                     x509Certificates[i].checkValidity(date);
                 }
                 catch (GeneralSecurityException generalsecurityexception) {
-                	showMessage("certificate expired for " + server);
+                	showCertMessage("certificate expired",x509Certificates[i].getNotAfter().toLocaleString() , x509Certificates[i]);
                     throw new CertificateException("invalid date of " + server);
                 }
             }
@@ -285,14 +294,29 @@ class ServerTrustManager implements X509TrustManager {
 
     private int DEFAULT_NOTIFY_ID = 10;
     
-    private void showMessage (String msg)
+    private void showCertMessage (String title, String msg, X509Certificate cert)
+    {
+    	
+		Intent nIntent = new Intent(context, CertDisplayActivity.class);
+		
+		nIntent.putExtra("issuer", cert.getIssuerDN().getName());
+		nIntent.putExtra("subject", cert.getSubjectDN().getName());
+		nIntent.putExtra("fingerprint", getFingerprint(cert, FINGERPRINT_TYPE));
+		nIntent.putExtra("issued", cert.getNotBefore().toGMTString());
+		nIntent.putExtra("expires", cert.getNotAfter().toGMTString());
+		nIntent.putExtra("fingerprint", getFingerprint(cert, FINGERPRINT_TYPE));
+		
+		showMessage (title, msg, nIntent);
+		
+    }
+    private void showMessage (String title, String msg, Intent intent)
     {
     	
 		RemoteImService.debug(msg);
 		
 		try
 		{
-			showToolbarNotification(msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1);
+			showToolbarNotification(title, msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1, intent);
 		}
 		catch (Exception e)
 		{
@@ -300,7 +324,7 @@ class ServerTrustManager implements X509TrustManager {
 		}
     }
     
-    private void showToolbarNotification (String notifyMsg, int notifyId, int icon, int flags) throws Exception
+    private void showToolbarNotification (String title, String notifyMsg, int notifyId, int icon, int flags, Intent nIntent) throws Exception
 	{ 
 	
 		
@@ -313,11 +337,10 @@ class ServerTrustManager implements X509TrustManager {
 		Notification notification = new Notification(icon, tickerText, when);
 		//notification.flags |= flags;
 
-		CharSequence contentTitle = context.getString(R.string.app_name);
+		CharSequence contentTitle = context.getString(R.string.app_name) + ": " + title;
 		CharSequence contentText = notifyMsg;
 		
-		//Intent notificationIntent = new Intent(context, WelcomeActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, null, 0);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, nIntent, 0);
 
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 
@@ -405,4 +428,29 @@ class ServerTrustManager implements X509TrustManager {
         return identities;
     }
 
+    public String getFingerprint (X509Certificate cert, String type)
+    {
+    	 try {
+             MessageDigest md = MessageDigest.getInstance(type);
+             byte[] publicKey = md.digest(cert.getPublicKey().getEncoded());
+
+             StringBuffer hexString = new StringBuffer();
+             for (int i=0;i<publicKey.length;i++) {
+                 
+            	 String appendString = Integer.toHexString(0xFF & publicKey[i]);
+
+                 if(appendString.length()==1)
+                	 hexString.append("0");
+                 hexString.append(appendString);
+                 hexString.append(' ');
+             }
+
+             	return hexString.toString();
+
+         } catch (NoSuchAlgorithmException e1) {
+             e1.printStackTrace();
+             return null;
+         } 
+    }
+    
 }
