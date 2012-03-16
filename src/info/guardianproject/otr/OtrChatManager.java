@@ -40,10 +40,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	
 	private OtrEngineHostImpl mOtrEngineHost;
 	private OtrEngineImpl mOtrEngine;	
-	private OtrSm mOtrSm;
 	private Hashtable<String,SessionID> mSessions;
+	private Hashtable<SessionID,OtrSm> mOtrSms;
+	
 	private Context mContext;
-		
 	
 	private OtrChatManager (int otrPolicy,Context context) throws Exception
 	{
@@ -53,7 +53,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		mOtrEngine.addOtrEngineListener(this);
 		
 		mSessions = new Hashtable<String,SessionID>();
-		
+		mOtrSms = new Hashtable<SessionID,OtrSm>();
 		mContext = context;
 	}
 	
@@ -187,12 +187,16 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			try {
 
 				plain = mOtrEngine.transformReceiving(sessionId, msg);					
-
-				List<TLV> tlvs = mOtrSm.getPendingTlvs();
-				if (tlvs != null) {
-					String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
-	    			mOtrEngineHost.injectMessage(sessionId, encrypted);
-	    			
+				OtrSm otrSm = mOtrSms.get(sessionId);
+				
+				if (otrSm != null)
+				{
+					List<TLV> tlvs = otrSm.getPendingTlvs();
+					if (tlvs != null) {
+						String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
+		    			mOtrEngineHost.injectMessage(sessionId, encrypted);
+		    			
+					}
 				}
 				
 				//if (plain != null && plain.length() == 0)
@@ -207,13 +211,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		return plain;
 	}
 	
-	/*
 	public void processMessageReceiving(String localUserId, String remoteUserId, String msg)
 	{
 
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
-		//Log.i(TAG,"session status: " + mOtrEngine.getSessionStatus(sessionId));
 
 		if(mOtrEngine != null && sessionId != null){
 			try {
@@ -221,11 +223,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 				
 				
 			} catch (OtrException e) {
-				Log.e(TAG,"error decrypting message",e);
+				OtrDebugLogger.log("error decrypting message",e);
 			}
 
 		}
-	}*/
+	}
 	
 	public String encryptMessage(String localUserId, String remoteUserId, String msg){
 		
@@ -256,11 +258,15 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 			PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
 			mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 			
-			if (mOtrSm == null)
+			OtrSm otrSm = mOtrSms.get(sessionID);
+			
+			if (otrSm == null)
 			{
 				// SMP handler - make sure we only add this once per session!
-				mOtrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(), sessionID, OtrChatManager.this);
-				mOtrEngine.getSession(sessionID).addTlvHandler(mOtrSm);
+				otrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(), sessionID, OtrChatManager.this);
+				mOtrEngine.getSession(sessionID).addTlvHandler(otrSm);
+				
+				mOtrSms.put(sessionID, otrSm);
 			}
 		}
 		else if (sStatus == SessionStatus.PLAINTEXT)
@@ -271,17 +277,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		else if (sStatus == SessionStatus.FINISHED)
 		{
 
-			if (mOtrSm != null)
-			{
-				try {
-					mOtrEngine.getSession(sessionID).removeTlvHandler(mOtrSm);
-					mOtrSm.abortSmp();
-				} catch (OtrException e) {
-					OtrDebugLogger.log( "error aborting SMP",e);
-				}
-			}
-			
-			mOtrSm = null;
+			mOtrSms.remove(sessionID);
 			
 		}
 		
@@ -361,9 +357,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	{
 
 		
+		OtrSm otrSm = mOtrSms.get(sessionID);
+		
 		List<TLV> tlvs;
 		
-		tlvs = mOtrSm.initRespondSmp(null, secret, false);
+		tlvs = otrSm.initRespondSmp(null, secret, false);
 		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
 		mOtrEngineHost.injectMessage(sessionID, encrypted);
 		
@@ -371,8 +369,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	
 	public void initSmp (SessionID sessionID, String question, String secret) throws OtrException
 	{
+		OtrSm otrSm = mOtrSms.get(sessionID);
+		
 		List<TLV> tlvs;		
-		tlvs = mOtrSm.initRespondSmp(question, secret, true);
+		tlvs = otrSm.initRespondSmp(question, secret, true);
 		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);		
 		mOtrEngineHost.injectMessage(sessionID, encrypted);
 
@@ -380,10 +380,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	
 	public void abortSmp (SessionID sessionID) throws OtrException
 	{
-		List<TLV> tlvs = mOtrSm.abortSmp();
+		OtrSm otrSm = mOtrSms.get(sessionID);
+		
+		List<TLV> tlvs = otrSm.abortSmp();
 		String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
 		mOtrEngineHost.injectMessage(sessionID, encrypted);
 
+		
 	}
 
 }

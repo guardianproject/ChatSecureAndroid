@@ -45,11 +45,9 @@ public final class SessionID {
 	}
 
 	public synchronized String toString() {
-		if (sessionId == null)
-		{
+		
 		  sessionId = getAccountID() + '_' + this.getProtocolName() + '_'
 				+ this.getUserID();
-		}
 		
 		return sessionId;
 		
