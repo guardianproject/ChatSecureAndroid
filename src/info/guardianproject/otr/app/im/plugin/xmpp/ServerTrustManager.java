@@ -432,7 +432,7 @@ class ServerTrustManager implements X509TrustManager {
     {
     	 try {
              MessageDigest md = MessageDigest.getInstance(type);
-             byte[] publicKey = md.digest(cert.getPublicKey().getEncoded());
+             byte[] publicKey = md.digest(cert.getEncoded());
 
              StringBuffer hexString = new StringBuffer();
              for (int i=0;i<publicKey.length;i++) {
@@ -447,7 +447,7 @@ class ServerTrustManager implements X509TrustManager {
 
              	return hexString.toString();
 
-         } catch (NoSuchAlgorithmException e1) {
+         } catch (Exception e1) {
              e1.printStackTrace();
              return null;
          } 
