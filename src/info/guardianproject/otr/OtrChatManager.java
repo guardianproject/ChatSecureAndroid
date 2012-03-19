@@ -54,6 +54,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		
 		mSessions = new Hashtable<String,SessionID>();
 		mOtrSms = new Hashtable<SessionID,OtrSm>();
+		
+		mContext = context;
 	}
 	
 	
