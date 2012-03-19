@@ -65,8 +65,8 @@ public final class SessionID {
 		return this.toString().equals(sessionID.toString());
 	}
 
-	/*
+	
 	public int hashCode() {
 		return this.toString().hashCode();
-	}*/
+	}
 }
