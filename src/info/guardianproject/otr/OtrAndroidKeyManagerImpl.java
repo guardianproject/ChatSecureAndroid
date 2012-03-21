@@ -1,5 +1,7 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.bouncycastle.util.encoders.Hex;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,9 +30,6 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 
 import org.jivesoftware.smack.util.Base64;
-
-import android.content.Context;
-import android.util.Log;
 
 public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
@@ -61,12 +60,9 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 	class DefaultPropertiesStore implements OtrKeyManagerStore {
 		private Properties properties = new Properties();
-		private String filepath;
 		private File mStoreFile;
 		
 		public DefaultPropertiesStore(String filepath) {
-			
-			this.filepath = filepath;
 			mStoreFile = new File(filepath);
 			properties.clear();
 			
@@ -223,6 +219,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
 		this.store.setProperty(accountID + ".privateKey", pkcs8EncodedKeySpec
 				.getEncoded());
+
+		// Stash fingerprint for consistency.
+		try {
+			String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
+			this.store.setProperty(accountID + ".fingerprint",
+					Hex.decode(fingerprintString));
+		} catch (OtrCryptoException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getLocalFingerprint(SessionID sessionID) {
@@ -255,12 +260,20 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	public String getRemoteFingerprint(String userId) {
-		
+		byte[] fingerprint = this.store.getPropertyBytes(userId + ".fingerprint");
+		if (fingerprint != null) {
+			// If we have a fingerprint stashed, assume it is correct.
+			return new String(Hex.encode(fingerprint, 0, fingerprint.length));
+		}
 		PublicKey remotePublicKey = loadRemotePublicKeyFromStore(userId);
 		if (remotePublicKey == null)
 			return null;
 		try {
-			return new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
+			// Store the fingerprint, for posterity.
+			String fingerprintString =
+					new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
+			this.store.setProperty(userId + ".fingerprint", Hex.decode(fingerprintString));
+			return fingerprintString;
 		} catch (OtrCryptoException e) {
 			e.printStackTrace();
 			return null;
@@ -376,7 +389,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		String userId = sessionID.getUserID();
 		this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec
 				.getEncoded());
-		
+		// Stash the associated fingerprint.  This saves calculating it in the future
+		// and is useful for transferring rosters to other apps.
+		try {
+			String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
+			this.store.setProperty(userId + ".fingerprint",
+					Hex.decode(fingerprintString));
+		} catch (OtrCryptoException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void unverify(SessionID sessionID) {

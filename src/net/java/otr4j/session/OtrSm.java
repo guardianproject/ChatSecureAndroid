@@ -1,5 +1,7 @@
 package net.java.otr4j.session;
 
+import info.guardianproject.bouncycastle.util.encoders.Hex;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -17,7 +19,6 @@ import net.java.otr4j.crypto.SM;
 import net.java.otr4j.crypto.SM.SMException;
 import net.java.otr4j.crypto.SM.SMState;
 import net.java.otr4j.io.OtrOutputStream;
-import net.java.otr4j.io.SerializationUtils;
 
 public class OtrSm implements OtrTlvHandler {
     public static interface OtrSmEngineHost extends OtrEngineHost {
@@ -94,8 +95,8 @@ public class OtrSm implements OtrTlvHandler {
 		 * Version byte (0x01), Initiator fingerprint (20 bytes),
 		 * responder fingerprint (20 bytes), secure session id, input secret
 		 */
-		byte[] our_fp = new OtrCryptoEngineImpl().getFingerprintRaw(keyManager.loadLocalKeyPair(sessionID).getPublic());
-		byte[] their_fp = new OtrCryptoEngineImpl().getFingerprintRaw(keyManager.loadRemotePublicKey(sessionID));
+		byte[] our_fp = Hex.decode(keyManager.getLocalFingerprint(sessionID));
+		byte[] their_fp = Hex.decode(keyManager.getRemoteFingerprint(sessionID));
 
 		byte[] sessionId;
 		try {
