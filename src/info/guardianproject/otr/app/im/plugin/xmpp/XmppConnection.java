@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -182,10 +181,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 					Log.w(TAG, "dropped packet to " + packet.getTo() + " because we are not connected");
 					return;
 				}
-				if (!mConnection.isConnected()) {
+				try {
+					mConnection.sendPacket(packet);
+				} catch (IllegalStateException ex) {
 					Log.w(TAG, "dropped packet to " + packet.getTo() + " because socket is disconnected");
 				}
-				mConnection.sendPacket(packet);		
 			}
 		});
 	}
@@ -564,11 +564,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
 					debug(TAG, "got delivery receipt request");
 					// got XEP-0184 request, send receipt
-					sendReceipt(smackMessage.getFrom(), smackMessage.getPacketID());
+					sendReceipt(smackMessage);
 					session.onReceiptsExpected();
 				}
 			}
-		}, new MessageTypeFilter(org.jivesoftware.smack.packet.Message.Type.chat));
+		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
         
         mConnection.addPacketListener(new PacketListener() {
 			
@@ -715,12 +715,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	}
 	
-	public void sendReceipt(String toJID, String id) {
-		debug(TAG, "sending XEP-0184 ack to " + toJID + " id=" + id);
+	public void sendReceipt(org.jivesoftware.smack.packet.Message msg) {
+		debug(TAG, "sending XEP-0184 ack to " + msg.getFrom() + " id=" + msg.getPacketID());
 		org.jivesoftware.smack.packet.Message ack =
-				new org.jivesoftware.smack.packet.Message(toJID,
-						org.jivesoftware.smack.packet.Message.Type.normal);
-		ack.addExtension(new DeliveryReceipts.DeliveryReceipt(id));
+				new org.jivesoftware.smack.packet.Message(msg.getFrom(),
+						msg.getType());
+		ack.addExtension(new DeliveryReceipts.DeliveryReceipt(msg.getPacketID()));
 		mConnection.sendPacket(ack);
 	}
 
