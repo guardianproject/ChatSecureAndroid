@@ -38,4 +38,21 @@ public interface MessageListener {
      * @param error the error information.
      */
     public void onSendMessageError(ChatSession ses, Message msg, ImErrorInfo error);
+
+    /**
+     * Called when a message receipt was received.
+     * 
+     * @param ses the ChatSession.
+     * @param id the message ID.
+     */
+    public void onIncomingReceipt(ChatSession ses, String id);
+    
+    /**
+     * Called when we determine that the remote supports message delivery receipts.
+     * 
+     * <br>XEP-0184
+     * 
+     * @param ses the ChatSession.
+     */
+    public void onReceiptsExpected(ChatSession ses);
 }

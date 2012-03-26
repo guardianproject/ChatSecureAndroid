@@ -158,8 +158,18 @@ public class ChatSession {
         for (MessageListener listener : mListeners) {
             listener.onIncomingMessage(this, message);
         }
-        
-        
+    }
+    
+    public void onMessageReceipt(String id) {
+        for (MessageListener listener : mListeners) {
+            listener.onIncomingReceipt(this, id);
+        }
+    }
+    
+    public void onReceiptsExpected() {
+        for (MessageListener listener : mListeners) {
+            listener.onReceiptsExpected(this);
+        }
     }
 
     /**

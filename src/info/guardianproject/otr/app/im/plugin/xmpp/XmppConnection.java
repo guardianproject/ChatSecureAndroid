@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -64,16 +63,12 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.packet.PacketExtension;
-import org.jivesoftware.smack.packet.UnknownPacket;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
-import org.jivesoftware.smack.provider.PacketExtensionProvider;
-import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
-import org.xmlpull.v1.XmlPullParser;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -131,7 +126,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private String mUsername;
 	private String mPassword;
 	private String mResource;
-
+	
 	public XmppConnection(Context context) {
 		super(context);
 		aContext = context;
@@ -142,6 +137,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		createExecutor();
 		
 		XmppStreamHandler.addExtensionProviders();
+		DeliveryReceipts.addExtensionProviders();
+
+		ServiceDiscoveryManager.setIdentityName("Gibberbot");
+		ServiceDiscoveryManager.setIdentityType("phone");
 	}
 
 	private void createExecutor() {
@@ -182,10 +181,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 					Log.w(TAG, "dropped packet to " + packet.getTo() + " because we are not connected");
 					return;
 				}
-				if (!mConnection.isConnected()) {
+				try {
+					mConnection.sendPacket(packet);
+				} catch (IllegalStateException ex) {
 					Log.w(TAG, "dropped packet to " + packet.getTo() + " because socket is disconnected");
 				}
-				mConnection.sendPacket(packet);		
 			}
 		});
 	}
@@ -546,15 +546,29 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			@Override
 			public void processPacket(Packet packet) {
 				org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
-				Message rec = new Message(smackMessage.getBody());
 				String address = parseAddressBase(smackMessage.getFrom());
 				ChatSession session = findOrCreateSession(address);
+				DeliveryReceipts.DeliveryReceipt dr =
+						(DeliveryReceipts.DeliveryReceipt)smackMessage.getExtension("received", DeliveryReceipts.NAMESPACE);
+				if (dr != null) {
+					debug(TAG, "got delivery receipt for " + dr.getId());
+					session.onMessageReceipt(dr.getId());
+				}
+				if (smackMessage.getBody() == null)
+					return;
+				Message rec = new Message(smackMessage.getBody());
 				rec.setTo(mUser.getAddress());
 				rec.setFrom(session.getParticipant().getAddress());
 				rec.setDateTime(new Date());
 				session.onReceiveMessage(rec);
+				if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+					debug(TAG, "got delivery receipt request");
+					// got XEP-0184 request, send receipt
+					sendReceipt(smackMessage);
+					session.onReceiptsExpected();
+				}
 			}
-		}, new MessageTypeFilter(org.jivesoftware.smack.packet.Message.Type.chat));
+		}, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
         
         mConnection.addPacketListener(new PacketListener() {
 			
@@ -584,7 +598,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         
         mConnection.connect();
         
-        mConnection.addConnectionListener(new ConnectionListener() {
+		initServiceDiscovery();
+
+		mConnection.addConnectionListener(new ConnectionListener() {
         	/**
         	 * Called from smack when connect() is fully successful
         	 * 
@@ -699,6 +715,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	}
 	
+	public void sendReceipt(org.jivesoftware.smack.packet.Message msg) {
+		debug(TAG, "sending XEP-0184 ack to " + msg.getFrom() + " id=" + msg.getPacketID());
+		org.jivesoftware.smack.packet.Message ack =
+				new org.jivesoftware.smack.packet.Message(msg.getFrom(),
+						msg.getType());
+		ack.addExtension(new DeliveryReceipts.DeliveryReceipt(msg.getPacketID()));
+		mConnection.sendPacket(ack);
+	}
+
+
 	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
 	{
 
@@ -865,7 +891,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 						message.getTo().getFullName(),
 						org.jivesoftware.smack.packet.Message.Type.chat
 						);
+			msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
 			msg.setBody(message.getBody());
+			debug(TAG, "sending packet ID " + msg.getPacketID());
+			message.setID(msg.getPacketID());
 			sendPacket(msg);
 		}
 		
@@ -1566,8 +1595,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				if (mStreamHandler.isResumePossible()) {
 					// Connect without binding, will automatically trigger a resume
 					mConnection.connect(false);
+					//initServiceDiscovery();
 				} else {
 					mConnection.connect();
+					//initServiceDiscovery();
 					if (!mConnection.isAuthenticated()) {
 						// This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
 						// It can also happen if auth exception was swallowed by smack.
@@ -1706,4 +1737,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	    }
 	}
 	 */
+	private void initServiceDiscovery() {
+		debug(TAG, "init service discovery");
+		// register connection features
+		ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(mConnection);
+		if (sdm == null)
+			sdm = new ServiceDiscoveryManager(mConnection);
+
+		sdm.addFeature("http://jabber.org/protocol/disco#info");
+		sdm.addFeature(DeliveryReceipts.NAMESPACE);
+	}
+
 }
