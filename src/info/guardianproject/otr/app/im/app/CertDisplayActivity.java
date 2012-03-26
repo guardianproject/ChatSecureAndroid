@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 public class CertDisplayActivity extends Activity {
 
+	private AlertDialog ad;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,10 @@ public class CertDisplayActivity extends Activity {
 				);
 	}
 	
-	
-	
 	private void showDialog (String msg)
 	{
 		
-		AlertDialog ad = new AlertDialog.Builder(this)
+		ad = new AlertDialog.Builder(this)
 	    .setTitle("Certificate Info")
 	    .setMessage(msg).show();
 		
@@ -44,6 +43,26 @@ public class CertDisplayActivity extends Activity {
 			}
 			
 		});
+		
+		
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		if (ad != null)
+			ad.cancel();
+	}
+
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		if (ad != null)
+			ad.cancel();
 		
 		
 	}

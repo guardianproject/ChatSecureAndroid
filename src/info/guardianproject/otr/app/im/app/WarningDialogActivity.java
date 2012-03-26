@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 public class WarningDialogActivity extends Activity {
 
+	private AlertDialog ad;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class WarningDialogActivity extends Activity {
 	private void showDialog (String title, String msg)
 	{
 		
-		AlertDialog ad = new AlertDialog.Builder(this)
+		ad = new AlertDialog.Builder(this)
 	    .setTitle(title).setIcon(android.R.drawable.ic_dialog_alert)
 	    .setMessage(msg).show();
 		
@@ -42,6 +43,30 @@ public class WarningDialogActivity extends Activity {
 		
 		
 	}
+
+
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		if (ad != null)
+			ad.cancel();
+	}
+
+
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		if (ad != null)
+			ad.cancel();
+		
+		
+	}
+	
+	
 	
 	
 
