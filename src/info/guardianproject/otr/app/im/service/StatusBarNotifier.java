@@ -189,7 +189,11 @@ public class StatusBarNotifier {
 
     private void notify(String sender, String title, String tickerText, String message,
             long providerId, long accountId, Intent intent, boolean lightWeightNotify) {
-        NotificationInfo info;
+        
+    	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+    	NotificationInfo info;
+        
         synchronized (mNotificationInfos) {
             info = mNotificationInfos.get(providerId);
             if (info == null) {
@@ -199,6 +203,7 @@ public class StatusBarNotifier {
             info.addItem(sender, title, message, intent);
         }
 
+        
         mNotificationManager.notify(info.computeNotificationId(),
                 info.createNotification(tickerText, lightWeightNotify));
     }
@@ -291,6 +296,7 @@ public class StatusBarNotifier {
             intent.setType(Imps.Contacts.CONTENT_TYPE);
             intent.setClass(mContext, ContactListActivity.class);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             return intent;
         }
@@ -301,6 +307,8 @@ public class StatusBarNotifier {
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
             return intent;
         }
 
