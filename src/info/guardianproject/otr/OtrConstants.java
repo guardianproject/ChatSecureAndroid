@@ -23,4 +23,5 @@ Always send "\x20\x09\x20\x20\x09\x09\x09\x09" "\x20\x09\x20\x09\x20\x09\x20\x20
 	public static final String QueryMessage_CommonRequest = "?OTR?v2? You are being requested to have an Off-the-Record private conversation &lt;http://otr.cypherpunks.ca/&gt;.  However, you do not have a plugin to support that. See http://otr.cypherpunks.ca/ for more information.";
 	public static final String PlainText_V12 = "This is a plain text that has hidden support for V1 and V2! 	  				 	 	 	    		  	  	 	  	 ";
 	public static final String PlainText_V1 = "This is a plain text that has hidden support for V1! 	  				 	 	 	    		  	 ";
+	public static final String CommonRequest = " You are being requested to have an Off-the-Record private conversation.  However, you do not have a plugin to support that. See http://otr.cypherpunks.ca/ for more information.";
 }
