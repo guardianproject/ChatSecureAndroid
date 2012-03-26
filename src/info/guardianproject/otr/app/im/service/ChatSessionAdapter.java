@@ -39,6 +39,7 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -279,6 +280,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         msg.setFrom(mConnection.getLoginUser().getAddress());
         mAdaptee.sendMessageAsync(msg);
         long now = System.currentTimeMillis();
+        // TODO remember message ID so we can notify user on receipt (XEP-0184)
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING);
     }
 
@@ -636,6 +638,36 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             mRemoteListeners.finishBroadcast();
         }
+
+		@Override
+		public void onIncomingReceipt(ChatSession ses, String id) {
+			// TODO this just generates a debug message in the chat log.
+			// TODO Needs a real implementation.
+			Message message = new Message("receipt for " + id);
+			message.setDateTime(new Date());
+
+            insertOrUpdateChat(message.getBody());
+            long time = message.getDateTime().getTime();
+            insertMessageInDb("test", message.getBody(), time, Imps.MessageType.INCOMING);
+
+            int N = mRemoteListeners.beginBroadcast();
+            for (int i = 0; i < N; i++) {
+                IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                try {
+                    listener.onIncomingMessage(ChatSessionAdapter.this, message);
+                } catch (RemoteException e) {
+                    // The RemoteCallbackList will take care of removing the
+                    // dead listeners.
+                }
+            }
+            mRemoteListeners.finishBroadcast();
+		}
+
+		@Override
+		public void onReceiptsExpected(ChatSession ses) {
+			// TODO
+			
+		}
     }
 
     class ChatConvertor implements GroupListener, GroupMemberListener {

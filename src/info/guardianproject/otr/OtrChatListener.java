@@ -98,4 +98,14 @@ public class OtrChatListener implements MessageListener {
 		mMessageListener.onSendMessageError(session, msg, error);
 		OtrDebugLogger.log( "onSendMessageError: " + msg.toString());
 	}
+
+	@Override
+	public void onIncomingReceipt(ChatSession ses, String id) {
+		mMessageListener.onIncomingReceipt(ses, id);
+	}
+
+	@Override
+	public void onReceiptsExpected(ChatSession ses) {
+		mMessageListener.onReceiptsExpected(ses);
+	}
 }

@@ -96,10 +96,6 @@ public class XmppStreamHandler {
 			public void processPacket(Packet packet) {
 				incomingStanzaCount++;
 				debug("" + incomingStanzaCount + " : " + packet.toXML());
-				if (packet instanceof Message && ((Message)packet).getBody().contains("skip")) {
-					debug("skip");
-					incomingStanzaCount--;
-				}
 				if (packet instanceof StreamHandlingPacket) {
 					StreamHandlingPacket shPacket = (StreamHandlingPacket)packet;
 					String name = shPacket.getElementName();
