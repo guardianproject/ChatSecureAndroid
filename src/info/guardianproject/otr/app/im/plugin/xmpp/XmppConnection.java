@@ -1615,7 +1615,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 						setState(LOGGED_IN, null);
 					}
 				}
-			} catch (XMPPException e) {
+			} catch (Exception e) {
 				mConnection.shutdown();
 				Log.e(TAG, "reconnection attempt failed", e);
 				// Smack incorrectly notified us that reconnection was successful, reset in case it fails
