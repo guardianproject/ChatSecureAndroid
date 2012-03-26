@@ -7,6 +7,7 @@
 package net.java.otr4j.io;
 
 import info.guardianproject.bouncycastle.util.encoders.Base64;
+import info.guardianproject.otr.OtrConstants;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -154,6 +155,7 @@ public class SerializationUtils {
 
 				writer.write(SerializationConstants.HEAD_QUERY_Q);
 			}
+			writer.write(OtrConstants.CommonRequest);
 			break;
 		case AbstractEncodedMessage.MESSAGE_DHKEY:
 		case AbstractEncodedMessage.MESSAGE_REVEALSIG:
