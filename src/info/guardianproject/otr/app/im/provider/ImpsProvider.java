@@ -81,7 +81,7 @@ public class ImpsProvider extends ContentProvider {
 
 
     private static final String DATABASE_NAME = "imps.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 101;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
@@ -126,6 +126,7 @@ public class ImpsProvider extends ContentProvider {
     protected static final int MATCH_OTR_MESSAGES_BY_PROVIDER = 59;
     protected static final int MATCH_OTR_MESSAGES_BY_ACCOUNT = 60;
     protected static final int MATCH_OTR_MESSAGE = 61;
+    protected static final int MATCH_OTR_MESSAGES_BY_PACKET_ID = 62;
 
     protected static final int MATCH_GROUP_MEMBERS = 65;
     protected static final int MATCH_GROUP_MEMBERS_BY_GROUP = 66;
@@ -499,6 +500,23 @@ public class ImpsProvider extends ContentProvider {
                     }
 
                     return;
+                case 1:
+                    if (newVersion <= 100) {
+                        return;
+                    }
+
+                    db.beginTransaction();
+                    try {
+                        db.execSQL(
+                                "ALTER TABLE " + TABLE_MESSAGES + " ADD COLUMN is_delivered INTEGER;");
+                        db.setTransactionSuccessful();
+                    } catch (Throwable ex) {
+                        Log.e(LOG_TAG, ex.getMessage(), ex);
+                    } finally {
+                        db.endTransaction();
+                    }
+
+                    return;
             }
 
             Log.w(LOG_TAG, "Couldn't upgrade db to " + newVersion + ". Destroying old data.");
@@ -628,6 +646,7 @@ public class ImpsProvider extends ContentProvider {
             if (addShowTsColumnForMessagesTable) {
                 buf.append(",show_ts INTEGER");
             }
+            buf.append(",is_delivered INTEGER");
 
             buf.append(");");
 
@@ -683,7 +702,8 @@ public class ImpsProvider extends ContentProvider {
                     "err_code INTEGER NOT NULL DEFAULT 0," +
                     "err_msg TEXT," +
                     "is_muc INTEGER," +
-                    "show_ts INTEGER" +
+                    "show_ts INTEGER," +
+                    "is_delivered INTEGER" +
                     ");");
 
         }
@@ -910,6 +930,7 @@ public class ImpsProvider extends ContentProvider {
         sMessagesProjectionMap.put(Imps.Messages.ERROR_MESSAGE, "messages.err_msg AS err_msg");
         sMessagesProjectionMap.put(Imps.Messages.IS_GROUP_CHAT, "messages.is_muc AS is_muc");
         sMessagesProjectionMap.put(Imps.Messages.DISPLAY_SENT_TIME, "messages.show_ts AS show_ts");
+        sMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED, "messages.is_delivered AS is_delivered");
         // contacts columns
         sMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");
@@ -941,6 +962,8 @@ public class ImpsProvider extends ContentProvider {
                 "inMemoryMessages.is_muc AS is_muc");
         sInMemoryMessagesProjectionMap.put(Imps.Messages.DISPLAY_SENT_TIME,
                 "inMemoryMessages.show_ts AS show_ts");
+        sInMemoryMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED,
+                "inMemoryMessages.is_delivered AS is_delivered");
         // contacts columns
         sInMemoryMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sInMemoryMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");
@@ -1010,6 +1033,7 @@ public class ImpsProvider extends ContentProvider {
         mUrlMatcher.addURI(authority, "otrMessagesByThreadId/#", MATCH_OTR_MESSAGES_BY_THREAD_ID);
         mUrlMatcher.addURI(authority, "otrMessagesByProvider/#", MATCH_OTR_MESSAGES_BY_PROVIDER);
         mUrlMatcher.addURI(authority, "otrMessagesByAccount/#", MATCH_OTR_MESSAGES_BY_ACCOUNT);
+        mUrlMatcher.addURI(authority, "otrMessagesByPacketId/*", MATCH_OTR_MESSAGES_BY_PACKET_ID);
         mUrlMatcher.addURI(authority, "otrMessages/#", MATCH_OTR_MESSAGE);
 
         mUrlMatcher.addURI(authority, "groupMembers", MATCH_GROUP_MEMBERS);
@@ -3121,6 +3145,7 @@ public class ImpsProvider extends ContentProvider {
         String accountStr = null;
         long account = 0;
         String contact = null;
+        String packetId = null;
         long threadId = 0;
         int count;
 
@@ -3278,6 +3303,13 @@ public class ImpsProvider extends ContentProvider {
                 appendWhere(whereClause, Imps.Messages.THREAD_ID, "=", threadId);
 
                 notifyMessagesByThreadIdContentUri = true;
+                break;
+
+            case MATCH_OTR_MESSAGES_BY_PACKET_ID:
+                packetId = decodeURLSegment(url.getPathSegments().get(1));
+                tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
+                appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
+                notifyMessagesContentUri = true;
                 break;
 
             case MATCH_OTR_MESSAGE:

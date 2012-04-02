@@ -36,13 +36,14 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
 
     private TextView mTextViewForMessages;
-
+    private ImageView mDeliveryIcon;
     private Resources mResources;
 
     public MessageView(Context context, AttributeSet attrs) {
@@ -54,6 +55,7 @@ public class MessageView extends LinearLayout {
         super.onFinishInflate();
 
         mTextViewForMessages = (TextView) findViewById(R.id.message);
+        mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
 
         mResources = getResources();
     }
@@ -68,13 +70,20 @@ public class MessageView extends LinearLayout {
         CharSequence message =  formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
+		mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling) {
+    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling, boolean isDelivered) {
         String contact = mResources.getString(R.string.me);
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
+        if (isDelivered) {
+        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_unread);
+        	mDeliveryIcon.setVisibility(VISIBLE);
+        } else {
+    		mDeliveryIcon.setVisibility(INVISIBLE);
+        }
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat,
@@ -82,11 +91,13 @@ public class MessageView extends LinearLayout {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
+		mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
     public void bindErrorMessage(int errCode) {
         mTextViewForMessages.setText(R.string.msg_sent_failed);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
+		mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
     private CharSequence formatMessage(String contact, String body,

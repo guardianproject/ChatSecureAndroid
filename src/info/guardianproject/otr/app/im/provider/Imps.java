@@ -975,6 +975,12 @@ public class Imps {
          * <P>Type: INTEGER</P>
          */
         String DISPLAY_SENT_TIME = "show_ts";
+
+        /**
+         * Whether a delivery confirmation was received.
+         * <P>Type: INTEGER</P>
+         */
+        String IS_DELIVERED = "is_delivered";
     }
 
     /**
@@ -1149,6 +1155,10 @@ public class Imps {
          */
         public static final Uri OTR_MESSAGES_CONTENT_URI_BY_ACCOUNT =
                 Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByAccount");
+
+        public static final Uri OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID =
+                Uri.parse("content://info.guardianproject.otr.app.im.provider.Imps/otrMessagesByPacketId");
+
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of

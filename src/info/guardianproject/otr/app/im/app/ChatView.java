@@ -268,6 +268,10 @@ public class ChatView extends LinearLayout {
                 info.guardianproject.otr.app.im.engine.Message msg, ImErrorInfo error) {
             scheduleRequery(0);
         }
+        
+        public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
+            scheduleRequery(0);
+        }
     };
 
     private Runnable mUpdateChatCallback = new Runnable() {
@@ -1579,6 +1583,7 @@ public class ChatView extends LinearLayout {
         private int mTypeColumn;
         private int mErrCodeColumn;
         private int mDeltaColumn;
+		private int mDeliveredColumn;
         private ChatBackgroundMaker mBgMaker;
 
         private LayoutInflater mInflater;
@@ -1599,6 +1604,7 @@ public class ChatView extends LinearLayout {
             mTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.TYPE);
             mErrCodeColumn = c.getColumnIndexOrThrow(Imps.Messages.ERROR_CODE);
             mDeltaColumn = c.getColumnIndexOrThrow(DeltaCursor.DELTA_COLUMN_NAME);
+            mDeliveredColumn = c.getColumnIndexOrThrow(Imps.Messages.IS_DELIVERED);
         }
 
         @Override
@@ -1624,6 +1630,7 @@ public class ChatView extends LinearLayout {
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
             Date date = showTimeStamp ? new Date(cursor.getLong(mDateColumn)) : null;
+            boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
 
             switch (type) {
                 case Imps.MessageType.INCOMING:
@@ -1638,7 +1645,7 @@ public class ChatView extends LinearLayout {
                     if (errCode != 0) {
                         messageView.bindErrorMessage(errCode);
                     } else {
-                        messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling());
+                        messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling(), isDelivered);
                     }
                     break;
 

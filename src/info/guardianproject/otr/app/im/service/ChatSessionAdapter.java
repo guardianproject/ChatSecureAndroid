@@ -39,12 +39,10 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import net.java.otr4j.session.SessionID;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -53,7 +51,6 @@ import android.net.Uri;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSession.Stub {
 
@@ -281,7 +278,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mAdaptee.sendMessageAsync(msg);
         long now = System.currentTimeMillis();
         // TODO remember message ID so we can notify user on receipt (XEP-0184)
-        insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING);
+        insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
     }
 
     /**
@@ -511,10 +508,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type) {
-        return insertMessageInDb(contact, body, time, type, 0/*No error*/);
+        return insertMessageInDb(contact, body, time, type, 0/*No error*/, "");
     }
 
-    Uri insertMessageInDb(String contact, String body, long time, int type, int errCode) {
+    Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {
         ContentValues values = new ContentValues(mIsGroupChat ? 4 : 3);
         values.put(Imps.Messages.BODY, body);
         values.put(Imps.Messages.DATE, time);
@@ -524,8 +521,17 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             values.put(Imps.Messages.NICKNAME, contact);
             values.put(Imps.Messages.IS_GROUP_CHAT, 1);
         }
+        values.put(Imps.Messages.IS_DELIVERED, 0);
+        values.put(Imps.Messages.PACKET_ID, id);
 
         return mContentResolver.insert(mMessageURI, values);
+    }
+
+    int updateConfirmInDb(String id, int value) {
+        Uri messageUri = Uri.parse(Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID + "/" + id);
+        ContentValues values = new ContentValues(1);
+        values.put(Imps.Messages.IS_DELIVERED, value);
+        return mContentResolver.update(messageUri, values, null, null);
     }
 
     class ListenerAdapter implements MessageListener, GroupMemberListener {
@@ -563,7 +569,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         public void onSendMessageError(ChatSession ses, final Message msg,
                 final ImErrorInfo error) {
             insertMessageInDb(null, null, System.currentTimeMillis(),
-                    Imps.MessageType.OUTGOING, error.getCode());
+                    Imps.MessageType.OUTGOING, error.getCode(), null);
 
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
@@ -643,18 +649,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 		public void onIncomingReceipt(ChatSession ses, String id) {
 			// TODO this just generates a debug message in the chat log.
 			// TODO Needs a real implementation.
-			Message message = new Message("receipt for " + id);
-			message.setDateTime(new Date());
-
-            insertOrUpdateChat(message.getBody());
-            long time = message.getDateTime().getTime();
-            insertMessageInDb("test", message.getBody(), time, Imps.MessageType.INCOMING);
+			updateConfirmInDb(id, 1);
 
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IChatListener listener = mRemoteListeners.getBroadcastItem(i);
                 try {
-                    listener.onIncomingMessage(ChatSessionAdapter.this, message);
+                    listener.onIncomingReceipt(ChatSessionAdapter.this, id);
                 } catch (RemoteException e) {
                     // The RemoteCallbackList will take care of removing the
                     // dead listeners.
