@@ -41,6 +41,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
+	public enum DeliveryState {
+		NEUTRAL,
+		DELIVERED,
+		UNDELIVERED
+	}
 
     private TextView mTextViewForMessages;
     private ImageView mDeliveryIcon;
@@ -73,16 +78,19 @@ public class MessageView extends LinearLayout {
 		mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling, boolean isDelivered) {
+    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling, DeliveryState delivery) {
         String contact = mResources.getString(R.string.me);
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
-        if (isDelivered) {
-        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_unread);
+        if (delivery == DeliveryState.DELIVERED) {
+        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+        	mDeliveryIcon.setVisibility(VISIBLE);
+        } else if (delivery == DeliveryState.UNDELIVERED) {
+        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
         	mDeliveryIcon.setVisibility(VISIBLE);
         } else {
-    		mDeliveryIcon.setVisibility(INVISIBLE);
+    		mDeliveryIcon.setVisibility(GONE);
         }
     }
 

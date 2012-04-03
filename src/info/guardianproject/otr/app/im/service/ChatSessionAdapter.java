@@ -508,7 +508,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type) {
-        return insertMessageInDb(contact, body, time, type, 0/*No error*/, "");
+        return insertMessageInDb(contact, body, time, type, 0/*No error*/, null);
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {

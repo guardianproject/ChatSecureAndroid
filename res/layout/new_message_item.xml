@@ -40,7 +40,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center_vertical"
 		    android:layout_marginLeft="6dp"
-		    /><!-- android:src="@drawable/ic_chat_msg_status_unread" --> 
+		    /> 
 
    	</LinearLayout>
 
