@@ -316,7 +316,6 @@ public class WelcomeActivity extends Activity {
                 return true;
                 
             case R.id.menu_about:
-                finish();
                 showAbout();
                 return true;
             
