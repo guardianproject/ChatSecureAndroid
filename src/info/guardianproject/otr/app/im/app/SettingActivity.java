@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -87,9 +88,11 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     		settings.setVibrate(prefs.getBoolean(key, true));
     	} else if (key.equals(getString(R.string.pref_notification_sound))){
     		// TODO sort out notification sound pref
-    		if (!prefs.getBoolean(key, false)) {
-    			settings.setRingtoneURI(null);
-    		}
+            if (prefs.getBoolean(key, false)) {
+            	settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
+            } else {
+            	settings.setRingtoneURI(null);
+            }
     	}
     	settings.close();
     }
