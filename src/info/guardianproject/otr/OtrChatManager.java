@@ -5,16 +5,21 @@ package info.guardianproject.otr;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.Hashtable;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
+import net.java.otr4j.io.SerializationUtils;
+import net.java.otr4j.io.messages.PlainTextMessage;
 import net.java.otr4j.session.OtrSm;
 import net.java.otr4j.session.OtrSm.OtrSmEngineHost;
 import net.java.otr4j.session.SessionID;
@@ -78,6 +83,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 	public void addOtrEngineListener (OtrEngineListener oel)
 	{
 		mOtrEngine.addOtrEngineListener(oel);
+	}
+	
+	public void setPolicy(int otrPolicy) {
+		mOtrEngineHost.setSessionPolicy(new OtrPolicyImpl(otrPolicy));
 	}
 	
 	public OtrAndroidKeyManagerImpl getKeyManager ()
@@ -231,15 +240,30 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		}
 	}
 	
-	public String encryptMessage(String localUserId, String remoteUserId, String msg){
+	public String transformSending(String localUserId, String remoteUserId, String msg){
 		
 		SessionID sessionId = getSessionId(localUserId,remoteUserId);
 
-		OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
+		if (mOtrEngine != null && sessionId != null) {
+			SessionStatus sessionStatus = mOtrEngine.getSessionStatus(sessionId);
+			OtrDebugLogger.log("session status: " + sessionStatus);
 
-		if(mOtrEngine != null && sessionId != null) {
 			try {
-				msg = mOtrEngine.transformSending(sessionId, msg);
+				OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
+				
+				if (sessionStatus == SessionStatus.ENCRYPTED) {
+					msg = mOtrEngine.transformSending(sessionId, msg);
+				} else if (sessionPolicy.getRequireEncryption()) {
+					mOtrEngine.startSession(sessionId);
+					msg = null;
+					// TODO postpone this message until encryption negotiated
+				} else if (sessionStatus == SessionStatus.PLAINTEXT &&
+						sessionPolicy.getAllowV2() &&
+						sessionPolicy.getSendWhitespaceTag()) {
+					// Work around asmack not sending whitespace tag for auto discovery
+					msg += " \t  \t\t\t\t \t \t \t   \t \t  \t   \t\t  \t ";
+					  
+				}
 			} catch (OtrException e) {
 				OtrDebugLogger.log( "error encrypting", e);
 			}	

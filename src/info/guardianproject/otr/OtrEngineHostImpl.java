@@ -108,7 +108,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 		return mPolicy;
 	}
 	
-	public void setSessionPolicty (OtrPolicy policy)
+	public void setSessionPolicy (OtrPolicy policy)
 	{
 		mPolicy = policy;
 	}

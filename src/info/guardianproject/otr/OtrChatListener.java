@@ -13,11 +13,6 @@ public class OtrChatListener implements MessageListener {
 	private OtrChatManager mOtrChatManager;
 	private MessageListener mMessageListener;
 
-	// we want to support OTR v2 only since v1 has security issues
-	//private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
-	//private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
-	private final static String OTR_HEADER = "?OTR";
-	
 	public OtrChatListener (OtrChatManager otrChatManager, MessageListener listener)
 	{
 		this.mOtrChatManager = otrChatManager;
