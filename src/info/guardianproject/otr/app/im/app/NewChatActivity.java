@@ -70,8 +70,6 @@ public class NewChatActivity extends Activity {
     private ChatSwitcher mChatSwitcher;
 
     private LayoutInflater mInflater;
-    
-    private ProgressDialog pbarDialog;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -287,45 +285,26 @@ public class NewChatActivity extends Activity {
     	//TODO OTRCHAT switch state on/off
     	
     	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
-    	 
+    	String msg;
+
     	try {
 			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
 			boolean desiredState;
-			
-			pbarDialog = new ProgressDialog( this );
-	    	
 
-	    	pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-	    	
-	    	
-
-			if (!isOtrEnabled)
-			{
+			if (!isOtrEnabled) {
 				otrChatSession.startChatEncryption();
 				desiredState = true;
-				pbarDialog.setMessage("Starting encrypted chat session...");
-			}
-			else
-			{
+				msg = new String("Starting encrypted chat session...");
+			} else {
 				otrChatSession.stopChatEncryption();
 				desiredState = false;
-				pbarDialog.setMessage("Stopping encrypted chat session...");
-
+				msg = new String("Stopping encrypted chat session...");
 			}
-			
-			pbarDialog.show();
+			Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 			new OtrStateCheckerThread(desiredState).start();
-			
-			updateOtrMenuState();
-			mChatView.updateWarningView();
-			
-			
-			
 		} catch (RemoteException e) {
 			Log.d("Gibber", "error getting remote activity",e);
 		}
-    	
-    	
     }
     
     private class OtrStateCheckerThread extends Thread 
@@ -338,14 +317,10 @@ public class NewChatActivity extends Activity {
     	{
     		otrChatSession = mChatView.getOtrChatSession();
     		this.desiredState = desiredState;
-    		
-    		
-    		
     	}
     	
     	public void run ()
     	{
-    		
     		while (currentState != desiredState)
     		{
 	    		try {
@@ -361,17 +336,14 @@ public class NewChatActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
     		}
-    		  handler.sendEmptyMessage(0);
+    		handler.sendEmptyMessage(0);
         }
 
         private Handler handler = new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
-             
-            	pbarDialog.dismiss();
             	mChatView.updateWarningView();
             	updateOtrMenuState();
             }
