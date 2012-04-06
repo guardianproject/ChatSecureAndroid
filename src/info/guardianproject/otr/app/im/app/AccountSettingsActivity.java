@@ -37,6 +37,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     private long mProviderId;
 
     EditTextPreference mXmppResource;
+    EditTextPreference mXmppResourcePrio;
     EditTextPreference mPort;
     EditTextPreference mServer;
     ListPreference mOtrMode;
@@ -56,6 +57,11 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
         mXmppResource.setText(text);
         if (text != null) {
         	mXmppResource.setSummary(text);
+        }
+        text = Integer.toString(settings.getXmppResourcePrio());
+        mXmppResourcePrio.setText(text);
+        if (text != null) {
+        	mXmppResourcePrio.setSummary(text);
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
@@ -90,6 +96,15 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     		if (value != null) {
     			mXmppResource.setSummary(value);
     		}
+    	} else if (key.equals(getString(R.string.pref_account_xmpp_resource_prio))) {
+    		value = prefs.getString(key, "5");
+    		try {
+    			settings.setXmppResourcePrio(Integer.parseInt(value));
+    		} catch (NumberFormatException nfe) {
+    			Toast.makeText(getBaseContext(), "Priority must be a number in the range [0 .. 127]",
+    					Toast.LENGTH_SHORT).show();
+    		}
+    		mXmppResource.setSummary(value);
     	} else if (key.equals(getString(R.string.pref_account_port))) {
     		value = prefs.getString(key, "5222");
     		try {

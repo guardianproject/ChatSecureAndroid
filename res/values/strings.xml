@@ -656,6 +656,7 @@
 	<string name="pref_account_pass">pref_account_pass</string>
 	<string name="pref_account_domain">pref_account_domain</string>
 	<string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+	<string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
 	<string name="pref_account_port">pref_account_port</string>
 	<string name="pref_account_server">pref_account_server</string>
 	<string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
@@ -701,6 +702,8 @@
 	<string name="server_port">Server Port</string>
 	<string name="xmpp_resource">XMPP Resource</string>
 	<string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+	<string name="xmpp_resource_prio_title">XMPP Resource Priority</string>
+	<string name="xmpp_resource_prio_summary">Messages to clients with multiple active resources will be sent to the resource with the highest priority</string>
 
 	<string name="btn_next">Next</string>
 	<string name="btn_back">Back</string>
