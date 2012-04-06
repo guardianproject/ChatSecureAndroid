@@ -285,7 +285,7 @@ public class NewChatActivity extends Activity {
     	//TODO OTRCHAT switch state on/off
     	
     	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
-    	String msg;
+    	int toastMsgId;
 
     	try {
 			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
@@ -294,13 +294,13 @@ public class NewChatActivity extends Activity {
 			if (!isOtrEnabled) {
 				otrChatSession.startChatEncryption();
 				desiredState = true;
-				msg = new String("Starting encrypted chat session...");
+				toastMsgId = R.string.starting_otr_chat;
 			} else {
 				otrChatSession.stopChatEncryption();
 				desiredState = false;
-				msg = new String("Stopping encrypted chat session...");
+				toastMsgId = R.string.stopping_otr_chat;
 			}
-			Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
 			new OtrStateCheckerThread(desiredState).start();
 		} catch (RemoteException e) {
 			Log.d("Gibber", "error getting remote activity",e);
