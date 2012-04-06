@@ -147,7 +147,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	@Override
 	public void injectMessage(SessionID sessionID, String text) {
-		
 		OtrDebugLogger.log( sessionID.toString() + ": injecting message: " + text);
 		
 		sendMessage(sessionID,text);
@@ -156,9 +155,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public void showError(SessionID sessionID, String error) {
-		
-		injectMessage(sessionID,error);
-
 		OtrDebugLogger.log( sessionID.toString() + ": ERROR=" + error);
 		
     	showDialog ("Encryption Error", error);
@@ -166,9 +162,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
 	@Override
 	public void showWarning(SessionID sessionID, String warning) {
-		
-		injectMessage(sessionID,warning);
-		
 		OtrDebugLogger.log( sessionID.toString() + ": WARNING=" +  warning);
 		
     	showDialog ("Encryption Warning", warning);
