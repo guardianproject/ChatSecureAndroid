@@ -306,6 +306,9 @@
     <string name="select_link_title">Select link</string>
     <!-- Displayed when there is no active chats in the chat dashboard.-->
     <string name="empty_chat_list">No active chats.</string>
+    <!--  Toast messages when starting/stopping OTR encryption for a chat -->
+    <string name ="starting_otr_chat">Starting encrypted chat session...</string>
+    <string name ="stopping_otr_chat">Stopping encrypted chat session...</string>
 
     <!-- Add contact screen -->
     <!-- This is the title of the Add Contact Screen. -->
