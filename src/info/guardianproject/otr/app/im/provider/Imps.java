@@ -1647,6 +1647,9 @@ public class Imps {
         /** The XMPP Resource string  */
         public static final String XMPP_RESOURCE = "pref_account_xmpp_resource";
 
+        /** The XMPP Resource priority string */
+        public static final String XMPP_RESOURCE_PRIO = "pref_account_xmpp_resource_prio";
+
         /** the port number to connect to */
         public static final String PORT = "pref_account_port";
 
@@ -1879,7 +1882,19 @@ public class Imps {
                 long providerId, String xmppResource) {
             putStringValue(cr, providerId, XMPP_RESOURCE, xmppResource);
         }
-        
+
+        /**
+         * A convenience method to set the XMPP Resource priority
+         *
+         * @param cr The ContentResolver to use to access the settings table
+         * @param providerId used to identify the set of settings for a given provider
+         * @param priority the XMPP Resource priority
+         */
+        public static void setXmppResourcePrio(ContentResolver cr,
+                long providerId, int priority) {
+            putLongValue(cr, providerId, XMPP_RESOURCE_PRIO, (long)priority);
+        }
+
         /**
          * A convenience method to set the TCP/IP port number to connect to
          * 
@@ -2149,6 +2164,14 @@ public class Imps {
             
             public String getXmppResource() {
                 return getString(XMPP_RESOURCE, "Gibberbot");
+            }
+
+            public void setXmppResourcePrio(int prio) {
+            	ProviderSettings.setXmppResourcePrio(mContentResolver, mProviderId, prio);
+            }
+
+            public int getXmppResourcePrio() {
+                return (int)getLong(XMPP_RESOURCE_PRIO, 5);
             }
 
             public void setPort(int port) {
