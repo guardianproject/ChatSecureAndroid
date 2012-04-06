@@ -527,8 +527,7 @@ public class WelcomeActivity extends Activity {
 			}
 		});
     	
-    	AlertDialog alert = ad.create();
-    	alert.show();
+    	ad.show();
   	}
     
 	
