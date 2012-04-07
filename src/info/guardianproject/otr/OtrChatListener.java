@@ -31,9 +31,7 @@ public class OtrChatListener implements MessageListener {
  		//remove port number from to/from names
  		String localUserId = OtrChatManager.processUserId(to);
  		String remoteUserId = OtrChatManager.processUserId(from);
-		 SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-
-		// mOtrChatManager.refreshSession(localUserId, remoteUserId);
+ 		SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
 
 		 
 			if (otrStatus == SessionStatus.ENCRYPTED)
@@ -55,8 +53,6 @@ public class OtrChatListener implements MessageListener {
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
-				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-				
 				if (body != null)
 				{
 					msg.setBody(body);
@@ -70,9 +66,6 @@ public class OtrChatListener implements MessageListener {
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
-				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-				
-				//if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
 				if (body != null)
 				{
 					msg.setBody(body);
@@ -83,7 +76,10 @@ public class OtrChatListener implements MessageListener {
 			{
 				mMessageListener.onIncomingMessage(session, msg);
 			}
-		//}
+			
+		if (mOtrChatManager.getSessionStatus(localUserId, remoteUserId) != otrStatus) {
+			mMessageListener.onStatusChanged(session);
+		}
 	}
 
 	@Override
@@ -102,5 +98,10 @@ public class OtrChatListener implements MessageListener {
 	@Override
 	public void onReceiptsExpected(ChatSession ses) {
 		mMessageListener.onReceiptsExpected(ses);
+	}
+
+	@Override
+	public void onStatusChanged(ChatSession session) {
+		mMessageListener.onStatusChanged(session);
 	}
 }

@@ -59,4 +59,6 @@ oneway interface IChatListener {
      */
     void onIncomingReceipt(IChatSession ses, in String packetId);
 
+	/** This method is called when OTR status changes */
+	void onStatusChanged(IChatSession ses);
 }

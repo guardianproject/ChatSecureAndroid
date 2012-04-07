@@ -289,67 +289,18 @@ public class NewChatActivity extends Activity {
 
     	try {
 			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
-			boolean desiredState;
 
 			if (!isOtrEnabled) {
 				otrChatSession.startChatEncryption();
-				desiredState = true;
 				toastMsgId = R.string.starting_otr_chat;
 			} else {
 				otrChatSession.stopChatEncryption();
-				desiredState = false;
 				toastMsgId = R.string.stopping_otr_chat;
 			}
 			Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
-			new OtrStateCheckerThread(desiredState).start();
 		} catch (RemoteException e) {
 			Log.d("Gibber", "error getting remote activity",e);
 		}
-    }
-    
-    private class OtrStateCheckerThread extends Thread 
-    {
-    	IOtrChatSession otrChatSession ;
-    	boolean currentState;
-    	boolean desiredState;
-    	
-    	public OtrStateCheckerThread(boolean desiredState) 
-    	{
-    		otrChatSession = mChatView.getOtrChatSession();
-    		this.desiredState = desiredState;
-    	}
-    	
-    	public void run ()
-    	{
-    		while (currentState != desiredState)
-    		{
-	    		try {
-	    			currentState = otrChatSession.isChatEncrypted();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    		handler.sendEmptyMessage(0);
-        }
-
-        private Handler handler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-            	mChatView.updateWarningView();
-            	updateOtrMenuState();
-            }
-      	
-    		
-    	};
     }
     
     private void updateOtrMenuState ()
