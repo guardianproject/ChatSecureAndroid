@@ -53,4 +53,10 @@ oneway interface IChatListener {
      * this ChatSession.
      */
     void onInviteError(IChatSession ses, in ImErrorInfo error);
+
+    /**
+     * This method is called when a new receipt has arrived.
+     */
+    void onIncomingReceipt(IChatSession ses, in String packetId);
+
 }

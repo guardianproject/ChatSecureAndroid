@@ -24,11 +24,24 @@
     android:layout_height="wrap_content"
     android:background="#ccffffff" >
 
-    <TextView android:id="@+id/message"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-         android:autoLink="web"
-         />
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:orientation="horizontal">
+
+	    <TextView android:id="@+id/message"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	         android:autoLink="web"
+	         />
+		<ImageView
+		    android:id="@+id/iconView"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_vertical"
+		    android:layout_marginLeft="6dp"
+		    /> 
+
+   	</LinearLayout>
 
 </view>
