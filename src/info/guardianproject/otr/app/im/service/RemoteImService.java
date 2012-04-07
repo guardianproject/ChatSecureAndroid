@@ -121,37 +121,13 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	
 	private synchronized void initOtr()
 	{
+    	int otrPolicy = convertPolicy();
 		
 		if (mOtrChatManager == null)
 		{
 	        
 	        try
 	        {
-	        	int otrPolicy = OtrPolicy.OPPORTUNISTIC;	        	
-	        	
-	        	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-	        	
-	        	String otrModeSelect = prefs.getString("pref_security_otr_mode", "auto");
-	        	
-	        	if (otrModeSelect.equals("auto"))
-	        	{
-	        		otrPolicy = OtrPolicy.OPPORTUNISTIC;
-	        	}
-	        	else if (otrModeSelect.equals("disabled"))
-	        	{
-	        		otrPolicy = OtrPolicy.NEVER;
-
-	        	}
-	        	else if (otrModeSelect.equals("force"))
-	        	{
-	        		otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
-
-	        	}
-	        	else if (otrModeSelect.equals("requested"))
-	        	{
-	        		otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
-	        	}
-	        				        	
 		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
 		        mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
 		        mOtrChatManager.addOtrEngineListener(this);
@@ -160,8 +136,38 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	        {
 	        	debug( "can't get otr manager",e);
 	        }
+		} else {
+			mOtrChatManager.setPolicy(otrPolicy);
 		}
     }
+
+	private int convertPolicy() {
+		int otrPolicy = OtrPolicy.OPPORTUNISTIC;	        	
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+		
+		String otrModeSelect = prefs.getString("pref_security_otr_mode", "auto");
+		
+		if (otrModeSelect.equals("auto"))
+		{
+			otrPolicy = OtrPolicy.OPPORTUNISTIC;
+		}
+		else if (otrModeSelect.equals("disabled"))
+		{
+			otrPolicy = OtrPolicy.NEVER;
+
+		}
+		else if (otrModeSelect.equals("force"))
+		{
+			otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+
+		}
+		else if (otrModeSelect.equals("requested"))
+		{
+			otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
+		}
+		return otrPolicy;
+	}
 
     @Override
     public void onCreate() {
