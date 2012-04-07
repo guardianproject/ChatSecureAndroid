@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatListener;
 
+import android.os.RemoteException;
 import android.util.Log;
 
 public class ChatListenerAdapter extends IChatListener.Stub {
@@ -67,5 +68,13 @@ public class ChatListenerAdapter extends IChatListener.Stub {
             Log.d(TAG, "onConvertedToGroupChat(" + ses + ")");
         }
     }
+
+	@Override
+	public void onIncomingReceipt(IChatSession ses, String packetId)
+			throws RemoteException {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "onIncomingReceipt(" + ses + "," + packetId + ")");
+        }
+	}
 
 }

@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
@@ -138,6 +139,9 @@ public class ChatView extends LinearLayout {
     private ImageView mWarningIcon;
     private TextView mWarningText;
 
+    private ImageView mDeliveryIcon;
+	private boolean mExpectingDelivery;
+
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
     private IChatSessionListener mChatSessionListener;
@@ -164,6 +168,7 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
     private static final long SHOW_TIME_STAMP_INTERVAL = 60 * 1000;     // 1 minute
+    private static final long SHOW_DELIVERY_INTERVAL = 10 * 1000;     // 10 seconds
     private static final int QUERY_TOKEN = 10;
 
     // Async QueryHandler
@@ -268,6 +273,10 @@ public class ChatView extends LinearLayout {
                 info.guardianproject.otr.app.im.engine.Message msg, ImErrorInfo error) {
             scheduleRequery(0);
         }
+        
+        public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
+            scheduleRequery(0);
+        }
     };
 
     private Runnable mUpdateChatCallback = new Runnable() {
@@ -326,6 +335,7 @@ public class ChatView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         mStatusIcon     = (ImageView) findViewById(R.id.statusIcon);
+        mDeliveryIcon     = (ImageView) findViewById(R.id.deliveryIcon);
         mTitle          = (TextView) findViewById(R.id.title);
         mHistory        = (ListView) findViewById(R.id.history);
         mComposeMessage       = (EditText) findViewById(R.id.composeMessage);
@@ -507,9 +517,11 @@ public class ChatView extends LinearLayout {
         if (mChatId != oldChatId) {
             startQuery();
             mComposeMessage.setText("");
+            mExpectingDelivery = false;
         }
 
         updateWarningView();
+        setDeliveryIcon();
     }
 
     private void updateContactInfo() {
@@ -553,6 +565,14 @@ public class ChatView extends LinearLayout {
             BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
             int presenceResId = PresenceUtils.getStatusIconId(mPresenceStatus);
             mStatusIcon.setImageDrawable(brandingRes.getDrawable(presenceResId));
+        }
+    }
+
+    private void setDeliveryIcon() {
+        if (mExpectingDelivery) {
+            mDeliveryIcon.setVisibility(VISIBLE);
+        } else {
+            mDeliveryIcon.setVisibility(GONE);
         }
     }
 
@@ -1579,6 +1599,7 @@ public class ChatView extends LinearLayout {
         private int mTypeColumn;
         private int mErrCodeColumn;
         private int mDeltaColumn;
+		private int mDeliveredColumn;
         private ChatBackgroundMaker mBgMaker;
 
         private LayoutInflater mInflater;
@@ -1599,6 +1620,7 @@ public class ChatView extends LinearLayout {
             mTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.TYPE);
             mErrCodeColumn = c.getColumnIndexOrThrow(Imps.Messages.ERROR_CODE);
             mDeltaColumn = c.getColumnIndexOrThrow(DeltaCursor.DELTA_COLUMN_NAME);
+            mDeliveredColumn = c.getColumnIndexOrThrow(Imps.Messages.IS_DELIVERED);
         }
 
         @Override
@@ -1623,7 +1645,14 @@ public class ChatView extends LinearLayout {
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
-            Date date = showTimeStamp ? new Date(cursor.getLong(mDateColumn)) : null;
+            long timestamp = cursor.getLong(mDateColumn);
+			Date date = showTimeStamp ? new Date(timestamp) : null;
+            boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
+            boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
+            MessageView.DeliveryState deliveryState = DeliveryState.NEUTRAL;
+            if (showDelivery && !isDelivered && mExpectingDelivery) {
+            	deliveryState = DeliveryState.UNDELIVERED;
+            }
 
             switch (type) {
                 case Imps.MessageType.INCOMING:
@@ -1638,7 +1667,7 @@ public class ChatView extends LinearLayout {
                     if (errCode != 0) {
                         messageView.bindErrorMessage(errCode);
                     } else {
-                        messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling());
+                        messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling(), deliveryState);
                     }
                     break;
 
@@ -1654,14 +1683,21 @@ public class ChatView extends LinearLayout {
            
             updateWarningView();
 
-            // if showTimeStamp is false for the latest message, then set a timer to query the
-            // cursor again in a minute, so we can update the last message timestamp if no new
-            // message is received
-            if (cursor.getPosition() == cursor.getCount()-1) {
+            if (!mExpectingDelivery && isDelivered) {
+            	log("Setting delivery icon");
+            	mExpectingDelivery = true;
+            	setDeliveryIcon();
+            	scheduleRequery(0); // FIXME workaround to no refresh
+            } else if (cursor.getPosition() == cursor.getCount()-1) {
+                // if showTimeStamp is false for the latest message, then set a timer to query the
+                // cursor again in a minute, so we can update the last message timestamp if no new
+                // message is received
                 if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
                     log("delta = " + delta + ", showTs=" + showTimeStamp);
                 }
-                if (!showTimeStamp) {
+                if (!showDelivery) {
+                	scheduleRequery(SHOW_DELIVERY_INTERVAL);
+                } else if (!showTimeStamp) {
                     scheduleRequery(SHOW_TIME_STAMP_INTERVAL);
                 } else {
                     cancelRequery();
