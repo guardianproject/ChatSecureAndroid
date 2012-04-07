@@ -95,7 +95,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         	RemoteImService.debug("mOtrChatManager == null");
         } else {
         	RemoteImService.debug( "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
-        	mOtrChatManager.startSession(userName, contactAddress);
+        	//mOtrChatManager.startSession(userName, contactAddress);
         }
         return getChatSessionAdapter(session);
     }

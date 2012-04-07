@@ -13,11 +13,6 @@ public class OtrChatListener implements MessageListener {
 	private OtrChatManager mOtrChatManager;
 	private MessageListener mMessageListener;
 
-	// we want to support OTR v2 only since v1 has security issues
-	//private final static String OTR_V12_STRING = "?OTR?v2?"; // this means offering v1 or v2
-	//private final static String OTR_V2ONLY_STRING = "?OTRv2?"; // this means offering v2 only
-	private final static String OTR_HEADER = "?OTR";
-	
 	public OtrChatListener (OtrChatManager otrChatManager, MessageListener listener)
 	{
 		this.mOtrChatManager = otrChatManager;
@@ -36,9 +31,7 @@ public class OtrChatListener implements MessageListener {
  		//remove port number from to/from names
  		String localUserId = OtrChatManager.processUserId(to);
  		String remoteUserId = OtrChatManager.processUserId(from);
-		 SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-
-		// mOtrChatManager.refreshSession(localUserId, remoteUserId);
+ 		SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
 
 		 
 			if (otrStatus == SessionStatus.ENCRYPTED)
@@ -60,8 +53,6 @@ public class OtrChatListener implements MessageListener {
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
-				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-				
 				if (body != null)
 				{
 					msg.setBody(body);
@@ -75,9 +66,6 @@ public class OtrChatListener implements MessageListener {
 				//this is most likely a DH setup message, so we will process and swallow it
 				body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
 				
-				otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-				
-				//if (body != null && otrStatus != SessionStatus.ENCRYPTED && (!body.startsWith(OTR_HEADER)))
 				if (body != null)
 				{
 					msg.setBody(body);
@@ -88,7 +76,10 @@ public class OtrChatListener implements MessageListener {
 			{
 				mMessageListener.onIncomingMessage(session, msg);
 			}
-		//}
+			
+		if (mOtrChatManager.getSessionStatus(localUserId, remoteUserId) != otrStatus) {
+			mMessageListener.onStatusChanged(session);
+		}
 	}
 
 	@Override
@@ -107,5 +98,10 @@ public class OtrChatListener implements MessageListener {
 	@Override
 	public void onReceiptsExpected(ChatSession ses) {
 		mMessageListener.onReceiptsExpected(ses);
+	}
+
+	@Override
+	public void onStatusChanged(ChatSession session) {
+		mMessageListener.onStatusChanged(session);
 	}
 }

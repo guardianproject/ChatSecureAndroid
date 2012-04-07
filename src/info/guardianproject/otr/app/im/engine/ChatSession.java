@@ -44,7 +44,6 @@ public class ChatSession {
     private ChatSessionManager mManager;
     
     private OtrChatManager mOtrChatManager;
-	private final static String OTR_HEADER = "?OTR";
 
     
     private CopyOnWriteArrayList<MessageListener> mListeners;
@@ -133,15 +132,9 @@ public class ChatSession {
         String localUserId = message.getFrom().getFullName();
         String remoteUserId =  message.getTo().getFullName();
         
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
-        
-        if (otrStatus == SessionStatus.ENCRYPTED)
-        {
-        	//this is encrypted phase
-        	String encryptedBody = mOtrChatManager.encryptMessage(localUserId, 
-        			remoteUserId, message.getBody());
-        	message.setBody(encryptedBody);
-        }
+        String transformBody = mOtrChatManager.transformSending(localUserId, 
+        		remoteUserId, message.getBody());
+        message.setBody(transformBody);
         
         mManager.sendMessageAsync(this, message);
     }

@@ -669,6 +669,21 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 			// TODO
 			
 		}
+
+		@Override
+		public void onStatusChanged(ChatSession session) {
+            final int N = mRemoteListeners.beginBroadcast();
+            for (int i = 0; i < N; i++) {
+                IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                try {
+                    listener.onStatusChanged(ChatSessionAdapter.this);
+                } catch (RemoteException e) {
+                    // The RemoteCallbackList will take care of removing the
+                    // dead listeners.
+                }
+            }
+            mRemoteListeners.finishBroadcast();
+		}
     }
 
     class ChatConvertor implements GroupListener, GroupMemberListener {

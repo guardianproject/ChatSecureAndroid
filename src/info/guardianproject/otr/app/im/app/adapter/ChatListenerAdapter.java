@@ -77,4 +77,11 @@ public class ChatListenerAdapter extends IChatListener.Stub {
         }
 	}
 
+	@Override
+	public void onStatusChanged(IChatSession ses)
+			throws RemoteException {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "onStatusChanged(" + ses + ")");
+        }
+	}
 }

@@ -203,9 +203,9 @@ public class ChatView extends LinearLayout {
 	
     private class RequeryCallback implements Runnable {
         public void run() {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+//            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
                 log("RequeryCallback");
-            }
+//            }
             requeryCursor();
         }
     }
@@ -277,6 +277,10 @@ public class ChatView extends LinearLayout {
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
             scheduleRequery(0);
         }
+        
+        public void onStatusChanged(IChatSession ses) throws RemoteException {
+        	scheduleRequery(0);
+        };
     };
 
     private Runnable mUpdateChatCallback = new Runnable() {
@@ -808,8 +812,9 @@ public class ChatView extends LinearLayout {
             return;
         }
         
-// TODO OTRCHAT updateSecureWarning
-//        updateSecureWarning ();
+        // This is redundant if there are messages in view, because the cursor requery will update everything.
+        // However, if there are no messages, no update will trigger below, and we still want this to update.
+        updateWarningView();
         
         // TODO: async query?
         Cursor cursor = getMessageCursor();
