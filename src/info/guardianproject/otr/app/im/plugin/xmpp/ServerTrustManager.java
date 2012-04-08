@@ -316,7 +316,7 @@ class ServerTrustManager implements X509TrustManager {
 		
 		try
 		{
-			showToolbarNotification(title, msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, -1, intent);
+			showToolbarNotification(title, msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key, Notification.FLAG_AUTO_CANCEL, intent);
 		}
 		catch (Exception e)
 		{
@@ -326,16 +326,15 @@ class ServerTrustManager implements X509TrustManager {
     
     private void showToolbarNotification (String title, String notifyMsg, int notifyId, int icon, int flags, Intent nIntent) throws Exception
 	{ 
-	
-		
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
 		
 		CharSequence tickerText = notifyMsg;
 		long when = System.currentTimeMillis();
 
 		Notification notification = new Notification(icon, tickerText, when);
-		//notification.flags |= flags;
+		if (flags > 0) {
+			notification.flags |= flags;
+		}
 
 		CharSequence contentTitle = context.getString(R.string.app_name) + ": " + title;
 		CharSequence contentText = notifyMsg;
@@ -345,9 +344,8 @@ class ServerTrustManager implements X509TrustManager {
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 
 		mNotificationManager.notify(notifyId, notification);
-
-
 	}
+
     /**
      * Returns the identity of the remote server as defined in the specified certificate. The
      * identity is defined in the subjectDN of the certificate and it can also be defined in

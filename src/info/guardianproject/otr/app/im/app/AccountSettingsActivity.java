@@ -95,7 +95,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     		try {
     			settings.setPort(Integer.parseInt(value));
     		} catch (NumberFormatException nfe) {
-    			// TODO port numbers with non-int content should be handled better
     			Toast.makeText(getBaseContext(), "Port number must be a number",
     					Toast.LENGTH_SHORT).show();     
     		}
