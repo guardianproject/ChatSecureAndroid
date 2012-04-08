@@ -218,6 +218,10 @@ public abstract class ImConnection {
      * Log out from the IM server.
      */
     public abstract void logoutAsync();
+    
+    /** Immediate logout */
+    
+    public abstract void logout();
 
     /**
      * Suspend connection with the IM server.
