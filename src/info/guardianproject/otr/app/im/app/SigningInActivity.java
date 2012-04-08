@@ -372,15 +372,7 @@ public class SigningInActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == ID_CANCEL_SIGNIN) {
             if (mConn != null) {
-                try {
-                    if (mConn.getState() == ImConnection.LOGGING_IN) {
-                        
-                    	cancelSignIn();
-                    	
-                    }
-                } catch (RemoteException e) {
-                    Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared!");
-                }
+            	cancelSignIn();
             }
             return true;
         } else {
@@ -522,8 +514,12 @@ public class SigningInActivity extends Activity {
     	try
     	{
     		log("canceling login");
-    		if (mConn != null)
-    			mConn.cancelLogin();
+            try {
+        		if (mConn != null && mConn.getState() == ImConnection.LOGGING_IN)
+        			mConn.cancelLogin();
+            } catch (RemoteException e) {
+                Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared!");
+            }
     		
     		showAccount();
     		finish();
