@@ -188,8 +188,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             // too late
             return;
         }
-
-        logout();
+        mConnectionState = ImConnection.LOGGING_OUT;
+        mConnection.logout();
     }
 
     void suspend() {

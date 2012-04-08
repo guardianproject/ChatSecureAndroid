@@ -802,8 +802,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			}
 		});
 	}
+
+	// Force immediate logout
+	public void logout() {
+		do_logout();
+	}
 	
-	// Runs in executor thread
+	// Usually runs in executor thread, unless called from logout()
 	private void do_logout() {
 		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);

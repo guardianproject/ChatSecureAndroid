@@ -277,4 +277,8 @@ public class LoopbackConnection extends ImConnection {
 
 	public void setProxy(String type, String host, int port) {
 	}
+
+	@Override
+	public void logout() {
+	}
 }
