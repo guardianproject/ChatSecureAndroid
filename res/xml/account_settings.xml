@@ -28,6 +28,8 @@
 	<EditTextPreference android:key="@string/pref_account_port"
 		android:title="@string/server_port"
 		android:defaultValue="5222"
+		android:numeric="integer"
+		android:maxLength="5"
 		android:summary="@string/tcp_port_for_xmpp_server" />
 	<EditTextPreference android:key="@string/pref_account_server"
 		android:title="@string/connect_server"

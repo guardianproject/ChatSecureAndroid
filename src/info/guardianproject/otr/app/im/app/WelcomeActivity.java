@@ -316,7 +316,6 @@ public class WelcomeActivity extends Activity {
                 return true;
                 
             case R.id.menu_about:
-                finish();
                 showAbout();
                 return true;
             
@@ -528,8 +527,7 @@ public class WelcomeActivity extends Activity {
 			}
 		});
     	
-    	AlertDialog alert = ad.create();
-    	alert.show();
+    	ad.show();
   	}
     
 	

@@ -282,25 +282,24 @@ public class NewChatActivity extends Activity {
     
     private void switchOtrState ()
     {
-    	//TODO OTRCHAT switch state on/off
-    	
-    	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
-    	int toastMsgId;
+	    //TODO OTRCHAT switch state on/off
 
-    	try {
-			boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+	    IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+	    int toastMsgId;
 
-			if (!isOtrEnabled) {
-				otrChatSession.startChatEncryption();
-				toastMsgId = R.string.starting_otr_chat;
-			} else {
-				otrChatSession.stopChatEncryption();
-				toastMsgId = R.string.stopping_otr_chat;
-			}
-			Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
-		} catch (RemoteException e) {
-			Log.d("Gibber", "error getting remote activity",e);
-		}
+	    try {
+		    boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+		    if (!isOtrEnabled) {
+			    otrChatSession.startChatEncryption();
+			    toastMsgId = R.string.starting_otr_chat;
+		    } else {
+			    otrChatSession.stopChatEncryption();
+			    toastMsgId = R.string.stopping_otr_chat;
+		    }
+		    Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
+	    } catch (RemoteException e) {
+	    	Log.d("Gibber", "error getting remote activity",e);
+	    }
     }
     
     private void updateOtrMenuState ()
