@@ -33,7 +33,7 @@ import org.jivesoftware.smack.util.Base64;
 
 public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
-	private OtrKeyManagerStore store;
+	private SimplePropertiesStore store;
 
 	private OtrCryptoEngineImpl cryptoEngine;
 	
@@ -53,16 +53,16 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 	
 	private OtrAndroidKeyManagerImpl(String filepath) throws IOException {
-		this.store = new DefaultPropertiesStore(filepath);
+		this.store = new SimplePropertiesStore(filepath);
 
 		cryptoEngine = new OtrCryptoEngineImpl();
 	}
 
-	class DefaultPropertiesStore implements OtrKeyManagerStore {
+	class SimplePropertiesStore implements OtrKeyManagerStore {
 		private Properties properties = new Properties();
 		private File mStoreFile;
 		
-		public DefaultPropertiesStore(String filepath) {
+		public SimplePropertiesStore(String filepath) {
 			mStoreFile = new File(filepath);
 			properties.clear();
 			
@@ -138,6 +138,17 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			}
 		}
 
+		// Store as hex bytes
+		public void setPropertyHex(String id, byte[] value) {
+			properties.setProperty(id, new String(Hex.encode(value)));
+			
+			try {
+				this.store();
+			} catch (Exception e) {
+				OtrDebugLogger.log("store not saved",e);
+			}
+		}
+
 		public void removeProperty(String id) {
 			properties.remove(id);
 
@@ -148,6 +159,17 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			
 			if (value != null)
 				return Base64.decode(value);
+			return 
+				null;
+		}
+
+
+		// Load from hex bytes
+		public byte[] getPropertyHexBytes(String id) {
+			String value = properties.getProperty(id);
+			
+			if (value != null)
+				return Hex.decode(value);
 			return 
 				null;
 		}
@@ -223,7 +245,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		// Stash fingerprint for consistency.
 		try {
 			String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-			this.store.setProperty(accountID + ".fingerprint",
+			this.store.setPropertyHex(accountID + ".fingerprint",
 					Hex.decode(fingerprintString));
 		} catch (OtrCryptoException e) {
 			e.printStackTrace();
@@ -260,7 +282,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 	}
 
 	public String getRemoteFingerprint(String userId) {
-		byte[] fingerprint = this.store.getPropertyBytes(userId + ".fingerprint");
+		byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
 		if (fingerprint != null) {
 			// If we have a fingerprint stashed, assume it is correct.
 			return new String(Hex.encode(fingerprint, 0, fingerprint.length));
@@ -272,7 +294,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 			// Store the fingerprint, for posterity.
 			String fingerprintString =
 					new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
-			this.store.setProperty(userId + ".fingerprint", Hex.decode(fingerprintString));
+			this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
 			return fingerprintString;
 		} catch (OtrCryptoException e) {
 			e.printStackTrace();
@@ -393,7 +415,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 		// and is useful for transferring rosters to other apps.
 		try {
 			String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-			this.store.setProperty(userId + ".fingerprint",
+			this.store.setPropertyHex(userId + ".fingerprint",
 					Hex.decode(fingerprintString));
 		} catch (OtrCryptoException e) {
 			e.printStackTrace();
