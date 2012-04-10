@@ -522,6 +522,7 @@ public class ChatView extends LinearLayout {
             startQuery();
             mComposeMessage.setText("");
             mExpectingDelivery = false;
+            mOtrChatSession = null;
         }
 
         updateWarningView();
