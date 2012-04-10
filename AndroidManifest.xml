@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="11" ></uses-sdk>
+<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="4"></uses-sdk>
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
