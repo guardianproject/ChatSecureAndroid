@@ -104,7 +104,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     			Toast.makeText(getBaseContext(), "Priority must be a number in the range [0 .. 127]",
     					Toast.LENGTH_SHORT).show();
     		}
-    		mXmppResource.setSummary(value);
+    		mXmppResourcePrio.setSummary(value);
     	} else if (key.equals(getString(R.string.pref_account_port))) {
     		value = prefs.getString(key, "5222");
     		try {
@@ -145,6 +145,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     		throw new RuntimeException("AccountSettingsActivity must be created with an provider id");
     	}
     	mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
+    	mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
     	mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
     	mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
     	mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
