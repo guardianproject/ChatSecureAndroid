@@ -126,6 +126,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private String mUsername;
 	private String mPassword;
 	private String mResource;
+	private int mPriority;
 	
 	public XmppConnection(Context context) {
 		super(context);
@@ -230,7 +231,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		String statusText = presence.getStatusText();
         Type type = Type.available;
         Mode mode = Mode.available;
-        int priority = 20;
+        int priority = mPriority;
         if (presence.getStatus() == Presence.AWAY) {
         	priority = 10;
         	mode = Mode.away;
@@ -248,6 +249,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         	type = Type.unavailable;
         	statusText = "Offline";
         }
+        
+        // The user set priority is the maximum allowed
+        if (priority > mPriority)
+        	priority = mPriority;
+        
 		org.jivesoftware.smack.packet.Presence packet = 
         	new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
 		
@@ -431,6 +437,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		String domain = providerSettings.getDomain();
 		String server = providerSettings.getServer();
 		String xmppResource = providerSettings.getXmppResource();
+		mPriority = providerSettings.getXmppResourcePrio();
 		int serverPort = providerSettings.getPort();
 		
 		providerSettings.close(); // close this, which was opened in do_login()

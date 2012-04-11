@@ -97,7 +97,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     			mXmppResource.setSummary(value);
     		}
     	} else if (key.equals(getString(R.string.pref_account_xmpp_resource_prio))) {
-    		value = prefs.getString(key, "5");
+    		value = prefs.getString(key, "20");
     		try {
     			settings.setXmppResourcePrio(Integer.parseInt(value));
     		} catch (NumberFormatException nfe) {
