@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,6 +40,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class LandingPage extends ListActivity implements View.OnCreateContextMenuListener {
     private static final String TAG = ImApp.LOG_TAG;
@@ -249,28 +252,45 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(ID_SIGN_OUT_ALL).setVisible(!allAccountsSignedOut());
+        menu.findItem(R.id.menu_sign_out_all).setVisible(!allAccountsSignedOut());
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ID_SIGN_OUT_ALL, 0, R.string.menu_sign_out_all)
-                .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.accounts_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case ID_SIGN_OUT_ALL:
+            case R.id.menu_sign_out_all:
                 signOutAll();
                 return true;
+            case R.id.menu_new_account:
+            	createAccount();
+            	return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    private void createAccount() {
+        final ImPluginHelper helper = ImPluginHelper.getInstance(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.account_select_type);
+        final String[] items = helper.getProviderNames().toArray(new String[0]);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+        	public void onClick(DialogInterface dialog, int pos) {
+        		helper.createAdditionalProvider(items[pos]);
+        	}});
+        AlertDialog dialog = builder.create();
+        dialog.show();
+	}
+
+
+	@Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info;
         try {
@@ -340,6 +360,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             {
                 Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
                 getContentResolver().delete(accountUri, null, null);
+                Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
+                getContentResolver().delete(providerUri, null, null);
                 // Requery the cursor to force refreshing screen
                 providerCursor.requery();
                 return true;
