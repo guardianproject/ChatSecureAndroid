@@ -177,7 +177,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
             return true;
      
 	        case R.id.menu_view_accounts:
-	        	startActivity(getEditAccountIntent());           
+//	        	startActivity(getEditAccountIntent());
+	        	startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
 	            return true;
 	            
             case R.id.menu_settings:

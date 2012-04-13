@@ -308,7 +308,8 @@ public class WelcomeActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.menu_account_settings:
                 finish();
-                showAccountSetup();                
+                //showAccountSetup();
+                showAccounts();
                 return true;
                 
             case R.id.menu_about:
@@ -456,6 +457,10 @@ public class WelcomeActivity extends Activity {
         } catch (RemoteException ex) {
             Log.e(TAG, "signOut failed", ex);
         }
+    }
+
+    void showAccounts() {
+    	startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
     }
 
     Intent getCreateAccountIntent() {

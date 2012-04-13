@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
  * Copyright (C) 2008 Esmertec AG.
  * Copyright (C) 2008 The Android Open Source Project
@@ -14,25 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package info.guardianproject.otr.app.im.app;
-
-import info.guardianproject.otr.app.im.provider.Imps;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-
-public class ChooseAccountActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setType(Imps.Provider.CONTENT_TYPE);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-        finish();
-    }
-}
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+ <item android:id="@+id/menu_sign_out_all"
+        android:title="@string/menu_sign_out_all"
+         android:icon="@android:drawable/ic_menu_close_clear_cancel"
+         />
+ <item android:id="@+id/menu_new_account"
+        android:title="@string/menu_new_account"
+         android:icon="@android:drawable/ic_menu_add"
+         />
+</menu>

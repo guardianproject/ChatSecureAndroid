@@ -532,29 +532,9 @@ public class SigningInActivity extends Activity {
     
     private void showAccount() 
     {
-        ContentResolver cr = getContentResolver();
-        
-        Cursor c = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                WelcomeActivity.PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        
-
-        if (!c.moveToFirst()) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("No data for " + accountData);
-            }
-            c.close();
-            finish();
-            return;
-        }
-
-    	 Intent intent = new Intent(Intent.ACTION_EDIT,
-                 ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
-                         c.getLong(WelcomeActivity.ACTIVE_ACCOUNT_ID_COLUMN)));
+    	 Intent intent = new Intent(Intent.ACTION_EDIT, accountData);
          intent.putExtra("isSignedIn", false);
-         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
+//         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
          startActivity(intent);
 
     }
