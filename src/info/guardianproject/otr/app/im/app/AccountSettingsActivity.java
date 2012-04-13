@@ -122,6 +122,10 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	// Set dummy name for preferences so that they don't mix with global ones.
+    	// FIXME we should not be writing these out to a file, since they are written to
+    	// the DB in onSharedPreferenceChanged().
+    	getPreferenceManager().setSharedPreferencesName("account");
     	addPreferencesFromResource(R.xml.account_settings);
     	Intent intent = getIntent();
     	mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
