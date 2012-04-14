@@ -108,7 +108,7 @@ public class AccountActivity extends Activity {
     String mUserName;
     String mDomain;
     int mPort;
-    private boolean mHaveSetUseTor = false;
+    
     private String mOriginalUserAccount;
     
     private final static int DEFAULT_PORT = 5222;
@@ -125,10 +125,47 @@ public class AccountActivity extends Activity {
 
         setContentView(R.layout.account_activity);
         mEditUserAccount = (EditText)findViewById(R.id.edtName);
+        
+        mEditUserAccount.addTextChangedListener(new TextWatcher (){
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+
+				String username = arg0.toString();
+            	if (parseAccount(username)) {
+            			//Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+            			settingsForDomain(mDomain, mPort);
+            			mOriginalUserAccount = username;
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				
+			}
+        	
+        });
+        
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
  //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
         mUseTor = (CheckBox)findViewById(R.id.useTor);
+        mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+
+             	
+             	updateUseTor(isChecked);
+            }
+        });
+        
         mBtnSignIn = (Button)findViewById(R.id.btnSignIn);
         
         mBtnAdvanced = (Button)findViewById(R.id.btnAdvanced);
@@ -290,18 +327,8 @@ public class AccountActivity extends Activity {
         mBtnSignIn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	
-            	String username = mEditUserAccount.getText().toString();
             	
-            	if (!username.equals(mOriginalUserAccount)) {
-            		if (parseAccount(username)) {
-            			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-            			settingsForDomain(mDomain, mPort);
-            			mHaveSetUseTor = false;
-            		}
-				}
     			
-    			
-            	
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
 
@@ -354,19 +381,7 @@ public class AccountActivity extends Activity {
             }
 
             void signIn(boolean rememberPass, String pass) {
-                final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        getContentResolver(),
-                        mProviderId,
-                        false /* don't keep updated */,
-                        null /* no handler */);
-                
-                if (!mHaveSetUseTor && mUseTor.isChecked()) {
-                	// if using Tor, disable DNS SRV to reduce anonymity leaks
-                	settings.setDoDnsSrv(false);
-                	mHaveSetUseTor = true;
-                }
-            	settings.setUseTor(mUseTor.isChecked());
-            	settings.close();
+               
                 
                 Intent intent = new Intent(AccountActivity.this, SigningInActivity.class);
                 intent.setData(mAccountUri);
@@ -400,6 +415,52 @@ public class AccountActivity extends Activity {
        
         updateWidgetState();
                 
+    }
+    
+    private void updateUseTor (boolean useTor)
+    {
+    	
+    	 final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                 getContentResolver(),
+                 mProviderId,
+                 false /* don't keep updated */,
+                 null /* no handler */);
+         
+     	// if using Tor, disable DNS SRV to reduce anonymity leaks
+     	settings.setDoDnsSrv(!useTor);
+     	
+     	String server = "";
+     	
+     	if (useTor)
+     	{
+	     	server = settings.getDomain();
+	     	String domain = settings.getDomain().toLowerCase();
+	     	
+	     	// a little bit of custom handling here
+	     	if (domain.equals("gmail.com"))
+	     	{
+	     		server = "talk.l.google.com";
+	     	}
+	     	else if (domain.equals("jabber.ccc.de"))
+	     	{
+	     		server = "okj7xc6j2szr2y75.onion";
+	     	}
+	     	else if (domain.equals("jabber.org"))
+	     	{
+	     		server = "hermes.jabber.org";
+	     	}
+	     	else if (domain.equals("chat.facebook.com"))
+	     	{
+	     		server = "chat.facebook.com";
+	     	}
+	     	
+	   }
+      
+     	settings.setServer(server);
+     	
+      	
+     	settings.setUseTor(useTor);
+     	settings.close();
     }
     
     private void getOTRKeyInfo ()
@@ -468,14 +529,14 @@ public class AccountActivity extends Activity {
 
     	if (mDomain == null) {
     		isGood = false;
-    		Toast.makeText(AccountActivity.this, 
-    				R.string.account_wizard_no_domain_warning,
-    				Toast.LENGTH_LONG).show();
+    		//Toast.makeText(AccountActivity.this, 
+    			//	R.string.account_wizard_no_domain_warning,
+    			//	Toast.LENGTH_LONG).show();
     	} else if (mDomain.indexOf(".") == -1) {
     		isGood = false;
-    		Toast.makeText(AccountActivity.this, 
-    				R.string.account_wizard_no_root_domain_warning,
-    				Toast.LENGTH_LONG).show();
+    	//	Toast.makeText(AccountActivity.this, 
+    		//		R.string.account_wizard_no_root_domain_warning,
+    			//	Toast.LENGTH_LONG).show();
     	}
 
     	return isGood;
@@ -630,7 +691,7 @@ public class AccountActivity extends Activity {
           
         	
         	
-           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditUserAccount.getText()), Toast.LENGTH_LONG).show();
+           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditUserAccount.getText()), Toast.LENGTH_SHORT).show();
            isSignedIn = false;
            
            mBtnSignIn.setText(getString(R.string.sign_in));
@@ -720,18 +781,9 @@ public class AccountActivity extends Activity {
     };
 
     private void showAdvanced() {
-    	// if using Tor, disable DNS SRV to reduce anonymity leaks
-    	if (!mHaveSetUseTor && mUseTor.isChecked()) {
-    		final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-    				getContentResolver(),
-    				mProviderId,
-    				false /* don't keep updated */,
-    				null /* no handler */);
-    		settings.setDoDnsSrv(false);
-    		mHaveSetUseTor = true;
-    		settings.setUseTor(mUseTor.isChecked());
-    		settings.close();
-    	}
+    	
+    	updateUseTor(mUseTor.isChecked());
+    	
     	Intent intent = new Intent(this, AccountSettingsActivity.class);
     	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
     	startActivity(intent);
