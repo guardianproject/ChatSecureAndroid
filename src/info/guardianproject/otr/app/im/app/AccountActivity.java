@@ -96,7 +96,6 @@ public class AccountActivity extends Activity {
     EditText mEditUserAccount;
     EditText mEditPass;
     CheckBox mRememberPass;
-  //  CheckBox mKeepSignIn; //n8fr8 removed 2011/04/20 
     CheckBox mUseTor;
     Button   mBtnSignIn;
     Button	 mBtnAdvanced;
@@ -287,33 +286,7 @@ public class AccountActivity extends Activity {
                 }
             }
         });
-
-        /*
-        mEditUserAccount.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-        	@Override
-        	public void onFocusChange(View v, boolean hasFocus) {
-        		if (! hasFocus) {
-        			String username = mEditUserAccount.getText().toString();
-
-        			if (mOriginalUserAccount != username)
-        			{
-	        			Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-	        			if (parseAccount(username)) {
-	        				if (username != mOriginalUserAccount) {
-	        					settingsForDomain(mDomain, mPort);
-	        					mHaveSetUseTor = false;
-	        				}
-	        			} else {
-	        				// TODO if bad account name, bump back to the account EditText
-	        				//mEditUserAccount.requestFocus();
-	        			}
-        			}
-        		}
-        	}
-        });
-        */
-        
+      
         mEditUserAccount.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
 

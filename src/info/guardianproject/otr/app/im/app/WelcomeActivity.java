@@ -268,12 +268,9 @@ public class WelcomeActivity extends Activity {
 	       if (!mDidAutoLaunch)
         	{
         		mDidAutoLaunch = true;
-        		signInAll();
-        		
+        		signInAll();		
         	}
-        	
-        	
-        	
+        
         } else {
         	showActiveAccount();
         }
@@ -288,7 +285,6 @@ public class WelcomeActivity extends Activity {
 
         long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-        
         Intent intent = new Intent(this, TabbedContainer.class);
         // clear the back stack of the account setup
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
