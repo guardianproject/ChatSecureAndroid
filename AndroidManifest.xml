@@ -106,6 +106,21 @@ android:anyDensity="true"
                 android:value="http://xmpp.org/services/"/>
         </service>
 
+        <service android:name=".plugin.xmpp.LLXmppImPlugin"
+               android:process=":remote"
+        
+        	>
+            <intent-filter>
+                <action android:name="info.guardianproject.otr.app.im.plugin" />
+            </intent-filter>
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
+                android:value="Local"/>
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
+                android:value="@string/provider_full_name_llxmpp"/>
+            <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
+                android:value="http://xmpp.org/services/"/>
+        </service>
+
 <!-- 
         <service android:name=".plugin.loopback.LoopbackImPlugin">
             <intent-filter>

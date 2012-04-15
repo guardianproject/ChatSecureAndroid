@@ -326,7 +326,8 @@
 
 	<!-- provider plugin names -->
 	<string name="provider_full_name_xmpp">Jabber/XMPP</string>
-
+	<string name="provider_full_name_llxmpp">Local Serverless XMPP</string>
+	
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
 
     <string name="account_setup_title">Account Setup</string>
