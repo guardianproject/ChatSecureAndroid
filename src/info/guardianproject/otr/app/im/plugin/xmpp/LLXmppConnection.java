@@ -16,6 +16,7 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -46,6 +47,9 @@ import org.jivesoftware.smackx.LLServiceDiscoveryManager;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.MulticastLock;
+import android.os.Debug;
 import android.os.Parcel;
 import android.util.Log;
 
@@ -68,6 +72,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     private final static int SOTIMEOUT = 15000;
 
     private LLService mService;
+
+    private MulticastLock mcLock;
 
     static {
         LLServiceDiscoveryManager.addServiceListener();
@@ -206,6 +212,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
+        mAccountId = accountId;
+        mProviderId = providerId;
         execute(new Runnable() {
             @Override
             public void run() {
@@ -223,7 +231,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         String domain = providerSettings.getDomain();
 
         try {
-            initConnection(userName + "@" + domain, providerSettings);
+            initConnection(userName, domain, providerSettings);
         } catch (Exception e) {
             Log.w(TAG, "login failed", e);
         }
@@ -240,36 +248,37 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
-    public void initConnection(Contact user, int state) {
-        mUser = user;
-        setState(state, null);
-    }
-
     // Runs in executor thread
-    private void initConnection(String userName, Imps.ProviderSettings.QueryMap providerSettings)
+    private void initConnection(String userName, String domain, Imps.ProviderSettings.QueryMap providerSettings)
             throws Exception {
         providerSettings.close(); // close this, which was opened in do_login()
 
-        LLPresence presence = new LLPresence(userName);
+        setState(LOGGING_IN, null);
+        mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
+
+        Debug.waitForDebugger();
+        domain = domain.replace('.', '_');
+        LLPresence presence = new LLPresence(userName + "@" + domain);
         mService = JmDNSService.create(presence);
         mService.addServiceStateListener(new LLServiceStateListener() {
             public void serviceNameChanged(String newName, String oldName) {
-                System.out
-                        .println("Service named changed from " + oldName + " to " + newName + ".");
+                debug(TAG, "Service named changed from " + oldName + " to " + newName + ".");
             }
 
             public void serviceClosed() {
-                System.out.println("Service closed");
+                setState(DISCONNECTED, null);
+                debug(TAG, "Service closed");
             }
 
             public void serviceClosedOnError(Exception e) {
                 System.out.println("Service closed due to an exception");
-                e.printStackTrace();
+                ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
+                setState(DISCONNECTED, info);
             }
 
             public void unknownOriginMessage(org.jivesoftware.smack.packet.Message m) {
-                System.out.println("This message has unknown origin:");
-                System.out.println(m.toXML());
+                debug(TAG, "This message has unknown origin:");
+                debug(TAG, m.toXML());
             }
         });
 
@@ -284,15 +293,14 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        System.out.println("Prepering link-local service discovery...");
+        debug(TAG, "Prepering link-local service discovery");
         LLServiceDiscoveryManager disco = LLServiceDiscoveryManager.getInstanceFor(mService);
 
         if (disco == null) {
-            System.err.println("Failed to initiated Service Discovery Manager.");
+            Log.e(TAG, "Failed to initiated Service Discovery Manager.");
             System.exit(1);
         }
 
-        System.out.println("Adding three features to service discovery manager...");
         disco.addFeature(DeliveryReceipts.NAMESPACE);
 
         // Start listen for Link-local chats
@@ -319,9 +327,18 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
+        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
+        mcLock = wifi.createMulticastLock("mylock");
+        mcLock.acquire();
+        // TODO release
+            
         // Initiate Link-local message session
         mService.init();
 
+        String xmppName = userName + '@' + domain;
+        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
+        debug(TAG, "logged in");
+        setState(LOGGED_IN, null);
     }
 
     public void sendReceipt(org.jivesoftware.smack.packet.Message msg) {
@@ -443,6 +460,15 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     public class XmppContactList extends ContactListManager {
+        private void do_loadContactLists() {
+            String generalGroupName = "Buddies";
+
+            Collection<Contact> contacts = new ArrayList<Contact>();
+            ContactList cl = new ContactList(mUser.getAddress(), generalGroupName, true, contacts, this);
+            notifyContactListCreated(cl);
+            notifyContactListsLoaded();
+        }
+        
         @Override
         protected void setListNameAsync(final String name, final ContactList list) {
             execute(new Runnable() {
@@ -464,7 +490,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             execute(new Runnable() {
                 @Override
                 public void run() {
-                    // TODO
+                    do_loadContactLists();
                 }
             });
 
