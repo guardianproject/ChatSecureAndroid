@@ -90,7 +90,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         // underlying connection.
         createExecutor();
 
-        XmppStreamHandler.addExtensionProviders();
         DeliveryReceipts.addExtensionProviders();
 
         LLServiceDiscoveryManager.setIdentityName("Gibberbot");
@@ -326,6 +325,12 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                             org.jivesoftware.smack.packet.Message message) {
                         String address = message.getFrom();
                         ChatSession session = findOrCreateSession(address);
+                        DeliveryReceipts.DeliveryReceipt dr =
+                                (DeliveryReceipts.DeliveryReceipt)message.getExtension("received", DeliveryReceipts.NAMESPACE);
+                        if (dr != null) {
+                            debug(TAG, "got delivery receipt for " + dr.getId());
+                            session.onMessageReceipt(dr.getId());
+                        }
                         if (message.getBody() == null)
                             return;
                         Message rec = new Message(message.getBody());
@@ -333,6 +338,13 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                         rec.setFrom(session.getParticipant().getAddress());
                         rec.setDateTime(new Date());
                         session.onReceiveMessage(rec);
+                        
+                        if (message.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                            debug(TAG, "got delivery receipt request");
+                            // got XEP-0184 request, send receipt
+                            sendReceipt(message);
+                            session.onReceiptsExpected();
+                        }
                     }
                 });
             }
@@ -356,7 +368,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         org.jivesoftware.smack.packet.Message ack = new org.jivesoftware.smack.packet.Message(
                 msg.getFrom(), msg.getType());
         ack.addExtension(new DeliveryReceipts.DeliveryReceipt(msg.getPacketID()));
-        // TODO mConnection.sendPacket(ack);
+        sendPacket(ack);
     }
 
     void disconnected(ImErrorInfo info) {
