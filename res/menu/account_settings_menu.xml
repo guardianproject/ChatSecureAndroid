@@ -18,20 +18,24 @@
  */
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-   
-   <!--  <item android:id="@+id/menu_account_settings" 
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!--
+    <item android:id="@+id/menu_account_settings" 
     android:title="@string/account_settings_title" />
-     -->
-    
-         <item android:id="@+id/menu_gen_key"
-        android:title="@string/menu_gen_key"
-         android:icon="@drawable/ic_menu_key"
-         />
- 
-         
-     <item android:id="@+id/menu_locale"
-        android:title="@string/menu_locale"
-        android:icon="@drawable/ic_menu_settings"/>
+    -->
+
+    <item
+        android:id="@+id/menu_gen_key"
+        android:icon="@drawable/ic_menu_key"
+        android:title="@string/menu_gen_key"/>
+    <item
+        android:id="@+id/menu_locale"
+        android:icon="@drawable/ic_menu_settings"
+        android:title="@string/menu_locale"/>
+    <item
+        android:id="@+id/menu_view_accounts"
+        android:icon="@drawable/ic_menu_sign_in"
+        android:title="@string/menu_view_accounts"/>
 
 </menu>
