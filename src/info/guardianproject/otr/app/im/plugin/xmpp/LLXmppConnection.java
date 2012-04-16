@@ -16,6 +16,7 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,6 +48,7 @@ import org.jivesoftware.smackx.LLServiceDiscoveryManager;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Debug;
@@ -259,7 +261,20 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         Debug.waitForDebugger();
         domain = domain.replace('.', '_');
         LLPresence presence = new LLPresence(userName + "@" + domain);
-        mService = JmDNSService.create(presence);
+
+        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
+        mcLock = wifi.createMulticastLock("mylock");
+        mcLock.acquire(); // TODO release
+        WifiInfo connectionInfo = wifi.getConnectionInfo();
+        int ip = connectionInfo.getIpAddress();
+        InetAddress address =
+                InetAddress.getByAddress(new byte[] { (byte)((ip)&0xff),
+                                                      (byte)((ip>>8)&0xff),
+                                                      (byte)((ip>>16)&0xff),
+                                                      (byte)((ip>>24)&0xff)});
+        
+            
+        mService = JmDNSService.create(presence, address);
         mService.addServiceStateListener(new LLServiceStateListener() {
             public void serviceNameChanged(String newName, String oldName) {
                 debug(TAG, "Service named changed from " + oldName + " to " + newName + ".");
@@ -327,11 +342,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
-        mcLock = wifi.createMulticastLock("mylock");
-        mcLock.acquire();
-        // TODO release
-            
         // Initiate Link-local message session
         mService.init();
 
@@ -388,8 +398,9 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Force immediate logout
-    public void logout() {
-        mService.close();
+    public synchronized void logout() {
+        if (mService != null)
+            mService.close();
     }
 
     @Override
