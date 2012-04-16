@@ -235,6 +235,9 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             initConnection(userName, domain, providerSettings);
         } catch (Exception e) {
             Log.w(TAG, "login failed", e);
+            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
+            setState(DISCONNECTED, info);
+            mService = null;
         }
     }
 
@@ -257,7 +260,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(LOGGING_IN, null);
         mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
 
-        Debug.waitForDebugger();
+//        Debug.waitForDebugger();
         domain = domain.replace('.', '_');
         LLPresence presence = new LLPresence(userName + "@" + domain);
 
@@ -307,7 +310,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        debug(TAG, "Prepering link-local service discovery");
+        debug(TAG, "Preparing link-local service discovery");
         LLServiceDiscoveryManager disco = LLServiceDiscoveryManager.getInstanceFor(mService);
 
         if (disco == null) {
@@ -354,11 +357,12 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
+        String xmppName = userName + '@' + domain;
+        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
+
         // Initiate Link-local message session
         mService.init();
 
-        String xmppName = userName + '@' + domain;
-        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
         debug(TAG, "logged in");
         setState(LOGGED_IN, null);
     }
