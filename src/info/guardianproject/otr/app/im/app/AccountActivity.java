@@ -303,11 +303,6 @@ public class AccountActivity extends Activity {
                 
                 if (isSignedIn)
                 {
-                	//if you are signing out, then we will deactive "auto" sign in
-                    ContentValues values = new ContentValues();
-                    values.put(Imps.Account.KEEP_SIGNED_IN, false ? 1 : 0);
-                    getContentResolver().update(mAccountUri, values, null, null);
-                    
                 	signOut();
                 	isSignedIn = false;
                 }
@@ -614,7 +609,11 @@ public class AccountActivity extends Activity {
     
     void signOut ()
     {
-    	
+        //if you are signing out, then we will deactive "auto" sign in
+        ContentValues values = new ContentValues();
+        values.put(Imps.Account.KEEP_SIGNED_IN, false ? 1 : 0);
+        getContentResolver().update(mAccountUri, values, null, null);
+
     	mApp = ImApp.getApplication(AccountActivity.this);
     	
         mApp.callWhenServiceConnected(mHandler, new Runnable() {

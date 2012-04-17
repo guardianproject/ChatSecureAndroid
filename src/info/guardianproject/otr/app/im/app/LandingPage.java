@@ -27,6 +27,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -233,20 +234,32 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             .show();
     }
 
-    private void signOut(long accountId) {
+    private void signOut(final long accountId) {
         if (accountId == 0) {
             Log.w(TAG, "signOut: account id is 0, bail");
             return;
         }
 
-        try {
-            IImConnection conn = mApp.getConnectionByAccount(accountId);
-            if (conn != null) {
-                conn.logout();
+        // Remember that the user signed out and do not auto sign in until they
+        // explicitly do so
+        Uri mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+        ContentValues values = new ContentValues();
+        values.put(Imps.Account.KEEP_SIGNED_IN, false);
+        getContentResolver().update(mAccountUri, values, null, null);
+
+        // Sign out
+        mApp.callWhenServiceConnected(mHandler, new Runnable() {
+            public void run() {
+                try {
+                    IImConnection conn = mApp.getConnectionByAccount(accountId);
+                    if (conn != null) {
+                        conn.logout();
+                    }
+                } catch (RemoteException ex) {
+                    Log.e(TAG, "signOut failed", ex);
+                }
             }
-        } catch (RemoteException ex) {
-            Log.e(TAG, "signOut failed", ex);
-        }
+        });
     }
 
     @Override
