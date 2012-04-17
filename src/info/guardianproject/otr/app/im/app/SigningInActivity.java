@@ -289,6 +289,10 @@ public class SigningInActivity extends Activity {
             } else {
                 if (mApp.isBackgroundDataEnabled()) {
                     mConn = mApp.createConnection(mProviderId);
+                    if (mConn == null) {
+                        // This can happen when service did not come up for any reason
+                        return;
+                    }
                     mConn.registerConnectionListener(mListener);
                     // TODO UsrTor should probably be set in the intent rather than fetched from the settings
                     final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(

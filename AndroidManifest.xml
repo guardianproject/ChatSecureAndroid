@@ -326,6 +326,12 @@ android:anyDensity="true"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
-        
+          
+          <receiver android:name=".app.AutoConnectListener" >
+              <intent-filter>
+                  <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+              </intent-filter>
+          </receiver>
+
     </application>
 </manifest>
