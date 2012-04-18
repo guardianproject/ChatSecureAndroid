@@ -2,6 +2,8 @@ package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.AccountActivity;
+import info.guardianproject.otr.app.im.app.lang.BhoButton;
+import info.guardianproject.otr.app.im.app.lang.BhoTextView;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -143,13 +145,13 @@ public class AboutActivity extends Activity implements OnClickListener
 				
 		};
 		
-		TextView txtTitle  = ((TextView)findViewById(R.id.WizardTextTitle));
+		BhoTextView txtTitle  = ((BhoTextView)findViewById(R.id.WizardTextTitle));
 		txtTitle.setText(getString(title[contentIdx]));
         
-        TextView txtBody = ((TextView)findViewById(R.id.WizardTextBody));
+        BhoTextView txtBody = ((BhoTextView)findViewById(R.id.WizardTextBody));
 		txtBody.setText(getString(msg[contentIdx]));
         
-        Button btn1 = ((Button)findViewById(R.id.btnWizard1));
+        BhoButton btn1 = ((BhoButton)findViewById(R.id.btnWizard1));
         if (buttons[contentIdx][0] != null)
         {
         	btn1.setText(buttons[contentIdx][0]);
@@ -162,7 +164,7 @@ public class AboutActivity extends Activity implements OnClickListener
         	btn1.setVisibility(Button.INVISIBLE);
         }
         
-        Button btn2 = ((Button)findViewById(R.id.btnWizard2));
+        BhoButton btn2 = ((BhoButton)findViewById(R.id.btnWizard2));
         if (buttons[contentIdx][1] != null)
         {
         	btn2.setText(buttons[contentIdx][1]);
