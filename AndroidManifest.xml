@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.8-RC1"
-     android:versionCode="29"
+     android:versionName="0.0.8-RC3"
+     android:versionCode="30"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -44,7 +44,7 @@ android:anyDensity="true"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
-             android:debuggable="true"
+             android:debuggable="false"
              android:configChanges="locale">
 
          <activity android:name=".app.WelcomeActivity"
