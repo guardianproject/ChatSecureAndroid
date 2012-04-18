@@ -16,10 +16,14 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.lang.BhoButton;
+import info.guardianproject.otr.app.im.app.lang.BhoContextualMenu;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
@@ -97,7 +101,7 @@ public class WelcomeActivity extends Activity {
         		
         setContentView(R.layout.welcome_activity);
         
-        Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
+        BhoButton btnSplashAbout = ((BhoButton)findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
         
         btnSplashAbout.setOnClickListener(new OnClickListener()
@@ -505,17 +509,19 @@ public class WelcomeActivity extends Activity {
 
     private void showLocaleDialog ()
     {
-    	AlertDialog.Builder ad = new AlertDialog.Builder(this);
-    	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
-    	
-    	ad.setItems(getResources().getStringArray(R.array.languages) , new DialogInterface.OnClickListener() {
+    	BhoContextualMenu m = new BhoContextualMenu(this);
+    	final Map<Integer, String> opts = new HashMap<Integer, String>();
+    	String[] lang = getResources().getStringArray(R.array.languages);
+    	for(int l=0; l < lang.length; l++) {
+    		opts.put(l, lang[l]);
+    	}
+    	m.setTitle(getString(R.string.KEY_PREF_LANGUAGE_TITLE));
+    	m.setAdapter(m.setOpts(opts), new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				
 				String[] locs = getResources().getStringArray(R.array.languages_values);
-				
-				if (which < locs.length)
+				if(which < locs.length)
 				{
 					Locale locale = new Locale(locs[which]);
 					ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
@@ -523,11 +529,11 @@ public class WelcomeActivity extends Activity {
 					Intent intent = getIntent();
 					finish();
 					startActivity(intent);
-				}	
+				}
+				
 			}
 		});
-    	
-    	ad.show();
+    	m.show();
   	}
     
 	

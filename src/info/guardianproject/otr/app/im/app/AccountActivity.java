@@ -22,6 +22,10 @@ import java.util.Locale;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.lang.BhoButton;
+import info.guardianproject.otr.app.im.app.lang.BhoCheckBox;
+import info.guardianproject.otr.app.im.app.lang.BhoEditText;
+import info.guardianproject.otr.app.im.app.lang.BhoTextView;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -93,14 +97,14 @@ public class AccountActivity extends Activity {
 
     Uri mAccountUri;
 
-    EditText mEditUserAccount;
-    EditText mEditPass;
-    CheckBox mRememberPass;
+    BhoEditText mEditUserAccount;
+    BhoEditText mEditPass;
+    BhoCheckBox mRememberPass;
   //  CheckBox mKeepSignIn; //n8fr8 removed 2011/04/20 
-    CheckBox mUseTor;
-    Button   mBtnSignIn;
-    Button	 mBtnAdvanced;
-    TextView mTxtFingerprint;
+    BhoCheckBox mUseTor;
+    BhoButton   mBtnSignIn;
+    BhoButton	 mBtnAdvanced;
+    BhoTextView mTxtFingerprint;
     
     boolean isEdit = false;
     boolean isSignedIn = false;
@@ -124,14 +128,14 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
-        mEditUserAccount = (EditText)findViewById(R.id.edtName);
-        mEditPass = (EditText)findViewById(R.id.edtPass);
-        mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
+        mEditUserAccount = (BhoEditText)findViewById(R.id.edtName);
+        mEditPass = (BhoEditText)findViewById(R.id.edtPass);
+        mRememberPass = (BhoCheckBox)findViewById(R.id.rememberPassword);
  //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
-        mUseTor = (CheckBox)findViewById(R.id.useTor);
-        mBtnSignIn = (Button)findViewById(R.id.btnSignIn);
+        mUseTor = (BhoCheckBox)findViewById(R.id.useTor);
+        mBtnSignIn = (BhoButton)findViewById(R.id.btnSignIn);
         
-        mBtnAdvanced = (Button)findViewById(R.id.btnAdvanced);
+        mBtnAdvanced = (BhoButton)findViewById(R.id.btnAdvanced);
         
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView,
@@ -413,17 +417,17 @@ public class AccountActivity extends Activity {
             	
             	if (otrKeyManager == null)
             	{
-	            	mTxtFingerprint = ((TextView)findViewById(R.id.txtFingerprint));
+	            	mTxtFingerprint = ((BhoTextView)findViewById(R.id.txtFingerprint));
 	            	
 	            	String localFingerprint = otrKeyManager.getLocalFingerprint();
 	            	if (localFingerprint != null)
 	            	{
-	            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);            	
+	            		((BhoTextView)findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);            	
 	            		mTxtFingerprint.setText(processFingerprint(localFingerprint));
 	            	}
 	            	else
 	            	{
-	            		((TextView)findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
+	            		((BhoTextView)findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
 	            		mTxtFingerprint.setText("");            		
 	            	}
             	}

@@ -18,24 +18,27 @@
  */
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-	android:title="@string/account_settings_title">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/account_settings_title" android:layout="@layout/bho_preference_category">
+		<EditTextPreference android:key="@string/pref_account_xmpp_resource"
+			android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
+			android:defaultValue="Gibberbot"
+			android:title="@string/xmpp_resource"
+			android:layout="@layout/bho_edit_text_preference" />
+		<EditTextPreference android:key="@string/pref_account_port"
+			android:title="@string/server_port"
+			android:defaultValue="5222"
+			android:numeric="integer"
+			android:maxLength="5"
+			android:summary="@string/tcp_port_for_xmpp_server"
+			android:layout="@layout/bho_edit_text_preference" />
+		<EditTextPreference android:key="@string/pref_account_server"
+			android:title="@string/connect_server"
+			android:summary="@string/the_server_to_connect_to_if_needed"
+			android:layout="@layout/bho_edit_text_preference" />
+	</PreferenceCategory>
 
-	<EditTextPreference android:key="@string/pref_account_xmpp_resource"
-		android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
-		android:defaultValue="Gibberbot"
-		android:title="@string/xmpp_resource" />
-	<EditTextPreference android:key="@string/pref_account_port"
-		android:title="@string/server_port"
-		android:defaultValue="5222"
-		android:numeric="integer"
-		android:maxLength="5"
-		android:summary="@string/tcp_port_for_xmpp_server" />
-	<EditTextPreference android:key="@string/pref_account_server"
-		android:title="@string/connect_server"
-		android:summary="@string/the_server_to_connect_to_if_needed" />
-
-	<PreferenceCategory android:title="@string/encryption_and_anonymity_title">
+	<PreferenceCategory android:title="@string/encryption_and_anonymity_title" android:layout="@layout/bho_preference_category">
 
 		<ListPreference android:title="Chat Encryption"
 			android:key="@string/pref_security_otr_mode"
@@ -48,25 +51,29 @@
 			android:defaultValue="true"
 			android:title="@string/transport_encryption"
 			android:summary="@string/require_tls_ssl_connection"
-			android:enabled="true" />
+			android:enabled="true"
+			android:layout="@layout/bho_checkbox_preference" />
 
 		<CheckBoxPreference android:key="@string/pref_security_tls_cert_verify"
 			android:title="@string/tls_verification"
 			android:defaultValue="true"
 			android:enabled="true"
-			android:summary="@string/verify_that_the_certificate_is_trusted" />
+			android:summary="@string/verify_that_the_certificate_is_trusted"
+			android:layout="@layout/bho_checkbox_preference" />
 			
 		<CheckBoxPreference android:key="@string/pref_security_allow_plain_auth"
 			android:enabled="true"
 			android:defaultValue="false"
 			android:title="@string/allow_plain_text_auth"
-			android:summary="@string/allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport" />
+			android:summary="@string/allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport"
+			android:layout="@layout/bho_checkbox_preference" />
 
 		<CheckBoxPreference android:key="@string/pref_security_do_dns_srv"
 			android:title="@string/do_srv_lookup"
 			android:enabled="true"
 			android:summary="@string/use_dns_srv_to_find_actual_xmpp_server_from_domain_name"
-			android:defaultValue="true" />
+			android:defaultValue="true"
+			android:layout="@layout/bho_checkbox_preference" />
 
 	</PreferenceCategory>
 

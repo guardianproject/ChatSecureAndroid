@@ -41,5 +41,57 @@
     	<item name="android:textSize">16dip</item>
     	<item name="android:textStyle">bold</item>
     </style>
+    <style name="transparent_progress">
+	    <item name="android:windowFrame">@null</item>
+	    <item name="android:windowBackground">@android:color/transparent</item>
+	    <item name="android:windowIsFloating">true</item>
+	    <item name="android:windowContentOverlay">@null</item>
+	    <item name="android:windowTitleStyle">@null</item>
+	    <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+	    <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+	    <item name="android:backgroundDimEnabled">false</item>
+	    <item name="android:background">@android:color/transparent</item>
+	</style>
+	
+	<style name="contextual_menu_text">
+	    <item name="android:textColor">#ff000000</item>
+	    <item name="android:textSize">20dip</item>
+	    <item name="android:paddingLeft">10dip</item>
+	    <item name="android:paddingTop">6dip</item>
+	</style>
+	
+	<style name="bho_preference_H1">
+	    <item name="android:textSize">20dip</item>
+	    <item name="android:textColor">#ffffffff</item>
+	</style>
+	
+	<style name="bho_preference_P">
+	    <item name="android:textSize">12dip</item>
+	    <item name="android:textColor">#ffcccccc</item>
+	</style>
+	
+	<style name="bho_preference_separator">
+	    <item name="android:background">#ff444444</item>
+	    <item name="android:textColor">#ffcccccc</item>
+	    <item name="android:textSize">16dip</item>
+	    <item name="android:paddingLeft">10dip</item>
+	    <item name="android:paddingRight">10dip</item>
+	    <item name="android:paddingTop">4dip</item>
+	</style>
+	
+	<style name="bho_toast">
+	    <item name="android:background">#dd000000</item>
+	</style>
+	
+	<style name="bho_toast_P">
+	    <item name="android:padding">10dip</item>
+	    <item name="android:textSize">16dip</item>
+	    <item name="android:textColor">#ffcccccc</item>
+	</style>
+	
+	<style name="bho_tab_P">
+	    <item name="android:textSize">12dip</item>
+	    <item name="android:textColor">#ff000000</item>
+	</style>
     
 </resources>

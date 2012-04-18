@@ -24,7 +24,7 @@
   		android:scrollbarAlwaysDrawHorizontalTrack="true" 
   		android:layout_gravity="bottom|center_horizontal" 
   		android:gravity="bottom">
-      <Button android:layout_marginLeft="20dip" 
+      <info.guardianproject.otr.app.im.app.lang.BhoButton android:layout_marginLeft="20dip" 
       		android:textColor="#333333" 
       		android:text="@string/welcome_about" 
       		android:background="@drawable/btn_gray" 
@@ -35,7 +35,7 @@
       		android:layout_alignParentTop="true" 
       		android:layout_height="wrap_content" 
       		android:textSize="20dp" 
-      		android:typeface="sans" android:layout_marginBottom="25dip" android:layout_marginTop="25dip"></Button>
+      		android:typeface="sans" android:layout_marginBottom="25dip" android:layout_marginTop="25dip" />
       <ImageView android:id="@+id/poweredby" 
       		android:src="@drawable/logo_poweredby" 
       		android:layout_width="fill_parent" 
