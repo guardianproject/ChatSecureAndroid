@@ -108,7 +108,7 @@ public class AccountActivity extends Activity {
     String mDomain;
     int mPort;
     
-    private String mOriginalUserAccount;
+    private String mOriginalUserAccount = "";
     
     private final static int DEFAULT_PORT = 5222;
 
@@ -125,32 +125,12 @@ public class AccountActivity extends Activity {
         setContentView(R.layout.account_activity);
         mEditUserAccount = (EditText)findViewById(R.id.edtName);
         
-        mEditUserAccount.addTextChangedListener(new TextWatcher (){
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-
-				String username = arg0.toString();
-            	if (parseAccount(username)) {
-            			//Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-            			settingsForDomain(mDomain, mPort);
-            			mOriginalUserAccount = username;
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				
-			}
-        	
-        });
+        mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            	checkUserChanged();
+            }
+          });
         
         mEditPass = (EditText)findViewById(R.id.edtPass);
         mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
@@ -160,7 +140,6 @@ public class AccountActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
 
-             	
              	updateUseTor(isChecked);
             }
         });
@@ -301,7 +280,8 @@ public class AccountActivity extends Activity {
             public void onClick(View v) {
             	
             	
-    			
+            	checkUserChanged();
+            	
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
 
@@ -392,6 +372,7 @@ public class AccountActivity extends Activity {
     
     private void updateUseTor (boolean useTor)
     {
+    	checkUserChanged();
     	
     	 final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                  getContentResolver(),
@@ -475,6 +456,17 @@ public class AccountActivity extends Activity {
         
     }
 
+    private void checkUserChanged ()
+    {
+    	String username = mEditUserAccount.getText().toString();
+    	
+    	if ((!username.equals(mOriginalUserAccount)) && parseAccount(username)) {
+    			//Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+    			settingsForDomain(mDomain, mPort);
+    			mOriginalUserAccount = username;
+		}
+    }
+    
     boolean parseAccount(String userField) {
     	boolean isGood = true;
     	String[] splitAt = userField.split("@");
@@ -755,8 +747,8 @@ public class AccountActivity extends Activity {
 
     private void showAdvanced() {
     	
-    	updateUseTor(mUseTor.isChecked());
-    	
+    	checkUserChanged();
+        
     	Intent intent = new Intent(this, AccountSettingsActivity.class);
     	intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
     	startActivity(intent);
