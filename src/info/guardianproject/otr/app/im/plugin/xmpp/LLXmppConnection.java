@@ -28,6 +28,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -51,6 +52,7 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Debug;
 import android.os.Parcel;
 import android.util.Log;
@@ -77,6 +79,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     private MulticastLock mcLock;
 
+    private WifiLock wifiLock;
+    
     static {
         LLServiceDiscoveryManager.addServiceListener();
     }
@@ -94,7 +98,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         LLServiceDiscoveryManager.setIdentityName("Gibberbot");
         LLServiceDiscoveryManager.setIdentityType("phone");
-
     }
 
     private void createExecutor() {
@@ -260,20 +263,31 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(LOGGING_IN, null);
         mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
 
-//        Debug.waitForDebugger();
         domain = domain.replace('.', '_');
-        LLPresence presence = new LLPresence(userName + "@" + domain);
+        final String serviceName = userName + "@" + domain;
+        LLPresence presence = new LLPresence(serviceName);
 
         WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
-        mcLock = wifi.createMulticastLock("mylock");
-        mcLock.acquire(); // TODO release
+
         WifiInfo connectionInfo = wifi.getConnectionInfo();
+        if (connectionInfo == null || connectionInfo.getBSSID() == null) {
+            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR, "WiFi connection is required");
+            setState(DISCONNECTED, info);
+            return;
+        }
+        
         int ip = connectionInfo.getIpAddress();
         InetAddress address =
                 InetAddress.getByAddress(new byte[] { (byte)((ip)&0xff),
                                                       (byte)((ip>>8)&0xff),
                                                       (byte)((ip>>16)&0xff),
                                                       (byte)((ip>>24)&0xff)});
+        
+        mcLock = wifi.createMulticastLock(serviceName);
+        mcLock.acquire();
+        // HIGH_PERF is required for some devices to listen to multicast while screen is off
+        wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
+        wifiLock.acquire();
         
             
         mService = JmDNSService.create(presence, address);
@@ -283,14 +297,16 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
 
             public void serviceClosed() {
-                setState(DISCONNECTED, null);
                 debug(TAG, "Service closed");
+                setState(DISCONNECTED, null);
+                releaseLocks();
             }
 
             public void serviceClosedOnError(Exception e) {
-                System.out.println("Service closed due to an exception");
+                debug(TAG, "Service closed on error");
                 ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
                 setState(DISCONNECTED, info);
+                releaseLocks();
             }
 
             public void unknownOriginMessage(org.jivesoftware.smack.packet.Message m) {
@@ -301,22 +317,25 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         // Adding presence listener.
         mService.addPresenceListener(new LLPresenceListener() {
-            public void presenceRemove(LLPresence presence) {
-                mContactListManager.handlePresenceChanged(presence, true);
+            public void presenceRemove(final LLPresence presence) {
+                execute(new Runnable() {
+                    public void run() {
+                        mContactListManager.handlePresenceChanged(presence, true);
+                    }
+                });
             }
 
-            public void presenceNew(LLPresence presence) {
-                mContactListManager.handlePresenceChanged(presence, false);
+            public void presenceNew(final LLPresence presence) {
+                execute(new Runnable() {
+                    public void run() {
+                        mContactListManager.handlePresenceChanged(presence, false);
+                    }
+                });
             }
         });
 
         debug(TAG, "Preparing link-local service discovery");
         LLServiceDiscoveryManager disco = LLServiceDiscoveryManager.getInstanceFor(mService);
-
-        if (disco == null) {
-            Log.e(TAG, "Failed to initiated Service Discovery Manager.");
-            System.exit(1);
-        }
 
         disco.addFeature(DeliveryReceipts.NAMESPACE);
 
@@ -359,12 +378,21 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         String xmppName = userName + '@' + domain;
         mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
-
+        
         // Initiate Link-local message session
         mService.init();
 
         debug(TAG, "logged in");
         setState(LOGGED_IN, null);
+    }
+
+    private void releaseLocks() {
+        if (mcLock != null)
+            mcLock.release();
+        mcLock = null;
+        if (wifiLock != null)
+            wifiLock.release();
+        wifiLock = null;
     }
 
     public void sendReceipt(org.jivesoftware.smack.packet.Message msg) {
@@ -524,6 +552,11 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
 
         private void handlePresenceChanged(LLPresence presence, boolean offline) {
+            // Create default lists on first presence received
+            if (mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
+                do_loadContactLists();
+            }
+            
             String name = presence.getFirstName();
             String address = presence.getServiceName();
 

@@ -435,6 +435,7 @@
     <string name="contact_not_loaded">Please wait while your Contact list loads.</string>
     <!-- Error message for when a network error occurred.-->
     <string name="network_error">A network error occurred.</string>
+    <string name="wifi_not_connected_error">WiFi is required for this connection.</string>
     <!-- Error message for lack of server support error.-->
     <string name="service_not_support">The server does not support this functionality.</string>
     <!-- Erorr message for bad password error.-->
