@@ -51,6 +51,8 @@ public class ErrorResUtils {
 
             case ImErrorInfo.NETWORK_ERROR:
                 return R.string.network_error;
+            case ImErrorInfo.WIFI_NOT_CONNECTED_ERROR:
+                return R.string.wifi_not_connected_error;
 
             case ImErrorInfo.INVALID_USERNAME:
             	return R.string.invalid_password;
