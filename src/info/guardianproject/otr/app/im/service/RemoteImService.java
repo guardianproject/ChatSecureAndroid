@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
+import info.guardianproject.otr.app.im.app.LandingPage;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
@@ -46,6 +47,8 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -101,6 +104,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     Vector<ImConnectionAdapter> mConnections;
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners
             = new RemoteCallbackList<IConnectionCreationListener>();
+    private ForegroundStarter mForegroundStarter;
 
     
 	public RemoteImService() {
@@ -197,6 +201,22 @@ public class RemoteImService extends Service implements OtrEngineListener {
         
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
+        
+        startForegroundCompat();
+    }
+
+    private void startForegroundCompat() {
+        Notification notification = new Notification(
+                R.drawable.status,
+                "Gibberbot",
+                System.currentTimeMillis());
+        notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+        Intent notificationIntent = new Intent(this, LandingPage.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setLatestEventInfo(this, "Gibberbot", "Active.", notification.contentIntent);
+        mForegroundStarter = new ForegroundStarter(this);
+        mForegroundStarter.startForegroundCompat(1000, notification);
     }
     
     class HeartbeatHandler implements Callback {
@@ -301,6 +321,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     @Override
     public void onDestroy() {
+        if (mForegroundStarter != null)
+            mForegroundStarter.stopForegroundCompat();
+        
         Log.w(TAG, "ImService stopped.");
         for (ImConnectionAdapter conn : mConnections) {
             conn.logout();
