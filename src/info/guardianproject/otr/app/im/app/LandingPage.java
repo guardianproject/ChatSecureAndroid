@@ -287,6 +287,11 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             case R.id.menu_new_account:
             	createAccount();
             	return true;
+            case R.id.menu_settings:
+                Intent sintent = new Intent(this, SettingActivity.class);
+                startActivity(sintent);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -299,6 +304,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         builder.setItems(items, new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int pos) {
         		helper.createAdditionalProvider(items[pos]);
+        		mApp.resetProviderSettings();
         	}});
         AlertDialog dialog = builder.create();
         dialog.show();
