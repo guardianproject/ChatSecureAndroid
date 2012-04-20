@@ -18,6 +18,8 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -443,9 +445,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     Intent getViewContactsIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Imps.Contacts.CONTENT_URI);
-        intent.addCategory(getProviderCategory(mProviderCursor));
+        Intent intent = new Intent(this, TabbedContainer.class);
         intent.putExtra("accountId", mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;
     }
