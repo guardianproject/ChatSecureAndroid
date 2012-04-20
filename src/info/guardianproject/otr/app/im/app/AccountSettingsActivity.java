@@ -39,7 +39,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     EditTextPreference mXmppResource;
     EditTextPreference mPort;
     EditTextPreference mServer;
-    ListPreference mOtrMode;
     CheckBoxPreference mAllowPlainAuth;
     CheckBoxPreference mRequireTls;
     CheckBoxPreference mTlsCertVerify;
@@ -67,7 +66,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
         if (text != null) {
         	mServer.setSummary(text);
         }
-        mOtrMode.setValue(settings.getOtrMode());
         mAllowPlainAuth.setChecked(settings.getAllowPlainAuth());
         mRequireTls.setChecked(settings.getRequireTls());
         mTlsCertVerify.setChecked(settings.getTlsCertVerify());
@@ -105,8 +103,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     		if (value != null) {
     			mServer.setSummary(value);
     		}
-    	} else if (key.equals(getString(R.string.pref_security_otr_mode))) {
-    		settings.setOtrMode(prefs.getString(key, "auto"));
     	} else if (key.equals(getString(R.string.pref_security_allow_plain_auth))) {
     		settings.setAllowPlainAuth(prefs.getBoolean(key, false));
     	} else if (key.equals(getString(R.string.pref_security_require_tls))) {
@@ -136,7 +132,6 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     	mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
     	mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
     	mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
-    	mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
     	mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
     	mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
     	mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
