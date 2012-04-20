@@ -2003,7 +2003,7 @@ public class Imps {
 
         public static void setUseForegroundPriority(ContentResolver contentResolver,
                 long providerId, boolean flag) {
-            putBooleanValue(contentResolver, providerId, HIDE_OFFLINE_CONTACTS,
+            putBooleanValue(contentResolver, providerId, USE_FOREGROUND_PRIORITY,
                     flag);
         }
 
@@ -2254,7 +2254,7 @@ public class Imps {
             }
 
             public boolean getUseForegroundPriority() {
-                return getBoolean(HIDE_OFFLINE_CONTACTS, false /* default */);
+                return getBoolean(USE_FOREGROUND_PRIORITY, false /* default */);
             }
             /**
              * Set whether or not enable the IM notification.
