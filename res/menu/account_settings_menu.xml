@@ -33,9 +33,4 @@
         android:id="@+id/menu_locale"
         android:icon="@drawable/ic_menu_settings"
         android:title="@string/menu_locale"/>
-    <item
-        android:id="@+id/menu_view_accounts"
-        android:icon="@drawable/ic_menu_sign_in"
-        android:title="@string/menu_view_accounts"/>
-
 </menu>

@@ -224,7 +224,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
             case R.id.menu_view_accounts:
 //            	startActivity(getEditAccountIntent());
-	        	startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+                startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+                finish();
                 return true;
 				
             case R.id.menu_settings:
