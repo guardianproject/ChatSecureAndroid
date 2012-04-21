@@ -263,35 +263,38 @@ public class WelcomeActivity extends Activity {
 	
         mHandler.registerForBroadcastEvents();
         
-        if (allAccountsSignedOut()) {
-        	
-	       if (!mDidAutoLaunch)
-        	{
-        		mDidAutoLaunch = true;
-        		signInAll();		
-        	}
-        
+        int count = accountsSignedIn();
+
+        if (count == 0) {
+            if (!mDidAutoLaunch) {
+                mDidAutoLaunch = true;
+                signInAll();
+            }
+        } else if (count == 1) {
+            showActiveAccount();
         } else {
-        	showActiveAccount();
+            showAccounts();
         }
     }
 
-    // Show active account if signed in
+    // Show signed in account
     protected boolean showActiveAccount() {
-    	if (! mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN))
+    	if (! mProviderCursor.moveToFirst())
     		return false;
-    	if (!isSignedIn(mProviderCursor))
-    		return false;
+        do {
+            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) && isSignedIn(mProviderCursor)) {
+                long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-        Intent intent = new Intent(this, TabbedContainer.class);
-        // clear the back stack of the account setup
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
-        startActivity(intent);
-        finish();
-        return true;
+                Intent intent = new Intent(this, TabbedContainer.class);
+                // clear the back stack of the account setup
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+        } while (mProviderCursor.moveToNext()) ;
+        return false;
     }
 
     @Override
@@ -372,6 +375,7 @@ public class WelcomeActivity extends Activity {
             if (Log.isLoggable(TAG, Log.DEBUG)) Log.i(TAG, "no pw for account " + accountId);
             Intent intent = getEditAccountIntent();
             startActivity(intent);
+            finish();
             return;
         }
 
@@ -393,17 +397,18 @@ public class WelcomeActivity extends Activity {
         return connectionStatus == Imps.ConnectionStatus.ONLINE;
     }
     
-    private boolean allAccountsSignedOut() {
+    private int accountsSignedIn() {
         if(!mProviderCursor.moveToFirst()) {
-            return false;
+            return 0;
         }
+        int count = 0;
         do {
             if (isSignedIn(mProviderCursor)) {
-                return false;
+                count++;
             }
         } while (mProviderCursor.moveToNext()) ;
 
-        return true;
+        return count;
     }
 
     private void showAccountSetup ()
@@ -461,6 +466,7 @@ public class WelcomeActivity extends Activity {
 
     void showAccounts() {
     	startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+    	finish();
     }
 
     Intent getCreateAccountIntent() {

@@ -540,6 +540,6 @@ public class SigningInActivity extends Activity {
          intent.putExtra("isSignedIn", false);
 //         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
          startActivity(intent);
-
+         finish();
     }
 }
