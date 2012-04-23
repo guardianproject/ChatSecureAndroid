@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -40,6 +41,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,6 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
     private static final int ID_ADD_ACCOUNT = Menu.FIRST + 6;
     private static final int ID_VIEW_CONTACT_LIST = Menu.FIRST + 7;
-    private static final int ID_SETTINGS = Menu.FIRST + 8;
 
     private ProviderAdapter mAdapter;
     private Cursor mProviderCursor;
@@ -112,8 +113,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         registerForContextMenu(getListView());
     }
-
-
+    
     @Override
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
@@ -262,28 +262,51 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(ID_SIGN_OUT_ALL).setVisible(!allAccountsSignedOut());
+        menu.findItem(R.id.menu_sign_out_all).setVisible(!allAccountsSignedOut());
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ID_SIGN_OUT_ALL, 0, R.string.menu_sign_out_all)
-                .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.accounts_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case ID_SIGN_OUT_ALL:
+            case R.id.menu_sign_out_all:
                 signOutAll();
                 return true;
+            case R.id.menu_new_account:
+            	createAccount();
+            	return true;
+            case R.id.menu_settings:
+                Intent sintent = new Intent(this, SettingActivity.class);
+                startActivity(sintent);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    private void createAccount() {
+        final ImPluginHelper helper = ImPluginHelper.getInstance(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.account_select_type);
+        final String[] items = helper.getProviderNames().toArray(new String[0]);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+        	public void onClick(DialogInterface dialog, int pos) {
+        		helper.createAdditionalProvider(items[pos]);
+        		mApp.resetProviderSettings();
+        	}});
+        AlertDialog dialog = builder.create();
+        dialog.show();
+	}
+
+
+	@Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info;
         try {
@@ -297,7 +320,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         menu.setHeaderTitle(providerCursor.getString(PROVIDER_FULLNAME_COLUMN));
 
         if (providerCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            menu.add(0, ID_ADD_ACCOUNT, 0, R.string.menu_add_account);
+            menu.add(0, ID_ADD_ACCOUNT, 0, R.string.menu_edit_account);
             return;
         }
 
@@ -324,9 +347,6 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account)
                 .setIcon(android.R.drawable.ic_menu_delete);
         }
-
-        // always add a settings menu item
-        menu.add(0, ID_SETTINGS, 0, R.string.menu_settings);
     }
 
     @Override
@@ -353,6 +373,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             {
                 Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
                 getContentResolver().delete(accountUri, null, null);
+                Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
+                getContentResolver().delete(providerUri, null, null);
                 // Requery the cursor to force refreshing screen
                 providerCursor.requery();
                 return true;
@@ -380,15 +402,6 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             {
                 // TODO: progress bar
                 signOut(accountId);
-                return true;
-            }
-
-            case ID_SETTINGS:
-            {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Imps.ProviderSettings.CONTENT_URI);
-                intent.addCategory(getProviderCategory(providerCursor));
-                intent.putExtra("providerId", providerId);
-                startActivity(intent);
                 return true;
             }
 
@@ -421,9 +434,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     Intent getViewContactsIntent() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Imps.Contacts.CONTENT_URI);
-        intent.addCategory(getProviderCategory(mProviderCursor));
+        Intent intent = new Intent(this, TabbedContainer.class);
         intent.putExtra("accountId", mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;
     }

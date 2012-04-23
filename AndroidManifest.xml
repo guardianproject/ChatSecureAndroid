@@ -166,12 +166,9 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
  -->
-<!--
-        <activity android:name=".app.LandingPage">
-           <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".app.LandingPage"
+            android:configChanges="orientation|keyboardHidden|locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -179,8 +176,6 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
       
--->
-
         <activity android:name=".app.AccountActivity"
             android:configChanges="orientation|keyboardHidden|locale"
             android:windowSoftInputMode="stateUnchanged">
@@ -192,6 +187,7 @@ android:anyDensity="true"
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.item/imps-providers" />
             </intent-filter>

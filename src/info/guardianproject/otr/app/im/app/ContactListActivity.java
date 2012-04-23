@@ -79,7 +79,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     boolean mIsFiltering;
 
-    Imps.ProviderSettings.QueryMap mSettingMap;
+    Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
 
     @Override
@@ -133,8 +133,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mSettingMap = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, true, null);
+        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), true, null);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable(){
             public void run() {
@@ -150,7 +150,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         mFilterView.mPresenceView.setConnection(mConn);
                         mContactListView.setConnection(mConn);
                         mContactListView.setHideOfflineContacts(
-                                mSettingMap.getHideOfflineContacts());
+                                mGlobalSettingMap.getHideOfflineContacts());
                     }
                 }
             }
@@ -159,11 +159,11 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         mContextMenuHandler = new ContextMenuHandler();
         mContactListView.getListView().setOnCreateContextMenuListener(this);
 
-        mSettingMap.addObserver(new Observer() {
+        mGlobalSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
                 if (!mDestroyed) {
                     mContactListView.setHideOfflineContacts(
-                            mSettingMap.getHideOfflineContacts());
+                            mGlobalSettingMap.getHideOfflineContacts());
                 }
             }
         });
@@ -223,12 +223,13 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 */
 
             case R.id.menu_view_accounts:
-            	startActivity(getEditAccountIntent());           
+//            	startActivity(getEditAccountIntent());
+                startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+                finish();
                 return true;
 				
             case R.id.menu_settings:
                 Intent sintent = new Intent(this, SettingActivity.class);
-                sintent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                 startActivity(sintent);
                 return true;
 
@@ -419,7 +420,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     private void showFilterView() {
     	
         
-        Uri uri = mSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+        Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                 : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
@@ -460,8 +461,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         mDestroyed = true;
         // set connection to null to unregister listeners.
         mContactListView.setConnection(null);
-        if (mSettingMap != null) {
-            mSettingMap.close();
+        if (mGlobalSettingMap != null) {
+            mGlobalSettingMap.close();
         }
         super.onDestroy();
     }
