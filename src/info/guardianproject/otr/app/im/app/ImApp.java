@@ -56,6 +56,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -134,6 +135,15 @@ public class ImApp extends Application {
         // TODO should this be synchronized?
         if (sImApp == null) {
             initialize(activity);
+        }
+
+        return sImApp;
+    }
+
+    public static ImApp getApplication() {
+        // TODO should this be synchronized?
+        if (sImApp == null) {
+            new ImApp();
         }
 
         return sImApp;
@@ -231,11 +241,16 @@ public class ImApp extends Application {
     }
 
     public synchronized void startImServiceIfNeed() {
+        startImServiceIfNeed(false);
+    }
+    
+    public synchronized void startImServiceIfNeed(boolean auto) {
         if(!mServiceStarted) {
             if(Log.isLoggable(LOG_TAG, Log.DEBUG)) log("start ImService");
 
             Intent serviceIntent = new Intent();
             serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
+            serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
             mApplicationContext.startService(serviceIntent);
             mApplicationContext.bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
             mServiceStarted = true;
