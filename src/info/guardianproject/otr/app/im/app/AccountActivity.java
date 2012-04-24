@@ -777,6 +777,7 @@ public class AccountActivity extends Activity {
         case R.id.menu_locale:
             showLocaleDialog();
             return true;
+        
         	/*
     	case R.id.menu_account_settings:
             Intent intent = new Intent(this, AccountSettingsActivity.class);

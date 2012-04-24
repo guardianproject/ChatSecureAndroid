@@ -48,7 +48,7 @@ public class ImRingtonePreference extends RingtonePreference {
     @Override
     protected Uri onRestoreRingtone() {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContext().getContentResolver(), mProviderId, 
+                getContext().getContentResolver(), 
                 false /* keep updated */, null /* no handler */);
         
         String uri = settings.getRingtoneURI();
@@ -71,7 +71,7 @@ public class ImRingtonePreference extends RingtonePreference {
     @Override
     protected void onSaveRingtone(Uri ringtoneUri) {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContext().getContentResolver(), mProviderId, 
+                getContext().getContentResolver(), 
                false /* keep updated */, null /* no handler */);
         
         // When ringtoneUri is null, that means 'Silent' was chosen

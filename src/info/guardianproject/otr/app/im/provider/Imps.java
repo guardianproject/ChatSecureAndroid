@@ -1620,6 +1620,9 @@ public class Imps {
     }
 
     public static class ProviderSettings implements ProviderSettingsColumns {
+        // Global settings are saved with this provider ID, for backward compatibility
+        public static final int PROVIDER_ID_FOR_GLOBAL_SETTINGS = 1;
+        
         private ProviderSettings() {
         }
 
@@ -1661,7 +1664,7 @@ public class Imps {
         /** boolean for whether the TLS certificate should be verified */
         public static final String TLS_CERT_VERIFY = "pref_security_tls_cert_verify";
 
-        /** How should the OTR engine operate: auto, force, requested, disabled */
+        /** Global setting controlling how OTR engine initiates: auto, force, requested, disabled */
         public static final String OTR_MODE = "pref_security_otr_mode";
 
         /** boolean to specify whether to use Tor proxying or not */
@@ -1681,19 +1684,19 @@ public class Imps {
         /** controls whether the IM service will be automatically started after boot */
         public static final String AUTOMATICALLY_START_SERVICE = "auto_start_service";
 
-        /** controls whether the offline contacts will be hided */
+        /** Global setting which controls whether the offline contacts will be hid.  */
         public static final String HIDE_OFFLINE_CONTACTS = "hide_offline_contacts";
 
-        /** controls whether enable the IM notification */
+        /** Global setting which controls whether enable the IM notification */
         public static final String ENABLE_NOTIFICATION = "enable_notification";
 
-        /** specifies whether to vibrate */
+        /** Global setting which specifies whether to vibrate */
         public static final String NOTIFICATION_VIBRATE = "vibrate";
 
-        /** specifies the Uri string of the ringtone */
+        /** Global setting which specifies the Uri string of the ringtone */
         public static final String NOTIFICATION_RINGTONE = "ringtone";
 
-        /** specifies the Uri of the default ringtone */
+        /** Global setting which specifies the Uri of the default ringtone */
         public static final String RINGTONE_DEFAULT =
                 "content://settings/system/notification_sound";
 
@@ -2085,6 +2088,11 @@ public class Imps {
             private ContentResolver mContentResolver;
             private long mProviderId;
 
+            public QueryMap(ContentResolver contentResolver, boolean keepUpdated,
+                    Handler handlerForUpdateNotifications) {
+                this(contentResolver, ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
+                        keepUpdated, handlerForUpdateNotifications);
+            }
             public QueryMap(ContentResolver contentResolver, long providerId, boolean keepUpdated,
                     Handler handlerForUpdateNotifications) {
                 super(contentResolver.query(CONTENT_URI,
