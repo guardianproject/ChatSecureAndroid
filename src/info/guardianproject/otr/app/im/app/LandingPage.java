@@ -183,6 +183,9 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             return;
         }
 
+        // Remember that the user signed in.
+        setKeepSignedIn(accountId, true);
+
         Intent intent = new Intent(this, SigningInActivity.class);
         intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
         startActivity(intent);
@@ -239,10 +242,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         // Remember that the user signed out and do not auto sign in until they
         // explicitly do so
-        Uri mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-        ContentValues values = new ContentValues();
-        values.put(Imps.Account.KEEP_SIGNED_IN, false);
-        getContentResolver().update(mAccountUri, values, null, null);
+        setKeepSignedIn(accountId, false);
 
         // Sign out
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
@@ -257,6 +257,13 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                 }
             }
         });
+    }
+
+    private void setKeepSignedIn(final long accountId, boolean signin) {
+        Uri mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+        ContentValues values = new ContentValues();
+        values.put(Imps.Account.KEEP_SIGNED_IN, signin);
+        getContentResolver().update(mAccountUri, values, null, null);
     }
 
     @Override
