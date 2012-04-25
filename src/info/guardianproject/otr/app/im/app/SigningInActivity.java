@@ -23,6 +23,8 @@ import info.guardianproject.otr.app.im.IConnectionListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.app.lang.BhoAlertDialog;
+import info.guardianproject.otr.app.im.app.lang.BhoEditText;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -211,12 +213,12 @@ public class SigningInActivity extends Activity {
 	
 	private void showPasswordDialog() {
 		
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		BhoAlertDialog alert = new BhoAlertDialog(this);
 		alert.setTitle("Password");
 		String message = getString(R.string.signin_password_prompt);
 		alert.setMessage(message);
 		
-		final EditText input = new EditText(this);
+		final BhoEditText input = new BhoEditText(this);
 		input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		input.setTransformationMethod(new PasswordTransformationMethod());
 		alert.setView(input);
@@ -387,7 +389,7 @@ public class SigningInActivity extends Activity {
      * immediately.
      */
     private void promptForBackgroundDataSetting() {
-        new AlertDialog.Builder(SigningInActivity.this)
+        new BhoAlertDialog(SigningInActivity.this)
             .setTitle(R.string.bg_data_prompt_title)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setMessage(getString(R.string.bg_data_prompt_message, mProviderName))
@@ -461,10 +463,9 @@ public class SigningInActivity extends Activity {
                 Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared while signing in!");
             }
         } else if (state == ImConnection.DISCONNECTED) {
-        	
             // sign in failed
             Resources r = getResources();
-            new AlertDialog.Builder(this)
+            new BhoAlertDialog(this)
                 .setTitle(R.string.error)
                 .setMessage(r.getString(R.string.login_service_failed, mProviderName,
                             error == null? "": ErrorResUtils.getErrorRes(r, error.getCode())))

@@ -38,7 +38,7 @@
 	  	android:src="@drawable/ic_gb"/>
 	  	<LinearLayout android:orientation="horizontal" android:gravity="center_horizontal"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"  android:layout_marginTop="20dp">		
-	  	<TextView android:text="@string/signing_in_wait" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+	  	<info.guardianproject.otr.app.im.app.lang.BhoTextView android:text="@string/signing_in_wait" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 	  	</LinearLayout>
 	  	
 	  	<LinearLayout android:orientation="horizontal" android:gravity="center_horizontal"

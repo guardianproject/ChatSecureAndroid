@@ -128,7 +128,7 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
-        mEditUserAccount = (EditText)findViewById(R.id.edtName);
+        mEditUserAccount = (BhoEditText)findViewById(R.id.edtName);
         
         mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -137,10 +137,10 @@ public class AccountActivity extends Activity {
             }
           });
         
-        mEditPass = (EditText)findViewById(R.id.edtPass);
-        mRememberPass = (CheckBox)findViewById(R.id.rememberPassword);
+        mEditPass = (BhoEditText)findViewById(R.id.edtPass);
+        mRememberPass = (BhoCheckBox)findViewById(R.id.rememberPassword);
  //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
-        mUseTor = (CheckBox)findViewById(R.id.useTor);
+        mUseTor = (BhoCheckBox)findViewById(R.id.useTor);
         mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
@@ -149,7 +149,7 @@ public class AccountActivity extends Activity {
             }
         });
         
-        mBtnSignIn = (Button)findViewById(R.id.btnSignIn);
+        mBtnSignIn = (BhoButton)findViewById(R.id.btnSignIn);
         
         mBtnAdvanced = (BhoButton)findViewById(R.id.btnAdvanced);
         
