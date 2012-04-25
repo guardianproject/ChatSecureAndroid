@@ -2744,6 +2744,9 @@ public class ImpsProvider extends ContentProvider {
         final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         switch (match) {
+        	case MATCH_PROVIDERS_BY_ID:
+        		changedItemId = url.getPathSegments().get(1);
+            // fall through
             case MATCH_PROVIDERS:
                 tableToChange = TABLE_PROVIDERS;
                 notifyProviderAccountContentUri = true;

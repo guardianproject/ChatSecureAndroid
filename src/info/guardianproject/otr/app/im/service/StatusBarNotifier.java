@@ -37,7 +37,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class StatusBarNotifier {
     private static final boolean DBG = false;
@@ -49,7 +48,7 @@ public class StatusBarNotifier {
     private Context mContext;
     private NotificationManager mNotificationManager;
 
-    private HashMap<Long, Imps.ProviderSettings.QueryMap> mSettings;
+    private Imps.ProviderSettings.QueryMap mGlobalSettings; 
     private Handler mHandler;
     private HashMap<Long, NotificationInfo> mNotificationInfos;
     private long mLastSoundPlayedMs;
@@ -58,15 +57,13 @@ public class StatusBarNotifier {
         mContext = context;
         mNotificationManager = (NotificationManager) context.getSystemService(
                 Context.NOTIFICATION_SERVICE);
-        mSettings = new HashMap<Long, Imps.ProviderSettings.QueryMap>();
         mHandler = new Handler();
         mNotificationInfos = new HashMap<Long, NotificationInfo>();
     }
 
     public void onServiceStop() {
-        for(Imps.ProviderSettings.QueryMap queryMap : mSettings.values()) {
-            queryMap.close();
-        }
+        if (mGlobalSettings != null)
+            mGlobalSettings.close();
     }
 
     public void notifyChat(long providerId, long accountId, long chatId,
@@ -172,19 +169,15 @@ public class StatusBarNotifier {
         }
     }
 
-    private Imps.ProviderSettings.QueryMap getProviderSettings(long providerId) {
-        Imps.ProviderSettings.QueryMap res = mSettings.get(providerId);
-        if (res == null) {
-            res = new Imps.ProviderSettings.QueryMap(mContext.getContentResolver(),
-                    providerId, true, mHandler);
-            mSettings.put(providerId, res);
+    private Imps.ProviderSettings.QueryMap getGlobalSettings() {
+        if (mGlobalSettings == null) {
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(mContext.getContentResolver(), true, mHandler);
         }
-        return res;
+        return mGlobalSettings;
     }
 
     private boolean isNotificationEnabled(long providerId) {
-        Imps.ProviderSettings.QueryMap settings = getProviderSettings(providerId);
-        return settings.getEnableNotification();
+        return getGlobalSettings().getEnableNotification();
     }
 
     private void notify(String sender, String title, String tickerText, String message,
@@ -209,9 +202,8 @@ public class StatusBarNotifier {
     }
 
     private void setRinger(long providerId, Notification notification) {
-        Imps.ProviderSettings.QueryMap settings = getProviderSettings(providerId);
-        String ringtoneUri = settings.getRingtoneURI();
-        boolean vibrate = settings.getVibrate();
+        String ringtoneUri = getGlobalSettings().getRingtoneURI();
+        boolean vibrate = getGlobalSettings().getVibrate();
 
         notification.sound = TextUtils.isEmpty(ringtoneUri) ? null : Uri.parse(ringtoneUri);
         if (notification.sound != null) {

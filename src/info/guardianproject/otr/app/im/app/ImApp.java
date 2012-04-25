@@ -353,6 +353,11 @@ public class ImApp extends Application {
         }
     }
 
+    /** Used to reset the provider settings if a reload is required. */
+    public void resetProviderSettings() {
+    	mProviders = null;
+    }
+    
     // For testing
     public void setImProviderSettings(HashMap<Long, ProviderDef> providers) {
     	mProviders = providers;

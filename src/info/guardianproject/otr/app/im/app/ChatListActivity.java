@@ -73,7 +73,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
     boolean mIsFiltering;
 
-    Imps.ProviderSettings.QueryMap mSettingMap;
+    Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
 
     @Override
@@ -119,8 +119,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mSettingMap = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, true, null);
+        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), true, null);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable(){
             public void run() {
@@ -141,7 +141,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         mContextMenuHandler = new ContextMenuHandler();
         mActiveChatListView.getListView().setOnCreateContextMenuListener(this);
 
-        mSettingMap.addObserver(new Observer() {
+        mGlobalSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
                 if (!mDestroyed) {
                 }
@@ -176,13 +176,14 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         		Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
             return true;
      
-	        case R.id.menu_view_accounts:
-	        	startActivity(getEditAccountIntent());           
-	            return true;
+        case R.id.menu_view_accounts:
+//	            startActivity(getEditAccountIntent());
+            startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+            finish();
+            return true;
 	            
             case R.id.menu_settings:
                 Intent intent = new Intent(this, SettingActivity.class);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                 startActivity(intent);
                 return true;
 
@@ -328,7 +329,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                     R.layout.contact_list_filter_view, null);
             mFilterView.getListView().setOnCreateContextMenuListener(this);
         }
-        Uri uri = mSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+        Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                 : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
@@ -366,8 +367,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         mDestroyed = true;
         // set connection to null to unregister listeners.
         mActiveChatListView.setConnection(null);
-        if (mSettingMap != null) {
-            mSettingMap.close();
+        if (mGlobalSettingMap != null) {
+            mGlobalSettingMap.close();
         }
         super.onDestroy();
     }

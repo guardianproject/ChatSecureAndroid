@@ -33,11 +33,6 @@
     android:defaultValue="auto">
   </ListPreference>
 
-  <EditTextPreference android:title="Resource"
-    android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
-    android:defaultValue="Gibberbot" 
-    android:key="@string/pref_account_xmpp_resource" />
-
     <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference

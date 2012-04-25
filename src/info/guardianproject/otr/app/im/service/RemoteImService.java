@@ -32,7 +32,6 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
-import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
@@ -52,7 +51,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -61,8 +59,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -99,12 +95,17 @@ public class RemoteImService extends Service implements OtrEngineListener {
     
     private ImPluginHelper mPluginHelper;
     Vector<ImConnectionAdapter> mConnections;
+
+    private Imps.ProviderSettings.QueryMap mGlobalSettings;
+    private Handler mHandler;
+
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners
             = new RemoteCallbackList<IConnectionCreationListener>();
 
     
 	public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
+        mHandler = new Handler();
 	}
 	
 	private static final String TAG = "Gibberbot.ImService";
@@ -144,9 +145,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 	private int convertPolicy() {
 		int otrPolicy = OtrPolicy.OPPORTUNISTIC;	        	
 		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-		
-		String otrModeSelect = prefs.getString("pref_security_otr_mode", "auto");
+		String otrModeSelect = getGlobalSettings().getOtrMode();
 		
 		if (otrModeSelect.equals("auto"))
 		{
@@ -168,6 +167,14 @@ public class RemoteImService extends Service implements OtrEngineListener {
 		}
 		return otrPolicy;
 	}
+
+    private Imps.ProviderSettings.QueryMap getGlobalSettings() {
+        if (mGlobalSettings == null) {
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(getContentResolver(),
+                    true, mHandler);
+        }
+        return mGlobalSettings;
+    }
 
     @Override
     public void onCreate() {
@@ -313,6 +320,10 @@ public class RemoteImService extends Service implements OtrEngineListener {
         mNetworkConnectivityListener = null;
 
         unregisterReceiver(mSettingsMonitor);
+        
+        if (mGlobalSettings != null)
+            mGlobalSettings.close();
+
     }
 
     @Override

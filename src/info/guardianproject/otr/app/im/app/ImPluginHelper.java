@@ -87,15 +87,89 @@ public class ImPluginHelper {
     public void skipLoadingPlugins() {
     	mLoaded = true;
     }
+
+	private List<ResolveInfo> getPlugins() {
+		PackageManager pm = mContext.getPackageManager();
+        List<ResolveInfo> plugins = pm.queryIntentServices(
+                new Intent(ImPluginConstants.PLUGIN_ACTION_NAME), PackageManager.GET_META_DATA);
+		return plugins;
+	}
     
+    public List<String> getProviderNames() {
+        List<ResolveInfo> plugins = getPlugins();
+        List<String> names = new ArrayList<String>();
+        for (ResolveInfo plugin : plugins) {
+        	names.add(plugin.serviceInfo.metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME));
+        }
+        return names;
+    }
+    
+    public void createAdditionalProvider(String name) {
+        List<ResolveInfo> plugins = getPlugins();
+        ResolveInfo info = null;
+        ServiceInfo serviceInfo = null;
+        Bundle metaData = null;
+
+        for (ResolveInfo _info : plugins) {
+        	serviceInfo = _info.serviceInfo;
+            if (serviceInfo == null) {
+            	Log.e(TAG, "Ignore bad IM plugin: " + _info);
+            	continue;
+            }
+            if (serviceInfo.metaData == null) {
+            	Log.e(TAG, "Ignore bad IM plugin: " + _info);
+            	continue;
+            }
+            metaData = serviceInfo.metaData;
+            if (name.equals(metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME))) {
+            	info = _info;
+            	break;
+            }
+        }
+        
+        if (info == null) {
+        	Log.e(TAG, "Did not find plugin " + name);
+        	return;
+        }
+        
+        String providerName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME);
+        String providerFullName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_FULL_NAME);
+        String signUpUrl = metaData.getString(ImPluginConstants.METADATA_SIGN_UP_URL);
+        
+        if (TextUtils.isEmpty(providerName) || TextUtils.isEmpty(providerFullName)) {
+        	Log.e(TAG, "Ignore bad IM plugin: " + info + ". Lack of required meta data");
+        	return;
+        }
+
+        if (!serviceInfo.packageName.equals(mContext.getPackageName())) {
+        	Log.e(TAG, "Ignore plugin in package: " + serviceInfo.packageName);
+        	return;
+        }
+        ImPluginInfo pluginInfo = new ImPluginInfo(providerName, serviceInfo.packageName,
+        		serviceInfo.name, serviceInfo.applicationInfo.sourceDir);
+
+        ImPlugin plugin = loadPlugin(pluginInfo);
+        if (plugin == null) {
+        	Log.e(TAG, "Ignore bad IM plugin");
+        	return;
+        }
+
+        try {
+        	insertProviderDb(plugin, pluginInfo,providerFullName, signUpUrl);
+        } catch (SQLiteFullException e) {
+        	Log.e(TAG, "Storage full", e);
+        	return;
+        }
+        mPluginsInfo.add(pluginInfo);
+        mPluginObjects.add(plugin);
+    }
+
     public void loadAvailablePlugins() {
         if (mLoaded) {
             return;
         }
 
-        PackageManager pm = mContext.getPackageManager();
-        List<ResolveInfo> plugins = pm.queryIntentServices(
-                new Intent(ImPluginConstants.PLUGIN_ACTION_NAME), PackageManager.GET_META_DATA);
+        List<ResolveInfo> plugins = getPlugins();
         for (ResolveInfo info : plugins) {
             Log.d(TAG, "Found plugin " + info);
 
@@ -258,6 +332,39 @@ public class ImPluginHelper {
             }
             cr.bulkInsert(Imps.ProviderSettings.CONTENT_URI, settingValues);
         }
+
+        return providerId;
+    }
+
+    private long insertProviderDb(ImPlugin plugin, ImPluginInfo info,
+            String providerFullName, String signUpUrl) {
+        Map<String, String> config = loadConfiguration(plugin, info);
+        if (config == null) {
+            return 0;
+        }
+
+        long providerId = 0;
+        ContentResolver cr = mContext.getContentResolver();
+        ContentValues values = new ContentValues(3);
+        values.put(Imps.Provider.NAME, info.mProviderName);
+        values.put(Imps.Provider.FULLNAME, providerFullName);
+        values.put(Imps.Provider.CATEGORY, ImApp.IMPS_CATEGORY);
+        values.put(Imps.Provider.SIGNUP_URL, signUpUrl);
+
+        Uri result = cr.insert(Imps.Provider.CONTENT_URI, values);
+        providerId = ContentUris.parseId(result);
+        
+        ContentValues[] settingValues = new ContentValues[config.size()];
+
+        int index = 0;
+        for (Map.Entry<String, String> entry : config.entrySet()) {
+        	ContentValues settingValue = new ContentValues();
+        	settingValue.put(Imps.ProviderSettings.PROVIDER, providerId);
+        	settingValue.put(Imps.ProviderSettings.NAME, entry.getKey());
+        	settingValue.put(Imps.ProviderSettings.VALUE, entry.getValue());
+        	settingValues[index++] = settingValue;
+        }
+        cr.bulkInsert(Imps.ProviderSettings.CONTENT_URI, settingValues);
 
         return providerId;
     }
