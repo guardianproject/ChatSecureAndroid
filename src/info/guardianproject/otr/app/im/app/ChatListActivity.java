@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.lang.BhoToast;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -173,7 +174,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         //TODO make sure this works
 
         case R.id.menu_new_chat:
-        		Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
+        		new BhoToast(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT);
             return true;
      
 	        case R.id.menu_view_accounts:

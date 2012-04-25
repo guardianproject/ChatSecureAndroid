@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.app.lang.BhoButton;
 import info.guardianproject.otr.app.im.app.lang.BhoCheckBox;
 import info.guardianproject.otr.app.im.app.lang.BhoEditText;
 import info.guardianproject.otr.app.im.app.lang.BhoTextView;
+import info.guardianproject.otr.app.im.app.lang.BhoToast;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -60,15 +61,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
 public class AccountActivity extends Activity {
     public static final String TAG = "AccountActivity";
@@ -262,11 +257,11 @@ public class AccountActivity extends Activity {
         mRememberPass.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	
-                CheckBox mRememberPass = (CheckBox) v;
+                BhoCheckBox mRememberPass = (BhoCheckBox) v;
                 
                 if ( mRememberPass.isChecked() ) {
                     String msg = brandingRes.getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
+                    new BhoToast(AccountActivity.this, msg, Toast.LENGTH_LONG);
                 }
             }
         });
@@ -449,7 +444,7 @@ public class AccountActivity extends Activity {
             	}
             	else
             	{
-            		Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
+            		new BhoToast(this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
             	}
             	
             }
@@ -489,10 +484,10 @@ public class AccountActivity extends Activity {
     			} catch (NumberFormatException e) {
     				// TODO move these strings to strings.xml
     				isGood = false;
-    				Toast.makeText(AccountActivity.this, 
+    				new BhoToast(AccountActivity.this, 
     						"The port value '" + splitColon[1] +
     						"' after the : could not be parsed as a number!",
-    						Toast.LENGTH_LONG).show();
+    						Toast.LENGTH_LONG);
     			}
     		}
     	}
@@ -661,7 +656,7 @@ public class AccountActivity extends Activity {
           
         	
         	
-           Toast.makeText(this, getString(R.string.signed_out_prompt,this.mEditUserAccount.getText()), Toast.LENGTH_SHORT).show();
+           new BhoToast(this, getString(R.string.signed_out_prompt,this.mEditUserAccount.getText()), Toast.LENGTH_SHORT);
            isSignedIn = false;
            
            mBtnSignIn.setText(getString(R.string.sign_in));
@@ -835,7 +830,7 @@ public class AccountActivity extends Activity {
         		}
         		else
         		{
-        			Toast.makeText(AccountActivity.this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
+        			new BhoToast(AccountActivity.this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
         		}
 			} catch (Exception e) {
 				Log.e("OTR","could not gen local key pair",e);

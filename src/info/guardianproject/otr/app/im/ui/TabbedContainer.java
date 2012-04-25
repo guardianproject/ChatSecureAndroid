@@ -3,6 +3,7 @@ package info.guardianproject.otr.app.im.ui;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
+import info.guardianproject.otr.app.im.app.lang.BhoTab;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,6 +13,7 @@ import android.widget.TabHost;
 
 public class TabbedContainer extends TabActivity {
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle smurfy) {
 	    super.onCreate(smurfy);
@@ -27,15 +29,19 @@ public class TabbedContainer extends TabActivity {
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    Intent intent;  // Reusable Intent for each tab
-
+	    
+	    BhoTab contactsTab = new BhoTab(this, getTabWidget(), getString(R.string.menu_contact_list),
+                res.getDrawable(R.drawable.ic_tab_contacts));
+	    BhoTab chatsTab = new BhoTab(this, getTabWidget(), getString(R.string.title_chats),
+                res.getDrawable(R.drawable.ic_tab_chats));
 	   
 	    // Do the same for the other tabs
 	    intent = new Intent().setClass(this, ContactListActivity.class);
 	    intent.setAction(passThruAction);
 	    intent.setData(passThruData);
 	    intent.putExtras(passThruExtras);
-	    spec = tabHost.newTabSpec("contacts").setIndicator(getString(R.string.menu_contact_list),
-	                      res.getDrawable(R.drawable.ic_tab_contacts))
+	    spec = tabHost.newTabSpec("contacts")
+	    			  .setIndicator(contactsTab.bhoTab)
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
@@ -47,8 +53,8 @@ public class TabbedContainer extends TabActivity {
 	    intent.putExtras(passThruExtras);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("chats").setIndicator(getString(R.string.title_chats),
-	                      res.getDrawable(R.drawable.ic_tab_chats))
+	    spec = tabHost.newTabSpec("chats")
+	    			  .setIndicator(chatsTab.bhoTab)
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
