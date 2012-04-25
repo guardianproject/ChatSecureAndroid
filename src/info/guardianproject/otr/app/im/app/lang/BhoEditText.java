@@ -9,7 +9,6 @@ public class BhoEditText extends EditText {
 	Context c;
 	private static Typeface t;
 	
-<<<<<<< HEAD
 	public BhoEditText(Context context) {
 		super(context);
 		this.c = context;
@@ -20,9 +19,6 @@ public class BhoEditText extends EditText {
 		setTypeface(t);
 		
 	}
-	
-=======
->>>>>>> 11c0a53ade8fd7484e982783986a06cd8f5a564a
 	public BhoEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.c = context;

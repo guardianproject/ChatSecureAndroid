@@ -129,7 +129,6 @@ public class AccountActivity extends Activity {
 
         setContentView(R.layout.account_activity);
         mEditUserAccount = (BhoEditText)findViewById(R.id.edtName);
-<<<<<<< HEAD
         
         mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -137,14 +136,11 @@ public class AccountActivity extends Activity {
             	checkUserChanged();
             }
           });
-        
-=======
->>>>>>> 11c0a53ade8fd7484e982783986a06cd8f5a564a
+ 
         mEditPass = (BhoEditText)findViewById(R.id.edtPass);
         mRememberPass = (BhoCheckBox)findViewById(R.id.rememberPassword);
  //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
         mUseTor = (BhoCheckBox)findViewById(R.id.useTor);
-<<<<<<< HEAD
         mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
@@ -152,9 +148,7 @@ public class AccountActivity extends Activity {
              	updateUseTor(isChecked);
             }
         });
-        
-=======
->>>>>>> 11c0a53ade8fd7484e982783986a06cd8f5a564a
+
         mBtnSignIn = (BhoButton)findViewById(R.id.btnSignIn);
         
         mBtnAdvanced = (BhoButton)findViewById(R.id.btnAdvanced);
