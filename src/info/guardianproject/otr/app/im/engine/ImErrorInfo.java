@@ -53,6 +53,7 @@ public class ImErrorInfo implements Parcelable, Serializable {
     public static final int SERIALIZER_ERROR = -750;
 
     public static final int NETWORK_ERROR = -800;
+    public static final int WIFI_NOT_CONNECTED_ERROR = -801;
 
     public static final int ILLEGAL_SERVER_RESPONSE = -900;
 

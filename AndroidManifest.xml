@@ -18,8 +18,9 @@ android:anyDensity="true"
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-  
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />  
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
 
     <permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE"
@@ -102,6 +103,21 @@ android:anyDensity="true"
                 android:value="XMPP"/>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
                 android:value="@string/provider_full_name_xmpp"/>
+            <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
+                android:value="http://xmpp.org/services/"/>
+        </service>
+
+        <service android:name=".plugin.xmpp.LLXmppImPlugin"
+               android:process=":remote"
+        
+        	>
+            <intent-filter>
+                <action android:name="info.guardianproject.otr.app.im.plugin" />
+            </intent-filter>
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
+                android:value="Local"/>
+            <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
+                android:value="@string/provider_full_name_llxmpp"/>
             <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
                 android:value="http://xmpp.org/services/"/>
         </service>

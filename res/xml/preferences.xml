@@ -33,7 +33,13 @@
     android:defaultValue="auto">
   </ListPreference>
 
-    <PreferenceCategory android:title="@string/notification_group_title">
+  <CheckBoxPreference
+          android:key="@string/pref_foreground_service"
+          android:title="@string/foreground_service_title"
+          android:summary="@string/foreground_service_summary"
+          android:defaultValue="false" />
+
+  <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference
                 android:key="@string/pref_enable_notification"

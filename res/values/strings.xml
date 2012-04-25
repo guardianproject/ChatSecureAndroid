@@ -326,7 +326,8 @@
 
 	<!-- provider plugin names -->
 	<string name="provider_full_name_xmpp">Jabber/XMPP</string>
-
+	<string name="provider_full_name_llxmpp">Local Serverless XMPP</string>
+	
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
 
     <string name="account_setup_title">Account Setup</string>
@@ -341,6 +342,8 @@
     <string name="notification_enabled_summary">Notify in status bar when IM arrives</string>
     <!-- This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label -->
+    <string name="foreground_service_title">Use foreground priority</string>
+    <string name="foreground_service_summary">Reduce the chance that Android will restart our connection service.  This will place a notification in the notification area.</string>
     <string name="notification_vibrate_title">Vibrate</string>
     <!-- This is the summary of the vibrate notification setting-->
     <string name="notification_vibrate_summary">Also vibrate when IM arrives</string>
@@ -434,6 +437,7 @@
     <string name="contact_not_loaded">Please wait while your Contact list loads.</string>
     <!-- Error message for when a network error occurred.-->
     <string name="network_error">A network error occurred.</string>
+    <string name="wifi_not_connected_error">WiFi is required for this connection.</string>
     <!-- Error message for lack of server support error.-->
     <string name="service_not_support">The server does not support this functionality.</string>
     <!-- Erorr message for bad password error.-->
@@ -669,6 +673,7 @@
 	<string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
 	<string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
 	<string name="pref_enable_notification">pref_enable_notification</string>
+	<string name="pref_foreground_service">pref_foreground_service</string>
 	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
 	<string name="pref_notification_sound">pref_notification_sound</string>
 	<string name="pref_notification_ringtone">pref_notification_ringtone</string>

@@ -20,17 +20,12 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
-import android.util.Log;
-import android.widget.Toast;
 
 public class SettingActivity extends android.preference.PreferenceActivity implements OnSharedPreferenceChangeListener {
     ListPreference mOtrMode;
@@ -38,6 +33,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     CheckBoxPreference mEnableNotification;
     CheckBoxPreference mNotificationVibrate;
     CheckBoxPreference mNotificationSound;
+    CheckBoxPreference mForegroundService;
     
     private void setInitialValues() {
 		ContentResolver cr = getContentResolver();
@@ -49,6 +45,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         mEnableNotification.setChecked(settings.getEnableNotification());
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
+        mForegroundService.setChecked(settings.getUseForegroundPriority());
         
         settings.close();
     }
@@ -75,6 +72,8 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
             } else {
             	settings.setRingtoneURI(null);
             }
+        } else if (key.equals(getString(R.string.pref_foreground_service))) {
+            settings.setUseForegroundPriority(prefs.getBoolean(key, false));
     	}
     	settings.close();
     }
@@ -91,6 +90,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     	mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
     	// TODO re-enable Ringtone preference
     	//mNotificationRingtone = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
+        mForegroundService = (CheckBoxPreference) findPreference(getString(R.string.pref_foreground_service));
     }
 
     @Override
