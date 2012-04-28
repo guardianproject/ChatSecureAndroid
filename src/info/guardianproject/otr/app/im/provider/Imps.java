@@ -1706,6 +1706,9 @@ public class Imps {
         /** specifies whether to show as away when device is idle */
         public static final String SHOW_AWAY_ON_IDLE = "show_away_on_idle";
 
+        /** controls whether the service gets foreground priority */
+        public static final String USE_FOREGROUND_PRIORITY = "use_foreground_priority";
+
         /** specifies whether to upload heartbeat stat upon login */
         public static final String UPLOAD_HEARTBEAT_STAT = "upload_heartbeat_stat";
 
@@ -1998,6 +2001,12 @@ public class Imps {
                     hideOfflineContacts);
         }
 
+        public static void setUseForegroundPriority(ContentResolver contentResolver,
+                long providerId, boolean flag) {
+            putBooleanValue(contentResolver, providerId, USE_FOREGROUND_PRIORITY,
+                    flag);
+        }
+
         /**
          * A convenience method to set whether or not enable the IM notification.
          *
@@ -2237,10 +2246,16 @@ public class Imps {
              * @return Whether or not the offline contacts should be hided.
              */
             public boolean getHideOfflineContacts() {
-                return getBoolean(HIDE_OFFLINE_CONTACTS,
-                        false/* by default not hide the offline contacts*/);
+                return getBoolean(HIDE_OFFLINE_CONTACTS, false /* default*/);
             }
 
+            public void setUseForegroundPriority(boolean flag) {
+                ProviderSettings.setUseForegroundPriority(mContentResolver, mProviderId, flag);
+            }
+
+            public boolean getUseForegroundPriority() {
+                return getBoolean(USE_FOREGROUND_PRIORITY, false /* default */);
+            }
             /**
              * Set whether or not enable the IM notification.
              *
