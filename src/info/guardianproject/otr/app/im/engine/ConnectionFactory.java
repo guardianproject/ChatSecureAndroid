@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 //import info.guardianproject.otr.app.im.plugin.loopback.LoopbackConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.LLXmppConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
 import java.util.Map;
@@ -56,6 +57,9 @@ public class ConnectionFactory {
     public ImConnection createConnection(Map<String, String> settings, Context context) throws ImException {
     	if ("XMPP".equals(settings.get("im.protocol"))) {
         	return new XmppConnection(context);
+    	} 
+    	if ("LLXMPP".equals(settings.get("im.protocol"))) {
+        	return new LLXmppConnection(context);
     	} 
     	/*else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
     		return new SMSConnection();
