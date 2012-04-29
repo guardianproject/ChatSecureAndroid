@@ -165,12 +165,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		}
 		return false;
 	}
-	
-	public void join() throws InterruptedException {
-		ExecutorService oldExecutor = mExecutor;
-		createExecutor();
-		oldExecutor.shutdown();
-		oldExecutor.awaitTermination(10, TimeUnit.SECONDS);
+
+	// This runs in executor thread, and since there is only one such thread, we will definitely
+	// succeed in shutting down the executor if we get here.
+	public void join() {
+		final ExecutorService executor = mExecutor;
+		mExecutor = null;
+		// This will send us an interrupt, which we will ignore.  We will terminate
+		// anyway after the caller is done.  This also drains the executor queue.
+		executor.shutdownNow();
 	}
 	
 	public void sendPacket(final org.jivesoftware.smack.packet.Packet packet) {
@@ -763,8 +766,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		this.disconnect();
 	}
 
+	// We must release resources here, because we will not be reused
 	void disconnected(ImErrorInfo info) {
 		Log.w(TAG, "disconnected");
+		join();
 		setState(DISCONNECTED, info);
 	}
 	
@@ -794,7 +799,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	@Override
 	public void logoutAsync() {
-		// TODO invoke join() here?
 		execute(new Runnable() {
 			@Override
 			public void run() {
@@ -813,7 +817,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		Log.w(TAG, "logout");
 		setState(LOGGING_OUT, null);
 		disconnect();
-		setState(DISCONNECTED, null);
+		disconnected(null);
 	}
 
 	// Runs in executor thread
