@@ -118,20 +118,20 @@ public class WelcomeActivity extends Activity {
     {
     	try
     	{
-	    	 mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-	                 PROVIDER_PROJECTION,
-	                 Imps.Provider.CATEGORY + "=?" /* selection */,
-	                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-	                 Imps.Provider.DEFAULT_SORT_ORDER);
-	    	 
-	    	 mProviderCursor.moveToFirst();
-	    	 
-	    	 mApp = ImApp.getApplication(this);
-             mHandler = new MyHandler(this);
-        	ImPluginHelper.getInstance(this).loadAvailablePlugins();
-        	
-	    	 
-	    	 return true;
+    	    mApp = ImApp.getApplication(this);
+    	    mHandler = new MyHandler(this);
+    	    ImPluginHelper.getInstance(this).loadAvailablePlugins();
+           
+    	    mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+    	            PROVIDER_PROJECTION,
+    	            Imps.Provider.CATEGORY + "=?" /* selection */,
+    	            new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+    	            Imps.Provider.DEFAULT_SORT_ORDER);
+
+    	    mProviderCursor.moveToFirst();
+
+
+    	    return true;
          
     	}
     	catch (Exception e)
