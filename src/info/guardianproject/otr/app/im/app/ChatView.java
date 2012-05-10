@@ -25,7 +25,6 @@ import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -51,7 +50,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
@@ -87,7 +85,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -203,9 +200,9 @@ public class ChatView extends LinearLayout {
 	
     private class RequeryCallback implements Runnable {
         public void run() {
-//            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
                 log("RequeryCallback");
-//            }
+            }
             requeryCursor();
         }
     }
@@ -595,9 +592,9 @@ public class ChatView extends LinearLayout {
             return;
         } else {
             mChatSession = getChatSession(mCursor);
-          
-        //    initOtr();
             
+            // This will save the current chatId and providerId in the relevant fields.
+            // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
             updateChat();
             registerChatListener();
         }
@@ -952,7 +949,7 @@ public class ChatView extends LinearLayout {
     }
 
     private IChatSessionManager getChatSessionManager(long providerId) {
-        if (mChatSessionManager == null) {
+        if (mChatSessionManager == null || mProviderId != providerId) {
         	
             IImConnection conn = mApp.getConnection(providerId);
             

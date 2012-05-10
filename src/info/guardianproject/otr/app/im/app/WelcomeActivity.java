@@ -330,7 +330,8 @@ public class WelcomeActivity extends Activity {
     private void signInAll() {
     	
         Log.i(TAG, "signInAll");
-    	mProviderCursor.moveToFirst();
+    	if (!mProviderCursor.moveToFirst())
+    		return;
     	
     	do {
     		int position = mProviderCursor.getPosition();
