@@ -17,10 +17,14 @@ import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +32,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -43,8 +46,6 @@ import org.jivesoftware.smack.LLService;
 import org.jivesoftware.smack.LLServiceStateListener;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.proxy.ProxyInfo;
-import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.LLServiceDiscoveryManager;
 
 import android.content.ContentResolver;
@@ -68,8 +69,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     private ThreadPoolExecutor mExecutor;
 
-    private ProxyInfo mProxyInfo = null;
-
     private long mAccountId = -1;
     private long mProviderId = -1;
 
@@ -80,6 +79,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     private MulticastLock mcLock;
 
     private WifiLock wifiLock;
+
+    private InetAddress ipAddress;
+
+    private String serviceName;
     
     static {
         LLServiceDiscoveryManager.addServiceListener();
@@ -233,9 +236,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         // providerSettings is closed in initConnection()
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
+        providerSettings.close(); // close this, which was opened in do_login()
 
         try {
-            initConnection(userName, domain, providerSettings);
+            initConnection(userName, domain);
         } catch (Exception e) {
             Log.w(TAG, "login failed", e);
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
@@ -244,53 +248,29 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
-    // TODO shouldn't setProxy be handled in Imps/settings?
     public void setProxy(String type, String host, int port) {
-
-        if (type == null) {
-            mProxyInfo = ProxyInfo.forNoProxy();
-        } else {
-            ProxyInfo.ProxyType pType = ProxyType.valueOf(type);
-            mProxyInfo = new ProxyInfo(pType, host, port, "", "");
-        }
+        // Ignore proxies for mDNS
     }
 
     // Runs in executor thread
-    private void initConnection(String userName, String domain, Imps.ProviderSettings.QueryMap providerSettings)
+    private void initConnection(String userName, String domain)
             throws Exception {
-        providerSettings.close(); // close this, which was opened in do_login()
-
         setState(LOGGING_IN, null);
         mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
 
         domain = domain.replace('.', '_');
-        final String serviceName = userName + "@" + domain;
+        serviceName = userName + "@" + domain;
         LLPresence presence = new LLPresence(serviceName);
 
-        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
-
-        WifiInfo connectionInfo = wifi.getConnectionInfo();
-        if (connectionInfo == null || connectionInfo.getBSSID() == null) {
-            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR, "WiFi connection is required");
+        ipAddress = getMyAddress(serviceName, true);
+        
+        if (ipAddress == null) {
+            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR, "network connection is required");
             setState(DISCONNECTED, info);
             return;
         }
-        
-        int ip = connectionInfo.getIpAddress();
-        InetAddress address =
-                InetAddress.getByAddress(new byte[] { (byte)((ip)&0xff),
-                                                      (byte)((ip>>8)&0xff),
-                                                      (byte)((ip>>16)&0xff),
-                                                      (byte)((ip>>24)&0xff)});
-        
-        mcLock = wifi.createMulticastLock(serviceName);
-        mcLock.acquire();
-        // HIGH_PERF is required for some devices to listen to multicast while screen is off
-        wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
-        wifiLock.acquire();
-        
             
-        mService = JmDNSService.create(presence, address);
+        mService = JmDNSService.create(presence, ipAddress);
         mService.addServiceStateListener(new LLServiceStateListener() {
             public void serviceNameChanged(String newName, String oldName) {
                 debug(TAG, "Service named changed from " + oldName + " to " + newName + ".");
@@ -298,7 +278,9 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             public void serviceClosed() {
                 debug(TAG, "Service closed");
-                setState(DISCONNECTED, null);
+                if (getState() != SUSPENDED) {
+                    setState(DISCONNECTED, null);
+                }
                 releaseLocks();
             }
 
@@ -386,6 +368,52 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(LOGGED_IN, null);
     }
 
+    private InetAddress getMyAddress(final String serviceName, boolean doLock) {
+        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
+
+        WifiInfo connectionInfo = wifi.getConnectionInfo();
+        if (connectionInfo == null || connectionInfo.getBSSID() == null) {
+            Log.w(TAG, "Not connected to wifi.  This may not work.");
+            // Get the IP the usual Java way
+            try {
+                for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                    NetworkInterface intf = en.nextElement();
+                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                        InetAddress inetAddress = enumIpAddr.nextElement();
+                        if (!inetAddress.isLoopbackAddress()) {
+                            return inetAddress;
+                        }
+                    }
+                }        
+            } catch (SocketException e) {
+                Log.e(TAG, "while enumerating interfaces", e);
+                return null;
+            }
+        }
+        
+        int ip = connectionInfo.getIpAddress();
+        InetAddress address;
+        try {
+            address = InetAddress.getByAddress(new byte[] { (byte)((ip)&0xff),
+                                                  (byte)((ip>>8)&0xff),
+                                                  (byte)((ip>>16)&0xff),
+                                                  (byte)((ip>>24)&0xff)});
+        } catch (UnknownHostException e) {
+            Log.e(TAG, "unknown host exception when converting ip address");
+            return null;
+        }
+        
+        if (doLock) {
+            mcLock = wifi.createMulticastLock(serviceName);
+            mcLock.acquire();
+            // HIGH_PERF is required for some devices to listen to multicast while screen is off
+            wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
+            wifiLock.acquire();
+        }
+        
+        return address;
+    }
+
     private void releaseLocks() {
         if (mcLock != null)
             mcLock.release();
@@ -443,8 +471,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     // Force immediate logout
     public synchronized void logout() {
-        if (mService != null)
+        if (mService != null) {
             mService.close();
+            mService = null;
+        }
     }
 
     @Override
@@ -452,13 +482,17 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         execute(new Runnable() {
             @Override
             public void run() {
-                debug(TAG, "suspend");
-                setState(SUSPENDED, null);
-                logout();
+                do_suspend();
             }
         });
     }
 
+    private void do_suspend() {
+        debug(TAG, "suspend");
+        setState(SUSPENDED, null);
+        logout();
+    }
+    
     private ChatSession findOrCreateSession(String address) {
         ChatSession session = mSessionManager.findSession(address);
 
@@ -723,12 +757,24 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void reestablishSessionAsync(Map<String, String> sessionContext) {
-        do_login();
+        execute(new Runnable() {
+            public void run() {
+                do_login();
+            }
+        });
     }
 
     @Override
     public void sendHeartbeat() {
-        // TODO Auto-generated method stub
-
+        InetAddress newAddress = getMyAddress(serviceName, false);
+        if (!ipAddress.equals(newAddress)) {
+            debug(TAG, "new address, reconnect");
+            execute(new Runnable() {
+                public void run() {
+                    do_suspend();
+                    do_login();
+                }
+            });
+        }
     }
 }
