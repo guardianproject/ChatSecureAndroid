@@ -406,8 +406,12 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         if (doLock) {
             mcLock = wifi.createMulticastLock(serviceName);
             mcLock.acquire();
+            
             // HIGH_PERF is required for some devices to listen to multicast while screen is off
-            wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
+            //wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
+            // n8fr8: HIGH_PERF is only available on android-12 and above sadly
+            wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL, serviceName);
+            
             wifiLock.acquire();
         }
         
