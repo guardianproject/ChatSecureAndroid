@@ -120,6 +120,8 @@
     <string name="menu_switch_chats">Switch chats</string>
     <!-- Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
     <string name="menu_insert_smiley">Insert smiley</string>
+    
+    <string name="menu_resend">Resend</string>
 
 	<!-- Strings for the contact info screen -->
 	<string name="menu_scan">Scan Fingerprint</string>
