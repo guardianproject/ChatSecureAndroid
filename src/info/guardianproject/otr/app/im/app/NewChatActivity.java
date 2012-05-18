@@ -512,7 +512,11 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         mContextMenuHandler.mPosition = info.position;
-        menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(mContextMenuHandler);
+        Cursor cursor = mChatView.getMessageAtPosition(info.position);
+        int type = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Messages.TYPE));
+        if (type == Imps.MessageType.OUTGOING) {
+            menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(mContextMenuHandler);
+        }
     }
 
     final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
