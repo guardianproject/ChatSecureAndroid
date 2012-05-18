@@ -17,7 +17,9 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactListActivity.ContextMenuHandler;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -28,22 +30,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,12 +50,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-public class NewChatActivity extends Activity {
+public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
 
+    private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
 
     ImApp mApp;
@@ -70,6 +74,8 @@ public class NewChatActivity extends Activity {
     private ChatSwitcher mChatSwitcher;
 
     private LayoutInflater mInflater;
+
+    ContextMenuHandler mContextMenuHandler;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -85,6 +91,9 @@ public class NewChatActivity extends Activity {
 
         mApp = ImApp.getApplication(this);
         mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
+
+        mContextMenuHandler = new ContextMenuHandler();
+        mChatView.getHistoryView().setOnCreateContextMenuListener(this);
 
         final Handler handler = new Handler();
         mApp.callWhenServiceConnected(handler, new Runnable() {
@@ -497,4 +506,37 @@ public class NewChatActivity extends Activity {
             mChatSession.registerChatListener(this);
         }
     }
+
+    /** Show the context menu on a history item. */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        mContextMenuHandler.mPosition = info.position;
+        Cursor cursor = mChatView.getMessageAtPosition(info.position);
+        int type = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Messages.TYPE));
+        if (type == Imps.MessageType.OUTGOING) {
+            menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(mContextMenuHandler);
+        }
+    }
+
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+        int mPosition;
+
+        public boolean onMenuItemClick(MenuItem item) {
+            Cursor c;
+            c = mChatView.getMessageAtPosition(mPosition);
+
+            switch (item.getItemId()) {
+            case MENU_RESEND:
+                String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
+                mChatView.getComposedMessage().setText(text);
+                break;
+            default:
+                return false;
+            }
+
+            return true;
+        }
+    }
+
 }

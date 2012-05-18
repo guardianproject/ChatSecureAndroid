@@ -758,6 +758,10 @@ public class ChatView extends LinearLayout {
         }
         
     }
+    
+    ListView getHistoryView() {
+        return mHistory;
+    }
 
     private void startQuery() {
         if (mQueryHandler == null) {
@@ -1741,5 +1745,14 @@ public class ChatView extends LinearLayout {
         void setNeedRequeryCursor(boolean requeryCursor) {
             mNeedRequeryCursor = requeryCursor;
         }
+    }
+
+    Cursor getMessageAtPosition(int position) {
+        Object item = mMessageAdapter.getItem(position);
+        return (Cursor)item;
+    }
+    
+    EditText getComposedMessage() {
+        return mComposeMessage;
     }
 }
