@@ -402,15 +402,20 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             Log.e(TAG, "unknown host exception when converting ip address");
             return null;
         }
-        
+
         if (doLock) {
             mcLock = wifi.createMulticastLock(serviceName);
             mcLock.acquire();
+
+            // HIGH_PERF is only available on android-12 and above
+            int wifiMode;
+            try {
+                wifiMode = (Integer) WifiManager.class.getField("WIFI_MODE_FULL_HIGH_PERF").get(null);
+            } catch (Exception e) {
+                wifiMode = WifiManager.WIFI_MODE_FULL;
+            }
             
-            // HIGH_PERF is required for some devices to listen to multicast while screen is off
-            //wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, serviceName);
-            // n8fr8: HIGH_PERF is only available on android-12 and above sadly
-            wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_FULL, serviceName);
+            wifiLock = wifi.createWifiLock(wifiMode, serviceName);
             
             wifiLock.acquire();
         }
