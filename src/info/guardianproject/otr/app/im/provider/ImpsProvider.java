@@ -2386,6 +2386,7 @@ public class ImpsProvider extends ContentProvider {
                     addToQuickSwitch(rowID);
                 }
                 notifyContactContentUri = true;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_PRESENCE:
@@ -2987,6 +2988,7 @@ public class ImpsProvider extends ContentProvider {
             case MATCH_CHATS:
                 tableToChange = TABLE_CHATS;
                 backfillQuickSwitchSlots = true;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_CHATS_BY_ACCOUNT:
@@ -2999,12 +3001,14 @@ public class ImpsProvider extends ContentProvider {
                 if (DBG) log("delete (MATCH_CHATS_BY_ACCOUNT) sel => " + whereClause);
 
                 changedItemId = null;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_CHATS_ID:
                 tableToChange = TABLE_CHATS;
                 changedItemId = url.getPathSegments().get(1);
                 idColumnName = Imps.Chats.CONTACT_ID;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_PRESENCE:
@@ -3338,12 +3342,14 @@ public class ImpsProvider extends ContentProvider {
 
             case MATCH_CHATS:
                 tableToChange = TABLE_CHATS;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_CHATS_ID:
                 tableToChange = TABLE_CHATS;
                 changedItemId = url.getPathSegments().get(1);
                 idColumnName = Imps.Chats.CONTACT_ID;
+                notifyProviderAccountContentUri = true; // For updating account stats in account list
                 break;
 
             case MATCH_PRESENCE:
