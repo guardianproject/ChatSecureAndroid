@@ -2171,7 +2171,7 @@ public class Imps {
             }
 
             public int getXmppResourcePrio() {
-                return (int)getLong(XMPP_RESOURCE_PRIO, 5);
+                return (int)getLong(XMPP_RESOURCE_PRIO, 20);
             }
 
             public void setPort(int port) {
