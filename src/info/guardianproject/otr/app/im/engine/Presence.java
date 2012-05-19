@@ -55,6 +55,10 @@ public final class Presence implements Parcelable {
         this(Presence.OFFLINE, null, null, null, CLIENT_TYPE_DEFAULT, null);
     }
 
+    public Presence(int status, String statusText, int clientType) {
+        this(status, statusText, null, null, clientType);
+    }
+
     public Presence(int status, String statusText, byte[] avatarData,
             String avatarType, int clientType) {
         this(status, statusText, avatarData, avatarType, clientType, null);
@@ -68,7 +72,7 @@ public final class Presence implements Parcelable {
         mClientType = clientType;
         mExtendedInfo = extendedInfo;
     }
-
+    
     public Presence(Presence p) {
         this(p.mStatus, p.mStatusText, p.mAvatarData, p.mAvatarType,
                 p.mClientType, p.mExtendedInfo);

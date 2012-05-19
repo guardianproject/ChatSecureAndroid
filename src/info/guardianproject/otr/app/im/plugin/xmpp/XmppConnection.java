@@ -57,7 +57,6 @@ import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
@@ -126,6 +125,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private String mUsername;
 	private String mPassword;
 	private String mResource;
+	private int mPriority;
 	
 	public XmppConnection(Context context) {
 		super(context);
@@ -227,38 +227,44 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	        return vCard;
 	    }
 
-	@Override
-	protected void doUpdateUserPresenceAsync(Presence presence) {
-		
-		String statusText = presence.getStatusText();
+    @Override
+    protected void doUpdateUserPresenceAsync(Presence presence) {
+        org.jivesoftware.smack.packet.Presence packet = makePresencePacket(presence);
+
+        sendPacket(packet);
+        mUserPresence = presence;
+        notifyUserPresenceUpdated();
+    }
+
+    private org.jivesoftware.smack.packet.Presence makePresencePacket(Presence presence) {
+        String statusText = presence.getStatusText();
         Type type = Type.available;
         Mode mode = Mode.available;
-        int priority = 20;
-        if (presence.getStatus() == Presence.AWAY) {
-        	priority = 10;
-        	mode = Mode.away;
+        int priority = mPriority;
+        final int status = presence.getStatus();
+        if (status == Presence.AWAY) {
+            priority = 10;
+            mode = Mode.away;
+        } else if (status == Presence.IDLE) {
+            priority = 15;
+            mode = Mode.away;
+        } else if (status == Presence.DO_NOT_DISTURB) {
+            priority = 5;
+            mode = Mode.dnd;
+        } else if (status == Presence.OFFLINE) {
+            priority = 0;
+            type = Type.unavailable;
+            statusText = "Offline";
         }
-        else if (presence.getStatus() == Presence.IDLE) {
-        	priority = 15;
-        	mode = Mode.away;
-        }
-        else if (presence.getStatus() == Presence.DO_NOT_DISTURB) {
-        	priority = 5;
-        	mode = Mode.dnd;
-        }
-        else if (presence.getStatus() == Presence.OFFLINE) {
-        	priority = 0;
-        	type = Type.unavailable;
-        	statusText = "Offline";
-        }
-		org.jivesoftware.smack.packet.Presence packet = 
-        	new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
-		
-        sendPacket(packet);
-		mUserPresence = presence;
-        notifyUserPresenceUpdated();
-	}
-	
+
+        // The user set priority is the maximum allowed
+        if (priority > mPriority)
+            priority = mPriority;
+
+        org.jivesoftware.smack.packet.Presence packet =
+                new org.jivesoftware.smack.packet.Presence(type, statusText, priority, mode);
+        return packet;
+    }
 
 	@Override
 	public int getCapability() {
@@ -434,6 +440,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		String domain = providerSettings.getDomain();
 		String server = providerSettings.getServer();
 		String xmppResource = providerSettings.getXmppResource();
+		mPriority = providerSettings.getXmppResourcePrio();
 		int serverPort = providerSettings.getPort();
 		
 		providerSettings.close(); // close this, which was opened in do_login()
@@ -708,8 +715,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         mConnection.login(mUsername, mPassword, mResource);
         mStreamHandler.notifyInitialLogin();
 
-        org.jivesoftware.smack.packet.Presence presence = 
-        		new org.jivesoftware.smack.packet.Presence(org.jivesoftware.smack.packet.Presence.Type.available);
+        org.jivesoftware.smack.packet.Presence presence =
+                makePresencePacket(new Presence(Presence.AVAILABLE, null, Presence.CLIENT_TYPE_MOBILE)); 
         mConnection.sendPacket(presence);
 
         Roster roster = mConnection.getRoster();
