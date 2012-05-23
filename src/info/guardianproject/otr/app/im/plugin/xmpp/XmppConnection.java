@@ -352,7 +352,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 		mNeedReconnect = true;
 		setState(LOGGING_IN, null);
-		mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
+		mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
 
 		try {
 			if (userName.length() == 0)
@@ -541,7 +541,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 		// Don't use smack reconnection - not reliable
 		mConfig.setReconnectionAllowed(false);		
-		mConfig.setSendPresence(true);
+		mConfig.setSendPresence(false);
 		mConfig.setRosterLoadedAtLogin(true);
 
 		mConnection = new MyXMPPConnection(mConfig);
@@ -715,15 +715,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler
         mConnection.login(mUsername, mPassword, mResource);
         mStreamHandler.notifyInitialLogin();
 
-        org.jivesoftware.smack.packet.Presence presence =
-                makePresencePacket(new Presence(Presence.AVAILABLE, null, Presence.CLIENT_TYPE_MOBILE)); 
-        mConnection.sendPacket(presence);
+        sendPresencePacket();
 
         Roster roster = mConnection.getRoster();
 		roster.setSubscriptionMode(Roster.SubscriptionMode.manual);			
 		getContactListManager().listenToRoster(roster);
 
 	}
+
+    private void sendPresencePacket() {
+        org.jivesoftware.smack.packet.Presence presence =
+                makePresencePacket(mUserPresence); 
+        mConnection.sendPacket(presence);
+    }
 	
 	public void sendReceipt(org.jivesoftware.smack.packet.Message msg) {
 		debug(TAG, "sending XEP-0184 ack to " + msg.getFrom() + " id=" + msg.getPacketID());
@@ -1626,10 +1630,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 						// Make sure
 						if (!mConnection.isAuthenticated())
 							throw new XMPPException("manual auth failed");
+
 						// Manually set the state since manual auth doesn't notify listeners
 						mNeedReconnect = false;
 						setState(LOGGED_IN, null);
 					}
+					sendPresencePacket();
 				}
 			} catch (Exception e) {
 				mConnection.shutdown();
