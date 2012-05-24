@@ -57,6 +57,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -393,7 +394,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             mConnections.add(imConnectionAdapter);
 
             initOtr();
-            mOtrChatManager.setConnection(imConnectionAdapter);
+            mOtrChatManager.addConnection(imConnectionAdapter);
             
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
@@ -416,7 +417,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
         }
     }
 
-    void removeConnection(IImConnection connection) {
+    void removeConnection(ImConnectionAdapter connection) {
+        mOtrChatManager.removeConnection(connection);
         mConnections.remove(connection);
     }
 
