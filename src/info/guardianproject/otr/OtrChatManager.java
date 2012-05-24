@@ -5,35 +5,23 @@ package info.guardianproject.otr;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
-import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.Hashtable;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
-import net.java.otr4j.io.SerializationUtils;
-import net.java.otr4j.io.messages.PlainTextMessage;
 import net.java.otr4j.session.OtrSm;
 import net.java.otr4j.session.OtrSm.OtrSmEngineHost;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
-
-
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.Editable;
-import android.util.Log;
-import android.widget.EditText;
 
 /* OtrChatManager keeps track of the status of chats and their OTR stuff
  */
@@ -74,11 +62,15 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 		return mInstance;
 	}
 	
-	public void setConnection (ImConnectionAdapter imConnectionAdapter)
+	public void addConnection (ImConnectionAdapter imConnectionAdapter)
 	{
-		mOtrEngineHost.setConnection(imConnectionAdapter);
+		mOtrEngineHost.addConnection(imConnectionAdapter);
 	}
 	
+	public void removeConnection (ImConnectionAdapter imConnectionAdapter)
+	{
+	        mOtrEngineHost.removeConnection(imConnectionAdapter);
+	}
 	
 	public void addOtrEngineListener (OtrEngineListener oel)
 	{

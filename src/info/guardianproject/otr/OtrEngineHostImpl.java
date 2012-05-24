@@ -1,9 +1,8 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.CertDisplayActivity;
 import info.guardianproject.otr.app.im.app.WarningDialogActivity;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
+import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
@@ -13,26 +12,23 @@ import java.io.File;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 /* OtrEngineHostImpl is the connects this app and the OtrEngine
  * http://code.google.com/p/otr4j/wiki/QuickStart
  */
 public class OtrEngineHostImpl implements OtrEngineHost {
 	
-	private ImConnectionAdapter mConnection;
+	private List<ImConnectionAdapter> mConnections;
 	private OtrPolicy mPolicy;
     
 	private OtrAndroidKeyManagerImpl mOtrKeyManager;
@@ -57,14 +53,33 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 				OtrDebugLogger.log( msg);
 			}
 		});
+		
+		mConnections = new ArrayList<ImConnectionAdapter>();
 	}
 	
-	public void setConnection (ImConnectionAdapter imConnectionAdapter)
+	public void addConnection (ImConnectionAdapter connection)
 	{
-		this.mConnection = imConnectionAdapter;
-
+		mConnections.add(connection);
 	}
 	
+        public void removeConnection (ImConnectionAdapter connection)
+        {
+                mConnections.remove(connection);
+                this.mConnections.remove(connection.getLoginUser().getAddress().getScreenName());
+
+        }
+        
+        public ImConnectionAdapter findConnection(String localAddress) {
+            for (ImConnectionAdapter connection : mConnections) {
+                Contact user = connection.getLoginUser();
+                if (user != null) {
+                    if (user.getAddress().getFullName().equals(localAddress))
+                        return connection;
+                }
+            }
+            return null;
+        }
+        
 	public OtrAndroidKeyManagerImpl getKeyManager ()
 	{
 		return mOtrKeyManager;
@@ -115,34 +130,19 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 	
 	private void sendMessage (SessionID sessionID, String body)
 	{
-		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
+	        ImConnectionAdapter connection = findConnection(sessionID.getAccountID());
+		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)connection.getChatSessionManager();
 		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
 		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
 		
 		Message msg = new Message(body);
 		
-		msg.setFrom(mConnection.getLoginUser().getAddress());
+		msg.setFrom(connection.getLoginUser().getAddress());
 		msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
 		msg.setDateTime(new Date());
 		msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
 		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
 		
-	}
-	
-	private void sendLocalMessage (SessionID sessionID, String body)
-	{
-		ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter)mConnection.getChatSessionManager();
-		ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter)chatSessionManagerAdapter.getChatSession(sessionID.getUserID());
-		ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
-		
-		Message msg = new Message(body);
-		
-		msg.setTo(mConnection.getLoginUser().getAddress());
-		msg.setFrom(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
-		msg.setDateTime(new Date());
-		msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
-		chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
-	
 	}
 	
 	@Override
