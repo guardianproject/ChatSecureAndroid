@@ -173,7 +173,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mExecutor = null;
 		// This will send us an interrupt, which we will ignore.  We will terminate
 		// anyway after the caller is done.  This also drains the executor queue.
-		executor.shutdownNow();
+		if (executor != null)
+		    executor.shutdownNow();
 	}
 	
 	public void sendPacket(final org.jivesoftware.smack.packet.Packet packet) {
@@ -426,7 +427,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private void initConnection(String userName, final String password, 
 			Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
-//		android.os.Debug.waitForDebugger();
+		android.os.Debug.waitForDebugger();
 		
 		boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
 		boolean requireTls = providerSettings.getRequireTls();
@@ -461,7 +462,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     		debug(TAG, "(DNS SRV) resolving: "+domain);
     		DNSUtil.HostAddress srvHost = DNSUtil.resolveXMPPDomain(domain);
     		server = srvHost.getHost();
-    		//serverPort = srvHost.getPort(); //ignore port right now, as we are always a client
+    		if (serverPort <= 0) {
+    		    // If user did not override port, use port from SRV record
+    		    serverPort = srvHost.getPort();
+    		}
     		debug(TAG, "(DNS SRV) resolved: "+domain+"=" + server + ":" + serverPort);
     		
     	}

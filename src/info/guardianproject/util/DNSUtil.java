@@ -128,17 +128,13 @@ public class DNSUtil {
 		}
 		
 
-		if (result == null) {
-			result = resolveSRV("_xmpp-server._tcp." + domain);
-		}
-		
-		
-		if (result == null) {
+		if (result != null) {
+		    // Add item to cache.
+		    synchronized (ccache) {
+		        ccache.put(domain, result);
+		    }
+		} else {
 			result = new HostAddress(domain, 5222);
-		}
-		// Add item to cache.
-		synchronized (ccache) {
-			ccache.put(domain, result);
 		}
 		return result;
 	}
