@@ -427,7 +427,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private void initConnection(String userName, final String password, 
 			Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
-		android.os.Debug.waitForDebugger();
+//		android.os.Debug.waitForDebugger();
 		
 		boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
 		boolean requireTls = providerSettings.getRequireTls();
@@ -485,11 +485,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     			mConfig = new ConnectionConfiguration(server, serverPort, domain);
     		else
     			mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
-
-    		//if domain of login user is the same as server
-    		doVerifyDomain = (domain.equals(server));
-    		
-        	
     	}
 
     	mConfig.setDebuggerEnabled(DEBUG_ENABLED);
@@ -538,10 +533,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mConfig.setTruststorePassword(TRUSTSTORE_PASS);
 		
 		
-		if (server == null)
-			initSSLContext(domain, mConfig);
-		else
-    		initSSLContext(server, mConfig);
+		// Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
+		// can enable MITM.
+		initSSLContext(domain, mConfig);
 		
 		// Don't use smack reconnection - not reliable
 		mConfig.setReconnectionAllowed(false);		
