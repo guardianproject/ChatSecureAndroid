@@ -439,10 +439,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		boolean useSASL = true;//!allowPlainAuth;
 		
 		String domain = providerSettings.getDomain();
-		String server = providerSettings.getServer();
+		String requestedServer = providerSettings.getServer();
 		String xmppResource = providerSettings.getXmppResource();
 		mPriority = providerSettings.getXmppResourcePrio();
 		int serverPort = providerSettings.getPort();
+		
+		String server = requestedServer;
 		
 		providerSettings.close(); // close this, which was opened in do_login()
 		
@@ -535,7 +537,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		
 		// Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
 		// can enable MITM.
-		initSSLContext(domain, mConfig);
+		initSSLContext(domain, requestedServer, mConfig);
 		
 		// Don't use smack reconnection - not reliable
 		mConfig.setReconnectionAllowed(false);		
@@ -737,7 +739,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	}
 
 
-	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
+	private void initSSLContext (String domain, String requestedServer, ConnectionConfiguration config) throws Exception
 	{
 
        
@@ -758,7 +760,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	     }
 	     
 	     sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-	     sTrustManager = new ServerTrustManager(aContext, server, config, this);
+	     sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
 	     
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},
