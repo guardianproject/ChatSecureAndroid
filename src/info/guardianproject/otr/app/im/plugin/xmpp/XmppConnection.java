@@ -127,8 +127,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	private String mResource;
 	private int mPriority;
 	
+	private int mGlobalId;
+	private static int mGlobalCount;
+	
 	public XmppConnection(Context context) {
 		super(context);
+		
+		synchronized (XmppConnection.class) {
+		    mGlobalId = mGlobalCount++;
+		}
+		
 		aContext = context;
 		
 		SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
@@ -687,17 +695,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				 */
 			}
 		});
-        
-        Connection.addConnectionCreationListener(new ConnectionCreationListener (){
-
-			@Override
-			public void connectionCreated(Connection arg0) {
-				debug(TAG, "connection created!");
-				
-			}
-
-        });
-
 
         if (server.contains(IS_GOOGLE))
         {
@@ -1661,9 +1658,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		super.setState(state, error);
 	}
 
-	public static void debug (String tag, String msg)
+	public void debug(String tag, String msg)
 	{
-		//Log.d(tag, msg);
+//		Log.d(tag, "" + mGlobalId + " : " + msg);
 	}
 
 

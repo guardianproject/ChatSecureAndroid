@@ -235,6 +235,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 			try {
 				if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
 					debug( "autoLogin from heartbeat");
+					mNeedCheckAutoLogin = false;
 					autoLogin();
 				}
 				for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter
@@ -267,7 +268,14 @@ public class RemoteImService extends Service implements OtrEngineListener {
     }
 
     private void autoLogin() {
-        debug( "Scaning accounts and login automatically");
+        if (!mConnections.isEmpty()) {
+            // This can happen because the UI process may be restarted and may think that we need
+            // to autologin, while we (the Service process) are already up.
+            debug("Got autoLogin request, but we have one or more connections");
+            return;
+        }
+        
+        debug( "Scanning accounts and login automatically");
 
         ContentResolver resolver = getContentResolver();
 
