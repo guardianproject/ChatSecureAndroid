@@ -455,8 +455,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
 
-    	// try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
-    	if (doDnsSrv) {
+    	// If user did not specify a server, and SRV requested then lookup SRV
+    	if (doDnsSrv && requestedServer == null) {
     		
     		//java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
     		//java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -472,7 +472,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     		
     	}
 
-    	if (server == null) { // no server specified in prefs, use the domain
+    	// No server requested and SRV lookup wasn't requested or returned nothing - use domain
+    	if (server == null) {
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
     		
     		if (mProxyInfo == null)
