@@ -9,7 +9,6 @@ import java.util.Map;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.UnknownPacket;
@@ -17,6 +16,8 @@ import org.jivesoftware.smack.provider.PacketExtensionProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
+
+import android.util.Log;
 
 public class XmppStreamHandler {
 	private static final String URN_SM_2 = "urn:xmpp:sm:2";
@@ -147,7 +148,7 @@ public class XmppStreamHandler {
 	}
 	
 	private void debug(String message) {
-		XmppConnection.debug(XmppConnection.TAG, message);
+	    //Log.d(XmppConnection.TAG, message);
 	}
 
 	static class StreamHandlingPacket extends UnknownPacket {
