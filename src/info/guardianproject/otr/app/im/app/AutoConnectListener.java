@@ -11,7 +11,7 @@ import android.util.Log;
  * including on boot.
  */
 public class AutoConnectListener extends BroadcastReceiver {
-    private static final String TAG = "Gibberbot.AppConnectivityListener";
+    private static final String TAG = "Gibberbot.AutoConnectListener";
     static boolean firstCall = true;
 
     @Override
