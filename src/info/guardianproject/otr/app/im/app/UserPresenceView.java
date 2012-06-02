@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -63,14 +63,14 @@ public class UserPresenceView extends LinearLayout {
     public UserPresenceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mHandler = new SimpleAlertHandler((Activity)context);
+        mHandler = new SimpleAlertHandler((Activity) context);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mStatusDialogButton = (ImageButton)findViewById(R.id.statusDropDownButton);
+        mStatusDialogButton = (ImageButton) findViewById(R.id.statusDropDownButton);
         mStatusDialogButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showStatusListDialog();
@@ -84,16 +84,15 @@ public class UserPresenceView extends LinearLayout {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setAdapter(getStatusAdapter(),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        StatusItem item = mStatusItems.get(which);
-                        int oldStatus = mPresence.getStatus();
-                        if (item.getStatus() != oldStatus) {
-                            updatePresence(item.getStatus(), item.getText().toString());
-                        }
-                    }
-                });
+        builder.setAdapter(getStatusAdapter(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                StatusItem item = mStatusItems.get(which);
+                int oldStatus = mPresence.getStatus();
+                if (item.getStatus() != oldStatus) {
+                    updatePresence(item.getStatus(), item.getText().toString());
+                }
+            }
+        });
         builder.show();
     }
 
@@ -106,7 +105,7 @@ public class UserPresenceView extends LinearLayout {
                 if (s == Imps.Presence.OFFLINE) {
                     s = Imps.Presence.INVISIBLE;
                 }
-                ImApp app = ImApp.getApplication((Activity)mContext);
+                ImApp app = ImApp.getApplication((Activity) mContext);
                 BrandingResources brandingRes = app.getBrandingResource(mProviderId);
                 Drawable icon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(s));
                 String text = brandingRes.getString(PresenceUtils.getStatusStringRes(s));
@@ -127,7 +126,7 @@ public class UserPresenceView extends LinearLayout {
         if (!newStatusText.equals(mLastStatusText)) {
             updatePresence(-1, newStatusText);
         }
-        
+
         mStatusBar = initStatusBar(mProviderId, false);
     }
 
@@ -146,11 +145,11 @@ public class UserPresenceView extends LinearLayout {
     }
 
     private void updateView() {
-        ImApp app = ImApp.getApplication((Activity)mContext);
+        ImApp app = ImApp.getApplication((Activity) mContext);
         BrandingResources brandingRes = app.getBrandingResource(mProviderId);
         int status = PresenceUtils.convertStatus(mPresence.getStatus());
-        mStatusDialogButton.setImageDrawable(brandingRes.getDrawable(
-                PresenceUtils.getStatusIconId(status)));
+        mStatusDialogButton.setImageDrawable(brandingRes.getDrawable(PresenceUtils
+                .getStatusIconId(status)));
 
         String statusText = mPresence.getStatusText();
         if (TextUtils.isEmpty(statusText)) {
@@ -168,44 +167,43 @@ public class UserPresenceView extends LinearLayout {
         ProviderDef provider = app.getProvider(mProviderId);
         String providerName = provider == null ? null : provider.mName;
         if (Imps.ProviderNames.AIM.equals(providerName)
-                || Imps.ProviderNames.MSN.equals(providerName)) {
+            || Imps.ProviderNames.MSN.equals(providerName)) {
             mStatusBar.setFocusable(false);
         }
     }
 
     private TextView initStatusBar(long providerId, boolean showEdit) {
-    	/*
+        /*
         String value = Imps.ProviderSettings.getStringValue(
                             mContext.getContentResolver(), providerId,
                             ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE);
 
-       boolean showEdit = true;
-       */
-    	
+        boolean showEdit = true;
+        */
+
         EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
         statusEdit.setVisibility(View.GONE);
         TextView statusView = (TextView) findViewById(R.id.statusView);
         statusView.setVisibility(View.GONE);
-        
-        if (showEdit)
-        {
-        
-           statusEdit.setVisibility(View.VISIBLE);
+
+        if (showEdit) {
+
+            statusEdit.setVisibility(View.VISIBLE);
             statusEdit.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if (KeyEvent.ACTION_DOWN == event.getAction()) {
                         switch (keyCode) {
-                            case KeyEvent.KEYCODE_DPAD_CENTER:
-                            case KeyEvent.KEYCODE_ENTER:
-                                updateStatusText();
-                                return true;
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            updateStatusText();
+                            return true;
                         }
                     }
                     return false;
                 }
             });
 
-            statusEdit.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            statusEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
                         updateStatusText();
@@ -214,27 +212,23 @@ public class UserPresenceView extends LinearLayout {
             });
 
             return statusEdit;
-        }
-        else
-        {
-        	if (mPresence != null)
-        	{
-        		statusView.setText(mPresence.getStatusText());
-        	}
-        	
-            statusView.setVisibility(View.VISIBLE);
-            
-            statusView.setOnClickListener(new OnClickListener (){
+        } else {
+            if (mPresence != null) {
+                statusView.setText(mPresence.getStatusText());
+            }
 
-				@Override
-				public void onClick(View v) {
-					 mStatusBar = initStatusBar(mProviderId, true);
-					
-				}
-            	
-            	
+            statusView.setVisibility(View.VISIBLE);
+
+            statusView.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mStatusBar = initStatusBar(mProviderId, true);
+
+                }
+
             });
-            
+
             return statusView;
         }
 
@@ -256,8 +250,7 @@ public class UserPresenceView extends LinearLayout {
         try {
             int res = mConn.updateUserPresence(newPresence);
             if (res != ImErrorInfo.NO_ERROR) {
-                mHandler.showAlert(R.string.error,
-                        ErrorResUtils.getErrorRes(getResources(), res));
+                mHandler.showAlert(R.string.error, ErrorResUtils.getErrorRes(getResources(), res));
             } else {
                 mPresence = newPresence;
                 updateView();
@@ -270,7 +263,7 @@ public class UserPresenceView extends LinearLayout {
     private static class StatusItem implements ImageListAdapter.ImageListItem {
         private final int mStatus;
         private final Drawable mIcon;
-        private final String   mText;
+        private final String mText;
 
         public StatusItem(int status, Drawable icon, String text) {
             mStatus = status;
@@ -298,7 +291,7 @@ public class UserPresenceView extends LinearLayout {
 
         @Override
         public long getItemId(int position) {
-            StatusItem item = (StatusItem)getItem(position);
+            StatusItem item = (StatusItem) getItem(position);
             return item.getStatus();
         }
 

@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -46,20 +46,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ContactView extends LinearLayout {
-    static final String[] CONTACT_PROJECTION = {
-        Imps.Contacts._ID,
-        Imps.Contacts.PROVIDER,
-        Imps.Contacts.ACCOUNT,
-        Imps.Contacts.USERNAME,
-        Imps.Contacts.NICKNAME,
-        Imps.Contacts.TYPE,
-        Imps.Contacts.SUBSCRIPTION_TYPE,
-        Imps.Contacts.SUBSCRIPTION_STATUS,
-        Imps.Presence.PRESENCE_STATUS,
-        Imps.Presence.PRESENCE_CUSTOM_STATUS,
-        Imps.Chats.LAST_MESSAGE_DATE,
-        Imps.Chats.LAST_UNREAD_MESSAGE,
-    };
+    static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+                                                Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
+                                                Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
+                                                Imps.Contacts.SUBSCRIPTION_TYPE,
+                                                Imps.Contacts.SUBSCRIPTION_STATUS,
+                                                Imps.Presence.PRESENCE_STATUS,
+                                                Imps.Presence.PRESENCE_CUSTOM_STATUS,
+                                                Imps.Chats.LAST_MESSAGE_DATE,
+                                                Imps.Chats.LAST_UNREAD_MESSAGE, };
 
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
@@ -92,7 +87,7 @@ public class ContactView extends LinearLayout {
         mLine1 = (TextView) findViewById(R.id.line1);
         mLine2 = (TextView) findViewById(R.id.line2);
         mLine2.setCompoundDrawablePadding(5);
-        mTimeStamp = (TextView)findViewById(R.id.timestamp);
+        mTimeStamp = (TextView) findViewById(R.id.timestamp);
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
@@ -110,7 +105,7 @@ public class ContactView extends LinearLayout {
 
         boolean hasChat = !cursor.isNull(COLUMN_LAST_MESSAGE_DATE);
 
-        ImApp app = ImApp.getApplication((Activity)mContext);
+        ImApp app = ImApp.getApplication((Activity) mContext);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
@@ -122,7 +117,7 @@ public class ContactView extends LinearLayout {
             iconId = lastMsg == null ? R.drawable.group_chat : R.drawable.group_chat_new;
         } else if (hasChat) {
             iconId = lastMsg == null ? BrandingResourceIDs.DRAWABLE_READ_CHAT
-                    : BrandingResourceIDs.DRAWABLE_UNREAD_CHAT;
+                                    : BrandingResourceIDs.DRAWABLE_UNREAD_CHAT;
         } else {
             iconId = PresenceUtils.getStatusIconId(presence);
         }
@@ -137,8 +132,8 @@ public class ContactView extends LinearLayout {
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
             line1 = queryGroupMembers(resolver, id);
         } else {
-            line1 = TextUtils.isEmpty(nickname) ?
-                    ImpsAddressUtils.getDisplayableAddress(username) : nickname;
+            line1 = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
+                                               : nickname;
 
             if (!TextUtils.isEmpty(underLineText)) {
                 // highlight/underline the word being searched
@@ -147,8 +142,7 @@ public class ContactView extends LinearLayout {
                 if (start >= 0) {
                     int end = start + underLineText.length();
                     SpannableString str = new SpannableString(line1);
-                    str.setSpan(new UnderlineSpan(), start, end,
-                            Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    str.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
                     line1 = str;
                 }
             }
@@ -185,7 +179,7 @@ public class ContactView extends LinearLayout {
             line2 = lastMsg;
         }
 
-        if (TextUtils.isEmpty(line2)){
+        if (TextUtils.isEmpty(line2)) {
             if (Imps.Contacts.TYPE_GROUP == type) {
                 // Show nothing in line2 if it's a group and don't
                 // have any unread message.
@@ -205,7 +199,6 @@ public class ContactView extends LinearLayout {
         mLine2.setText(line2);
         mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
-
         View contactInfoPanel = findViewById(R.id.contactInfo);
         if (hasChat && showChatMsg) {
             contactInfoPanel.setBackgroundResource(R.drawable.bubble);
@@ -222,10 +215,10 @@ public class ContactView extends LinearLayout {
         Uri uri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, groupId);
         Cursor c = resolver.query(uri, projection, null, null, null);
         StringBuilder buf = new StringBuilder();
-        if(c != null) {
-            while(c.moveToNext()) {
+        if (c != null) {
+            while (c.moveToNext()) {
                 buf.append(c.getString(0));
-                if(!c.isLast()) {
+                if (!c.isLast()) {
                     buf.append(',');
                 }
             }
@@ -233,6 +226,5 @@ public class ContactView extends LinearLayout {
         }
         return buf.toString();
     }
-    
-    
+
 }

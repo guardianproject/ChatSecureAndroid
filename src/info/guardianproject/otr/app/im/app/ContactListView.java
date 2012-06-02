@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -68,7 +68,7 @@ public class ContactListView extends LinearLayout {
     public ContactListView(Context screen, AttributeSet attrs) {
         super(screen, attrs);
         mContext = screen;
-        mScreen = (Activity)screen;
+        mScreen = (Activity) screen;
         mHandler = new SimpleAlertHandler(mScreen);
         mContactListListener = new MyContactListListener(mHandler);
     }
@@ -105,12 +105,12 @@ public class ContactListView extends LinearLayout {
                 mAdapter.startQuerySubscriptions();
             }
         }
-     };
+    };
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-       // mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
+        // mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
         mContactsList = (ExpandableListView) findViewById(R.id.contactsList);
         mContactsList.setOnChildClickListener(mOnChildClickListener);
     }
@@ -128,7 +128,6 @@ public class ContactListView extends LinearLayout {
 
             if (conn != null) {
                 registerListeners();
-                
 
                 if (mAdapter == null) {
                     mAdapter = new ContactListTreeAdapter(conn, mScreen);
@@ -137,7 +136,7 @@ public class ContactListView extends LinearLayout {
                     mContactsList.setOnScrollListener(mAdapter);
                     if (mSavedState != null) {
                         int[] expandedGroups = mSavedState.mExpandedGroups;
-                        if(expandedGroups != null) {
+                        if (expandedGroups != null) {
                             for (int group : expandedGroups) {
                                 mContactsList.expandGroup(group);
                             }
@@ -183,7 +182,7 @@ public class ContactListView extends LinearLayout {
             try {
                 IChatSessionManager manager = mConn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
-                if(session == null) {
+                if (session == null) {
                     manager.createChatSession(username);
                 }
 
@@ -216,12 +215,12 @@ public class ContactListView extends LinearLayout {
     }
 
     void endChat(Cursor c) {
-        if(c != null) {
+        if (c != null) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             try {
                 IChatSessionManager manager = mConn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
-                if(session != null) {
+                if (session != null) {
                     session.leave();
                 }
             } catch (RemoteException e) {
@@ -252,7 +251,7 @@ public class ContactListView extends LinearLayout {
         int type = ExpandableListView.getPackedPositionType(packedPosition);
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
         return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
-                && !mAdapter.isPosForSubscription(groupPosition);
+               && !mAdapter.isPosForSubscription(groupPosition);
     }
 
     public boolean isContactSelected() {
@@ -297,7 +296,7 @@ public class ContactListView extends LinearLayout {
         } else {
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
@@ -313,13 +312,10 @@ public class ContactListView extends LinearLayout {
             };
             Resources r = getResources();
 
-            new AlertDialog.Builder(mContext)
-                .setTitle(R.string.confirm)
-                .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null)
-                .setCancelable(false)
-                .show();
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
 
             clearFocusIfEmpty(c);
         }
@@ -339,7 +335,7 @@ public class ContactListView extends LinearLayout {
         } else {
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
@@ -356,13 +352,10 @@ public class ContactListView extends LinearLayout {
 
             Resources r = getResources();
 
-            new AlertDialog.Builder(mContext)
-                .setTitle(R.string.confirm)
-                .setMessage(r.getString(R.string.confirm_block_contact, nickname))
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null)
-                .setCancelable(false)
-                .show();
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_block_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
             clearFocusIfEmpty(c);
         }
     }
@@ -379,9 +372,8 @@ public class ContactListView extends LinearLayout {
 
     public Cursor getSelectedContact() {
         long pos = mContactsList.getSelectedPosition();
-        if (ExpandableListView.getPackedPositionType(pos)
-                == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            return (Cursor)mContactsList.getSelectedItem();
+        if (ExpandableListView.getPackedPositionType(pos) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            return (Cursor) mContactsList.getSelectedItem();
         }
         return null;
     }
@@ -393,7 +385,7 @@ public class ContactListView extends LinearLayout {
             return null;
         }
 
-        Cursor cursor = (Cursor)mAdapter.getGroup(groupPos);
+        Cursor cursor = (Cursor) mAdapter.getGroup(groupPos);
         if (cursor == null) {
             return null;
         }
@@ -401,21 +393,21 @@ public class ContactListView extends LinearLayout {
     }
 
     private void registerListeners() {
-        try{
+        try {
             IContactListManager listManager = mConn.getContactListManager();
             listManager.registerContactListListener(mContactListListener);
             listManager.registerSubscriptionListener(mSubscriptionListener);
-        }catch(RemoteException e) {
+        } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
 
     private void unregisterListeners() {
-        try{
+        try {
             IContactListManager listManager = mConn.getContactListManager();
             listManager.unregisterContactListListener(mContactListListener);
             listManager.unregisterSubscriptionListener(mSubscriptionListener);
-        }catch(RemoteException e) {
+        } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
@@ -423,8 +415,8 @@ public class ContactListView extends LinearLayout {
     private final OnChildClickListener mOnChildClickListener = new OnChildClickListener() {
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                 int childPosition, long id) {
-            Cursor cursor = (Cursor)parent.getExpandableListAdapter().getChild(
-                    groupPosition, childPosition);
+            Cursor cursor = (Cursor) parent.getExpandableListAdapter().getChild(groupPosition,
+                    childPosition);
             if (cursor == null) {
                 Log.w(ImApp.LOG_TAG,
                         "[ContactListView.OnChildClickListener.onChildClick] cursor null! groupPos="
@@ -432,11 +424,11 @@ public class ContactListView extends LinearLayout {
                         new RuntimeException());
                 return false;
             }
-            
+
             int subscriptionType = cursor.getInt(ContactView.COLUMN_SUBSCRIPTION_TYPE);
             int subscriptionStatus = cursor.getInt(ContactView.COLUMN_SUBSCRIPTION_STATUS);
             if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
-                    && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)){
+                && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
                 long providerId = cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER);
                 String username = cursor.getString(ContactView.COLUMN_CONTACT_USERNAME);
                 Intent intent = new Intent(ImServiceConstants.ACTION_MANAGE_SUBSCRIPTION,
@@ -470,8 +462,7 @@ public class ContactListView extends LinearLayout {
             out.writeIntArray(mExpandedGroups);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
@@ -485,8 +476,7 @@ public class ContactListView extends LinearLayout {
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
-        int[] expandedGroups = mAdapter == null ? null
-                : mAdapter.getExpandedGroups();
+        int[] expandedGroups = mAdapter == null ? null : mAdapter.getExpandedGroups();
         return new SavedState(superState, expandedGroups);
     }
 

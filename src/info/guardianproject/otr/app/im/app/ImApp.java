@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -75,26 +75,28 @@ public class ImApp extends Application {
     public static final String EXTRA_INTENT_PROXY_PORT = "proxy.port";
 
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
-    
+
     public final static String PREF_DEFAULT_LOCALE = "defLoc";
 
-    
     private Locale locale = null;
 
     private static ImApp sImApp;
 
     IRemoteImService mImService;
 
-	HashMap<Long, IImConnection> mConnections;
+    HashMap<Long, IImConnection> mConnections;
     MyConnListener mConnectionListener;
     HashMap<Long, ProviderDef> mProviders;
 
     Broadcaster mBroadcaster;
 
-    /** A queue of messages that are waiting to be sent when service is connected.*/
+    /**
+     * A queue of messages that are waiting to be sent when service is
+     * connected.
+     */
     ArrayList<Message> mQueue = new ArrayList<Message>();
 
-    /** A flag indicates that we have called to start the service.*/
+    /** A flag indicates that we have called to start the service. */
     private boolean mServiceStarted;
     private Context mApplicationContext;
     private Resources mPrivateResources;
@@ -112,20 +114,13 @@ public class ImApp extends Application {
     public static final int EVENT_USER_PRESENCE_UPDATED = 300;
     public static final int EVENT_UPDATE_USER_PRESENCE_ERROR = 301;
 
-    private static final String[] PROVIDER_PROJECTION = {
-        Imps.Provider._ID,
-        Imps.Provider.NAME,
-        Imps.Provider.FULLNAME,
-        Imps.Provider.SIGNUP_URL,
-    };
+    private static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.SIGNUP_URL, };
 
-    private static final String[] ACCOUNT_PROJECTION = {
-        Imps.Account._ID,
-        Imps.Account.PROVIDER,
-        Imps.Account.NAME,
-        Imps.Account.USERNAME,
-        Imps.Account.PASSWORD,
-    };
+    private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PROVIDER,
+                                                        Imps.Account.NAME, Imps.Account.USERNAME,
+                                                        Imps.Account.PASSWORD, };
 
     static final void log(String log) {
         Log.d(LOG_TAG, log);
@@ -150,12 +145,13 @@ public class ImApp extends Application {
     }
 
     /**
-     * Initialize performs the manual ImApp instantiation and initialization. When the
-     * ImApp is started first in the process, the ImApp public constructor should be called,
-     * and sImApp initialized. So calling initialize() later should have no effect. However,
-     * if another application runs in the same process and is started first, the ImApp
-     * application object won't be instantiated, and we need to call initialize() manually to
-     * instantiate and initialize it.
+     * Initialize performs the manual ImApp instantiation and initialization.
+     * When the ImApp is started first in the process, the ImApp public
+     * constructor should be called, and sImApp initialized. So calling
+     * initialize() later should have no effect. However, if another application
+     * runs in the same process and is started first, the ImApp application
+     * object won't be instantiated, and we need to call initialize() manually
+     * to instantiate and initialize it.
      */
     private static void initialize(Activity activity) {
         // construct the TalkApp manually and call onCreate().
@@ -190,39 +186,34 @@ public class ImApp extends Application {
         sImApp = this;
     }
 
-
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-       
-        if (locale != null)
-        {
+
+        if (locale != null) {
             newConfig.locale = locale;
             Locale.setDefault(locale);
             getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
         }
     }
 
-    
     @Override
     public void onCreate() {
         super.onCreate();
         mBroadcaster = new Broadcaster();
-        
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         Configuration config = getResources().getConfiguration();
 
         String lang = settings.getString(PREF_DEFAULT_LOCALE, "");
-        if (! "".equals(lang) && ! config.locale.getLanguage().equals(lang))
-        {
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             Locale.setDefault(locale);
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
-        
+
         loadDefaultBrandingRes();
     }
 
@@ -243,16 +234,18 @@ public class ImApp extends Application {
     public synchronized void startImServiceIfNeed() {
         startImServiceIfNeed(false);
     }
-    
+
     public synchronized void startImServiceIfNeed(boolean auto) {
-        if(!mServiceStarted) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG)) log("start ImService");
+        if (!mServiceStarted) {
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+                log("start ImService");
 
             Intent serviceIntent = new Intent();
             serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
             mApplicationContext.startService(serviceIntent);
-            mApplicationContext.bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
+            mApplicationContext
+                    .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
             mServiceStarted = true;
 
             mConnectionListener = new MyConnListener(new Handler());
@@ -269,7 +262,7 @@ public class ImApp extends Application {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("stop ImService because there's no active connections");
 
-            if(mImService != null) {
+            if (mImService != null) {
                 mApplicationContext.unbindService(mImServiceConn);
                 mImService = null;
             }
@@ -282,7 +275,7 @@ public class ImApp extends Application {
 
     private ServiceConnection mImServiceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG))
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("service connected");
 
             mImService = IRemoteImService.Stub.asInterface(service);
@@ -299,7 +292,7 @@ public class ImApp extends Application {
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG))
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("service disconnected");
 
             mConnections.clear();
@@ -312,25 +305,25 @@ public class ImApp extends Application {
     }
 
     public boolean isBackgroundDataEnabled() {
-        ConnectivityManager manager =
-                (ConnectivityManager) mApplicationContext.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = (ConnectivityManager) mApplicationContext
+                .getSystemService(CONNECTIVITY_SERVICE);
         return manager.getBackgroundDataSetting();
     }
 
-    public static long insertOrUpdateAccount(ContentResolver cr,
-            long providerId, String userName, String pw) {
+    public static long insertOrUpdateAccount(ContentResolver cr, long providerId, String userName,
+            String pw) {
         String selection = Imps.Account.PROVIDER + "=? AND " + Imps.Account.USERNAME + "=?";
-        String[] selectionArgs = {Long.toString(providerId), userName };
+        String[] selectionArgs = { Long.toString(providerId), userName };
 
-        Cursor c = cr.query(Imps.Account.CONTENT_URI, ACCOUNT_PROJECTION,
-                selection, selectionArgs, null);
+        Cursor c = cr.query(Imps.Account.CONTENT_URI, ACCOUNT_PROJECTION, selection, selectionArgs,
+                null);
         if (c != null && c.moveToFirst()) {
             long id = c.getLong(c.getColumnIndexOrThrow(Imps.Account._ID));
 
             ContentValues values = new ContentValues(1);
-        	values.put(Imps.Account.PASSWORD, pw);
+            values.put(Imps.Account.PASSWORD, pw);
             Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, id);
-        	cr.update(accountUri, values, null, null);
+            cr.update(accountUri, values, null, null);
 
             c.close();
             return id;
@@ -340,29 +333,28 @@ public class ImApp extends Application {
             values.put(Imps.Account.NAME, userName);
             values.put(Imps.Account.USERNAME, userName);
             values.put(Imps.Account.PASSWORD, pw);
-            
-            if (pw != null && pw.length() > 0)
-            {
-            	values.put(Imps.Account.KEEP_SIGNED_IN, true);
+
+            if (pw != null && pw.length() > 0) {
+                values.put(Imps.Account.KEEP_SIGNED_IN, true);
             }
-         
+
             Uri result = cr.insert(Imps.Account.CONTENT_URI, values);
             if (c != null)
-            	c.close();
+                c.close();
             return ContentUris.parseId(result);
         }
     }
 
     /** Used to reset the provider settings if a reload is required. */
     public void resetProviderSettings() {
-    	mProviders = null;
+        mProviders = null;
     }
-    
+
     // For testing
     public void setImProviderSettings(HashMap<Long, ProviderDef> providers) {
-    	mProviders = providers;
+        mProviders = providers;
     }
-    
+
     private void loadImProviderSettings() {
         if (mProviders != null) {
             return;
@@ -374,8 +366,9 @@ public class ImApp extends Application {
         String selectionArgs[] = new String[1];
         selectionArgs[0] = ImApp.IMPS_CATEGORY;
 
-        Cursor c = cr.query(Imps.Provider.CONTENT_URI, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY+"=?", selectionArgs, null);
+        Cursor c = cr.query(Imps.Provider.CONTENT_URI, PROVIDER_PROJECTION, Imps.Provider.CATEGORY
+                                                                            + "=?", selectionArgs,
+                null);
         if (c == null) {
             return;
         }
@@ -400,80 +393,57 @@ public class ImApp extends Application {
         resMapping.put(BrandingResourceIDs.DRAWABLE_LOGO, R.drawable.ic_launcher_gibberbot);
         resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_ONLINE,
                 android.R.drawable.presence_online);
-        resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_AWAY,
-                android.R.drawable.presence_away);
-        resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_BUSY,
-                android.R.drawable.presence_busy);
+        resMapping
+                .put(BrandingResourceIDs.DRAWABLE_PRESENCE_AWAY, android.R.drawable.presence_away);
+        resMapping
+                .put(BrandingResourceIDs.DRAWABLE_PRESENCE_BUSY, android.R.drawable.presence_busy);
         resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_INVISIBLE,
                 android.R.drawable.presence_invisible);
         resMapping.put(BrandingResourceIDs.DRAWABLE_PRESENCE_OFFLINE,
                 android.R.drawable.presence_offline);
-        resMapping.put(BrandingResourceIDs.DRAWABLE_READ_CHAT,
-                R.drawable.status_chat);
-        resMapping.put(BrandingResourceIDs.DRAWABLE_UNREAD_CHAT,
-                R.drawable.status_chat_new);
-        resMapping.put(BrandingResourceIDs.DRAWABLE_BLOCK,
-                R.drawable.ic_im_block);
+        resMapping.put(BrandingResourceIDs.DRAWABLE_READ_CHAT, R.drawable.status_chat);
+        resMapping.put(BrandingResourceIDs.DRAWABLE_UNREAD_CHAT, R.drawable.status_chat_new);
+        resMapping.put(BrandingResourceIDs.DRAWABLE_BLOCK, R.drawable.ic_im_block);
 
-        resMapping.put(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES,
-                R.array.default_smiley_names);
-        resMapping.put(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS,
-                R.array.default_smiley_texts);
+        resMapping.put(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES, R.array.default_smiley_names);
+        resMapping.put(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS, R.array.default_smiley_texts);
 
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_AVAILABLE,
-                R.string.presence_available);
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_BUSY,
-                R.string.presence_busy);
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_AWAY,
-                R.string.presence_away);
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_IDLE,
-                R.string.presence_idle);
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_OFFLINE,
-                R.string.presence_offline);
-        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_INVISIBLE,
-                R.string.presence_invisible);
-        resMapping.put(BrandingResourceIDs.STRING_LABEL_USERNAME,
-                R.string.label_username);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_AVAILABLE, R.string.presence_available);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_BUSY, R.string.presence_busy);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_AWAY, R.string.presence_away);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_IDLE, R.string.presence_idle);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_OFFLINE, R.string.presence_offline);
+        resMapping.put(BrandingResourceIDs.STRING_PRESENCE_INVISIBLE, R.string.presence_invisible);
+        resMapping.put(BrandingResourceIDs.STRING_LABEL_USERNAME, R.string.label_username);
         resMapping.put(BrandingResourceIDs.STRING_ONGOING_CONVERSATION,
                 R.string.ongoing_conversation);
-        resMapping.put(BrandingResourceIDs.STRING_ADD_CONTACT_TITLE,
-                R.string.add_contact_title);
-        resMapping.put(BrandingResourceIDs.STRING_LABEL_INPUT_CONTACT,
-                R.string.input_contact_label);
-        resMapping.put(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT,
-                R.string.invite_label);
+        resMapping.put(BrandingResourceIDs.STRING_ADD_CONTACT_TITLE, R.string.add_contact_title);
+        resMapping
+                .put(BrandingResourceIDs.STRING_LABEL_INPUT_CONTACT, R.string.input_contact_label);
+        resMapping.put(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT, R.string.invite_label);
         resMapping.put(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE,
                 R.string.contact_profile_title);
 
-        resMapping.put(BrandingResourceIDs.STRING_MENU_ADD_CONTACT,
-                R.string.menu_add_contact);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT,
-                R.string.menu_block_contact);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_ADD_CONTACT, R.string.menu_add_contact);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT, R.string.menu_block_contact);
         resMapping.put(BrandingResourceIDs.STRING_MENU_CONTACT_LIST,
                 R.string.menu_view_contact_list);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_DELETE_CONTACT,
-                R.string.menu_remove_contact);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_END_CHAT,
-                R.string.menu_end_conversation);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY,
-                R.string.menu_insert_smiley);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_START_CHAT,
-                R.string.menu_start_chat);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE,
-                R.string.menu_view_profile);
-        resMapping.put(BrandingResourceIDs.STRING_MENU_SWITCH_CHATS,
-                R.string.menu_switch_chats);
+        resMapping
+                .put(BrandingResourceIDs.STRING_MENU_DELETE_CONTACT, R.string.menu_remove_contact);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_END_CHAT, R.string.menu_end_conversation);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY, R.string.menu_insert_smiley);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_START_CHAT, R.string.menu_start_chat);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE, R.string.menu_view_profile);
+        resMapping.put(BrandingResourceIDs.STRING_MENU_SWITCH_CHATS, R.string.menu_switch_chats);
 
         resMapping.put(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD,
                 R.string.check_save_password);
         resMapping.put(BrandingResourceIDs.STRING_TOAST_CHECK_AUTO_SIGN_IN,
                 R.string.check_auto_sign_in);
 
-        resMapping.put(BrandingResourceIDs.STRING_LABEL_SIGN_UP,
-                R.string.sign_up);
+        resMapping.put(BrandingResourceIDs.STRING_LABEL_SIGN_UP, R.string.sign_up);
 
-        mDefaultBrandingResources = new BrandingResources(this, resMapping,
-                null /* default res */);
+        mDefaultBrandingResources = new BrandingResources(this, resMapping, null /* default res */);
     }
 
     private void loadThirdPartyResources() {
@@ -493,8 +463,8 @@ public class ImApp extends Application {
                 Map<Integer, Integer> resMap = plugin.getResourceMap();
                 int[] smileyIcons = plugin.getSmileyIconIds();
 
-                BrandingResources res = new BrandingResources(packageRes, resMap,
-                        smileyIcons, mDefaultBrandingResources);
+                BrandingResources res = new BrandingResources(packageRes, resMap, smileyIcons,
+                        mDefaultBrandingResources);
                 mBrandingResources.put(pluginInfo.mProviderName, res);
             } catch (NameNotFoundException e) {
                 Log.e(LOG_TAG, "Failed to load third party resources.", e);
@@ -504,8 +474,8 @@ public class ImApp extends Application {
 
     public long getProviderId(String name) {
         loadImProviderSettings();
-        for (ProviderDef provider: mProviders.values()) {
-            if(provider.mName.equals(name)) {
+        for (ProviderDef provider : mProviders.values()) {
+            if (provider.mName.equals(name)) {
                 return provider.mId;
             }
         }
@@ -592,15 +562,15 @@ public class ImApp extends Application {
 
     public void removePendingCall(Handler target) {
         synchronized (mQueue) {
-           Iterator<Message> iter = mQueue.iterator();
-           while (iter.hasNext()) {
-               Message msg = iter.next();
-               if (msg.getTarget() == target) {
-                   iter.remove();
-               }
-           }
-       }
-   }
+            Iterator<Message> iter = mQueue.iterator();
+            while (iter.hasNext()) {
+                Message msg = iter.next();
+                if (msg.getTarget() == target) {
+                    iter.remove();
+                }
+            }
+        }
+    }
 
     public void registerForBroadcastEvent(int what, Handler target) {
         mBroadcaster.request(what, target, what);
@@ -611,35 +581,25 @@ public class ImApp extends Application {
     }
 
     public void registerForConnEvents(Handler handler) {
-        mBroadcaster.request(EVENT_CONNECTION_CREATED, handler,
-                EVENT_CONNECTION_CREATED);
-        mBroadcaster.request(EVENT_CONNECTION_LOGGING_IN, handler,
-                EVENT_CONNECTION_LOGGING_IN);
-        mBroadcaster.request(EVENT_CONNECTION_LOGGED_IN, handler,
-                EVENT_CONNECTION_LOGGED_IN);
-        mBroadcaster.request(EVENT_CONNECTION_LOGGING_OUT, handler,
-                EVENT_CONNECTION_LOGGING_OUT);
-        mBroadcaster.request(EVENT_CONNECTION_SUSPENDED, handler,
-                EVENT_CONNECTION_SUSPENDED);
-        mBroadcaster.request(EVENT_CONNECTION_DISCONNECTED, handler,
-                EVENT_CONNECTION_DISCONNECTED);
-        mBroadcaster.request(EVENT_USER_PRESENCE_UPDATED, handler,
-                EVENT_USER_PRESENCE_UPDATED);
+        mBroadcaster.request(EVENT_CONNECTION_CREATED, handler, EVENT_CONNECTION_CREATED);
+        mBroadcaster.request(EVENT_CONNECTION_LOGGING_IN, handler, EVENT_CONNECTION_LOGGING_IN);
+        mBroadcaster.request(EVENT_CONNECTION_LOGGED_IN, handler, EVENT_CONNECTION_LOGGED_IN);
+        mBroadcaster.request(EVENT_CONNECTION_LOGGING_OUT, handler, EVENT_CONNECTION_LOGGING_OUT);
+        mBroadcaster.request(EVENT_CONNECTION_SUSPENDED, handler, EVENT_CONNECTION_SUSPENDED);
+        mBroadcaster.request(EVENT_CONNECTION_DISCONNECTED, handler, EVENT_CONNECTION_DISCONNECTED);
+        mBroadcaster.request(EVENT_USER_PRESENCE_UPDATED, handler, EVENT_USER_PRESENCE_UPDATED);
         mBroadcaster.request(EVENT_UPDATE_USER_PRESENCE_ERROR, handler,
                 EVENT_UPDATE_USER_PRESENCE_ERROR);
     }
 
     public void unregisterForConnEvents(Handler handler) {
-        mBroadcaster.cancelRequest(EVENT_CONNECTION_CREATED, handler,
-                EVENT_CONNECTION_CREATED);
+        mBroadcaster.cancelRequest(EVENT_CONNECTION_CREATED, handler, EVENT_CONNECTION_CREATED);
         mBroadcaster.cancelRequest(EVENT_CONNECTION_LOGGING_IN, handler,
                 EVENT_CONNECTION_LOGGING_IN);
-        mBroadcaster.cancelRequest(EVENT_CONNECTION_LOGGED_IN, handler,
-                EVENT_CONNECTION_LOGGED_IN);
+        mBroadcaster.cancelRequest(EVENT_CONNECTION_LOGGED_IN, handler, EVENT_CONNECTION_LOGGED_IN);
         mBroadcaster.cancelRequest(EVENT_CONNECTION_LOGGING_OUT, handler,
                 EVENT_CONNECTION_LOGGING_OUT);
-        mBroadcaster.cancelRequest(EVENT_CONNECTION_SUSPENDED, handler,
-                EVENT_CONNECTION_SUSPENDED);
+        mBroadcaster.cancelRequest(EVENT_CONNECTION_SUSPENDED, handler, EVENT_CONNECTION_SUSPENDED);
         mBroadcaster.cancelRequest(EVENT_CONNECTION_DISCONNECTED, handler,
                 EVENT_CONNECTION_DISCONNECTED);
         mBroadcaster.cancelRequest(EVENT_USER_PRESENCE_UPDATED, handler,
@@ -649,14 +609,11 @@ public class ImApp extends Application {
     }
 
     void broadcastConnEvent(int what, long providerId, ImErrorInfo error) {
-        if(Log.isLoggable(LOG_TAG, Log.DEBUG)){
+        if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
             log("broadcasting connection event " + what + ", provider id " + providerId);
         }
-        android.os.Message msg = android.os.Message.obtain(
-                null,
-                what,
-                (int)(providerId >> 32), (int)providerId,
-                error);
+        android.os.Message msg = android.os.Message.obtain(null, what, (int) (providerId >> 32),
+                (int) providerId, error);
         mBroadcaster.broadcast(msg);
     }
 
@@ -679,11 +636,11 @@ public class ImApp extends Application {
     }
 
     private void fetchActiveConnections() {
-          try {
+        try {
             // register the listener before fetch so that we won't miss any connection.
             mImService.addConnectionCreatedListener(mConnCreationListener);
             synchronized (mConnections) {
-                for(IBinder binder: (List<IBinder>) mImService.getActiveConnections()) {
+                for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
                     IImConnection conn = IImConnection.Stub.asInterface(binder);
                     long providerId = conn.getProviderId();
                     if (!mConnections.containsKey(providerId)) {
@@ -697,10 +654,8 @@ public class ImApp extends Application {
         }
     }
 
-    private final IConnectionCreationListener mConnCreationListener
-            = new IConnectionCreationListener.Stub() {
-        public void onConnectionCreated(IImConnection conn)
-                throws RemoteException {
+    private final IConnectionCreationListener mConnCreationListener = new IConnectionCreationListener.Stub() {
+        public void onConnectionCreated(IImConnection conn) throws RemoteException {
             long providerId = conn.getProviderId();
             synchronized (mConnections) {
                 if (!mConnections.containsKey(providerId)) {
@@ -710,7 +665,7 @@ public class ImApp extends Application {
             }
             broadcastConnEvent(EVENT_CONNECTION_CREATED, providerId, null);
         }
-      };
+    };
 
     private final class MyConnListener extends ConnectionListenerAdapter {
         public MyConnListener(Handler handler) {
@@ -718,9 +673,8 @@ public class ImApp extends Application {
         }
 
         @Override
-        public void onConnectionStateChange(IImConnection conn, int state,
-                ImErrorInfo error) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG)){
+        public void onConnectionStateChange(IImConnection conn, int state, ImErrorInfo error) {
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
                 log("onConnectionStateChange(" + state + ", " + error + ")");
             }
 
@@ -739,9 +693,9 @@ public class ImApp extends Application {
                 case ImConnection.LOGGING_OUT:
                     what = EVENT_CONNECTION_LOGGING_OUT;
                     // MIRON - remove only if disconnected!
-//                    synchronized (mConnections) {
-//                        mConnections.remove(providerId);
-//                    }
+                    //                    synchronized (mConnections) {
+                    //                        mConnections.remove(providerId);
+                    //                    }
                     break;
 
                 case ImConnection.DISCONNECTED:
@@ -766,15 +720,13 @@ public class ImApp extends Application {
         }
 
         @Override
-        public void onUpdateSelfPresenceError(IImConnection connection,
-                ImErrorInfo error) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG)){
+        public void onUpdateSelfPresenceError(IImConnection connection, ImErrorInfo error) {
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
                 log("onUpdateUserPresenceError(" + error + ")");
             }
             try {
                 long providerId = connection.getProviderId();
-                broadcastConnEvent(EVENT_UPDATE_USER_PRESENCE_ERROR, providerId,
-                        error);
+                broadcastConnEvent(EVENT_UPDATE_USER_PRESENCE_ERROR, providerId, error);
             } catch (RemoteException e) {
                 Log.e(LOG_TAG, "onUpdateUserPresenceError", e);
             }
@@ -782,43 +734,40 @@ public class ImApp extends Application {
 
         @Override
         public void onSelfPresenceUpdated(IImConnection connection) {
-            if(Log.isLoggable(LOG_TAG, Log.DEBUG)) log("onUserPresenceUpdated");
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+                log("onUserPresenceUpdated");
 
             try {
                 long providerId = connection.getProviderId();
-                broadcastConnEvent(EVENT_USER_PRESENCE_UPDATED, providerId,
-                        null);
+                broadcastConnEvent(EVENT_USER_PRESENCE_UPDATED, providerId, null);
             } catch (RemoteException e) {
                 Log.e(LOG_TAG, "onUserPresenceUpdated", e);
             }
         }
     }
-    
 
     public IRemoteImService getRemoteImService() {
-		return mImService;
-	}
+        return mImService;
+    }
 
-	public static boolean setNewLocale(Context context, Locale locale) {
-		
-		
-		Configuration config = context.getResources().getConfiguration();
-		config.locale = locale;
-		//Locale.setDefault(locale);
-		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-		
-		Log.d("Gibberbot","locale = " + locale.getDisplayName());
+    public static boolean setNewLocale(Context context, Locale locale) {
+
+        Configuration config = context.getResources().getConfiguration();
+        config.locale = locale;
+        //Locale.setDefault(locale);
+        context.getResources().updateConfiguration(config,
+                context.getResources().getDisplayMetrics());
+
+        Log.d("Gibberbot", "locale = " + locale.getDisplayName());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		Editor prefEdit = prefs.edit();
-		
-		prefEdit.putString(ImApp.PREF_DEFAULT_LOCALE, locale.getISO3Language());
-		prefEdit.commit();
-		
-		return true;
-	}
-	
-	
+        Editor prefEdit = prefs.edit();
+
+        prefEdit.putString(ImApp.PREF_DEFAULT_LOCALE, locale.getISO3Language());
+        prefEdit.commit();
+
+        return true;
+    }
 
 }

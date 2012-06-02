@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -31,13 +31,9 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-
 public class SignoutActivity extends Activity {
 
-    private String[] ACCOUNT_SELECTION = new String[] {
-            Imps.Account._ID,
-            Imps.Account.PROVIDER,
-    };
+    private String[] ACCOUNT_SELECTION = new String[] { Imps.Account._ID, Imps.Account.PROVIDER, };
 
     private ImApp mApp;
 
@@ -56,11 +52,8 @@ public class SignoutActivity extends Activity {
         }
 
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(data,
-                ACCOUNT_SELECTION,
-                null /* selection */,
-                null /* selection args */,
-                null /* sort order */);
+        Cursor c = cr.query(data, ACCOUNT_SELECTION, null /* selection */,
+                null /* selection args */, null /* sort order */);
         final long providerId;
         final long accountId;
 
@@ -86,10 +79,8 @@ public class SignoutActivity extends Activity {
     }
 
     private void signOut(long providerId, long accountId) {
-        try {	
-        	
-       
-        	
+        try {
+
             IImConnection conn = mApp.getConnection(providerId);
             if (conn != null) {
                 conn.logout();
@@ -99,21 +90,18 @@ public class SignoutActivity extends Activity {
                 // status will never be updated. Clear the status in this case
                 // to make it recoverable from the crash.
                 ContentValues values = new ContentValues(2);
-                values.put(Imps.AccountStatus.PRESENCE_STATUS,
-                        Imps.Presence.OFFLINE);
-                values.put(Imps.AccountStatus.CONNECTION_STATUS,
-                        Imps.ConnectionStatus.OFFLINE);
+                values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
+                values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
                 String where = Imps.AccountStatus.ACCOUNT + "=?";
-                getContentResolver().update(Imps.AccountStatus.CONTENT_URI,
-                        values, where,
+                getContentResolver().update(Imps.AccountStatus.CONTENT_URI, values, where,
                         new String[] { Long.toString(accountId) });
             }
         } catch (RemoteException ex) {
             Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
         } finally {
-           finish();
-        	
-           Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
+            finish();
+
+            Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -123,11 +111,8 @@ public class SignoutActivity extends Activity {
 
         // always call finish here, because we don't want to be in the backlist ever, and
         // we don't handle onRestart()
-     
-    	
-    }
 
-  
+    }
 
     static void log(String msg) {
         Log.d(ImApp.LOG_TAG, "[Signout] " + msg);

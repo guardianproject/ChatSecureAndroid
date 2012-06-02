@@ -29,7 +29,7 @@ public class ForegroundStarter {
         mService = service;
         init();
     }
-    
+
     void invokeMethod(Method method, Object[] args) {
         try {
             method.invoke(mService, args);
@@ -84,15 +84,18 @@ public class ForegroundStarter {
     public void init() {
         mNM = (NotificationManager) mService.getSystemService(Service.NOTIFICATION_SERVICE);
         try {
-            mStartForeground = mService.getClass().getMethod("startForeground", mStartForegroundSignature);
-            mStopForeground = mService.getClass().getMethod("stopForeground", mStopForegroundSignature);
+            mStartForeground = mService.getClass().getMethod("startForeground",
+                    mStartForegroundSignature);
+            mStopForeground = mService.getClass().getMethod("stopForeground",
+                    mStopForegroundSignature);
             return;
         } catch (NoSuchMethodException e) {
             // Running on an older platform.
             mStartForeground = mStopForeground = null;
         }
         try {
-            mSetForeground = mService.getClass().getMethod("setForeground", mSetForegroundSignature);
+            mSetForeground = mService.getClass()
+                    .getMethod("setForeground", mSetForegroundSignature);
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(
                     "OS doesn't have Service.startForeground OR Service.setForeground!");

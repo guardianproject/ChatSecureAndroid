@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.service;
@@ -66,25 +66,20 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-
 public class RemoteImService extends Service implements OtrEngineListener {
 
-    private static final String[] ACCOUNT_PROJECTION = {
-        Imps.Account._ID,
-        Imps.Account.PROVIDER,
-        Imps.Account.USERNAME,
-        Imps.Account.PASSWORD,
-    };
+    private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PROVIDER,
+                                                        Imps.Account.USERNAME,
+                                                        Imps.Account.PASSWORD, };
     // TODO why aren't these Imps.Account.* values?
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSOWRD_COLUMN = 3;
 
-
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
-	private static final long HEARTBEAT_INTERVAL = 1000 * 60;
+    private static final long HEARTBEAT_INTERVAL = 1000 * 60;
 
     private StatusBarNotifier mStatusBarNotifier;
     private Handler mServiceHandler;
@@ -96,96 +91,79 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     private SettingsMonitor mSettingsMonitor;
     private OtrChatManager mOtrChatManager;
-    
+
     private ImPluginHelper mPluginHelper;
     Vector<ImConnectionAdapter> mConnections;
 
     private Imps.ProviderSettings.QueryMap mGlobalSettings;
     private Handler mHandler;
 
-    final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners
-            = new RemoteCallbackList<IConnectionCreationListener>();
+    final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     private ForegroundStarter mForegroundStarter;
 
-    
-	public RemoteImService() {
+    public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
         mHandler = new Handler();
-	}
-	
-	private static final String TAG = "Gibberbot.ImService";
-
-	public static void debug (String msg)
-	{
-		Log.d(TAG, msg);
-	}
-	
-	public static void debug (String msg, Exception e)
-	{
-		Log.e(TAG, msg, e);
-	}
-	
-	private synchronized void initOtr()
-	{
-    	int otrPolicy = convertPolicy();
-		
-		if (mOtrChatManager == null)
-		{
-	        
-	        try
-	        {
-		     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
-		        mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
-		        mOtrChatManager.addOtrEngineListener(this);
-	        }
-	        catch (Exception e)
-	        {
-	        	debug( "can't get otr manager",e);
-	        }
-		} else {
-			mOtrChatManager.setPolicy(otrPolicy);
-		}
     }
 
-	private int convertPolicy() {
-		int otrPolicy = OtrPolicy.OPPORTUNISTIC;	        	
-		
-		String otrModeSelect = getGlobalSettings().getOtrMode();
-		
-		if (otrModeSelect.equals("auto"))
-		{
-			otrPolicy = OtrPolicy.OPPORTUNISTIC;
-		}
-		else if (otrModeSelect.equals("disabled"))
-		{
-			otrPolicy = OtrPolicy.NEVER;
+    private static final String TAG = "Gibberbot.ImService";
 
-		}
-		else if (otrModeSelect.equals("force"))
-		{
-			otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+    public static void debug(String msg) {
+        Log.d(TAG, msg);
+    }
 
-		}
-		else if (otrModeSelect.equals("requested"))
-		{
-			otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
-		}
-		return otrPolicy;
-	}
+    public static void debug(String msg, Exception e) {
+        Log.e(TAG, msg, e);
+    }
+
+    private synchronized void initOtr() {
+        int otrPolicy = convertPolicy();
+
+        if (mOtrChatManager == null) {
+
+            try {
+                // TODO OTRCHAT add support for more than one connection type (this is a kludge)
+                mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this);
+                mOtrChatManager.addOtrEngineListener(this);
+            } catch (Exception e) {
+                debug("can't get otr manager", e);
+            }
+        } else {
+            mOtrChatManager.setPolicy(otrPolicy);
+        }
+    }
+
+    private int convertPolicy() {
+        int otrPolicy = OtrPolicy.OPPORTUNISTIC;
+
+        String otrModeSelect = getGlobalSettings().getOtrMode();
+
+        if (otrModeSelect.equals("auto")) {
+            otrPolicy = OtrPolicy.OPPORTUNISTIC;
+        } else if (otrModeSelect.equals("disabled")) {
+            otrPolicy = OtrPolicy.NEVER;
+
+        } else if (otrModeSelect.equals("force")) {
+            otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+
+        } else if (otrModeSelect.equals("requested")) {
+            otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL;
+        }
+        return otrPolicy;
+    }
 
     private Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {
-            mGlobalSettings = new Imps.ProviderSettings.QueryMap(getContentResolver(),
-                    true, mHandler);
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(getContentResolver(), true,
+                    mHandler);
         }
         return mGlobalSettings;
     }
 
     @Override
     public void onCreate() {
-    	
 
-        debug( "ImService started");
+        debug("ImService started");
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
         mNetworkConnectivityListener = new NetworkConnectivityListener();
@@ -198,71 +176,70 @@ public class RemoteImService extends Service implements OtrEngineListener {
         intentFilter.addAction(ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED);
         registerReceiver(mSettingsMonitor, intentFilter);
 
-        ConnectivityManager manager
-            = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         setBackgroundData(manager.getBackgroundDataSetting());
 
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
         AndroidSystemService.getInstance().initialize(this);
-        AndroidSystemService.getInstance().getHeartbeatService().startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
-        
+        AndroidSystemService.getInstance().getHeartbeatService()
+                .startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
+
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
-        
+
         if (getGlobalSettings().getUseForegroundPriority())
             startForegroundCompat();
     }
 
     private void startForegroundCompat() {
-        Notification notification = new Notification(
-                R.drawable.status,
-                "Gibberbot",
+        Notification notification = new Notification(R.drawable.status, "Gibberbot",
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
         Intent notificationIntent = new Intent(this, LandingPage.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         notification.setLatestEventInfo(this, "Gibberbot", "Active.", notification.contentIntent);
         mForegroundStarter = new ForegroundStarter(this);
         mForegroundStarter.startForegroundCompat(1000, notification);
     }
-    
+
     class HeartbeatHandler implements Callback {
 
-		@SuppressWarnings("finally")
-		@Override
-		public long sendHeartbeat() {
-			try {
-				if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
-					debug( "autoLogin from heartbeat");
-					mNeedCheckAutoLogin = false;
-					autoLogin();
-				}
-				for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter
-						.hasNext();) {
-					 ImConnectionAdapter conn =  iter.next();
-					 conn.sendHeartbeat();
-				}
-			}
-			finally {
-				return HEARTBEAT_INTERVAL;
-			}
-		}
-    	
+        @SuppressWarnings("finally")
+        @Override
+        public long sendHeartbeat() {
+            try {
+                if (mNeedCheckAutoLogin
+                    && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+                    debug("autoLogin from heartbeat");
+                    mNeedCheckAutoLogin = false;
+                    autoLogin();
+                }
+                for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter.hasNext();) {
+                    ImConnectionAdapter conn = iter.next();
+                    conn.sendHeartbeat();
+                }
+            } finally {
+                return HEARTBEAT_INTERVAL;
+            }
+        }
+
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, false);
+        mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
+                false);
 
-        debug( "ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent + " startId =" + startId);
+        debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
+              + " startId =" + startId);
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
-        if (mNeedCheckAutoLogin &&
-                mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+        if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
             mNeedCheckAutoLogin = false;
             autoLogin();
         }
@@ -275,14 +252,14 @@ public class RemoteImService extends Service implements OtrEngineListener {
             debug("Got autoLogin request, but we have one or more connections");
             return;
         }
-        
-        debug( "Scanning accounts and login automatically");
+
+        debug("Scanning accounts and login automatically");
 
         ContentResolver resolver = getContentResolver();
 
         String where = Imps.Account.KEEP_SIGNED_IN + "=1 AND " + Imps.Account.ACTIVE + "=1";
-        Cursor cursor = resolver.query(Imps.Account.CONTENT_URI,
-                ACCOUNT_PROJECTION, where, null, null);
+        Cursor cursor = resolver.query(Imps.Account.CONTENT_URI, ACCOUNT_PROJECTION, where, null,
+                null);
         if (cursor == null) {
             Log.w(TAG, "Can't query account!");
             return;
@@ -307,7 +284,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
         // Insert a fake msisdn on emulator. We don't need this on device
         // because the mobile network will take care of it.
-//        if ("1".equals(SystemProperties.get("ro.kernel.qemu"))) {
+        //        if ("1".equals(SystemProperties.get("ro.kernel.qemu"))) {
         /*
         if (false) {
             settings.put(ImpsConfigNames.MSISDN, "15555218135");
@@ -332,7 +309,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 settings.put(ImpsConfigNames.MSISDN, msisdn);
             }
         }*/
-        
+
         return settings;
     }
 
@@ -340,7 +317,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     public void onDestroy() {
         if (mForegroundStarter != null)
             mForegroundStarter.stopForegroundCompat();
-        
+
         Log.w(TAG, "ImService stopped.");
         for (ImConnectionAdapter conn : mConnections) {
             conn.logout();
@@ -353,7 +330,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         mNetworkConnectivityListener = null;
 
         unregisterReceiver(mSettingsMonitor);
-        
+
         if (mGlobalSettings != null)
             mGlobalSettings.close();
 
@@ -373,11 +350,11 @@ public class RemoteImService extends Service implements OtrEngineListener {
         return mStatusBarNotifier;
     }
 
-	public OtrChatManager getOtrChatManager() {
-		initOtr();
-		
-		return mOtrChatManager;
-	}
+    public OtrChatManager getOtrChatManager() {
+        initOtr();
+
+        return mOtrChatManager;
+    }
 
     public void scheduleReconnect(long delay) {
         if (!isNetworkAvailable()) {
@@ -397,13 +374,13 @@ public class RemoteImService extends Service implements OtrEngineListener {
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
             ImConnection conn = factory.createConnection(settings, this);
-            ImConnectionAdapter imConnectionAdapter = new ImConnectionAdapter(providerId,
-                    conn, this);
+            ImConnectionAdapter imConnectionAdapter = new ImConnectionAdapter(providerId, conn,
+                    this);
             mConnections.add(imConnectionAdapter);
 
             initOtr();
             mOtrChatManager.addConnection(imConnectionAdapter);
-            
+
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IConnectionCreationListener listener = mRemoteListeners.getBroadcastItem(i);
@@ -414,13 +391,12 @@ public class RemoteImService extends Service implements OtrEngineListener {
                     // dead listeners.
                 }
             }
-            
+
             mRemoteListeners.finishBroadcast();
-            
-            
+
             return imConnectionAdapter;
         } catch (ImException e) {
-            debug( "Error creating connection", e);
+            debug("Error creating connection", e);
             return null;
         }
     }
@@ -442,7 +418,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         mBackgroundDataEnabled = flag;
     }
 
-    void handleBackgroundDataSettingChange(){
+    void handleBackgroundDataSettingChange() {
         if (!isBackgroundDataEnabled()) {
             for (ImConnectionAdapter conn : mConnections) {
                 conn.logout();
@@ -457,7 +433,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
         NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
         NetworkInfo.State state = networkInfo.getState();
 
-        debug( "networkStateChanged:" + state);
+        debug("networkStateChanged:" + state);
 
         int oldType = mNetworkType;
         mNetworkType = networkInfo.getType();
@@ -465,28 +441,27 @@ public class RemoteImService extends Service implements OtrEngineListener {
         // Notify the connection that network type has changed. Note that this
         // only work for connected connections, we need to reestablish if it's
         // suspended.
-        if (mNetworkType != oldType
-                && isNetworkAvailable()) {
+        if (mNetworkType != oldType && isNetworkAvailable()) {
             for (ImConnectionAdapter conn : mConnections) {
                 conn.networkTypeChanged();
             }
         }
-        
-        switch (state) {
-            case CONNECTED:
-                if (mNeedCheckAutoLogin) {
-                    mNeedCheckAutoLogin = false;
-                    autoLogin();
-                    break;
-                }
-                reestablishConnections();
-                break;
 
-            case DISCONNECTED:
-                if (!isNetworkAvailable()) {
-                    suspendConnections();
-                }
+        switch (state) {
+        case CONNECTED:
+            if (mNeedCheckAutoLogin) {
+                mNeedCheckAutoLogin = false;
+                autoLogin();
                 break;
+            }
+            reestablishConnections();
+            break;
+
+        case DISCONNECTED:
+            if (!isNetworkAvailable()) {
+                suspendConnections();
+            }
+            break;
         }
     }
 
@@ -502,8 +477,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 conn.reestablishSession();
             }
         }
-        
-       // showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
+
+        // showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
 
     }
 
@@ -513,10 +488,10 @@ public class RemoteImService extends Service implements OtrEngineListener {
                 continue;
             }
             conn.suspend();
-            
+
         }
-        
-      //  showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
+
+        //  showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
     }
 
     private final IRemoteImService.Stub mBinder = new IRemoteImService.Stub() {
@@ -543,7 +518,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
         public List getActiveConnections() {
             ArrayList<IBinder> result = new ArrayList<IBinder>(mConnections.size());
-            for(IImConnection conn : mConnections) {
+            for (IImConnection conn : mConnections) {
                 result.add(conn.asBinder());
             }
             return result;
@@ -557,11 +532,11 @@ public class RemoteImService extends Service implements OtrEngineListener {
             mStatusBarNotifier.dismissChatNotification(providerId, username);
         }
 
-		@Override
-		public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
-			
-			return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
-		}
+        @Override
+        public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
+
+            return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
+        }
     };
 
     private final class SettingsMonitor extends BroadcastReceiver {
@@ -570,8 +545,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
             String action = intent.getAction();
 
             if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(action)) {
-                ConnectivityManager manager =
-                    (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+                ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 setBackgroundData(manager.getBackgroundDataSetting());
                 handleBackgroundDataSettingChange();
             }
@@ -585,47 +559,39 @@ public class RemoteImService extends Service implements OtrEngineListener {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case EVENT_SHOW_TOAST:
-                    Toast.makeText(RemoteImService.this,
-                            (CharSequence) msg.obj, msg.arg1).show();
-                    break;
+            case EVENT_SHOW_TOAST:
+                Toast.makeText(RemoteImService.this, (CharSequence) msg.obj, msg.arg1).show();
+                break;
 
-                case EVENT_NETWORK_STATE_CHANGED:
-                    networkStateChanged();
-                    break;
+            case EVENT_NETWORK_STATE_CHANGED:
+                networkStateChanged();
+                break;
 
-                default:
+            default:
             }
         }
     }
 
-	@Override
-	public void sessionStatusChanged(SessionID sessionID) {
-		
-		initOtr();
-		
-		SessionStatus sStatus = mOtrChatManager.getSessionStatus(sessionID);
-		
-		String msg = "";
-		
-		if (sStatus == SessionStatus.PLAINTEXT)
-		{
-			msg = getString(R.string.otr_session_status_plaintext);
-			
-		}
-		else if (sStatus == SessionStatus.ENCRYPTED)
-		{
-			msg = getString(R.string.otr_session_status_encrypted);
-			
-		}
-		else if (sStatus == SessionStatus.FINISHED)
-		{
-			msg = getString(R.string.otr_session_status_finished);
-		}
-		
-		//showToast(msg, Toast.LENGTH_SHORT);
-	
-		  
-		
-	}
+    @Override
+    public void sessionStatusChanged(SessionID sessionID) {
+
+        initOtr();
+
+        SessionStatus sStatus = mOtrChatManager.getSessionStatus(sessionID);
+
+        String msg = "";
+
+        if (sStatus == SessionStatus.PLAINTEXT) {
+            msg = getString(R.string.otr_session_status_plaintext);
+
+        } else if (sStatus == SessionStatus.ENCRYPTED) {
+            msg = getString(R.string.otr_session_status_encrypted);
+
+        } else if (sStatus == SessionStatus.FINISHED) {
+            msg = getString(R.string.otr_session_status_finished);
+        }
+
+        //showToast(msg, Toast.LENGTH_SHORT);
+
+    }
 }

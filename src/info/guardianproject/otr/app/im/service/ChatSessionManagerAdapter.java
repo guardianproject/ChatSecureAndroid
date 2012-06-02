@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.service;
@@ -39,10 +39,9 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
-/**
- * manages the chat sessions for a given protocol
- */
-public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.IChatSessionManager.Stub {
+/** manages the chat sessions for a given protocol */
+public class ChatSessionManagerAdapter extends
+        info.guardianproject.otr.app.im.IChatSessionManager.Stub {
 
     ImConnectionAdapter mConnection;
     ChatSessionManager mChatSessionManager;
@@ -50,8 +49,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
     HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
     ChatSessionListenerAdapter mSessionListenerAdapter;
     OtrChatManager mOtrChatManager;
-    final RemoteCallbackList<IChatSessionListener> mRemoteListeners
-            = new RemoteCallbackList<IChatSessionListener>();
+    final RemoteCallbackList<IChatSessionListener> mRemoteListeners = new RemoteCallbackList<IChatSessionListener>();
 
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
         mConnection = connection;
@@ -62,22 +60,22 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
         RemoteImService service = connection.getContext();
         mOtrChatManager = service.getOtrChatManager();
-        
-        if((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
+
+        if ((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
             mGroupManager = connAdaptee.getChatGroupManager();
             mGroupManager.addGroupListener(new ChatGroupListenerAdapter());
         }
     }
 
     public ChatSessionManager getChatSessionManager() {
-            return mChatSessionManager;
+        return mChatSessionManager;
     }
 
     public IChatSession createChatSession(String contactAddress) {
-        ContactListManagerAdapter listManager =
-            (ContactListManagerAdapter) mConnection.getContactListManager();
+        ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
+                .getContactListManager();
         Contact contact = listManager.getContactByAddress(contactAddress);
-        if(contact == null) {
+        if (contact == null) {
             try {
                 contact = listManager.createTemporaryContact(contactAddress);
             } catch (IllegalArgumentException e) {
@@ -90,12 +88,13 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         ImConnection imConnection = mConnection.getAdaptee();
         String userName = imConnection.getLoginUserName();
         ChatSession session = mChatSessionManager.createChatSession(contact);
-        
+
         if (mOtrChatManager == null) {
-        	RemoteImService.debug("mOtrChatManager == null");
+            RemoteImService.debug("mOtrChatManager == null");
         } else {
-        	RemoteImService.debug( "mOtrChatManager.startSession("+userName+", "+contactAddress+")");
-        	//mOtrChatManager.startSession(userName, contactAddress);
+            RemoteImService.debug("mOtrChatManager.startSession(" + userName + ", "
+                                  + contactAddress + ")");
+            //mOtrChatManager.startSession(userName, contactAddress);
         }
         return getChatSessionAdapter(session);
     }
@@ -110,10 +109,10 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
 
     public void closeAllChatSessions() {
         synchronized (mActiveChatSessionAdapters) {
-            ArrayList<ChatSessionAdapter> adapters =
-                new ArrayList<ChatSessionAdapter>(mActiveChatSessionAdapters.values());
+            ArrayList<ChatSessionAdapter> adapters = new ArrayList<ChatSessionAdapter>(
+                    mActiveChatSessionAdapters.values());
             for (ChatSessionAdapter adapter : adapters) {
-            	adapter.leave();
+                adapter.leave();
             }
         }
     }
@@ -209,7 +208,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public void onGroupError(int errorType, String name, ImErrorInfo error) {
-            if(errorType == ERROR_CREATING_GROUP) {
+            if (errorType == ERROR_CREATING_GROUP) {
                 mSessionListenerAdapter.notifyChatSessionCreateFailed(name, error);
             }
         }
@@ -225,7 +224,7 @@ public class ChatSessionManagerAdapter extends info.guardianproject.otr.app.im.I
         private void closeSession(ChatGroup group) {
             String address = group.getAddress().getFullName();
             IChatSession session = getChatSession(address);
-            if(session != null) {
+            if (session != null) {
                 closeChatSession((ChatSessionAdapter) session);
             }
         }

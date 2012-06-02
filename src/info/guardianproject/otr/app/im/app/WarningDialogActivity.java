@@ -8,67 +8,52 @@ import android.os.Bundle;
 
 public class WarningDialogActivity extends Activity {
 
-	private AlertDialog ad;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private AlertDialog ad;
 
-		String title = getIntent().getStringExtra("title");
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		String msg = getIntent().getStringExtra("msg");
+        String title = getIntent().getStringExtra("title");
 
-		showDialog (title, msg);
-	}
-	
-	
-	
-	private void showDialog (String title, String msg)
-	{
-		
-		ad = new AlertDialog.Builder(this)
-	    .setTitle(title).setIcon(android.R.drawable.ic_dialog_alert)
-	    .setMessage(msg).show();
-		
-		ad.setOnDismissListener(new OnDismissListener () {
+        String msg = getIntent().getStringExtra("msg");
 
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				
-				WarningDialogActivity.this.finish();
-				
-			}
-			
-		});
-		
-		
-	}
+        showDialog(title, msg);
+    }
 
+    private void showDialog(String title, String msg) {
 
+        ad = new AlertDialog.Builder(this).setTitle(title)
+                .setIcon(android.R.drawable.ic_dialog_alert).setMessage(msg).show();
 
-	@Override
-	protected void onPause() {
-		super.onPause();
+        ad.setOnDismissListener(new OnDismissListener() {
 
-		if (ad != null)
-			ad.cancel();
-	}
+            @Override
+            public void onDismiss(DialogInterface arg0) {
 
+                WarningDialogActivity.this.finish();
 
+            }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		if (ad != null)
-			ad.cancel();
-		
-		
-	}
-	
-	
-	
-	
+        });
 
-	
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (ad != null)
+            ad.cancel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (ad != null)
+            ad.cancel();
+
+    }
+
 }

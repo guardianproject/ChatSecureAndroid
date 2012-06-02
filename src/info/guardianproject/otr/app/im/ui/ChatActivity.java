@@ -10,48 +10,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ChatActivity extends Activity implements OnClickListener
-{
-	protected void onCreate(Bundle savedInstanceState)
-	{
+public class ChatActivity extends Activity implements OnClickListener {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		
-	}
-	
-	
-	
-	@Override
-	protected void onStart() {
-		
-		super.onStart();
-		
-    //    setContentView(R.layout.conversation);
+    }
 
-       
-      
-	}
-	
-	
+    @Override
+    protected void onStart() {
 
+        super.onStart();
 
+        //    setContentView(R.layout.conversation);
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-	
-		
-	}
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+    }
 
+    @Override
+    public void onClick(DialogInterface arg0, int arg1) {
 
-	@Override
-	public void onClick(DialogInterface arg0, int arg1) {
-		
-		
-	}
-	
-	
-	
+    }
+
 }

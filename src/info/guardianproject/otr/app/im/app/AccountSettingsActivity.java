@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -32,7 +32,8 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-public class AccountSettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class AccountSettingsActivity extends PreferenceActivity implements
+        OnSharedPreferenceChangeListener {
 
     private long mProviderId;
 
@@ -44,23 +45,22 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
     CheckBoxPreference mRequireTls;
     CheckBoxPreference mTlsCertVerify;
     CheckBoxPreference mDoDnsSrv;
-    
+
     private void setInitialValues() {
-		ContentResolver cr = getContentResolver();
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                cr, mProviderId,
-                false /* keep updated */, null /* no handler */);        
+        ContentResolver cr = getContentResolver();
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(cr,
+                mProviderId, false /* keep updated */, null /* no handler */);
         String text;
 
         text = settings.getXmppResource();
         mXmppResource.setText(text);
         if (text != null) {
-        	mXmppResource.setSummary(text);
+            mXmppResource.setSummary(text);
         }
         text = Integer.toString(settings.getXmppResourcePrio());
         mXmppResourcePrio.setText(text);
         if (text != null) {
-        	mXmppResourcePrio.setSummary(text);
+            mXmppResourcePrio.setSummary(text);
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
@@ -70,103 +70,106 @@ public class AccountSettingsActivity extends PreferenceActivity implements OnSha
         text = settings.getServer();
         mServer.setText(text);
         if (text != null) {
-        	mServer.setSummary(text);
+            mServer.setSummary(text);
         }
         mAllowPlainAuth.setChecked(settings.getAllowPlainAuth());
         mRequireTls.setChecked(settings.getRequireTls());
         mTlsCertVerify.setChecked(settings.getTlsCertVerify());
         mDoDnsSrv.setChecked(settings.getDoDnsSrv());
-        
+
         settings.close();
     }
 
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    	final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-    			getContentResolver(), mProviderId,
-    			false /* don't keep updated */, null /* no handler */);
-    	String value;
+        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+        String value;
 
-    	if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
-    		value = prefs.getString(key, null);
-    		settings.setXmppResource(value);
-    		if (value != null) {
-    			mXmppResource.setSummary(value);
-    		}
-    	} else if (key.equals(getString(R.string.pref_account_xmpp_resource_prio))) {
-    		value = prefs.getString(key, "20");
-    		try {
-    			settings.setXmppResourcePrio(Integer.parseInt(value));
-    		} catch (NumberFormatException nfe) {
-    			Toast.makeText(getBaseContext(), "Priority must be a number in the range [0 .. 127]",
-    					Toast.LENGTH_SHORT).show();
-    		}
-    		mXmppResourcePrio.setSummary(value);
-    	} else if (key.equals(getString(R.string.pref_account_port))) {
-    		value = prefs.getString(key, "5222");
-    		try {
-    			settings.setPort(Integer.parseInt(value));
-    		} catch (NumberFormatException nfe) {
-    			Toast.makeText(getBaseContext(), "Port number must be a number",
-    					Toast.LENGTH_SHORT).show();     
-    		}
-    		if (value != "5222") mPort.setSummary(value);
-    	} else if (key.equals(getString(R.string.pref_account_server))) {
-    		value = prefs.getString(key, null);
-    		settings.setServer(value);
-    		if (value != null) {
-    			mServer.setSummary(value);
-    		}
-    	} else if (key.equals(getString(R.string.pref_security_allow_plain_auth))) {
-    		settings.setAllowPlainAuth(prefs.getBoolean(key, false));
-    	} else if (key.equals(getString(R.string.pref_security_require_tls))) {
-    		settings.setRequireTls(prefs.getBoolean(key, true));
-    	} else if (key.equals(getString(R.string.pref_security_tls_cert_verify))) {
-    		settings.setTlsCertVerify(prefs.getBoolean(key, true));
-    	} else if (key.equals(getString(R.string.pref_security_do_dns_srv))) {
-    		settings.setDoDnsSrv(prefs.getBoolean(key, true));
-    	}
-    	settings.close();
+        if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
+            value = prefs.getString(key, null);
+            settings.setXmppResource(value);
+            if (value != null) {
+                mXmppResource.setSummary(value);
+            }
+        } else if (key.equals(getString(R.string.pref_account_xmpp_resource_prio))) {
+            value = prefs.getString(key, "20");
+            try {
+                settings.setXmppResourcePrio(Integer.parseInt(value));
+            } catch (NumberFormatException nfe) {
+                Toast.makeText(getBaseContext(),
+                        "Priority must be a number in the range [0 .. 127]", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            mXmppResourcePrio.setSummary(value);
+        } else if (key.equals(getString(R.string.pref_account_port))) {
+            value = prefs.getString(key, "5222");
+            try {
+                settings.setPort(Integer.parseInt(value));
+            } catch (NumberFormatException nfe) {
+                Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            if (value != "5222")
+                mPort.setSummary(value);
+        } else if (key.equals(getString(R.string.pref_account_server))) {
+            value = prefs.getString(key, null);
+            settings.setServer(value);
+            if (value != null) {
+                mServer.setSummary(value);
+            }
+        } else if (key.equals(getString(R.string.pref_security_allow_plain_auth))) {
+            settings.setAllowPlainAuth(prefs.getBoolean(key, false));
+        } else if (key.equals(getString(R.string.pref_security_require_tls))) {
+            settings.setRequireTls(prefs.getBoolean(key, true));
+        } else if (key.equals(getString(R.string.pref_security_tls_cert_verify))) {
+            settings.setTlsCertVerify(prefs.getBoolean(key, true));
+        } else if (key.equals(getString(R.string.pref_security_do_dns_srv))) {
+            settings.setDoDnsSrv(prefs.getBoolean(key, true));
+        }
+        settings.close();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	// Set dummy name for preferences so that they don't mix with global ones.
-    	// FIXME we should not be writing these out to a file, since they are written to
-    	// the DB in onSharedPreferenceChanged().
-    	getPreferenceManager().setSharedPreferencesName("account");
-    	addPreferencesFromResource(R.xml.account_settings);
-    	Intent intent = getIntent();
-    	mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
-    	if (mProviderId < 0) {
-    		Log.e(ImApp.LOG_TAG,"AccountSettingsActivity intent requires provider id extra");
-    		throw new RuntimeException("AccountSettingsActivity must be created with an provider id");
-    	}
-    	mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
-    	mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
-    	mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
-    	mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
-    	mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
-    	mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
-    	mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
-    	mDoDnsSrv = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
+        super.onCreate(savedInstanceState);
+        // Set dummy name for preferences so that they don't mix with global ones.
+        // FIXME we should not be writing these out to a file, since they are written to
+        // the DB in onSharedPreferenceChanged().
+        getPreferenceManager().setSharedPreferencesName("account");
+        addPreferencesFromResource(R.xml.account_settings);
+        Intent intent = getIntent();
+        mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
+        if (mProviderId < 0) {
+            Log.e(ImApp.LOG_TAG, "AccountSettingsActivity intent requires provider id extra");
+            throw new RuntimeException(
+                    "AccountSettingsActivity must be created with an provider id");
+        }
+        mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
+        mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
+        mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
+        mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
+        mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
+        mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
+        mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
+        mDoDnsSrv = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
     }
 
     @Override
     protected void onResume() {
-    	super.onResume();
+        super.onResume();
 
-    	setInitialValues();
-    	getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        setInitialValues();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     protected void onPause() {
-    	super.onPause();
+        super.onPause();
 
-    	getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);    
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(
+                this);
     }
 
 }

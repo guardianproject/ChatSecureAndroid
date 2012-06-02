@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -60,10 +60,8 @@ import android.widget.TextView;
 
 public class AddContactActivity extends Activity {
 
-    private static final String[] CONTACT_LIST_PROJECTION = {
-        Imps.ContactList._ID,
-        Imps.ContactList.NAME,
-    };
+    private static final String[] CONTACT_LIST_PROJECTION = { Imps.ContactList._ID,
+                                                             Imps.ContactList.NAME, };
     private static final int CONTACT_LIST_NAME_COLUMN = 1;
 
     private MultiAutoCompleteTextView mAddressList;
@@ -100,20 +98,17 @@ public class AddContactActivity extends Activity {
         mListSpinner = (Spinner) findViewById(R.id.choose_list);
 
         Cursor c = queryContactLists();
-        int initSelection = searchInitListPos(c, getIntent().getStringExtra(
-                ImServiceConstants.EXTRA_INTENT_LIST_NAME));
+        int initSelection = searchInitListPos(c,
+                getIntent().getStringExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME));
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item,
-                c,
-                new String[] {Imps.ContactList.NAME},
-                new int[] {android.R.id.text1});
+                android.R.layout.simple_spinner_item, c, new String[] { Imps.ContactList.NAME },
+                new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mListSpinner.setAdapter(adapter);
         mListSpinner.setSelection(initSelection);
 
         mInviteButton = (Button) findViewById(R.id.invite);
-        mInviteButton.setText(brandingRes.getString(
-                BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
+        mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
         mInviteButton.setOnClickListener(mButtonHandler);
         mInviteButton.setEnabled(false);
     }
@@ -140,12 +135,10 @@ public class AddContactActivity extends Activity {
     }
 
     private void resolveIntent(Intent intent) {
-        mProviderId = intent.getLongExtra(
-                ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
-        mAccountId = intent.getLongExtra(
-                ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
-        mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(),
-                mProviderId, ImpsConfigNames.DEFAULT_DOMAIN);
+        mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
+        mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
+        mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
+                ImpsConfigNames.DEFAULT_DOMAIN);
     }
 
     void inviteBuddies() {
@@ -155,7 +148,7 @@ public class AddContactActivity extends Activity {
             IContactList list = getContactList(conn);
             if (list == null) {
                 Log.e(ImApp.LOG_TAG, "<AddContactActivity> can't find given contact list:"
-                        + getSelectedListName());
+                                     + getSelectedListName());
                 finish();
             } else {
                 boolean fail = false;
@@ -164,7 +157,7 @@ public class AddContactActivity extends Activity {
                     if (mDefaultDomain != null && username.indexOf('@') == -1) {
                         username = username + "@" + mDefaultDomain;
                     }
-                    if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+                    if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("addContact:" + username);
                     }
                     int res = list.addContact(username);
@@ -254,9 +247,8 @@ public class AddContactActivity extends Activity {
         private static final String SORT_ORDER = "people.name, contact_methods.data";
         private ContentResolver mContentResolver;
 
-        private static final String[] PROJECTION = {
-            ContactMethods._ID,     // 0
-            ContactMethods.DATA     // 1
+        private static final String[] PROJECTION = { ContactMethods._ID, // 0
+                                                    ContactMethods.DATA // 1
         };
 
         public EmailAddressAdapter(Context context) {

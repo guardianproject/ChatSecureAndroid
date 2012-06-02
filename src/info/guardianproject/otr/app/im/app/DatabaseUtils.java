@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -21,7 +21,6 @@ import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.Map;
-
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -41,8 +40,8 @@ public class DatabaseUtils {
     private DatabaseUtils() {
     }
 
-    public static Cursor queryAccountsForProvider(ContentResolver cr,
-            String[] projection, long providerId) {
+    public static Cursor queryAccountsForProvider(ContentResolver cr, String[] projection,
+            long providerId) {
         StringBuilder where = new StringBuilder(Imps.Account.ACTIVE);
         where.append("=1 AND ").append(Imps.Account.PROVIDER).append('=').append(providerId);
         Cursor c = cr.query(Imps.Account.CONTENT_URI, projection, where.toString(), null, null);
@@ -122,9 +121,7 @@ public class DatabaseUtils {
         StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
         buf.append("=?");
 
-        String[] selectionArgs = new String[] {
-            username
-        };
+        String[] selectionArgs = new String[] { username };
 
         resolver.update(updateUri, values, buf.toString(), selectionArgs);
     }
@@ -137,6 +134,7 @@ public class DatabaseUtils {
 
     /**
      * Update IM provider database for a plugin using newly loaded information.
+     * 
      * @param cr the resolver
      * @param providerName the plugin provider name
      * @param providerFullName the full name
@@ -144,9 +142,8 @@ public class DatabaseUtils {
      * @param config the plugin's settings
      * @return the provider ID of the plugin
      */
-    public static long updateProviderDb(ContentResolver cr,
-            String providerName, String providerFullName, String signUpUrl,
-            Map<String, String> config) {
+    public static long updateProviderDb(ContentResolver cr, String providerName,
+            String providerFullName, String signUpUrl, Map<String, String> config) {
         boolean versionChanged;
 
         // query provider data
@@ -163,14 +160,14 @@ public class DatabaseUtils {
             // clear branding resource map cache
             clearBrandingResourceMapCache(cr, providerId);
 
-            Log.d(TAG, "Plugin " + providerName + "(" + providerId +
-                    ") has a version change. Database updated.");
+            Log.d(TAG, "Plugin " + providerName + "(" + providerId
+                       + ") has a version change. Database updated.");
         } else {
             // new plugin, not loaded before, insert the provider data
             providerId = insertProviderRow(cr, providerName, providerFullName, signUpUrl);
 
-            Log.d(TAG, "Plugin " + providerName + "(" + providerId +
-                    ") is new. Provider added to IM db.");
+            Log.d(TAG, "Plugin " + providerName + "(" + providerId
+                       + ") is new. Provider added to IM db.");
         }
 
         // plugin provider has been inserted/updated, we need to update settings
@@ -179,9 +176,7 @@ public class DatabaseUtils {
         return providerId;
     }
 
-    /**
-     * Clear the branding resource map cache.
-     */
+    /** Clear the branding resource map cache. */
     private static int clearBrandingResourceMapCache(ContentResolver cr, long providerId) {
         StringBuilder where = new StringBuilder();
         where.append(Imps.BrandingResourceMapCache.PROVIDER_ID);
@@ -190,9 +185,7 @@ public class DatabaseUtils {
         return cr.delete(Imps.BrandingResourceMapCache.CONTENT_URI, where.toString(), null);
     }
 
-    /**
-     * Insert the plugin settings into the database.
-     */
+    /** Insert the plugin settings into the database. */
     private static int saveProviderSettings(ContentResolver cr, long providerId,
             Map<String, String> config) {
         ContentValues[] settingValues = new ContentValues[config.size()];
@@ -207,9 +200,7 @@ public class DatabaseUtils {
         return cr.bulkInsert(Imps.ProviderSettings.CONTENT_URI, settingValues);
     }
 
-    /**
-     * Insert a new plugin provider to the provider table.
-     */
+    /** Insert a new plugin provider to the provider table. */
     private static long insertProviderRow(ContentResolver cr, String providerName,
             String providerFullName, String signUpUrl) {
         ContentValues values = new ContentValues(3);
@@ -221,9 +212,7 @@ public class DatabaseUtils {
         return ContentUris.parseId(result);
     }
 
-    /**
-     * Update the data of a plugin provider.
-     */
+    /** Update the data of a plugin provider. */
     private static int updateProviderRow(ContentResolver cr, long providerId,
             String providerFullName, String signUpUrl) {
         // Update the full name, signup url and category each time when the plugin change
@@ -240,7 +229,8 @@ public class DatabaseUtils {
     }
 
     /**
-     * Compare the saved version of a plugin provider with the newly loaded version.
+     * Compare the saved version of a plugin provider with the newly loaded
+     * version.
      */
     private static boolean isPluginVersionChanged(ContentResolver cr, long providerId,
             String newVersion) {

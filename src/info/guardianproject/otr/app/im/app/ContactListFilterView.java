@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -43,36 +43,33 @@ public class ContactListFilterView extends LinearLayout {
 
     private Uri mUri;
     private Context mContext;
-    
+
     UserPresenceView mPresenceView;
     private ContactListActivity mActivity;
-    
 
-	public ContactListFilterView(Context context, AttributeSet attrs) {
+    public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
+
         mContext = context;
     }
 
     @Override
     protected void onFinishInflate() {
 
-    	mFilterList = (ListView) findViewById(R.id.filteredList);
-    	mFilterList.setTextFilterEnabled(true);
+        mFilterList = (ListView) findViewById(R.id.filteredList);
+        mFilterList.setTextFilterEnabled(true);
 
-    	mFilterList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View view, int position,
-                    long id) {
-                                      	
-                    Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
-                    mActivity.mContactListView.startChat(c);
-                    
-              
+        mFilterList.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+
+                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+                mActivity.mContactListView.startChat(c);
+
             }
         });
-    	
-    	 mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
-    	
+
+        mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+
     }
 
     public ListView getListView() {
@@ -102,18 +99,18 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     public void doFilter(String filterString) {
-         mFilter.filter(filterString);
-        
+        mFilter.filter(filterString);
+
     }
-    
+
     Cursor runQuery(CharSequence constraint) {
         StringBuilder buf = new StringBuilder();
 
         // exclude chatting contact
-     //   buf.append(Imps.Chats.LAST_MESSAGE_DATE);
-       // buf.append(" IS NULL");
+        //   buf.append(Imps.Chats.LAST_MESSAGE_DATE);
+        // buf.append(" IS NULL");
         //   buf.append(" AND ");
-        
+
         if (constraint != null) {
 
             buf.append(Imps.Contacts.NICKNAME);
@@ -147,10 +144,9 @@ public class ContactListFilterView extends LinearLayout {
             return ContactListFilterView.this.runQuery(constraint);
         }
     }
-    
 
     public void setActivity(ContactListActivity mActivity) {
-		this.mActivity = mActivity;
-	}
+        this.mActivity = mActivity;
+    }
 
 }

@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -37,9 +37,7 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
-/**
- * Activity used to pick a contact.
- */
+/** Activity used to pick a contact. */
 public class ContactsPickerActivity extends ListActivity {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
@@ -60,15 +58,15 @@ public class ContactsPickerActivity extends ListActivity {
         super.onCreate(icicle);
 
         setContentView(R.layout.contacts_picker_activity);
-        if(!resolveIntent()){
-            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+        if (!resolveIntent()) {
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("no data, finish");
             }
             finish();
             return;
         }
 
-        EditText filter = (EditText)findViewById(R.id.filter);
+        EditText filter = (EditText) findViewById(R.id.filter);
         filter.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -86,12 +84,12 @@ public class ContactsPickerActivity extends ListActivity {
         Intent i = getIntent();
         mData = i.getData();
 
-        if(mData == null) {
+        if (mData == null) {
             return false;
         }
         mExcludeClause = buildExcludeClause(i.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS));
-        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION,
-                mExcludeClause, null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, null,
+                Imps.Contacts.DEFAULT_SORT_ORDER);
         if (cursor == null) {
             return false;
         }
@@ -104,10 +102,9 @@ public class ContactsPickerActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Cursor cursor = (Cursor)mAdapter.getItem(position);
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
         Intent data = new Intent();
-        data.putExtra(EXTRA_RESULT_USERNAME,
-                cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
+        data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
         setResult(RESULT_OK, data);
         finish();
     }
@@ -159,14 +156,14 @@ public class ContactsPickerActivity extends ListActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ContactView v = (ContactView)view;
+            ContactView v = (ContactView) view;
             v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mConstraints, false);
         }
 
         @Override
         public void changeCursor(Cursor cursor) {
-            if(mCursor != null && mCursor != cursor) {
+            if (mCursor != null && mCursor != cursor) {
                 mCursor.deactivate();
             }
             super.changeCursor(cursor);

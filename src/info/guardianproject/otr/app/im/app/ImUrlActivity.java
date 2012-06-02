@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -40,10 +40,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 public class ImUrlActivity extends Activity {
-    private static final String[] ACCOUNT_PROJECTION = {
-        Imps.Account._ID,
-        Imps.Account.PASSWORD,
-    };
+    private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PW_COLUMN = 1;
 
@@ -69,10 +66,11 @@ public class ImUrlActivity extends Activity {
                 return;
             }
             mApp = ImApp.getApplication(this);
-            mApp.callWhenServiceConnected(new Handler(), new Runnable(){
+            mApp.callWhenServiceConnected(new Handler(), new Runnable() {
                 public void run() {
                     handleIntent();
-                }});
+                }
+            });
 
         } else {
             finish();
@@ -84,7 +82,7 @@ public class ImUrlActivity extends Activity {
         long providerId = Imps.Provider.getProviderIdForName(cr, mProviderName);
         long accountId;
 
-        mConn= mApp.getConnection(providerId);
+        mConn = mApp.getConnection(providerId);
         if (mConn == null) {
             Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
             if (c == null) {
@@ -120,11 +118,11 @@ public class ImUrlActivity extends Activity {
     }
 
     private void addAccount(long providerId) {
-        Intent  intent = new Intent(this, AccountActivity.class);
+        Intent intent = new Intent(this, AccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
         intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
-        
+
         startActivity(intent);
     }
 
@@ -158,7 +156,7 @@ public class ImUrlActivity extends Activity {
         try {
             IChatSessionManager manager = mConn.getChatSessionManager();
             IChatSession session = manager.getChatSession(mToAddress);
-            if(session == null) {
+            if (session == null) {
                 session = manager.createChatSession(mToAddress);
             }
 
@@ -192,8 +190,8 @@ public class ImUrlActivity extends Activity {
                     String providerName = getProviderNameForCategory(category);
                     mProviderName = findMatchingProvider(providerName);
                     if (mProviderName == null) {
-                        Log.w(ImApp.LOG_TAG,
-                                "resolveIntent: IM provider "+ category + " not supported");
+                        Log.w(ImApp.LOG_TAG, "resolveIntent: IM provider " + category
+                                             + " not supported");
                         return false;
                     }
                 }
@@ -203,18 +201,19 @@ public class ImUrlActivity extends Activity {
             mProviderName = findMatchingProvider(host);
 
             if (mProviderName == null) {
-                Log.w(ImApp.LOG_TAG, "resolveIntent: IM provider "+ host + " not supported");
+                Log.w(ImApp.LOG_TAG, "resolveIntent: IM provider " + host + " not supported");
                 return false;
             }
 
             String path = data.getPath();
 
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) log("resolveIntent: path=" + path);
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
+                log("resolveIntent: path=" + path);
 
             if (!TextUtils.isEmpty(path)) {
                 int index;
                 if ((index = path.indexOf('/')) != -1) {
-                    mToAddress = path.substring(index+1);
+                    mToAddress = path.substring(index + 1);
                 }
             }
         }
@@ -230,9 +229,11 @@ public class ImUrlActivity extends Activity {
         if (providerCategory != null) {
             if (providerCategory.equalsIgnoreCase("info.guardianproject.otr.app.im.category.AIM")) {
                 return Imps.ProviderNames.AIM;
-            } else if (providerCategory.equalsIgnoreCase("info.guardianproject.otr.app.im.category.MSN")) {
+            } else if (providerCategory
+                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.MSN")) {
                 return Imps.ProviderNames.MSN;
-            } else if (providerCategory.equalsIgnoreCase("info.guardianproject.otr.app.im.category.YAHOO")) {
+            } else if (providerCategory
+                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.YAHOO")) {
                 return Imps.ProviderNames.YAHOO;
             }
         }

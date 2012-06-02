@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2009 Myriad Group AG.
- * Copyright (C) 2009 The Android Open Source Project
- *
+ * Copyright (C) 2009 Myriad Group AG. Copyright (C) 2009 The Android Open
+ * Source Project
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -26,7 +26,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -53,13 +52,13 @@ public class ImPluginHelper {
     private boolean mLoaded;
 
     private static ImPluginHelper sInstance;
-    
+
     public static ImPluginHelper getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new ImPluginHelper(context);
-            
+
         }
-        
+
         return sInstance;
     }
 
@@ -85,25 +84,26 @@ public class ImPluginHelper {
 
     // For testing
     public void skipLoadingPlugins() {
-    	mLoaded = true;
+        mLoaded = true;
     }
 
-	private List<ResolveInfo> getPlugins() {
-		PackageManager pm = mContext.getPackageManager();
-        List<ResolveInfo> plugins = pm.queryIntentServices(
-                new Intent(ImPluginConstants.PLUGIN_ACTION_NAME), PackageManager.GET_META_DATA);
-		return plugins;
-	}
-    
+    private List<ResolveInfo> getPlugins() {
+        PackageManager pm = mContext.getPackageManager();
+        List<ResolveInfo> plugins = pm.queryIntentServices(new Intent(
+                ImPluginConstants.PLUGIN_ACTION_NAME), PackageManager.GET_META_DATA);
+        return plugins;
+    }
+
     public List<String> getProviderNames() {
         List<ResolveInfo> plugins = getPlugins();
         List<String> names = new ArrayList<String>();
         for (ResolveInfo plugin : plugins) {
-        	names.add(plugin.serviceInfo.metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME));
+            names.add(plugin.serviceInfo.metaData
+                    .getString(ImPluginConstants.METADATA_PROVIDER_NAME));
         }
         return names;
     }
-    
+
     public void createAdditionalProvider(String name) {
         List<ResolveInfo> plugins = getPlugins();
         ResolveInfo info = null;
@@ -111,54 +111,54 @@ public class ImPluginHelper {
         Bundle metaData = null;
 
         for (ResolveInfo _info : plugins) {
-        	serviceInfo = _info.serviceInfo;
+            serviceInfo = _info.serviceInfo;
             if (serviceInfo == null) {
-            	Log.e(TAG, "Ignore bad IM plugin: " + _info);
-            	continue;
+                Log.e(TAG, "Ignore bad IM plugin: " + _info);
+                continue;
             }
             if (serviceInfo.metaData == null) {
-            	Log.e(TAG, "Ignore bad IM plugin: " + _info);
-            	continue;
+                Log.e(TAG, "Ignore bad IM plugin: " + _info);
+                continue;
             }
             metaData = serviceInfo.metaData;
             if (name.equals(metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME))) {
-            	info = _info;
-            	break;
+                info = _info;
+                break;
             }
         }
-        
+
         if (info == null) {
-        	Log.e(TAG, "Did not find plugin " + name);
-        	return;
+            Log.e(TAG, "Did not find plugin " + name);
+            return;
         }
-        
+
         String providerName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME);
         String providerFullName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_FULL_NAME);
         String signUpUrl = metaData.getString(ImPluginConstants.METADATA_SIGN_UP_URL);
-        
+
         if (TextUtils.isEmpty(providerName) || TextUtils.isEmpty(providerFullName)) {
-        	Log.e(TAG, "Ignore bad IM plugin: " + info + ". Lack of required meta data");
-        	return;
+            Log.e(TAG, "Ignore bad IM plugin: " + info + ". Lack of required meta data");
+            return;
         }
 
         if (!serviceInfo.packageName.equals(mContext.getPackageName())) {
-        	Log.e(TAG, "Ignore plugin in package: " + serviceInfo.packageName);
-        	return;
+            Log.e(TAG, "Ignore plugin in package: " + serviceInfo.packageName);
+            return;
         }
         ImPluginInfo pluginInfo = new ImPluginInfo(providerName, serviceInfo.packageName,
-        		serviceInfo.name, serviceInfo.applicationInfo.sourceDir);
+                serviceInfo.name, serviceInfo.applicationInfo.sourceDir);
 
         ImPlugin plugin = loadPlugin(pluginInfo);
         if (plugin == null) {
-        	Log.e(TAG, "Ignore bad IM plugin");
-        	return;
+            Log.e(TAG, "Ignore bad IM plugin");
+            return;
         }
 
         try {
-        	insertProviderDb(plugin, pluginInfo,providerFullName, signUpUrl);
+            insertProviderDb(plugin, pluginInfo, providerFullName, signUpUrl);
         } catch (SQLiteFullException e) {
-        	Log.e(TAG, "Storage full", e);
-        	return;
+            Log.e(TAG, "Storage full", e);
+            return;
         }
         mPluginsInfo.add(pluginInfo);
         mPluginObjects.add(plugin);
@@ -184,7 +184,8 @@ public class ImPluginHelper {
             Bundle metaData = serviceInfo.metaData;
             if (metaData != null) {
                 providerName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME);
-                providerFullName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_FULL_NAME);
+                providerFullName = metaData
+                        .getString(ImPluginConstants.METADATA_PROVIDER_FULL_NAME);
                 signUpUrl = metaData.getString(ImPluginConstants.METADATA_SIGN_UP_URL);
             }
             if (TextUtils.isEmpty(providerName) || TextUtils.isEmpty(providerFullName)) {
@@ -211,7 +212,7 @@ public class ImPluginHelper {
             }
 
             try {
-                updateProviderDb(plugin, pluginInfo,providerFullName, signUpUrl);
+                updateProviderDb(plugin, pluginInfo, providerFullName, signUpUrl);
             } catch (SQLiteFullException e) {
                 Log.e(TAG, "Storage full", e);
                 return;
@@ -259,8 +260,8 @@ public class ImPluginHelper {
         return null;
     }
 
-    private long updateProviderDb(ImPlugin plugin, ImPluginInfo info,
-            String providerFullName, String signUpUrl) {
+    private long updateProviderDb(ImPlugin plugin, ImPluginInfo info, String providerFullName,
+            String signUpUrl) {
         Map<String, String> config = loadConfiguration(plugin, info);
         if (config == null) {
             return 0;
@@ -268,15 +269,12 @@ public class ImPluginHelper {
 
         long providerId = 0;
         ContentResolver cr = mContext.getContentResolver();
-        
+
         String where = Imps.Provider.NAME + "=?";
-        String[] selectionArgs = new String[]{info.mProviderName};
-        
-        Cursor c = cr.query(Imps.Provider.CONTENT_URI,
-                null /* projection */,
-                where,
-                selectionArgs,
-                null);
+        String[] selectionArgs = new String[] { info.mProviderName };
+
+        Cursor c = cr.query(Imps.Provider.CONTENT_URI, null /* projection */, where,
+                selectionArgs, null);
 
         boolean pluginChanged;
         try {
@@ -315,8 +313,7 @@ public class ImPluginHelper {
 
         if (pluginChanged) {
             // Remove all the old settings
-            cr.delete(ContentUris.withAppendedId(
-                    Imps.ProviderSettings.CONTENT_URI, providerId),
+            cr.delete(ContentUris.withAppendedId(Imps.ProviderSettings.CONTENT_URI, providerId),
                     null, /*where*/
                     null /*selectionArgs*/);
 
@@ -336,8 +333,8 @@ public class ImPluginHelper {
         return providerId;
     }
 
-    private long insertProviderDb(ImPlugin plugin, ImPluginInfo info,
-            String providerFullName, String signUpUrl) {
+    private long insertProviderDb(ImPlugin plugin, ImPluginInfo info, String providerFullName,
+            String signUpUrl) {
         Map<String, String> config = loadConfiguration(plugin, info);
         if (config == null) {
             return 0;
@@ -353,27 +350,26 @@ public class ImPluginHelper {
 
         Uri result = cr.insert(Imps.Provider.CONTENT_URI, values);
         providerId = ContentUris.parseId(result);
-        
+
         ContentValues[] settingValues = new ContentValues[config.size()];
 
         int index = 0;
         for (Map.Entry<String, String> entry : config.entrySet()) {
-        	ContentValues settingValue = new ContentValues();
-        	settingValue.put(Imps.ProviderSettings.PROVIDER, providerId);
-        	settingValue.put(Imps.ProviderSettings.NAME, entry.getKey());
-        	settingValue.put(Imps.ProviderSettings.VALUE, entry.getValue());
-        	settingValues[index++] = settingValue;
+            ContentValues settingValue = new ContentValues();
+            settingValue.put(Imps.ProviderSettings.PROVIDER, providerId);
+            settingValue.put(Imps.ProviderSettings.NAME, entry.getKey());
+            settingValue.put(Imps.ProviderSettings.VALUE, entry.getValue());
+            settingValues[index++] = settingValue;
         }
         cr.bulkInsert(Imps.ProviderSettings.CONTENT_URI, settingValues);
 
         return providerId;
     }
 
-    private Map<String, String> loadConfiguration(ImPlugin plugin,
-            ImPluginInfo info) {
+    private Map<String, String> loadConfiguration(ImPlugin plugin, ImPluginInfo info) {
         Map<String, String> config = null;
 
-            config = plugin.getProviderConfig();
+        config = plugin.getProviderConfig();
 
         if (config != null) {
             config.put(ImConfigNames.PLUGIN_PATH, info.mSrcPath);
@@ -382,8 +378,7 @@ public class ImPluginHelper {
         return config;
     }
 
-    private boolean isPluginChanged(ContentResolver cr, long providerId,
-            Map<String, String> config) {
+    private boolean isPluginChanged(ContentResolver cr, long providerId, Map<String, String> config) {
         String origVersion = Imps.ProviderSettings.getStringValue(cr, providerId,
                 ImConfigNames.PLUGIN_VERSION);
         String newVersion = config.get(ImConfigNames.PLUGIN_VERSION);

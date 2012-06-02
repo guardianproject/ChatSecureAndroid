@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.service;
@@ -55,19 +55,18 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.IContactListManager.Stub {
+public class ContactListManagerAdapter extends
+        info.guardianproject.otr.app.im.IContactListManager.Stub {
 
     ImConnectionAdapter mConn;
-    ContentResolver     mResolver;
+    ContentResolver mResolver;
 
-    private ContactListManager          mAdaptee;
-    private ContactListListenerAdapter  mContactListListenerAdapter;
+    private ContactListManager mAdaptee;
+    private ContactListListenerAdapter mContactListListenerAdapter;
     private SubscriptionRequestListenerAdapter mSubscriptionListenerAdapter;
 
-    final RemoteCallbackList<IContactListListener> mRemoteContactListeners
-            = new RemoteCallbackList<IContactListListener>();
-    final RemoteCallbackList<ISubscriptionListener> mRemoteSubscriptionListeners
-            = new RemoteCallbackList<ISubscriptionListener>();
+    final RemoteCallbackList<IContactListListener> mRemoteContactListeners = new RemoteCallbackList<IContactListListener>();
+    final RemoteCallbackList<ISubscriptionListener> mRemoteSubscriptionListeners = new RemoteCallbackList<ISubscriptionListener>();
 
     HashMap<Address, ContactListAdapter> mContactLists;
     HashMap<String, Contact> mTemporaryContacts;
@@ -83,14 +82,14 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     private Uri mContactUrl;
 
     static final long FAKE_TEMPORARY_LIST_ID = -1;
-    static final String[] CONTACT_LIST_ID_PROJECTION  = { Imps.ContactList._ID };
+    static final String[] CONTACT_LIST_ID_PROJECTION = { Imps.ContactList._ID };
 
     RemoteImService mContext;
 
     public ContactListManagerAdapter(ImConnectionAdapter conn) {
-        mAdaptee  = conn.getAdaptee().getContactListManager();
-        mConn     = conn;
-        mContext  = conn.getContext();
+        mAdaptee = conn.getAdaptee().getContactListManager();
+        mConn = conn;
+        mContext = conn.getContext();
         mResolver = mContext.getContentResolver();
 
         mContactListListenerAdapter = new ContactListListenerAdapter();
@@ -104,7 +103,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         mAdaptee.addContactListListener(mContactListListenerAdapter);
         mAdaptee.setSubscriptionRequestListener(mSubscriptionListenerAdapter);
 
-        mAccountId  = mConn.getAccountId();
+        mAccountId = mConn.getAccountId();
         mProviderId = mConn.getProviderId();
 
         Uri.Builder builder = Imps.Avatars.CONTENT_URI_AVATARS_BY.buildUpon();
@@ -147,7 +146,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     public int removeContact(String address) {
-        if(isTemporary(address)) {
+        if (isTemporary(address)) {
             // For temporary contact, just close the session and delete him in
             // database.
             closeChatSession(address);
@@ -160,7 +159,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             }
         } else {
             synchronized (mContactLists) {
-                for(ContactListAdapter list : mContactLists.values()) {
+                for (ContactListAdapter list : mContactLists.values()) {
                     int resCode = list.removeContact(address);
                     if (ImErrorInfo.ILLEGAL_CONTACT_ADDRESS == resCode) {
                         // Did not find in this list, continue to remove from
@@ -199,7 +198,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         try {
             mAdaptee.unblockContactAsync(address);
         } catch (ImException e) {
-        	RemoteImService.debug( e.getMessage());
+            RemoteImService.debug(e.getMessage());
             return e.getImError().getCode();
         }
 
@@ -210,7 +209,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         try {
             return mAdaptee.isBlocked(address);
         } catch (ImException e) {
-        	RemoteImService.debug( e.getMessage());
+            RemoteImService.debug(e.getMessage());
             return false;
         }
     }
@@ -245,7 +244,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
     public void loadContactLists() {
 
-    	if(mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED){
+        if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
             clearValidatedContactsAndLists();
             mAdaptee.loadContactListsAsync();
         }
@@ -257,7 +256,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
     public Contact getContactByAddress(String address) {
         Contact c = mAdaptee.getContact(address);
-        if(c == null) {
+        if (c == null) {
             synchronized (mTemporaryContacts) {
                 return mTemporaryContacts.get(address);
             }
@@ -278,18 +277,17 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         String username = c.getAddress().getFullName();
         String selection = Imps.Contacts.USERNAME + "=?";
         String[] selectionArgs = { username };
-        String[] projection = {Imps.Contacts._ID};
+        String[] projection = { Imps.Contacts._ID };
 
-        Cursor cursor = mResolver.query(mContactUrl, projection, selection,
-                selectionArgs, null);
+        Cursor cursor = mResolver.query(mContactUrl, projection, selection, selectionArgs, null);
 
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             result = cursor.getLong(0);
         } else {
             result = insertTemporary(c);
         }
 
-        if(cursor != null) {
+        if (cursor != null) {
             cursor.close();
         }
         return result;
@@ -307,11 +305,10 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
      * Tells if a contact is a temporary one which is not in the list of
      * contacts that we subscribe presence for. Usually created because of the
      * user is having a chat session with this contact.
-     *
-     * @param address
-     *            the address of the contact.
-     * @return <code>true</code> if it's a temporary contact;
-     *         <code>false</code> otherwise.
+     * 
+     * @param address the address of the contact.
+     * @return <code>true</code> if it's a temporary contact; <code>false</code>
+     *         otherwise.
      */
     public boolean isTemporary(String address) {
         synchronized (mTemporaryContacts) {
@@ -352,7 +349,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public void add(String exclusionItem) {
-            if (mSelection.length()==0) {
+            if (mSelection.length() == 0) {
                 mSelection.append(mExclusionColumn + "!=?");
             } else {
                 mSelection.append(" AND " + mExclusionColumn + "!=?");
@@ -365,7 +362,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public String[] getSelectionArgs() {
-            return (String []) mSelectionArgs.toArray(new String[0]);
+            return (String[]) mSelectionArgs.toArray(new String[0]);
         }
     }
 
@@ -410,8 +407,8 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
                 mContact = contact;
             }
         }
-        private Vector<StoredContactChange> mDelayedContactChanges =
-                new Vector<StoredContactChange>();
+
+        private Vector<StoredContactChange> mDelayedContactChanges = new Vector<StoredContactChange>();
 
         public void onContactsPresenceUpdate(final Contact[] contacts) {
             // The client listens only to presence updates for now. Update
@@ -423,8 +420,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
             final int N = mRemoteContactListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                IContactListListener listener =
-                        mRemoteContactListeners.getBroadcastItem(i);
+                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
                 try {
                     listener.onContactsPresenceUpdate(contacts);
                 } catch (RemoteException e) {
@@ -435,8 +431,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             mRemoteContactListeners.finishBroadcast();
         }
 
-        public void onContactChange(final int type, final ContactList list,
-                final Contact contact) {
+        public void onContactChange(final int type, final ContactList list, final Contact contact) {
             ContactListAdapter removed = null;
             String notificationText = null;
 
@@ -462,13 +457,13 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             case LIST_CONTACT_ADDED:
                 long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
                 String contactAddress = contact.getAddress().getFullName();
-                if(isTemporary(contactAddress)){
+                if (isTemporary(contactAddress)) {
                     moveTemporaryContactToList(contactAddress, listId);
                 } else {
                     insertContactContent(contact, listId);
                 }
-                notificationText = mContext.getResources().getString(
-                        R.string.add_contact_success, contact.getName());
+                notificationText = mContext.getResources().getString(R.string.add_contact_success,
+                        contact.getName());
                 // handle case where a contact is added before mAllContactsLoaded
                 if (!mAllContactsLoaded) {
                     // if a contact is added to a cached contact list before the actual contact
@@ -538,7 +533,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
                 break;
 
             default:
-            	RemoteImService.debug( "Unknown list update event!");
+                RemoteImService.debug("Unknown list update event!");
                 break;
             }
 
@@ -546,13 +541,11 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             if (type == LIST_DELETED) {
                 listAdapter = removed;
             } else {
-                listAdapter = (list == null) ? null
-                        : getContactListAdapter(list.getAddress());
+                listAdapter = (list == null) ? null : getContactListAdapter(list.getAddress());
             }
             final int N = mRemoteContactListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                IContactListListener listener =
-                        mRemoteContactListeners.getBroadcastItem(i);
+                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
                 try {
                     listener.onContactChange(type, listAdapter, contact);
                 } catch (RemoteException e) {
@@ -571,8 +564,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
                 final String listName, final Contact contact) {
             final int N = mRemoteContactListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                IContactListListener listener =
-                        mRemoteContactListeners.getBroadcastItem(i);
+                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
                 try {
                     listener.onContactError(errorType, error, listName, contact);
                 } catch (RemoteException e) {
@@ -595,8 +587,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             removeObsoleteContactsAndLists();
             final int N = mRemoteContactListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                IContactListListener listener =
-                        mRemoteContactListeners.getBroadcastItem(i);
+                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
                 try {
                     listener.onAllContactListsLoaded();
                 } catch (RemoteException e) {
@@ -608,8 +599,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
     }
 
-    final class SubscriptionRequestListenerAdapter
-            implements SubscriptionRequestListener {
+    final class SubscriptionRequestListenerAdapter implements SubscriptionRequestListener {
 
         public void onSubScriptionRequest(final Contact from) {
             String username = from.getAddress().getFullName();
@@ -622,8 +612,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
                     ContentUris.parseId(uri), username, nickname);
             final int N = mRemoteSubscriptionListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener =
-                    mRemoteSubscriptionListeners.getBroadcastItem(i);
+                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
                 try {
                     listener.onSubScriptionRequest(from);
                 } catch (RemoteException e) {
@@ -635,14 +624,12 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public void onSubscriptionApproved(final String contact) {
-            insertOrUpdateSubscription(contact, null,
-                    Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             final int N = mRemoteSubscriptionListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener =
-                    mRemoteSubscriptionListeners.getBroadcastItem(i);
+                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
                 try {
                     listener.onSubscriptionApproved(contact);
                 } catch (RemoteException e) {
@@ -654,14 +641,12 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         public void onSubscriptionDeclined(final String contact) {
-            insertOrUpdateSubscription(contact, null,
-                    Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             final int N = mRemoteSubscriptionListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener =
-                    mRemoteSubscriptionListeners.getBroadcastItem(i);
+                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
                 try {
                     listener.onSubscriptionDeclined(contact);
                 } catch (RemoteException e) {
@@ -674,13 +659,15 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
         public void onApproveSubScriptionError(final String contact, final ImErrorInfo error) {
             String displayableAddress = getDisplayableAddress(contact);
-            String msg = mContext.getString(R.string.approve_subscription_error, displayableAddress);
+            String msg = mContext
+                    .getString(R.string.approve_subscription_error, displayableAddress);
             mContext.showToast(msg, Toast.LENGTH_SHORT);
         }
 
         public void onDeclineSubScriptionError(final String contact, final ImErrorInfo error) {
             String displayableAddress = getDisplayableAddress(contact);
-            String msg = mContext.getString(R.string.decline_subscription_error, displayableAddress);
+            String msg = mContext
+                    .getString(R.string.decline_subscription_error, displayableAddress);
             mContext.showToast(msg, Toast.LENGTH_SHORT);
         }
     }
@@ -720,10 +707,9 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         ContentUris.appendId(builder, mAccountId);
 
         Uri uri = builder.build();
-        mResolver.delete(uri, Imps.BlockedList.USERNAME + "=?", new String[]{ address });
+        mResolver.delete(uri, Imps.BlockedList.USERNAME + "=?", new String[] { address });
 
-        int type = isTemporary(address) ? Imps.Contacts.TYPE_TEMPORARY
-                : Imps.Contacts.TYPE_NORMAL;
+        int type = isTemporary(address) ? Imps.Contacts.TYPE_TEMPORARY : Imps.Contacts.TYPE_NORMAL;
         updateContactType(address, type);
     }
 
@@ -736,7 +722,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         values.put(Imps.Contacts.CONTACTLIST, listId);
 
         String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.TYPE + "="
-                + Imps.Contacts.TYPE_TEMPORARY;
+                           + Imps.Contacts.TYPE_TEMPORARY;
         String[] selectionArgs = { address };
 
         mResolver.update(mContactUrl, values, selection, selectionArgs);
@@ -750,7 +736,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
     /**
      * Insert or update subscription request from user into the database.
-     *
+     * 
      * @param username
      * @param nickname
      * @param subscriptionType
@@ -758,10 +744,10 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
      */
     Uri insertOrUpdateSubscription(String username, String nickname, int subscriptionType,
             int subscriptionStatus) {
-        Cursor cursor = mResolver.query(mContactUrl, new String[]{ Imps.Contacts._ID },
-                Imps.Contacts.USERNAME + "=?", new String[]{username}, null);
+        Cursor cursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts._ID },
+                Imps.Contacts.USERNAME + "=?", new String[] { username }, null);
         if (cursor == null) {
-        	RemoteImService.debug("query contact " + username + " failed");
+            RemoteImService.debug("query contact " + username + " failed");
             return null;
         }
 
@@ -801,7 +787,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         ArrayList<String> customStatusArray = new ArrayList<String>();
         ArrayList<String> clientTypeArray = new ArrayList<String>();
 
-        for(Contact c : contacts) {
+        for (Contact c : contacts) {
             String username = c.getAddress().getFullName();
             Presence p = c.getPresence();
             int status = convertPresenceStatus(p);
@@ -816,10 +802,10 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
 
         ContentValues values = new ContentValues();
         values.put(Imps.Contacts.ACCOUNT, mAccountId);
-        putStringArrayList(values,Imps.Contacts.USERNAME, usernames);
-        putStringArrayList(values,Imps.Presence.PRESENCE_STATUS, statusArray);
-        putStringArrayList(values,Imps.Presence.PRESENCE_CUSTOM_STATUS, customStatusArray);
-        putStringArrayList(values,Imps.Presence.CONTENT_TYPE, clientTypeArray);
+        putStringArrayList(values, Imps.Contacts.USERNAME, usernames);
+        putStringArrayList(values, Imps.Presence.PRESENCE_STATUS, statusArray);
+        putStringArrayList(values, Imps.Presence.PRESENCE_CUSTOM_STATUS, customStatusArray);
+        putStringArrayList(values, Imps.Presence.CONTENT_TYPE, clientTypeArray);
 
         mResolver.update(Imps.Presence.BULK_CONTENT_URI, values, null, null);
     }
@@ -844,8 +830,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
         if (avatars.size() > 0) {
             // ImProvider will replace the avatar content if it already exist.
-            mResolver.bulkInsert(mAvatarUrl, avatars.toArray(
-                    new ContentValues[avatars.size()]));
+            mResolver.bulkInsert(mAvatarUrl, avatars.toArray(new ContentValues[avatars.size()]));
 
             // notify avatar changed
             Intent i = new Intent(ImServiceConstants.ACTION_AVATAR_CHANGED);
@@ -864,8 +849,8 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         long id = listAdapter.getDataBaseId();
 
         // delete contacts of this list first
-        mResolver.delete(mContactUrl,
-            Imps.Contacts.CONTACTLIST + "=?", new String[]{Long.toString(id)});
+        mResolver.delete(mContactUrl, Imps.Contacts.CONTACTLIST + "=?",
+                new String[] { Long.toString(id) });
 
         mResolver.delete(ContentUris.withAppendedId(Imps.ContactList.CONTENT_URI, id), null, null);
         synchronized (mContactLists) {
@@ -874,17 +859,12 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     void addContactListContent(ContactList list) {
-        String selection = Imps.ContactList.NAME + "=? AND "
-                + Imps.ContactList.PROVIDER + "=? AND "
-                + Imps.ContactList.ACCOUNT + "=?";
-        String[] selectionArgs = { list.getName(),
-                Long.toString(mProviderId),
-                Long.toString(mAccountId) };
-        Cursor cursor = mResolver.query(Imps.ContactList.CONTENT_URI,
-                                        CONTACT_LIST_ID_PROJECTION,
-                                        selection,
-                                        selectionArgs,
-                                        null); // no sort order
+        String selection = Imps.ContactList.NAME + "=? AND " + Imps.ContactList.PROVIDER
+                           + "=? AND " + Imps.ContactList.ACCOUNT + "=?";
+        String[] selectionArgs = { list.getName(), Long.toString(mProviderId),
+                                  Long.toString(mAccountId) };
+        Cursor cursor = mResolver.query(Imps.ContactList.CONTENT_URI, CONTACT_LIST_ID_PROJECTION,
+                selection, selectionArgs, null); // no sort order
         long listId = 0;
         Uri uri = null;
         try {
@@ -900,7 +880,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             // remove existing ContactList and Contacts of that list for replacement by the newly
             // downloaded list
             mResolver.delete(mContactUrl, Imps.Contacts.CONTACTLIST + "=?",
-                    new String[]{Long.toString(listId)});
+                    new String[] { Long.toString(listId) });
             mResolver.delete(uri, selection, selectionArgs);
         }
 
@@ -915,8 +895,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         listId = ContentUris.parseId(uri);
 
         synchronized (mContactLists) {
-            mContactLists.put(list.getAddress(),
-                    new ContactListAdapter(list, listId));
+            mContactLists.put(list.getAddress(), new ContactListAdapter(list, listId));
         }
 
         Collection<Contact> contacts = list.getContacts();
@@ -925,10 +904,10 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         Iterator<Contact> iter = contacts.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             Contact c = iter.next();
             String address = c.getAddress().getFullName();
-            if(isTemporary(address)) {
+            if (isTemporary(address)) {
                 moveTemporaryContactToList(address, listId);
                 iter.remove();
             }
@@ -942,7 +921,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
             String username = c.getAddress().getFullName();
             String nickname = c.getName();
             int type = Imps.Contacts.TYPE_NORMAL;
-            if(isTemporary(username)) {
+            if (isTemporary(username)) {
                 type = Imps.Contacts.TYPE_TEMPORARY;
             }
             if (isBlocked(username)) {
@@ -958,32 +937,31 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         values.put(Imps.Contacts.PROVIDER, mProviderId);
         values.put(Imps.Contacts.ACCOUNT, mAccountId);
         values.put(Imps.Contacts.CONTACTLIST, listId);
-        putStringArrayList(values,Imps.Contacts.USERNAME, usernames);
-        putStringArrayList(values,Imps.Contacts.NICKNAME, nicknames);
-        putStringArrayList(values,Imps.Contacts.TYPE, contactTypeArray);
+        putStringArrayList(values, Imps.Contacts.USERNAME, usernames);
+        putStringArrayList(values, Imps.Contacts.NICKNAME, nicknames);
+        putStringArrayList(values, Imps.Contacts.TYPE, contactTypeArray);
 
         mResolver.insert(Imps.Contacts.BULK_CONTENT_URI, values);
     }
 
-    private void putStringArrayList(ContentValues values, String key,
-			ArrayList<String> nicknames) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream os = new ObjectOutputStream(bos);
-			os.writeObject(nicknames);
-			os.close();
-		}
-		catch (IOException ex) {
-			throw new RuntimeException(ex);
-		}
-		values.put(key, bos.toByteArray());
-		
-	}
+    private void putStringArrayList(ContentValues values, String key, ArrayList<String> nicknames) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream os = new ObjectOutputStream(bos);
+            os.writeObject(nicknames);
+            os.close();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        values.put(key, bos.toByteArray());
 
-	void updateListNameInDataBase(ContactList list) {
+    }
+
+    void updateListNameInDataBase(ContactList list) {
         ContactListAdapter listAdapter = getContactListAdapter(list.getAddress());
 
-        Uri uri = ContentUris.withAppendedId(Imps.ContactList.CONTENT_URI, listAdapter.getDataBaseId());
+        Uri uri = ContentUris.withAppendedId(Imps.ContactList.CONTENT_URI,
+                listAdapter.getDataBaseId());
         ContentValues values = new ContentValues(1);
         values.put(Imps.ContactList.NAME, list.getName());
 
@@ -991,17 +969,16 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     void deleteContactFromDataBase(Contact contact, ContactList list) {
-        String selection = Imps.Contacts.USERNAME
-                + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
+        String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
         long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
         String username = contact.getAddress().getFullName();
-        String[] selectionArgs = {username, Long.toString(listId)};
+        String[] selectionArgs = { username, Long.toString(listId) };
 
         mResolver.delete(mContactUrl, selection, selectionArgs);
 
         // clear the history message if the contact doesn't exist in any list
         // anymore.
-        if(mAdaptee.getContact(contact.getAddress()) == null) {
+        if (mAdaptee.getContact(contact.getAddress()) == null) {
             clearHistoryMessages(username);
         }
     }
@@ -1023,7 +1000,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         final String username = contact.getAddress().getFullName();
         final String nickname = contact.getName();
         int type = Imps.Contacts.TYPE_NORMAL;
-        if(isTemporary(username)) {
+        if (isTemporary(username)) {
             type = Imps.Contacts.TYPE_TEMPORARY;
         }
         if (isBlocked(username)) {
@@ -1055,16 +1032,16 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     private int translateClientType(Presence presence) {
         int clientType = presence.getClientType();
         switch (clientType) {
-            case Presence.CLIENT_TYPE_MOBILE:
-                return Imps.Presence.CLIENT_TYPE_MOBILE;
-            default:
-                return Imps.Presence.CLIENT_TYPE_DEFAULT;
+        case Presence.CLIENT_TYPE_MOBILE:
+            return Imps.Presence.CLIENT_TYPE_MOBILE;
+        default:
+            return Imps.Presence.CLIENT_TYPE_DEFAULT;
         }
     }
 
     /**
      * Converts the presence status to the value defined for ImProvider.
-     *
+     * 
      * @param presence The presence from the IM engine.
      * @return The status value defined in for ImProvider.
      */
@@ -1087,7 +1064,7 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
         }
 
         // impossible...
-        RemoteImService.debug( "Illegal presence status value " + presence.getStatus());
+        RemoteImService.debug("Illegal presence status value " + presence.getStatus());
         return Imps.Presence.AVAILABLE;
     }
 
@@ -1098,11 +1075,12 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     /**
-     * Clears the list of validated contacts and contact lists.
-     * As contacts and contacts lists are added after login, contacts and contact lists are
-     * stored as "validated contacts". After initial download of contacts is complete, any contacts
-     * and contact lists that remain in the database, but are not in the validated list, are
-     * obsolete and should be removed.  This function resets that list for use upon login.
+     * Clears the list of validated contacts and contact lists. As contacts and
+     * contacts lists are added after login, contacts and contact lists are
+     * stored as "validated contacts". After initial download of contacts is
+     * complete, any contacts and contact lists that remain in the database, but
+     * are not in the validated list, are obsolete and should be removed. This
+     * function resets that list for use upon login.
      */
     private void clearValidatedContactsAndLists() {
         // clear the list of validated contacts, contact lists, and blocked contacts
@@ -1112,8 +1090,9 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     /**
-     * Clear the temporary contacts in the database. As contacts are persist between
-     * IM sessions, the temporary contacts need to be cleared after logout.
+     * Clear the temporary contacts in the database. As contacts are persist
+     * between IM sessions, the temporary contacts need to be cleared after
+     * logout.
      */
     private void clearTemporaryContacts() {
         String selection = Imps.Contacts.CONTACTLIST + "=" + FAKE_TEMPORARY_LIST_ID;
@@ -1136,27 +1115,25 @@ public class ContactListManagerAdapter extends info.guardianproject.otr.app.im.I
     }
 
     void closeChatSession(String address) {
-        ChatSessionManagerAdapter chatSessionManager =
-            (ChatSessionManagerAdapter) mConn.getChatSessionManager();
-        ChatSessionAdapter session =
-            (ChatSessionAdapter) chatSessionManager.getChatSession(address);
-        if(session != null) {
+        ChatSessionManagerAdapter chatSessionManager = (ChatSessionManagerAdapter) mConn
+                .getChatSessionManager();
+        ChatSessionAdapter session = (ChatSessionAdapter) chatSessionManager
+                .getChatSession(address);
+        if (session != null) {
             session.leave();
         }
     }
 
     void updateChatPresence(String address, String nickname, Presence p) {
-        ChatSessionManagerAdapter sessionManager =
-            (ChatSessionManagerAdapter) mConn.getChatSessionManager();
+        ChatSessionManagerAdapter sessionManager = (ChatSessionManagerAdapter) mConn
+                .getChatSessionManager();
         // TODO: This only find single chat sessions, we need to go through all
         // active chat sessions and find if the contact is a participant of the
         // session.
-        ChatSessionAdapter session =
-            (ChatSessionAdapter) sessionManager.getChatSession(address);
-        if(session != null) {
+        ChatSessionAdapter session = (ChatSessionAdapter) sessionManager.getChatSession(address);
+        if (session != null) {
             session.insertPresenceUpdatesMsg(nickname, p);
         }
     }
-
 
 }

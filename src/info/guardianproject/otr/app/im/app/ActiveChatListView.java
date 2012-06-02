@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -62,7 +62,7 @@ public class ActiveChatListView extends LinearLayout {
 
     UserPresenceView mPresenceView;
     ListView mChatList;
-    
+
     //TODO private SavedState mSavedState; 
     private ChatListAdapter mAdapter;//ChatListAdapter
     private boolean mAutoRefresh = true;
@@ -70,7 +70,7 @@ public class ActiveChatListView extends LinearLayout {
     public ActiveChatListView(Context screen, AttributeSet attrs) {
         super(screen, attrs);
         mContext = screen;
-        mScreen = (Activity)screen;
+        mScreen = (Activity) screen;
         mHandler = new SimpleAlertHandler(mScreen);
         mChatListListener = new MyChatSessionListener(mHandler);
     }
@@ -80,26 +80,24 @@ public class ActiveChatListView extends LinearLayout {
             super();
         }
 
-		@Override
-		public void onChatSessionCreated(IChatSession session) {
-			
-			super.onChatSessionCreated(session);
-			mAdapter.startAutoRequery();
-		}
+        @Override
+        public void onChatSessionCreated(IChatSession session) {
 
-		@Override
-		public void onChatSessionCreateError(String name, ImErrorInfo error) {
-			super.onChatSessionCreateError(name, error);
-		}
+            super.onChatSessionCreated(session);
+            mAdapter.startAutoRequery();
+        }
 
-        
+        @Override
+        public void onChatSessionCreateError(String name, ImErrorInfo error) {
+            super.onChatSessionCreateError(name, error);
+        }
+
     }
-
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
+        mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
         mChatList = (ListView) findViewById(R.id.chatsList);
         mChatList.setOnItemClickListener(mOnClickListener);
     }
@@ -123,15 +121,14 @@ public class ActiveChatListView extends LinearLayout {
                     mAdapter = new ChatListAdapter(conn, mScreen);
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
-                    
-                    
+
                 } else {
                     mAdapter.changeConnection(conn);
                 }
                 try {
                     IChatSessionManager listMgr = conn.getChatSessionManager();
                     mAdapter.startAutoRequery();
-                    
+
                 } catch (RemoteException e) {
                     Log.e(ImApp.LOG_TAG, "Service died!");
                 }
@@ -140,7 +137,6 @@ public class ActiveChatListView extends LinearLayout {
             mChatList.invalidateViews();
         }
     }
-
 
     /*
     public void startChat() {
@@ -158,7 +154,7 @@ public class ActiveChatListView extends LinearLayout {
             try {
                 IChatSessionManager manager = mConn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
-                if(session == null) {
+                if (session == null) {
                     manager.createChatSession(username);
                 }
 
@@ -181,22 +177,23 @@ public class ActiveChatListView extends LinearLayout {
             clearFocus();
         }
     }
-/*
-    public void endChat() {
-        endChat(getSelectedContact());
-    }
 
-    public void endChatAtPosition(long packedPosition) {
-        endChat(getContactAtPosition(packedPosition));
-    }*/
+    /*
+        public void endChat() {
+            endChat(getSelectedContact());
+        }
+
+        public void endChatAtPosition(long packedPosition) {
+            endChat(getContactAtPosition(packedPosition));
+        }*/
 
     void endChat(Cursor c) {
-        if(c != null) {
+        if (c != null) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             try {
                 IChatSessionManager manager = mConn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
-                if(session != null) {
+                if (session != null) {
                     session.leave();
                 }
             } catch (RemoteException e) {
@@ -241,10 +238,10 @@ public class ActiveChatListView extends LinearLayout {
         int type = ExpandableListView.getPackedPositionType(packedPosition);
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
         return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
-                && mAdapter.isPosForOngoingConversation(groupPosition);
+               && mAdapter.isPosForOngoingConversation(groupPosition);
     }
 
-    public boolean isConversationSelected () {
+    public boolean isConversationSelected() {
         long pos = mChatList.getSelectedItemPosition();
         return isConversationAtPosition(pos);
     }
@@ -274,7 +271,7 @@ public class ActiveChatListView extends LinearLayout {
         } else {
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
@@ -290,13 +287,10 @@ public class ActiveChatListView extends LinearLayout {
             };
             Resources r = getResources();
 
-            new AlertDialog.Builder(mContext)
-                .setTitle(R.string.confirm)
-                .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null)
-                .setCancelable(false)
-                .show();
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
 
             clearFocusIfEmpty(c);
         }
@@ -317,7 +311,7 @@ public class ActiveChatListView extends LinearLayout {
         } else {
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener(){
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
@@ -334,13 +328,10 @@ public class ActiveChatListView extends LinearLayout {
 
             Resources r = getResources();
 
-            new AlertDialog.Builder(mContext)
-                .setTitle(R.string.confirm)
-                .setMessage(r.getString(R.string.confirm_block_contact, nickname))
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null)
-                .setCancelable(false)
-                .show();
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_block_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
             clearFocusIfEmpty(c);
         }
     }
@@ -380,28 +371,28 @@ public class ActiveChatListView extends LinearLayout {
     }*/
 
     private void registerListeners() {
-        try{
-        	IChatSessionManager chatManager = mConn.getChatSessionManager();
-        	
-        	chatManager.registerChatSessionListener(mChatListListener);
-            
-        }catch(RemoteException e) {
+        try {
+            IChatSessionManager chatManager = mConn.getChatSessionManager();
+
+            chatManager.registerChatSessionListener(mChatListListener);
+
+        } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
 
     private void unregisterListeners() {
-        try{
-        	IChatSessionManager chatManager = mConn.getChatSessionManager();
-        	
-        	chatManager.unregisterChatSessionListener(mChatListListener);
-        }catch(RemoteException e) {
+        try {
+            IChatSessionManager chatManager = mConn.getChatSessionManager();
+
+            chatManager.unregisterChatSessionListener(mChatListListener);
+        } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
 
     private final OnItemClickListener mOnClickListener = new OnItemClickListener() {
-    	/*
+        /*
         public boolean onChildClick(ListView parent, View v, int groupPosition,
                 int childPosition, long id) {
         	
@@ -432,18 +423,16 @@ public class ActiveChatListView extends LinearLayout {
             return true;
         }*/
 
+        @Override
+        public void onItemClick(AdapterView<?> view, View itemView, int position, long id) {
+            ListView chatList = (ListView) view;
 
-		@Override
-		public void onItemClick(AdapterView<?> view, View itemView, int position, long id)
-		{
-			ListView chatList = (ListView)view;
-			
-			Cursor cursor = (Cursor)chatList.getAdapter().getItem(position);
-			
-		    int subscriptionType = cursor.getInt(ContactView.COLUMN_SUBSCRIPTION_TYPE);
+            Cursor cursor = (Cursor) chatList.getAdapter().getItem(position);
+
+            int subscriptionType = cursor.getInt(ContactView.COLUMN_SUBSCRIPTION_TYPE);
             int subscriptionStatus = cursor.getInt(ContactView.COLUMN_SUBSCRIPTION_STATUS);
             if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
-                    && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)){
+                && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
                 long providerId = cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER);
                 String username = cursor.getString(ContactView.COLUMN_CONTACT_USERNAME);
                 Intent intent = new Intent(ImServiceConstants.ACTION_MANAGE_SUBSCRIPTION,
@@ -454,8 +443,8 @@ public class ActiveChatListView extends LinearLayout {
             } else {
                 startChat(cursor);
             }
-			
-		}
+
+        }
     };
 
     static class SavedState extends BaseSavedState {
@@ -477,8 +466,7 @@ public class ActiveChatListView extends LinearLayout {
             out.writeIntArray(mExpandedGroups);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
@@ -491,7 +479,7 @@ public class ActiveChatListView extends LinearLayout {
 
     @Override
     public Parcelable onSaveInstanceState() {
-    	
+
         Parcelable superState = super.onSaveInstanceState();
         //int[] expandedGroups = mAdapter == null ? null
         //        : mAdapter.getExpandedGroups();

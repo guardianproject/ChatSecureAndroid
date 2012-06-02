@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -53,13 +53,11 @@ import android.widget.CursorTreeAdapter;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 
-public class ContactListTreeAdapter extends BaseExpandableListAdapter
-        implements AbsListView.OnScrollListener{
+public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
+        AbsListView.OnScrollListener {
 
-    private static final String[] CONTACT_LIST_PROJECTION = {
-            Imps.ContactList._ID,
-            Imps.ContactList.NAME,
-    };
+    private static final String[] CONTACT_LIST_PROJECTION = { Imps.ContactList._ID,
+                                                             Imps.ContactList.NAME, };
 
     private static final int COLUMN_CONTACT_LIST_ID = 0;
     private static final int COLUMN_CONTACT_LIST_NAME = 1;
@@ -80,30 +78,31 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     private ArrayList<Integer> mExpandedGroups;
 
     private static final int TOKEN_CONTACT_LISTS = -1;
- //   private static final int TOKEN_ONGOING_CONVERSATION = -2;
+    //   private static final int TOKEN_ONGOING_CONVERSATION = -2;
     private static final int TOKEN_SUBSCRIPTION = -3;
 
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
-        + Imps.Contacts.LAST_MESSAGE_DATE + " IS NULL) AND ("
-        + Imps.Contacts.TYPE + "!=" + Imps.Contacts.TYPE_BLOCKED + ")";
-    
-    private static final String BLOCKED_CONTACTS = "("
-        + Imps.Contacts.TYPE + "!=" + Imps.Contacts.TYPE_BLOCKED + ")";
+                                                                + Imps.Contacts.LAST_MESSAGE_DATE
+                                                                + " IS NULL) AND ("
+                                                                + Imps.Contacts.TYPE + "!="
+                                                                + Imps.Contacts.TYPE_BLOCKED + ")";
 
-    private static final String CONTACTS_SELECTION = Imps.Contacts.CONTACTLIST
-            + "=? AND " + BLOCKED_CONTACTS;
+    private static final String BLOCKED_CONTACTS = "(" + Imps.Contacts.TYPE + "!="
+                                                   + Imps.Contacts.TYPE_BLOCKED + ")";
 
-    private static final String ONLINE_CONTACT_SELECTION = CONTACTS_SELECTION
-            + " AND "+ Imps.Contacts.PRESENCE_STATUS + " != " + Imps.Presence.OFFLINE;
+    private static final String CONTACTS_SELECTION = Imps.Contacts.CONTACTLIST + "=? AND "
+                                                     + BLOCKED_CONTACTS;
+
+    private static final String ONLINE_CONTACT_SELECTION = CONTACTS_SELECTION + " AND "
+                                                           + Imps.Contacts.PRESENCE_STATUS + " != "
+                                                           + Imps.Presence.OFFLINE;
 
     static final void log(String msg) {
         Log.d(ImApp.LOG_TAG, "<ContactListAdapter>" + msg);
     }
 
-    static final String[] CONTACT_COUNT_PROJECTION = {
-        Imps.Contacts.CONTACTLIST,
-        Imps.Contacts._COUNT,
-    };
+    static final String[] CONTACT_COUNT_PROJECTION = { Imps.Contacts.CONTACTLIST,
+                                                      Imps.Contacts._COUNT, };
 
     ContentQueryMap mOnlineContactsCountMap;
 
@@ -115,35 +114,34 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
-        	
-        	
-        	/*
-        	String[] thatCursor  = c.getColumnNames();
-        	for (int i= 0; i< thatCursor.length ; i++ ){
-        		Log.v("That Column:" + i,thatCursor[i]);
-        		
-        		
-        			      //String data = c.getString(c.getColumnIndex("last_unread_message"));
-        			    
-        			
-        		
-        		/*if(c.isNull(c.getColumnIndex(thatCursor[i]))){
-        		break;
-        		}
-        		else{
-        			Log.v("That Column:" + i,thatCursor[i] + ":" + c.getString(c.getColumnIndex(thatCursor[i])));
-        		}
-        		
-        	}
-        	*/
-            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+
+            /*
+            String[] thatCursor  = c.getColumnNames();
+            for (int i= 0; i< thatCursor.length ; i++ ){
+            	Log.v("That Column:" + i,thatCursor[i]);
+            	
+            	
+            		      //String data = c.getString(c.getColumnIndex("last_unread_message"));
+            		    
+            		
+            	
+            	/*if(c.isNull(c.getColumnIndex(thatCursor[i]))){
+            	break;
+            	}
+            	else{
+            		Log.v("That Column:" + i,thatCursor[i] + ":" + c.getString(c.getColumnIndex(thatCursor[i])));
+            	}
+            	
+            }
+            */
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onQueryComplete:token=" + token);
             }
 
             if (token == TOKEN_CONTACT_LISTS) {
                 mDataValid = true;
                 mAdapter.setGroupCursor(c);
-            }  else if (token == TOKEN_SUBSCRIPTION) {
+            } else if (token == TOKEN_SUBSCRIPTION) {
                 setSubscriptions(c);
                 notifyDataSetChanged();
             } else {
@@ -158,6 +156,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             }
         }
     }
+
     private QueryHandler mQueryHandler;
 
     private int mScrollState;
@@ -185,7 +184,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
 
         synchronized (this) {
-          
+
             if (mSubscriptions != null) {
                 mSubscriptions.close();
                 mSubscriptions = null;
@@ -200,7 +199,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
             try {
                 mProviderId = conn.getProviderId();
                 mAccountId = conn.getAccountId();
-          //      startQueryOngoingConversations();
+                //      startQueryOngoingConversations();
                 startQueryContactLists();
                 startQuerySubscriptions();
             } catch (RemoteException e) {
@@ -217,18 +216,18 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public void startAutoRequery() {
-        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startAutoRequery()");
         }
         mAutoRequery = true;
         if (mRequeryPending) {
             mRequeryPending = false;
-           // startQueryOngoingConversations();
+            // startQueryOngoingConversations();
         }
     }
 
     private void startQueryContactLists() {
-        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQueryContactLists()");
         }
 
@@ -236,8 +235,8 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
 
-        mQueryHandler.startQuery(TOKEN_CONTACT_LISTS, null, uri, CONTACT_LIST_PROJECTION,
-                null, null, Imps.ContactList.DEFAULT_SORT_ORDER);
+        mQueryHandler.startQuery(TOKEN_CONTACT_LISTS, null, uri, CONTACT_LIST_PROJECTION, null,
+                null, Imps.ContactList.DEFAULT_SORT_ORDER);
     }
 
     /*
@@ -253,7 +252,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }*/
 
     void startQuerySubscriptions() {
-        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQuerySubscriptions()");
         }
 
@@ -261,22 +260,21 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
 
-        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri,
-                ContactView.CONTACT_PROJECTION,
-                String.format(Locale.US, "%s=%d AND %s=%d",
-                    Imps.Contacts.SUBSCRIPTION_STATUS, Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
-                    Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
-                null,Imps.Contacts.DEFAULT_SORT_ORDER);
+        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri, ContactView.CONTACT_PROJECTION,
+                String.format(Locale.US, "%s=%d AND %s=%d", Imps.Contacts.SUBSCRIPTION_STATUS,
+                        Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
+                        Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
+                null, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
 
     void startQueryContacts(long listId) {
-        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQueryContacts - listId=" + listId);
         }
 
         String selection = mHideOfflineContacts ? ONLINE_CONTACT_SELECTION : CONTACTS_SELECTION;
         String[] args = { Long.toString(listId) };
-        int token = (int)listId;
+        int token = (int) listId;
         mQueryHandler.startQuery(token, null, Imps.Contacts.CONTENT_URI,
                 ContactView.CONTACT_PROJECTION, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
@@ -299,45 +297,42 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
             View convertView, ViewGroup parent) {
-        
+
         if (isPosForSubscription(groupPosition)) {
             View view = null;
-            
+
             if (convertView != null) {
                 // use the convert view if it matches the type required by displayEmpty
                 if ((convertView instanceof TextView)) {
                     view = convertView;
                     ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
                 } else if ((convertView instanceof ContactView)) {
-                     view = convertView;
+                    view = convertView;
                 }
             }
             if (view == null) {
                 view = newChildView(parent);
-                
+
             }
-            
-            Cursor cursor =  getSubscriptions();
+
+            Cursor cursor = getSubscriptions();
             cursor.moveToPosition(childPosition);
-            
+
             if (view instanceof ContactView)
-            	((ContactView) view).bind(cursor, null, isScrolling());
-           
+                ((ContactView) view).bind(cursor, null, isScrolling());
+
             return view;
         } else {
             return mAdapter.getChildView(getChildAdapterPosition(groupPosition), childPosition,
                     isLastChild, convertView, parent);
         }
     }
-    
-    
-   
 
     public int getChildrenCount(int groupPosition) {
         if (!mDataValid) {
             return 0;
         }
-       if (isPosForSubscription(groupPosition)) {
+        if (isPosForSubscription(groupPosition)) {
             return getSubscriptionCount();
         } else {
             // XXX getChildrenCount() may be called with an invalid groupPosition that is larger
@@ -390,26 +385,27 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 v = newGroupView(parent);
             }
 
-            TextView text1 = (TextView)v.findViewById(R.id.text1);
-            TextView text2 = (TextView)v.findViewById(R.id.text2);
+            TextView text1 = (TextView) v.findViewById(R.id.text1);
+            TextView text2 = (TextView) v.findViewById(R.id.text2);
 
             Resources r = v.getResources();
             ImApp app = ImApp.getApplication(mActivity);
-            String text =  r.getString(R.string.subscriptions);
+            String text = r.getString(R.string.subscriptions);
             text1.setText(text);
             text2.setVisibility(View.GONE);
             return v;
         } else {
-        	
+
             return mAdapter.getGroupView(getChildAdapterPosition(groupPosition), isExpanded,
                     convertView, parent);
-        	
+
         }
     }
 
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-       
-        if (isPosForSubscription(groupPosition)) return true;
+
+        if (isPosForSubscription(groupPosition))
+            return true;
         return mAdapter.isChildSelectable(getChildAdapterPosition(groupPosition), childPosition);
     }
 
@@ -454,7 +450,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
     }
 
     public int[] getExpandedGroups() {
-    	
+
         ArrayList<Integer> expandedGroups = mExpandedGroups;
         int size = expandedGroups.size();
         int[] res = new int[size];
@@ -476,8 +472,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         return mInflate.inflate(R.layout.group_view, parent, false);
     }
 
-   
-
     private synchronized Cursor getSubscriptions() {
         if (mSubscriptions == null) {
             startQuerySubscriptions();
@@ -487,17 +481,16 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
     synchronized void setSubscriptions(Cursor c) {
         if (mSubscriptions != null) {
-        	mSubscriptions.unregisterContentObserver(mContentObserver);
-        	mSubscriptions.unregisterDataSetObserver(mDataSetObserver);
+            mSubscriptions.unregisterContentObserver(mContentObserver);
+            mSubscriptions.unregisterDataSetObserver(mDataSetObserver);
             mSubscriptions.close();
         }
-        
+
         c.registerContentObserver(mContentObserver);
         c.registerDataSetObserver(mDataSetObserver);
-        
+
         mSubscriptions = c;
-        
-        		
+
     }
 
     private int getSubscriptionCount() {
@@ -505,13 +498,12 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         return c == null ? 0 : c.getCount();
     }
 
-
     public boolean isPosForSubscription(int groupPosition) {
         return groupPosition == 0 && getSubscriptionCount() > 0;
     }
 
     private int getChildAdapterPosition(int groupPosition) {
-    	
+
         if (getSubscriptionCount() > 0) {
             return groupPosition - 1;
         } else {
@@ -540,8 +532,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         }
 
         @Override
-        protected void bindChildView(View view, Context context, Cursor cursor,
-                boolean isLastChild) {
+        protected void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
             // binding when child is text view for an empty group
             if (view instanceof TextView) {
                 ((TextView) view).setText(mActivity.getText(R.string.empty_contact_group));
@@ -551,10 +542,9 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         }
 
         @Override
-        protected void bindGroupView(View view, Context context, Cursor cursor,
-                boolean isExpanded) {
-            TextView text1 = (TextView)view.findViewById(R.id.text1);
-            TextView text2 = (TextView)view.findViewById(R.id.text2);
+        protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
+            TextView text1 = (TextView) view.findViewById(R.id.text1);
+            TextView text2 = (TextView) view.findViewById(R.id.text2);
             Resources r = view.getResources();
 
             text1.setText(cursor.getString(COLUMN_CONTACT_LIST_NAME));
@@ -573,17 +563,17 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                 View convertView, ViewGroup parent) {
             // Provide a TextView if the group is empty
-            if (super.getChildrenCount(groupPosition)==0) {
+            if (super.getChildrenCount(groupPosition) == 0) {
                 if (convertView != null) {
                     if (convertView instanceof TextView) {
-                        ((TextView) convertView).setText(
-                                mActivity.getText(R.string.empty_contact_group));
+                        ((TextView) convertView).setText(mActivity
+                                .getText(R.string.empty_contact_group));
                         return convertView;
                     }
                 }
                 return newEmptyView(parent);
             }
-            if ( !(convertView instanceof ContactView) ) {
+            if (!(convertView instanceof ContactView)) {
                 convertView = null;
             }
             return super.getChildView(groupPosition, childPosition, isLastChild, convertView,
@@ -622,15 +612,16 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
                 Cursor c = cr.query(Imps.Contacts.CONTENT_URI_ONLINE_COUNT,
                         CONTACT_COUNT_PROJECTION, where, null, null);
-                mOnlineContactsCountMap = new ContentQueryMap(c,
-                        Imps.Contacts.CONTACTLIST, true, mHandler);
-                mOnlineContactsCountMap.addObserver(new Observer(){
+                mOnlineContactsCountMap = new ContentQueryMap(c, Imps.Contacts.CONTACTLIST, true,
+                        mHandler);
+                mOnlineContactsCountMap.addObserver(new Observer() {
                     public void update(Observable observable, Object data) {
                         notifyDataSetChanged();
-                    }});
+                    }
+                });
             }
             ContentValues value = mOnlineContactsCountMap.getValues(String.valueOf(listId));
-            return  value == null ? 0 : value.getAsInteger(Imps.Contacts._COUNT);
+            return value == null ? 0 : value.getAsInteger(Imps.Contacts._COUNT);
         }
 
         @Override
@@ -658,7 +649,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         public void onChange(boolean selfChange) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("MyContentObserver.onChange() autoRequery=" + mAutoRequery);
             }
             // Don't requery when fling. We will schedule a requery when the fling is complete.
@@ -666,7 +657,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
                 return;
             }
             if (mAutoRequery) {
-             //   startQueryOngoingConversations();
+                //   startQueryOngoingConversations();
             } else {
                 mRequeryPending = true;
             }
@@ -679,7 +670,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         public void onChanged() {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("MyDataSetObserver.onChanged()");
             }
 
@@ -689,7 +680,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter
 
         @Override
         public void onInvalidated() {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("MyDataSetObserver.onInvalidated()");
             }
 

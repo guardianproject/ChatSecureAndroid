@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.service;
@@ -21,7 +21,6 @@ import info.guardianproject.otr.app.im.engine.HeartbeatService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -35,23 +34,19 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.SparseArray;
 
-public class AndroidHeartBeatService extends BroadcastReceiver
-        implements HeartbeatService {
+public class AndroidHeartBeatService extends BroadcastReceiver implements HeartbeatService {
 
     private static final String WAKELOCK_TAG = "IM_HEARTBEAT";
 
-    private static final String HEARTBEAT_INTENT_ACTION
-            = "info.guardianproject.otr.app.im.intent.action.HEARTBEAT";
-    private static final Uri HEARTBEAT_CONTENT_URI
-            = Uri.parse("content://im/heartbeat");
-    private static final String HEARTBEAT_CONTENT_TYPE
-            = "vnd.android.im/heartbeat";
+    private static final String HEARTBEAT_INTENT_ACTION = "info.guardianproject.otr.app.im.intent.action.HEARTBEAT";
+    private static final Uri HEARTBEAT_CONTENT_URI = Uri.parse("content://im/heartbeat");
+    private static final String HEARTBEAT_CONTENT_TYPE = "vnd.android.im/heartbeat";
 
     private static final ExecutorService sExecutor = Executors.newSingleThreadExecutor();
 
     private final Context mContext;
     private final AlarmManager mAlarmManager;
-    /*package*/ PowerManager.WakeLock mWakeLock;
+    /*package*/PowerManager.WakeLock mWakeLock;
 
     static class Alarm {
         public PendingIntent mAlaramSender;
@@ -62,12 +57,9 @@ public class AndroidHeartBeatService extends BroadcastReceiver
 
     public AndroidHeartBeatService(Context context) {
         mContext = context;
-        mAlarmManager = (AlarmManager)context.getSystemService(
-                Context.ALARM_SERVICE);
-        PowerManager powerManager = (PowerManager)context.getSystemService(
-                Context.POWER_SERVICE);
-        mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                WAKELOCK_TAG);
+        mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG);
         mAlarms = new SparseArray<Alarm>();
     }
 
@@ -78,23 +70,20 @@ public class AndroidHeartBeatService extends BroadcastReceiver
             int id = nextId();
             alarm.mCallback = callback;
             Uri data = ContentUris.withAppendedId(HEARTBEAT_CONTENT_URI, id);
-            Intent i = new Intent(HEARTBEAT_INTENT_ACTION)
-                            .setDataAndType(data, HEARTBEAT_CONTENT_TYPE);
+            Intent i = new Intent(HEARTBEAT_INTENT_ACTION).setDataAndType(data,
+                    HEARTBEAT_CONTENT_TYPE);
             alarm.mAlaramSender = PendingIntent.getBroadcast(mContext, 0, i, 0);
             if (mAlarms.size() == 0) {
 
-            	try
-            	{
-            		mContext.registerReceiver(this, IntentFilter.create(
-            				HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
-            	}
-            	catch (Exception e)
-            	{
-            		mContext.unregisterReceiver(this);    
-            		
-            		mContext.registerReceiver(this, IntentFilter.create(
-            				HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
-            	}
+                try {
+                    mContext.registerReceiver(this,
+                            IntentFilter.create(HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
+                } catch (Exception e) {
+                    mContext.unregisterReceiver(this);
+
+                    mContext.registerReceiver(this,
+                            IntentFilter.create(HEARTBEAT_INTENT_ACTION, HEARTBEAT_CONTENT_TYPE));
+                }
             }
             mAlarms.append(id, alarm);
         }
@@ -117,7 +106,7 @@ public class AndroidHeartBeatService extends BroadcastReceiver
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int id = (int)ContentUris.parseId(intent.getData());
+        int id = (int) ContentUris.parseId(intent.getData());
         Alarm alarm = mAlarms.get(id);
         if (alarm == null) {
             return;
@@ -158,13 +147,12 @@ public class AndroidHeartBeatService extends BroadcastReceiver
         return null;
     }
 
-    /*package*/ synchronized void setAlarm(Alarm alarm, long offset) {
+    /*package*/synchronized void setAlarm(Alarm alarm, long offset) {
         long triggerAtTime = SystemClock.elapsedRealtime() + offset;
-        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime,
-                alarm.mAlaramSender);
+        mAlarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, alarm.mAlaramSender);
     }
 
-    /*package*/  synchronized void cancelAlarm(Alarm alarm) {
+    /*package*/synchronized void cancelAlarm(Alarm alarm) {
         mAlarmManager.cancel(alarm.mAlaramSender);
         int index = mAlarms.indexOfValue(alarm);
         if (index >= 0) {
@@ -178,6 +166,7 @@ public class AndroidHeartBeatService extends BroadcastReceiver
     }
 
     private static int sNextId = 0;
+
     private static synchronized int nextId() {
         return sNextId++;
     }

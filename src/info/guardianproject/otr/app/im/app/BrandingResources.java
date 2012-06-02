@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -24,7 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,9 +32,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-/**
- * The provider specific branding resources.
- */
+/** The provider specific branding resources. */
 public class BrandingResources {
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -48,14 +45,13 @@ public class BrandingResources {
     /**
      * Creates a new BrandingResource of a specific plug-in. The resources will
      * be retrieved from the plug-in package.
-     *
+     * 
      * @param context The current application context.
      * @param pluginInfo The info about the plug-in.
      * @param defaultRes The default branding resources. If the resource is not
      *            found in the plug-in, the default resource will be returned.
      */
-    public BrandingResources(Context context, ImPluginInfo pluginInfo,
-            BrandingResources defaultRes) {
+    public BrandingResources(Context context, ImPluginInfo pluginInfo, BrandingResources defaultRes) {
         mDefaultRes = defaultRes;
 
         PackageManager pm = context.getPackageManager();
@@ -71,7 +67,7 @@ public class BrandingResources {
         try {
             Class cls = classLoader.loadClass(pluginInfo.mClassName);
             Method m = cls.getMethod("onBind", Intent.class);
-            ImPlugin plugin = (ImPlugin)m.invoke(cls.newInstance(), new Object[]{null});
+            ImPlugin plugin = (ImPlugin) m.invoke(cls.newInstance(), new Object[] { null });
             mResMapping = plugin.getResourceMap();
             mSmileyIcons = plugin.getSmileyIconIds();
         } catch (ClassNotFoundException e) {
@@ -92,9 +88,10 @@ public class BrandingResources {
     }
 
     /**
-     * Creates a BrandingResource with application context and the resource ID map.
-     * The resource will be retrieved from the context directly instead from the plug-in package.
-     *
+     * Creates a BrandingResource with application context and the resource ID
+     * map. The resource will be retrieved from the context directly instead
+     * from the plug-in package.
+     * 
      * @param context
      * @param resMapping
      */
@@ -114,7 +111,7 @@ public class BrandingResources {
     /**
      * Gets a drawable object associated with a particular resource ID defined
      * in {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     *
+     * 
      * @param id The ID defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @return Drawable An object that can be used to draw this resource.
@@ -123,7 +120,7 @@ public class BrandingResources {
         int resId = getPackageResourceId(id);
         if (resId != 0) {
             return mPackageRes.getDrawable(resId);
-        } else if (mDefaultRes != null){
+        } else if (mDefaultRes != null) {
             return mDefaultRes.getDrawable(id);
         } else {
             return null;
@@ -133,7 +130,7 @@ public class BrandingResources {
     /**
      * Gets an array of the IDs of the supported smiley of the provider. Use
      * {@link #getSmileyIcon(int)} to get the drawable object of the smiley.
-     *
+     * 
      * @return An array of the IDs of the supported smileys.
      */
     public int[] getSmileyIcons() {
@@ -142,12 +139,12 @@ public class BrandingResources {
 
     /**
      * Gets the drawable associated with particular smiley ID.
-     *
+     * 
      * @param smileyId The ID of the smiley returned in
      *            {@link #getSmileyIcons()}
      * @return Drawable An object that can be used to draw this smiley.
      */
-    public Drawable getSmileyIcon(int smileyId){
+    public Drawable getSmileyIcon(int smileyId) {
         if (mPackageRes == null) {
             return null;
         }
@@ -157,7 +154,7 @@ public class BrandingResources {
     /**
      * Gets the string value associated with a particular resource ID defined in
      * {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     *
+     * 
      * @param id The ID of the string resource defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @param formatArgs The format arguments that will be used for
@@ -168,8 +165,8 @@ public class BrandingResources {
         int resId = getPackageResourceId(id);
         if (resId != 0) {
             return mPackageRes.getString(resId, formatArgs);
-        } else if (mDefaultRes != null){
-            return  mDefaultRes.getString(id, formatArgs);
+        } else if (mDefaultRes != null) {
+            return mDefaultRes.getString(id, formatArgs);
         } else {
             return null;
         }
@@ -178,7 +175,7 @@ public class BrandingResources {
     /**
      * Gets the string array associated with a particular resource ID defined in
      * {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     *
+     * 
      * @param id The ID of the string resource defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @return The string array associated with the resource.
@@ -187,7 +184,7 @@ public class BrandingResources {
         int resId = getPackageResourceId(id);
         if (resId != 0) {
             return mPackageRes.getStringArray(resId);
-        } else if (mDefaultRes != null){
+        } else if (mDefaultRes != null) {
             return mDefaultRes.getStringArray(id);
         } else {
             return null;

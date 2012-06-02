@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -51,13 +51,11 @@ import android.widget.TextView;
 public class ChatSwitcher {
     private static final boolean LOCAL_DEBUG = true;
 
-    private static final String[] PROVIDER_CATEGORY_PROJECTION = new String[] {
-            Imps.Provider.CATEGORY
-    };
+    private static final String[] PROVIDER_CATEGORY_PROJECTION = new String[] { Imps.Provider.CATEGORY };
     private static final int PROVIDER_CATEGORY_COLUMN = 0;
 
     private boolean mPreferMenuShortcut = false;
-    public  SwitcherAdapter mSwitcherAdapter;
+    public SwitcherAdapter mSwitcherAdapter;
     private Activity mActivity;
     private Handler mHandler;
     private ImApp mApp;
@@ -73,18 +71,17 @@ public class ChatSwitcher {
     private static final int sQueryToken = 1;
     private static final long sPeriodicUpdatePeriod = 60000;
 
-
-    public  int mContactIdColumn;
-    public  int mProviderIdColumn;
-    public  int mAccountIdColumn;
-    public  int mUsernameColumn;
-    public  int mNicknameColumn;
-    public  int mAvatarDataColumn;
-    public  int mPresenceStatusColumn;
-    public  int mLastUnreadMessageColumn;
-    public  int mShortcutColumn;
-    public  int mLastChatColumn;
-    public  int mGroupChatColumn;
+    public int mContactIdColumn;
+    public int mProviderIdColumn;
+    public int mAccountIdColumn;
+    public int mUsernameColumn;
+    public int mNicknameColumn;
+    public int mAvatarDataColumn;
+    public int mPresenceStatusColumn;
+    public int mLastUnreadMessageColumn;
+    public int mShortcutColumn;
+    public int mLastChatColumn;
+    public int mGroupChatColumn;
 
     public interface OnQueryCompleteRunnable {
         public void onComplete(Cursor c);
@@ -99,7 +96,8 @@ public class ChatSwitcher {
         public void onChanged() {
             super.onChanged();
             if (isOpen()) {
-                if (LOCAL_DEBUG) log("Observer.onChanged: update");
+                if (LOCAL_DEBUG)
+                    log("Observer.onChanged: update");
                 update();
             }
         }
@@ -108,7 +106,8 @@ public class ChatSwitcher {
         public void onInvalidated() {
             super.onInvalidated();
             if (isOpen()) {
-                if (LOCAL_DEBUG) log("Observer.onInvalidated: update");
+                if (LOCAL_DEBUG)
+                    log("Observer.onInvalidated: update");
                 update();
             }
         }
@@ -128,19 +127,12 @@ public class ChatSwitcher {
 
     private void startQuery(OnQueryCompleteRunnable runnable) {
         cancelPreviousQuery();
-        mQueryHandler.startQuery(
-                sQueryToken,
-                runnable,
-                Imps.Contacts.CONTENT_URI_CHAT_CONTACTS,
+        mQueryHandler.startQuery(sQueryToken, runnable, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS,
                 null, /*projection*/
-                mQuerySelection,
-                mQuerySelectionArgs,
-                null  /*orderBy*/);
+                mQuerySelection, mQuerySelectionArgs, null /*orderBy*/);
     }
 
-    /**
-     * Onscreen dialog used to show the chat switcher
-     */
+    /** Onscreen dialog used to show the chat switcher */
     private class ChatSwitcherDialog extends Dialog {
         public ChatSwitcher mSwitcher;
         private ViewGroup mContainer;
@@ -166,8 +158,9 @@ public class ChatSwitcher {
                 c.moveToPosition(-1);
                 while (c.moveToNext()) {
                     if (!mSwitcherAdapter.validateCursor(c)) {
-                        if (LOCAL_DEBUG) log("populateGallery: validate cursor failed");
-                        return;    // return true so we don't draw the empty text
+                        if (LOCAL_DEBUG)
+                            log("populateGallery: validate cursor failed");
+                        return; // return true so we don't draw the empty text
                     }
 
                     View v = mViews.get(c.getPosition());
@@ -180,7 +173,8 @@ public class ChatSwitcher {
             v.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     select(c, position);
-                }});
+                }
+            });
 
             v.setOnKeyListener(new View.OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -222,8 +216,9 @@ public class ChatSwitcher {
                 c.moveToPosition(-1);
                 while (c.moveToNext()) {
                     if (!mSwitcherAdapter.validateCursor(c)) {
-                        if (LOCAL_DEBUG) log("populateGallery: validate cursor failed");
-                        return;    // return true so we don't draw the empty text
+                        if (LOCAL_DEBUG)
+                            log("populateGallery: validate cursor failed");
+                        return; // return true so we don't draw the empty text
                     }
 
                     View v;
@@ -235,7 +230,7 @@ public class ChatSwitcher {
                     } else {
                         v = mViews.get(pos);
                     }
-                    
+
                     updateViewListeners(v, c, pos);
 
                     v.setVisibility(View.VISIBLE);
@@ -247,7 +242,7 @@ public class ChatSwitcher {
 
                 int viewCount = mViews.size();
                 int cursorCount = c.getCount();
-                for (int i = cursorCount; i <viewCount; i++) {
+                for (int i = cursorCount; i < viewCount; i++) {
                     mViews.get(i).setVisibility(View.GONE);
                 }
 
@@ -271,8 +266,7 @@ public class ChatSwitcher {
             case KeyEvent.KEYCODE_MENU:
                 // if we don't have a keyboard then we don't use the
                 // fancy keyboard shortcuts for the chat switcher
-                if (0 != (mActivity.getResources().getConfiguration().keyboard &
-                        Configuration.KEYBOARD_QWERTY)) {
+                if (0 != (mActivity.getResources().getConfiguration().keyboard & Configuration.KEYBOARD_QWERTY)) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
                         mSwitcher.mPreferMenuShortcut = true;
                         mSwitcher.update();
@@ -318,27 +312,25 @@ public class ChatSwitcher {
         }
     }
 
-    /**
-     * The cursor adapter for the chatting contacts
-     */
+    /** The cursor adapter for the chatting contacts */
     public class SwitcherAdapter extends CursorAdapter {
         private String mMenuPlus;
 
         private int mLayout;
-        private android.database.ContentObserver mContentObserver = 
-            new android.database.ContentObserver(null) {
-                @Override
-                public void onChange(boolean selfChange) {
-                    if (isOpen())
-                        startQuery();
-                }
+        private android.database.ContentObserver mContentObserver = new android.database.ContentObserver(
+                null) {
+            @Override
+            public void onChange(boolean selfChange) {
+                if (isOpen())
+                    startQuery();
+            }
         };
 
         public SwitcherAdapter(Cursor c, Activity a) {
             // use false as the third parameter to the CursorAdapter constructor
             // to indicate that we should not auto-requery the cursor 
             super(a, c, false);
-            mLayout = R.layout.chat_switcher_item; 
+            mLayout = R.layout.chat_switcher_item;
             mActivity = a;
             mMenuPlus = a.getString(R.string.menu_plus);
 
@@ -391,11 +383,9 @@ public class ChatSwitcher {
             //  If there is unread text, indicate that, otherwise, show presence
             Drawable presence;
             if (s != null) {
-                presence = brandingRes.getDrawable(
-                        BrandingResourceIDs.DRAWABLE_UNREAD_CHAT);
+                presence = brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_UNREAD_CHAT);
             } else {
-                presence = brandingRes.getDrawable(
-                        PresenceUtils.getStatusIconId(presenceMode));
+                presence = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presenceMode));
             }
             ImageView presenceView = (ImageView) view.findViewById(R.id.presence);
             presenceView.setImageDrawable(presence);
@@ -423,21 +413,15 @@ public class ChatSwitcher {
 
             TextView tv = (TextView) view.findViewById(R.id.when);
             tv.setText(android.text.format.DateUtils.getRelativeTimeSpanString(
-                        c.getLong(mLastChatColumn),
-                        System.currentTimeMillis(),
-                        android.text.format.DateUtils.MINUTE_IN_MILLIS, 
-                        android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE));
+                    c.getLong(mLastChatColumn), System.currentTimeMillis(),
+                    android.text.format.DateUtils.MINUTE_IN_MILLIS,
+                    android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE));
             tv.setVisibility(mPreferMenuShortcut ? View.GONE : View.VISIBLE);
         }
     }
 
-
-    public ChatSwitcher(
-            final Activity a,
-            final Handler handler,
-            final ImApp app,
-            final LayoutInflater inflater,
-            final SwitcherRunnable switcher) {
+    public ChatSwitcher(final Activity a, final Handler handler, final ImApp app,
+            final LayoutInflater inflater, final SwitcherRunnable switcher) {
         mActivity = a;
         mApp = app;
         mHandler = handler;
@@ -453,14 +437,16 @@ public class ChatSwitcher {
             protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
 
                 if (cursor != null) {
-                	// TODO this should probably use Imps convenience methods
+                    // TODO this should probably use Imps convenience methods
                     mContactIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts._ID);
                     mProviderIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.PROVIDER);
                     mAccountIdColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.ACCOUNT);
                     mUsernameColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.USERNAME);
                     mNicknameColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.NICKNAME);
-                    mPresenceStatusColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS);
-                    mLastUnreadMessageColumn = cursor.getColumnIndexOrThrow(Imps.Chats.LAST_UNREAD_MESSAGE);
+                    mPresenceStatusColumn = cursor
+                            .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS);
+                    mLastUnreadMessageColumn = cursor
+                            .getColumnIndexOrThrow(Imps.Chats.LAST_UNREAD_MESSAGE);
                     mAvatarDataColumn = cursor.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA);
                     mShortcutColumn = cursor.getColumnIndexOrThrow(Imps.Chats.SHORTCUT);
                     mLastChatColumn = cursor.getColumnIndexOrThrow(Imps.Chats.LAST_MESSAGE_DATE);
@@ -497,7 +483,7 @@ public class ChatSwitcher {
             if (i > 0) {
                 buf.append(" OR ");
             }
-            
+
             buf.append(Imps.Contacts.PROVIDER).append("=?");
             mQuerySelectionArgs[i] = String.valueOf(providerDef.mId);
             i++;
@@ -511,11 +497,8 @@ public class ChatSwitcher {
 
     private static String findCategory(ContentResolver resolver, long providerId) {
         // find the provider category for this chat
-        Cursor providerCursor = resolver.query(
-                Imps.Provider.CONTENT_URI,
-                PROVIDER_CATEGORY_PROJECTION,
-                "_id = " + providerId,
-                null /* selection args */,
+        Cursor providerCursor = resolver.query(Imps.Provider.CONTENT_URI,
+                PROVIDER_CATEGORY_PROJECTION, "_id = " + providerId, null /* selection args */,
                 null /* sort order */
         );
         String category = null;
@@ -533,8 +516,8 @@ public class ChatSwitcher {
 
     public static Intent makeChatIntent(ContentResolver resolver, long provider, long account,
             String contact, long contactId, int groupChat) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, contactId));
+        Intent intent = new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(
+                Imps.Chats.CONTENT_URI, contactId));
         intent.addCategory(findCategory(resolver, provider));
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS, contact);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, provider);
@@ -618,9 +601,8 @@ public class ChatSwitcher {
         long accountId = c.getLong(mAccountIdColumn);
         long providerId = c.getLong(mProviderIdColumn);
         int groupChat = c.getInt(mGroupChatColumn);
-        Intent intent = ChatSwitcher.makeChatIntent(
-                mActivity.getContentResolver(), providerId, accountId,
-                contact, contactId, groupChat);
+        Intent intent = ChatSwitcher.makeChatIntent(mActivity.getContentResolver(), providerId,
+                accountId, contact, contactId, groupChat);
 
         if (mSwitcherCallback == null || !mSwitcherCallback.switchTo(contact, accountId, intent)) {
             mActivity.startActivity(intent);
@@ -703,7 +685,8 @@ public class ChatSwitcher {
     /*
      * +1 to go forward, -1 to go backward
      */
-    public void rotateChat(final int direction, final String contact, final long accountId, final long providerId) {
+    public void rotateChat(final int direction, final String contact, final long accountId,
+            final long providerId) {
         if (direction != 1 && direction != -1) {
             return;
         }
@@ -723,4 +706,3 @@ public class ChatSwitcher {
         Log.d(ImApp.LOG_TAG, "[ChatSwitcher] " + msg);
     }
 }
-

@@ -14,52 +14,41 @@ import android.util.Log;
 
 public class OtrChatView {
 
-	private final static String TAG = "OtrChatView";
-	
-	private static IOtrChatSession mOtrChatSession = null;
-	private static IOtrKeyManager mOtrKeyManager = null;
-	
-	
-	public static IOtrChatSession getOtrChatSession ()
-	{
-		return mOtrChatSession;
-	}
-	
-	public static IOtrKeyManager getOtrKeyManager ()
-	{
-		return mOtrKeyManager;
-	}
-	
-	
-	
-	/**
-     * Class for interacting with the main interface of the service.
-     */
+    private final static String TAG = "OtrChatView";
+
+    private static IOtrChatSession mOtrChatSession = null;
+    private static IOtrKeyManager mOtrKeyManager = null;
+
+    public static IOtrChatSession getOtrChatSession() {
+        return mOtrChatSession;
+    }
+
+    public static IOtrKeyManager getOtrKeyManager() {
+        return mOtrKeyManager;
+    }
+
+    /** Class for interacting with the main interface of the service. */
     private ServiceConnection mOtrChatSessionConnection = new ServiceConnection() {
-    	
-        public void onServiceConnected(ComponentName className,
-                IBinder service) {
-        	mOtrChatSession = IOtrChatSession.Stub.asInterface(service);
-       
+
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mOtrChatSession = IOtrChatSession.Stub.asInterface(service);
+
         }
 
         public void onServiceDisconnected(ComponentName className) {
-        	mOtrChatSession = null;
-          
+            mOtrChatSession = null;
+
         }
     };
- 
-    private void bindChatService (Context context)
-    {
-    	context.bindService(new Intent(IOtrChatSession.class.getName()),
-    			mOtrChatSessionConnection, Context.BIND_AUTO_CREATE);
-    	 
-    
+
+    private void bindChatService(Context context) {
+        context.bindService(new Intent(IOtrChatSession.class.getName()), mOtrChatSessionConnection,
+                Context.BIND_AUTO_CREATE);
+
     }
-    
-    private void unbindChatService (Context context)
-    {
-    	context.unbindService(mOtrChatSessionConnection);
-        
+
+    private void unbindChatService(Context context) {
+        context.unbindService(mOtrChatSessionConnection);
+
     }
 }

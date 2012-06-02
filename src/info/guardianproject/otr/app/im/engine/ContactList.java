@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.engine;
@@ -72,15 +72,11 @@ public class ContactList extends ImEntity {
     /**
      * Add a contact to the list. The contact is specified by its address
      * string.
-     *
-     * @param address
-     *            the address string specifies the contact.
-     * @throws IllegalArgumentException
-     *             if the address is invalid.
-     * @throws NullPointerException
-     *             if the address string is null
-     * @throws ImException
-     *             if the contact is not allowed to be added
+     * 
+     * @param address the address string specifies the contact.
+     * @throws IllegalArgumentException if the address is invalid.
+     * @throws NullPointerException if the address string is null
+     * @throws ImException if the contact is not allowed to be added
      */
     public void addContact(String address) throws ImException {
         address = mManager.normalizeAddress(address);
@@ -89,15 +85,14 @@ public class ContactList extends ImEntity {
             throw new NullPointerException();
         }
 
-        if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED)
-        {
-	        if (mManager.isBlocked(address)) {
-	            throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
-	                    "Contact has been blocked");
-	        }
+        if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED) {
+            if (mManager.isBlocked(address)) {
+                throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
+                        "Contact has been blocked");
+            }
         }
 
-        if(containsContact(address)){
+        if (containsContact(address)) {
             throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
                     "Contact already exists in the list");
         }
@@ -107,40 +102,36 @@ public class ContactList extends ImEntity {
 
     /**
      * Remove a contact from the list. If the contact is not in the list,
-     * nothing will happen. Otherwise, the contact will be removed from
-     * the list on the server asynchronously.
-     *
-     * @param address
-     *            the address of the contact to be removed from the list
-     * @throws NullPointerException
-     *             If the address is null
+     * nothing will happen. Otherwise, the contact will be removed from the list
+     * on the server asynchronously.
+     * 
+     * @param address the address of the contact to be removed from the list
+     * @throws NullPointerException If the address is null
      */
     public void removeContact(Address address) throws ImException {
-        if(address == null) {
+        if (address == null) {
             throw new NullPointerException();
         }
         Contact c = getContact(address);
-        if(c != null) {
+        if (c != null) {
             removeContact(c);
         }
     }
 
     /**
      * Remove a contact from the list. If the contact is not in the list,
-     * nothing will happen. Otherwise, the contact will be removed from
-     * the list on the server asynchronously.
-     *
-     * @param contact
-     *            the contact to be removed from the list
-     * @throws NullPointerException
-     *             If the contact is null
+     * nothing will happen. Otherwise, the contact will be removed from the list
+     * on the server asynchronously.
+     * 
+     * @param contact the contact to be removed from the list
+     * @throws NullPointerException If the contact is null
      */
     public void removeContact(Contact contact) throws ImException {
-        if(contact == null) {
+        if (contact == null) {
             throw new NullPointerException();
         }
 
-        if(containsContact(contact)) {
+        if (containsContact(contact)) {
             mManager.removeContactFromListAsync(contact, this);
         }
     }
@@ -166,13 +157,13 @@ public class ContactList extends ImEntity {
     }
 
     public synchronized boolean containsContact(Address address) {
-        return address == null ? false
-                : mContactsCache.containsKey(mManager.normalizeAddress(address.getFullName()));
+        return address == null ? false : mContactsCache.containsKey(mManager
+                .normalizeAddress(address.getFullName()));
     }
 
     public synchronized boolean containsContact(Contact c) {
-        return c == null ? false
-                : mContactsCache.containsKey(mManager.normalizeAddress(c.getAddress().getFullName()));
+        return c == null ? false : mContactsCache.containsKey(mManager.normalizeAddress(c
+                .getAddress().getFullName()));
     }
 
     protected void insertToCache(Contact contact) {

@@ -8,66 +8,54 @@ import android.os.Bundle;
 
 public class CertDisplayActivity extends Activity {
 
-	private AlertDialog ad;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private AlertDialog ad;
 
-		String issuer = getIntent().getStringExtra("issuer");
-		String fingerprint = getIntent().getStringExtra("fingerprint");
-		String subject = getIntent().getStringExtra("subject");
-		String issuedOn = getIntent().getStringExtra("issued");
-		String expiresOn = getIntent().getStringExtra("expires");
-		
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		showDialog ("Issued by: " + issuer  + "\nIssued to: "  + subject  + "\nSHA1 Fingerprint: " + fingerprint
-				+ "\nIssued on: " + issuedOn + "\nExpires on" + expiresOn
-				);
-	}
-	
-	private void showDialog (String msg)
-	{
-		
-		ad = new AlertDialog.Builder(this)
-	    .setTitle("Certificate Info")
-	    .setMessage(msg).show();
-		
-		ad.setOnDismissListener(new OnDismissListener () {
+        String issuer = getIntent().getStringExtra("issuer");
+        String fingerprint = getIntent().getStringExtra("fingerprint");
+        String subject = getIntent().getStringExtra("subject");
+        String issuedOn = getIntent().getStringExtra("issued");
+        String expiresOn = getIntent().getStringExtra("expires");
 
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				
-				CertDisplayActivity.this.finish();
-				
-			}
-			
-		});
-		
-		
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
+        showDialog("Issued by: " + issuer + "\nIssued to: " + subject + "\nSHA1 Fingerprint: "
+                   + fingerprint + "\nIssued on: " + issuedOn + "\nExpires on" + expiresOn);
+    }
 
-		if (ad != null)
-			ad.cancel();
-	}
+    private void showDialog(String msg) {
 
+        ad = new AlertDialog.Builder(this).setTitle("Certificate Info").setMessage(msg).show();
 
+        ad.setOnDismissListener(new OnDismissListener() {
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		if (ad != null)
-			ad.cancel();
-		
-		
-	}
-	
-	
+            @Override
+            public void onDismiss(DialogInterface arg0) {
 
-	
+                CertDisplayActivity.this.finish();
+
+            }
+
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (ad != null)
+            ad.cancel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (ad != null)
+            ad.cancel();
+
+    }
+
 }

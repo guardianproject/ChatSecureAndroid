@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -69,7 +69,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     SimpleAlertHandler mHandler;
 
     MenuItem menuOtr;
-    
+
     private AlertDialog mSmileyDialog;
     private ChatSwitcher mChatSwitcher;
 
@@ -123,7 +123,8 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     void resolveIntent(Intent intent) {
         if (requireOpenDashboardOnStart(intent)) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1L);
-            final long accountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1L);
+            final long accountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
+                    -1L);
             if (providerId == -1L || accountId == -1L) {
                 finish();
             } else {
@@ -179,15 +180,15 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         menu.findItem(R.id.menu_block_contact).setTitle(
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT));
                 */
-        
+
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        
-        updateOtrMenuState ();
+
+        updateOtrMenuState();
 
         //XXX hide the invite menu, group chat is not supported by the server.
         //menu.findItem(R.id.menu_invite_contact).setVisible(false);
@@ -200,72 +201,71 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
                 menu.findItem(R.id.menu_block_contact).setVisible(false);
             }
         }*/
-        
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            
+
         case R.id.menu_view_otr:
-        		switchOtrState();
-        		return true;
-        		
+            switchOtrState();
+            return true;
 
         case R.id.menu_view_profile:
             mChatView.viewProfile();
             return true;
- 
+
             /*
-        	case R.id.menu_view_friend_list:
+            case R.id.menu_view_friend_list:
                 finish();
                 showRosterScreen();
                 return true;
               */
-            case R.id.menu_end_conversation:
-                mChatView.closeChatSession();
-                return true;
+        case R.id.menu_end_conversation:
+            mChatView.closeChatSession();
+            return true;
 
-            case R.id.menu_switch_chats:
-                if (mChatSwitcher.isOpen()) {
-                    mChatSwitcher.close();
-                } else {
-                    mChatSwitcher.open();
-                }
+        case R.id.menu_switch_chats:
+            if (mChatSwitcher.isOpen()) {
+                mChatSwitcher.close();
+            } else {
+                mChatSwitcher.open();
+            }
 
-                return true;
+            return true;
 
-                /*
+            /*
             case R.id.menu_invite_contact:
-                startContactPicker();
-              return true;
+            startContactPicker();
+            return true;
 
 
             case R.id.menu_block_contact:
-                mChatView.blockContact();
-                return true;
-*/
-            case R.id.menu_prev_chat:
-                switchChat(-1);
-                return true;
+            mChatView.blockContact();
+            return true;
+            */
+        case R.id.menu_prev_chat:
+            switchChat(-1);
+            return true;
 
-            case R.id.menu_next_chat:
-                switchChat(1);
-                return true;
+        case R.id.menu_next_chat:
+            switchChat(1);
+            return true;
 
-            case R.id.menu_quick_switch_0:
-            case R.id.menu_quick_switch_1:
-            case R.id.menu_quick_switch_2:
-            case R.id.menu_quick_switch_3:
-            case R.id.menu_quick_switch_4:
-            case R.id.menu_quick_switch_5:
-            case R.id.menu_quick_switch_6:
-            case R.id.menu_quick_switch_7:
-            case R.id.menu_quick_switch_8:
-            case R.id.menu_quick_switch_9:
-                mChatSwitcher.handleShortcut(item.getAlphabeticShortcut());
-                return true;
+        case R.id.menu_quick_switch_0:
+        case R.id.menu_quick_switch_1:
+        case R.id.menu_quick_switch_2:
+        case R.id.menu_quick_switch_3:
+        case R.id.menu_quick_switch_4:
+        case R.id.menu_quick_switch_5:
+        case R.id.menu_quick_switch_6:
+        case R.id.menu_quick_switch_7:
+        case R.id.menu_quick_switch_8:
+        case R.id.menu_quick_switch_9:
+            mChatSwitcher.handleShortcut(item.getAlphabeticShortcut());
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -274,76 +274,63 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            && event.getAction() == KeyEvent.ACTION_DOWN) {
             mChatView.closeChatSessionIfInactive();
         }
         return super.dispatchKeyEvent(event);
     }
 
-    /**
-     * Check whether we are asked to open Dashboard on startup.
-     */
+    /** Check whether we are asked to open Dashboard on startup. */
     private boolean requireOpenDashboardOnStart(Intent intent) {
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
 
-	
-    
-    private void switchOtrState ()
-    {
-	    //TODO OTRCHAT switch state on/off
+    private void switchOtrState() {
+        //TODO OTRCHAT switch state on/off
 
-	    IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
-	    int toastMsgId;
+        IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+        int toastMsgId;
 
-	    try {
-		    boolean isOtrEnabled = otrChatSession.isChatEncrypted();
-		    if (!isOtrEnabled) {
-			    otrChatSession.startChatEncryption();
-			    toastMsgId = R.string.starting_otr_chat;
-		    } else {
-			    otrChatSession.stopChatEncryption();
-			    toastMsgId = R.string.stopping_otr_chat;
-		    }
-		    Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
-	    } catch (RemoteException e) {
-	    	Log.d("Gibber", "error getting remote activity",e);
-	    }
+        try {
+            boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+            if (!isOtrEnabled) {
+                otrChatSession.startChatEncryption();
+                toastMsgId = R.string.starting_otr_chat;
+            } else {
+                otrChatSession.stopChatEncryption();
+                toastMsgId = R.string.stopping_otr_chat;
+            }
+            Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
+        } catch (RemoteException e) {
+            Log.d("Gibber", "error getting remote activity", e);
+        }
     }
-    
-    private void updateOtrMenuState ()
-    {
-    	IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
-   	 
-    	if (otrChatSession != null)
-    	{
-	    	try {
-				boolean isOtrEnabled = otrChatSession.isChatEncrypted();
-				
-				if (isOtrEnabled)
-				{
-					menuOtr.setTitle(R.string.menu_otr_stop);
-				}
-				else
-				{
-					menuOtr.setTitle(R.string.menu_otr_start);
-				}
-				
-				
-			} catch (RemoteException e) {
-				Log.d("NewChat","Error accessing remote service",e);
-			}
-    	}
-    	else
-    	{
-			menuOtr.setTitle(R.string.menu_otr_start);
 
-    	}
-    	
-		mChatView.updateWarningView();
+    private void updateOtrMenuState() {
+        IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+
+        if (otrChatSession != null) {
+            try {
+                boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+
+                if (isOtrEnabled) {
+                    menuOtr.setTitle(R.string.menu_otr_stop);
+                } else {
+                    menuOtr.setTitle(R.string.menu_otr_start);
+                }
+
+            } catch (RemoteException e) {
+                Log.d("NewChat", "Error accessing remote service", e);
+            }
+        } else {
+            menuOtr.setTitle(R.string.menu_otr_start);
+
+        }
+
+        mChatView.updateWarningView();
 
     }
-    
+
     private void showRosterScreen() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClass(this, ContactListActivity.class);
@@ -357,10 +344,10 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
             final BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             int[] icons = brandingRes.getSmileyIcons();
-            String[] names = brandingRes.getStringArray(
-                    BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES);
-            final String[] texts = brandingRes.getStringArray(
-                    BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS);
+            String[] names = brandingRes
+                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES);
+            final String[] texts = brandingRes
+                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS);
 
             final int N = names.length;
 
@@ -378,25 +365,23 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
                 if (!added) {
                     HashMap<String, Object> entry = new HashMap<String, Object>();
 
-                    entry. put("icon", icons[i]);
-                    entry. put("name", names[i]);
+                    entry.put("icon", icons[i]);
+                    entry.put("name", names[i]);
                     entry.put("text", texts[i]);
 
                     entries.add(entry);
                 }
             }
 
-            final SimpleAdapter a = new SimpleAdapter(
-                    this,
-                    entries,
-                    R.layout.smiley_menu_item,
-                    new String[] {"icon", "name", "text"},
-                    new int[] {R.id.smiley_icon, R.id.smiley_name, R.id.smiley_text});
+            final SimpleAdapter a = new SimpleAdapter(this, entries, R.layout.smiley_menu_item,
+                    new String[] { "icon", "name", "text" }, new int[] { R.id.smiley_icon,
+                                                                        R.id.smiley_name,
+                                                                        R.id.smiley_text });
             SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
                 public boolean setViewValue(View view, Object data, String textRepresentation) {
                     if (view instanceof ImageView) {
-                        Drawable img = brandingRes.getSmileyIcon((Integer)data);
-                        ((ImageView)view).setImageDrawable(img);
+                        Drawable img = brandingRes.getSmileyIcon((Integer) data);
+                        ((ImageView) view).setImageDrawable(img);
                         return true;
                     }
                     return false;
@@ -406,14 +391,13 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
             AlertDialog.Builder b = new AlertDialog.Builder(this);
 
-            b.setTitle(brandingRes.getString(
-                    BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
+            b.setTitle(brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
 
             b.setCancelable(true);
             b.setAdapter(a, new DialogInterface.OnClickListener() {
                 public final void onClick(DialogInterface dialog, int which) {
                     HashMap<String, Object> item = (HashMap<String, Object>) a.getItem(which);
-                    mChatView.insertSmiley((String)item.get("text"));
+                    mChatView.insertSmiley((String) item.get("text"));
                 }
             });
 
@@ -439,8 +423,8 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
         try {
             Intent i = new Intent(Intent.ACTION_PICK, data);
-            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS,
-                    mChatView.getCurrentChatSession().getPariticipants());
+            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
+                    .getCurrentChatSession().getPariticipants());
             startActivityForResult(i, REQUEST_PICK_CONTACTS);
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
@@ -448,12 +432,10 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_CONTACTS) {
-                String username = data.getStringExtra(
-                        ContactsPickerActivity.EXTRA_RESULT_USERNAME);
+                String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {
                     IChatSession chatSession = mChatView.getCurrentChatSession();
                     if (chatSession.isGroupChatSession()) {
@@ -471,8 +453,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     }
 
     void showInvitationHasSent(String contact) {
-        Toast.makeText(NewChatActivity.this,
-                getString(R.string.invitation_sent_prompt, contact),
+        Toast.makeText(NewChatActivity.this, getString(R.string.invitation_sent_prompt, contact),
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -490,7 +471,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             try {
                 final long chatId = mChatSession.getId();
                 mChatSession.inviteContact(mContact);
-                mHandler.post(new Runnable(){
+                mHandler.post(new Runnable() {
                     public void run() {
                         mChatView.bindChat(chatId);
                         showInvitationHasSent(mContact);
@@ -515,7 +496,8 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         Cursor cursor = mChatView.getMessageAtPosition(info.position);
         int type = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Messages.TYPE));
         if (type == Imps.MessageType.OUTGOING) {
-            menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(mContextMenuHandler);
+            menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(
+                    mContextMenuHandler);
         }
     }
 

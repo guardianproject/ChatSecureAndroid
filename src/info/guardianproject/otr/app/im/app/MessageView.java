@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -41,11 +41,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
-	public enum DeliveryState {
-		NEUTRAL,
-		DELIVERED,
-		UNDELIVERED
-	}
+    public enum DeliveryState {
+        NEUTRAL, DELIVERED, UNDELIVERED
+    }
 
     private TextView mTextViewForMessages;
     private ImageView mDeliveryIcon;
@@ -69,47 +67,47 @@ public class MessageView extends LinearLayout {
         return mTextViewForMessages.getUrls();
     }
 
-    public void bindIncomingMessage(String contact, String body, Date date,
-            Markup smileyRes, boolean scrolling) {
-    	// TODO SQLCipher decrypt messages from encrypted message store here
-        CharSequence message =  formatMessage(contact, body, date, smileyRes, scrolling);
+    public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
+            boolean scrolling) {
+        // TODO SQLCipher decrypt messages from encrypted message store here
+        CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
-		mDeliveryIcon.setVisibility(INVISIBLE);
+        mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling, DeliveryState delivery) {
+    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
+            DeliveryState delivery) {
         String contact = mResources.getString(R.string.me);
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         if (delivery == DeliveryState.DELIVERED) {
-        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
-        	mDeliveryIcon.setVisibility(VISIBLE);
+            mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+            mDeliveryIcon.setVisibility(VISIBLE);
         } else if (delivery == DeliveryState.UNDELIVERED) {
-        	mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
-        	mDeliveryIcon.setVisibility(VISIBLE);
+            mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
+            mDeliveryIcon.setVisibility(VISIBLE);
         } else {
-    		mDeliveryIcon.setVisibility(GONE);
+            mDeliveryIcon.setVisibility(GONE);
         }
     }
 
-    public void bindPresenceMessage(String contact, int type, boolean isGroupChat,
-            boolean scrolling) {
+    public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mTextViewForMessages.setText(message);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
-		mDeliveryIcon.setVisibility(INVISIBLE);
+        mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
     public void bindErrorMessage(int errCode) {
         mTextViewForMessages.setText(R.string.msg_sent_failed);
         mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
-		mDeliveryIcon.setVisibility(INVISIBLE);
+        mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    private CharSequence formatMessage(String contact, String body,
-            Date date, Markup smileyRes, boolean scrolling) {
+    private CharSequence formatMessage(String contact, String body, Date date, Markup smileyRes,
+            boolean scrolling) {
         if (body.indexOf('\r') != -1) {
             // first convert \r\n pair to \n, then single \r to \n.
             // here we can't use HideReturnsTransformationMethod because
@@ -117,19 +115,17 @@ public class MessageView extends LinearLayout {
             // the "\r\n" case.
             body = body.replace("\r\n", "\n").replace('\r', '\n');
         }
-        
+
         //remove HTML tags since we can't display HTML
         body = body.replaceAll("\\<.*?\\>", "");
 
-        
         SpannableStringBuilder buf = new SpannableStringBuilder();
-        
-        if (contact != null)
-        {
-        	buf.append(contact);
-        	buf.append(": ");
+
+        if (contact != null) {
+            buf.append(contact);
+            buf.append(": ");
         }
-        
+
         if (scrolling) {
             buf.append(body);
         } else {
@@ -151,41 +147,38 @@ public class MessageView extends LinearLayout {
         String dateStr = format.format(date);
         SpannableString spanText = new SpannableString(dateStr);
         int len = spanText.length();
-        spanText.setSpan(new StyleSpan(Typeface.ITALIC),
-                0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new RelativeSizeSpan(0.8f),
-                0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new ForegroundColorSpan(
-                mResources.getColor(android.R.color.darker_gray)),
+        spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spanText.setSpan(new ForegroundColorSpan(mResources.getColor(android.R.color.darker_gray)),
                 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         buf.append('\n');
         buf.append(spanText);
     }
 
-    private CharSequence formatPresenceUpdates(String contact, int type,
-            boolean isGroupChat, boolean scrolling) {
+    private CharSequence formatPresenceUpdates(String contact, int type, boolean isGroupChat,
+            boolean scrolling) {
         String body;
         switch (type) {
-            case Imps.MessageType.PRESENCE_AVAILABLE:
-                body = mResources.getString(isGroupChat ? R.string.contact_joined
-                        : R.string.contact_online, contact);
-                break;
+        case Imps.MessageType.PRESENCE_AVAILABLE:
+            body = mResources.getString(isGroupChat ? R.string.contact_joined
+                                                   : R.string.contact_online, contact);
+            break;
 
-            case Imps.MessageType.PRESENCE_AWAY:
-                body = mResources.getString(R.string.contact_away, contact);
-                break;
+        case Imps.MessageType.PRESENCE_AWAY:
+            body = mResources.getString(R.string.contact_away, contact);
+            break;
 
-            case Imps.MessageType.PRESENCE_DND:
-                body = mResources.getString(R.string.contact_busy, contact);
-                break;
+        case Imps.MessageType.PRESENCE_DND:
+            body = mResources.getString(R.string.contact_busy, contact);
+            break;
 
-            case Imps.MessageType.PRESENCE_UNAVAILABLE:
-                body = mResources.getString(isGroupChat ? R.string.contact_left
-                        : R.string.contact_offline, contact);
-                break;
+        case Imps.MessageType.PRESENCE_UNAVAILABLE:
+            body = mResources.getString(isGroupChat ? R.string.contact_left
+                                                   : R.string.contact_offline, contact);
+            break;
 
-            default:
-                return null;
+        default:
+            return null;
         }
 
         if (scrolling) {
@@ -193,10 +186,10 @@ public class MessageView extends LinearLayout {
         } else {
             SpannableString spanText = new SpannableString(body);
             int len = spanText.length();
-            spanText.setSpan(new StyleSpan(Typeface.ITALIC),
-                    0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spanText.setSpan(new RelativeSizeSpan((float)0.8),
-                    0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanText.setSpan(new RelativeSizeSpan((float) 0.8), 0, len,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return spanText;
         }
     }

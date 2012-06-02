@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -70,43 +70,42 @@ public class SigningInActivity extends Activity {
     private long mAccountId;
     private String mProviderName;
 
-
     private String mToAddress;
-    
+
     private boolean isActive;
 
     protected static final int ID_CANCEL_SIGNIN = Menu.FIRST + 1;
 
     private Dialog dl = null;
-    
+
     private Uri accountData = null;
-    
+
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.signing_in_activity);
-      
-    }
-    
-    @Override
-	protected void onResume() {
-    	
-		super.onResume();
-		
-		  Intent intent = getIntent();
-	        mToAddress = intent.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
 
-	   accountData = intent.getData();
-	        if (accountData == null) {
-	            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-	                log("Need account data to sign in");
-	            }
-	            finish();
-	            return;
-	        }
-	
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        Intent intent = getIntent();
+        mToAddress = intent.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
+
+        accountData = intent.getData();
+        if (accountData == null) {
+            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+                log("Need account data to sign in");
+            }
+            finish();
+            return;
+        }
+
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(accountData, null, null, null, null);
         if (c == null) {
@@ -131,43 +130,41 @@ public class SigningInActivity extends Activity {
 
         final String pwExtra = intent.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD);
         String mPassword = null;
-        
+
         if (pwExtra != null) {
-        	mPassword = pwExtra;
+            mPassword = pwExtra;
         } else {
-        	mPassword = c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
+            mPassword = c.getString(c.getColumnIndexOrThrow(Imps.Account.PASSWORD));
         }
 
         c.close();
-        
+
         mApp = ImApp.getApplication(this);
 
         IImConnection conn = mApp.getConnection(mProviderId);
         try {
-        	if (conn == null || (conn.getState() != ImConnection.LOGGED_IN)) {
-        		if (mPassword == null || mPassword.length() == 0) {
-        			//show password prompt
-        			showPasswordDialog();
-        		} else {
-        			connectService(mPassword);
-        		}
-        	} else if (conn.getState() == ImConnection.LOGGED_IN)
-        	{
-        	
-        		 // assume we can sign in successfully.
+            if (conn == null || (conn.getState() != ImConnection.LOGGED_IN)) {
+                if (mPassword == null || mPassword.length() == 0) {
+                    //show password prompt
+                    showPasswordDialog();
+                } else {
+                    connectService(mPassword);
+                }
+            } else if (conn.getState() == ImConnection.LOGGED_IN) {
+
+                // assume we can sign in successfully.
                 setResult(RESULT_OK);
-        			//conn.logout(); // in case we are already logged
-        			//connectService();
-        	}
+                //conn.logout(); // in case we are already logged
+                //connectService();
+            }
         } catch (Exception e) {
-        	Log.w(TAG, "bad things: " + e);
-        	showPasswordDialog();
+            Log.w(TAG, "bad things: " + e);
+            showPasswordDialog();
         }
     }
-    
-    
+
     public void connectService(String password) {
-    	
+
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
 
@@ -175,31 +172,27 @@ public class SigningInActivity extends Activity {
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-*/
-        
-        setTitle(getResources().getString(R.string.signing_in_to,
-                provider.mFullName));
+        */
 
+        setTitle(getResources().getString(R.string.signing_in_to, provider.mFullName));
 
         mHandler = new SimpleAlertHandler(this);
         mListener = new MyConnectionListener(mHandler);
-        
+
         mApp.callWhenServiceConnected(mHandler, new ConnectHandler(password));
-        
+
         // assume we can sign in successfully.
         setResult(RESULT_OK);
     }
 
-    class ConnectHandler implements Runnable
-    {
-    	String mPassword;
-    	
-    	ConnectHandler (String password)
-    	{
-    		mPassword = password;
-    	}
-    	
-    	public void run() {
+    class ConnectHandler implements Runnable {
+        String mPassword;
+
+        ConnectHandler(String password) {
+            mPassword = password;
+        }
+
+        public void run() {
             if (mApp.serviceConnected()) {
                 if (!isActive) {
                     activateAccount(mProviderId, mAccountId);
@@ -208,49 +201,48 @@ public class SigningInActivity extends Activity {
             }
         }
     }
-	
-	private void showPasswordDialog() {
-		
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle("Password");
-		String message = getString(R.string.signin_password_prompt);
-		alert.setMessage(message);
-		
-		final EditText input = new EditText(this);
-		input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		input.setTransformationMethod(new PasswordTransformationMethod());
-		alert.setView(input);
-		alert.setNeutralButton("Remember",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						String pwd = input.getText().toString();
-						SharedPreferences prefs = PreferenceManager
-								.getDefaultSharedPreferences(getApplication());
-						Editor edit = prefs.edit();
-						edit.putString("pref_account_pass", pwd);
-						edit.commit();
-						connectService(pwd);
-					}
-				});
 
-         alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {  
-         public void onClick(DialogInterface dialog, int whichButton) {  
-        	 String pwd = input.getText().toString();  
-        	 connectService(pwd);
-           }  
-         });  
+    private void showPasswordDialog() {
 
-         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {  
-         public void onClick(DialogInterface dialog, int whichButton) {  
-        	 showAccount();
-        	 finish();
-             return;
-           }  
-        });  
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Password");
+        String message = getString(R.string.signin_password_prompt);
+        alert.setMessage(message);
 
-        alert.show();  
-	}
-	
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setTransformationMethod(new PasswordTransformationMethod());
+        alert.setView(input);
+        alert.setNeutralButton("Remember", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String pwd = input.getText().toString();
+                SharedPreferences prefs = PreferenceManager
+                        .getDefaultSharedPreferences(getApplication());
+                Editor edit = prefs.edit();
+                edit.putString("pref_account_pass", pwd);
+                edit.commit();
+                connectService(pwd);
+            }
+        });
+
+        alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String pwd = input.getText().toString();
+                connectService(pwd);
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                showAccount();
+                finish();
+                return;
+            }
+        });
+
+        alert.show();
+    }
+
     /*
     @Override
     protected void onRestart() {
@@ -266,13 +258,13 @@ public class SigningInActivity extends Activity {
             finish();
         }
     }
-*/
-	
+    */
+
     private void signInAccount(String password) {
-    	
-    	boolean autoLoadContacts = true;
-    	boolean autoRetryLogin = false;
-    	
+
+        boolean autoLoadContacts = true;
+        boolean autoRetryLogin = false;
+
         try {
             IImConnection conn = mApp.getConnection(mProviderId);
             if (conn != null) {
@@ -296,18 +288,16 @@ public class SigningInActivity extends Activity {
                     mConn.registerConnectionListener(mListener);
                     // TODO UsrTor should probably be set in the intent rather than fetched from the settings
                     final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                            getContentResolver(),
-                            mProviderId,
-                            false /* don't keep updated */,
+                            getContentResolver(), mProviderId, false /* don't keep updated */,
                             null /* no handler */);
-                    if (settings.getUseTor()) {	
-                        mConn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST, TorProxyInfo.PROXY_PORT);
+                    if (settings.getUseTor()) {
+                        mConn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
+                                TorProxyInfo.PROXY_PORT);
                     }
                     settings.close();
 
-                 	mConn.login(mAccountId, password, autoLoadContacts, autoRetryLogin);
-                 	
-                 	
+                    mConn.login(mAccountId, password, autoLoadContacts, autoRetryLogin);
+
                 } else {
                     promptForBackgroundDataSetting();
                     return;
@@ -316,8 +306,7 @@ public class SigningInActivity extends Activity {
 
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
-           
-            
+
         }
     }
 
@@ -329,19 +318,16 @@ public class SigningInActivity extends Activity {
         ContentValues values = new ContentValues(1);
         values.put(Imps.Account.ACTIVE, 0);
         ContentResolver cr = getContentResolver();
-        cr.update(Imps.Account.CONTENT_URI, values,
-                Imps.Account.PROVIDER + "=" + providerId, null);
+        cr.update(Imps.Account.CONTENT_URI, values, Imps.Account.PROVIDER + "=" + providerId, null);
 
         values.put(Imps.Account.ACTIVE, 1);
-        cr.update(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId),
-                values, null, null);
+        cr.update(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), values, null,
+                null);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        
-
 
         if (mApp != null) {
             mApp.removePendingCall(mHandler);
@@ -366,8 +352,8 @@ public class SigningInActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ID_CANCEL_SIGNIN, 0, R.string.menu_cancel_signin)
-            .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        menu.add(0, ID_CANCEL_SIGNIN, 0, R.string.menu_cancel_signin).setIcon(
+                android.R.drawable.ic_menu_close_clear_cancel);
 
         return true;
     }
@@ -376,7 +362,7 @@ public class SigningInActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == ID_CANCEL_SIGNIN) {
             if (mConn != null) {
-            	cancelSignIn();
+                cancelSignIn();
             }
             return true;
         } else {
@@ -385,58 +371,54 @@ public class SigningInActivity extends Activity {
     }
 
     /**
-     * Popup a dialog to ask the user whether he/she wants to enable
-     * background connection to continue. If yes, enable the setting
-     * and broadcast the change. Otherwise, quit the signing in window
-     * immediately.
+     * Popup a dialog to ask the user whether he/she wants to enable background
+     * connection to continue. If yes, enable the setting and broadcast the
+     * change. Otherwise, quit the signing in window immediately.
      */
     private void promptForBackgroundDataSetting() {
         new AlertDialog.Builder(SigningInActivity.this)
-            .setTitle(R.string.bg_data_prompt_title)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setMessage(getString(R.string.bg_data_prompt_message, mProviderName))
-            .setPositiveButton(R.string.bg_data_prompt_ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    Intent intent = new Intent(SYNC_SETTINGS_ACTION);
-                    intent.addCategory(SYNC_SETTINGS_CATEGORY);
-                    startActivity(intent);
-                }
-             })
-            .setNegativeButton(R.string.bg_data_prompt_cancel,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
-             })
-            .show();
+                .setTitle(R.string.bg_data_prompt_title)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(getString(R.string.bg_data_prompt_message, mProviderName))
+                .setPositiveButton(R.string.bg_data_prompt_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Intent intent = new Intent(SYNC_SETTINGS_ACTION);
+                                intent.addCategory(SYNC_SETTINGS_CATEGORY);
+                                startActivity(intent);
+                            }
+                        })
+                .setNegativeButton(R.string.bg_data_prompt_cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            }
+                        }).show();
     }
 
     void handleConnectionEvent(int state, ImErrorInfo error) {
-       
-    	/*
-    	if (isFinishing()) {
+
+        /*
+        if (isFinishing()) {
             return;
         }*/
 
         if (state == ImConnection.LOGGED_IN) {
 
-          
             try {
                 Intent intent;
 
                 mAccountId = mConn.getAccountId();
 
-                
                 /*#############################################################################
                  * This (see below) intent is the one that needs to be passed to the tab Event 
                  */
-                
 
                 if (mToAddress != null) {
                     IChatSessionManager manager = mConn.getChatSessionManager();
                     IChatSession session = manager.getChatSession(mToAddress);
-                    if(session == null) {
+                    if (session == null) {
                         session = manager.createChatSession(mToAddress);
                     }
                     Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, session.getId());
@@ -448,40 +430,41 @@ public class SigningInActivity extends Activity {
 
                 } else {
                     intent = new Intent(this, TabbedContainer.class);
-                    
+
                     // clear the back stack of the account setup
-                    
-               //     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK && Intent.FLAG);
+
+                    //     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK && Intent.FLAG);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                 }
-                
+
                 startActivity(intent);
-                
+
                 // sign in successfully, finish and switch to contact list
                 finish();
-                
+
             } catch (RemoteException e) {
                 // Ouch!  Service died!  We'll just disappear.
                 Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared while signing in!");
             }
         } else if (state == ImConnection.DISCONNECTED) {
-        	
+
             // sign in failed
             Resources r = getResources();
             new AlertDialog.Builder(this)
-                .setTitle(R.string.error)
-                .setMessage(r.getString(R.string.login_service_failed, mProviderName,
-                            error == null? "": ErrorResUtils.getErrorRes(r, error.getCode())))
-                .setPositiveButton(R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                setResult(RESULT_CANCELED);
-                                showAccount();
-                                finish();
-                            }
-                        })
-                .setCancelable(false)
-                .show();
+                    .setTitle(R.string.error)
+                    .setMessage(
+                            r.getString(
+                                    R.string.login_service_failed,
+                                    mProviderName,
+                                    error == null ? "" : ErrorResUtils.getErrorRes(r,
+                                            error.getCode())))
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            setResult(RESULT_CANCELED);
+                            showAccount();
+                            finish();
+                        }
+                    }).setCancelable(false).show();
         }
     }
 
@@ -495,51 +478,44 @@ public class SigningInActivity extends Activity {
         }
 
         @Override
-        public void onConnectionStateChange(IImConnection connection,
-                int state, ImErrorInfo error) {
+        public void onConnectionStateChange(IImConnection connection, int state, ImErrorInfo error) {
             handleConnectionEvent(state, error);
         }
     }
-    
+
     @Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-	      
-	    	cancelSignIn();
-	    
-	    	
-	    }
-	    return super.onKeyDown(keyCode, event);
-	}
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
-    private void cancelSignIn ()
-    {
+            cancelSignIn();
 
-    	try
-    	{
-    		log("canceling login");
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void cancelSignIn() {
+
+        try {
+            log("canceling login");
             try {
-        		if (mConn != null && mConn.getState() == ImConnection.LOGGING_IN)
-        			mConn.cancelLogin();
+                if (mConn != null && mConn.getState() == ImConnection.LOGGING_IN)
+                    mConn.cancelLogin();
             } catch (RemoteException e) {
                 Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared!");
             }
-    		
-    		showAccount();
-    		finish();
-    	}
-    	catch (Exception e)
-    	{
-    		Log.e(ImApp.LOG_TAG,"error on cancel",e);
-    	}
+
+            showAccount();
+            finish();
+        } catch (Exception e) {
+            Log.e(ImApp.LOG_TAG, "error on cancel", e);
+        }
     }
-    
-    private void showAccount() 
-    {
-    	 Intent intent = new Intent(Intent.ACTION_EDIT, accountData);
-         intent.putExtra("isSignedIn", false);
-//         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
-         startActivity(intent);
-         finish();
+
+    private void showAccount() {
+        Intent intent = new Intent(Intent.ACTION_EDIT, accountData);
+        intent.putExtra("isSignedIn", false);
+        //         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
+        startActivity(intent);
+        finish();
     }
 }

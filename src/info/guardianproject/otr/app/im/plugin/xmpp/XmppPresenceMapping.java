@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
@@ -21,19 +21,13 @@ import info.guardianproject.otr.app.im.plugin.PresenceMapping;
 
 import java.util.Map;
 
-
-/**
- * A simple implementation of PresenceMaping for the provider.
- *
- */
+/** A simple implementation of PresenceMaping for the provider. */
 public class XmppPresenceMapping implements PresenceMapping {
 
     public int[] getSupportedPresenceStatus() {
-        return new int[] {
-                ImPluginConstants.PRESENCE_AVAILABLE,
-                ImPluginConstants.PRESENCE_DO_NOT_DISTURB,
-                ImPluginConstants.PRESENCE_OFFLINE
-        };
+        return new int[] { ImPluginConstants.PRESENCE_AVAILABLE,
+                          ImPluginConstants.PRESENCE_DO_NOT_DISTURB,
+                          ImPluginConstants.PRESENCE_OFFLINE };
     }
 
     public boolean getOnlineStatus(int status) {
@@ -42,17 +36,17 @@ public class XmppPresenceMapping implements PresenceMapping {
 
     public String getUserAvaibility(int status) {
         switch (status) {
-            case ImPluginConstants.PRESENCE_AVAILABLE:
-                return ImPluginConstants.PA_AVAILABLE;
+        case ImPluginConstants.PRESENCE_AVAILABLE:
+            return ImPluginConstants.PA_AVAILABLE;
 
-            case ImPluginConstants.PRESENCE_DO_NOT_DISTURB:
-                return ImPluginConstants.PA_DISCREET;
+        case ImPluginConstants.PRESENCE_DO_NOT_DISTURB:
+            return ImPluginConstants.PA_DISCREET;
 
-            case ImPluginConstants.PRESENCE_OFFLINE:
-                return ImPluginConstants.PA_NOT_AVAILABLE;
+        case ImPluginConstants.PRESENCE_OFFLINE:
+            return ImPluginConstants.PA_NOT_AVAILABLE;
 
-            default:
-                return null;
+        default:
+            return null;
         }
     }
 
@@ -85,8 +79,7 @@ public class XmppPresenceMapping implements PresenceMapping {
         return false;
     }
 
-    public int getPresenceStatus(boolean onlineStatus, String userAvailability,
-            Map allValues) {
+    public int getPresenceStatus(boolean onlineStatus, String userAvailability, Map allValues) {
         if (!onlineStatus) {
             return ImPluginConstants.PRESENCE_OFFLINE;
         }

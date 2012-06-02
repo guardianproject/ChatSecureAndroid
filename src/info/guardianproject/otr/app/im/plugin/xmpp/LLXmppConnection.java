@@ -83,7 +83,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     private InetAddress ipAddress;
 
     private String serviceName;
-    
+
     static {
         LLServiceDiscoveryManager.addServiceListener();
     }
@@ -253,23 +253,24 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(String userName, String domain)
-            throws Exception {
+    private void initConnection(String userName, String domain) throws Exception {
         setState(LOGGING_IN, null);
-        mUserPresence = new Presence(Presence.AVAILABLE, "", null, null, Presence.CLIENT_TYPE_DEFAULT);
+        mUserPresence = new Presence(Presence.AVAILABLE, "", null, null,
+                Presence.CLIENT_TYPE_DEFAULT);
 
         domain = domain.replace('.', '_');
         serviceName = userName + "@" + domain;
         LLPresence presence = new LLPresence(serviceName);
 
         ipAddress = getMyAddress(serviceName, true);
-        
+
         if (ipAddress == null) {
-            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR, "network connection is required");
+            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR,
+                    "network connection is required");
             setState(DISCONNECTED, info);
             return;
         }
-            
+
         mService = JmDNSService.create(presence, ipAddress);
         mService.addServiceStateListener(new LLServiceStateListener() {
             public void serviceNameChanged(String newName, String oldName) {
@@ -329,8 +330,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                             org.jivesoftware.smack.packet.Message message) {
                         String address = message.getFrom();
                         ChatSession session = findOrCreateSession(address);
-                        DeliveryReceipts.DeliveryReceipt dr =
-                                (DeliveryReceipts.DeliveryReceipt)message.getExtension("received", DeliveryReceipts.NAMESPACE);
+                        DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) message
+                                .getExtension("received", DeliveryReceipts.NAMESPACE);
                         if (dr != null) {
                             debug(TAG, "got delivery receipt for " + dr.getId());
                             session.onMessageReceipt(dr.getId());
@@ -342,7 +343,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                         rec.setFrom(session.getParticipant().getAddress());
                         rec.setDateTime(new Date());
                         session.onReceiveMessage(rec);
-                        
+
                         if (message.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                             debug(TAG, "got delivery receipt request");
                             // got XEP-0184 request, send receipt
@@ -360,7 +361,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         String xmppName = userName + '@' + domain;
         mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
-        
+
         // Initiate Link-local message session
         mService.init();
 
@@ -369,35 +370,37 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private InetAddress getMyAddress(final String serviceName, boolean doLock) {
-        WifiManager wifi = (WifiManager)mContext.getSystemService( Context.WIFI_SERVICE );
+        WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 
         WifiInfo connectionInfo = wifi.getConnectionInfo();
         if (connectionInfo == null || connectionInfo.getBSSID() == null) {
             Log.w(TAG, "Not connected to wifi.  This may not work.");
             // Get the IP the usual Java way
             try {
-                for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en
+                        .hasMoreElements();) {
                     NetworkInterface intf = en.nextElement();
-                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
+                            .hasMoreElements();) {
                         InetAddress inetAddress = enumIpAddr.nextElement();
                         if (!inetAddress.isLoopbackAddress()) {
                             return inetAddress;
                         }
                     }
-                }        
+                }
             } catch (SocketException e) {
                 Log.e(TAG, "while enumerating interfaces", e);
                 return null;
             }
         }
-        
+
         int ip = connectionInfo.getIpAddress();
         InetAddress address;
         try {
-            address = InetAddress.getByAddress(new byte[] { (byte)((ip)&0xff),
-                                                  (byte)((ip>>8)&0xff),
-                                                  (byte)((ip>>16)&0xff),
-                                                  (byte)((ip>>24)&0xff)});
+            address = InetAddress.getByAddress(new byte[] { (byte) ((ip) & 0xff),
+                                                           (byte) ((ip >> 8) & 0xff),
+                                                           (byte) ((ip >> 16) & 0xff),
+                                                           (byte) ((ip >> 24) & 0xff) });
         } catch (UnknownHostException e) {
             Log.e(TAG, "unknown host exception when converting ip address");
             return null;
@@ -410,16 +413,17 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             // HIGH_PERF is only available on android-12 and above
             int wifiMode;
             try {
-                wifiMode = (Integer) WifiManager.class.getField("WIFI_MODE_FULL_HIGH_PERF").get(null);
+                wifiMode = (Integer) WifiManager.class.getField("WIFI_MODE_FULL_HIGH_PERF").get(
+                        null);
             } catch (Exception e) {
                 wifiMode = WifiManager.WIFI_MODE_FULL;
             }
-            
+
             wifiLock = wifi.createWifiLock(wifiMode, serviceName);
-            
+
             wifiLock.acquire();
         }
-        
+
         return address;
     }
 
@@ -501,7 +505,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(SUSPENDED, null);
         logout();
     }
-    
+
     private ChatSession findOrCreateSession(String address) {
         ChatSession session = mSessionManager.findSession(address);
 
@@ -562,11 +566,12 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             String generalGroupName = "Buddies";
 
             Collection<Contact> contacts = new ArrayList<Contact>();
-            ContactList cl = new ContactList(mUser.getAddress(), generalGroupName, true, contacts, this);
+            ContactList cl = new ContactList(mUser.getAddress(), generalGroupName, true, contacts,
+                    this);
             notifyContactListCreated(cl);
             notifyContactListsLoaded();
         }
-        
+
         @Override
         protected void setListNameAsync(final String name, final ContactList list) {
             execute(new Runnable() {
@@ -599,7 +604,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             if (mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
                 do_loadContactLists();
             }
-            
+
             String name = presence.getFirstName();
             String address = presence.getServiceName();
 
@@ -662,7 +667,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         private void doAddContact(String name, String address, ContactList list) {
             Contact contact = makeContact(name, address);
             if (!containsContact(contact))
-                    notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
+                notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
         }
 
         private void doAddContact(String name, String address) {
@@ -672,7 +677,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 Log.e(TAG, "Failed to add contact", e);
             }
         }
-        
+
         @Override
         protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());

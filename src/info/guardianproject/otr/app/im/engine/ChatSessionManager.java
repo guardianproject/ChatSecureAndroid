@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007 Esmertec AG.
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.engine;
@@ -39,7 +39,7 @@ public abstract class ChatSessionManager {
     /**
      * Registers a ChatSessionListener with the ChatSessionManager to receive
      * events related to ChatSession.
-     *
+     * 
      * @param listener the listener
      */
     public synchronized void addChatSessionListener(ChatSessionListener listener) {
@@ -50,7 +50,7 @@ public abstract class ChatSessionManager {
 
     /**
      * Removes a ChatSessionListener so that it will no longer be notified.
-     *
+     * 
      * @param listener the listener to remove.
      */
     public synchronized void removeChatSessionListener(ChatSessionListener listener) {
@@ -59,13 +59,13 @@ public abstract class ChatSessionManager {
 
     /**
      * Creates a new ChatSession with specified participant.
-     *
+     * 
      * @param participant the participant.
      * @return the created ChatSession.
      */
     public synchronized ChatSession createChatSession(ImEntity participant) {
-        for(ChatSession session : mSessions) {
-            if(session.getParticipant().equals(participant)) {
+        for (ChatSession session : mSessions) {
+            if (session.getParticipant().equals(participant)) {
                 return session;
             }
         }
@@ -84,7 +84,7 @@ public abstract class ChatSessionManager {
      * Closes a ChatSession. This only removes the session from the list; the
      * protocol implementation should override this if it has special work to
      * do.
-     *
+     * 
      * @param session the ChatSession to close.
      */
     public void closeChatSession(ChatSession session) {
@@ -92,9 +92,9 @@ public abstract class ChatSessionManager {
     }
 
     /**
-     * Sends a message to specified participant(s) asynchronously.
-     * TODO: more docs on async callbacks.
-     *
+     * Sends a message to specified participant(s) asynchronously. TODO: more
+     * docs on async callbacks.
+     * 
      * @param message the message to send.
      */
     public abstract void sendMessageAsync(ChatSession session, Message message);

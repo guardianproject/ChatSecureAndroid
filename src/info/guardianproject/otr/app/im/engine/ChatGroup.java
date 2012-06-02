@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007 Esmertec AG.
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.engine;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ChatGroup extends ImEntity{
+public class ChatGroup extends ImEntity {
     private ChatGroupManager mManager;
     private Address mAddress;
     private String mName;
@@ -41,7 +41,7 @@ public class ChatGroup extends ImEntity{
         mManager = manager;
         mMembers = new Vector<Contact>();
 
-        if(members != null) {
+        if (members != null) {
             mMembers.addAll(members);
         }
         mMemberListeners = new CopyOnWriteArrayList<GroupMemberListener>();
@@ -54,7 +54,7 @@ public class ChatGroup extends ImEntity{
 
     /**
      * Gets the name of the group.
-     *
+     * 
      * @return the name of the group.
      */
     public String getName() {
@@ -71,17 +71,16 @@ public class ChatGroup extends ImEntity{
 
     /**
      * Gets an unmodifiable collection of the members of the group.
-     *
+     * 
      * @return an unmodifiable collection of the members of the group.
      */
-    public List<Contact> getMembers(){
+    public List<Contact> getMembers() {
         return Collections.unmodifiableList(mMembers);
     }
 
     /**
-     * Adds a member to this group.
-     * TODO: more docs on async callbacks.
-     *
+     * Adds a member to this group. TODO: more docs on async callbacks.
+     * 
      * @param contact the member to add.
      */
     public synchronized void addMemberAsync(Contact contact) {
@@ -89,9 +88,8 @@ public class ChatGroup extends ImEntity{
     }
 
     /**
-     * Removes a member from this group.
-     * TODO: more docs on async callbacks.
-     *
+     * Removes a member from this group. TODO: more docs on async callbacks.
+     * 
      * @param contact the member to remove.
      */
     public synchronized void removeMemberAsync(Contact contact) {
@@ -100,24 +98,24 @@ public class ChatGroup extends ImEntity{
 
     /**
      * Notifies that a contact has joined into this group.
-     *
+     * 
      * @param contact the contact who has joined into the group.
      */
     void notifyMemberJoined(Contact contact) {
         mMembers.add(contact);
-        for(GroupMemberListener listener : mMemberListeners) {
+        for (GroupMemberListener listener : mMemberListeners) {
             listener.onMemberJoined(this, contact);
         }
     }
 
     /**
      * Notifies that a contact has left this group.
-     *
+     * 
      * @param contact the contact who has left this group.
      */
     void notifyMemberLeft(Contact contact) {
-        if(mMembers.remove(contact)) {
-            for(GroupMemberListener listener : mMemberListeners) {
+        if (mMembers.remove(contact)) {
+            for (GroupMemberListener listener : mMemberListeners) {
                 listener.onMemberLeft(this, contact);
             }
         }
@@ -125,11 +123,11 @@ public class ChatGroup extends ImEntity{
 
     /**
      * Notifies that previous operation on this group has failed.
-     *
+     * 
      * @param error the error information.
      */
     void notifyGroupMemberError(ImErrorInfo error) {
-        for(GroupMemberListener listener : mMemberListeners) {
+        for (GroupMemberListener listener : mMemberListeners) {
             listener.onError(this, error);
         }
     }

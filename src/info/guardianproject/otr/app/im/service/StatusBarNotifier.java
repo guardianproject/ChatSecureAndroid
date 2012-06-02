@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.service;
@@ -43,20 +43,20 @@ public class StatusBarNotifier {
 
     private static final long SUPPRESS_SOUND_INTERVAL_MS = 3000L;
 
-    static final long[] VIBRATE_PATTERN = new long[] {0, 250, 250, 250};
+    static final long[] VIBRATE_PATTERN = new long[] { 0, 250, 250, 250 };
 
     private Context mContext;
     private NotificationManager mNotificationManager;
 
-    private Imps.ProviderSettings.QueryMap mGlobalSettings; 
+    private Imps.ProviderSettings.QueryMap mGlobalSettings;
     private Handler mHandler;
     private HashMap<Long, NotificationInfo> mNotificationInfos;
     private long mLastSoundPlayedMs;
 
     public StatusBarNotifier(Context context) {
         mContext = context;
-        mNotificationManager = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         mHandler = new Handler();
         mNotificationInfos = new HashMap<Long, NotificationInfo>();
     }
@@ -66,27 +66,29 @@ public class StatusBarNotifier {
             mGlobalSettings.close();
     }
 
-    public void notifyChat(long providerId, long accountId, long chatId,
-            String username, String nickname, String msg, boolean lightWeightNotify) {
+    public void notifyChat(long providerId, long accountId, long chatId, String username,
+            String nickname, String msg, boolean lightWeightNotify) {
         if (!isNotificationEnabled(providerId)) {
-            if (DBG) log("notification for chat " + username + " is not enabled");
+            if (DBG)
+                log("notification for chat " + username + " is not enabled");
             return;
         }
-        
+
         msg = html2text(msg); // strip tags for html client inbound msgs
-        
+
         String title = nickname;
         String snippet = mContext.getString(R.string.new_messages_notify) + ' ' + nickname;// + ": " + msg;
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, chatId));
+        Intent intent = new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(
+                Imps.Chats.CONTENT_URI, chatId));
         intent.addCategory(info.guardianproject.otr.app.im.app.ImApp.IMPS_CATEGORY);
         notify(username, title, snippet, msg, providerId, accountId, intent, lightWeightNotify);
     }
 
-    public void notifySubscriptionRequest(long providerId, long accountId,
-            long contactId, String username, String nickname) {
+    public void notifySubscriptionRequest(long providerId, long accountId, long contactId,
+            String username, String nickname) {
         if (!isNotificationEnabled(providerId)) {
-            if (DBG) log("notification for subscription request " + username + " is not enabled");
+            if (DBG)
+                log("notification for subscription request " + username + " is not enabled");
             return;
         }
         String title = nickname;
@@ -98,39 +100,37 @@ public class StatusBarNotifier {
         notify(username, title, message, message, providerId, accountId, intent, false);
     }
 
-    public void notifyGroupInvitation(long providerId, long accountId,
-            long invitationId, String username) {
+    public void notifyGroupInvitation(long providerId, long accountId, long invitationId,
+            String username) {
 
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                ContentUris.withAppendedId(Imps.Invitation.CONTENT_URI, invitationId));
+        Intent intent = new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(
+                Imps.Invitation.CONTENT_URI, invitationId));
 
         String title = mContext.getString(R.string.notify_groupchat_label);
-        String message = mContext.getString(
-                R.string.group_chat_invite_notify_text, username);
+        String message = mContext.getString(R.string.group_chat_invite_notify_text, username);
         notify(username, title, message, message, providerId, accountId, intent, false);
     }
 
-    public void notifyLoggedIn(long providerId, long accountId)
-    {
+    public void notifyLoggedIn(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext,ContactListActivity.class);;
+        Intent intent = new Intent(mContext, ContactListActivity.class);
+        ;
 
         String title = mContext.getString(R.string.app_name);
         String message = mContext.getString(R.string.presence_available);
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
-    
-    public void notifyDisconnected(long providerId, long accountId)
-    {
 
-        Intent intent = new Intent(mContext,ContactListActivity.class);;
+    public void notifyDisconnected(long providerId, long accountId) {
+
+        Intent intent = new Intent(mContext, ContactListActivity.class);
+        ;
 
         String title = mContext.getString(R.string.app_name);
         String message = mContext.getString(R.string.presence_offline);
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
-    
-   
+
     public void dismissNotifications(long providerId) {
         synchronized (mNotificationInfos) {
             NotificationInfo info = mNotificationInfos.get(providerId);
@@ -154,14 +154,13 @@ public class StatusBarNotifier {
 
         if (removed) {
             if (info.getMessage() == null) {
-                if (DBG) log("dismissChatNotification: removed notification for " + providerId);
+                if (DBG)
+                    log("dismissChatNotification: removed notification for " + providerId);
                 mNotificationManager.cancel(info.computeNotificationId());
             } else {
                 if (DBG) {
-                    log("cancelNotify: new notification" +
-                            " mTitle=" + info.getTitle() +
-                            " mMessage=" + info.getMessage() +
-                            " mIntent=" + info.getIntent());
+                    log("cancelNotify: new notification" + " mTitle=" + info.getTitle()
+                        + " mMessage=" + info.getMessage() + " mIntent=" + info.getIntent());
                 }
                 mNotificationManager.notify(info.computeNotificationId(),
                         info.createNotification("", true));
@@ -171,7 +170,8 @@ public class StatusBarNotifier {
 
     private Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {
-            mGlobalSettings = new Imps.ProviderSettings.QueryMap(mContext.getContentResolver(), true, mHandler);
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(mContext.getContentResolver(),
+                    true, mHandler);
         }
         return mGlobalSettings;
     }
@@ -182,11 +182,11 @@ public class StatusBarNotifier {
 
     private void notify(String sender, String title, String tickerText, String message,
             long providerId, long accountId, Intent intent, boolean lightWeightNotify) {
-        
-    	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-    	NotificationInfo info;
-        
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        NotificationInfo info;
+
         synchronized (mNotificationInfos) {
             info = mNotificationInfos.get(providerId);
             if (info == null) {
@@ -196,7 +196,6 @@ public class StatusBarNotifier {
             info.addItem(sender, title, message, intent);
         }
 
-        
         mNotificationManager.notify(info.computeNotificationId(),
                 info.createNotification(tickerText, lightWeightNotify));
     }
@@ -210,11 +209,13 @@ public class StatusBarNotifier {
             mLastSoundPlayedMs = SystemClock.elapsedRealtime();
         }
 
-        if (DBG) log("setRinger: notification.sound = " + notification.sound);
+        if (DBG)
+            log("setRinger: notification.sound = " + notification.sound);
 
         if (vibrate) {
             notification.defaults |= Notification.DEFAULT_VIBRATE;
-            if (DBG) log("setRinger: defaults |= vibrate");
+            if (DBG)
+                log("setRinger: defaults |= vibrate");
         }
     }
 
@@ -243,7 +244,7 @@ public class StatusBarNotifier {
         }
 
         public int computeNotificationId() {
-            return (int)mProviderId;
+            return (int) mProviderId;
         }
 
         public synchronized void addItem(String sender, String title, String message, Intent intent) {
@@ -259,7 +260,7 @@ public class StatusBarNotifier {
         }
 
         public synchronized boolean removeItem(String sender) {
-            Item item =  mItems.remove(sender);
+            Item item = mItems.remove(sender);
             if (item != null) {
                 return true;
             }
@@ -267,10 +268,8 @@ public class StatusBarNotifier {
         }
 
         public Notification createNotification(String tickerText, boolean lightWeightNotify) {
-            Notification notification = new Notification(
-                    R.drawable.status,
-                    lightWeightNotify ? null : tickerText,
-                    System.currentTimeMillis());
+            Notification notification = new Notification(R.drawable.status,
+                    lightWeightNotify ? null : tickerText, System.currentTimeMillis());
 
             Intent intent = getIntent();
 
@@ -312,8 +311,8 @@ public class StatusBarNotifier {
                 Item item = mItems.values().iterator().next();
                 return item.mTitle;
             } else {
-                return mContext.getString(R.string.newMessages_label,
-                        Imps.Provider.getProviderNameForId(mContext.getContentResolver(), mProviderId));
+                return mContext.getString(R.string.newMessages_label, Imps.Provider
+                        .getProviderNameForId(mContext.getContentResolver(), mProviderId));
             }
         }
 
@@ -343,14 +342,14 @@ public class StatusBarNotifier {
     }
 
     private static void log(String msg) {
-        RemoteImService.debug( "[StatusBarNotify] " + msg);
+        RemoteImService.debug("[StatusBarNotify] " + msg);
     }
 
     private boolean shouldSuppressSoundNotification() {
         return (SystemClock.elapsedRealtime() - mLastSoundPlayedMs < SUPPRESS_SOUND_INTERVAL_MS);
     }
-    
+
     public static String html2text(String html) {
-    	return Jsoup.parse(html).text();
+        return Jsoup.parse(html).text();
     }
 }

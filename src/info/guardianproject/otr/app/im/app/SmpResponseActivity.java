@@ -16,60 +16,54 @@ import android.widget.EditText;
 
 public class SmpResponseActivity extends Activity {
 
-	private EditText mInputSMP;
-	private String mSessionId;
-	private String mQuestion;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private EditText mInputSMP;
+    private String mSessionId;
+    private String mQuestion;
 
-		mInputSMP = new EditText(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		mSessionId = getIntent().getStringExtra("sid");
-		mQuestion = getIntent().getStringExtra("q");
-		showQuestionDialog ();
-	}
-	
-	
-	
-	private void showQuestionDialog ()
-	{
-		
-		new AlertDialog.Builder(this)
-	    .setTitle("OTR Verification")
-	    .setMessage(mQuestion)
-	    .setView(mInputSMP)
-	    .setPositiveButton("Answer", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	            
-	            String secret = mInputSMP.getText().toString();
-	    		respondSmp(mSessionId, secret);
-	    		
-	    		SmpResponseActivity.this.finish();
-	        }
-	    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	            // Do nothing.
-	        }
-	    }).show();
-		
-	}
-	
-	private void respondSmp (String sid, String answer)
-    {
-     	ImApp app = ImApp.getApplication(this);
+        mInputSMP = new EditText(this);
 
-     	IOtrChatSession iOtrSession;
- 		try {
- 			iOtrSession = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(sid).getOtrChatSession();
- 			iOtrSession.respondSmpVerification(answer);
- 	    	
- 		} catch (RemoteException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
- 		}
+        mSessionId = getIntent().getStringExtra("sid");
+        mQuestion = getIntent().getStringExtra("q");
+        showQuestionDialog();
     }
 
-	
+    private void showQuestionDialog() {
+
+        new AlertDialog.Builder(this).setTitle("OTR Verification").setMessage(mQuestion)
+                .setView(mInputSMP)
+                .setPositiveButton("Answer", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        String secret = mInputSMP.getText().toString();
+                        respondSmp(mSessionId, secret);
+
+                        SmpResponseActivity.this.finish();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing.
+                    }
+                }).show();
+
+    }
+
+    private void respondSmp(String sid, String answer) {
+        ImApp app = ImApp.getApplication(this);
+
+        IOtrChatSession iOtrSession;
+        try {
+            iOtrSession = app.getActiveConnections().get(0).getChatSessionManager()
+                    .getChatSession(sid).getOtrChatSession();
+            iOtrSession.respondSmpVerification(answer);
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -50,13 +50,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.Toast;
 
-public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener{
+public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
-    private static final int MENU_VIEW_PROFILE       = Menu.FIRST + 1;
-    private static final int MENU_BLOCK_CONTACT      = Menu.FIRST + 2;
-    private static final int MENU_DELETE_CONTACT     = Menu.FIRST + 3;
-    private static final int MENU_END_CONVERSATION   = Menu.FIRST + 4;
+    private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
+    private static final int MENU_BLOCK_CONTACT = Menu.FIRST + 2;
+    private static final int MENU_DELETE_CONTACT = Menu.FIRST + 3;
+    private static final int MENU_END_CONVERSATION = Menu.FIRST + 4;
 
     private static final String FILTER_STATE_KEY = "Filtering";
 
@@ -65,7 +65,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
-   ActiveChatListView mActiveChatListView;
+    ActiveChatListView mActiveChatListView;
     ContactListFilterView mFilterView;
     SimpleAlertHandler mHandler;
 
@@ -80,11 +80,10 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-       getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
-        mActiveChatListView = (ActiveChatListView) inflate.inflate(
-                R.layout.chat_list_view, null);
+        mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
 
         setContentView(mActiveChatListView);
 
@@ -97,8 +96,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         mApp = ImApp.getApplication(this);
 
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId),
-                null, null, null, null);
+        Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
+                null, null, null);
         if (c == null) {
             finish();
             return;
@@ -114,15 +113,13 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        setTitle(brandingRes.getString(
-                BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
+        setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
         getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                 brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), true, null);
+        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 
-        mApp.callWhenServiceConnected(mHandler, new Runnable(){
+        mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {
                 if (!mDestroyed) {
                     mApp.dismissNotifications(mProviderId);
@@ -147,21 +144,21 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                 }
             }
         });
-        
+
         c.close();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-    	MenuInflater inflater = getMenuInflater();
+
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_list_menu, menu);
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        
+
         //TODO make sure this works
-     //   menu.findItem(R.id.menu_invite_user).setTitle(
-       //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
+        //   menu.findItem(R.id.menu_invite_user).setTitle(
+        //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
 
         return true;
     }
@@ -169,92 +166,85 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        
+
         //TODO make sure this works
 
         case R.id.menu_new_chat:
-        		Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
             return true;
-     
+
         case R.id.menu_view_accounts:
-//	            startActivity(getEditAccountIntent());
+            //	            startActivity(getEditAccountIntent());
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
             return true;
-	            
-            case R.id.menu_settings:
-                Intent intent = new Intent(this, SettingActivity.class);
-                startActivity(intent);
-                return true;
 
-            case R.id.menu_quit:
-            	handleQuit();
-            	
-                return true;
+        case R.id.menu_settings:
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
+            return true;
+
+        case R.id.menu_quit:
+            handleQuit();
+
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    Intent getEditAccountIntent() {
-        
-    	Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                 PROVIDER_PROJECTION,
-                 Imps.Provider.CATEGORY + "=?" /* selection */,
-                 new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                 Imps.Provider.DEFAULT_SORT_ORDER);
-    	mProviderCursor.moveToFirst();
 
-    	Intent intent = new Intent(Intent.ACTION_EDIT,
-                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
-                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+    Intent getEditAccountIntent() {
+
+        Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+                PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        mProviderCursor.moveToFirst();
+
+        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
         intent.addCategory(mProviderCursor.getString(PROVIDER_CATEGORY_COLUMN));
         intent.putExtra("isSignedIn", true);
-        
+
         return intent;
     }
 
     private static final String[] PROVIDER_PROJECTION = {
-        Imps.Provider._ID,
-        Imps.Provider.NAME,
-        Imps.Provider.FULLNAME,
-        Imps.Provider.CATEGORY,
-        Imps.Provider.ACTIVE_ACCOUNT_ID,
-        Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-        Imps.Provider.ACTIVE_ACCOUNT_PW,
-        Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-        Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-        Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-        Imps.Provider.ACCOUNT_CONNECTION_STATUS,
-    };
-	
-	static final int PROVIDER_CATEGORY_COLUMN = 3;
-	static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;    
-    
-	private void handleQuit ()
-	{
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+
+    private void handleQuit() {
 
         try {
             if (mConn != null) {
                 mConn.logout();
-              
+
             }
-            
-            
+
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-           
+
             finish();
-            
+
         } catch (RemoteException e) {
-        	Log.e(ImApp.LOG_TAG, e.getMessage());
+            Log.e(ImApp.LOG_TAG, e.getMessage());
         }
-        
-        
-        
-	}
-    
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -262,15 +252,14 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
     }
 
-    
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    	
+
         boolean isFiltering = savedInstanceState.getBoolean(FILTER_STATE_KEY);
         if (isFiltering) {
             showFilterView();
         }
-    	
+
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -279,18 +268,18 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         int keyCode = event.getKeyCode();
 
         boolean handled = false;
-        
+
         if (mIsFiltering) {
             handled = mFilterView.dispatchKeyEvent(event);
             if (!handled && (KeyEvent.KEYCODE_BACK == keyCode)
-                    && (KeyEvent.ACTION_DOWN == event.getAction())) {
+                && (KeyEvent.ACTION_DOWN == event.getAction())) {
                 showContactListView();
                 handled = true;
             }
         } else {
             handled = mActiveChatListView.dispatchKeyEvent(event);
             if (!handled && isReadable(keyCode, event)
-                    && (KeyEvent.ACTION_DOWN == event.getAction())) {
+                && (KeyEvent.ACTION_DOWN == event.getAction())) {
                 showFilterView();
                 handled = mFilterView.dispatchKeyEvent(event);
             }
@@ -321,16 +310,15 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         return true;
     }
 
-    
     private void showFilterView() {
-    	
-        if (mFilterView == null ) {
-            mFilterView = (ContactListFilterView)getLayoutInflater().inflate(
+
+        if (mFilterView == null) {
+            mFilterView = (ContactListFilterView) getLayoutInflater().inflate(
                     R.layout.contact_list_filter_view, null);
             mFilterView.getListView().setOnCreateContextMenuListener(this);
         }
         Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                                                            : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
         mFilterView.doFilter(uri, null);
@@ -374,7 +362,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     }
 
     static void log(String msg) {
-        Log.d(ImApp.LOG_TAG, "<ContactListActivity> " +msg);
+        Log.d(ImApp.LOG_TAG, "<ContactListActivity> " + msg);
     }
 
     @Override
@@ -382,31 +370,27 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         boolean chatSelected = false;
         boolean contactSelected = false;
         Cursor contactCursor;
-        
+
         if (mIsFiltering) {
             AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.position;
             contactSelected = true;
             contactCursor = mFilterView.getContactAtPosition(info.position);
         } else {
-        	
-        	if (menuInfo instanceof ExpandableListContextMenuInfo)
-        	{
-        		ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
-        		mContextMenuHandler.mPosition = info.packedPosition;
-        		contactSelected = false;
-        		chatSelected = mActiveChatListView.isConversationAtPosition(info.packedPosition);
-        		contactCursor = null;
-        	}
-        	else if (menuInfo instanceof AdapterContextMenuInfo)
-        	{
-        		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+
+            if (menuInfo instanceof ExpandableListContextMenuInfo) {
+                ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
+                mContextMenuHandler.mPosition = info.packedPosition;
+                contactSelected = false;
+                chatSelected = mActiveChatListView.isConversationAtPosition(info.packedPosition);
+                contactCursor = null;
+            } else if (menuInfo instanceof AdapterContextMenuInfo) {
+                AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
                 mContextMenuHandler.mPosition = info.position;
                 contactSelected = false;
-                contactCursor = null;                
-        	}
-        	else
-        		contactCursor = null;
+                contactCursor = null;
+            } else
+                contactCursor = null;
         }
 
         boolean allowBlock = true;
@@ -414,7 +398,8 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
             //XXX HACK: Yahoo! doesn't allow to block a friend. We can only block a temporary contact.
             ProviderDef provider = mApp.getProvider(mProviderId);
             if (Imps.ProviderNames.YAHOO.equals(provider.mName)) {
-                int type = contactCursor.getInt(contactCursor.getColumnIndexOrThrow(Imps.Contacts.TYPE));
+                int type = contactCursor.getInt(contactCursor
+                        .getColumnIndexOrThrow(Imps.Contacts.TYPE));
                 allowBlock = (type == Imps.Contacts.TYPE_TEMPORARY);
             }
 
@@ -424,39 +409,39 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         }
 
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        String menu_end_conversation = brandingRes.getString(
-                BrandingResourceIDs.STRING_MENU_END_CHAT);
-        String menu_view_profile = brandingRes.getString(
-                BrandingResourceIDs.STRING_MENU_VIEW_PROFILE);
-        String menu_block_contact = brandingRes.getString(
-                BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT);
-        String menu_start_conversation = brandingRes.getString(
-                BrandingResourceIDs.STRING_MENU_START_CHAT);
-        String menu_delete_contact = brandingRes.getString(
-                BrandingResourceIDs.STRING_MENU_DELETE_CONTACT);
+        String menu_end_conversation = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_END_CHAT);
+        String menu_view_profile = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE);
+        String menu_block_contact = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT);
+        String menu_start_conversation = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_START_CHAT);
+        String menu_delete_contact = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_DELETE_CONTACT);
 
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
-                    //TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_end_conversation)
+            //TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                        //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
+                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
-                    //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_start_conversation)
+            //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_view_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                        //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
+                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
             menu.add(0, MENU_DELETE_CONTACT, 0, menu_delete_contact)
@@ -480,37 +465,37 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
-//            Cursor c;
-//            if (mIsFiltering) {
-//                c = mFilterView.getContactAtPosition((int)mPosition);
-//            } else {
-//                c = mActiveChatListView.getContactAtPosition(mPosition);
-//            }
-//
-//            switch (item.getItemId()) {
-//            case MENU_START_CONVERSATION:
-//                mActiveChatListView.startChat(c);
-//                break;
-//            case MENU_VIEW_PROFILE:
-//                mActiveChatListView.viewContactPresence(c);
-//                break;
-//            case MENU_BLOCK_CONTACT:
-//                mActiveChatListView.blockContact(c);
-//                break;
-//            case MENU_DELETE_CONTACT:
-//                mActiveChatListView.removeContact(c);
-//                break;
-//            case MENU_END_CONVERSATION:
-//                mActiveChatListView.endChat(c);
-//                break;
-//            default:
-//                return false;
-//            }
-//
-//            if (mIsFiltering) {
-//                showContactListView();
-//            }
-           return true;
+            //            Cursor c;
+            //            if (mIsFiltering) {
+            //                c = mFilterView.getContactAtPosition((int)mPosition);
+            //            } else {
+            //                c = mActiveChatListView.getContactAtPosition(mPosition);
+            //            }
+            //
+            //            switch (item.getItemId()) {
+            //            case MENU_START_CONVERSATION:
+            //                mActiveChatListView.startChat(c);
+            //                break;
+            //            case MENU_VIEW_PROFILE:
+            //                mActiveChatListView.viewContactPresence(c);
+            //                break;
+            //            case MENU_BLOCK_CONTACT:
+            //                mActiveChatListView.blockContact(c);
+            //                break;
+            //            case MENU_DELETE_CONTACT:
+            //                mActiveChatListView.removeContact(c);
+            //                break;
+            //            case MENU_END_CONVERSATION:
+            //                mActiveChatListView.endChat(c);
+            //                break;
+            //            default:
+            //                return false;
+            //            }
+            //
+            //            if (mIsFiltering) {
+            //                showContactListView();
+            //            }
+            return true;
         }
     }
 
@@ -526,19 +511,19 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                     log("Handle event connection disconnected.");
                 }
                 promptDisconnectedEvent(msg);
-                long providerId = ((long)msg.arg1 << 32) | msg.arg2;
+                long providerId = ((long) msg.arg1 << 32) | msg.arg2;
                 if (providerId == mProviderId) {
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("Current connection disconnected, finish");
                     }
-                  
+
                     //TODO Gibber manually launch back to main
-                	Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);					
-					intent.putExtra("showSettings",false);
-					intent.putExtra("doSignIn",false);					
-					startActivity(intent);
-					
-					finish();
+                    Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+                    intent.putExtra("showSettings", false);
+                    intent.putExtra("doSignIn", false);
+                    startActivity(intent);
+
+                    finish();
                 }
                 return;
             }

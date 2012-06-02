@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -67,18 +67,17 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private SimpleAlertHandler mHandler;
 
     private static final String[] PROVIDER_PROJECTION = {
-            Imps.Provider._ID,
-            Imps.Provider.NAME,
-            Imps.Provider.FULLNAME,
-            Imps.Provider.CATEGORY,
-            Imps.Provider.ACTIVE_ACCOUNT_ID,
-            Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-            Imps.Provider.ACTIVE_ACCOUNT_PW,
-            Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-            Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-            Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-            Imps.Provider.ACCOUNT_CONNECTION_STATUS,
-    };
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
 
     static final int PROVIDER_ID_COLUMN = 0;
     static final int PROVIDER_NAME_COLUMN = 1;
@@ -103,17 +102,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                PROVIDER_PROJECTION,
+        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
 
         registerForContextMenu(getListView());
     }
-    
+
     @Override
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
@@ -127,16 +125,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         mHandler.registerForBroadcastEvents();
     }
-    
+
     private void signInAll() {
-    	Log.i(TAG, "signInAll");
-    	mProviderCursor.moveToFirst();
-    	do {
-    		int position = mProviderCursor.getPosition();
-    		signInAccountAtPosition(position);
-    	} while (mProviderCursor.moveToNext()) ;
+        Log.i(TAG, "signInAll");
+        mProviderCursor.moveToFirst();
+        do {
+            int position = mProviderCursor.getPosition();
+            signInAccountAtPosition(position);
+        } while (mProviderCursor.moveToNext());
     }
-    
+
     private void signInAccountAtPosition(int position) {
         Intent intent = null;
         mProviderCursor.moveToPosition(position);
@@ -153,7 +151,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                 boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
                 if (isKeepSignedIn) {
                     signIn(accountId);
-                } else if(isAccountEditible) {
+                } else if (isAccountEditible) {
                     intent = getEditAccountIntent();
                 }
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
@@ -177,7 +175,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
         if (isAccountEditible && mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
             // no password, edit the account
-            if (Log.isLoggable(TAG, Log.DEBUG)) log("no pw for account " + accountId);
+            if (Log.isLoggable(TAG, Log.DEBUG))
+                log("no pw for account " + accountId);
             Intent intent = getEditAccountIntent();
             startActivity(intent);
             return;
@@ -202,36 +201,32 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     private boolean allAccountsSignedOut() {
-        if(!mProviderCursor.moveToFirst()) {
+        if (!mProviderCursor.moveToFirst()) {
             return false;
         }
         do {
             if (isSignedIn(mProviderCursor)) {
                 return false;
             }
-        } while (mProviderCursor.moveToNext()) ;
+        } while (mProviderCursor.moveToNext());
 
         return true;
     }
 
     private void signOutAll() {
-        DialogInterface.OnClickListener confirmListener
-                = new DialogInterface.OnClickListener(){
+        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 do {
                     long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                     signOut(accountId);
-                } while (mProviderCursor.moveToNext()) ;
+                } while (mProviderCursor.moveToNext());
             }
         };
 
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.confirm)
-            .setMessage(R.string.signout_all_confirm_message)
-            .setPositiveButton(R.string.yes, confirmListener) // default button
-            .setNegativeButton(R.string.no, null)
-            .setCancelable(true)
-            .show();
+        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+                .setMessage(R.string.signout_all_confirm_message)
+                .setPositiveButton(R.string.yes, confirmListener) // default button
+                .setNegativeButton(R.string.no, null).setCancelable(true).show();
     }
 
     private void signOut(final long accountId) {
@@ -275,7 +270,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.accounts_menu, menu);
         return true;
     }
@@ -283,16 +278,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_sign_out_all:
-                signOutAll();
-                return true;
-            case R.id.menu_new_account:
-            	createAccount();
-            	return true;
-            case R.id.menu_settings:
-                Intent sintent = new Intent(this, SettingActivity.class);
-                startActivity(sintent);
-                return true;
+        case R.id.menu_sign_out_all:
+            signOutAll();
+            return true;
+        case R.id.menu_new_account:
+            createAccount();
+            return true;
+        case R.id.menu_settings:
+            Intent sintent = new Intent(this, SettingActivity.class);
+            startActivity(sintent);
+            return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -304,16 +299,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         builder.setTitle(R.string.account_select_type);
         final String[] items = helper.getProviderNames().toArray(new String[0]);
         builder.setItems(items, new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int pos) {
-        		helper.createAdditionalProvider(items[pos]);
-        		mApp.resetProviderSettings();
-        	}});
+            public void onClick(DialogInterface dialog, int pos) {
+                helper.createAdditionalProvider(items[pos]);
+                mApp.resetProviderSettings();
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
-	}
+    }
 
-
-	@Override
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info;
         try {
@@ -343,16 +338,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         } else {
             menu.add(0, ID_VIEW_CONTACT_LIST, 0,
                     brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
-            menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out)
-                .setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+            menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
+                    android.R.drawable.ic_menu_close_clear_cancel);
         }
 
         boolean isAccountEditible = providerCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
         if (isAccountEditible && !isLoggingIn && !isLoggedIn) {
-            menu.add(0, ID_EDIT_ACCOUNT, 0, R.string.menu_edit_account)
-                .setIcon(android.R.drawable.ic_menu_edit);
-            menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account)
-                .setIcon(android.R.drawable.ic_menu_delete);
+            menu.add(0, ID_EDIT_ACCOUNT, 0, R.string.menu_edit_account).setIcon(
+                    android.R.drawable.ic_menu_edit);
+            menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account).setIcon(
+                    android.R.drawable.ic_menu_delete);
         }
     }
 
@@ -370,47 +365,41 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         long accountId = providerCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
         switch (item.getItemId()) {
-            case ID_EDIT_ACCOUNT:
-            {
-                startActivity(getEditAccountIntent());
-                return true;
-            }
+        case ID_EDIT_ACCOUNT: {
+            startActivity(getEditAccountIntent());
+            return true;
+        }
 
-            case ID_REMOVE_ACCOUNT:
-            {
-                Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-                getContentResolver().delete(accountUri, null, null);
-                Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
-                getContentResolver().delete(providerUri, null, null);
-                // Requery the cursor to force refreshing screen
-                providerCursor.requery();
-                return true;
-            }
+        case ID_REMOVE_ACCOUNT: {
+            Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            getContentResolver().delete(accountUri, null, null);
+            Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
+            getContentResolver().delete(providerUri, null, null);
+            // Requery the cursor to force refreshing screen
+            providerCursor.requery();
+            return true;
+        }
 
-            case ID_VIEW_CONTACT_LIST:
-            {
-                Intent intent = getViewContactsIntent();
-                startActivity(intent);
-                return true;
-            }
-            case ID_ADD_ACCOUNT:
-            {
-                startActivity(getCreateAccountIntent());
-                return true;
-            }
+        case ID_VIEW_CONTACT_LIST: {
+            Intent intent = getViewContactsIntent();
+            startActivity(intent);
+            return true;
+        }
+        case ID_ADD_ACCOUNT: {
+            startActivity(getCreateAccountIntent());
+            return true;
+        }
 
-            case ID_SIGN_IN:
-            {
-                signIn(accountId);
-                return true;
-            }
+        case ID_SIGN_IN: {
+            signIn(accountId);
+            return true;
+        }
 
-            case ID_SIGN_OUT:
-            {
-                // TODO: progress bar
-                signOut(accountId);
-                return true;
-            }
+        case ID_SIGN_OUT: {
+            // TODO: progress bar
+            signOut(accountId);
+            return true;
+        }
 
         }
 
@@ -419,7 +408,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	signInAccountAtPosition(position);
+        signInAccountAtPosition(position);
     }
 
     Intent getCreateAccountIntent() {
@@ -433,9 +422,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     Intent getEditAccountIntent() {
-        Intent intent = new Intent(Intent.ACTION_EDIT,
-                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
-                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
     }
@@ -477,8 +465,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
             // create a custom view, so we can manage it ourselves. Mainly, we want to
             // initialize the widget views (by calling getViewById()) in newView() instead of in
             // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(
-                    R.layout.account_view, parent, false);
+            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view,
+                    parent, false);
             view.init(cursor);
             return view;
         }

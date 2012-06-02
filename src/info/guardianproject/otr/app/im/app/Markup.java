@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2008 Esmertec AG.
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -31,8 +31,8 @@ public class Markup {
 
     public Markup(BrandingResources res) {
         mRes = res;
-        mSmileys = new IntTrie(
-                res.getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS), res.getSmileyIcons());
+        mSmileys = new IntTrie(res.getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS),
+                res.getSmileyIcons());
     }
 
     public final CharSequence markup(CharSequence text) {
@@ -90,8 +90,8 @@ public class Markup {
                 }
                 Drawable smiley = mRes.getSmileyIcon(candidate);
                 smiley.setBounds(0, 0, smiley.getIntrinsicWidth(), smiley.getIntrinsicHeight());
-                result.setSpan(new ImageSpan(smiley, ImageSpan.ALIGN_BASELINE),
-                    offset, lastMatchEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                result.setSpan(new ImageSpan(smiley, ImageSpan.ALIGN_BASELINE), offset,
+                        lastMatchEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 candidate = 0;
             }

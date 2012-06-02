@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -60,20 +60,16 @@ public class WelcomeActivity extends Activity {
     private SimpleAlertHandler mHandler;
 
     private String mDefaultLocale;
-    
-    static final String[] PROVIDER_PROJECTION = {
-            Imps.Provider._ID,
-            Imps.Provider.NAME,
-            Imps.Provider.FULLNAME,
-            Imps.Provider.CATEGORY,
-            Imps.Provider.ACTIVE_ACCOUNT_ID,
-            Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-            Imps.Provider.ACTIVE_ACCOUNT_PW,
-            Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-            Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-            Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-            Imps.Provider.ACCOUNT_CONNECTION_STATUS,
-    };
+
+    static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
+                                                 Imps.Provider.FULLNAME, Imps.Provider.CATEGORY,
+                                                 Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                 Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                 Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                 Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                 Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                 Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                 Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
 
     static final int PROVIDER_ID_COLUMN = 0;
     static final int PROVIDER_NAME_COLUMN = 1;
@@ -90,70 +86,56 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);    
-        		
+        mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);
+
         setContentView(R.layout.welcome_activity);
-        
-        Button btnSplashAbout = ((Button)findViewById(R.id.btnSplashAbout));
+
+        Button btnSplashAbout = ((Button) findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-        
-        btnSplashAbout.setOnClickListener(new OnClickListener()
-        {
-			@Override
-			public void onClick(View v) {
-				finish();
-				Intent intent = new Intent(getBaseContext(), AboutActivity.class);
-				startActivity(intent);
-			}
+
+        btnSplashAbout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+                startActivity(intent);
+            }
         });
-        
 
-      
     }
-    
-    private boolean cursorUnlocked ()
-    {
-    	try
-    	{
-    	    mApp = ImApp.getApplication(this);
-    	    mHandler = new MyHandler(this);
-    	    ImPluginHelper.getInstance(this).loadAvailablePlugins();
-           
-    	    mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-    	            PROVIDER_PROJECTION,
-    	            Imps.Provider.CATEGORY + "=?" /* selection */,
-    	            new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-    	            Imps.Provider.DEFAULT_SORT_ORDER);
 
-    	    mProviderCursor.moveToFirst();
+    private boolean cursorUnlocked() {
+        try {
+            mApp = ImApp.getApplication(this);
+            mHandler = new MyHandler(this);
+            ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
+            mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+                    PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
+                    new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                    Imps.Provider.DEFAULT_SORT_ORDER);
 
-    	    return true;
-         
-    	}
-    	catch (Exception e)
-    	{
-    		Log.e(ImApp.LOG_TAG, e.getMessage(),e);
-    		//must need to be unlocked
-    		return false;
-    	}
+            mProviderCursor.moveToFirst();
+
+            return true;
+
+        } catch (Exception e) {
+            Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+            //must need to be unlocked
+            return false;
+        }
     }
-    
-    private void initCursor (String dbKey)
-    {
-        
-       
-        
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                PROVIDER_PROJECTION,
+
+    private void initCursor(String dbKey) {
+
+        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[]{ ImApp.IMPS_CATEGORY } /* selection args */,
-                null);
-              //  "key=" + dbKey);
-        
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */, null);
+        //  "key=" + dbKey);
+
         /*
         if (mProviderCursor == null)
         {
@@ -164,32 +146,31 @@ public class WelcomeActivity extends Activity {
         }
         else
         {*/
-        
-        	doOnResume();
+
+        doOnResume();
         //}
 
     }
 
     @Override
     protected void onPause() {
-    	
-    	if (mHandler != null)
-    		mHandler.unregisterForBroadcastEvents();
-        
+
+        if (mHandler != null)
+            mHandler.unregisterForBroadcastEvents();
+
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        
+
         if (mDefaultLocale == null)
-        	showLocaleDialog();
-        else
-        {
-        	cursorUnlocked();
-        	doOnResume();
-        } 
+            showLocaleDialog();
+        else {
+            cursorUnlocked();
+            doOnResume();
+        }
         /*
         if (cursorUnlocked())
         {
@@ -200,27 +181,27 @@ public class WelcomeActivity extends Activity {
         	showPasscodeEntry ();        	
         }*/
     }
-    
+
     /*
     private void showPasscodeEntry ()
     {
-		String dialogMessage;
-		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
-		boolean firstTime = prefs.getBoolean("first_time",true);
-		
-		if (firstTime)
-		{
-			dialogMessage = "Please choose a passphrase to protect your local application data.";
-			Editor pEdit = prefs.edit();
-			pEdit.putBoolean("first_time",false);
-			pEdit.commit();
-		}
-		else
-			dialogMessage = "Enter passphrase";
+    	String dialogMessage;
+    	
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    	
+    	boolean firstTime = prefs.getBoolean("first_time",true);
+    	
+    	if (firstTime)
+    	{
+    		dialogMessage = "Please choose a passphrase to protect your local application data.";
+    		Editor pEdit = prefs.edit();
+    		pEdit.putBoolean("first_time",false);
+    		pEdit.commit();
+    	}
+    	else
+    		dialogMessage = "Enter passphrase";
 
-		
+    	
     	 // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
@@ -250,19 +231,17 @@ public class WelcomeActivity extends Activity {
             })
             .create().show();
     }*/
-    
-    private void doOnResume ()
-    {
 
-    	if (mApp == null)
-    	{
-    		mApp = ImApp.getApplication(this);
-    		mHandler = new MyHandler(this);
-    		ImPluginHelper.getInstance(this).loadAvailablePlugins();
-    	}
-	
+    private void doOnResume() {
+
+        if (mApp == null) {
+            mApp = ImApp.getApplication(this);
+            mHandler = new MyHandler(this);
+            ImPluginHelper.getInstance(this).loadAvailablePlugins();
+        }
+
         mHandler.registerForBroadcastEvents();
-        
+
         int count = accountsSignedIn();
 
         if (count == 0) {
@@ -279,8 +258,8 @@ public class WelcomeActivity extends Activity {
 
     // Show signed in account
     protected boolean showActiveAccount() {
-    	if (! mProviderCursor.moveToFirst())
-    		return false;
+        if (!mProviderCursor.moveToFirst())
+            return false;
         do {
             if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) && isSignedIn(mProviderCursor)) {
                 long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
@@ -293,14 +272,14 @@ public class WelcomeActivity extends Activity {
                 finish();
                 return true;
             }
-        } while (mProviderCursor.moveToNext()) ;
+        } while (mProviderCursor.moveToNext());
         return false;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-    	MenuInflater inflater = getMenuInflater();
+
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_list_menu, menu);
 
         return true;
@@ -309,38 +288,38 @@ public class WelcomeActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_account_settings:
-                finish();
-                //showAccountSetup();
-                showAccounts();
-                return true;
-                
-            case R.id.menu_about:
-                showAbout();
-                return true;
-            
-            case R.id.menu_locale:
-                showLocaleDialog();
-                return true;
+        case R.id.menu_account_settings:
+            finish();
+            //showAccountSetup();
+            showAccounts();
+            return true;
+
+        case R.id.menu_about:
+            showAbout();
+            return true;
+
+        case R.id.menu_locale:
+            showLocaleDialog();
+            return true;
 
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     private void signInAll() {
-    	
+
         Log.i(TAG, "signInAll");
-    	if (!mProviderCursor.moveToFirst())
-    		return;
-    	
-    	do {
-    		int position = mProviderCursor.getPosition();
-    		signInAccountAtPosition(position);
-    		
-    	} while (mProviderCursor.moveToNext()) ;
-    	
+        if (!mProviderCursor.moveToFirst())
+            return;
+
+        do {
+            int position = mProviderCursor.getPosition();
+            signInAccountAtPosition(position);
+
+        } while (mProviderCursor.moveToNext());
+
     }
-    
+
     private boolean signInAccountAtPosition(int position) {
         mProviderCursor.moveToPosition(position);
 
@@ -354,13 +333,13 @@ public class WelcomeActivity extends Activity {
                     signIn(accountId);
                     return true;
                 }
-                
+
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
                 signIn(accountId);
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -373,7 +352,8 @@ public class WelcomeActivity extends Activity {
         boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
         if (isAccountEditible && mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
             // no password, edit the account
-            if (Log.isLoggable(TAG, Log.DEBUG)) Log.i(TAG, "no pw for account " + accountId);
+            if (Log.isLoggable(TAG, Log.DEBUG))
+                Log.i(TAG, "no pw for account " + accountId);
             Intent intent = getEditAccountIntent();
             startActivity(intent);
             finish();
@@ -381,10 +361,10 @@ public class WelcomeActivity extends Activity {
         }
 
         Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));       
+        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
         startActivity(intent);
 
-    	finish();
+        finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -394,12 +374,12 @@ public class WelcomeActivity extends Activity {
 
     private boolean isSignedIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        
+
         return connectionStatus == Imps.ConnectionStatus.ONLINE;
     }
-    
+
     private int accountsSignedIn() {
-        if(!mProviderCursor.moveToFirst()) {
+        if (!mProviderCursor.moveToFirst()) {
             return 0;
         }
         int count = 0;
@@ -407,46 +387,41 @@ public class WelcomeActivity extends Activity {
             if (isSignedIn(mProviderCursor)) {
                 count++;
             }
-        } while (mProviderCursor.moveToNext()) ;
+        } while (mProviderCursor.moveToNext());
 
         return count;
     }
 
-    private void showAccountSetup ()
-    {
-    	if (! mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
+    private void showAccountSetup() {
+        if (!mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
             // add account
-			startActivity(getCreateAccountIntent());
+            startActivity(getCreateAccountIntent());
         } else {
-        	// edit existing account
-			startActivity(getEditAccountIntent());
+            // edit existing account
+            startActivity(getEditAccountIntent());
         }
     }
-    
-    private void showAbout ()
-    {
-    	//TODO implement this about form
-    	Toast.makeText(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber", Toast.LENGTH_LONG).show();
+
+    private void showAbout() {
+        //TODO implement this about form
+        Toast.makeText(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber",
+                Toast.LENGTH_LONG).show();
     }
-    
+
     private void signOutAll() {
-        DialogInterface.OnClickListener confirmListener
-                = new DialogInterface.OnClickListener(){
+        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 do {
                     long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                     signOut(accountId);
-                } while (mProviderCursor.moveToNext()) ;
+                } while (mProviderCursor.moveToNext());
             }
         };
 
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.confirm)
-            .setMessage(R.string.signout_all_confirm_message)
-            .setPositiveButton(R.string.yes, confirmListener) // default button
-            .setNegativeButton(R.string.no, null)
-            .setCancelable(true)
-            .show();
+        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+                .setMessage(R.string.signout_all_confirm_message)
+                .setPositiveButton(R.string.yes, confirmListener) // default button
+                .setNegativeButton(R.string.no, null).setCancelable(true).show();
     }
 
     private void signOut(long accountId) {
@@ -466,27 +441,26 @@ public class WelcomeActivity extends Activity {
     }
 
     void showAccounts() {
-    	startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-    	finish();
+        startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+        finish();
     }
 
     Intent getCreateAccountIntent() {
-    	Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-    	intent.setAction(Intent.ACTION_INSERT);
+        Intent intent = new Intent(getBaseContext(), AccountActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
 
-    	// TODO fix for multiple account support
-    	//long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-    	long providerId = 1; // XMPP
-    	intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-    	//TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
-    	//intent.addCategory(getProviderCategory(mProviderCursor));
-    	return intent;
+        // TODO fix for multiple account support
+        //long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+        long providerId = 1; // XMPP
+        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
+        //TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
+        //intent.addCategory(getProviderCategory(mProviderCursor));
+        return intent;
     }
 
     Intent getEditAccountIntent() {
-        Intent intent = new Intent(Intent.ACTION_EDIT,
-                ContentUris.withAppendedId(Imps.Account.CONTENT_URI,
-                        mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
+        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
         intent.putExtra("isSignedIn", isSignedIn(mProviderCursor));
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
@@ -511,33 +485,30 @@ public class WelcomeActivity extends Activity {
         }
     }
 
-    private void showLocaleDialog ()
-    {
-    	AlertDialog.Builder ad = new AlertDialog.Builder(this);
-    	ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
-    	
-    	ad.setItems(getResources().getStringArray(R.array.languages) , new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-				String[] locs = getResources().getStringArray(R.array.languages_values);
-				
-				if (which < locs.length)
-				{
-					Locale locale = new Locale(locs[which]);
-					ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
-					
-					Intent intent = getIntent();
-					finish();
-					startActivity(intent);
-				}	
-			}
-		});
-    	
-    	ad.show();
-  	}
-    
-	
-	
+    private void showLocaleDialog() {
+        AlertDialog.Builder ad = new AlertDialog.Builder(this);
+        ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
+
+        ad.setItems(getResources().getStringArray(R.array.languages),
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String[] locs = getResources().getStringArray(R.array.languages_values);
+
+                        if (which < locs.length) {
+                            Locale locale = new Locale(locs[which]);
+                            ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
+
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+        ad.show();
+    }
+
 }

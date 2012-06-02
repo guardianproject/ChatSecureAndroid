@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
+ * Source Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -58,68 +58,64 @@ import android.widget.Toast;
 
 public class ContactPresenceActivity extends Activity {
 
-	private String remoteFingerprint;
-	private boolean remoteFingerprintVerified = false;
-	private String remoteAddress;
-	
-	private String localFingerprint;
-	
-	private final static String TAG = "Gibberbot";
-	
+    private String remoteFingerprint;
+    private boolean remoteFingerprintVerified = false;
+    private String remoteAddress;
+
+    private String localFingerprint;
+
+    private final static String TAG = "Gibberbot";
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         setContentView(R.layout.contact_presence_activity);
 
-     //   ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
+        //   ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
-  
 
         Intent i = getIntent();
         Uri uri = i.getData();
-        if(uri == null) {
+        if (uri == null) {
             warning("No data to show");
             finish();
             return;
         }
-        
 
-        if (i.getExtras() != null)
-        {
-	        remoteFingerprint = i.getExtras().getString("remoteFingerprint");
-	        
-	        if (remoteFingerprint != null)
-	        {
-	        	remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
-	        	localFingerprint = i.getExtras().getString("localFingerprint");
-	        }
-	        
-	        
+        if (i.getExtras() != null) {
+            remoteFingerprint = i.getExtras().getString("remoteFingerprint");
+
+            if (remoteFingerprint != null) {
+                remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
+                localFingerprint = i.getExtras().getString("localFingerprint");
+            }
+
         }
-        
+
         updateUI();
-        
+
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(uri, null, null, null, null);
-        if(c == null) {
+        if (c == null) {
             warning("Database error when query " + uri);
             finish();
             return;
         }
 
-        if(c.moveToFirst()) {
+        if (c.moveToFirst()) {
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            String nickname   = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
-            int status    = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
+            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+            int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
             int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
-            String customStatus = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
+            String customStatus = c.getString(c
+                    .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
 
             ImApp app = ImApp.getApplication(this);
-            
+
             BrandingResources brandingRes = app.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
@@ -134,18 +130,15 @@ public class ContactPresenceActivity extends Activity {
 
             txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
 
-            String statusString = brandingRes.getString(
-                    PresenceUtils.getStatusStringRes(status));
+            String statusString = brandingRes.getString(PresenceUtils.getStatusStringRes(status));
             SpannableString s = new SpannableString("+ " + statusString);
-            Drawable statusIcon = brandingRes.getDrawable(
-                    PresenceUtils.getStatusIconId(status));
+            Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(status));
             statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
                     statusIcon.getIntrinsicHeight());
-            s.setSpan(new ImageSpan(statusIcon), 0, 1,
-                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             txtStatus.setText(s);
 
-       //     txtClientType.setText(getClientTypeString(clientType));
+            //     txtClientType.setText(getClientTypeString(clientType));
 
             if (!TextUtils.isEmpty(customStatus)) {
                 txtCustomStatus.setVisibility(View.VISIBLE);
@@ -156,205 +149,186 @@ public class ContactPresenceActivity extends Activity {
         }
         c.close();
     }
-    
-    private void updateUI ()
-    {
-       
+
+    private void updateUI() {
+
         TextView lblFingerprintLocal = (TextView) findViewById(R.id.labelFingerprintLocal);
         TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
         TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
         TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
 
+        if (remoteFingerprint != null) {
+            txtFingerprintRemote.setText(remoteFingerprint);
 
-        if (remoteFingerprint != null)
-        {
-        	txtFingerprintRemote.setText(remoteFingerprint);
-        	
-        	if (remoteFingerprintVerified)
-        	{
-        		lblFingerprintRemote.setText("Their Fingerprint (Verified)");
-        		txtFingerprintRemote.setBackgroundColor(Color.GREEN);
-        	}
-        	else
-        		txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
+            if (remoteFingerprintVerified) {
+                lblFingerprintRemote.setText("Their Fingerprint (Verified)");
+                txtFingerprintRemote.setBackgroundColor(Color.GREEN);
+            } else
+                txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
 
-        	txtFingerprintRemote.setTextColor(Color.BLACK);
-        	
-        	txtFingerprintLocal.setText(localFingerprint);
+            txtFingerprintRemote.setTextColor(Color.BLACK);
+
+            txtFingerprintLocal.setText(localFingerprint);
+        } else {
+            txtFingerprintRemote.setVisibility(View.GONE);
+            txtFingerprintLocal.setVisibility(View.GONE);
+            lblFingerprintRemote.setVisibility(View.GONE);
+            lblFingerprintLocal.setVisibility(View.GONE);
         }
-        else
-        {
-        	txtFingerprintRemote.setVisibility(View.GONE);
-        	txtFingerprintLocal.setVisibility(View.GONE);
-        	lblFingerprintRemote.setVisibility(View.GONE);
-        	lblFingerprintLocal.setVisibility(View.GONE);
-	     }
-        
-        
-       
+
     }
 
     private String getClientTypeString(int clientType) {
         Resources res = getResources();
         switch (clientType) {
-            case Imps.Contacts.CLIENT_TYPE_MOBILE:
-                return res.getString(R.string.client_type_mobile);
+        case Imps.Contacts.CLIENT_TYPE_MOBILE:
+            return res.getString(R.string.client_type_mobile);
 
-            default:
-                return res.getString(R.string.client_type_computer);
+        default:
+            return res.getString(R.string.client_type_computer);
         }
     }
 
     private static void warning(String msg) {
         Log.w(ImApp.LOG_TAG, "<ContactPresenceActivity> " + msg);
     }
-    
-    private void confirmVerify ()
-    {
-    	String message = "Are you sure you want to confirm this key?";
-    	
-    	new AlertDialog.Builder(this)
-        .setTitle("Verify key?")
-        .setMessage(message)
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                verifyRemoteFingerprint();
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Do nothing.
-            }
-        }).show();
+
+    private void confirmVerify() {
+        String message = "Are you sure you want to confirm this key?";
+
+        new AlertDialog.Builder(this).setTitle("Verify key?").setMessage(message)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        verifyRemoteFingerprint();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing.
+                    }
+                }).show();
     }
-    
-    private void verifyRemoteFingerprint ()
-    {
-    	Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT).show();
-    	
+
+    private void verifyRemoteFingerprint() {
+        Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT)
+                .show();
+
         ImApp app = ImApp.getApplication(this);
 
-    	IOtrKeyManager okm;
-		try {
-			okm = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
-	    	okm.verifyKey(remoteAddress);
-	    	remoteFingerprintVerified = true;
-	    	updateUI ();
-	    	
-		} catch (RemoteException e) {
-			Log.e(TAG, "error verifying remote fingerprint",e);
-		}
-		
-		updateUI();
-                
+        IOtrKeyManager okm;
+        try {
+            okm = app.getActiveConnections().get(0).getChatSessionManager()
+                    .getChatSession(remoteAddress).getOtrKeyManager();
+            okm.verifyKey(remoteAddress);
+            remoteFingerprintVerified = true;
+            updateUI();
+
+        } catch (RemoteException e) {
+            Log.e(TAG, "error verifying remote fingerprint", e);
+        }
+
+        updateUI();
+
     }
-    
-    public void startScan ()
-    {
-    	IntentIntegrator.initiateScan(this);
-    	
+
+    public void startScan() {
+        IntentIntegrator.initiateScan(this);
+
     }
-    
-    public void displayQRCode (String text)
-    {
-    	IntentIntegrator.shareText(this, text);
+
+    public void displayQRCode(String text) {
+        IntentIntegrator.shareText(this, text);
     }
-    
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-	     
-    	IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-	     
-	     if (scanResult != null) {
-	        
-	    	 String otherFingerprint = scanResult.getContents();
-	    	 
-	    	 if (otherFingerprint != null && otherFingerprint.equals(remoteFingerprint))
-	    	 {
-	    		 verifyRemoteFingerprint();
-	    	 }
-	    	 
-	    	
-	      }
-	     
-    // else continue with any other code you need in the method
-     }
-    
+
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
+                intent);
+
+        if (scanResult != null) {
+
+            String otherFingerprint = scanResult.getContents();
+
+            if (otherFingerprint != null && otherFingerprint.equals(remoteFingerprint)) {
+                verifyRemoteFingerprint();
+            }
+
+        }
+
+        // else continue with any other code you need in the method
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
-    	
-    	if (remoteFingerprint != null)
-    	{
-    		MenuInflater inflater = getMenuInflater();
-    		inflater.inflate(R.menu.contact_info_menu, menu);
-    	}
-    	
-       
+
+        if (remoteFingerprint != null) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.contact_info_menu, menu);
+        }
+
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-	       	case R.id.menu_scan:
-	        	startScan();
-	        	return true;
-	
-	        case R.id.menu_fingerprint:
-	        	if (remoteFingerprint!=null)
-	        		displayQRCode(localFingerprint);
-	            return true;
-	            
-	        case R.id.menu_verify_fingerprint:
-	        	if (remoteFingerprint!=null)
-	        		confirmVerify();
-	        	return true;
+        case R.id.menu_scan:
+            startScan();
+            return true;
 
-	        case R.id.menu_verify_secret:
-	        	if (remoteFingerprint!=null)
-	        		initSmpUI();
-	        	return true;
-	        }
+        case R.id.menu_fingerprint:
+            if (remoteFingerprint != null)
+                displayQRCode(localFingerprint);
+            return true;
+
+        case R.id.menu_verify_fingerprint:
+            if (remoteFingerprint != null)
+                confirmVerify();
+            return true;
+
+        case R.id.menu_verify_secret:
+            if (remoteFingerprint != null)
+                initSmpUI();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
-    
-    private void initSmpUI ()
-    {
-    	// Set an EditText view to get user input 
-    	//final EditText input = new EditText(this);
-    	String message = "Enter a question? and an answer.";
-    	
-    	LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-    	final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
 
-    	new AlertDialog.Builder(this)
-        .setTitle("OTR Q&A Verification")
-        .setView(viewSmp)
-        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-          
-            	EditText eiQuestion = (EditText)viewSmp.findViewById(R.id.editSmpQuestion);
-            	EditText eiAnswer = (EditText)viewSmp.findViewById(R.id.editSmpAnswer);
-            	 String question = eiQuestion.getText().toString();
-                 String answer = eiAnswer.getText().toString();
-                initSmp (question, answer);
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Do nothing.
-            }
-        }).show();
+    private void initSmpUI() {
+        // Set an EditText view to get user input 
+        //final EditText input = new EditText(this);
+        String message = "Enter a question? and an answer.";
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
+
+        new AlertDialog.Builder(this).setTitle("OTR Q&A Verification").setView(viewSmp)
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
+                        EditText eiAnswer = (EditText) viewSmp.findViewById(R.id.editSmpAnswer);
+                        String question = eiQuestion.getText().toString();
+                        String answer = eiAnswer.getText().toString();
+                        initSmp(question, answer);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing.
+                    }
+                }).show();
     }
-    
-    private void initSmp (String question, String answer)
-    {
-     	ImApp app = ImApp.getApplication(this);
 
-     	IOtrChatSession iOtrSession;
- 		try {
- 			iOtrSession = app.getActiveConnections().get(0).getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
- 			iOtrSession.initSmpVerification(question, answer);
- 	    	
- 		} catch (RemoteException e) {
-			Log.e(TAG, "error init SMP",e);
+    private void initSmp(String question, String answer) {
+        ImApp app = ImApp.getApplication(this);
 
- 		}
+        IOtrChatSession iOtrSession;
+        try {
+            iOtrSession = app.getActiveConnections().get(0).getChatSessionManager()
+                    .getChatSession(remoteAddress).getOtrChatSession();
+            iOtrSession.initSmpVerification(question, answer);
+
+        } catch (RemoteException e) {
+            Log.e(TAG, "error init SMP", e);
+
+        }
     }
 }

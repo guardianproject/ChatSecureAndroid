@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2007 Esmertec AG.
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.engine;
@@ -26,12 +26,12 @@ import android.os.Parcelable;
 /**
  * A <code>Presence</code> is an abstract presentation of the user's presence
  * information.
- *
- * Note that changes made to the Presence data won't be reflected to the
- * server until <code>ImConnection.updateUserPresence</code> is called.
- * Only the logged in user can update its own presence data via
- * <code>ImConnection.updateUserPresence</code>. Changes to any other
- * contact's presence data won't be saved or sent to the server.
+ * 
+ * Note that changes made to the Presence data won't be reflected to the server
+ * until <code>ImConnection.updateUserPresence</code> is called. Only the logged
+ * in user can update its own presence data via
+ * <code>ImConnection.updateUserPresence</code>. Changes to any other contact's
+ * presence data won't be saved or sent to the server.
  */
 public final class Presence implements Parcelable {
     public static final int OFFLINE = 0;
@@ -59,23 +59,22 @@ public final class Presence implements Parcelable {
         this(status, statusText, null, null, clientType);
     }
 
-    public Presence(int status, String statusText, byte[] avatarData,
-            String avatarType, int clientType) {
+    public Presence(int status, String statusText, byte[] avatarData, String avatarType,
+            int clientType) {
         this(status, statusText, avatarData, avatarType, clientType, null);
     }
 
-    public Presence(int status, String statusText, byte[] avatarData,
-            String avatarType, int clientType, Map<String, String> extendedInfo) {
+    public Presence(int status, String statusText, byte[] avatarData, String avatarType,
+            int clientType, Map<String, String> extendedInfo) {
         setStatus(status);
         mStatusText = statusText;
         setAvatar(avatarData, avatarType);
         mClientType = clientType;
         mExtendedInfo = extendedInfo;
     }
-    
+
     public Presence(Presence p) {
-        this(p.mStatus, p.mStatusText, p.mAvatarData, p.mAvatarType,
-                p.mClientType, p.mExtendedInfo);
+        this(p.mStatus, p.mStatusText, p.mAvatarData, p.mAvatarType, p.mClientType, p.mExtendedInfo);
     }
 
     public Presence(Parcel source) {
@@ -91,15 +90,16 @@ public final class Presence implements Parcelable {
 
     /**
      * Get avatar bitmap.
-     *
-     * @return Avatar bitmap. Note any changes made to the bitmap itself
-     *         won't be saved or sent back to the server. To change avatar
-     *         call <code>setAvatar</code> with a <b>new</b> bitmap instance.
-     * FIXME: Avatar is stored as a byte array and a type string now, it will
-     * be encapsulated with an Object after we change to ContentProvider.
+     * 
+     * @return Avatar bitmap. Note any changes made to the bitmap itself won't
+     *         be saved or sent back to the server. To change avatar call
+     *         <code>setAvatar</code> with a <b>new</b> bitmap instance. FIXME:
+     *         Avatar is stored as a byte array and a type string now, it will
+     *         be encapsulated with an Object after we change to
+     *         ContentProvider.
      */
     public byte[] getAvatarData() {
-        if(mAvatarData == null){
+        if (mAvatarData == null) {
             return null;
         } else {
             byte[] data = new byte[mAvatarData.length];
@@ -110,7 +110,7 @@ public final class Presence implements Parcelable {
 
     /**
      * Get the MIME type of avatar.
-     *
+     * 
      * @return the MIME type of avatar.
      */
     public String getAvatarType() {
@@ -134,7 +134,7 @@ public final class Presence implements Parcelable {
     }
 
     public void setStatus(int status) {
-        if (status < OFFLINE || status > AVAILABLE ) {
+        if (status < OFFLINE || status > AVAILABLE) {
             throw new IllegalArgumentException("invalid presence status value");
         }
         mStatus = status;
@@ -145,7 +145,7 @@ public final class Presence implements Parcelable {
     }
 
     public void setAvatar(byte[] data, String type) {
-        if(data != null) {
+        if (data != null) {
             mAvatarData = new byte[data.length];
             System.arraycopy(data, 0, mAvatarData, 0, data.length);
         } else {

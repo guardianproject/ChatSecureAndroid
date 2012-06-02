@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2009 Myriad Group AG
- * Copyright (C) 2009 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (C) 2009 Myriad Group AG Copyright (C) 2009 The Android Open Source
+ * Project
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package info.guardianproject.otr.app.im.app;
@@ -75,14 +75,13 @@ public class ProviderListItem extends LinearLayout {
 
         mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
         mProviderFullnameColumn = c.getColumnIndexOrThrow(Imps.Provider.FULLNAME);
-        mActiveAccountIdColumn = c.getColumnIndexOrThrow(
-                Imps.Provider.ACTIVE_ACCOUNT_ID);
-        mActiveAccountUserNameColumn = c.getColumnIndexOrThrow(
-                Imps.Provider.ACTIVE_ACCOUNT_USERNAME);
-        mAccountPresenceStatusColumn = c.getColumnIndexOrThrow(
-                Imps.Provider.ACCOUNT_PRESENCE_STATUS);
-        mAccountConnectionStatusColumn = c.getColumnIndexOrThrow(
-                Imps.Provider.ACCOUNT_CONNECTION_STATUS);
+        mActiveAccountIdColumn = c.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+        mActiveAccountUserNameColumn = c
+                .getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_USERNAME);
+        mAccountPresenceStatusColumn = c
+                .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_PRESENCE_STATUS);
+        mAccountConnectionStatusColumn = c
+                .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_CONNECTION_STATUS);
 
         mProviderNameColors = mProviderName.getTextColors();
         mLoginNameColors = mLoginName.getTextColors();
@@ -102,8 +101,7 @@ public class ProviderListItem extends LinearLayout {
 
         ImApp app = ImApp.getApplication(mActivity);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
-        providerIcon.setImageDrawable(
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
         mUnderBubble.setBackgroundDrawable(mDefaultBackground);
         statusIcon.setVisibility(View.GONE);
@@ -125,36 +123,35 @@ public class ProviderListItem extends LinearLayout {
             chatView.setVisibility(View.GONE);
 
             switch (connectionStatus) {
-                case Imps.ConnectionStatus.CONNECTING:
-                    secondRowText = r.getString(R.string.signing_in_wait);
-                    break;
+            case Imps.ConnectionStatus.CONNECTING:
+                secondRowText = r.getString(R.string.signing_in_wait);
+                break;
 
-                case Imps.ConnectionStatus.ONLINE:
-                    int presenceIconId = getPresenceIconId(cursor);
-                    statusIcon.setImageDrawable(
-                            brandingRes.getDrawable(presenceIconId));
-                    statusIcon.setVisibility(View.VISIBLE);
-                    ContentResolver cr = mActivity.getContentResolver();
+            case Imps.ConnectionStatus.ONLINE:
+                int presenceIconId = getPresenceIconId(cursor);
+                statusIcon.setImageDrawable(brandingRes.getDrawable(presenceIconId));
+                statusIcon.setVisibility(View.VISIBLE);
+                ContentResolver cr = mActivity.getContentResolver();
 
-                    int count = getConversationCount(cr, accountId);
-                    if (count > 0) {
-                        mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
-                        chatView.setVisibility(View.VISIBLE);
-                        chatView.setText(r.getString(R.string.conversations, count));
+                int count = getConversationCount(cr, accountId);
+                if (count > 0) {
+                    mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
+                    chatView.setVisibility(View.VISIBLE);
+                    chatView.setText(r.getString(R.string.conversations, count));
 
-                        providerName.setTextColor(0xff000000);
-                        loginName.setTextColor(0xff000000);
-                        chatView.setTextColor(0xff000000);
-                    } else {
-                        chatView.setVisibility(View.GONE);
-                    }
+                    providerName.setTextColor(0xff000000);
+                    loginName.setTextColor(0xff000000);
+                    chatView.setTextColor(0xff000000);
+                } else {
+                    chatView.setVisibility(View.GONE);
+                }
 
-                    secondRowText = cursor.getString(mActiveAccountUserNameColumn);
-                    break;
+                secondRowText = cursor.getString(mActiveAccountUserNameColumn);
+                break;
 
-                default:
-                    secondRowText = cursor.getString(mActiveAccountUserNameColumn);
-                    break;
+            default:
+                secondRowText = cursor.getString(mActiveAccountUserNameColumn);
+                break;
             }
 
             loginName.setText(secondRowText);
@@ -190,24 +187,25 @@ public class ProviderListItem extends LinearLayout {
     private int getPresenceIconId(Cursor cursor) {
         int presenceStatus = cursor.getInt(mAccountPresenceStatusColumn);
 
-        if (LOCAL_DEBUG) log("getPresenceIconId: presenceStatus=" + presenceStatus);
+        if (LOCAL_DEBUG)
+            log("getPresenceIconId: presenceStatus=" + presenceStatus);
 
         switch (presenceStatus) {
-            case Imps.Presence.AVAILABLE:
-                return BrandingResourceIDs.DRAWABLE_PRESENCE_ONLINE;
+        case Imps.Presence.AVAILABLE:
+            return BrandingResourceIDs.DRAWABLE_PRESENCE_ONLINE;
 
-            case Imps.Presence.IDLE:
-            case Imps.Presence.AWAY:
-                return BrandingResourceIDs.DRAWABLE_PRESENCE_AWAY;
+        case Imps.Presence.IDLE:
+        case Imps.Presence.AWAY:
+            return BrandingResourceIDs.DRAWABLE_PRESENCE_AWAY;
 
-            case Imps.Presence.DO_NOT_DISTURB:
-                return BrandingResourceIDs.DRAWABLE_PRESENCE_BUSY;
+        case Imps.Presence.DO_NOT_DISTURB:
+            return BrandingResourceIDs.DRAWABLE_PRESENCE_BUSY;
 
-            case Imps.Presence.INVISIBLE:
-                return BrandingResourceIDs.DRAWABLE_PRESENCE_INVISIBLE;
+        case Imps.Presence.INVISIBLE:
+            return BrandingResourceIDs.DRAWABLE_PRESENCE_INVISIBLE;
 
-            default:
-                return BrandingResourceIDs.DRAWABLE_PRESENCE_OFFLINE;
+        default:
+            return BrandingResourceIDs.DRAWABLE_PRESENCE_OFFLINE;
         }
     }
 
