@@ -33,6 +33,17 @@ public class XmppStreamHandler {
 		startListening();
 	}
 	
+	/** Perform a quick shutdown of the XMPPConnection if a resume is possible */
+	public void quickShutdown() {
+	    if (isResumePossible()) {
+	        mConnection.quickShutdown();
+	        // We will not necessarily get any notification from a quickShutdown, so adjust our state here.
+	        closeOnError();
+	    } else {
+	        mConnection.shutdown();
+	    }
+	}
+	
 	public boolean isResumePossible() {
 		return sessionId != null;
 	}
@@ -53,6 +64,7 @@ public class XmppStreamHandler {
 	}
 
 	private void sendEnablePacket() {
+	        debug("sm send enable " + sessionId);
 		if (sessionId != null) {
 			// TODO binding
 			StreamHandlingPacket resumePacket = new StreamHandlingPacket("resume", URN_SM_2);
@@ -66,6 +78,14 @@ public class XmppStreamHandler {
 		}
 	}
 	
+	private void closeOnError() {
+	    if (isSmEnabled && sessionId != null) {
+	        previousIncomingStanzaCount = incomingStanzaCount;
+	    }
+	    isSmEnabled = false;
+	    isSmAvailable = false;
+	}
+
 	private void startListening() {
         mConnection.addConnectionListener(new ConnectionListener() {
 			public void reconnectionSuccessful() {
@@ -82,13 +102,9 @@ public class XmppStreamHandler {
 			public void reconnectingIn(int seconds) {}
 			
 			public void connectionClosedOnError(Exception e) {
-				if (isSmEnabled && sessionId != null) {
-					previousIncomingStanzaCount = incomingStanzaCount;
-				}
-				isSmEnabled = false;
-				isSmAvailable = false;
+				closeOnError();
 			}
-			
+
 			public void connectionClosed() {
 				previousIncomingStanzaCount = -1;
 			}});
@@ -96,11 +112,12 @@ public class XmppStreamHandler {
 		mConnection.addPacketListener(new PacketListener() {
 			public void processPacket(Packet packet) {
 				incomingStanzaCount++;
-				debug("" + incomingStanzaCount + " : " + packet.toXML());
+				//debug("" + incomingStanzaCount + " : " + packet.toXML());
 				if (packet instanceof StreamHandlingPacket) {
 					StreamHandlingPacket shPacket = (StreamHandlingPacket)packet;
 					String name = shPacket.getElementName();
 					if ("sm".equals(name)) {
+					        debug("sm avail");
 						isSmAvailable = true;
 					} else if ("r".equals(name)) {
 						incomingStanzaCount--;
@@ -110,6 +127,7 @@ public class XmppStreamHandler {
 					} else if ("a".equals(name)) {
 						// ignore for now 
 					} else if ("enabled".equals(name)) {
+					        debug("sm enabled " + sessionId);
 						incomingStanzaCount = 0;
 						isSmEnabled = true;
 						mConnection.getRoster().setOfflineOnError(false);
@@ -118,10 +136,12 @@ public class XmppStreamHandler {
 							sessionId = shPacket.getAttribute("id");
 						}
 					} else if ("resumed".equals(name)) {
+					        debug("sm resumed");
 						incomingStanzaCount = previousIncomingStanzaCount;
 						isSmEnabled = true;
 					} else if ("failed".equals(name)) {
 						// Failed, shutdown and the parent will retry
+					        debug("sm failed");
 						mConnection.getRoster().setOfflineOnError(true);
 						mConnection.getRoster().setOfflinePresences();
 						sessionId = null;
