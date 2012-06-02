@@ -30,7 +30,6 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
@@ -68,7 +67,6 @@ class ServerTrustManager implements X509TrustManager {
 
     private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
     private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
-    private final static Pattern ouPattern = Pattern.compile("(?i)(ou=)([^,]*)");
     
     private final static String FINGERPRINT_TYPE = "SHA1";
 
@@ -78,18 +76,34 @@ class ServerTrustManager implements X509TrustManager {
      * Holds the domain of the remote server we are trying to connect
      */
     private String server;
+	private String domain;
     private KeyStore trustStore;
 
-    private XmppConnection xmppConnection;
-    
     private Context context;
     
-    public ServerTrustManager(Context context, String server, ConnectionConfiguration configuration, XmppConnection xmppConnection) {
+    /**
+     * Construct a trust manager for XMPP connections.  Certificates are considered verified if:
+     * 
+     * <ul>
+     * <li>The root certificate is in our trust store
+     * <li>The chain is valid
+     * <li>The leaf certificate contains the identity of the domain or the requested server
+     * </ul>
+     * 
+     * @param context - the Android context for presenting notifications
+     * @param domain - the domain requested by the user
+     * @param requestedServer - the connect server requested by the user
+     * @param configuration - the XMPP configuration
+     */
+    public ServerTrustManager(Context context, String domain, String requestedServer, ConnectionConfiguration configuration) {
     
     	this.context = context;
     	this.configuration = configuration;
-        this.server = server;
-        this.xmppConnection = xmppConnection;
+        this.domain = domain;
+        this.server = requestedServer;
+        if (this.server == null) {
+        	this.server = domain;
+        }
         
         InputStream in = null;
         try {
@@ -257,19 +271,33 @@ class ServerTrustManager implements X509TrustManager {
         if (configuration.isNotMatchingDomainCheckEnabled()) {
             // Verify that the first certificate in the chain corresponds to
             // the server we desire to authenticate.
-            // Check if the certificate uses a wildcard indicating that subdomains are valid
-            if (peerIdentities.size() == 1 && peerIdentities.get(0).startsWith("*.")) {
-                // Remove the wildcard
-                String peerIdentity = peerIdentities.get(0).replace("*.", "");
-                // Check if the requested subdomain matches the certified domain
-                if (!server.endsWith(peerIdentity)) {
-                	showCertMessage("domain check failed", peerIdentities.get(0) + " is not " + server, x509Certificates[0]);
-
-                    throw new CertificateException("target verification failed of " + peerIdentities);
-                }
-            }
-            else if (!peerIdentities.contains(server)) {
-            	showCertMessage("domain check failed", peerIdentities.get(0) + " is not " + server, x509Certificates[0]);
+        	boolean found = false;
+        	for (String peerIdentity : peerIdentities) {
+                // Check if the certificate uses a wildcard.
+        		// This indicates that immediate subdomains are valid.
+        		if (peerIdentity.startsWith("*.")) {
+        			// Remove wildcard: *.foo.info -> .foo.info
+        			String stem = peerIdentity.substring(1);
+        			
+        			// Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
+        			if (server.replaceFirst("[^.]+", "").equals(stem) ||
+        					domain.replaceFirst("[^.]+", "").equals(stem)) {
+        				found = true;
+        				break;
+        			}
+        		} else {
+        			if (server.equals(peerIdentity) || domain.equals(peerIdentity)) {
+        				found = true;
+        				break;
+        			}
+        		}
+        	}
+        	
+        	if (!found) {
+            	showCertMessage("domain check failed",
+            			join(peerIdentities) +
+            			" does not contain '" + server + "' or '" + domain + "'",
+            			x509Certificates[0]);
 
                 throw new CertificateException("target verification failed of " + peerIdentities);
             }
@@ -292,7 +320,20 @@ class ServerTrustManager implements X509TrustManager {
 
     }
 
-    private int DEFAULT_NOTIFY_ID = 10;
+    private String join(List<String> strs) {
+    	boolean first = true;
+    	StringBuffer buf = new StringBuffer();
+    	for (String str : strs) {
+    		if (!first) {
+    			buf.append(':');
+    		}
+    		first = false;
+    		buf.append(str);
+    	}
+    	return buf.toString();
+	}
+
+	private int DEFAULT_NOTIFY_ID = 10;
     
     private void showCertMessage (String title, String msg, X509Certificate cert)
     {
