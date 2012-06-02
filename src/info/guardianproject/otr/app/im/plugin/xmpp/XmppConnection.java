@@ -869,7 +869,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 				mNeedReconnect = false;
 				clearPing();
 				// Do not try to reconnect anymore if we were asked to suspend
-				mConnection.shutdown();
+				mStreamHandler.quickShutdown();
 			}
 		});
 	}
@@ -1543,7 +1543,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		try {
 			if (mConnection != null && mConnection.isConnected())
 			{
-				mConnection.shutdown();
+				mStreamHandler.quickShutdown();
 			}
 		}
 		catch (Exception e) {
@@ -1611,9 +1611,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 			try {
 				if (mStreamHandler.isResumePossible()) {
 					// Connect without binding, will automatically trigger a resume
+				        debug(TAG, "resume");
 					mConnection.connect(false);
 					//initServiceDiscovery();
 				} else {
+				        debug(TAG, "no resume");
 					mConnection.connect();
 					//initServiceDiscovery();
 					if (!mConnection.isAuthenticated()) {
@@ -1635,7 +1637,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 					sendPresencePacket();
 				}
 			} catch (Exception e) {
-				mConnection.shutdown();
+				mStreamHandler.quickShutdown();
 				Log.e(TAG, "reconnection attempt failed", e);
 				// Smack incorrectly notified us that reconnection was successful, reset in case it fails
 				mNeedReconnect = true;
@@ -1660,7 +1662,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 
 	public void debug(String tag, String msg)
 	{
-//		Log.d(tag, "" + mGlobalId + " : " + msg);
+		//Log.d(tag, "" + mGlobalId + " : " + msg);
 	}
 
 
