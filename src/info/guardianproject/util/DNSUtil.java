@@ -89,16 +89,15 @@ public class DNSUtil {
 	 * Returns the host name and port that the specified XMPP server can be
 	 * reached at for client-to-server communication. A DNS lookup for a SRV
 	 * record in the form "_xmpp-client._tcp.example.com" is attempted,
-	 * according to section 14.4 of RFC 3920. If that lookup fails, a lookup in
-	 * the older form of "_jabber._tcp.example.com" is attempted since servers
-	 * that implement an older version of the protocol may be listed using that
-	 * notation. If that lookup fails as well, it's assumed that the XMPP server
+	 * according to section 14.4 of RFC 3920.
+	 * 
+	 * If that lookup fails, it's assumed that the XMPP server
 	 * lives at the host resolved by a DNS lookup at the specified domain on the
 	 * default port of 5222.
 	 * <p>
 	 * 
 	 * As an example, a lookup for "example.com" may return
-	 * "im.example.com:5269".
+	 * "im.example.com:5222".
 	 * 
 	 * Note on SRV record selection. We now check priority and weight, but we
 	 * still don't do this correctly. The missing behavior is this: if we fail
@@ -121,24 +120,15 @@ public class DNSUtil {
 				}
 			}
 		}
-		HostAddress result = resolveSRV("_xmpp-client._tcp." + domain);
-		
-		if (result == null) {
-			result = resolveSRV("_jabber._tcp." + domain);
-		}
-		
+		HostAddress result = resolveSRV("_xmpp-client._tcp." + domain);		
 
-		if (result == null) {
-			result = resolveSRV("_xmpp-server._tcp." + domain);
-		}
-		
-		
-		if (result == null) {
+		if (result != null) {
+		    // Add item to cache.
+		    synchronized (ccache) {
+		        ccache.put(domain, result);
+		    }
+		} else {
 			result = new HostAddress(domain, 5222);
-		}
-		// Add item to cache.
-		synchronized (ccache) {
-			ccache.put(domain, result);
 		}
 		return result;
 	}
@@ -176,9 +166,6 @@ public class DNSUtil {
 		HostAddress result = resolveSRV("_xmpp-server._tcp." + domain);
 		if (result == null) {
 			result = resolveSRV("_jabber._tcp." + domain);
-		}
-		if (result == null) {
-			result = resolveSRV("_xmpp-client._tcp." + domain);
 		}
 		if (result == null) {
 			result = new HostAddress(domain, 5269);

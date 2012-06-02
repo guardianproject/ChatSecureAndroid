@@ -181,7 +181,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mExecutor = null;
 		// This will send us an interrupt, which we will ignore.  We will terminate
 		// anyway after the caller is done.  This also drains the executor queue.
-		executor.shutdownNow();
+		if (executor != null)
+		    executor.shutdownNow();
 	}
 	
 	public void sendPacket(final org.jivesoftware.smack.packet.Packet packet) {
@@ -446,10 +447,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		boolean useSASL = true;//!allowPlainAuth;
 		
 		String domain = providerSettings.getDomain();
-		String server = providerSettings.getServer();
+		String requestedServer = providerSettings.getServer();
 		String xmppResource = providerSettings.getXmppResource();
 		mPriority = providerSettings.getXmppResourcePrio();
 		int serverPort = providerSettings.getPort();
+		
+		String server = requestedServer;
 		
 		providerSettings.close(); // close this, which was opened in do_login()
 		
@@ -460,8 +463,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     	if (mProxyInfo == null)
     		 mProxyInfo = ProxyInfo.forNoProxy();
 
-    	// try getting a connection without DNS SRV first, and if that doesn't work and the prefs allow it, use DNS SRV
-    	if (doDnsSrv) {
+    	// If user did not specify a server, and SRV requested then lookup SRV
+    	if (doDnsSrv && requestedServer == null) {
     		
     		//java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
     		//java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -469,12 +472,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     		debug(TAG, "(DNS SRV) resolving: "+domain);
     		DNSUtil.HostAddress srvHost = DNSUtil.resolveXMPPDomain(domain);
     		server = srvHost.getHost();
-    		//serverPort = srvHost.getPort(); //ignore port right now, as we are always a client
+    		if (serverPort <= 0) {
+    		    // If user did not override port, use port from SRV record
+    		    serverPort = srvHost.getPort();
+    		}
     		debug(TAG, "(DNS SRV) resolved: "+domain+"=" + server + ":" + serverPort);
     		
     	}
 
-    	if (server == null) { // no server specified in prefs, use the domain
+    	// No server requested and SRV lookup wasn't requested or returned nothing - use domain
+    	if (server == null) {
     		debug(TAG, "(use domain) ConnectionConfiguration("+domain+", "+serverPort+", "+domain+", mProxyInfo);");
     		
     		if (mProxyInfo == null)
@@ -489,11 +496,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler
     			mConfig = new ConnectionConfiguration(server, serverPort, domain);
     		else
     			mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
-
-    		//if domain of login user is the same as server
-    		doVerifyDomain = (domain.equals(server));
-    		
-        	
     	}
 
     	mConfig.setDebuggerEnabled(DEBUG_ENABLED);
@@ -542,10 +544,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 		mConfig.setTruststorePassword(TRUSTSTORE_PASS);
 		
 		
-		if (server == null)
-			initSSLContext(domain, mConfig);
-		else
-    		initSSLContext(server, mConfig);
+		// Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
+		// can enable MITM.
+		initSSLContext(domain, requestedServer, mConfig);
 		
 		// Don't use smack reconnection - not reliable
 		mConfig.setReconnectionAllowed(false);		
@@ -736,7 +737,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	}
 
 
-	private void initSSLContext (String server, ConnectionConfiguration config) throws Exception
+	private void initSSLContext (String domain, String requestedServer, ConnectionConfiguration config) throws Exception
 	{
 
        
@@ -757,7 +758,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler
 	     }
 	     
 	     sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-	     sTrustManager = new ServerTrustManager(aContext, server, config, this);
+	     sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
 	     
 	     sslContext.init(kms,
                  new javax.net.ssl.TrustManager[]{sTrustManager},

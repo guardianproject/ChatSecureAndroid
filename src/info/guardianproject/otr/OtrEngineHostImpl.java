@@ -65,8 +65,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         public void removeConnection (ImConnectionAdapter connection)
         {
                 mConnections.remove(connection);
-                this.mConnections.remove(connection.getLoginUser().getAddress().getScreenName());
-
         }
         
         public ImConnectionAdapter findConnection(String localAddress) {
