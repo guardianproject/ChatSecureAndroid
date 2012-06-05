@@ -9,7 +9,7 @@ public class OtrDebugLogger {
     public static boolean errorLog = true;
 
     public static void log(String msg) {
-        if (debugLog)
+        if (debugLog && Log.isLoggable(TAG, Log.DEBUG))
             Log.d(TAG, msg);
     }
 

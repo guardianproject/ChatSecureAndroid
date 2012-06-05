@@ -41,10 +41,8 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
-import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
-import org.jivesoftware.smack.ConnectionCreationListener;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
@@ -77,7 +75,7 @@ import android.util.Log;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
-    final static String TAG = "Gibberbot.XmppConnection";
+    final static String TAG = "GB.XmppConnection";
     private final static boolean DEBUG_ENABLED = false;
 
     private XmppContactList mContactListManager;
@@ -541,6 +539,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void processPacket(Packet packet) {
+                debug(TAG, "receive message");
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
                 String address = parseAddressBase(smackMessage.getFrom());
                 ChatSession session = findOrCreateSession(address);
@@ -1602,7 +1601,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     public void debug(String tag, String msg) {
-        //Log.d(tag, "" + mGlobalId + " : " + msg);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(tag, "" + mGlobalId + " : " + msg);
+        }
     }
 
     @Override

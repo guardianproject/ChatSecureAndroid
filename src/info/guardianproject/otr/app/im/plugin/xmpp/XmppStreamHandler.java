@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jivesoftware.smack.ConnectionListener;
+import org.jivesoftware.smack.PacketInterceptor;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Packet;
@@ -27,6 +28,7 @@ public class XmppStreamHandler {
     private long previousIncomingStanzaCount = -1;
     private String sessionId;
     private long incomingStanzaCount = 0;
+    private long outgoingStanzaCount = 0;
 
     public XmppStreamHandler(MyXMPPConnection connection) {
         mConnection = connection;
@@ -112,10 +114,23 @@ public class XmppStreamHandler {
             }
         });
 
+        mConnection.addPacketInterceptor(new PacketInterceptor() {
+            public void interceptPacket(Packet packet) {
+                if (isSmEnabled)
+                    outgoingStanzaCount++;
+                trace("send " + outgoingStanzaCount + " : " + packet.toXML());
+            }
+        }, new PacketFilter() {
+            public boolean accept(Packet packet) {
+                return true;
+            }
+        });
+        
         mConnection.addPacketListener(new PacketListener() {
             public void processPacket(Packet packet) {
-                incomingStanzaCount++;
-                //debug("" + incomingStanzaCount + " : " + packet.toXML());
+                if (isSmEnabled)
+                    incomingStanzaCount++;
+                trace("recv " + incomingStanzaCount + " : " + packet.toXML());
                 if (packet instanceof StreamHandlingPacket) {
                     StreamHandlingPacket shPacket = (StreamHandlingPacket) packet;
                     String name = shPacket.getElementName();
@@ -132,6 +147,7 @@ public class XmppStreamHandler {
                     } else if ("enabled".equals(name)) {
                         debug("sm enabled " + sessionId);
                         incomingStanzaCount = 0;
+                        outgoingStanzaCount = 0;
                         isSmEnabled = true;
                         mConnection.getRoster().setOfflineOnError(false);
                         String resume = shPacket.getAttribute("resume");
@@ -176,7 +192,15 @@ public class XmppStreamHandler {
     }
 
     private void debug(String message) {
-        //Log.d(XmppConnection.TAG, message);
+        if (Log.isLoggable(XmppConnection.TAG, Log.DEBUG)) {
+            Log.d(XmppConnection.TAG, message);
+        }
+    }
+
+    private void trace(String message) {
+        if (Log.isLoggable(XmppConnection.TAG, Log.VERBOSE)) {
+            Log.v(XmppConnection.TAG, message);
+        }
     }
 
     static class StreamHandlingPacket extends UnknownPacket {
