@@ -755,7 +755,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             type = Presence.AWAY;
         else if (rmode == Mode.dnd)
             type = Presence.DO_NOT_DISTURB;
-        else if (rtype == Type.unavailable)
+        else if (rtype == Type.unavailable || rtype == Type.error)
             type = Presence.OFFLINE;
 
         return type;
@@ -1223,6 +1223,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     Log.e(TAG, "could not find entry " + address + " in group " + list.getName());
                     return;
                 }
+
+                // Remove from Roster if this is the last group
+                if (entry.getGroups().size() <= 1)
+                    roster.removeEntry(entry);
+
                 group.removeEntry(entry);
             } catch (XMPPException e) {
                 Log.e(TAG, "remove entry failed", e);
