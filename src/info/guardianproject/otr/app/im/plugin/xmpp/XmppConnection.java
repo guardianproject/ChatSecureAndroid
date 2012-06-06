@@ -181,6 +181,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             executor.shutdownNow();
     }
 
+    // For testing
+    boolean joinGracefully() throws InterruptedException {
+        final ExecutorService executor = mExecutor;
+        mExecutor = null;
+        // This will send us an interrupt, which we will ignore.  We will terminate
+        // anyway after the caller is done.  This also drains the executor queue.
+        if (executor != null) {
+            executor.shutdown();
+            return executor.awaitTermination(1, TimeUnit.SECONDS);
+        }
+        
+        return false;
+    }
+
     public void sendPacket(final org.jivesoftware.smack.packet.Packet packet) {
         execute(new Runnable() {
             @Override
