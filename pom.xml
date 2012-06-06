@@ -79,9 +79,8 @@
     <dependency>
       <groupId>com.pivotallabs</groupId>
       <artifactId>robolectric</artifactId>
-      <version>1.1.0</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/${robo.dir}/lib/robolectric-1.1-jar-with-dependencies.jar</systemPath>
+      <version>1.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>asmack</groupId>
