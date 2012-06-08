@@ -64,6 +64,7 @@ import android.util.Log;
  */
 class ServerTrustManager implements X509TrustManager {
 
+    private static final String TAG = "GB.SSL";
     private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
     private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
 
@@ -119,7 +120,7 @@ class ServerTrustManager implements X509TrustManager {
 
             trustStore.load(in, configuration.getTruststorePassword().toCharArray());
         } catch (Exception e) {
-            Log.e("SSL", e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
             // Disable root CA checking
             configuration.setVerifyRootCAEnabled(false);
         } finally {
@@ -224,8 +225,9 @@ class ServerTrustManager implements X509TrustManager {
                                 certFinal.verify(cert.getPublicKey());
                                 trusted = true;
 
-                                showCertMessage("TLS/SSL Certificate Verified",
-                                        getFingerprint(certFinal, FINGERPRINT_TYPE), certFinal);
+                                Log.d(TAG, "TLS/SSL Certificate Verified " + getFingerprint(certFinal, FINGERPRINT_TYPE));
+//                                showCertMessage("TLS/SSL Certificate Verified",
+//                                        getFingerprint(certFinal, FINGERPRINT_TYPE), certFinal);
 
                             } catch (Exception e) {
                                 RemoteImService.debug("error on ssl verify", e);
@@ -234,7 +236,6 @@ class ServerTrustManager implements X509TrustManager {
                         }
 
                         if (trusted) {
-                            //System.out.println("TRUSTED!");
                             break;
                         }
                     }
