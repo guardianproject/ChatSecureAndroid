@@ -76,7 +76,7 @@ import android.util.Log;
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
     final static String TAG = "GB.XmppConnection";
-    private final static boolean DEBUG_ENABLED = false;
+    private final static boolean DEBUG_ENABLED = true;
 
     private XmppContactList mContactListManager;
     private Contact mUser;
@@ -431,7 +431,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initConnection(String userName, final String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
-        //		android.os.Debug.waitForDebugger();
+//        		android.os.Debug.waitForDebugger();
 
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -460,7 +460,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mProxyInfo = ProxyInfo.forNoProxy();
 
         // If user did not specify a server, and SRV requested then lookup SRV
-        if (doDnsSrv && requestedServer == null) {
+        if (doDnsSrv && (requestedServer == null || requestedServer.length() == 0)) {
 
             //java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
             //java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
