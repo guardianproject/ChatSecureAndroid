@@ -19,6 +19,7 @@ public class SmpResponseActivity extends Activity {
     private EditText mInputSMP;
     private String mSessionId;
     private String mQuestion;
+    private long mProviderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class SmpResponseActivity extends Activity {
         mInputSMP = new EditText(this);
 
         mSessionId = getIntent().getStringExtra("sid");
+        mProviderId = getIntent().getLongExtra("provider", -1);
         mQuestion = getIntent().getStringExtra("q");
         showQuestionDialog();
     }
@@ -56,8 +58,7 @@ public class SmpResponseActivity extends Activity {
 
         IOtrChatSession iOtrSession;
         try {
-            iOtrSession = app.getActiveConnections().get(0).getChatSessionManager()
-                    .getChatSession(sid).getOtrChatSession();
+            iOtrSession = app.getChatSession(mProviderId, sid).getOtrChatSession();
             iOtrSession.respondSmpVerification(answer);
 
         } catch (RemoteException e) {

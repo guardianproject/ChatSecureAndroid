@@ -18,6 +18,8 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.Broadcaster;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
@@ -65,7 +67,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ImApp extends Application {
-    public static final String LOG_TAG = "ImApp";
+    public static final String LOG_TAG = "GB.ImApp";
 
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
     public static final String EXTRA_INTENT_PASSWORD = "password";
@@ -758,7 +760,7 @@ public class ImApp extends Application {
         context.getResources().updateConfiguration(config,
                 context.getResources().getDisplayMetrics());
 
-        Log.d("Gibberbot", "locale = " + locale.getDisplayName());
+        Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -769,5 +771,27 @@ public class ImApp extends Application {
 
         return true;
     }
+    
+    public IChatSession getChatSession(long providerId, String remoteAddress) {
+        IImConnection conn = getConnection(providerId);
 
+        IChatSessionManager chatSessionManager = null;
+        if (conn != null) {
+            try {
+                chatSessionManager = conn.getChatSessionManager();
+            } catch (RemoteException e) {
+                Log.e(LOG_TAG, "error in getting ChatSessionManager", e);
+            }
+        }
+
+        if (chatSessionManager != null) {
+            try {
+                return chatSessionManager.getChatSession(remoteAddress);
+            } catch (RemoteException e) {
+                Log.e(LOG_TAG, "error in getting ChatSession", e);
+            }
+        }
+
+        return null;
+    }
 }
