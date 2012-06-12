@@ -51,7 +51,7 @@ public class SessionImpl implements Session {
     private SessionKeys[][] sessionKeys;
     private Vector<byte[]> oldMacKeys;
     private static Logger logger = Logger.getLogger(SessionImpl.class.getName());
-    private static List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
+    private List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
     private BigInteger ess;
 
     public SessionImpl(SessionID sessionID, OtrEngineHost listener) {

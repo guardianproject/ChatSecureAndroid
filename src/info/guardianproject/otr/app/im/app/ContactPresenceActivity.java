@@ -67,8 +67,8 @@ public class ContactPresenceActivity extends Activity {
 
     private final static String TAG = "Gibberbot";
 
-    public ContactPresenceActivity(Context context, AttributeSet attrs) {
-        mApp = ImApp.getApplication((Activity)context);
+    public ContactPresenceActivity() {
+        mApp = ImApp.getApplication(this);
     }
 
     @Override
@@ -119,9 +119,7 @@ public class ContactPresenceActivity extends Activity {
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
 
-            ImApp app = ImApp.getApplication(this);
-
-            BrandingResources brandingRes = app.getBrandingResource(providerId);
+            BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,

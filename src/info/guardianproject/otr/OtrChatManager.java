@@ -4,6 +4,7 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -17,6 +18,7 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.OtrSm;
 import net.java.otr4j.session.OtrSm.OtrSmEngineHost;
+import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
@@ -253,37 +255,44 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         OtrDebugLogger.log("session status changed: " + sStatus);
 
+        final Session session = mOtrEngine.getSession(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID);
+
+        
         if (sStatus == SessionStatus.ENCRYPTED) {
 
             PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
             mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
 
-            OtrSm otrSm = mOtrSms.get(sessionID);
-
             if (otrSm == null) {
                 // SMP handler - make sure we only add this once per session!
-                otrSm = new OtrSm(mOtrEngine.getSession(sessionID), mOtrEngineHost.getKeyManager(),
+                otrSm = new OtrSm(session, mOtrEngineHost.getKeyManager(),
                         sessionID, OtrChatManager.this);
-                mOtrEngine.getSession(sessionID).addTlvHandler(otrSm);
+                session.addTlvHandler(otrSm);
 
                 mOtrSms.put(sessionID, otrSm);
             }
         } else if (sStatus == SessionStatus.PLAINTEXT) {
 
             try {
+                if (otrSm != null) {
+                    session.removeTlvHandler(otrSm);
+                    mOtrSms.remove(sessionID);
+                }
                 mOtrEngine.endSession(sessionID);
             } catch (OtrException e) {
                 OtrDebugLogger.log("error ending session", e);
             }
-
         } else if (sStatus == SessionStatus.FINISHED) {
             try {
+                if (otrSm != null) {
+                    session.removeTlvHandler(otrSm);
+                    mOtrSms.remove(sessionID);
+                }
                 mOtrEngine.endSession(sessionID);
             } catch (OtrException e) {
                 OtrDebugLogger.log("error ending session", e);
             }
-            mOtrSms.remove(sessionID);
-
         }
 
     }
@@ -343,6 +352,12 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         dialog.putExtra("q", question);
         dialog.putExtra("sid", sessionID.getUserID());
+        ImConnectionAdapter connection = mOtrEngineHost.findConnection(sessionID.getAccountID());
+        if (connection == null) {
+            OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.getAccountID());
+            return;
+        }
+        dialog.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, connection.getProviderId());
 
         mContext.startActivity(dialog);
 
