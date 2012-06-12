@@ -41,10 +41,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,7 +52,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,8 +62,14 @@ public class ContactPresenceActivity extends Activity {
     private String remoteAddress;
 
     private String localFingerprint;
+    private long providerId;
+    private ImApp mApp;
 
     private final static String TAG = "Gibberbot";
+
+    public ContactPresenceActivity() {
+        mApp = ImApp.getApplication(this);
+    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -106,7 +111,7 @@ public class ContactPresenceActivity extends Activity {
         }
 
         if (c.moveToFirst()) {
-            long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
+            providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
@@ -114,9 +119,7 @@ public class ContactPresenceActivity extends Activity {
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
 
-            ImApp app = ImApp.getApplication(this);
-
-            BrandingResources brandingRes = app.getBrandingResource(providerId);
+            BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
@@ -212,12 +215,9 @@ public class ContactPresenceActivity extends Activity {
         Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT)
                 .show();
 
-        ImApp app = ImApp.getApplication(this);
-
         IOtrKeyManager okm;
         try {
-            okm = app.getActiveConnections().get(0).getChatSessionManager()
-                    .getChatSession(remoteAddress).getOtrKeyManager();
+            okm = mApp.getChatSession(providerId, remoteAddress).getOtrKeyManager();
             okm.verifyKey(remoteAddress);
             remoteFingerprintVerified = true;
             updateUI();
@@ -293,10 +293,6 @@ public class ContactPresenceActivity extends Activity {
     }
 
     private void initSmpUI() {
-        // Set an EditText view to get user input 
-        //final EditText input = new EditText(this);
-        String message = "Enter a question? and an answer.";
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
 
@@ -318,12 +314,9 @@ public class ContactPresenceActivity extends Activity {
     }
 
     private void initSmp(String question, String answer) {
-        ImApp app = ImApp.getApplication(this);
-
         IOtrChatSession iOtrSession;
         try {
-            iOtrSession = app.getActiveConnections().get(0).getChatSessionManager()
-                    .getChatSession(remoteAddress).getOtrChatSession();
+            iOtrSession = mApp.getChatSession(providerId, remoteAddress).getOtrChatSession();
             iOtrSession.initSmpVerification(question, answer);
 
         } catch (RemoteException e) {
