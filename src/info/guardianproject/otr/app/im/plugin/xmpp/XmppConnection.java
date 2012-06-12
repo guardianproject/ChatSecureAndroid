@@ -444,6 +444,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         String domain = providerSettings.getDomain();
         String requestedServer = providerSettings.getServer();
+        if ("".equals(requestedServer))
+            requestedServer = null;
         String xmppResource = providerSettings.getXmppResource();
         mPriority = providerSettings.getXmppResourcePrio();
         int serverPort = providerSettings.getPort();
