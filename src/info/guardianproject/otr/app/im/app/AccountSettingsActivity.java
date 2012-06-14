@@ -88,7 +88,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
         String value;
 
         if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
-            value = prefs.getString(key, null)
+            value = prefs.getString(key, null);
             settings.setXmppResource(value);
             if (value != null) {
                 value = value.trim();
