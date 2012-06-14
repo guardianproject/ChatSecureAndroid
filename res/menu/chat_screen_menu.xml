@@ -29,6 +29,11 @@
         android:icon="@drawable/ic_menu_switch"
         android:alphabeticShortcut=" "/>
 
+    
+  <item android:id="@+id/menu_view_accounts"
+        android:title="@string/menu_view_accounts"
+        android:icon="@drawable/ic_menu_sign_in"
+         />
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_menu_info" />

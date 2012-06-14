@@ -227,6 +227,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             mChatView.closeChatSession();
             return true;
 
+         
         case R.id.menu_switch_chats:
             if (mChatSwitcher.isOpen()) {
                 mChatSwitcher.close();
@@ -236,6 +237,12 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
             return true;
 
+        case R.id.menu_view_accounts:
+            
+            startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+            finish();
+            
+            return true;
             /*
             case R.id.menu_invite_contact:
             startContactPicker();
