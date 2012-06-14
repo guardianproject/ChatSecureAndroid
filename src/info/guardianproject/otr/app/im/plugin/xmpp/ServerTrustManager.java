@@ -28,8 +28,10 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PublicKey;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -68,7 +70,7 @@ class ServerTrustManager implements X509TrustManager {
     private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
     private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
 
-    private final static String FINGERPRINT_TYPE = "SHA1";
+    private final static String FINGERPRINT_TYPE = "SHA-1";
 
     private ConnectionConfiguration configuration;
 
@@ -167,14 +169,14 @@ class ServerTrustManager implements X509TrustManager {
 
                         catch (GeneralSecurityException generalsecurityexception) {
                             showCertMessage("signature verification failed",
-                                    principalIssuer.getName(), x509Certificates[i]);
+                                    principalIssuer.getName(), x509Certificates[i], null);
 
                             throw new CertificateException("signature verification failed of "
                                                            + principalIssuer.getName());
                         }
                     } else {
                         showCertMessage("subject/issuer verification failed",
-                                principalIssuer.getName(), x509Certificates[i]);
+                                principalIssuer.getName(), x509Certificates[i], null);
 
                         throw new CertificateException("subject/issuer verification failed of "
                                                        + principalIssuer.getName());
@@ -192,9 +194,21 @@ class ServerTrustManager implements X509TrustManager {
             try {
 
                 if (configuration.isSelfSignedCertificateEnabled()) {
+                    
+                    String fingerprint = "";
+                    
+                    try 
+                    {
+                        fingerprint = getFingerprint(x509Certificates[0], FINGERPRINT_TYPE);
+                    }
+                    catch (Exception e)
+                    {
+                        fingerprint = "unable to read fingerprint";
+                    }
+                    
                     showCertMessage("Self-signed certificate",
-                            getFingerprint(x509Certificates[0], FINGERPRINT_TYPE),
-                            x509Certificates[0]);
+                            fingerprint,
+                            x509Certificates[0], fingerprint);
 
                     trusted = true;
                 } else {
@@ -231,6 +245,7 @@ class ServerTrustManager implements X509TrustManager {
 
                             } catch (Exception e) {
                                 RemoteImService.debug("error on ssl verify", e);
+                                trusted = false;
                             }
 
                         }
@@ -241,13 +256,28 @@ class ServerTrustManager implements X509TrustManager {
                     }
                 }
 
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                RemoteImService.debug("error on ssl verify", e);
+                trusted = false;
+               
             }
 
             if (!trusted) {
+                
+                String fingerprint = "";
+                
+                try
+                {
+                    fingerprint = getFingerprint(x509Certificates[0], FINGERPRINT_TYPE);
+                }
+                catch (Exception e)
+                {
+                    //may not even be able to get fingerprint properly
+                    fingerprint = "unable to read fingerprint";
+                }
+                
                 showCertMessage("root certificate not trusted",
-                        getFingerprint(x509Certificates[0], FINGERPRINT_TYPE), x509Certificates[0]);
+                        fingerprint, x509Certificates[0], fingerprint);
                 throw new CertificateException("root certificate not trusted of " + peerIdentities);
             }
         }
@@ -280,7 +310,7 @@ class ServerTrustManager implements X509TrustManager {
             if (!found) {
                 showCertMessage("domain check failed", join(peerIdentities) + " does not contain '"
                                                        + server + "' or '" + domain + "'",
-                        x509Certificates[0]);
+                        x509Certificates[0],null);
 
                 throw new CertificateException("target verification failed of " + peerIdentities);
             }
@@ -295,7 +325,7 @@ class ServerTrustManager implements X509TrustManager {
                     x509Certificates[i].checkValidity(date);
                 } catch (GeneralSecurityException generalsecurityexception) {
                     showCertMessage("certificate expired", x509Certificates[i].getNotAfter()
-                            .toLocaleString(), x509Certificates[i]);
+                            .toLocaleString(), x509Certificates[i], null);
                     throw new CertificateException("invalid date of " + server);
                 }
             }
@@ -318,17 +348,19 @@ class ServerTrustManager implements X509TrustManager {
 
     private int DEFAULT_NOTIFY_ID = 10;
 
-    private void showCertMessage(String title, String msg, X509Certificate cert) {
+    private void showCertMessage(String title, String msg, X509Certificate cert, String fingerprint) {
 
         Intent nIntent = new Intent(context, CertDisplayActivity.class);
 
         nIntent.putExtra("issuer", cert.getIssuerDN().getName());
         nIntent.putExtra("subject", cert.getSubjectDN().getName());
-        nIntent.putExtra("fingerprint", getFingerprint(cert, FINGERPRINT_TYPE));
+        
+        if (fingerprint != null)
+            nIntent.putExtra("fingerprint", fingerprint);
+        
         nIntent.putExtra("issued", cert.getNotBefore().toGMTString());
         nIntent.putExtra("expires", cert.getNotAfter().toGMTString());
-        nIntent.putExtra("fingerprint", getFingerprint(cert, FINGERPRINT_TYPE));
-
+        
         showMessage(title, msg, nIntent);
 
     }
@@ -450,8 +482,9 @@ class ServerTrustManager implements X509TrustManager {
         return identities;
     }
 
-    public String getFingerprint(X509Certificate cert, String type) {
-        try {
+    public String getFingerprint(X509Certificate cert, String type) throws NoSuchAlgorithmException, CertificateEncodingException 
+    {
+        
             MessageDigest md = MessageDigest.getInstance(type);
             byte[] publicKey = md.digest(cert.getEncoded());
 
@@ -468,10 +501,6 @@ class ServerTrustManager implements X509TrustManager {
 
             return hexString.toString();
 
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            return null;
-        }
     }
 
 }
