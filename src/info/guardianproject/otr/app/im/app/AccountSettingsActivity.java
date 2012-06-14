@@ -88,9 +88,10 @@ public class AccountSettingsActivity extends PreferenceActivity implements
         String value;
 
         if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
-            value = prefs.getString(key, null).trim();
+            value = prefs.getString(key, null)
             settings.setXmppResource(value);
             if (value != null) {
+                value = value.trim();
                 mXmppResource.setSummary(value);
                 mXmppResource.setText(value); // In case it was trimmed
             }
@@ -115,9 +116,10 @@ public class AccountSettingsActivity extends PreferenceActivity implements
             if (value != "5222")
                 mPort.setSummary(value);
         } else if (key.equals(getString(R.string.pref_account_server))) {
-            value = prefs.getString(key, null).trim();
+            value = prefs.getString(key, null);
             settings.setServer(value);
             if (value != null) {
+                value = value.trim();
                 mServer.setSummary(value);
                 mServer.setText(value); // In case it was trimmed
             }
