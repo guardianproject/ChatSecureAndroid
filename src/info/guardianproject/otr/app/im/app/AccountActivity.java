@@ -427,7 +427,7 @@ public class AccountActivity extends Activity {
 
     boolean parseAccount(String userField) {
         boolean isGood = true;
-        String[] splitAt = userField.split("@");
+        String[] splitAt = userField.trim().split("@");
         mUserName = splitAt[0];
         mDomain = null;
         mPort = 5222;
