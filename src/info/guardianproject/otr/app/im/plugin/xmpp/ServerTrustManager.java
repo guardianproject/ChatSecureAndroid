@@ -70,7 +70,7 @@ class ServerTrustManager implements X509TrustManager {
     private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
     private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
 
-    private final static String FINGERPRINT_TYPE = "SHA-1";
+    private final static String FINGERPRINT_TYPE = "SHA1";
 
     private ConnectionConfiguration configuration;
 
@@ -146,6 +146,8 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
+        android.os.Debug.waitForDebugger();
+        
         int nSize = x509Certificates.length;
 
         List<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
@@ -291,11 +293,15 @@ class ServerTrustManager implements X509TrustManager {
                 // This indicates that immediate subdomains are valid.
                 if (peerIdentity.startsWith("*.")) {
                     // Remove wildcard: *.foo.info -> .foo.info
-                    String stem = peerIdentity.substring(1);
+                    String stem = peerIdentity.substring(2);
 
                     // Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
-                    if (server.replaceFirst("[^.]+", "").equals(stem)
-                        || domain.replaceFirst("[^.]+", "").equals(stem)) {
+                    if (server.equals(stem)
+                            || domain.equals(stem)
+                            || server.replaceFirst("[^.]+", "").equals(stem)
+                        || domain.replaceFirst("[^.]+", "").equals(stem)
+            
+                            ) {
                         found = true;
                         break;
                     }
