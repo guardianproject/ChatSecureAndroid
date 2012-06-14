@@ -1,5 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
+import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -126,6 +128,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private int mGlobalId;
     private static int mGlobalCount;
+    
+    private final Random rnd = new Random();
 
     public XmppConnection(Context context) {
         super(context);
@@ -413,11 +417,28 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // TODO shouldn't setProxy be handled in Imps/settings?
     public void setProxy(String type, String host, int port) {
 
+        android.os.Debug.waitForDebugger();
+        
         if (type == null) {
             mProxyInfo = ProxyInfo.forNoProxy();
         } else {
+            
             ProxyInfo.ProxyType pType = ProxyType.valueOf(type);
-            mProxyInfo = new ProxyInfo(pType, host, port, "", "");
+            String username = null;
+            String password = null;
+            
+            if (type.equals(TorProxyInfo.PROXY_TYPE) //socks5
+                    && host.equals(TorProxyInfo.PROXY_HOST) //127.0.0.1
+                    && port == TorProxyInfo.PROXY_PORT) //9050
+            {
+                //if the proxy is for Orbot/Tor then generate random usr/pwd to isolate Tor streams
+                username = rnd.nextInt(100000)+"";
+                password = rnd.nextInt(100000)+"";
+                
+            }
+            
+            mProxyInfo = new ProxyInfo(pType, host, port, username, password);
+            
         }
     }
 
