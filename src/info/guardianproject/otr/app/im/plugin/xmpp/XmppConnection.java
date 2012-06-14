@@ -76,7 +76,7 @@ import android.util.Log;
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
     final static String TAG = "GB.XmppConnection";
-    private final static boolean DEBUG_ENABLED = true;
+    private final static boolean DEBUG_ENABLED = false;
 
     private XmppContactList mContactListManager;
     private Contact mUser;
