@@ -417,7 +417,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // TODO shouldn't setProxy be handled in Imps/settings?
     public void setProxy(String type, String host, int port) {
 
-        android.os.Debug.waitForDebugger();
+       // android.os.Debug.waitForDebugger();
         
         if (type == null) {
             mProxyInfo = ProxyInfo.forNoProxy();
