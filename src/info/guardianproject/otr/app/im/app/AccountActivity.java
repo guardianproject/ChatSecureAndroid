@@ -496,8 +496,8 @@ public class AccountActivity extends Activity {
             settings.setDomain("chat.facebook.com");
             settings.setPort(DEFAULT_PORT);
             settings.setServer("chat.facebook.com");
-            settings.setRequireTls(false);
-            settings.setTlsCertVerify(false);
+            settings.setRequireTls(true); //facebook TLS now seems to be on
+            settings.setTlsCertVerify(false); //but cert verify can still be funky - off by default
             settings.setAllowPlainAuth(false);
         } else {
 
