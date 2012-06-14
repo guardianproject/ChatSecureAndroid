@@ -146,7 +146,7 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
             throws CertificateException {
 
-        android.os.Debug.waitForDebugger();
+       // android.os.Debug.waitForDebugger();
         
         int nSize = x509Certificates.length;
 
