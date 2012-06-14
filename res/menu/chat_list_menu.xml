@@ -20,10 +20,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:id="@+id/menu_new_chat"
+  <!--   <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
         android:icon="@drawable/ic_menu_new_chat" />
-
+ -->
+ 
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
         android:icon="@drawable/ic_menu_settings" />
