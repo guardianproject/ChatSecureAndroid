@@ -18,6 +18,12 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
  * the License.
  */
 
+import info.guardianproject.bouncycastle.asn1.ASN1Object;
+import info.guardianproject.bouncycastle.asn1.ASN1OctetString;
+import info.guardianproject.bouncycastle.asn1.DERSequence;
+import info.guardianproject.bouncycastle.asn1.DERString;
+import info.guardianproject.bouncycastle.asn1.x509.GeneralName;
+import info.guardianproject.bouncycastle.asn1.x509.X509Extensions;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.CertDisplayActivity;
 import info.guardianproject.otr.app.im.service.RemoteImService;
@@ -26,14 +32,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,7 +154,7 @@ class ServerTrustManager implements X509TrustManager {
         
         int nSize = x509Certificates.length;
 
-        List<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
+        Collection<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
 
         if (configuration.isVerifyChainEnabled()) {
             // Working down the chain, for every certificate in the chain,
@@ -287,31 +291,7 @@ class ServerTrustManager implements X509TrustManager {
         if (configuration.isNotMatchingDomainCheckEnabled()) {
             // Verify that the first certificate in the chain corresponds to
             // the server we desire to authenticate.
-            boolean found = false;
-            for (String peerIdentity : peerIdentities) {
-                // Check if the certificate uses a wildcard.
-                // This indicates that immediate subdomains are valid.
-                if (peerIdentity.startsWith("*.")) {
-                    // Remove wildcard: *.foo.info -> .foo.info
-                    String stem = peerIdentity.substring(2);
-
-                    // Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
-                    if (server.equals(stem)
-                            || domain.equals(stem)
-                            || server.replaceFirst("[^.]+", "").equals(stem)
-                        || domain.replaceFirst("[^.]+", "").equals(stem)
-            
-                            ) {
-                        found = true;
-                        break;
-                    }
-                } else {
-                    if (server.equals(peerIdentity) || domain.equals(peerIdentity)) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
+            boolean found = checkMatchingDomain(domain, server, peerIdentities);
 
             if (!found) {
                 showCertMessage("domain check failed", join(peerIdentities) + " does not contain '"
@@ -339,7 +319,36 @@ class ServerTrustManager implements X509TrustManager {
 
     }
 
-    private String join(List<String> strs) {
+    static boolean checkMatchingDomain(String domain, String server, Collection<String> peerIdentities) {
+        boolean found = false;
+        for (String peerIdentity : peerIdentities) {
+            // Check if the certificate uses a wildcard.
+            // This indicates that immediate subdomains are valid.
+            if (peerIdentity.startsWith("*.")) {
+                // Remove wildcard: *.foo.info -> .foo.info
+                String stem = peerIdentity.substring(1);
+
+                // Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
+                if (server.equals(stem)
+                        || domain.equals(stem)
+                        || server.replaceFirst("[^.]+", "").equals(stem)
+                    || domain.replaceFirst("[^.]+", "").equals(stem)
+        
+                        ) {
+                    found = true;
+                    break;
+                }
+            } else {
+                if (server.equals(peerIdentity) || domain.equals(peerIdentity)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+
+    private String join(Collection<String> strs) {
         boolean first = true;
         StringBuffer buf = new StringBuffer();
         for (String str : strs) {
@@ -419,9 +428,9 @@ class ServerTrustManager implements X509TrustManager {
      * @return the identity of the remote server as defined in the specified
      *         certificate.
      */
-    public static List<String> getPeerIdentity(X509Certificate x509Certificate) {
+    public static Collection<String> getPeerIdentity(X509Certificate x509Certificate) {
         // Look the identity in the subjectAltName extension if available
-        List<String> names = getSubjectAlternativeNames(x509Certificate);
+        Collection<String> names = getSubjectAlternativeNames(x509Certificate);
         if (names.isEmpty()) {
             String name = x509Certificate.getSubjectDN().getName();
             Matcher matcher = cnPattern.matcher(name);
@@ -445,45 +454,35 @@ class ServerTrustManager implements X509TrustManager {
      *         SubjectAltName extension in the certificate. If none was found
      *         then return <tt>null</tt>.
      */
-    private static List<String> getSubjectAlternativeNames(X509Certificate certificate) {
+    static Collection<String> getSubjectAlternativeNames(X509Certificate certificate) {
         List<String> identities = new ArrayList<String>();
         try {
-            Collection<List<?>> altNames = certificate.getSubjectAlternativeNames();
+            byte[] extVal = certificate.getExtensionValue(X509Extensions.SubjectAlternativeName.getId());
             // Check that the certificate includes the SubjectAltName extension
-            if (altNames == null) {
+            if (extVal == null) {
                 return Collections.emptyList();
             }
-            // Use the type OtherName to search for the certified server name
-            /*for (List item : altNames) {
-                Integer type = (Integer) item.get(0);
-                if (type == 0) {
-                    // Type OtherName found so return the associated value
-                    try {
-                        // Value is encoded using ASN.1 so decode it to get the server's identity
-                        ASN1InputStream decoder = new ASN1InputStream((byte[]) item.toArray()[1]);
-                        DEREncodable encoded = decoder.readObject();
-                        encoded = ((DERSequence) encoded).getObjectAt(1);
-                        encoded = ((DERTaggedObject) encoded).getObject();
-                        encoded = ((DERTaggedObject) encoded).getObject();
-                        String identity = ((DERUTF8String) encoded).getString();
-                        // Add the decoded server name to the list of identities
-                        identities.add(identity);
-                    }
-                    catch (UnsupportedEncodingException e) {
-                        // Ignore
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
+            ASN1OctetString octs = (ASN1OctetString)ASN1Object.fromByteArray(extVal);
+            
+            @SuppressWarnings("rawtypes")
+            Enumeration it = DERSequence.getInstance(ASN1Object.fromByteArray(octs.getOctets())).getObjects();
+            
+            while (it.hasMoreElements())
+            {
+                GeneralName genName = GeneralName.getInstance(it.nextElement());
+                switch (genName.getTagNo())
+                {
+                case GeneralName.dNSName:
+                    identities.add(((DERString)genName.getName()).getString());
+                    break;
                 }
-                // Other types are not good for XMPP so ignore them
-                System.out.println("SubjectAltName of invalid type found: " + certificate);
-            }*/
-        } catch (CertificateParsingException e) {
-            e.printStackTrace();
+            }
+            return Collections.unmodifiableCollection(identities);
+        } catch (IOException e) {
+            Log.w(TAG, e.getMessage(), e);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
         }
         return identities;
     }
