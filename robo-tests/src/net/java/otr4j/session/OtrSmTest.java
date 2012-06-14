@@ -1,16 +1,17 @@
-/* Copyright 2011 Google Inc. All Rights Reserved.
+/*
+ * Copyright 2011 Google Inc. All Rights Reserved.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package net.java.otr4j.session;
@@ -63,8 +64,7 @@ public class OtrSmTest extends EasyMockSupport {
 
             if (value != null)
                 return Base64.decode(value);
-            return 
-                    null;
+            return null;
         }
 
         public boolean getPropertyBoolean(String id, boolean defaultValue) {
@@ -84,8 +84,8 @@ public class OtrSmTest extends EasyMockSupport {
     private SessionID sessionId_b;
     private OtrSmEngineHost host_a;
     private OtrSmEngineHost host_b;
-	private Session session_a;
-	private Session session_b;
+    private Session session_a;
+    private Session session_b;
 
     @Before
     public void setUp() throws Exception {
@@ -93,10 +93,10 @@ public class OtrSmTest extends EasyMockSupport {
         manager_b = new OtrKeyManagerImpl(new MemoryPropertiesStore());
         session_a = createMock(Session.class);
         session_b = createMock(Session.class);
-		AuthContextImpl ca = new AuthContextImpl(session_a);
+        AuthContextImpl ca = new AuthContextImpl(session_a);
         AuthContextImpl cb = new AuthContextImpl(session_b);
-        ca.setRemoteDHPublicKey((DHPublicKey)cb.getLocalDHKeyPair().getPublic());
-        cb.setRemoteDHPublicKey((DHPublicKey)ca.getLocalDHKeyPair().getPublic());
+        ca.setRemoteDHPublicKey((DHPublicKey) cb.getLocalDHKeyPair().getPublic());
+        cb.setRemoteDHPublicKey((DHPublicKey) ca.getLocalDHKeyPair().getPublic());
         EasyMock.expect(session_a.getS()).andStubReturn(ca.getS());
         EasyMock.expect(session_b.getS()).andStubReturn(cb.getS());
         sessionId_a = new SessionID("a1", "ua", "xmpp");
@@ -113,7 +113,7 @@ public class OtrSmTest extends EasyMockSupport {
 
     @Test
     public void testSuccess() throws Exception {
-    	replayAll();
+        replayAll();
         List<TLV> tlvs = sm_a.initRespondSmp(null, "xyz", true);
         assertEquals(SM.EXPECT2, sm_a.smstate.nextExpected);
         assertEquals(1, tlvs.size());
