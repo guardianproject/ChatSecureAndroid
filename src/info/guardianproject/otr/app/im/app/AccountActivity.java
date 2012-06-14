@@ -416,7 +416,7 @@ public class AccountActivity extends Activity {
     }
 
     private void checkUserChanged() {
-        String username = mEditUserAccount.getText().toString();
+        String username = mEditUserAccount.getText().toString().trim();
 
         if ((!username.equals(mOriginalUserAccount)) && parseAccount(username)) {
             //Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
