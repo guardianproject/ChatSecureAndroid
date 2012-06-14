@@ -169,10 +169,12 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
         //TODO make sure this works
 
+        /*
         case R.id.menu_new_chat:
             Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
             return true;
-
+*/
+        
         case R.id.menu_view_accounts:
             //	            startActivity(getEditAccountIntent());
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
