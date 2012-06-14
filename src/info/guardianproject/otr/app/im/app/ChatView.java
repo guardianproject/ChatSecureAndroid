@@ -1133,9 +1133,13 @@ public class ChatView extends LinearLayout {
                         message = mContext.getString(R.string.otr_session_status_plaintext);
                     }
 
-                    ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
+                  //  ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
+//                    imgSec.setImageResource(R.drawable.ic_menu_encrypt);
 
-                    imgSec.setImageResource(R.drawable.ic_menu_encrypt);
+                    
+                    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
+                    
+                    
 
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
@@ -1143,9 +1147,11 @@ public class ChatView extends LinearLayout {
                 }
             } else {
 
-                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
-                imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
+//                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
+  //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
 
+                mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
+                
                 mWarningText.setTextColor(Color.WHITE);
                 mWarningText.setBackgroundColor(Color.RED);
                 message = mContext.getString(R.string.otr_session_status_plaintext);

@@ -162,14 +162,15 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:orientation="horizontal">
-        
-        
+        <!-- 
+        //NF removed 13/06/2012
         <ImageView android:id="@+id/composeSecureIcon"
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:src="@drawable/ic_menu_unencrypt"
             android:padding="0dip"
              />
+              -->
         
 
         <EditText android:id="@+id/composeMessage"
@@ -180,11 +181,14 @@
             android:imeOptions="actionSend|flagNoEnterAction"
             android:maxLines="4"
             android:maxLength="2000"
-            android:hint="@string/compose_hint"/>
+            android:hint="@string/compose_hint"
+            
+            />
 
         <Button android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:drawableLeft="@drawable/ic_menu_unencrypt"
             android:text="@string/send" />
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ChatView>
