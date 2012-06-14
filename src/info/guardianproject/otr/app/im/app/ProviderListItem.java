@@ -113,7 +113,10 @@ public class ProviderListItem extends LinearLayout {
         if (!cursor.isNull(mActiveAccountIdColumn)) {
             mLoginName.setVisibility(View.VISIBLE);
             providerName.setVisibility(View.VISIBLE);
-            providerName.setText(providerDisplayName);
+            
+            String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
+         //   providerName.setText(providerDisplayName);
+            providerName.setText(activeUserName);
 
             long accountId = cursor.getLong(mActiveAccountIdColumn);
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
@@ -146,11 +149,11 @@ public class ProviderListItem extends LinearLayout {
                     chatView.setVisibility(View.GONE);
                 }
 
-                secondRowText = cursor.getString(mActiveAccountUserNameColumn);
+                secondRowText = providerDisplayName;
                 break;
 
             default:
-                secondRowText = cursor.getString(mActiveAccountUserNameColumn);
+                secondRowText = providerDisplayName;
                 break;
             }
 
