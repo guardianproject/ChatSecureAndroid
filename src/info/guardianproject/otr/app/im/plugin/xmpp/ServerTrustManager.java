@@ -241,7 +241,7 @@ class ServerTrustManager implements X509TrustManager {
                                 certFinal.verify(cert.getPublicKey());
                                 trusted = true;
 
-                                Log.d(TAG, "TLS/SSL Certificate Verified " + getFingerprint(certFinal, FINGERPRINT_TYPE));
+                          //      Log.d(TAG, "TLS/SSL Certificate Verified " + getFingerprint(certFinal, FINGERPRINT_TYPE));
 //                                showCertMessage("TLS/SSL Certificate Verified",
 //                                        getFingerprint(certFinal, FINGERPRINT_TYPE), certFinal);
 
