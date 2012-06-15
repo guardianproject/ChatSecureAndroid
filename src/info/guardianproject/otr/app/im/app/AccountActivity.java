@@ -489,7 +489,6 @@ public class AccountActivity extends Activity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-            settings.setDoDnsSrv(true);
 
         } else if (domain.equals("facebook.com")) {
             settings.setDoDnsSrv(false);
@@ -508,7 +507,6 @@ public class AccountActivity extends Activity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-            settings.setDoDnsSrv(true);
 
         }
 
