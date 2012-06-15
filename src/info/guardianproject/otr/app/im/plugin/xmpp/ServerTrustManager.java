@@ -329,17 +329,17 @@ class ServerTrustManager implements X509TrustManager {
                 String stem = peerIdentity.substring(1);
 
                 // Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
-                if (server.equals(stem)
-                        || domain.equals(stem)
-                        || server.replaceFirst("[^.]+", "").equals(stem)
-                    || domain.replaceFirst("[^.]+", "").equals(stem)
+                if (server.equalsIgnoreCase(stem)
+                        || domain.equalsIgnoreCase(stem)
+                        || server.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)
+                    || domain.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)
         
                         ) {
                     found = true;
                     break;
                 }
             } else {
-                if (server.equals(peerIdentity) || domain.equals(peerIdentity)) {
+                if (server.equalsIgnoreCase(peerIdentity) || domain.equalsIgnoreCase(peerIdentity)) {
                     found = true;
                     break;
                 }

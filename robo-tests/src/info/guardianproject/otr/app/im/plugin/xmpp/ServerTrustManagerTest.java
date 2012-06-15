@@ -51,6 +51,7 @@ public class ServerTrustManagerTest extends EasyMockSupport {
     public void testCheckMatchingDomain() throws Exception {
         Collection<String> names = ServerTrustManager.getPeerIdentity(cert);
         assertTrue(ServerTrustManager.checkMatchingDomain("jabber.org", "", names));
+        assertTrue(ServerTrustManager.checkMatchingDomain("JabBer.Org", "", names));
         assertTrue(ServerTrustManager.checkMatchingDomain("xyz.jabber.org", "", names));
         assertFalse(ServerTrustManager.checkMatchingDomain("abc.xyz.jabber.org", "", names));
         assertFalse(ServerTrustManager.checkMatchingDomain("org", "", names));
