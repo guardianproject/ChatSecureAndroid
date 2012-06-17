@@ -546,7 +546,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             mRemoteListeners.finishBroadcast();
 
             mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, "", N > 0);
+                    getId(), username, nickname, "", false);
 
             mHasUnreadMessages = true;
         }
