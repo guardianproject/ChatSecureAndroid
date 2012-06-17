@@ -75,6 +75,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -971,6 +972,9 @@ public class ChatView extends LinearLayout {
     }
 
     void sendMessage() {
+        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isFullscreenMode())
+            imm.hideSoftInputFromWindow(mComposeMessage.getWindowToken(), 0);
         String msg = mComposeMessage.getText().toString();
 
         if (TextUtils.isEmpty(msg.trim())) {
