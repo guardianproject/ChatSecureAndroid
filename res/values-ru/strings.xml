@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="ro_perm_label">читать сообщения</string>
-  <string name="ro_perm_desc">Разрешить приложениям получать данные от контент-провайдера мгновенных сообщений.</string>
-  <string name="wo_perm_label">писать сообщения</string>
-  <string name="wo_perm_desc">разрешить приложениям записывать данные от контент-провайдера мгновенных сообщений.</string>
+  <string name="ro_perm_label">Читать сообщения</string>
+  <string name="ro_perm_desc">Позволяет приложению получать данные от провайдера мгновенных сообщений.</string>
+  <string name="wo_perm_label">Писать сообщения</string>
+  <string name="wo_perm_desc">Позволяет приложению отправлять данные провайдеру мгновенных сообщений.</string>
   <string name="im_label">Gibberbot</string>
-  <string name="landing_page_title">Чат - выберите учетную запись</string>
-  <string name="menu_about">About</string>
+  <string name="landing_page_title">Выберите учетную запись</string>
+  <string name="menu_about">О программе</string>
   <string name="menu_add_account">Добавить аккаунт</string>
-  <string name="menu_edit_account">Изменить счет</string>
-  <string name="menu_remove_account">Удалить учетную запись</string>
-  <string name="menu_sign_out_all">Выйти из всех</string>
-  <string name="choose_account_title">Чат - выберите учетную запись</string>
+  <string name="menu_edit_account">Изменить аккаунт</string>
+  <string name="menu_remove_account">Удалить аккаунт</string>
+  <string name="menu_sign_out_all">Отключить все</string>
+  <string name="choose_account_title">Выберите учетную запись</string>
   <string name="conversations">(&lt;xliff:g id=\"number\" example=\"27\"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="menu_cancel_signin">Отмена входа</string>
+  <string name="menu_cancel_signin">Отменить вход</string>
   <string name="menu_add_contact">Добавить контакт</string>
   <string name="menu_remove_contact">Удалить контакт</string>
   <string name="menu_block_contact">Заблокировать контакт</string>
@@ -33,9 +33,9 @@
   <string name="menu_invite_contact">Пригласить пользователя...</string>
   <string name="menu_switch_chats">Сменить чат</string>
   <string name="menu_insert_smiley">Вставить смайлик</string>
-  <string name="menu_scan">Сканирование отпечатков пальцев</string>
-  <string name="menu_fingerprint">Отпечатки пальцев</string>
-  <string name="menu_verify">Проверка отпечатков пальцев</string>
+  <string name="menu_scan">Сканирование ключей </string>
+  <string name="menu_fingerprint">Ключи</string>
+  <string name="menu_verify">Проверка ключей</string>
   <string name="menu_plus">Меню+</string>
   <string name="confirm">Подтвердить</string>
   <string name="signout_all_confirm_message">Вы хотите выйти из всех сервисов?</string>
@@ -54,7 +54,7 @@
   <string name="remember_password">Запомнить пароль.</string>
   <string name="keep_me_signed_in">Входить автоматически.</string>
   <string name="sign_up">У вас нет аккаунта?</string>
-  <string name="check_save_password">Для вашей безопасности, если телефон потерян или украден, перейдите на веб-сайт на вашем компьютере и изменить пароль.</string>
+  <string name="check_save_password">Для вашей безопасности, если телефон потерян или украден, перейдите на веб-сайт на вашем компьютере и измените пароль.</string>
   <string name="check_auto_sign_in">Этот параметр позволяет пользователю автоматически входить в систему при каждом запуске приложения. Чтобы отключить этот параметр, выйдите из системы, а затем снимите флажок \"Входить автоматически\".</string>
   <string name="sign_in">Вход</string>
   <string name="signing_in_to">Вход в &lt;xliff:g id=\"ACCOUNT\"&gt;%1$s&lt;/xliff:g&gt;</string>
@@ -145,7 +145,7 @@
   <string name="approve_subscription_error">Не удалось одобрить запрос подписки от пользователя &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
   <string name="decline_subscription_error">Не удалось отклонить запрос подписки от пользователя &lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
   <string name="newMessages_label">Новые сообщения пользователя: &lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <string name="num_unread_chats">Непрочитанных чатов: &lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">Непрочитанных сообщений: &lt;xliff:g id=\"NUMBER\"&gt;%1$d&lt;/xliff:g&gt;</string>
   <string name="subscription_notify_text">Новое приглашение от пользователя <xliff:g id="USER">%s</xliff:g></string>
   <string name="notify_groupchat_label">Приглашение в групповой чат</string>
   <string name="group_chat_invite_notify_text">Новое приглашение в групповой чат от пользователя <xliff:g id="USER">%s</xliff:g></string>
@@ -153,8 +153,8 @@
   <string name="delete_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" удален.</string>
   <string name="block_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" заблокирован.</string>
   <string name="unblock_contact_success">Контакт \&lt;xliff:g id=\"USER\"&gt;%1$s&lt;/xliff:g&gt;\" разблокирован.</string>
-  <string name="perm_label">Включить чат</string>
-  <string name="perm_desc">Разрешает приложениям включать чат через Intent.</string>
+  <string name="perm_label">Запустить IM сервис</string>
+  <string name="perm_desc">Разрешает приложению запускать IM сервис</string>
   <string name="error">Внимание</string>
   <string name="login_service_failed">Не удается выполнить вход в службу: &lt;xliff:g id=\"SERVICE\"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.\"\n\"(Подробности: &lt;xliff:g id=\"DESCRIPTION\"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Список не был добавлен.</string>
@@ -170,7 +170,7 @@
   <string name="contact_not_loaded">Дождитесь окончания загрузки списка контактов.</string>
   <string name="network_error">Произошла ошибка сети.</string>
   <string name="service_not_support">Эта функция не поддерживается сервером.</string>
-  <string name="invalid_password">Указанный пароль недействителен.</string>
+  <string name="invalid_password">Неверный пароль.</string>
   <string name="internal_server_error">Произошла ошибка сервера.</string>
   <string name="not_implemented">Эта функция не поддерживается сервером.</string>
   <string name="service_unavaiable">В настоящий момент сервер недоступен.</string>
@@ -222,7 +222,8 @@
 <item>:-D</item>
 <item>o_O</item>
 </string-array>
-  <string-array name="smiley_names"><item>Счастливы</item>
+  <string-array name="smiley_names">
+<item>Счастливы</item>
 <item>Печальный</item>
 <item>Подмигивание</item>
 <item>Высунутый язык</item>
@@ -258,13 +259,13 @@
 <item>:-D</item>
 <item>o_O</item>
 </string-array>
-  <string name="buddy_list_title">Contact List - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">Список контактов - &lt;xliff:g id=\"username\"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_contact_list">Список контактов</string>
-  <string name="menu_view_encrypt_chat">Шифрование On/Off</string>
+  <string name="menu_view_encrypt_chat">Шифрование вкл/выкл</string>
   <string name="use_tor">Подключение через Tor (требуется Orbot приложение)</string>
   <string name="app_name">Gibberbot</string>
   <string name="welcome_first">Используете Gibberbot впервые?</string>
-  <string name="welcome_skip">Начать скорее?</string>
+  <string name="welcome_skip">Начать сейчас?</string>
   <string name="welcome_about">О Gibberbot</string>
   <string name="welcome_account">Создание учетной записи</string>
   <string name="about_welcome_title">Добро пожаловать в Gibberbot</string>
@@ -280,7 +281,7 @@
   <string name="account_setup_example_email_address">user@domain.com</string>
   <string name="account_setup_password">пароль</string>
   <string name="account_setup_advanced_button">Дополнительные настройки аккаунта</string>
-  <string name="account_setup_pers_sub">Настойчивость</string>
+  <string name="account_setup_pers_sub">Надежность</string>
   <string name="account_setup_pers_pw_title">Запомнить пароль</string>
   <string name="account_setup_pers_pw_on">Пароль кэшируется</string>
   <string name="account_setup_pers_pw_off">Пароль не кэшируются</string>
@@ -288,8 +289,8 @@
   <string name="account_setup_pers_auto_on">Запускать Gibberbot при загрузке</string>
   <string name="account_setup_pers_auto_off">Не запускать Gibberbot при загрузке</string>
   <string name="account_setup_pers_now_title">Войти сейчас</string>
-  <string name="account_setup_pers_now_on">Подключите следующие настройки учетной записи</string>
-  <string name="account_setup_pers_now_off">Don\'t связаться следующие настройки учетной записи</string>
+  <string name="account_setup_pers_now_on">Подключить после настройки учетной записи</string>
+  <string name="account_setup_pers_now_off">Не подключаться после настройки учетной записи</string>
   <string name="account_setup_personal_sub">Личное (опционально)</string>
   <string name="account_setup_personal_alias_title">Псевдоним (ваше имя)</string>
   <string name="account_setup_personal_alias_sub">Как ваш аккаунт отображается в Интернете</string>
@@ -297,7 +298,7 @@
   <string name="account_setup_personal_profile_sub">О себе</string>
   <string name="account_setup_advanced_enc_force">Принудительное шифрование</string>
   <string name="account_setup_advanced_enc_auto">При возможности шифровать автоматически</string>
-  <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
+  <string name="account_setup_advanced_enc_req">Шифрование чатов по запросу</string>
   <string name="account_setup_advanced_enc_off">Отключить</string>
   <string name="account_setup_signin_a">Проверка полномочий ...</string>
   <string name="account_setup_signin_b">Создание пары ключей ...</string>
@@ -311,11 +312,11 @@
   <string name="menu_sign_in">Войдите в систему,</string>
   <string name="menu_gen_key">Новый ключ</string>
   <string name="error_suspended_connection">Gibberbot потерял соединение с сетью</string>
-  <string name="error_reestablish_connection">Gibberbot пытается restablish связи</string>
+  <string name="error_reestablish_connection">Gibberbot пытается переустановить соединение</string>
   <string name="otr_session_status_plaintext">Внимание: Этот чат не шифруется</string>
   <string name="otr_session_status_encrypted">Этот чат является безопасным, но личности участников не были проверены</string>
-  <string name="otr_session_status_finished">Warning: чат шифрования была остановлена.</string>
-  <string name="otr_session_status_verified">Этот чат обеспеченных и проверено</string>
+  <string name="otr_session_status_finished">Внимание:шифрование чата закончено.</string>
+  <string name="otr_session_status_verified">Этот чат проверен и защищен</string>
   <string name="account_wizard_setup_title">Мастер учетных записей</string>
   <string name="account_wizard_account_title">Ваш аккаунт ID</string>
   <string name="account_wizard_host_title">Настройка сервера</string>
@@ -325,7 +326,7 @@
   <string name="account_wizard_host_body">Пожалуйста, введите или измените jabber/xmpp чат имя сервера и номер порта (5222 по умолчанию).</string>
   <string name="account_wizard_ready_body">Gibberbot был настроен, теперь можно подключиться. Начинайте общаться безопасно, надежно и конфиденциально!</string>
   <string name="account_wizard_no_domain_warning">Вы не ввели имя хоста @hostname.com в вашем аккаунте. Попрбуйте снова!</string>
-  <string name="account_wizard_no_root_domain_warning">Неверно указано зона домена (.com, .net и др). Попробуйте снова!</string>
+  <string name="account_wizard_no_root_domain_warning">Неверно указана зона домена (.com, .net и др). Попробуйте снова!</string>
   <string name="signin_password_prompt">Введите пароль:</string>
   <string name="pref_account_user">pref_account_user</string>
   <string name="pref_account_pass">pref_account_pass</string>
@@ -344,13 +345,13 @@
   <string name="pref_notification_vibrate">pref_notification_vibrate</string>
   <string name="pref_notification_sound">pref_notification_sound</string>
   <string name="pref_notification_ringtone">pref_notification_ringtone</string>
-  <string name="account_settings_title">Настройки аккаунта</string>
+  <string name="account_settings_title">Account Settings</string>
   <string name="warning_alpha">Внимание: тестовая версия, возможны баги и уязвимости!</string>
   <string name="menu_view_groups">Группы</string>
   <string name="otr_gen_key">Создание новой ключевой пары...</string>
   <string name="search_label">Контакты</string>
   <string name="search_hint">напишите имя контакта для беседы</string>
-  <string name="search_button_text">Go</string>
+  <string name="search_button_text">Начать</string>
   <string name="menu_locale">Язык</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Языки</string>
   <string name="KEY_PREF_LANGUAGE_SUMMARY">Какой язык должен показывать InTheClear?</string>
@@ -363,12 +364,12 @@
   <string name="require_tls_ssl_connection">Требовать TLS/SSL</string>
   <string name="transport_encryption">Шифрование транспорта</string>
   <string name="how_encrypted_chats_are_started">когда шифровать разговоры</string>
-  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
-  <string name="connect_server">Connect Server</string>
+  <string name="the_server_to_connect_to_if_needed">К какому серверу подключаться, если необходимо</string>
+  <string name="connect_server">Подключение к серверу</string>
   <string name="tcp_port_for_xmpp_server">TCP порт для сервера XMPP</string>
   <string name="server_port">Порт</string>
   <string name="xmpp_resource">Ресурс XMPP</string>
-  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">выделять это подключение среди других подключенных клиентов</string>
   <string name="btn_next">Вперед</string>
   <string name="btn_back">назад</string>
   <string name="title_chats">Разговоры</string>
