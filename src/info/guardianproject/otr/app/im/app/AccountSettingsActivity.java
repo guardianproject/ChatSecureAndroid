@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoEditTextPreference;
 import info.guardianproject.otr.app.lang.BhoToast;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
 
     private long mProviderId;
 
-    EditTextPreference mXmppResource;
+    BhoEditTextPreference mXmppResource;
     EditTextPreference mXmppResourcePrio;
     EditTextPreference mPort;
     EditTextPreference mServer;
@@ -149,7 +150,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
             throw new RuntimeException(
                     "AccountSettingsActivity must be created with an provider id");
         }
-        mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
+        mXmppResource = (BhoEditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
         mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
         mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
         mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));

@@ -20,7 +20,7 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal" />
-        <org.thoughtcrime.securesms.lang.BhoTextView android:id="@+android:id/summary"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+android:id/summary"
             style="@style/bho_preference_P"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

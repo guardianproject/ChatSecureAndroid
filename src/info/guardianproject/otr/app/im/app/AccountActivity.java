@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.lang.BhoButton;
+import info.guardianproject.otr.app.lang.BhoCheckBox;
 import info.guardianproject.otr.app.lang.BhoEditText;
 import info.guardianproject.otr.app.lang.BhoTextView;
 import info.guardianproject.otr.app.lang.BhoToast;
@@ -62,7 +63,6 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -95,8 +95,8 @@ public class AccountActivity extends Activity {
 
     BhoEditText mEditUserAccount;
     BhoEditText mEditPass;
-    CheckBox mRememberPass;
-    CheckBox mUseTor;
+    BhoCheckBox mRememberPass;
+    BhoCheckBox mUseTor;
     BhoButton mBtnSignIn;
     BhoButton mBtnAdvanced;
     BhoTextView mTxtFingerprint;
@@ -133,9 +133,9 @@ public class AccountActivity extends Activity {
         });
 
         mEditPass = (BhoEditText) findViewById(R.id.edtPass);
-        mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
+        mRememberPass = (BhoCheckBox) findViewById(R.id.rememberPassword);
         //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
-        mUseTor = (CheckBox) findViewById(R.id.useTor);
+        mUseTor = (BhoCheckBox) findViewById(R.id.useTor);
         mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -252,7 +252,7 @@ public class AccountActivity extends Activity {
         mRememberPass.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
 
-                CheckBox mRememberPass = (CheckBox) v;
+                BhoCheckBox mRememberPass = (BhoCheckBox) v;
 
                 if (mRememberPass.isChecked()) {
                     String msg = brandingRes

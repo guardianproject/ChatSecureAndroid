@@ -23,7 +23,8 @@
 
   <CheckBoxPreference android:key="@string/pref_hide_offline_contacts"
     android:title="@string/hide_offline_contacts"
-    android:defaultValue="false" />
+    android:defaultValue="false"
+    android:layout="@layout/bho_checkbox_preference" />
 
   <ListPreference android:title="Chat Encryption"
     android:key="@string/pref_security_otr_mode"
@@ -37,18 +38,20 @@
           android:key="@string/pref_foreground_service"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
-          android:defaultValue="false" />
+          android:defaultValue="false"
+          android:layout="@layout/bho_checkbox_preference" />
 
-  <PreferenceCategory android:title="@string/notification_group_title">
+  <PreferenceCategory android:title="@string/notification_group_title" android:layout="@layout/bho_preference_category">
 
         <CheckBoxPreference
                 android:key="@string/pref_enable_notification"
                 android:title="@string/notification_enabled_title"
                 android:summary="@string/notification_enabled_summary"
-                android:defaultValue="true" />
+                android:defaultValue="true"
+                android:layout="@layout/bho_checkbox_preference" />
 
         <CheckBoxPreference
-                android:layout="?android:attr/preferenceLayoutChild"
+                android:layout="@layout/bho_preference_child"
                 android:dependency="@string/pref_enable_notification"
                 android:key="@string/pref_notification_vibrate"
                 android:title="@string/notification_vibrate_title"
@@ -57,7 +60,7 @@
                  />
 
         <CheckBoxPreference
-                android:layout="?android:attr/preferenceLayoutChild"
+                android:layout="@layout/bho_preference_child"
                 android:dependency="@string/pref_enable_notification"
                 android:key="@string/pref_notification_sound"
                 android:title="@string/notification_sound_title"

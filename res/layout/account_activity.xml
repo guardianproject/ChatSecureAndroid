@@ -47,13 +47,13 @@
 	        android:autoText="false"
 	        android:selectAllOnFocus="true" android:inputType="textPassword"/>
 	        
-	    <CheckBox android:id="@+id/rememberPassword"
+	    <info.guardianproject.otr.app.lang.BhoCheckBox android:id="@+id/rememberPassword"
 	android:textAppearance="?android:attr/textAppearanceSmall"
 	android:layout_height="wrap_content"
 	android:layout_width="wrap_content"
 	android:text="@string/remember_password" />
 	
-	  <CheckBox android:id="@+id/useTor"
+	  <info.guardianproject.otr.app.lang.BhoCheckBox android:id="@+id/useTor"
   		android:textSize="13sp"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
