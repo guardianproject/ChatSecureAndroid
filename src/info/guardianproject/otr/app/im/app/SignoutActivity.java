@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.lang.BhoToast;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -101,7 +102,7 @@ public class SignoutActivity extends Activity {
         } finally {
             finish();
 
-            Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
+            new BhoToast(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG);
         }
     }
 

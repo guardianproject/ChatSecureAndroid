@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoToast;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -100,9 +101,8 @@ public class AccountSettingsActivity extends PreferenceActivity implements
             try {
                 settings.setXmppResourcePrio(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
-                Toast.makeText(getBaseContext(),
-                        "Priority must be a number in the range [0 .. 127]", Toast.LENGTH_SHORT)
-                        .show();
+                new BhoToast(getBaseContext(),
+                        "Priority must be a number in the range [0 .. 127]", Toast.LENGTH_SHORT);
             }
             mXmppResourcePrio.setSummary(value);
         } else if (key.equals(getString(R.string.pref_account_port))) {
@@ -110,8 +110,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
             try {
                 settings.setPort(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
-                Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
-                        .show();
+                new BhoToast(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT);
             }
             if (value != "5222")
                 mPort.setSummary(value);

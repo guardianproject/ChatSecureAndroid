@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoToast;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,7 +54,7 @@ public class SimpleAlertHandler extends Handler {
         } else {
             promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
-        Toast.makeText(mActivity, promptMsg, Toast.LENGTH_SHORT).show();
+        new BhoToast(mActivity, promptMsg, Toast.LENGTH_SHORT);
     }
 
     public void registerForBroadcastEvents() {

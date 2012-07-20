@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,9 +55,9 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.Toast;
 
 public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
 
@@ -307,7 +308,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
                 otrChatSession.stopChatEncryption();
                 toastMsgId = R.string.stopping_otr_chat;
             }
-            Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
+            new BhoToast(this, getString(toastMsgId), Toast.LENGTH_SHORT);
         } catch (RemoteException e) {
             Log.d("Gibber", "error getting remote activity", e);
         }
@@ -460,8 +461,8 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     }
 
     void showInvitationHasSent(String contact) {
-        Toast.makeText(NewChatActivity.this, getString(R.string.invitation_sent_prompt, contact),
-                Toast.LENGTH_SHORT).show();
+        new BhoToast(NewChatActivity.this, getString(R.string.invitation_sent_prompt, contact),
+                Toast.LENGTH_SHORT);
     }
 
     private class ContactInvitor extends ChatListenerAdapter {

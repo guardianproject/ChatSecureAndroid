@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
 import info.guardianproject.otr.app.lang.BhoButton;
+import info.guardianproject.otr.app.lang.BhoToast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -403,8 +404,8 @@ public class WelcomeActivity extends Activity {
 
     private void showAbout() {
         //TODO implement this about form
-        Toast.makeText(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber",
-                Toast.LENGTH_LONG).show();
+        new BhoToast(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber",
+                Toast.LENGTH_LONG);
     }
 
     private void signOutAll() {

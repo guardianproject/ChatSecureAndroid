@@ -48,7 +48,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import android.widget.Toast;
 
 public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener {
 
