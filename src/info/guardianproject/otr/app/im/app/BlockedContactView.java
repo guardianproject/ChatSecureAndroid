@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,13 +30,12 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class BlockedContactView extends LinearLayout {
     private ImageView mAvatar;
     private ImageView mBlockedIcon;
-    private TextView mLine1;
-    private TextView mLine2;
+    private BhoTextView mLine1;
+    private BhoTextView mLine2;
 
     public BlockedContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,8 +47,8 @@ public class BlockedContactView extends LinearLayout {
 
         mAvatar = (ImageView) findViewById(R.id.avatar);
         mBlockedIcon = (ImageView) findViewById(R.id.blocked);
-        mLine1 = (TextView) findViewById(R.id.line1);
-        mLine2 = (TextView) findViewById(R.id.line2);
+        mLine1 = (BhoTextView) findViewById(R.id.line1);
+        mLine2 = (BhoTextView) findViewById(R.id.line2);
     }
 
     public void bind(Cursor cursor, Context mContext) {

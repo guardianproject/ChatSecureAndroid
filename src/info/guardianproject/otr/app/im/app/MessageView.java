@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -38,14 +39,13 @@ import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
     public enum DeliveryState {
         NEUTRAL, DELIVERED, UNDELIVERED
     }
 
-    private TextView mTextViewForMessages;
+    private BhoTextView mTextViewForMessages;
     private ImageView mDeliveryIcon;
     private Resources mResources;
 
@@ -57,7 +57,7 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mTextViewForMessages = (TextView) findViewById(R.id.message);
+        mTextViewForMessages = (BhoTextView) findViewById(R.id.message);
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
 
         mResources = getResources();

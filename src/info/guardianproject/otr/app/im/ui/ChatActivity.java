@@ -7,8 +7,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class ChatActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {

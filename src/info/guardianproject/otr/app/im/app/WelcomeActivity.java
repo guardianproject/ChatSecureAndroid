@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
+import info.guardianproject.otr.app.lang.BhoButton;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -46,8 +47,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class WelcomeActivity extends Activity {
@@ -93,7 +92,7 @@ public class WelcomeActivity extends Activity {
 
         setContentView(R.layout.welcome_activity);
 
-        Button btnSplashAbout = ((Button) findViewById(R.id.btnSplashAbout));
+        BhoButton btnSplashAbout = ((BhoButton) findViewById(R.id.btnSplashAbout));
         btnSplashAbout.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 
         btnSplashAbout.setOnClickListener(new OnClickListener() {

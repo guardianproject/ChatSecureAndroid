@@ -22,7 +22,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <EditText android:id="@+id/filter"
+    <info.guardianproject.otr.app.lang.BhoEditText android:id="@+id/filter"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/contact_filter_hint"/>
@@ -34,7 +34,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
 
-        <TextView android:id="@android:id/empty"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@android:id/empty"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -46,7 +47,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 
 public class ChatSwitcher {
     private static final boolean LOCAL_DEBUG = true;
@@ -373,7 +374,7 @@ public class ChatSwitcher {
             String nickname = c.getString(mNicknameColumn);
             //if (LOCAL_DEBUG) log("bindView: nickname=" + nickname);
 
-            TextView t = (TextView) view.findViewById(R.id.name);
+            BhoTextView t = (BhoTextView) view.findViewById(R.id.name);
             t.setText(nickname);
 
             int presenceMode = c.getInt(mPresenceStatusColumn);
@@ -393,7 +394,7 @@ public class ChatSwitcher {
             //  If there is a shortcut assigned to this chat, then show it, otherwise
             //  hide the shortcut text view.
             long shortcut = c.getLong(mShortcutColumn);
-            TextView shortcutView = (TextView) view.findViewById(R.id.shortcut);
+            BhoTextView shortcutView = (BhoTextView) view.findViewById(R.id.shortcut);
 
             shortcutView.setVisibility(mPreferMenuShortcut ? View.VISIBLE : View.GONE);
             if (shortcut >= 0 && shortcut < 10) {
@@ -411,7 +412,7 @@ public class ChatSwitcher {
                 avatarView.setImageDrawable(avatar);
             }
 
-            TextView tv = (TextView) view.findViewById(R.id.when);
+            BhoTextView tv = (BhoTextView) view.findViewById(R.id.when);
             tv.setText(android.text.format.DateUtils.getRelativeTimeSpanString(
                     c.getLong(mLastChatColumn), System.currentTimeMillis(),
                     android.text.format.DateUtils.MINUTE_IN_MILLIS,

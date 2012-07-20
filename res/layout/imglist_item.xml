@@ -38,7 +38,7 @@
         android:paddingLeft="4dip"
         android:paddingRight="4dip" />
 
-    <TextView android:id="@+id/text"
+    <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/text"
         android:textColor="@color/status_popup_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

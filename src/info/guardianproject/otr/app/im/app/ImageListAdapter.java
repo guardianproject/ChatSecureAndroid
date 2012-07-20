@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import java.util.List;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -28,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
 /** A general image list adapter. */
 public class ImageListAdapter extends BaseAdapter implements ListAdapter {
@@ -87,7 +87,7 @@ public class ImageListAdapter extends BaseAdapter implements ListAdapter {
 
     private void setupView(int position, View view) {
         ImageView iv = (ImageView) view.findViewById(mImageId);
-        TextView tv = (TextView) view.findViewById(mTextId);
+        BhoTextView tv = (BhoTextView) view.findViewById(mTextId);
         View separator = view.findViewById(mSeparatorId);
 
         if (!isEnabled(position)) {

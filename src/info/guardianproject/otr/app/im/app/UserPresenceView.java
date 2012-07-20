@@ -26,6 +26,8 @@ import java.util.List;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.lang.BhoEditText;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,17 +40,15 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class UserPresenceView extends LinearLayout {
 
     private ImageButton mStatusDialogButton;
 
     // views of the popup window
-    TextView mStatusBar;
+    BhoTextView mStatusBar;
 
     private final SimpleAlertHandler mHandler;
 
@@ -127,7 +127,7 @@ public class UserPresenceView extends LinearLayout {
             updatePresence(-1, newStatusText);
         }
 
-        mStatusBar = initStatusBar(mProviderId, false);
+        mStatusBar = (BhoTextView) initStatusBar(mProviderId, false);
     }
 
     public void setConnection(IImConnection conn) {
@@ -158,7 +158,7 @@ public class UserPresenceView extends LinearLayout {
         mLastStatusText = statusText;
 
         if (mStatusBar == null) {
-            mStatusBar = initStatusBar(mProviderId, false);
+            mStatusBar = (BhoTextView) initStatusBar(mProviderId, false);
         }
         mStatusBar.setText(statusText);
 
@@ -171,8 +171,9 @@ public class UserPresenceView extends LinearLayout {
             mStatusBar.setFocusable(false);
         }
     }
-
-    private TextView initStatusBar(long providerId, boolean showEdit) {
+    
+    // TODO: this might also be wonky; changed TextView to View as return type and cast all returned values
+    private View initStatusBar(long providerId, boolean showEdit) {
         /*
         String value = Imps.ProviderSettings.getStringValue(
                             mContext.getContentResolver(), providerId,
@@ -181,9 +182,9 @@ public class UserPresenceView extends LinearLayout {
         boolean showEdit = true;
         */
 
-        EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
+        BhoEditText statusEdit = (BhoEditText) findViewById(R.id.statusEdit);
         statusEdit.setVisibility(View.GONE);
-        TextView statusView = (TextView) findViewById(R.id.statusView);
+        BhoTextView statusView = (BhoTextView) findViewById(R.id.statusView);
         statusView.setVisibility(View.GONE);
 
         if (showEdit) {
@@ -223,7 +224,7 @@ public class UserPresenceView extends LinearLayout {
 
                 @Override
                 public void onClick(View v) {
-                    mStatusBar = initStatusBar(mProviderId, true);
+                    mStatusBar = (BhoTextView) initStatusBar(mProviderId, true);
 
                 }
 

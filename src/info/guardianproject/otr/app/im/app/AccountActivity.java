@@ -25,6 +25,9 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoButton;
+import info.guardianproject.otr.app.lang.BhoEditText;
+import info.guardianproject.otr.app.lang.BhoTextView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -57,13 +60,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
+
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+
+import android.widget.TextView.OnEditorActionListener;
+
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class AccountActivity extends Activity {
@@ -89,13 +93,13 @@ public class AccountActivity extends Activity {
 
     Uri mAccountUri;
 
-    EditText mEditUserAccount;
-    EditText mEditPass;
+    BhoEditText mEditUserAccount;
+    BhoEditText mEditPass;
     CheckBox mRememberPass;
     CheckBox mUseTor;
-    Button mBtnSignIn;
-    Button mBtnAdvanced;
-    TextView mTxtFingerprint;
+    BhoButton mBtnSignIn;
+    BhoButton mBtnAdvanced;
+    BhoTextView mTxtFingerprint;
 
     boolean isEdit = false;
     boolean isSignedIn = false;
@@ -119,7 +123,7 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         setContentView(R.layout.account_activity);
-        mEditUserAccount = (EditText) findViewById(R.id.edtName);
+        mEditUserAccount = (BhoEditText) findViewById(R.id.edtName);
 
         mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -128,7 +132,7 @@ public class AccountActivity extends Activity {
             }
         });
 
-        mEditPass = (EditText) findViewById(R.id.edtPass);
+        mEditPass = (BhoEditText) findViewById(R.id.edtPass);
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
         //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
         mUseTor = (CheckBox) findViewById(R.id.useTor);
@@ -139,9 +143,9 @@ public class AccountActivity extends Activity {
             }
         });
 
-        mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
+        mBtnSignIn = (BhoButton) findViewById(R.id.btnSignIn);
 
-        mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
+        mBtnAdvanced = (BhoButton) findViewById(R.id.btnAdvanced);
 
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -393,14 +397,14 @@ public class AccountActivity extends Activity {
                 otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
 
                 if (otrKeyManager == null) {
-                    mTxtFingerprint = ((TextView) findViewById(R.id.txtFingerprint));
+                    mTxtFingerprint = ((BhoTextView) findViewById(R.id.txtFingerprint));
 
                     String localFingerprint = otrKeyManager.getLocalFingerprint();
                     if (localFingerprint != null) {
-                        ((TextView) findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);
+                        ((BhoTextView) findViewById(R.id.lblFingerprint)).setVisibility(View.VISIBLE);
                         mTxtFingerprint.setText(processFingerprint(localFingerprint));
                     } else {
-                        ((TextView) findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
+                        ((BhoTextView) findViewById(R.id.lblFingerprint)).setVisibility(View.GONE);
                         mTxtFingerprint.setText("");
                     }
                 } else {

@@ -15,7 +15,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
 		    android:padding="3px">
-<TextView android:text="" 	android:textColor="#ffffff" android:id="@+id/WizardTextBody" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<info.guardianproject.otr.app.lang.BhoTextView android:text="" 	android:textColor="#ffffff" android:id="@+id/WizardTextBody" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
 			</LinearLayout>
 		</ScrollView>			

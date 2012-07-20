@@ -4,6 +4,7 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoEditText;
 
 import java.util.List;
 
@@ -15,11 +16,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.EditText;
 
 public class SmpResponseActivity extends Activity {
 
-    private EditText mInputSMP;
+    private BhoEditText mInputSMP;
     private String mSessionId;
     private String mQuestion;
     private long mProviderId;
@@ -28,7 +28,7 @@ public class SmpResponseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mInputSMP = new EditText(this);
+        mInputSMP = new BhoEditText(this);
 
         mSessionId = getIntent().getStringExtra("sid");
         mProviderId = getIntent().getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);

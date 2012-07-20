@@ -27,6 +27,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoEditText;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -51,8 +53,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+
+
 import android.widget.Toast;
 
 public class ContactPresenceActivity extends Activity {
@@ -78,9 +80,9 @@ public class ContactPresenceActivity extends Activity {
         setContentView(R.layout.contact_presence_activity);
 
         //   ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
-        TextView txtName = (TextView) findViewById(R.id.txtName);
-        TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
-        TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
+        BhoTextView txtName = (BhoTextView) findViewById(R.id.txtName);
+        BhoTextView txtStatus = (BhoTextView) findViewById(R.id.txtStatus);
+        BhoTextView txtCustomStatus = (BhoTextView) findViewById(R.id.txtStatusText);
 
         Intent i = getIntent();
         Uri uri = i.getData();
@@ -155,10 +157,10 @@ public class ContactPresenceActivity extends Activity {
 
     private void updateUI() {
 
-        TextView lblFingerprintLocal = (TextView) findViewById(R.id.labelFingerprintLocal);
-        TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
-        TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
-        TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
+        BhoTextView lblFingerprintLocal = (BhoTextView) findViewById(R.id.labelFingerprintLocal);
+        BhoTextView lblFingerprintRemote = (BhoTextView) findViewById(R.id.labelFingerprintRemote);
+        BhoTextView txtFingerprintRemote = (BhoTextView) findViewById(R.id.txtFingerprintRemote);
+        BhoTextView txtFingerprintLocal = (BhoTextView) findViewById(R.id.txtFingerprintLocal);
 
         if (remoteFingerprint != null) {
             txtFingerprintRemote.setText(remoteFingerprint);
@@ -300,8 +302,8 @@ public class ContactPresenceActivity extends Activity {
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
-                        EditText eiAnswer = (EditText) viewSmp.findViewById(R.id.editSmpAnswer);
+                        BhoEditText eiQuestion = (BhoEditText) viewSmp.findViewById(R.id.editSmpQuestion);
+                        BhoEditText eiAnswer = (BhoEditText) viewSmp.findViewById(R.id.editSmpAnswer);
                         String question = eiQuestion.getText().toString();
                         String answer = eiAnswer.getText().toString();
                         initSmp(question, answer);

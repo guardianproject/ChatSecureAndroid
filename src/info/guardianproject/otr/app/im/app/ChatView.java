@@ -41,6 +41,9 @@ import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoButton;
+import info.guardianproject.otr.app.lang.BhoEditText;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -78,15 +81,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -120,13 +121,13 @@ public class ChatView extends LinearLayout {
     Cursor mCursor;
 
     private ImageView mStatusIcon;
-    private TextView mTitle;
+    private BhoTextView mTitle;
     /*package*/ListView mHistory;
-    EditText mComposeMessage;
-    private Button mSendButton;
+    BhoEditText mComposeMessage;
+    private BhoButton mSendButton;
     private View mStatusWarningView;
     private ImageView mWarningIcon;
-    private TextView mWarningText;
+    private BhoTextView mWarningText;
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
@@ -327,21 +328,21 @@ public class ChatView extends LinearLayout {
     protected void onFinishInflate() {
         mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
         mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
-        mTitle = (TextView) findViewById(R.id.title);
+        mTitle = (BhoTextView) findViewById(R.id.title);
         mHistory = (ListView) findViewById(R.id.history);
-        mComposeMessage = (EditText) findViewById(R.id.composeMessage);
-        mSendButton = (Button) findViewById(R.id.btnSend);
+        mComposeMessage = (BhoEditText) findViewById(R.id.composeMessage);
+        mSendButton = (BhoButton) findViewById(R.id.btnSend);
         mHistory.setOnItemClickListener(mOnItemClickListener);
 
         mStatusWarningView = findViewById(R.id.warning);
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
-        mWarningText = (TextView) findViewById(R.id.warningText);
+        mWarningText = (BhoTextView) findViewById(R.id.warningText);
 
-        Button acceptInvitation = (Button) findViewById(R.id.btnAccept);
-        Button declineInvitation = (Button) findViewById(R.id.btnDecline);
+        BhoButton acceptInvitation = (BhoButton) findViewById(R.id.btnAccept);
+        BhoButton declineInvitation = (BhoButton) findViewById(R.id.btnDecline);
 
-        Button approveSubscription = (Button) findViewById(R.id.btnApproveSubscription);
-        Button declineSubscription = (Button) findViewById(R.id.btnDeclineSubscription);
+        BhoButton approveSubscription = (BhoButton) findViewById(R.id.btnApproveSubscription);
+        BhoButton declineSubscription = (BhoButton) findViewById(R.id.btnDeclineSubscription);
 
         mWarningText.setOnTouchListener(new OnTouchListener() {
 
@@ -395,7 +396,8 @@ public class ChatView extends LinearLayout {
                 return false;
             }
         });
-
+        
+        // TODO: this might be wonky?
         mComposeMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null) {
@@ -636,7 +638,7 @@ public class ChatView extends LinearLayout {
             mProviderId = cursor.getLong(INVITATION_PROVIDER_COLUMN);
             String sender = cursor.getString(INVITATION_SENDER_COLUMN);
 
-            TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
+            BhoTextView mInvitationText = (BhoTextView) findViewById(R.id.txtInvitation);
             mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
             mTitle.setText(mContext.getString(R.string.chat_with, sender));
         }
@@ -652,7 +654,7 @@ public class ChatView extends LinearLayout {
 
         setViewType(VIEW_TYPE_SUBSCRIPTION);
 
-        TextView text = (TextView) findViewById(R.id.txtSubscription);
+        BhoTextView text = (BhoTextView) findViewById(R.id.txtSubscription);
         String displayableAddr = ImpsAddressUtils.getDisplayableAddress(from);
         text.setText(mContext.getString(R.string.subscription_prompt, displayableAddr));
         mTitle.setText(mContext.getString(R.string.chat_with, displayableAddr));
@@ -1704,7 +1706,7 @@ public class ChatView extends LinearLayout {
         return (Cursor) item;
     }
 
-    EditText getComposedMessage() {
+    BhoEditText getComposedMessage() {
         return mComposeMessage;
     }
 }

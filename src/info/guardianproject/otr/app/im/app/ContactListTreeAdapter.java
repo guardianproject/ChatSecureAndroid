@@ -29,6 +29,7 @@ import org.jivesoftware.smackx.packet.VCard;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
@@ -50,8 +51,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CursorTreeAdapter;
-import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.TextView;
 
 public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         AbsListView.OnScrollListener {
@@ -305,7 +306,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
                 // use the convert view if it matches the type required by displayEmpty
                 if ((convertView instanceof TextView)) {
                     view = convertView;
-                    ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
+                    ((BhoTextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
                 } else if ((convertView instanceof ContactView)) {
                     view = convertView;
                 }
@@ -385,8 +386,8 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
                 v = newGroupView(parent);
             }
 
-            TextView text1 = (TextView) v.findViewById(R.id.text1);
-            TextView text2 = (TextView) v.findViewById(R.id.text2);
+            BhoTextView text1 = (BhoTextView) v.findViewById(R.id.text1);
+            BhoTextView text2 = (BhoTextView) v.findViewById(R.id.text2);
 
             Resources r = v.getResources();
             ImApp app = ImApp.getApplication(mActivity);
@@ -535,7 +536,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         protected void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
             // binding when child is text view for an empty group
             if (view instanceof TextView) {
-                ((TextView) view).setText(mActivity.getText(R.string.empty_contact_group));
+                ((BhoTextView) view).setText(mActivity.getText(R.string.empty_contact_group));
             } else {
                 ((ContactView) view).bind(cursor, null, isScrolling());
             }
@@ -543,8 +544,8 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
 
         @Override
         protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
-            TextView text1 = (TextView) view.findViewById(R.id.text1);
-            TextView text2 = (TextView) view.findViewById(R.id.text2);
+            BhoTextView text1 = (BhoTextView) view.findViewById(R.id.text1);
+            BhoTextView text2 = (BhoTextView) view.findViewById(R.id.text2);
             Resources r = view.getResources();
 
             text1.setText(cursor.getString(COLUMN_CONTACT_LIST_NAME));
@@ -566,7 +567,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
             if (super.getChildrenCount(groupPosition) == 0) {
                 if (convertView != null) {
                     if (convertView instanceof TextView) {
-                        ((TextView) convertView).setText(mActivity
+                        ((BhoTextView) convertView).setText(mActivity
                                 .getText(R.string.empty_contact_group));
                         return convertView;
                     }

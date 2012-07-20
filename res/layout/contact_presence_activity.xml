@@ -30,7 +30,7 @@
             android:padding="2dip"
             android:background="@drawable/picture_frame_background" />
 
-        <TextView android:id="@+id/labelName"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/labelName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dip"
@@ -38,13 +38,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_username" /> -->
 
-        <TextView android:id="@+id/txtName"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="40dip"
             android:text="name here"/>
 
-        <TextView android:id="@+id/labelStatus"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/labelStatus"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip"
@@ -52,11 +52,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_status" />
 
-        <TextView android:id="@+id/txtStatus"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtStatus"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
-        <TextView android:id="@+id/txtStatusText"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtStatusText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dip"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content" />
              -->
             
-            <TextView android:id="@+id/labelFingerprintRemote"
+            <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/labelFingerprintRemote"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip"                
@@ -87,13 +87,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_fingerprint_remote" />
 
-        <TextView android:id="@+id/txtFingerprintRemote"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtFingerprintRemote"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="10pt"
             android:text="" />
             
-               <TextView android:id="@+id/labelFingerprintLocal"
+               <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/labelFingerprintLocal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dip"                
@@ -101,7 +101,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_fingerprint_local" />
 
-        <TextView android:id="@+id/txtFingerprintLocal"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtFingerprintLocal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="10pt"

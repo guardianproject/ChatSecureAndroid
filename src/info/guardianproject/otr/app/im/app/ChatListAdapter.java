@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -45,6 +46,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.CursorTreeAdapter;
 import android.widget.TextView;
+
 import android.widget.ListAdapter;
 
 public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListener {
@@ -577,7 +579,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         protected void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
             // binding when child is text view for an empty group
             if (view instanceof TextView) {
-                ((TextView) view).setText(mActivity.getText(R.string.empty_contact_group));
+                ((BhoTextView) view).setText(mActivity.getText(R.string.empty_contact_group));
             } else {
                 ((ContactView) view).bind(cursor, null, isScrolling());
             }
@@ -585,8 +587,8 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
 
         @Override
         protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
-            TextView text1 = (TextView) view.findViewById(R.id.text1);
-            TextView text2 = (TextView) view.findViewById(R.id.text2);
+            BhoTextView text1 = (BhoTextView) view.findViewById(R.id.text1);
+            BhoTextView text2 = (BhoTextView) view.findViewById(R.id.text2);
             Resources r = view.getResources();
 
             text1.setText(cursor.getString(COLUMN_CONTACT_LIST_NAME));
@@ -608,7 +610,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
             if (super.getChildrenCount(groupPosition) == 0) {
                 if (convertView != null) {
                     if (convertView instanceof TextView) {
-                        ((TextView) convertView).setText(mActivity
+                        ((BhoTextView) convertView).setText(mActivity
                                 .getText(R.string.empty_contact_group));
                         return convertView;
                     }
@@ -788,7 +790,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
             // use the convert view if it matches the type required by displayEmpty
             if (displayEmpty && (convertView instanceof TextView)) {
                 view = convertView;
-                ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
+                ((BhoTextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
             } else if (!displayEmpty && (convertView instanceof ContactView)) {
                 view = convertView;
             }

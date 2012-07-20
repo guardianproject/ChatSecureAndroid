@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -32,7 +33,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class ProviderListItem extends LinearLayout {
     private static final String TAG = "IM";
@@ -41,9 +41,9 @@ public class ProviderListItem extends LinearLayout {
     private LandingPage mActivity;
     private ImageView mProviderIcon;
     private ImageView mStatusIcon;
-    private TextView mProviderName;
-    private TextView mLoginName;
-    private TextView mChatView;
+    private BhoTextView mProviderName;
+    private BhoTextView mLoginName;
+    private BhoTextView mChatView;
     private View mUnderBubble;
     private Drawable mBubbleDrawable, mDefaultBackground;
 
@@ -66,9 +66,9 @@ public class ProviderListItem extends LinearLayout {
     public void init(Cursor c) {
         mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
         mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
-        mProviderName = (TextView) findViewById(R.id.providerName);
-        mLoginName = (TextView) findViewById(R.id.loginName);
-        mChatView = (TextView) findViewById(R.id.conversations);
+        mProviderName = (BhoTextView) findViewById(R.id.providerName);
+        mLoginName = (BhoTextView) findViewById(R.id.loginName);
+        mChatView = (BhoTextView) findViewById(R.id.conversations);
         mUnderBubble = findViewById(R.id.underBubble);
         mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
         mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
@@ -92,9 +92,9 @@ public class ProviderListItem extends LinearLayout {
         Resources r = getResources();
         ImageView providerIcon = mProviderIcon;
         ImageView statusIcon = mStatusIcon;
-        TextView providerName = mProviderName;
-        TextView loginName = mLoginName;
-        TextView chatView = mChatView;
+        BhoTextView providerName = mProviderName;
+        BhoTextView loginName = mLoginName;
+        BhoTextView chatView = mChatView;
 
         int providerId = cursor.getInt(mProviderIdColumn);
         String providerDisplayName = cursor.getString(mProviderFullnameColumn);

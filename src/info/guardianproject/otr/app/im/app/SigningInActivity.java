@@ -28,6 +28,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
+import info.guardianproject.otr.app.lang.BhoEditText;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -54,7 +55,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.EditText;
 
 public class SigningInActivity extends Activity {
     private static final String TAG = "SigningInActivity";
@@ -209,7 +209,7 @@ public class SigningInActivity extends Activity {
         String message = getString(R.string.signin_password_prompt);
         alert.setMessage(message);
 
-        final EditText input = new EditText(this);
+        final BhoEditText input = new BhoEditText(this);
         input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         input.setTransformationMethod(new PasswordTransformationMethod());
         alert.setView(input);

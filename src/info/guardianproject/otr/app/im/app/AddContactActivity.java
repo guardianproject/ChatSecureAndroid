@@ -31,6 +31,8 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.lang.BhoButton;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -51,12 +53,10 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 public class AddContactActivity extends Activity {
 
@@ -66,7 +66,7 @@ public class AddContactActivity extends Activity {
 
     private MultiAutoCompleteTextView mAddressList;
     private Spinner mListSpinner;
-    Button mInviteButton;
+    BhoButton mInviteButton;
     ImApp mApp;
     SimpleAlertHandler mHandler;
 
@@ -87,7 +87,7 @@ public class AddContactActivity extends Activity {
         BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
         setTitle(brandingRes.getString(BrandingResourceIDs.STRING_ADD_CONTACT_TITLE));
 
-        TextView label = (TextView) findViewById(R.id.input_contact_label);
+        BhoTextView label = (BhoTextView) findViewById(R.id.input_contact_label);
         label.setText(brandingRes.getString(BrandingResourceIDs.STRING_LABEL_INPUT_CONTACT));
 
         mAddressList = (MultiAutoCompleteTextView) findViewById(R.id.email);
@@ -107,7 +107,7 @@ public class AddContactActivity extends Activity {
         mListSpinner.setAdapter(adapter);
         mListSpinner.setSelection(initSelection);
 
-        mInviteButton = (Button) findViewById(R.id.invite);
+        mInviteButton = (BhoButton) findViewById(R.id.invite);
         mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
         mInviteButton.setOnClickListener(mButtonHandler);
         mInviteButton.setEnabled(false);
@@ -263,7 +263,7 @@ public class AddContactActivity extends Activity {
 
         @Override
         public final void bindView(View view, Context context, Cursor cursor) {
-            ((TextView) view).setText(cursor.getString(DATA_INDEX));
+            ((BhoTextView) view).setText(cursor.getString(DATA_INDEX));
         }
 
         @Override

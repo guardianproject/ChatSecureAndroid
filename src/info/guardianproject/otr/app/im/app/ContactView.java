@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoTextView;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -43,7 +44,6 @@ import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class ContactView extends LinearLayout {
     static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
@@ -70,9 +70,9 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_LAST_MESSAGE = 11;
 
     //private ImageView mPresence;
-    private TextView mLine1;
-    private TextView mLine2;
-    private TextView mTimeStamp;
+    private BhoTextView mLine1;
+    private BhoTextView mLine2;
+    private BhoTextView mTimeStamp;
     private Context mContext; // TODO
 
     public ContactView(Context context, AttributeSet attrs) {
@@ -84,10 +84,10 @@ public class ContactView extends LinearLayout {
         super.onFinishInflate();
 
         //mPresence = (ImageView) findViewById(R.id.presence);
-        mLine1 = (TextView) findViewById(R.id.line1);
-        mLine2 = (TextView) findViewById(R.id.line2);
+        mLine1 = (BhoTextView) findViewById(R.id.line1);
+        mLine2 = (BhoTextView) findViewById(R.id.line2);
         mLine2.setCompoundDrawablePadding(5);
-        mTimeStamp = (TextView) findViewById(R.id.timestamp);
+        mTimeStamp = (BhoTextView) findViewById(R.id.timestamp);
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {

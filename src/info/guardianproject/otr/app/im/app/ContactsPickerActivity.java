@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.lang.BhoEditText;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -32,7 +33,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
@@ -66,7 +66,7 @@ public class ContactsPickerActivity extends ListActivity {
             return;
         }
 
-        EditText filter = (EditText) findViewById(R.id.filter);
+        BhoEditText filter = (BhoEditText) findViewById(R.id.filter);
         filter.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
