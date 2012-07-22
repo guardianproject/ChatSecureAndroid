@@ -9,9 +9,11 @@ import org.ironrabbit.TibConvert;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BhoTyper {
@@ -30,6 +32,26 @@ public class BhoTyper {
 		bho = Typeface.createFromAsset(this.c.getAssets(), FONT);
 	    
 		refreshBho();
+	}
+	
+	public static void parseForBhoViews(Context c, ViewGroup viewGroup) {
+	    Typeface t = Typeface.createFromAsset(c.getAssets(), FONT);
+	    Log.d(BhoTyper.BHOTAG, "view group with " + viewGroup.getChildCount() + " children");
+	    for(int i=0; i<viewGroup.getChildCount(); i++) {
+	        View v = viewGroup.getChildAt(i);
+	        if(v instanceof LinearLayout)
+	            parseForBhoViews(c, (ViewGroup) v);
+	        else {
+	            Log.d(BhoTyper.BHOTAG, "child: " + v.getClass().getName());
+	            if(v instanceof TextView) {
+	                ((TextView) v).setTypeface(t);
+	                Log.d(BhoTyper.BHOTAG, "says: " + ((TextView) v).getText());
+	            } else if(v instanceof EditText) {
+	                ((EditText) v).setTypeface(t);
+	                Log.d(BhoTyper.BHOTAG, "says: " + ((EditText) v).getText());
+	            }
+	        }
+	    }
 	}
 	
 	public void refreshBho() {

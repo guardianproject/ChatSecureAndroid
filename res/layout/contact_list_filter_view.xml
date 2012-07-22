@@ -62,7 +62,7 @@
 
         </LinearLayout>
 
-        <EditText android:id="@+id/statusEdit"
+        <info.guardianproject.otr.app.lang.BhoEditText android:id="@+id/statusEdit"
             android:inputType="textCapSentences|textAutoCorrect"
             android:selectAllOnFocus="true"
             android:layout_gravity="center_vertical"
@@ -74,7 +74,7 @@
             android:hint="enter custom status"
             />
 
-        <TextView android:id="@+id/statusView"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/statusView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"

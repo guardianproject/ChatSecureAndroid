@@ -40,9 +40,9 @@ public class AccountSettingsActivity extends PreferenceActivity implements
     private long mProviderId;
 
     BhoEditTextPreference mXmppResource;
-    EditTextPreference mXmppResourcePrio;
-    EditTextPreference mPort;
-    EditTextPreference mServer;
+    BhoEditTextPreference mXmppResourcePrio;
+    BhoEditTextPreference mPort;
+    BhoEditTextPreference mServer;
     CheckBoxPreference mAllowPlainAuth;
     CheckBoxPreference mRequireTls;
     CheckBoxPreference mTlsCertVerify;
@@ -151,9 +151,9 @@ public class AccountSettingsActivity extends PreferenceActivity implements
                     "AccountSettingsActivity must be created with an provider id");
         }
         mXmppResource = (BhoEditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
-        mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
-        mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
-        mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
+        mXmppResourcePrio = (BhoEditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
+        mPort = (BhoEditTextPreference) findPreference(getString(R.string.pref_account_port));
+        mServer = (BhoEditTextPreference) findPreference(getString(R.string.pref_account_server));
         mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
         mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
         mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
