@@ -37,7 +37,7 @@
             android:layout_height="16dip"
             android:scaleType="fitCenter" />
 
-        <TextView android:id="@+id/title"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -69,7 +69,7 @@
             android:layout_height="fill_parent"
             android:src="@drawable/ic_im_message_not_sent" />
 
-        <TextView android:id="@+id/warningText"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/warningText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="5dip"
@@ -103,7 +103,7 @@
         android:visibility="gone"
         android:background="@drawable/text_divider_horizontal">
 
-        <TextView android:id="@+id/txtInvitation"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtInvitation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffad45d6"
@@ -113,12 +113,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button android:id="@+id/btnAccept"
+            <info.guardianproject.otr.app.lang.BhoButton android:id="@+id/btnAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/accept_invitation" />
 
-            <Button android:id="@+id/btnDecline"
+            <info.guardianproject.otr.app.lang.BhoButton android:id="@+id/btnDecline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
@@ -134,7 +134,7 @@
         android:visibility="gone"
         android:background="@drawable/text_divider_horizontal">
 
-        <TextView android:id="@+id/txtSubscription"
+        <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/txtSubscription"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffad45d6"
@@ -144,12 +144,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button android:id="@+id/btnApproveSubscription"
+            <info.guardianproject.otr.app.lang.BhoButton android:id="@+id/btnApproveSubscription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/approve_subscription" />
 
-            <Button android:id="@+id/btnDeclineSubscription"
+            <info.guardianproject.otr.app.lang.BhoButton android:id="@+id/btnDeclineSubscription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
@@ -173,7 +173,7 @@
               -->
         
 
-        <EditText android:id="@+id/composeMessage"
+        <info.guardianproject.otr.app.lang.BhoEditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -185,7 +185,7 @@
             
             />
 
-        <Button android:id="@+id/btnSend"
+        <info.guardianproject.otr.app.lang.BhoButton android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:drawableLeft="@drawable/ic_menu_unencrypt"

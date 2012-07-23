@@ -48,7 +48,7 @@ public class UserPresenceView extends LinearLayout {
     private ImageButton mStatusDialogButton;
 
     // views of the popup window
-    BhoTextView mStatusBar;
+    View mStatusBar;
 
     private final SimpleAlertHandler mHandler;
 
@@ -119,7 +119,7 @@ public class UserPresenceView extends LinearLayout {
     }
 
     void updateStatusText() {
-        String newStatusText = mStatusBar.getText().toString();
+        String newStatusText = ((BhoTextView) mStatusBar).getText().toString();
         if (TextUtils.isEmpty(newStatusText)) {
             newStatusText = "";
         }
@@ -160,7 +160,7 @@ public class UserPresenceView extends LinearLayout {
         if (mStatusBar == null) {
             mStatusBar = (BhoTextView) initStatusBar(mProviderId, false);
         }
-        mStatusBar.setText(statusText);
+        ((BhoTextView) mStatusBar).setText(statusText);
 
         // Disable the user to edit the custom status text because
         // the AIM and MSN server don't support it now.
@@ -224,8 +224,7 @@ public class UserPresenceView extends LinearLayout {
 
                 @Override
                 public void onClick(View v) {
-                    mStatusBar = (BhoTextView) initStatusBar(mProviderId, true);
-
+                    mStatusBar = (BhoEditText) initStatusBar(mProviderId, true);
                 }
 
             });
