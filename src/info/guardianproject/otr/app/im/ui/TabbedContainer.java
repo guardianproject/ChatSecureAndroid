@@ -3,6 +3,7 @@ package info.guardianproject.otr.app.im.ui;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
+import info.guardianproject.otr.app.lang.BhoTab;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -35,8 +36,8 @@ public class TabbedContainer extends TabActivity {
         intent.putExtras(passThruExtras);
         spec = tabHost
                 .newTabSpec("contacts")
-                .setIndicator(getString(R.string.menu_contact_list),
-                        res.getDrawable(R.drawable.ic_tab_contacts)).setContent(intent);
+                .setIndicator(new BhoTab(this, getTabWidget(), getString(R.string.menu_contact_list),
+                        R.drawable.ic_tab_contacts).tab).setContent(intent);
         tabHost.addTab(spec);
 
         // Create an Intent to launch an Activity for the tab (to be reused)
@@ -48,8 +49,8 @@ public class TabbedContainer extends TabActivity {
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost
                 .newTabSpec("chats")
-                .setIndicator(getString(R.string.title_chats),
-                        res.getDrawable(R.drawable.ic_tab_chats)).setContent(intent);
+                .setIndicator(new BhoTab(this, getTabWidget(), getString(R.string.title_chats),
+                        R.drawable.ic_tab_chats).tab).setContent(intent);
         tabHost.addTab(spec);
 
         //Value in parathes controls which tab element to view 
