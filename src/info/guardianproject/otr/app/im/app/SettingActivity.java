@@ -20,16 +20,19 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
+import info.guardianproject.otr.app.lang.BhoListPreference;
+import info.guardianproject.otr.app.lang.BhoTyper;
 import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.util.Log;
 
 public class SettingActivity extends android.preference.PreferenceActivity implements
         OnSharedPreferenceChangeListener {
-    ListPreference mOtrMode;
+    BhoListPreference mOtrMode;
     CheckBoxPreference mHideOfflineContacts;
     CheckBoxPreference mEnableNotification;
     CheckBoxPreference mNotificationVibrate;
@@ -55,7 +58,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), false /* don't keep updated */, null /* no handler */);
-
+        
         if (key.equals(getString(R.string.pref_security_otr_mode))) {
             settings.setOtrMode(prefs.getString(key, "auto"));
         } else if (key.equals(getString(R.string.pref_hide_offline_contacts))) {
@@ -83,7 +86,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         addPreferencesFromResource(R.xml.preferences);
 
         mHideOfflineContacts = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
-        mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
+        mOtrMode = (BhoListPreference) findPreference(getString(R.string.pref_security_otr_mode));
         mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notification));
         mNotificationVibrate = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
         mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
