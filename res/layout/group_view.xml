@@ -24,7 +24,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft">
 
-    <TextView android:id="@+id/text1"
+    <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/text1"
         android:maxLines="1"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView android:id="@+id/text2"
+    <info.guardianproject.otr.app.lang.BhoTextView android:id="@+id/text2"
         android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

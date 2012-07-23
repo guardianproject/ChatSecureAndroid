@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class UserPresenceView extends LinearLayout {
 
@@ -119,7 +120,7 @@ public class UserPresenceView extends LinearLayout {
     }
 
     void updateStatusText() {
-        String newStatusText = ((BhoTextView) mStatusBar).getText().toString();
+        String newStatusText = ((BhoEditText) mStatusBar).getText().toString();
         if (TextUtils.isEmpty(newStatusText)) {
             newStatusText = "";
         }
@@ -160,7 +161,8 @@ public class UserPresenceView extends LinearLayout {
         if (mStatusBar == null) {
             mStatusBar = (BhoTextView) initStatusBar(mProviderId, false);
         }
-        ((BhoTextView) mStatusBar).setText(statusText);
+        
+        ((TextView) mStatusBar).setText(statusText);
 
         // Disable the user to edit the custom status text because
         // the AIM and MSN server don't support it now.
@@ -186,9 +188,8 @@ public class UserPresenceView extends LinearLayout {
         statusEdit.setVisibility(View.GONE);
         BhoTextView statusView = (BhoTextView) findViewById(R.id.statusView);
         statusView.setVisibility(View.GONE);
-
+        
         if (showEdit) {
-
             statusEdit.setVisibility(View.VISIBLE);
             statusEdit.setOnKeyListener(new OnKeyListener() {
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
