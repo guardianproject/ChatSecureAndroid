@@ -34,9 +34,7 @@ import android.widget.Toast;
 public class SignoutActivity extends Activity {
 
     private String[] ACCOUNT_SELECTION = new String[] { Imps.Account._ID, Imps.Account.PROVIDER, };
-
     private ImApp mApp;
-
     private Handler mHandler = new Handler();
 
     @Override

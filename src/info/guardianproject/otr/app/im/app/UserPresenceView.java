@@ -18,7 +18,6 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
-import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
@@ -173,13 +172,6 @@ public class UserPresenceView extends LinearLayout {
     }
 
     private TextView initStatusBar(long providerId, boolean showEdit) {
-        /*
-        String value = Imps.ProviderSettings.getStringValue(
-                            mContext.getContentResolver(), providerId,
-                            ImpsConfigNames.SUPPORT_USER_DEFINED_PRESENCE);
-
-        boolean showEdit = true;
-        */
 
         EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
         statusEdit.setVisibility(View.GONE);
@@ -236,7 +228,7 @@ public class UserPresenceView extends LinearLayout {
 
     void updatePresence(int status, String statusText) {
         if (mPresence == null) {
-            // We haven't get the connection yet. Don't allow to update presence now.
+            // No connection yet. Don't allow to update presence yet.
             return;
         }
 

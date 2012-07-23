@@ -153,30 +153,14 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_list_menu, menu);
-
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-
-        //TODO make sure this works
-        //   menu.findItem(R.id.menu_invite_user).setTitle(
-        //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-        //TODO make sure this works
-
-        /*
-        case R.id.menu_new_chat:
-            Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
-            return true;
-*/
         
         case R.id.menu_view_accounts:
-            //	            startActivity(getEditAccountIntent());
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
             return true;
@@ -467,36 +451,6 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
-            //            Cursor c;
-            //            if (mIsFiltering) {
-            //                c = mFilterView.getContactAtPosition((int)mPosition);
-            //            } else {
-            //                c = mActiveChatListView.getContactAtPosition(mPosition);
-            //            }
-            //
-            //            switch (item.getItemId()) {
-            //            case MENU_START_CONVERSATION:
-            //                mActiveChatListView.startChat(c);
-            //                break;
-            //            case MENU_VIEW_PROFILE:
-            //                mActiveChatListView.viewContactPresence(c);
-            //                break;
-            //            case MENU_BLOCK_CONTACT:
-            //                mActiveChatListView.blockContact(c);
-            //                break;
-            //            case MENU_DELETE_CONTACT:
-            //                mActiveChatListView.removeContact(c);
-            //                break;
-            //            case MENU_END_CONVERSATION:
-            //                mActiveChatListView.endChat(c);
-            //                break;
-            //            default:
-            //                return false;
-            //            }
-            //
-            //            if (mIsFiltering) {
-            //                showContactListView();
-            //            }
             return true;
         }
     }

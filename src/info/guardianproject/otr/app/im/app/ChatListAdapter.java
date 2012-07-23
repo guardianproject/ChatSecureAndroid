@@ -20,7 +20,6 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -146,8 +145,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
 
     public void changeConnection(IImConnection conn) {
         mQueryHandler.cancelOperation(TOKEN_ONGOING_CONVERSATION);
-        //      mQueryHandler.cancelOperation(TOKEN_SUBSCRIPTION);
-        //     mQueryHandler.cancelOperation(TOKEN_CONTACT_LISTS);
 
         synchronized (this) {
             if (mOngoingConversations != null) {
@@ -165,8 +162,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
                 mProviderId = conn.getProviderId();
                 mAccountId = conn.getAccountId();
                 startQueryOngoingConversations();
-                //  startQueryContactLists();
-                //  startQuerySubscriptions();
             } catch (RemoteException e) {
                 // Service died!
             }
@@ -184,20 +179,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         }
     }
 
-    /*
-        private void startQueryContactLists() {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
-                log("startQueryContactLists()");
-            }
-
-            Uri uri = Imps.ContactList.CONTENT_URI;
-            uri = ContentUris.withAppendedId(uri, mProviderId);
-            uri = ContentUris.withAppendedId(uri, mAccountId);
-
-            mQueryHandler.startQuery(TOKEN_CONTACT_LISTS, null, uri, CONTACT_LIST_PROJECTION,
-                    null, null, Imps.ContactList.DEFAULT_SORT_ORDER);
-        }
-    */
     void startQueryOngoingConversations() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQueryOngoingConversations()");
@@ -219,43 +200,8 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         Uri uri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
-
-        /*
-        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri,
-                ContactView.CONTACT_PROJECTION,
-                String.format("%s=%d AND %s=%d",
-                    Imps.Contacts.SUBSCRIPTION_STATUS, Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
-                    Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
-                null,Imps.Contacts.DEFAULT_SORT_ORDER);
-                */
     }
 
-    /*
-        void startQueryContacts(long listId) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
-                log("startQueryContacts - listId=" + listId);
-            }
-
-            String selection = mHideOfflineContacts ? ONLINE_CONTACT_SELECTION : CONTACTS_SELECTION;
-            Log.v("Selection String value is: ", selection);
-            String[] args = { Long.toString(listId) };
-            int token = (int)listId;
-            mQueryHandler.startQuery(token, null, Imps.Contacts.CONTENT_URI,
-                    ContactView.CONTACT_PROJECTION, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
-        }*/
-
-    /*
-    public Object getChild(int groupPosition, int childPosition) {
-        if (isPosForOngoingConversation(groupPosition)) {
-            // No cursor exists for the "Empty" TextView item
-            if (getOngoingConversationCount() == 0) return null;
-            return moveTo(getOngoingConversations(), childPosition);
-        } else if (isPosForSubscription(groupPosition)) {
-            return moveTo(getSubscriptions(), childPosition);
-        } else {
-            return mAdapter.getChild(getChildAdapterPosition(groupPosition), childPosition);
-        }
-    }*/
 
     public long getChildId(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {
@@ -266,95 +212,11 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         }
 
         return -1;
-        /* else if (isPosForSubscription(groupPosition)) {
-            return getId(getSubscriptions(), childPosition);
-        } else {
-            return mAdapter.getChildId(getChildAdapterPosition(groupPosition), childPosition);
-        }*/
     }
 
-    //
-    //    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-    //            View convertView, ViewGroup parent) {
-    //        boolean isOngoingConversation = isPosForOngoingConversation(groupPosition);
-    //        boolean displayEmpty = isOngoingConversation && (getOngoingConversationCount() == 0);
-    //        if (isOngoingConversation || isPosForSubscription(groupPosition)) {
-    //            View view = null;
-    //            if (convertView != null) {
-    //                // use the convert view if it matches the type required by displayEmpty
-    //                if (displayEmpty && (convertView instanceof TextView)) {
-    //                    view = convertView;
-    //                    ((TextView) view).setText(mActivity.getText(R.string.empty_conversation_group));
-    //                } else if (!displayEmpty && (convertView instanceof ContactView)) {
-    //                     view = convertView;
-    //                }
-    //            }
-    //            if (view == null) {
-    //                if (displayEmpty) {
-    //                    view = newEmptyView(parent);
-    //                } else {
-    //                    view = newChildView(parent);
-    //                }
-    //            }
-    //            if (!displayEmpty) {
-    //                Cursor cursor = isPosForOngoingConversation(groupPosition)
-    //                        ? getOngoingConversations() : getSubscriptions();
-    //                cursor.moveToPosition(childPosition);
-    //               
-    //                
-    //               String[] myColumnString = cursor.getColumnNames(); 
-    //               for(int i=0;i<myColumnString.length; i++){
-    //            	   Log.v("Column:"+ i +"=", myColumnString[i]);   
-    //            	   /*04-11 12:29:01.226: VERBOSE/Column:0=(2352): _id
-    //					04-11 12:29:01.226: VERBOSE/Column:1=(2352): provider
-    //					04-11 12:29:01.236: VERBOSE/Column:2=(2352): account
-    //					04-11 12:29:01.236: VERBOSE/Column:3=(2352): username
-    //					04-11 12:29:01.236: VERBOSE/Column:4=(2352): nickname
-    //					04-11 12:29:01.236: VERBOSE/Column:5=(2352): type
-    //					04-11 12:29:01.236: VERBOSE/Column:6=(2352): subscriptionType
-    //					04-11 12:29:01.236: VERBOSE/Column:7=(2352): subscriptionStatus
-    //					04-11 12:29:01.236: VERBOSE/Column:8=(2352): mode
-    //					04-11 12:29:01.236: VERBOSE/Column:9=(2352): status
-    //					04-11 12:29:01.236: VERBOSE/Column:10=(2352): last_message_date
-    //					04-11 12:29:01.236: VERBOSE/Column:11=(2352): last_unread_message
-    //					*/
-    //               }
-    //               
-    //                ((ContactView) view).bind(cursor, null, isScrolling());
-    //            }
-    //            return view;
-    //        } else {
-    //            return mAdapter.getChildView(getChildAdapterPosition(groupPosition), childPosition,
-    //                    isLastChild, convertView, parent);
-    //        }
-    //    }
 
     public int getChildrenCount(int groupPosition) {
-
         return 0;
-        /*
-        if (!mDataValid) {
-            return 0;
-        }
-        if (isPosForOngoingConversation(groupPosition)) {
-            // if there are no ongoing conversations, we want to display "empty" textview
-            int count = getOngoingConversationCount();
-            if (count == 0) {
-                count = 1;
-            }
-            return count;
-        } else if (isPosForSubscription(groupPosition)) {
-            return getSubscriptionCount();
-        } else {
-            // XXX getChildrenCount() may be called with an invalid groupPosition that is larger
-            // than the total number of all groups.
-            int position = getChildAdapterPosition(groupPosition);
-            if (position >= mAdapter.getGroupCount()) {
-                Log.w(ImApp.LOG_TAG, "getChildrenCount out of range");
-                return 0;
-            }
-            return mAdapter.getChildrenCount(position);
-        }*/
     }
 
     public Object getGroup(int groupPosition) {
@@ -365,74 +227,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         }
     }
 
-    //
-    //    public int getGroupCount() {
-    //    	
-    //    	//return 1;  //<-------This is the hack to display the ongoing conversations. 
-    //    	
-    //    	return getOngoingConversationCount();
-    //    	
-    //    	/*
-    //        if (!mDataValid) {
-    //            return 0;
-    //        }
-    //        int count = mAdapter.getGroupCount();
-    //
-    //        // ongoing conversations
-    //        count++;
-    //
-    //        if (getSubscriptionCount() > 0) {
-    //            count++;
-    //        }
-    //
-    //        return count;
-    //        */
-    //    }
-    //
-    //    public long getGroupId(int groupPosition) {
-    //    	
-    //    	return getChildId(0, groupPosition);
-    //    	/*
-    //        if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
-    //            return 0;
-    //        } else {
-    //            return mAdapter.getGroupId(getChildAdapterPosition(groupPosition));
-    //        }*/
-    //    }
-    //
-    //    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-    //            ViewGroup parent) {
-    //    	
-    //    	return getChildView(0, groupPosition, false, convertView, parent);
-    //    	
-    /*
-    if (isPosForOngoingConversation(groupPosition) || isPosForSubscription(groupPosition)) {
-        View v;
-        if (convertView != null) {
-            v = convertView;
-        } else {
-            v = newGroupView(parent);
-        }
-
-        TextView text1 = (TextView)v.findViewById(R.id.text1);
-        TextView text2 = (TextView)v.findViewById(R.id.text2);
-
-        Resources r = v.getResources();
-        ImApp app = ImApp.getApplication(mActivity);
-        BrandingResources brandingRes = app.getBrandingResource(mProviderId);
-        String text = isPosForOngoingConversation(groupPosition) ?
-                brandingRes.getString(
-                        BrandingResourceIDs.STRING_ONGOING_CONVERSATION,
-                        getOngoingConversationCount()) :
-                r.getString(R.string.subscriptions);
-        text1.setText(text);
-        text2.setVisibility(View.GONE);
-        return v;
-    } else {
-        return mAdapter.getGroupView(getChildAdapterPosition(groupPosition), isExpanded,
-                convertView, parent);
-    }
-    }*/
 
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {
@@ -449,53 +243,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         return true;
     }
 
-    /*
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-            mAdapter.registerDataSetObserver(observer);
-            super.registerDataSetObserver(observer);
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-            mAdapter.unregisterDataSetObserver(observer);
-            super.unregisterDataSetObserver(observer);
-        }
-
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
-        public void onGroupCollapsed(int groupPosition) {
-            super.onGroupCollapsed(groupPosition);
-            mExpandedGroups.remove(Integer.valueOf(groupPosition));
-            int pos = getChildAdapterPosition(groupPosition);
-            if (pos >= 0) {
-                mAdapter.onGroupCollapsed(pos);
-            }
-        }
-
-        @Override
-        public void onGroupExpanded(int groupPosition) {
-            super.onGroupExpanded(groupPosition);
-            mExpandedGroups.add(groupPosition);
-            int pos = getChildAdapterPosition(groupPosition);
-            if (pos >= 0) {
-                mAdapter.onGroupExpanded(pos);
-            }
-        }
-
-        public int[] getExpandedGroups() {
-            ArrayList<Integer> expandedGroups = mExpandedGroups;
-            int size = expandedGroups.size();
-            int[] res = new int[size];
-            for (int i = 0; i < size; i++) {
-                res[i] = expandedGroups.get(i);
-            }
-            return res;
-        }
-    */
     View newChildView(ViewGroup parent) {
         return mInflate.inflate(R.layout.contact_view, parent, false);
     }
@@ -533,15 +280,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
 
     private int getOngoingConversationCount() {
         Cursor c = getOngoingConversations();
-
-        /* String[] cColumnString = c.getColumnNames(); 
-         for(int i=0;i<cColumnString.length; i++){
-           Log.v("Column:"+ i +"=", cColumnString[i]);   
-          
-         }
-         */
         return c == null ? 0 : c.getCount();
-
     }
 
     public boolean isPosForOngoingConversation(int groupPosition) {
@@ -624,8 +363,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
 
         @Override
         protected Cursor getChildrenCursor(Cursor groupCursor) {
-            long listId = groupCursor.getLong(COLUMN_CONTACT_LIST_ID);
-            // startQueryContacts(listId);
             return null;
         }
 
@@ -715,9 +452,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("MyDataSetObserver.onChanged()");
             }
-
             mDataValid = true;
-            //   notifyDataSetChanged();
         }
 
         @Override
@@ -725,9 +460,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("MyDataSetObserver.onInvalidated()");
             }
-
             mDataValid = false;
-            //     notifyDataSetInvalidated();
         }
     }
 
@@ -803,28 +536,9 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         if (!displayEmpty) {
             Cursor cursor = getOngoingConversations();
             cursor.moveToPosition(position);
-            /*
-            Cursor cursor = isPosForOngoingConversation(groupPosition)
-                    ? getOngoingConversations() : getSubscriptions();
-            cursor.moveToPosition(childPosition);
-            */
 
             String[] myColumnString = cursor.getColumnNames();
             for (int i = 0; i < myColumnString.length; i++) {
-                // Log.v("Column:"+ i +"=", myColumnString[i]);   
-                /*04-11 12:29:01.226: VERBOSE/Column:0=(2352): _id
-                	04-11 12:29:01.226: VERBOSE/Column:1=(2352): provider
-                	04-11 12:29:01.236: VERBOSE/Column:2=(2352): account
-                	04-11 12:29:01.236: VERBOSE/Column:3=(2352): username
-                	04-11 12:29:01.236: VERBOSE/Column:4=(2352): nickname
-                	04-11 12:29:01.236: VERBOSE/Column:5=(2352): type
-                	04-11 12:29:01.236: VERBOSE/Column:6=(2352): subscriptionType
-                	04-11 12:29:01.236: VERBOSE/Column:7=(2352): subscriptionStatus
-                	04-11 12:29:01.236: VERBOSE/Column:8=(2352): mode
-                	04-11 12:29:01.236: VERBOSE/Column:9=(2352): status
-                	04-11 12:29:01.236: VERBOSE/Column:10=(2352): last_message_date
-                	04-11 12:29:01.236: VERBOSE/Column:11=(2352): last_unread_message
-                	*/
             }
 
             ((ContactView) view).bind(cursor, null, isScrolling());

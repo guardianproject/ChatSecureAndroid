@@ -57,7 +57,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private static final int ID_SIGN_OUT = Menu.FIRST + 2;
     private static final int ID_EDIT_ACCOUNT = Menu.FIRST + 3;
     private static final int ID_REMOVE_ACCOUNT = Menu.FIRST + 4;
-    private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
+//    private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
     private static final int ID_ADD_ACCOUNT = Menu.FIRST + 6;
     private static final int ID_VIEW_CONTACT_LIST = Menu.FIRST + 7;
 

@@ -839,7 +839,7 @@ public class ChatView extends LinearLayout {
         String remoteFingerprint = null;
         String localFingerprint = null;
 
-        String mLocalUserName = "";
+//        String mLocalUserName = "";
         boolean isVerified = false;
 
         if (mOtrKeyManager == null)

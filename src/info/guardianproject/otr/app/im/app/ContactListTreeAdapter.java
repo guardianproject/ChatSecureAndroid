@@ -16,16 +16,12 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smackx.packet.VCard;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -81,11 +77,11 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
     //   private static final int TOKEN_ONGOING_CONVERSATION = -2;
     private static final int TOKEN_SUBSCRIPTION = -3;
 
-    private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
-                                                                + Imps.Contacts.LAST_MESSAGE_DATE
-                                                                + " IS NULL) AND ("
-                                                                + Imps.Contacts.TYPE + "!="
-                                                                + Imps.Contacts.TYPE_BLOCKED + ")";
+//    private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
+//                                                                + Imps.Contacts.LAST_MESSAGE_DATE
+//                                                                + " IS NULL) AND ("
+//                                                                + Imps.Contacts.TYPE + "!="
+//                                                                + Imps.Contacts.TYPE_BLOCKED + ")";
 
     private static final String BLOCKED_CONTACTS = "(" + Imps.Contacts.TYPE + "!="
                                                    + Imps.Contacts.TYPE_BLOCKED + ")";
@@ -115,25 +111,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
 
-            /*
-            String[] thatCursor  = c.getColumnNames();
-            for (int i= 0; i< thatCursor.length ; i++ ){
-            	Log.v("That Column:" + i,thatCursor[i]);
-            	
-            	
-            		      //String data = c.getString(c.getColumnIndex("last_unread_message"));
-            		    
-            		
-            	
-            	/*if(c.isNull(c.getColumnIndex(thatCursor[i]))){
-            	break;
-            	}
-            	else{
-            		Log.v("That Column:" + i,thatCursor[i] + ":" + c.getString(c.getColumnIndex(thatCursor[i])));
-            	}
-            	
-            }
-            */
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onQueryComplete:token=" + token);
             }
@@ -199,7 +176,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
             try {
                 mProviderId = conn.getProviderId();
                 mAccountId = conn.getAccountId();
-                //      startQueryOngoingConversations();
                 startQueryContactLists();
                 startQuerySubscriptions();
             } catch (RemoteException e) {
@@ -238,18 +214,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         mQueryHandler.startQuery(TOKEN_CONTACT_LISTS, null, uri, CONTACT_LIST_PROJECTION, null,
                 null, Imps.ContactList.DEFAULT_SORT_ORDER);
     }
-
-    /*
-    void startQueryOngoingConversations() {
-        if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)){
-            log("startQueryOngoingConversations()");
-        }
-
-        Uri uri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-        uri = ContentUris.withAppendedId(uri, mProviderId);
-        uri = ContentUris.withAppendedId(uri, mAccountId);
-
-    }*/
 
     void startQuerySubscriptions() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {

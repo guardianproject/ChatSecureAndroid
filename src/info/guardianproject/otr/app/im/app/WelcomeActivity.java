@@ -134,22 +134,7 @@ public class WelcomeActivity extends Activity {
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */, null);
-        //  "key=" + dbKey);
-
-        /*
-        if (mProviderCursor == null)
-        {
-        	Toast.makeText(this, "database error", Toast.LENGTH_SHORT).show();
-        	showPasscodeEntry();
-        	
-        	
-        }
-        else
-        {*/
-
         doOnResume();
-        //}
-
     }
 
     @Override
@@ -171,66 +156,7 @@ public class WelcomeActivity extends Activity {
             cursorUnlocked();
             doOnResume();
         }
-        /*
-        if (cursorUnlocked())
-        {
-        	doOnResume();
-        }
-        else
-        {
-        	showPasscodeEntry ();        	
-        }*/
     }
-
-    /*
-    private void showPasscodeEntry ()
-    {
-    	String dialogMessage;
-    	
-    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	
-    	boolean firstTime = prefs.getBoolean("first_time",true);
-    	
-    	if (firstTime)
-    	{
-    		dialogMessage = "Please choose a passphrase to protect your local application data.";
-    		Editor pEdit = prefs.edit();
-    		pEdit.putBoolean("first_time",false);
-    		pEdit.commit();
-    	}
-    	else
-    		dialogMessage = "Enter passphrase";
-
-    	
-    	 // This example shows how to add a custom layout to an AlertDialog
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
-        new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.app_name))
-            .setView(textEntryView)
-            .setMessage(dialogMessage)
-            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                	EditText eText = ((android.widget.EditText)textEntryView.findViewById(R.id.password_edit));
-                	String password = eText.getText().toString();
-                	
-                	initCursor(password);
-                	
-                	
-                	eText.setText("");
-                	System.gc();
-                	
-                }
-            })
-            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                	finish();
-                }
-            })
-            .create().show();
-    }*/
 
     private void doOnResume() {
 
@@ -290,7 +216,6 @@ public class WelcomeActivity extends Activity {
         switch (item.getItemId()) {
         case R.id.menu_account_settings:
             finish();
-            //showAccountSetup();
             showAccounts();
             return true;
 
@@ -392,15 +317,15 @@ public class WelcomeActivity extends Activity {
         return count;
     }
 
-    private void showAccountSetup() {
-        if (!mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            // add account
-            startActivity(getCreateAccountIntent());
-        } else {
-            // edit existing account
-            startActivity(getEditAccountIntent());
-        }
-    }
+    //    private void showAccountSetup() {
+    //        if (!mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
+    //            // add account
+    //            startActivity(getCreateAccountIntent());
+    //        } else {
+    //            // edit existing account
+    //            startActivity(getEditAccountIntent());
+    //        }
+    //    }
 
     private void showAbout() {
         //TODO implement this about form
@@ -408,37 +333,37 @@ public class WelcomeActivity extends Activity {
                 Toast.LENGTH_LONG).show();
     }
 
-    private void signOutAll() {
-        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                do {
-                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                    signOut(accountId);
-                } while (mProviderCursor.moveToNext());
-            }
-        };
+    //    private void signOutAll() {
+    //        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+    //            public void onClick(DialogInterface dialog, int whichButton) {
+    //                do {
+    //                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+    //                    signOut(accountId);
+    //                } while (mProviderCursor.moveToNext());
+    //            }
+    //        };
+    //
+    //        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+    //                .setMessage(R.string.signout_all_confirm_message)
+    //                .setPositiveButton(R.string.yes, confirmListener) // default button
+    //                .setNegativeButton(R.string.no, null).setCancelable(true).show();
+    //    }
 
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                .setMessage(R.string.signout_all_confirm_message)
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null).setCancelable(true).show();
-    }
-
-    private void signOut(long accountId) {
-        if (accountId == 0) {
-            Log.w(TAG, "signOut: account id is 0, bail");
-            return;
-        }
-
-        try {
-            IImConnection conn = mApp.getConnectionByAccount(accountId);
-            if (conn != null) {
-                conn.logout();
-            }
-        } catch (RemoteException ex) {
-            Log.e(TAG, "signOut failed", ex);
-        }
-    }
+    //    private void signOut(long accountId) {
+    //        if (accountId == 0) {
+    //            Log.w(TAG, "signOut: account id is 0, bail");
+    //            return;
+    //        }
+    //
+    //        try {
+    //            IImConnection conn = mApp.getConnectionByAccount(accountId);
+    //            if (conn != null) {
+    //                conn.logout();
+    //            }
+    //        } catch (RemoteException ex) {
+    //            Log.e(TAG, "signOut failed", ex);
+    //        }
+    //    }
 
     void showAccounts() {
         startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
@@ -450,11 +375,9 @@ public class WelcomeActivity extends Activity {
         intent.setAction(Intent.ACTION_INSERT);
 
         // TODO fix for multiple account support
-        //long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
         long providerId = 1; // XMPP
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
         //TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
-        //intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
     }
 

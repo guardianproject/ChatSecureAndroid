@@ -33,36 +33,29 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -84,8 +77,8 @@ public class AccountActivity extends Activity {
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSWORD_COLUMN = 3;
-    private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
-    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
+    //    private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
+    //    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
 
     Uri mAccountUri;
 
@@ -130,7 +123,6 @@ public class AccountActivity extends Activity {
 
         mEditPass = (EditText) findViewById(R.id.edtPass);
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
-        //       mKeepSignIn = (CheckBox)findViewById(R.id.keepSignIn);
         mUseTor = (CheckBox) findViewById(R.id.useTor);
         mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -156,7 +148,6 @@ public class AccountActivity extends Activity {
         if (i.hasExtra("isSignedIn"))
             isSignedIn = i.getBooleanExtra("isSignedIn", false);
 
-        //    mToAddress = i.getStringExtra(ImApp.EXTRA_INTENT_SEND_TO_USER);
         final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
@@ -233,17 +224,6 @@ public class AccountActivity extends Activity {
         }
 
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        /*
-        mKeepSignIn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                CheckBox keepSignIn = (CheckBox) v;
-                if ( keepSignIn.isChecked() ) {
-                    String msg = brandingRes.getString(BrandingResourceIDs.STRING_TOAST_CHECK_AUTO_SIGN_IN);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        */
 
         mRememberPass.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -334,20 +314,6 @@ public class AccountActivity extends Activity {
             }
         });
 
-        /*
-        // Make link for signing up.
-        String publicXmppServices = "http://xmpp.org/services/";
-        	
-        String text = brandingRes.getString(BrandingResourceIDs.STRING_LABEL_SIGN_UP);
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        builder.setSpan(new URLSpan(publicXmppServices), 0, builder.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        TextView signUp = (TextView)findViewById(R.id.signUp);
-        signUp.setText(builder);
-        signUp.setMovementMethod(LinkMovementMethod.getInstance());
-         */
-        // repurposing R.id.signUp for short term kludge for account settings message
-
         updateWidgetState();
 
     }
@@ -404,7 +370,7 @@ public class AccountActivity extends Activity {
                         mTxtFingerprint.setText("");
                     }
                 } else {
-                    Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (Exception e) {
@@ -559,7 +525,7 @@ public class AccountActivity extends Activity {
     void signOut() {
         //if you are signing out, then we will deactive "auto" sign in
         ContentValues values = new ContentValues();
-        values.put(Imps.Account.KEEP_SIGNED_IN, false ? 1 : 0);
+        values.put(Imps.Account.KEEP_SIGNED_IN, 0);
         getContentResolver().update(mAccountUri, values, null, null);
 
         mApp = ImApp.getApplication(AccountActivity.this);
@@ -615,23 +581,9 @@ public class AccountActivity extends Activity {
                 finish();
             } else {
                 // sign in failed, let's show the screen!
-                /*
-                //n8fr8: 2011/09/02: removed password reset b/c it was annoying in cases where problem was network
-                mEditPass.setText("");
-                ContentValues values = new ContentValues();
-                values.put(Imps.Account.PASSWORD, (String) null);
-                getContentResolver().update(mAccountUri, values, null, null);
-                */
             }
         }
     }
-
-    /*
-    void updateKeepSignedIn(boolean keepSignIn) {
-        ContentValues values = new ContentValues();
-        values.put(Imps.Account.KEEP_SIGNED_IN, keepSignIn ? 1 : 0);
-        getContentResolver().update(mAccountUri, values, null, null);
-    }*/
 
     void updateWidgetState() {
         boolean goodUsername = mEditUserAccount.getText().length() > 0;
@@ -650,14 +602,6 @@ public class AccountActivity extends Activity {
         }
         mRememberPass.setEnabled(hasNameAndPassword);
         mRememberPass.setFocusable(hasNameAndPassword);
-
-        /*
-        if (!rememberPass) {
-            mKeepSignIn.setChecked(false);
-        }
-        mKeepSignIn.setEnabled(rememberPass);
-        mKeepSignIn.setFocusable(rememberPass);
-        */
 
         mEditUserAccount.setEnabled(!isSignedIn);
         mEditPass.setEnabled(!isSignedIn);
@@ -718,13 +662,6 @@ public class AccountActivity extends Activity {
             showLocaleDialog();
             return true;
 
-            /*
-            case R.id.menu_account_settings:
-            Intent intent = new Intent(this, AccountSettingsActivity.class);
-            //Intent intent = new Intent(this, SettingActivity.class);
-            intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-            startActivity(intent);
-            return true;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -759,7 +696,7 @@ public class AccountActivity extends Activity {
 
                 } else {
                     Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 Log.e("OTR", "could not gen local key pair", e);

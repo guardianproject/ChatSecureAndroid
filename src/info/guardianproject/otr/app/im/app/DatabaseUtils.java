@@ -93,19 +93,9 @@ public class DatabaseUtils {
                 return null;
             }
 
-            // TODO rawData = android.os.Base64Utils.decodeBase64(encodedData);
-
-            // if (DBG) {
-            // log("getAvatarFromCursor for " + username + ": found encoded
-            // data,"
-            // + " update blob with data, len=" + rawData.length);
-            // }
-
             if (updateBlobUseCursor) {
-                // TODO cursor.updateBlob(dataColumn, rawData);
-                // cursor.updateString(encodedDataColumn, null);
-                // cursor.commitUpdates();
-            } else {
+            } 
+            else {
                 updateAvatarBlob(resolver, updateBlobUri, rawData, username);
             }
         }
