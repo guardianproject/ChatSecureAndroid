@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class AboutActivity extends Activity implements OnClickListener {
-    //WizardHelper wizard = null;
     // TODO get mProviderId for real
     long mProviderId = 1;
 
@@ -24,42 +23,33 @@ public class AboutActivity extends Activity implements OnClickListener {
     private int msg[] = { R.string.about_welcome, R.string.about_otr, R.string.about_security,
                          R.string.setup_passphrase };
 
-    private View.OnClickListener listener[][] = { { null, new View.OnClickListener() {
+    private View.OnClickListener listener[][] = {
 
+    { null, new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             nextContent();
-
         }
     } },
 
     { new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             prevContent();
-
         }
     }, new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
-
             nextContent();
-
         }
     } },
 
     { new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             prevContent();
-
         }
     }, new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             finish();
@@ -78,17 +68,13 @@ public class AboutActivity extends Activity implements OnClickListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     protected void onStart() {
-
         super.onStart();
-
         if (contentIdx == -1) {
             setContentView(R.layout.scrollingtext_buttons_view);
-
             nextContent();
         }
     }
@@ -105,14 +91,10 @@ public class AboutActivity extends Activity implements OnClickListener {
 
     private void showContent(int contentIdx) {
 
-        String buttons[][] = {
-
-        { null, getString(R.string.btn_next) },
+        String buttons[][] = {{ null, getString(R.string.btn_next) },
                               { getString(R.string.btn_back), getString(R.string.btn_next) },
                               { getString(R.string.btn_back), getString(R.string.btn_next) },
-                              { getString(R.string.btn_back), getString(R.string.btn_next) },
-
-        };
+                              { getString(R.string.btn_back), getString(R.string.btn_next) }};
 
         TextView txtTitle = ((TextView) findViewById(R.id.WizardTextTitle));
         txtTitle.setText(getString(title[contentIdx]));
@@ -125,7 +107,6 @@ public class AboutActivity extends Activity implements OnClickListener {
             btn1.setText(buttons[contentIdx][0]);
             btn1.setOnClickListener(listener[contentIdx][0]);
             btn1.setVisibility(Button.VISIBLE);
-
         } else {
             btn1.setVisibility(Button.INVISIBLE);
         }
@@ -139,18 +120,15 @@ public class AboutActivity extends Activity implements OnClickListener {
         } else {
             btn2.setVisibility(Button.INVISIBLE);
         }
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
     public void onClick(DialogInterface arg0, int arg1) {
-
     }
 
 }

@@ -18,7 +18,6 @@ package info.guardianproject.otr.app.im.app;
 
 import java.util.Locale;
 
-import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -27,38 +26,29 @@ import info.guardianproject.otr.app.im.ui.TabbedContainer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Message;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class WelcomeActivity extends Activity {
+    
     private static final String TAG = "WelcomeActivity";
-
     private boolean mDidAutoLaunch = false;
-
     private Cursor mProviderCursor;
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
-
     private String mDefaultLocale;
 
     static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
@@ -84,19 +74,15 @@ public class WelcomeActivity extends Activity {
     static final int ACCOUNT_CONNECTION_STATUS = 10;
 
     @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
+    protected void onCreate(Bundle savedInstanceState) {
+        
+        super.onCreate(savedInstanceState);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);
-
         setContentView(R.layout.welcome_activity);
+        Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
 
-        Button btnSplashAbout = ((Button) findViewById(R.id.btnSplashAbout));
-        btnSplashAbout.setAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
-
-        btnSplashAbout.setOnClickListener(new OnClickListener() {
+        getStarted.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -124,18 +110,18 @@ public class WelcomeActivity extends Activity {
 
         } catch (Exception e) {
             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
-            //must need to be unlocked
+            // needs to be unlocked
             return false;
         }
     }
 
-    private void initCursor(String dbKey) {
-
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */, null);
-        doOnResume();
-    }
+//    private void initCursor(String dbKey) {
+//
+//        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+//                Imps.Provider.CATEGORY + "=?" /* selection */,
+//                new String[] { ImApp.IMPS_CATEGORY } /* selection args */, null);
+//        doOnResume();
+//    }
 
     @Override
     protected void onPause() {
