@@ -5,13 +5,17 @@ import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnecti
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.jivesoftware.smack.ConnectionListener;
-import org.jivesoftware.smack.PacketInterceptor;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.PacketExtension;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.UnknownPacket;
 import org.jivesoftware.smack.provider.PacketExtensionProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
@@ -21,14 +25,19 @@ import org.xmlpull.v1.XmlPullParser;
 import android.util.Log;
 
 public class XmppStreamHandler {
-    private static final String URN_SM_2 = "urn:xmpp:sm:2";
+    public static final String URN_SM_2 = "urn:xmpp:sm:2";
+    private static final int MAX_OUTGOING_QUEUE_SIZE = 20;
+    private static final int OUTGOING_FILL_RATIO = 4;
     private MyXMPPConnection mConnection;
     private boolean isSmAvailable = false;
     private boolean isSmEnabled = false;
+    private boolean isOutgoingSmEnabled = false;
     private long previousIncomingStanzaCount = -1;
     private String sessionId;
     private long incomingStanzaCount = 0;
     private long outgoingStanzaCount = 0;
+    private Queue<Packet> outgoingQueue;
+    private int maxOutgoingQueueSize = MAX_OUTGOING_QUEUE_SIZE;
 
     public XmppStreamHandler(MyXMPPConnection connection) {
         mConnection = connection;
@@ -44,6 +53,10 @@ public class XmppStreamHandler {
         } else {
             mConnection.shutdown();
         }
+    }
+    
+    public void setMaxOutgoingQueueSize(int maxOutgoingQueueSize) {
+        this.maxOutgoingQueueSize = maxOutgoingQueueSize;
     }
 
     public boolean isResumePossible() {
@@ -68,12 +81,17 @@ public class XmppStreamHandler {
     private void sendEnablePacket() {
         debug("sm send enable " + sessionId);
         if (sessionId != null) {
+            isOutgoingSmEnabled = true;
             // TODO binding
             StreamHandlingPacket resumePacket = new StreamHandlingPacket("resume", URN_SM_2);
             resumePacket.addAttribute("h", String.valueOf(previousIncomingStanzaCount));
             resumePacket.addAttribute("previd", sessionId);
             mConnection.sendPacket(resumePacket);
         } else {
+            outgoingStanzaCount = 0;
+            outgoingQueue = new ConcurrentLinkedQueue<Packet>();
+            isOutgoingSmEnabled = true;
+
             StreamHandlingPacket enablePacket = new StreamHandlingPacket("enable", URN_SM_2);
             enablePacket.addAttribute("resume", "true");
             mConnection.sendPacket(enablePacket);
@@ -85,6 +103,7 @@ public class XmppStreamHandler {
             previousIncomingStanzaCount = incomingStanzaCount;
         }
         isSmEnabled = false;
+        isOutgoingSmEnabled = false;
         isSmAvailable = false;
     }
 
@@ -95,6 +114,7 @@ public class XmppStreamHandler {
                     sendEnablePacket();
                 } else {
                     isSmEnabled = false;
+                    isOutgoingSmEnabled = false;
                     sessionId = null;
                 }
             }
@@ -114,11 +134,33 @@ public class XmppStreamHandler {
             }
         });
 
-        mConnection.addPacketInterceptor(new PacketInterceptor() {
-            public void interceptPacket(Packet packet) {
-                if (isSmEnabled)
+        mConnection.addPacketSendingListener(new PacketListener() {
+            public void processPacket(Packet packet) {
+                // Ignore our own request for acks - they are not counted
+                if (!isStanza(packet)) {
+                    trace("send " + packet.toXML());
+                    return;
+                }
+
+                if (isOutgoingSmEnabled && !outgoingQueue.contains(packet)) {
                     outgoingStanzaCount++;
-                trace("send " + outgoingStanzaCount + " : " + packet.toXML());
+                    outgoingQueue.add(packet);
+
+                    trace("send " + outgoingStanzaCount + " : " + packet.toXML());
+
+                    // Don't let the queue grow beyond max size.  Request acks and drop old packets
+                    // if acks are not coming.
+                    if (outgoingQueue.size() >= maxOutgoingQueueSize / OUTGOING_FILL_RATIO) {
+                        mConnection.sendPacket(new StreamHandlingPacket("r", URN_SM_2));
+                    }
+
+                    if (outgoingQueue.size() > maxOutgoingQueueSize) {
+                        Log.e(XmppConnection.TAG, "not receiving acks?  outgoing queue full");
+                        outgoingQueue.remove();
+                    }
+                } else {
+                    trace("send " + packet.toXML());
+                }
             }
         }, new PacketFilter() {
             public boolean accept(Packet packet) {
@@ -128,9 +170,13 @@ public class XmppStreamHandler {
         
         mConnection.addPacketListener(new PacketListener() {
             public void processPacket(Packet packet) {
-                if (isSmEnabled)
+                if (isSmEnabled && isStanza(packet)) {
                     incomingStanzaCount++;
-                trace("recv " + incomingStanzaCount + " : " + packet.toXML());
+                    trace("recv " + incomingStanzaCount + " : " + packet.toXML());
+                } else {
+                    trace("recv " + packet.toXML());
+                }
+                
                 if (packet instanceof StreamHandlingPacket) {
                     StreamHandlingPacket shPacket = (StreamHandlingPacket) packet;
                     String name = shPacket.getElementName();
@@ -138,16 +184,16 @@ public class XmppStreamHandler {
                         debug("sm avail");
                         isSmAvailable = true;
                     } else if ("r".equals(name)) {
-                        incomingStanzaCount--;
                         StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
                         ackPacket.addAttribute("h", String.valueOf(incomingStanzaCount));
                         mConnection.sendPacket(ackPacket);
                     } else if ("a".equals(name)) {
-                        // ignore for now 
+                        long ackCount = Long.valueOf(shPacket.getAttribute("h"));
+                        removeOutgoingAcked(ackCount);
+                        trace(outgoingQueue.size() + " in outgoing queue after ack");
                     } else if ("enabled".equals(name)) {
                         debug("sm enabled " + sessionId);
                         incomingStanzaCount = 0;
-                        outgoingStanzaCount = 0;
                         isSmEnabled = true;
                         mConnection.getRoster().setOfflineOnError(false);
                         String resume = shPacket.getAttribute("resume");
@@ -157,6 +203,18 @@ public class XmppStreamHandler {
                     } else if ("resumed".equals(name)) {
                         debug("sm resumed");
                         incomingStanzaCount = previousIncomingStanzaCount;
+                        long resumeStanzaCount = Long.valueOf(shPacket.getAttribute("h"));
+                        // Removed acked packets
+                        removeOutgoingAcked(resumeStanzaCount);
+                        trace(outgoingQueue.size() + " in outgoing queue after resume");
+                        
+                        // Resend any unacked packets
+                        for (Packet resendPacket : outgoingQueue) {
+                            mConnection.sendPacket(resendPacket);
+                        }
+                        
+                        // Enable only after resend, so that the interceptor does not
+                        // queue these again or increment outgoingStanzaCount.
                         isSmEnabled = true;
                     } else if ("failed".equals(name)) {
                         // Failed, shutdown and the parent will retry
@@ -165,7 +223,7 @@ public class XmppStreamHandler {
                         mConnection.getRoster().setOfflinePresences();
                         sessionId = null;
                         mConnection.shutdown();
-                        // isSmEnabled is already false
+                        // isSmEnabled / isOutgoingSmEnabled are already false
                     }
                 }
             }
@@ -174,6 +232,23 @@ public class XmppStreamHandler {
                 return true;
             }
         });
+    }
+
+
+    private void removeOutgoingAcked(long ackCount) {
+        if (ackCount > outgoingStanzaCount) {
+            Log.e(XmppConnection.TAG,
+                    "got ack of " + ackCount + " but only sent " + outgoingStanzaCount);
+            // Reset the outgoing count here in a feeble attempt to re-sync.  All bets
+            // are off.
+            outgoingStanzaCount = ackCount;
+        }
+
+        int size = outgoingQueue.size();
+        while (size > outgoingStanzaCount - ackCount) {
+            outgoingQueue.remove();
+            size--;
+        }
     }
 
     private static void addSimplePacketExtension(final String name, final String namespace) {
@@ -248,5 +323,25 @@ public class XmppStreamHandler {
             return buf.toString();
         }
 
+    }
+    
+    /** Returns true if the packet is a Stanza as defined in RFC-6121 - a Message, IQ or Presence packet. */
+    public static boolean isStanza(Packet packet) {
+        if (packet instanceof Message)
+            return true;
+        if (packet instanceof IQ)
+            return true;
+        if (packet instanceof Presence)
+            return true;
+        return false;
+    }
+
+    public void queue(Packet packet) {
+        if (outgoingQueue.size() >= maxOutgoingQueueSize) {
+            Log.e(XmppConnection.TAG, "outgoing queue full");
+            return;
+        }
+        outgoingStanzaCount++;
+        outgoingQueue.add(packet);
     }
 }
