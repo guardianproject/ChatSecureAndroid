@@ -34,9 +34,16 @@ import org.junit.Test;
 public class ServerTrustManagerTest extends EasyMockSupport {
     X509Certificate cert;
     
+    /**
+     * Set up server trust manager tests.
+     * 
+     * <p>IMPORTANT: assumes working directory is parent project.
+     * If you are in Eclipse, you have to change the working directory
+     * of the run configuration.
+     */
     @Before
     public void setUp() throws Exception {
-        InputStream inStream = new FileInputStream("etc/jabber.org.pem");
+        InputStream inStream = new FileInputStream("robo-tests/etc/jabber.org.pem");
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         cert = (X509Certificate)cf.generateCertificate(inStream);
     }

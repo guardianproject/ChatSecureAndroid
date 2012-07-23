@@ -27,3 +27,7 @@ That's it! Generally speaking, this should be an easy project to build locally f
 See robo-tests/README.md for eclipse instructions.
 
 Currently the instrumented target tests (to be run on a device) in the directory `tests` are empty.
+
+*** Logging
+
+`adb shell setprop log.tag.GB.XmppConnection DEBUG`

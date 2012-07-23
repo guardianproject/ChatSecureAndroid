@@ -79,6 +79,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     final static String TAG = "GB.XmppConnection";
     private final static boolean DEBUG_ENABLED = false;
+    private final static boolean PING_ENABLED = true;
 
     private XmppContactList mContactListManager;
     private Contact mUser;
@@ -211,8 +212,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 try {
                     mConnection.sendPacket(packet);
                 } catch (IllegalStateException ex) {
-                    Log.w(TAG, "dropped packet to " + packet.getTo()
-                               + " because socket is disconnected");
+                    if (mStreamHandler.isResumePossible())
+                        mStreamHandler.queue(packet);
+                    else
+                        Log.w(TAG, "dropped packet to " + packet.getTo()
+                                + " because socket is disconnected");
                 }
             }
         });
@@ -1430,7 +1434,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             reconnect();
         } else if (mConnection.isConnected() && getState() == LOGGED_IN) {
             debug(TAG, "ping");
-            if (!sendPing()) {
+            if (PING_ENABLED && !sendPing()) {
                 Log.w(TAG, "reconnect on ping failed");
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
                 force_reconnect();
