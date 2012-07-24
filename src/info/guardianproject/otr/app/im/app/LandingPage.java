@@ -126,14 +126,14 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         mHandler.registerForBroadcastEvents();
     }
 
-    private void signInAll() {
-        Log.i(TAG, "signInAll");
-        mProviderCursor.moveToFirst();
-        do {
-            int position = mProviderCursor.getPosition();
-            signInAccountAtPosition(position);
-        } while (mProviderCursor.moveToNext());
-    }
+//    private void signInAll() {
+//        Log.i(TAG, "signInAll");
+//        mProviderCursor.moveToFirst();
+//        do {
+//            int position = mProviderCursor.getPosition();
+//            signInAccountAtPosition(position);
+//        } while (mProviderCursor.moveToNext());
+//    }
 
     private void signInAccountAtPosition(int position) {
         Intent intent = null;

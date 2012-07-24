@@ -465,14 +465,7 @@ public class ChatView extends LinearLayout {
         unregisterChatSessionListener();
     }
 
-    /*
-    private void closeSoftKeyboard() {
-        InputMethodManager inputMethodManager =
-            (InputMethodManager)mApp.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        inputMethodManager.hideSoftInputFromWindow(mComposeMessage.getWindowToken(), 0);
-    }
-    */
+    
     void updateChat() {
         setViewType(VIEW_TYPE_CHAT);
 
@@ -490,15 +483,6 @@ public class ChatView extends LinearLayout {
             mScreen.finish();
             return;
         }
-
-        /*
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        mHistory.setBackgroundDrawable(
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_CHAT_WATERMARK));
-
-        if (mMarkup == null) {
-            mMarkup = new Markup(brandingRes);
-        }*/
 
         if (mMessageAdapter == null) {
             mMessageAdapter = new MessageAdapter(mScreen, null);
@@ -838,8 +822,6 @@ public class ChatView extends LinearLayout {
     public void viewProfile() {
         String remoteFingerprint = null;
         String localFingerprint = null;
-
-//        String mLocalUserName = "";
         boolean isVerified = false;
 
         if (mOtrKeyManager == null)
@@ -993,15 +975,6 @@ public class ChatView extends LinearLayout {
                 mHandler.showServiceErrorAlert();
             }
         }
-
-        // Close the soft on-screen keyboard if we're in landscape mode so the user can see the
-        // conversation.
-        /*
-        Configuration config = getResources().getConfiguration();
-        if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          //  closeSoftKeyboard();
-        }*/
-
     }
 
     void registerChatListener() {

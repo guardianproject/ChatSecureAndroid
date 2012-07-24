@@ -106,7 +106,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
 
             if (token == TOKEN_ONGOING_CONVERSATION) {
                 setOngoingConversations(c);
-                // notifyDataSetChanged();
                 mAdapter.notifyDataSetChanged();
 
             } else {
@@ -476,7 +475,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         //  If we just finished a fling then some items may not have an icon
         //  So force a full redraw now that the fling is complete
         if (oldState == OnScrollListener.SCROLL_STATE_FLING) {
-            //     notifyDataSetChanged();
         }
     }
 

@@ -334,13 +334,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         return handled;
     }
 
-    /*
-    @Override
-    public boolean onSearchRequested() {
-    	// Open up the search/go dialog
-    	startSearch("", true, null, false);
-    	return true;
-    }*/
 
     @Override
     protected void onNewIntent(Intent intent) {
