@@ -24,7 +24,9 @@ import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoContextualMenu;
 import info.guardianproject.otr.app.lang.BhoToast;
+import info.guardianproject.otr.app.lang.BhoTyper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,13 +55,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.Toast;
 
-public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends Activity implements OnItemLongClickListener {
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
@@ -94,7 +97,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
 
         mContextMenuHandler = new ContextMenuHandler();
-        mChatView.getHistoryView().setOnCreateContextMenuListener(this);
+        mChatView.getHistoryView().setOnItemLongClickListener(this);
 
         final Handler handler = new Handler();
         mApp.callWhenServiceConnected(handler, new Runnable() {
@@ -496,7 +499,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         }
     }
 
-    /** Show the context menu on a history item. */
+    /** TODO: Show the context menu on a history item, removed in Bho-Friendly version */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -527,6 +530,34 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
             return true;
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int selection, long id) {
+        final BhoContextualMenu menu = new BhoContextualMenu(this);
+        menu.add(MENU_RESEND, getString(R.string.menu_resend));
+        
+        menu.setAdapter(menu.setOpts(), new DialogInterface.OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Cursor c;
+                c = mChatView.getMessageAtPosition(selection);
+                
+                switch(menu.getAdapter().getKeyByPosition(which)) {
+                case MENU_RESEND:
+                    String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
+                    mChatView.getComposedMessage().setText(text);
+                    break;
+                default:
+                    break;
+                }
+                
+            }
+        });
+        
+        menu.show();
+        return true;
     }
 
 }

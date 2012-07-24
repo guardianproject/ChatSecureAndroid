@@ -22,6 +22,8 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.lang.BhoContextualMenu;
+import info.guardianproject.otr.app.lang.BhoTyper;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -33,6 +35,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -53,9 +56,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-public class ContactListActivity extends Activity implements View.OnCreateContextMenuListener {
+public class ContactListActivity extends Activity implements OnItemLongClickListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -96,7 +101,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         mFilterView.setActivity(this);
 
-        mFilterView.getListView().setOnCreateContextMenuListener(this);
+        // XXX: mFilterView.getListView().setOnCreateContextMenuListener(this);
+        mFilterView.getListView().setOnItemLongClickListener(this);
 
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
@@ -153,6 +159,9 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         });
 
         mContextMenuHandler = new ContextMenuHandler();
+        
+        mContactListView.getListView().setOnItemLongClickListener(this);
+        //XXX: 
         mContactListView.getListView().setOnCreateContextMenuListener(this);
 
         mGlobalSettingMap.addObserver(new Observer() {
@@ -446,6 +455,126 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     static void log(String msg) {
         Log.v(ImApp.LOG_TAG, "<ContactListActivity> " + msg);
     }
+    
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int selection, long id) {
+        // TODO Auto-generated method stub
+        boolean chatSelected = false;
+        boolean contactSelected = false;
+        Cursor contactCursor;
+        
+        final BhoContextualMenu menu = new BhoContextualMenu(this);
+        
+        if (mIsFiltering) {
+            mContextMenuHandler.mPosition = selection;
+            
+            Log.d(BhoTyper.BHOTAG, "this pos (filtering): " + selection);
+            contactSelected = true;
+            contactCursor = mFilterView.getContactAtPosition(selection);
+        } else {
+            int gSelection = ExpandableListView.getPackedPositionGroup(id);
+            int pSelection = (ExpandableListView.getPackedPositionChild(id) - 1);
+            
+            if(pSelection < 0)
+                return false;
+            
+            Log.d(BhoTyper.BHOTAG, "this id: " + id);
+            Log.d(BhoTyper.BHOTAG, "this group: " + gSelection);
+            Log.d(BhoTyper.BHOTAG, "this child: " + pSelection);
+            
+            mContextMenuHandler.mPosition = pSelection;
+            
+            contactSelected = mContactListView.isContactAtPosition(id);
+            Log.d(BhoTyper.BHOTAG, "contactSelected: " + contactSelected);
+            
+            contactCursor = mContactListView.getContactAtPosition(id);
+            
+        }
+        
+        boolean allowBlock = true;
+        if (contactCursor != null) {
+            //XXX HACK: Yahoo! doesn't allow to block a friend. We can only block a temporary contact.
+            ProviderDef provider = mApp.getProvider(mProviderId);
+            if (Imps.ProviderNames.YAHOO.equals(provider.mName)) {
+                int type = contactCursor.getInt(contactCursor
+                        .getColumnIndexOrThrow(Imps.Contacts.TYPE));
+                allowBlock = (type == Imps.Contacts.TYPE_TEMPORARY);
+            }
+
+            int nickNameIndex = contactCursor.getColumnIndexOrThrow(Imps.Contacts.NICKNAME);
+
+            menu.setTitle(contactCursor.getString(nickNameIndex));
+        }
+        
+        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+        String menu_end_conversation = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_END_CHAT);
+        String menu_view_profile = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE);
+        String menu_block_contact = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT);
+        String menu_start_conversation = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_START_CHAT);
+        String menu_delete_contact = brandingRes
+                .getString(BrandingResourceIDs.STRING_MENU_DELETE_CONTACT);
+
+        if (chatSelected) {
+            menu.add(MENU_END_CONVERSATION, menu_end_conversation);
+            menu.add(MENU_VIEW_PROFILE, menu_view_profile);
+            
+            if (allowBlock)
+                menu.add(MENU_BLOCK_CONTACT, menu_block_contact);
+
+        } else if (contactSelected) {
+            menu.add(MENU_START_CONVERSATION, menu_start_conversation);
+            menu.add(MENU_VIEW_PROFILE, menu_view_profile);
+            if (allowBlock)
+                menu.add(MENU_BLOCK_CONTACT, menu_block_contact);
+            menu.add(MENU_DELETE_CONTACT, menu_delete_contact);
+        }
+        
+        menu.setAdapter(menu.setOpts(), new DialogInterface.OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                long mPosition = mContextMenuHandler.mPosition;
+                Cursor c;
+                if (mIsFiltering) {
+                    c = mFilterView.getContactAtPosition((int) mPosition);
+                } else {
+                    c = mContactListView.getContactAtPosition(mPosition);
+                }
+
+                switch (menu.getAdapter().getKeyByPosition(which)) {
+                case MENU_START_CONVERSATION:
+                    mContactListView.startChat(c);
+                    break;
+                case MENU_VIEW_PROFILE:
+                    mContactListView.viewContactPresence(c);
+                    break;
+                case MENU_BLOCK_CONTACT:
+                    mContactListView.blockContact(c);
+                    break;
+                case MENU_DELETE_CONTACT:
+                    mContactListView.removeContact(c);
+                    break;
+                case MENU_END_CONVERSATION:
+                    mContactListView.endChat(c);
+                    break;
+                default:
+                    break;
+                }
+
+                if (mIsFiltering) {
+                    showContactListView();
+                }
+                
+            }
+        });
+        
+        menu.show();
+        return true;
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -455,13 +584,21 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         if (mIsFiltering) {
             AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.position;
+            Log.d(BhoTyper.BHOTAG, "this pos: " + info.position);
             contactSelected = true;
             contactCursor = mFilterView.getContactAtPosition(info.position);
         } else {
             ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.packedPosition;
+            
+            
             contactSelected = mContactListView.isContactAtPosition(info.packedPosition);
+            Log.d(BhoTyper.BHOTAG, "contactSelected: " + contactSelected);
+            
             contactCursor = mContactListView.getContactAtPosition(info.packedPosition);
+            Log.d(BhoTyper.BHOTAG, "cursor count: " + contactCursor.getColumnCount());
+            
+            Log.d(BhoTyper.BHOTAG, "this pos: " + info.packedPosition);
         }
 
         boolean allowBlock = true;

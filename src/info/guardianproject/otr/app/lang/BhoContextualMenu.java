@@ -2,6 +2,7 @@ package info.guardianproject.otr.app.lang;
 
 import info.guardianproject.otr.app.im.R;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,14 +17,27 @@ import android.widget.BaseAdapter;
 public class BhoContextualMenu extends AlertDialog.Builder {
 	Context context;
 	BhoAdapter ba;
+	Map<Integer, String> options;
 	
 	public BhoContextualMenu(Context context) {
 		super(context);
-		this.context = context;		
+		this.context = context;	
 	}
 	
-	public BhoAdapter setOpts(Map<Integer, String> opt) {
-		return new BhoAdapter(opt);
+	public void add(int key, String label) {
+	    if(options == null)
+	        options = new HashMap<Integer, String>();
+	    
+	    options.put(key, label);
+	}
+	
+	public BhoAdapter setOpts() {
+	    ba = new BhoAdapter(options);
+	    return ba;
+	}
+	
+	public BhoAdapter getAdapter() {
+	    return ba;
 	}
 	
 	public class BhoAdapter extends BaseAdapter {
