@@ -55,12 +55,9 @@ public class ActiveChatListView extends LinearLayout {
     SimpleAlertHandler mHandler;
     Context mContext;
     private final IChatSessionListener mChatListListener;
-
     UserPresenceView mPresenceView;
     ListView mChatList;
-
-    //TODO private SavedState mSavedState; 
-    private ChatListAdapter mAdapter;//ChatListAdapter
+    private ChatListAdapter mAdapter;
     private boolean mAutoRefresh = true;
 
     public ActiveChatListView(Context screen, AttributeSet attrs) {
@@ -78,7 +75,6 @@ public class ActiveChatListView extends LinearLayout {
 
         @Override
         public void onChatSessionCreated(IChatSession session) {
-
             super.onChatSessionCreated(session);
             mAdapter.startAutoRequery();
         }
@@ -117,17 +113,17 @@ public class ActiveChatListView extends LinearLayout {
                     mAdapter = new ChatListAdapter(conn, mScreen);
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
-
-                } else {
+                } 
+                else {
                     mAdapter.changeConnection(conn);
                 }
-                try {
-                    IChatSessionManager listMgr = conn.getChatSessionManager();
+//                try {
+//                    IChatSessionManager listMgr = conn.getChatSessionManager();
                     mAdapter.startAutoRequery();
 
-                } catch (RemoteException e) {
-                    Log.e(ImApp.LOG_TAG, "Service died!");
-                }
+//                } catch (RemoteException e) {
+//                    Log.e(ImApp.LOG_TAG, "Service died!");
+//                }
             }
         } else {
             mChatList.invalidateViews();
@@ -147,9 +143,9 @@ public class ActiveChatListView extends LinearLayout {
                 }
 
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
-                Intent i = new Intent(Intent.ACTION_VIEW, data);
-                i.addCategory(ImApp.IMPS_CATEGORY);
-                mScreen.startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_VIEW, data);
+                intent.addCategory(ImApp.IMPS_CATEGORY);
+                mScreen.startActivity(intent);
                 setAutoRefreshContacts(false);
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
@@ -215,7 +211,6 @@ public class ActiveChatListView extends LinearLayout {
             return false;
         }
     }
-
 
     void removeContact(Cursor c) {
         if (c == null) {
@@ -284,10 +279,9 @@ public class ActiveChatListView extends LinearLayout {
     private void registerListeners() {
         try {
             IChatSessionManager chatManager = mConn.getChatSessionManager();
-
             chatManager.registerChatSessionListener(mChatListListener);
-
-        } catch (RemoteException e) {
+        } 
+        catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
@@ -295,9 +289,9 @@ public class ActiveChatListView extends LinearLayout {
     private void unregisterListeners() {
         try {
             IChatSessionManager chatManager = mConn.getChatSessionManager();
-
             chatManager.unregisterChatSessionListener(mChatListListener);
-        } catch (RemoteException e) {
+        } 
+        catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }
@@ -360,7 +354,6 @@ public class ActiveChatListView extends LinearLayout {
 
     @Override
     public Parcelable onSaveInstanceState() {
-
         Parcelable superState = super.onSaveInstanceState();
         return superState;
     }

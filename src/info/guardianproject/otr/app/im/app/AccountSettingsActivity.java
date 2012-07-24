@@ -27,7 +27,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,14 +36,14 @@ public class AccountSettingsActivity extends PreferenceActivity implements
 
     private long mProviderId;
 
-    EditTextPreference mXmppResource;
-    EditTextPreference mXmppResourcePrio;
-    EditTextPreference mPort;
-    EditTextPreference mServer;
-    CheckBoxPreference mAllowPlainAuth;
-    CheckBoxPreference mRequireTls;
-    CheckBoxPreference mTlsCertVerify;
-    CheckBoxPreference mDoDnsSrv;
+    private EditTextPreference mXmppResource;
+    private EditTextPreference mXmppResourcePrio;
+    private EditTextPreference mPort;
+    private EditTextPreference mServer;
+    private CheckBoxPreference mAllowPlainAuth;
+    private CheckBoxPreference mRequireTls;
+    private CheckBoxPreference mTlsCertVerify;
+    private CheckBoxPreference mDoDnsSrv;
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();

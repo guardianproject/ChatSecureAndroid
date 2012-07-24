@@ -215,14 +215,12 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         try {
             if (mConn != null) {
                 mConn.logout();
-
             }
 
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
             finish();
 
         } catch (RemoteException e) {
@@ -408,26 +406,22 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
-            //TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
-            //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_view_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
             menu.add(0, MENU_DELETE_CONTACT, 0, menu_delete_contact)

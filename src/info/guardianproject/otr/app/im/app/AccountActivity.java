@@ -24,6 +24,9 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
+import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
+import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,6 +42,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.provider.BaseColumns;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -60,20 +64,17 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class AccountActivity extends Activity {
+
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
-
-    private long mProviderId;
-    private long mAccountId;
-
+    private long mProviderId = 0;
+    private long mAccountId = 0;
     static final int REQUEST_SIGN_IN = RESULT_FIRST_USER + 1;
-
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PROVIDER,
                                                         Imps.Account.USERNAME,
                                                         Imps.Account.PASSWORD,
                                                         Imps.Account.KEEP_SIGNED_IN,
                                                         Imps.Account.LAST_LOGIN_STATE };
-
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSWORD_COLUMN = 3;
@@ -81,7 +82,6 @@ public class AccountActivity extends Activity {
     //    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
 
     Uri mAccountUri;
-
     EditText mEditUserAccount;
     EditText mEditPass;
     CheckBox mRememberPass;
@@ -93,27 +93,22 @@ public class AccountActivity extends Activity {
     boolean isEdit = false;
     boolean isSignedIn = false;
 
-    String mUserName;
-    String mDomain;
-    int mPort;
-
+    String mUserName = "";
+    String mDomain = "";
+    int mPort = 0;
     private String mOriginalUserAccount = "";
 
     private final static int DEFAULT_PORT = 5222;
 
     IOtrKeyManager otrKeyManager;
 
-    // String mToAddress;
-
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-
         setContentView(R.layout.account_activity);
-        mEditUserAccount = (EditText) findViewById(R.id.edtName);
 
+        mEditUserAccount = (EditText) findViewById(R.id.edtName);
         mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -125,17 +120,17 @@ public class AccountActivity extends Activity {
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
         mUseTor = (CheckBox) findViewById(R.id.useTor);
         mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 updateUseTor(isChecked);
             }
         });
 
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
-
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
 
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 updateWidgetState();
             }
@@ -190,7 +185,7 @@ public class AccountActivity extends Activity {
 
             setTitle(R.string.sign_in);
 
-            mAccountId = cursor.getLong(cursor.getColumnIndexOrThrow(Imps.Account._ID));
+            mAccountId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
 
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = mApp.getProvider(mProviderId);
@@ -226,6 +221,7 @@ public class AccountActivity extends Activity {
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
 
         mRememberPass.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
 
                 CheckBox mRememberPass = (CheckBox) v;
@@ -243,19 +239,20 @@ public class AccountActivity extends Activity {
 
         mBtnAdvanced.setOnClickListener(new OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 showAdvanced();
             }
         });
 
         mBtnSignIn.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
 
                 checkUserChanged();
 
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
-
                 ContentResolver cr = getContentResolver();
 
                 if (!parseAccount(mEditUserAccount.getText().toString())) {
@@ -276,12 +273,13 @@ public class AccountActivity extends Activity {
                     isSignedIn = false;
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put(Imps.Account.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
+                    values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
                     getContentResolver().update(mAccountUri, values, null, null);
 
                     if (!mOriginalUserAccount.equals(mUserName + '@' + mDomain)
                         && shouldShowTermOfUse(brandingRes)) {
                         confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
+                            @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 signIn(rememberPass, pass);
                             }
@@ -289,10 +287,8 @@ public class AccountActivity extends Activity {
                     } else {
                         signIn(rememberPass, pass);
                     }
-
                     isSignedIn = true;
                 }
-
                 updateWidgetState();
             }
 
@@ -304,12 +300,6 @@ public class AccountActivity extends Activity {
                 if (!rememberPass) {
                     intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
                 }
-
-                /*
-                if (mToAddress != null) {
-                    intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
-                }*/
-
                 startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
@@ -345,9 +335,7 @@ public class AccountActivity extends Activity {
             }
 
         }
-
         settings.setServer(server);
-
         settings.setUseTor(useTor);
         settings.close();
     }
@@ -433,6 +421,7 @@ public class AccountActivity extends Activity {
     }
 
     void settingsForDomain(String domain, int port) {
+
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
@@ -446,7 +435,6 @@ public class AccountActivity extends Activity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-
         } else if (domain.equals("jabber.org")) {
             settings.setDoDnsSrv(true);
             settings.setDomain(domain);
@@ -455,7 +443,6 @@ public class AccountActivity extends Activity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-
         } else if (domain.equals("facebook.com")) {
             settings.setDoDnsSrv(false);
             settings.setDomain("chat.facebook.com");
@@ -465,7 +452,6 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(false); //but cert verify can still be funky - off by default
             settings.setAllowPlainAuth(false);
         } else {
-
             settings.setDoDnsSrv(true);
             settings.setDomain(domain);
             settings.setPort(port);
@@ -473,9 +459,7 @@ public class AccountActivity extends Activity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-
         }
-
         settings.close();
     }
 
@@ -525,12 +509,13 @@ public class AccountActivity extends Activity {
     void signOut() {
         //if you are signing out, then we will deactive "auto" sign in
         ContentValues values = new ContentValues();
-        values.put(Imps.Account.KEEP_SIGNED_IN, 0);
+        values.put(AccountColumns.KEEP_SIGNED_IN, 0);
         getContentResolver().update(mAccountUri, values, null, null);
 
         mApp = ImApp.getApplication(AccountActivity.this);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
+            @Override
             public void run() {
 
                 signOut(mProviderId, mAccountId);
@@ -552,9 +537,9 @@ public class AccountActivity extends Activity {
                 // status will never be updated. Clear the status in this case
                 // to make it recoverable from the crash.
                 ContentValues values = new ContentValues(2);
-                values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
-                values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
-                String where = Imps.AccountStatus.ACCOUNT + "=?";
+                values.put(AccountStatusColumns.PRESENCE_STATUS, CommonPresenceColumns.OFFLINE);
+                values.put(AccountStatusColumns.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
+                String where = AccountStatusColumns.ACCOUNT + "=?";
                 getContentResolver().update(Imps.AccountStatus.CONTENT_URI, values, where,
                         new String[] { Long.toString(accountId) });
             }
@@ -615,14 +600,17 @@ public class AccountActivity extends Activity {
     }
 
     private final TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
         public void beforeTextChanged(CharSequence s, int start, int before, int after) {
         }
 
+        @Override
         public void onTextChanged(CharSequence s, int start, int before, int after) {
             updateWidgetState();
 
         }
 
+        @Override
         public void afterTextChanged(Editable s) {
 
         }
@@ -644,7 +632,6 @@ public class AccountActivity extends Activity {
 
         if (isEdit) {
             //add delete menu option
-
         }
 
         return true;

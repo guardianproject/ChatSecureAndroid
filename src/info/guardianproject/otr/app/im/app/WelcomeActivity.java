@@ -271,9 +271,9 @@ public class WelcomeActivity extends Activity {
             return;
         }
 
-        Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
-        startActivity(intent);
+        Intent signIn = new Intent(this, SigningInActivity.class);
+        signIn.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
+        startActivity(signIn);
 
         finish();
     }
