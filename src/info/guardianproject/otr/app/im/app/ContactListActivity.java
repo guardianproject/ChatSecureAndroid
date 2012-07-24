@@ -101,7 +101,7 @@ public class ContactListActivity extends Activity implements OnItemLongClickList
 
         mFilterView.setActivity(this);
 
-        // XXX: mFilterView.getListView().setOnCreateContextMenuListener(this);
+        // mFilterView.getListView().setOnCreateContextMenuListener(this);
         mFilterView.getListView().setOnItemLongClickListener(this);
 
         Intent intent = getIntent();
@@ -161,8 +161,7 @@ public class ContactListActivity extends Activity implements OnItemLongClickList
         mContextMenuHandler = new ContextMenuHandler();
         
         mContactListView.getListView().setOnItemLongClickListener(this);
-        //XXX: 
-        mContactListView.getListView().setOnCreateContextMenuListener(this);
+        // mContactListView.getListView().setOnCreateContextMenuListener(this);
 
         mGlobalSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
@@ -472,22 +471,20 @@ public class ContactListActivity extends Activity implements OnItemLongClickList
             contactSelected = true;
             contactCursor = mFilterView.getContactAtPosition(selection);
         } else {
-            int gSelection = ExpandableListView.getPackedPositionGroup(id);
-            int pSelection = (ExpandableListView.getPackedPositionChild(id) - 1);
+            int childPosition = ExpandableListView.getPackedPositionChild(id);
             
-            if(pSelection < 0)
+            if(childPosition < 0)
                 return false;
             
             Log.d(BhoTyper.BHOTAG, "this id: " + id);
-            Log.d(BhoTyper.BHOTAG, "this group: " + gSelection);
-            Log.d(BhoTyper.BHOTAG, "this child: " + pSelection);
             
-            mContextMenuHandler.mPosition = pSelection;
+            mContextMenuHandler.mPosition = id;
             
             contactSelected = mContactListView.isContactAtPosition(id);
             Log.d(BhoTyper.BHOTAG, "contactSelected: " + contactSelected);
             
             contactCursor = mContactListView.getContactAtPosition(id);
+            Log.d(BhoTyper.BHOTAG, "cursor: " + contactCursor.getColumnCount());
             
         }
         
@@ -591,14 +588,8 @@ public class ContactListActivity extends Activity implements OnItemLongClickList
             ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
             mContextMenuHandler.mPosition = info.packedPosition;
             
-            
             contactSelected = mContactListView.isContactAtPosition(info.packedPosition);
-            Log.d(BhoTyper.BHOTAG, "contactSelected: " + contactSelected);
-            
-            contactCursor = mContactListView.getContactAtPosition(info.packedPosition);
-            Log.d(BhoTyper.BHOTAG, "cursor count: " + contactCursor.getColumnCount());
-            
-            Log.d(BhoTyper.BHOTAG, "this pos: " + info.packedPosition);
+            contactCursor = mContactListView.getContactAtPosition(info.packedPosition);            
         }
 
         boolean allowBlock = true;
