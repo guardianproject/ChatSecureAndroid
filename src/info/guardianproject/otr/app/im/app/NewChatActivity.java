@@ -19,7 +19,6 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ContactListActivity.ContextMenuHandler;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -56,7 +55,6 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
 
@@ -64,15 +62,12 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
 
     ImApp mApp;
-
     ChatView mChatView;
     SimpleAlertHandler mHandler;
-
     MenuItem menuOtr;
 
     private AlertDialog mSmileyDialog;
     private ChatSwitcher mChatSwitcher;
-
     private LayoutInflater mInflater;
 
     ContextMenuHandler mContextMenuHandler;
@@ -158,50 +153,13 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
-        /*
-         *         long providerId = mChatView.getProviderId();
-
-        BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-        
-        menu.findItem(R.id.menu_view_friend_list).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
-        menu.findItem(R.id.menu_switch_chats).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_SWITCH_CHATS));
-        
-        menu.findItem(R.id.menu_insert_smiley).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
-        
-        menu.findItem(R.id.menu_end_conversation).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_END_CHAT));
-        
-        menu.findItem(R.id.menu_view_profile).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_VIEW_PROFILE));
-        
-        menu.findItem(R.id.menu_block_contact).setTitle(
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_BLOCK_CONTACT));
-                */
-
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
         updateOtrMenuState();
-
-        //XXX hide the invite menu, group chat is not supported by the server.
-        //menu.findItem(R.id.menu_invite_contact).setVisible(false);
-
-        /*
-        //XXX HACK: Yahoo! doesn't allow to block a friend. We can only block a temporary contact.
-        ProviderDef provider = mApp.getProvider(mChatView.getProviderId());
-        if ((provider != null) && Imps.ProviderNames.YAHOO.equals(provider.mName)) {
-            if (Imps.Contacts.TYPE_TEMPORARY != mChatView.getType()) {
-                menu.findItem(R.id.menu_block_contact).setVisible(false);
-            }
-        }*/
-
         return true;
     }
 
@@ -217,16 +175,9 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             mChatView.viewProfile();
             return true;
 
-            /*
-            case R.id.menu_view_friend_list:
-                finish();
-                showRosterScreen();
-                return true;
-              */
         case R.id.menu_end_conversation:
             mChatView.closeChatSession();
             return true;
-
          
         case R.id.menu_switch_chats:
             if (mChatSwitcher.isOpen()) {
@@ -234,25 +185,13 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             } else {
                 mChatSwitcher.open();
             }
-
             return true;
 
         case R.id.menu_view_accounts:
-            
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
+            return true;
             
-            return true;
-            /*
-            case R.id.menu_invite_contact:
-            startContactPicker();
-            return true;
-
-
-            case R.id.menu_block_contact:
-            mChatView.blockContact();
-            return true;
-            */
         case R.id.menu_prev_chat:
             switchChat(-1);
             return true;
@@ -293,7 +232,6 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     }
 
     private void switchOtrState() {
-        //TODO OTRCHAT switch state on/off
 
         IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
         int toastMsgId;
@@ -338,81 +276,81 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
     }
 
-    private void showRosterScreen() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setClass(this, ContactListActivity.class);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
-        startActivity(intent);
-    }
+//    private void showRosterScreen() {
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setClass(this, ContactListActivity.class);
+//        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
+//        startActivity(intent);
+//    }
 
-    private void showSmileyDialog() {
-        if (mSmileyDialog == null) {
-            long providerId = mChatView.getProviderId();
-
-            final BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-            int[] icons = brandingRes.getSmileyIcons();
-            String[] names = brandingRes
-                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES);
-            final String[] texts = brandingRes
-                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS);
-
-            final int N = names.length;
-
-            List<Map<String, ?>> entries = new ArrayList<Map<String, ?>>();
-            for (int i = 0; i < N; i++) {
-                // We might have different ASCII for the same icon, skip it if
-                // the icon is already added.
-                boolean added = false;
-                for (int j = 0; j < i; j++) {
-                    if (icons[i] == icons[j]) {
-                        added = true;
-                        break;
-                    }
-                }
-                if (!added) {
-                    HashMap<String, Object> entry = new HashMap<String, Object>();
-
-                    entry.put("icon", icons[i]);
-                    entry.put("name", names[i]);
-                    entry.put("text", texts[i]);
-
-                    entries.add(entry);
-                }
-            }
-
-            final SimpleAdapter a = new SimpleAdapter(this, entries, R.layout.smiley_menu_item,
-                    new String[] { "icon", "name", "text" }, new int[] { R.id.smiley_icon,
-                                                                        R.id.smiley_name,
-                                                                        R.id.smiley_text });
-            SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
-                public boolean setViewValue(View view, Object data, String textRepresentation) {
-                    if (view instanceof ImageView) {
-                        Drawable img = brandingRes.getSmileyIcon((Integer) data);
-                        ((ImageView) view).setImageDrawable(img);
-                        return true;
-                    }
-                    return false;
-                }
-            };
-            a.setViewBinder(viewBinder);
-
-            AlertDialog.Builder b = new AlertDialog.Builder(this);
-
-            b.setTitle(brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
-
-            b.setCancelable(true);
-            b.setAdapter(a, new DialogInterface.OnClickListener() {
-                public final void onClick(DialogInterface dialog, int which) {
-                    HashMap<String, Object> item = (HashMap<String, Object>) a.getItem(which);
-                    mChatView.insertSmiley((String) item.get("text"));
-                }
-            });
-
-            mSmileyDialog = b.create();
-        }
-
-        mSmileyDialog.show();
-    }
+//    private void showSmileyDialog() {
+//        if (mSmileyDialog == null) {
+//            long providerId = mChatView.getProviderId();
+//
+//            final BrandingResources brandingRes = mApp.getBrandingResource(providerId);
+//            int[] icons = brandingRes.getSmileyIcons();
+//            String[] names = brandingRes
+//                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES);
+//            final String[] texts = brandingRes
+//                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS);
+//
+//            final int N = names.length;
+//
+//            List<Map<String, ?>> entries = new ArrayList<Map<String, ?>>();
+//            for (int i = 0; i < N; i++) {
+//                // We might have different ASCII for the same icon, skip it if
+//                // the icon is already added.
+//                boolean added = false;
+//                for (int j = 0; j < i; j++) {
+//                    if (icons[i] == icons[j]) {
+//                        added = true;
+//                        break;
+//                    }
+//                }
+//                if (!added) {
+//                    HashMap<String, Object> entry = new HashMap<String, Object>();
+//
+//                    entry.put("icon", icons[i]);
+//                    entry.put("name", names[i]);
+//                    entry.put("text", texts[i]);
+//
+//                    entries.add(entry);
+//                }
+//            }
+//
+//            final SimpleAdapter a = new SimpleAdapter(this, entries, R.layout.smiley_menu_item,
+//                    new String[] { "icon", "name", "text" }, new int[] { R.id.smiley_icon,
+//                                                                        R.id.smiley_name,
+//                                                                        R.id.smiley_text });
+//            SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
+//                public boolean setViewValue(View view, Object data, String textRepresentation) {
+//                    if (view instanceof ImageView) {
+//                        Drawable img = brandingRes.getSmileyIcon((Integer) data);
+//                        ((ImageView) view).setImageDrawable(img);
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            };
+//            a.setViewBinder(viewBinder);
+//
+//            AlertDialog.Builder b = new AlertDialog.Builder(this);
+//
+//            b.setTitle(brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
+//
+//            b.setCancelable(true);
+//            b.setAdapter(a, new DialogInterface.OnClickListener() {
+//                public final void onClick(DialogInterface dialog, int which) {
+//                    HashMap<String, Object> item = (HashMap<String, Object>) a.getItem(which);
+//                    mChatView.insertSmiley((String) item.get("text"));
+//                }
+//            });
+//
+//            mSmileyDialog = b.create();
+//        }
+//
+//        mSmileyDialog.show();
+//    }
 
     private void switchChat(int delta) {
         long providerId = mChatView.getProviderId();
@@ -422,21 +360,21 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         mChatSwitcher.rotateChat(delta, contact, accountId, providerId);
     }
 
-    private void startContactPicker() {
-        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
-        ContentUris.appendId(builder, mChatView.getProviderId());
-        ContentUris.appendId(builder, mChatView.getAccountId());
-        Uri data = builder.build();
-
-        try {
-            Intent i = new Intent(Intent.ACTION_PICK, data);
-            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
-                    .getCurrentChatSession().getPariticipants());
-            startActivityForResult(i, REQUEST_PICK_CONTACTS);
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
-    }
+//    private void startContactPicker() {
+//        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
+//        ContentUris.appendId(builder, mChatView.getProviderId());
+//        ContentUris.appendId(builder, mChatView.getAccountId());
+//        Uri data = builder.build();
+//
+//        try {
+//            Intent i = new Intent(Intent.ACTION_PICK, data);
+//            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
+//                    .getCurrentChatSession().getPariticipants());
+//            startActivityForResult(i, REQUEST_PICK_CONTACTS);
+//        } catch (RemoteException e) {
+//            mHandler.showServiceErrorAlert();
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

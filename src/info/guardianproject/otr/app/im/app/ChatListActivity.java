@@ -153,30 +153,14 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_list_menu, menu);
-
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-
-        //TODO make sure this works
-        //   menu.findItem(R.id.menu_invite_user).setTitle(
-        //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-        //TODO make sure this works
-
-        /*
-        case R.id.menu_new_chat:
-            Toast.makeText(getBaseContext(), "Feature in development!", Toast.LENGTH_SHORT).show();
-            return true;
-*/
         
         case R.id.menu_view_accounts:
-            //	            startActivity(getEditAccountIntent());
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
             return true;
@@ -231,14 +215,12 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         try {
             if (mConn != null) {
                 mConn.logout();
-
             }
 
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
             finish();
 
         } catch (RemoteException e) {
@@ -424,26 +406,22 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
 
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
-            //TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
-            //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_view_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
             menu.add(0, MENU_DELETE_CONTACT, 0, menu_delete_contact)
@@ -467,36 +445,6 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
-            //            Cursor c;
-            //            if (mIsFiltering) {
-            //                c = mFilterView.getContactAtPosition((int)mPosition);
-            //            } else {
-            //                c = mActiveChatListView.getContactAtPosition(mPosition);
-            //            }
-            //
-            //            switch (item.getItemId()) {
-            //            case MENU_START_CONVERSATION:
-            //                mActiveChatListView.startChat(c);
-            //                break;
-            //            case MENU_VIEW_PROFILE:
-            //                mActiveChatListView.viewContactPresence(c);
-            //                break;
-            //            case MENU_BLOCK_CONTACT:
-            //                mActiveChatListView.blockContact(c);
-            //                break;
-            //            case MENU_DELETE_CONTACT:
-            //                mActiveChatListView.removeContact(c);
-            //                break;
-            //            case MENU_END_CONVERSATION:
-            //                mActiveChatListView.endChat(c);
-            //                break;
-            //            default:
-            //                return false;
-            //            }
-            //
-            //            if (mIsFiltering) {
-            //                showContactListView();
-            //            }
             return true;
         }
     }

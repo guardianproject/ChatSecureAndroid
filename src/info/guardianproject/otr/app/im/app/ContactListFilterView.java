@@ -28,7 +28,6 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -105,11 +104,6 @@ public class ContactListFilterView extends LinearLayout {
 
     Cursor runQuery(CharSequence constraint) {
         StringBuilder buf = new StringBuilder();
-
-        // exclude chatting contact
-        //   buf.append(Imps.Chats.LAST_MESSAGE_DATE);
-        // buf.append(" IS NULL");
-        //   buf.append(" AND ");
 
         if (constraint != null) {
 
