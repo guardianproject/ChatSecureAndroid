@@ -16,7 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -27,7 +26,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -37,7 +35,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
@@ -52,7 +49,6 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
@@ -180,16 +176,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
-
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-
-        //TODO make sure this works
-        //   menu.findItem(R.id.menu_invite_user).setTitle(
-        //     brandingRes.getString(BrandingResourceIDs.STRING_MENU_ADD_CONTACT));
-
         return true;
     }
 
@@ -208,16 +196,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             startActivity(i);
             return true;
 
-            /*            case R.id.menu_blocked_contacts:
-                            Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
-                            ContentUris.appendId(builder, mProviderId);
-                            ContentUris.appendId(builder, mAccountId);
-                            startActivity(new Intent(Intent.ACTION_VIEW, builder.build()));
-                            return true;
-            */
-
         case R.id.menu_view_accounts:
-            //            	startActivity(getEditAccountIntent());
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
             return true;
@@ -355,13 +334,6 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         return handled;
     }
 
-    /*
-    @Override
-    public boolean onSearchRequested() {
-    	// Open up the search/go dialog
-    	startSearch("", true, null, false);
-    	return true;
-    }*/
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -494,26 +466,22 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
-            //TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
-            //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_view_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
-                //.setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_block)
                         .setOnMenuItemClickListener(mContextMenuHandler);
             }
             menu.add(0, MENU_DELETE_CONTACT, 0, menu_delete_contact)

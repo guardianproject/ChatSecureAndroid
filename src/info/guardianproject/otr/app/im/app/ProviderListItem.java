@@ -44,8 +44,9 @@ public class ProviderListItem extends LinearLayout {
     private TextView mProviderName;
     private TextView mLoginName;
     private TextView mChatView;
-    private View mUnderBubble;
-    private Drawable mBubbleDrawable, mDefaultBackground;
+    //private View mUnderBubble;
+    //private Drawable mBubbleDrawable;
+    private Drawable mDefaultBackground;
 
     private int mProviderIdColumn;
     private int mProviderFullnameColumn;
@@ -69,8 +70,8 @@ public class ProviderListItem extends LinearLayout {
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
         mChatView = (TextView) findViewById(R.id.conversations);
-        mUnderBubble = findViewById(R.id.underBubble);
-        mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
+        //mUnderBubble = findViewById(R.id.underBubble);
+        //mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
         mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
 
         mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
@@ -103,7 +104,7 @@ public class ProviderListItem extends LinearLayout {
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mUnderBubble.setBackgroundDrawable(mDefaultBackground);
+//        mUnderBubble.setBackgroundDrawable(mDefaultBackground);
         statusIcon.setVisibility(View.GONE);
 
         providerName.setTextColor(mProviderNameColors);
@@ -115,7 +116,6 @@ public class ProviderListItem extends LinearLayout {
             providerName.setVisibility(View.VISIBLE);
             
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
-         //   providerName.setText(providerDisplayName);
             providerName.setText(activeUserName);
 
             long accountId = cursor.getLong(mActiveAccountIdColumn);
@@ -138,7 +138,7 @@ public class ProviderListItem extends LinearLayout {
 
                 int count = getConversationCount(cr, accountId);
                 if (count > 0) {
-                    mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
+//                    mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
                     chatView.setVisibility(View.VISIBLE);
                     chatView.setText(r.getString(R.string.conversations, count));
 

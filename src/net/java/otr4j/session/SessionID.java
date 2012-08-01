@@ -5,8 +5,6 @@
  */
 package net.java.otr4j.session;
 
-import java.util.Date;
-
 /** @author George Politis */
 public final class SessionID {
 

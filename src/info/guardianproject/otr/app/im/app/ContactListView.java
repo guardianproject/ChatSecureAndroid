@@ -58,7 +58,6 @@ public class ContactListView extends LinearLayout {
     Context mContext;
     private final IContactListListener mContactListListener;
 
-    //UserPresenceView mPresenceView;
     ExpandableListView mContactsList;
     private ContactListTreeAdapter mAdapter;
     private boolean mHideOfflineContacts;
@@ -110,7 +109,6 @@ public class ContactListView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        // mPresenceView = (UserPresenceView)findViewById(R.id.userPresence);
         mContactsList = (ExpandableListView) findViewById(R.id.contactsList);
         mContactsList.setOnChildClickListener(mOnChildClickListener);
     }
@@ -258,19 +256,6 @@ public class ContactListView extends LinearLayout {
         long pos = mContactsList.getSelectedPosition();
         return isContactAtPosition(pos);
     }
-
-    /*
-    public boolean isConversationAtPosition(long packedPosition) {
-        int type = ExpandableListView.getPackedPositionType(packedPosition);
-        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
-        return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
-                && mAdapter.isPosForOngoingConversation(groupPosition);
-    }
-
-    public boolean isConversationSelected () {
-        long pos = mContactsList.getSelectedPosition();
-        return isConversationAtPosition(pos);
-    }*/
 
     public boolean isContactsLoaded() {
         try {
@@ -483,9 +468,7 @@ public class ContactListView extends LinearLayout {
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
-
         super.onRestoreInstanceState(ss.getSuperState());
-
         mSavedState = ss;
     }
 

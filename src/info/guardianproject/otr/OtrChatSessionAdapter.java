@@ -1,25 +1,19 @@
 package info.guardianproject.otr;
 
-import java.util.List;
-
 import info.guardianproject.otr.IOtrChatSession.Stub;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
-import net.java.otr4j.session.TLV;
 import android.os.RemoteException;
-import android.util.Log;
 
 public class OtrChatSessionAdapter extends Stub {
 
     private OtrChatManager _chatManager;
-
     private String _localUser;
     private String _remoteUser;
 
     public OtrChatSessionAdapter(String localUser, String remoteUser, OtrChatManager chatManager) {
 
         _chatManager = chatManager;
-
         _localUser = localUser;
         _remoteUser = remoteUser;
 

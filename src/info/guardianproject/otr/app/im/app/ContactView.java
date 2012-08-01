@@ -36,14 +36,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.RelativeSizeSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.util.Log;
 
 public class ContactView extends LinearLayout {
     static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
@@ -103,7 +102,7 @@ public class ContactView extends LinearLayout {
         String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
         String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
 
-        boolean hasChat = !cursor.isNull(COLUMN_LAST_MESSAGE_DATE);
+        boolean hasChat = !cursor.isNull(COLUMN_LAST_MESSAGE);
 
         ImApp app = ImApp.getApplication((Activity) mContext);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
@@ -126,41 +125,29 @@ public class ContactView extends LinearLayout {
         Drawable presenceIcon = brandingRes.getDrawable(iconId);
 
         // line1
-        CharSequence line1;
+        CharSequence contact;
         if (Imps.Contacts.TYPE_GROUP == type) {
             ContentResolver resolver = getContext().getContentResolver();
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
-            line1 = queryGroupMembers(resolver, id);
+            contact = queryGroupMembers(resolver, id);
         } else {
-            line1 = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
+            contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
                                                : nickname;
 
             if (!TextUtils.isEmpty(underLineText)) {
                 // highlight/underline the word being searched
-                String lowercase = line1.toString().toLowerCase();
+                String lowercase = contact.toString().toLowerCase();
                 int start = lowercase.indexOf(underLineText.toLowerCase());
                 if (start >= 0) {
                     int end = start + underLineText.length();
-                    SpannableString str = new SpannableString(line1);
+                    SpannableString str = new SpannableString(contact);
                     str.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                    line1 = str;
+                    contact = str;
                 }
             }
 
-            /*
-            if (Imps.Contacts.TYPE_TEMPORARY == type) {
-                // Add a mark at the front of name if it's only a temporary
-                // contact.
-            	
-                SpannableStringBuilder str = new SpannableStringBuilder(
-                        r.getText(R.string.unknown_contact));
-                str.setSpan(new RelativeSizeSpan(0.8f), 0, str.length(),
-                        Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                str.append(line1);
-                line1 = str;
-            }*/
         }
-        mLine1.setText(line1);
+        mLine1.setText(contact);
 
         // time stamp
         if (showChatMsg && hasChat) {
@@ -174,33 +161,33 @@ public class ContactView extends LinearLayout {
         }
 
         // line2
-        CharSequence line2 = null;
+        CharSequence status = null;
         if (showChatMsg) {
-            line2 = lastMsg;
+            status = lastMsg;
         }
 
-        if (TextUtils.isEmpty(line2)) {
+        if (TextUtils.isEmpty(status)) {
             if (Imps.Contacts.TYPE_GROUP == type) {
                 // Show nothing in line2 if it's a group and don't
                 // have any unread message.
-                line2 = null;
+                status = null;
             } else {
                 // Show the custom status text if there's no new message.
-                line2 = statusText;
+                status = statusText;
             }
         }
 
-        if (TextUtils.isEmpty(line2)) {
+        if (TextUtils.isEmpty(status)) {
             // Show a string of presence if there is neither new message nor
             // custom status text.
-            line2 = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
+            status = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
         }
 
-        mLine2.setText(line2);
+        mLine2.setText(status);
         mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
         View contactInfoPanel = findViewById(R.id.contactInfo);
-        if (hasChat && showChatMsg) {
+        if (hasChat && showChatMsg) { // HERE the bubble is set
             contactInfoPanel.setBackgroundResource(R.drawable.bubble);
             mLine1.setTextColor(r.getColor(R.color.chat_contact));
         } else {

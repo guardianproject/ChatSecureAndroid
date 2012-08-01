@@ -130,9 +130,6 @@ public class MessageView extends LinearLayout {
             buf.append(body);
         } else {
             buf.setSpan(ChatView.STYLE_BOLD, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-            //sorry smileyRes
-            //buf.append(smileyRes.markup(body));
             buf.append(body);
 
             if (date != null) {

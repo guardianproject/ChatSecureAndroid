@@ -31,8 +31,6 @@ import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -76,7 +74,7 @@ public class SigningInActivity extends Activity {
 
     protected static final int ID_CANCEL_SIGNIN = Menu.FIRST + 1;
 
-    private Dialog dl = null;
+    //private Dialog dl = null;
 
     private Uri accountData = null;
 
@@ -151,11 +149,8 @@ public class SigningInActivity extends Activity {
                     connectService(mPassword);
                 }
             } else if (conn.getState() == ImConnection.LOGGED_IN) {
-
                 // assume we can sign in successfully.
                 setResult(RESULT_OK);
-                //conn.logout(); // in case we are already logged
-                //connectService();
             }
         } catch (Exception e) {
             Log.w(TAG, "bad things: " + e);
@@ -167,13 +162,6 @@ public class SigningInActivity extends Activity {
 
         final ProviderDef provider = mApp.getProvider(mProviderId);
         mProviderName = provider.mName;
-
-        /*
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-        */
-
         setTitle(getResources().getString(R.string.signing_in_to, provider.mFullName));
 
         mHandler = new SimpleAlertHandler(this);
@@ -242,23 +230,6 @@ public class SigningInActivity extends Activity {
 
         alert.show();
     }
-
-    /*
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        if (mApp.serviceConnected() && mApp.isBackgroundDataEnabled()) {
-            signInAccount();
-        } else {
-            if(Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("onRestart: service disconnected or background data disabled...");
-            }
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-    }
-    */
 
     private void signInAccount(String password) {
 
@@ -408,12 +379,9 @@ public class SigningInActivity extends Activity {
 
             try {
                 Intent intent;
-
                 mAccountId = mConn.getAccountId();
-
-                /*#############################################################################
-                 * This (see below) intent is the one that needs to be passed to the tab Event 
-                 */
+                
+                // the below intent needs to be passed to the tab event 
 
                 if (mToAddress != null) {
                     IChatSessionManager manager = mConn.getChatSessionManager();
@@ -430,15 +398,11 @@ public class SigningInActivity extends Activity {
 
                 } else {
                     intent = new Intent(this, TabbedContainer.class);
-
                     // clear the back stack of the account setup
-
-                    //     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK && Intent.FLAG);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
                 }
 
                 startActivity(intent);
-
                 // sign in successfully, finish and switch to contact list
                 finish();
 
@@ -514,7 +478,6 @@ public class SigningInActivity extends Activity {
     private void showAccount() {
         Intent intent = new Intent(Intent.ACTION_EDIT, accountData);
         intent.putExtra("isSignedIn", false);
-        //         intent.addCategory(c.getString(WelcomeActivity.PROVIDER_CATEGORY_COLUMN));
         startActivity(intent);
         finish();
     }

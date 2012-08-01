@@ -113,23 +113,17 @@ public class ContactPresenceActivity extends Activity {
         if (c.moveToFirst()) {
             providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+//            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
-            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
+//            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
 
             BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
-            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
-            /*
-            if (avatar != null) {
-                imgAvatar.setImageDrawable(avatar);
-            } else {
-                imgAvatar.setImageResource(R.drawable.avatar_unknown);
-            }*/
+//            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
+//                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
 
             txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
 
@@ -140,8 +134,6 @@ public class ContactPresenceActivity extends Activity {
                     statusIcon.getIntrinsicHeight());
             s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             txtStatus.setText(s);
-
-            //     txtClientType.setText(getClientTypeString(clientType));
 
             if (!TextUtils.isEmpty(customStatus)) {
                 txtCustomStatus.setVisibility(View.VISIBLE);
@@ -181,16 +173,16 @@ public class ContactPresenceActivity extends Activity {
 
     }
 
-    private String getClientTypeString(int clientType) {
-        Resources res = getResources();
-        switch (clientType) {
-        case Imps.Contacts.CLIENT_TYPE_MOBILE:
-            return res.getString(R.string.client_type_mobile);
-
-        default:
-            return res.getString(R.string.client_type_computer);
-        }
-    }
+//    private String getClientTypeString(int clientType) {
+//        Resources res = getResources();
+//        switch (clientType) {
+//        case Imps.Contacts.CLIENT_TYPE_MOBILE:
+//            return res.getString(R.string.client_type_mobile);
+//
+//        default:
+//            return res.getString(R.string.client_type_computer);
+//        }
+//    }
 
     private static void warning(String msg) {
         Log.w(ImApp.LOG_TAG, "<ContactPresenceActivity> " + msg);
@@ -253,8 +245,6 @@ public class ContactPresenceActivity extends Activity {
             }
 
         }
-
-        // else continue with any other code you need in the method
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

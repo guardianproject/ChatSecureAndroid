@@ -573,7 +573,6 @@ public class ChatSwitcher {
             mSwitcherAdapter.changeCursor(null);
 
             mViews.clear();
-
             mHandler.removeCallbacks(mSimpleUpdateRunnable);
         }
     }
