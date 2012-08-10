@@ -32,6 +32,7 @@ import info.guardianproject.otr.app.im.plugin.ImPlugin;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.AssetUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import android.app.Activity;
 import android.app.Application;
@@ -209,6 +211,18 @@ public class ImApp extends Application {
         Configuration config = getResources().getConfiguration();
 
         String lang = settings.getString(PREF_DEFAULT_LOCALE, "");
+        if ("".equals(lang)) {
+            Properties props = AssetUtil.getProperties("gibberbot.properties", this);
+            if (props != null) {
+                String configuredLocale = props.getProperty("locale");
+                if (configuredLocale != null && !"CHOOSE".equals(configuredLocale)) {
+                    lang = configuredLocale;
+                    Editor editor = settings.edit();
+                    editor.putString(ImApp.PREF_DEFAULT_LOCALE, lang);
+                    editor.commit();
+                }
+            }
+        }
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             Locale.setDefault(locale);

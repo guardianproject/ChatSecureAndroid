@@ -10,7 +10,7 @@ http://www.bouncycastle.org/java.html
 and SQLCipher for Android:
 https://guardianproject.info/code/sqlcipher/
 
-*** Build Instructions
+## Build Instructions
 1. For these instructions, you'll need the Android SDK and Eclipse installed. Follow instructions here: http://developer.android.com/sdk/index.html and here: https://developer.android.com/sdk/installing.html
 2. Gibberbot is currently configured to run on the version 4+ of the Android SDK. This corresponds to Platform 1.6 - make sure to install it.
 3. From the main Gibberbot GitHub project page (https://github.com/guardianproject/Gibberbot) grab the Gibberbot source through your method of choice.
@@ -20,7 +20,7 @@ https://guardianproject.info/code/sqlcipher/
 
 That's it! Generally speaking, this should be an easy project to build locally for anyone who's used Eclipse and/or ADT before. If you have any questions, don't be afraid to jump into IRC for real-time help at #guardianproject on freenode or OFTC.
 
-*** Test Instructions
+## Test Instructions
 
 `mvn test`
 
@@ -28,6 +28,10 @@ See robo-tests/README.md for eclipse instructions.
 
 Currently the instrumented target tests (to be run on a device) in the directory `tests` are empty.
 
-*** Logging
+## Logging
 
 `adb shell setprop log.tag.GB.XmppConnection DEBUG`
+
+## Building for a Locale
+
+ant -Dgibberbot.locale=fa release
