@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactList;
 import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.SubscriptionRequestListener;
+import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.XmppContactList;
@@ -67,7 +68,7 @@ public class XmppConnectionTest extends EasyMockSupport {
         roster = createMock(Roster.class);
         smackCon = createMock(MyXMPPConnection.class);
         expect(smackCon.getRoster()).andStubReturn(roster);
-        Contact user = new Contact(new XmppConnection.XmppAddress(TEST_CONTACT), TEST_CONTACT_NAME);
+        Contact user = new Contact(new XmppAddress(TEST_CONTACT), TEST_CONTACT_NAME);
         con.initConnection(smackCon, user, XmppConnection.LOGGED_IN);
         contactListManager = con.getContactListManager();
         subscriptionRequestListener = createMock(SubscriptionRequestListener.class);

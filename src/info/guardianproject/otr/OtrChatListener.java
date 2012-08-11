@@ -27,45 +27,18 @@ public class OtrChatListener implements MessageListener {
         String from = msg.getFrom().getFullName();
         String to = msg.getTo().getFullName();
 
-        //remove port number from to/from names
-        String localUserId = OtrChatManager.processUserId(to);
-        String remoteUserId = OtrChatManager.processUserId(from);
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(localUserId, remoteUserId);
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
 
-        if (otrStatus == SessionStatus.ENCRYPTED) {
-            OtrDebugLogger.log("session status: encrypted");
+        OtrDebugLogger.log("session status: " + otrStatus.name());
 
-            body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
+        body = mOtrChatManager.decryptMessage(to, from, body);
 
-            if (body != null) {
-                msg.setBody(body);
-                mMessageListener.onIncomingMessage(session, msg);
-            }
-        } else if (otrStatus == SessionStatus.PLAINTEXT || otrStatus == SessionStatus.FINISHED) {
-            OtrDebugLogger.log("session status: plaintext");
-
-            //this is most likely a DH setup message, so we will process and swallow it
-            body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
-
-            if (body != null) {
-                msg.setBody(body);
-                mMessageListener.onIncomingMessage(session, msg);
-            }
-        } else if (otrStatus == SessionStatus.FINISHED) {
-            OtrDebugLogger.log("session status: finished");
-
-            //this is most likely a DH setup message, so we will process and swallow it
-            body = mOtrChatManager.decryptMessage(localUserId, remoteUserId, body);
-
-            if (body != null) {
-                msg.setBody(body);
-                mMessageListener.onIncomingMessage(session, msg);
-            }
-        } else {
+        if (body != null) {
+            msg.setBody(body);
             mMessageListener.onIncomingMessage(session, msg);
         }
 
-        if (mOtrChatManager.getSessionStatus(localUserId, remoteUserId) != otrStatus) {
+        if (mOtrChatManager.getSessionStatus(to, from) != otrStatus) {
             mMessageListener.onStatusChanged(session);
         }
     }

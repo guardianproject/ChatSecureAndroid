@@ -3,6 +3,7 @@ package info.guardianproject.otr;
 // Originally: package com.zadov.beem;
 
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
+import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
@@ -89,6 +90,14 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return result;
     }
 
+    public static String processResource(String userId) {
+        String[] splits = userId.split("/", 2);
+        if (splits.length > 1)
+            return splits[1];
+        else
+            return "UNKNOWN";
+    }
+
     public SessionID getSessionId(String localUserId, String remoteUserId) {
         String sessionIdKey = processUserId(localUserId) + "+" + processUserId(remoteUserId);
 
@@ -172,7 +181,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public String decryptMessage(String localUserId, String remoteUserId, String msg) {
-
         String plain = null;
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
@@ -180,7 +188,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         if (mOtrEngine != null && sessionId != null) {
             try {
-
+                mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
                 plain = mOtrEngine.transformReceiving(sessionId, msg);
                 OtrSm otrSm = mOtrSms.get(sessionId);
 
@@ -195,7 +203,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
                 if (plain != null && plain.length() == 0)
                     return null;
-
             } catch (OtrException e) {
                 OtrDebugLogger.log("error decrypting message", e);
             }
@@ -204,22 +211,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return plain;
     }
 
-    public void processMessageReceiving(String localUserId, String remoteUserId, String msg) {
-
-        SessionID sessionId = getSessionId(localUserId, remoteUserId);
-
-        if (mOtrEngine != null && sessionId != null) {
-            try {
-                mOtrEngine.transformReceiving(sessionId, msg);
-
-            } catch (OtrException e) {
-                OtrDebugLogger.log("error decrypting message", e);
-            }
-
-        }
-    }
-
-    public String transformSending(String localUserId, String remoteUserId, String msg) {
+    public void transformSending(Message message) {
+        String localUserId = message.getFrom().getFullName();
+        String remoteUserId = message.getTo().getFullName();
+        String body = message.getBody();
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
 
@@ -231,22 +226,24 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
                 if (sessionStatus == SessionStatus.ENCRYPTED) {
-                    msg = mOtrEngine.transformSending(sessionId, msg);
+                    body = mOtrEngine.transformSending(sessionId, body);
+                    message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
                 } else if (sessionPolicy.getRequireEncryption()) {
                     mOtrEngine.startSession(sessionId);
-                    msg = null;
+                    body = null;
                     // TODO postpone this message until encryption negotiated
                 } else if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getAllowV2()
                            && sessionPolicy.getSendWhitespaceTag()) {
                     // Work around asmack not sending whitespace tag for auto discovery
-                    msg += " \t  \t\t\t\t \t \t \t   \t \t  \t   \t\t  \t ";
+                    body += " \t  \t\t\t\t \t \t \t   \t \t  \t   \t\t  \t ";
 
                 }
             } catch (OtrException e) {
                 OtrDebugLogger.log("error encrypting", e);
             }
         }
-        return msg;
+        
+        message.setBody(body);
     }
 
     @Override
@@ -280,6 +277,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                     mOtrSms.remove(sessionID);
                 }
                 mOtrEngine.endSession(sessionID);
+                mOtrEngineHost.removeSessionResource(sessionID);
             } catch (OtrException e) {
                 OtrDebugLogger.log("error ending session", e);
             }
@@ -290,6 +288,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                     mOtrSms.remove(sessionID);
                 }
                 mOtrEngine.endSession(sessionID);
+                mOtrEngineHost.removeSessionResource(sessionID);
             } catch (OtrException e) {
                 OtrDebugLogger.log("error ending session", e);
             }

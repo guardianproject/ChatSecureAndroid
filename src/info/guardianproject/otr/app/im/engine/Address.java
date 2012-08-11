@@ -38,6 +38,11 @@ public abstract class Address {
      */
     public abstract String getScreenName();
 
+    /** Append a resource if the address type supports it. */
+    public Address appendResource(String resource) {
+        return this;
+    }
+
     public abstract void writeToParcel(Parcel dest);
 
     public abstract void readFromParcel(Parcel source);

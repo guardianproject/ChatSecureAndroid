@@ -24,14 +24,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.packet.Packet;
-
-import net.java.otr4j.OtrException;
-import net.java.otr4j.session.SessionStatus;
-import net.java.otr4j.session.TLV;
-
 import android.util.Log;
 
 /**
@@ -127,12 +119,7 @@ public class ChatSession {
         // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession
         mHistoryMessages.add(message);
 
-        String localUserId = message.getFrom().getFullName();
-        String remoteUserId = message.getTo().getFullName();
-
-        String transformBody = mOtrChatManager.transformSending(localUserId, remoteUserId,
-                message.getBody());
-        message.setBody(transformBody);
+        mOtrChatManager.transformSending(message);
 
         mManager.sendMessageAsync(this, message);
     }

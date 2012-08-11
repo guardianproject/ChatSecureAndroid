@@ -1,7 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.TorProxyInfo;
-import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -14,6 +13,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.DNSUtil;
 
@@ -72,7 +72,6 @@ import org.jivesoftware.smackx.packet.VCard;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
-import android.os.Parcel;
 import android.util.Log;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
@@ -420,9 +419,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     // TODO shouldn't setProxy be handled in Imps/settings?
     public void setProxy(String type, String host, int port) {
-
-       // android.os.Debug.waitForDebugger();
-        
         if (type == null) {
             mProxyInfo = ProxyInfo.forNoProxy();
         } else {
@@ -456,7 +452,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initConnection(String userName, final String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
-//        		android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
 
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -594,7 +590,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     return;
                 Message rec = new Message(smackMessage.getBody());
                 rec.setTo(mUser.getAddress());
-                rec.setFrom(session.getParticipant().getAddress());
+                rec.setFrom(new XmppAddress(smackMessage.getFrom()));
                 rec.setDateTime(new Date());
                 session.onReceiveMessage(rec);
                 if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
@@ -1197,14 +1193,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         };
 
         private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-
             String name = parseAddressName(presence.getFrom());
             String address = parseAddressBase(presence.getFrom());
 
             XmppAddress xaddress = new XmppAddress(name, address);
 
-            // Get it from the Roster to handle priorities and such
-            presence = mConnection.getRoster().getPresence(address);
+            // Get presence from the Roster to handle priorities and such
+            final Roster roster = mConnection.getRoster();
+            if (roster != null) {
+                presence = roster.getPresence(address);
+            }
             int type = parsePresence(presence);
 
             Contact contact = getContact(xaddress.getFullName());
@@ -1342,48 +1340,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "create temporary " + address);
             return makeContact(parseAddressName(address), address);
         }
-    }
-
-    public static class XmppAddress extends Address {
-
-        private String address;
-        private String name;
-
-        public XmppAddress() {
-        }
-
-        public XmppAddress(String name, String address) {
-            this.name = name;
-            this.address = address;
-        }
-
-        public XmppAddress(String address) {
-            this.name = parseAddressName(address);
-            this.address = address;
-        }
-
-        @Override
-        public String getFullName() {
-            return address;
-        }
-
-        @Override
-        public String getScreenName() {
-            return name;
-        }
-
-        @Override
-        public void readFromParcel(Parcel source) {
-            name = source.readString();
-            address = source.readString();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest) {
-            dest.writeString(name);
-            dest.writeString(address);
-        }
-
     }
 
     /*

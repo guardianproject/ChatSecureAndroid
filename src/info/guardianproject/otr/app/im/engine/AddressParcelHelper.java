@@ -17,8 +17,8 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.plugin.xmpp.LLXmppConnection;
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
 import android.os.Parcel;
 import android.util.Log;
@@ -30,8 +30,10 @@ import android.util.Log;
  * implementing class here.
  */
 public class AddressParcelHelper {
-    private static Class[] sAddressClasses = new Class[] { XmppConnection.XmppAddress.class,
-                                                          LLXmppConnection.XmppAddress.class };
+    @SuppressWarnings("rawtypes")
+    private static Class[] sAddressClasses =
+            new Class[] { XmppAddress.class,
+                          LLXmppConnection.XmppAddress.class };
 
     private AddressParcelHelper() {
     }

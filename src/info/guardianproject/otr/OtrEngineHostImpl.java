@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.app.WarningDialogActivity;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
@@ -14,6 +15,7 @@ import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import net.java.otr4j.OtrEngineHost;
@@ -38,9 +40,13 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     private Context mContext;
 
+    private Hashtable<SessionID, String> mSessionResources;
+
     public OtrEngineHostImpl(OtrPolicy policy, Context context) throws IOException {
         mPolicy = policy;
         mContext = context;
+
+        mSessionResources = new Hashtable<SessionID, String>();
 
         File storeFile = new File(context.getFilesDir(), OTR_KEYSTORE_PATH);
         mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile.getAbsolutePath());
@@ -64,6 +70,19 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public void removeConnection(ImConnectionAdapter connection) {
         mConnections.remove(connection);
+    }
+    
+    public void putSessionResource(SessionID session, String resource) {
+        mSessionResources.put(session, resource);
+    }
+    
+    public void removeSessionResource(SessionID session) {
+        mSessionResources.remove(session);
+    }
+    
+    public Address appendSessionResource(SessionID session, Address to) {
+        String resource = mSessionResources.get(session);
+        return to.appendResource(resource);
     }
 
     public ImConnectionAdapter findConnection(String localAddress) {
@@ -129,7 +148,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         Message msg = new Message(body);
 
         msg.setFrom(connection.getLoginUser().getAddress());
-        msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
+        final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
+        msg.setTo(appendSessionResource(sessionID, to));
         msg.setDateTime(new Date());
         msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
         chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
