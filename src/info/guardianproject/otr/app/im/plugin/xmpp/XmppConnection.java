@@ -1203,20 +1203,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             XmppAddress xaddress = new XmppAddress(name, address);
 
-            Contact contact = getContact(xaddress.getFullName());
-
-            /*
-            if (mConnection != null)
-            {
-            	Roster roster = mConnection.getRoster();
-            	
-            	// Get it from the roster - it handles priorities, etc.
-            	
-            	if (roster != null)
-            		presence = roster.getPresence(address);
-            }*/
-
+            // Get it from the Roster to handle priorities and such
+            presence = mConnection.getRoster().getPresence(address);
             int type = parsePresence(presence);
+
+            Contact contact = getContact(xaddress.getFullName());
 
             if (contact == null) {
                 contact = new Contact(xaddress, name);
@@ -1228,16 +1219,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             } else {
                 debug(TAG, "Got present update for EXISTING user: "
-                           + contact.getAddress().getFullName() + " presence:" + type);
-
-                Presence p = new Presence(type, presence.getStatus(), null, null,
-                        Presence.CLIENT_TYPE_DEFAULT);
-                contact.setPresence(p);
-
-                Contact[] contacts = new Contact[] { contact };
-
-                notifyContactsPresenceUpdated(contacts);
+                        + contact.getAddress().getFullName() + " presence:" + type);
             }
+
+            Presence p = new Presence(type, presence.getStatus(), null, null,
+                    Presence.CLIENT_TYPE_DEFAULT);
+            contact.setPresence(p);
+
+            Contact[] contacts = new Contact[] { contact };
+
+            notifyContactsPresenceUpdated(contacts);
         }
 
         @Override
