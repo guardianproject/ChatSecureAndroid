@@ -467,7 +467,7 @@ public class SessionImpl implements Session {
                     .showWarning(this.getSessionID(), "Unreadable encrypted message was received.");
 
             injectMessage(new ErrorMessage(AbstractMessage.MESSAGE_ERROR,
-                    "You sent me an unreadable encrypted message.."));
+                    "You sent me an unreadable encrypted message"));
 
             break;
         }
@@ -735,5 +735,9 @@ public class SessionImpl implements Session {
 
     public KeyPair getLocalKeyPair() {
         return getHost().getKeyPair(this.getSessionID());
+    }
+    
+    public void showWarning(String warning) {
+        getHost().showWarning(sessionID, warning);
     }
 }

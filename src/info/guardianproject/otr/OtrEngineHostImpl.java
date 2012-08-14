@@ -168,14 +168,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
-        showDialog("Encryption Error", error);
+        showDialog("Encryption Error", sessionID.getUserID() + " : " + error);
     }
 
     @Override
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
 
-        showDialog("Encryption Warning", warning);
+        showDialog("Encryption Warning",  "[" + sessionID.getUserID() + "] " + warning);
 
     }
 

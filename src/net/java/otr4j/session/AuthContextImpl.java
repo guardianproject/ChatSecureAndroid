@@ -21,15 +21,15 @@ import net.java.otr4j.OtrException;
 import net.java.otr4j.crypto.OtrCryptoEngine;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.io.SerializationUtils;
-import net.java.otr4j.io.messages.DHCommitMessage;
-import net.java.otr4j.io.messages.DHKeyMessage;
 import net.java.otr4j.io.messages.AbstractEncodedMessage;
 import net.java.otr4j.io.messages.AbstractMessage;
-import net.java.otr4j.io.messages.SignatureM;
-import net.java.otr4j.io.messages.SignatureX;
+import net.java.otr4j.io.messages.DHCommitMessage;
+import net.java.otr4j.io.messages.DHKeyMessage;
 import net.java.otr4j.io.messages.QueryMessage;
 import net.java.otr4j.io.messages.RevealSignatureMessage;
+import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.SignatureMessage;
+import net.java.otr4j.io.messages.SignatureX;
 
 /** @author George Politis */
 class AuthContextImpl implements AuthContext {
@@ -450,6 +450,7 @@ class AuthContextImpl implements AuthContext {
                 throw new OtrException(e);
             }
             if (!otrCryptoEngine.verify(signature, remoteLongTermPublicKey, remoteX.signature)) {
+                session.showWarning("Bad signature");
                 logger.finest("Signature verification failed.");
                 return;
             }
@@ -544,6 +545,7 @@ class AuthContextImpl implements AuthContext {
             }
 
             if (!otrCryptoEngine.verify(signature, remoteLongTermPublicKey, remoteX.signature)) {
+                session.showWarning("Bad revealed signature");
                 logger.finest("Signature verification failed.");
                 return;
             }
