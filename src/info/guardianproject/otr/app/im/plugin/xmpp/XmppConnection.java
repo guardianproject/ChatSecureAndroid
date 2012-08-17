@@ -343,6 +343,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mPasswordTemp = passwordTemp;
         mProviderId = providerId;
         mRetryLogin = retry;
+
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                contentResolver, mProviderId, false, null);
+        String userName = Imps.Account.getUserName(contentResolver, mAccountId);
+        String domain = providerSettings.getDomain();
+        String xmppName = userName + '@' + domain;
+        providerSettings.close();
+        
+        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
+        
         execute(new Runnable() {
             @Override
             public void run() {
@@ -364,7 +375,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // providerSettings is closed in initConnection()
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String password = Imps.Account.getPassword(contentResolver, mAccountId);
-        String domain = providerSettings.getDomain();
 
         if (mPasswordTemp != null)
             password = mPasswordTemp;
@@ -410,8 +420,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         // TODO should we really be using the same name for both address and name?
-        String xmppName = userName + '@' + domain;
-        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
         setState(LOGGED_IN, null);
         debug(TAG, "logged in");
 
@@ -1198,6 +1206,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             XmppAddress xaddress = new XmppAddress(name, address);
 
+            if (mConnection == null)
+                return;
+            
             // Get presence from the Roster to handle priorities and such
             final Roster roster = mConnection.getRoster();
             if (roster != null) {

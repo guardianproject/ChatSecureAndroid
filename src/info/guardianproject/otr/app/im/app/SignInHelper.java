@@ -1,0 +1,251 @@
+package info.guardianproject.otr.app.im.app;
+
+import info.guardianproject.otr.TorProxyInfo;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.TabbedContainer;
+
+import java.util.Collection;
+import java.util.HashSet;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Handler;
+import android.os.RemoteException;
+import android.util.Log;
+
+/**
+ * Handle sign-in process for activities.
+ * 
+ * @author devrandom
+ * 
+ * <p>Users of this helper must call {@link SignInHelper#stop()} to clean up callbacks
+ * in their onDestroy() or onPause() lifecycle methods.
+ */
+public class SignInHelper {
+    Activity mContext;
+    private SimpleAlertHandler mHandler;
+    private ImApp mApp;
+    private MyConnectionListener mListener;
+    private Collection<IImConnection> connections;
+    private Listener mSignInListener;
+
+    // This can be used to be informed of signin events
+    public interface Listener {
+        void connectedToService();
+        void stateChanged(int state, long accountId);
+    }
+    
+    public SignInHelper(Activity context, Listener listener) {
+        this.mContext = context;
+        mHandler = new SimpleAlertHandler(context);
+        mListener = new MyConnectionListener(mHandler);
+        mSignInListener = listener;
+        if (mApp == null) {
+            mApp = ImApp.getApplication(context);
+        }
+        
+        connections = new HashSet<IImConnection>();
+    }
+    
+    public SignInHelper(Activity context) {
+        this(context, null);
+    }
+    
+    public void setSignInListener(Listener listener) {
+        mSignInListener = listener;
+    }
+    
+    public void stop() {
+        for (IImConnection connection : connections) {
+            try {
+                connection.unregisterConnectionListener(mListener);
+            } catch (RemoteException e) {
+                // Ignore
+            }
+        }
+        connections.clear();
+    }
+
+    private final class MyConnectionListener extends ConnectionListenerAdapter {
+        MyConnectionListener(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onConnectionStateChange(IImConnection connection, int state, ImErrorInfo error) {
+            handleConnectionEvent(connection, state, error);
+        }
+    }
+
+    private void handleConnectionEvent(IImConnection connection, int state, ImErrorInfo error) {
+        long accountId;
+        long providerId;
+        try {
+            accountId = connection.getAccountId();
+            providerId = connection.getProviderId();
+        } catch (RemoteException e) {
+            // Ouch!  Service died!  We'll just disappear.
+            Log.w(ImApp.LOG_TAG, "<SigningInActivity> Connection disappeared while signing in!");
+            return;
+        }
+
+        if (mSignInListener != null)
+            mSignInListener.stateChanged(state, accountId);
+
+        if (state == ImConnection.LOGGED_IN) {
+        } else if (state == ImConnection.DISCONNECTED) {
+            // sign in failed
+            final ProviderDef provider = mApp.getProvider(providerId);
+            String providerName = provider.mName;
+
+            Resources r = mContext.getResources();
+            new AlertDialog.Builder(mContext).setTitle(R.string.error)
+                    .setMessage(r.getString(R.string.login_service_failed, providerName, // FIXME
+                            error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode())))
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // FIXME
+                        }
+                    }).setCancelable(false).show();
+        }
+    }
+
+    public void goToAccount(long accountId) {
+        Intent intent;
+        intent = new Intent(mContext, TabbedContainer.class);
+        // clear the back stack of the account setup
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+
+        mContext.startActivity(intent);
+        // sign in successfully, finish and switch to contact list
+        mContext.finish();
+    }
+
+    public void signIn(final String password, final long providerId, final long accountId,
+            final boolean isActive) {
+
+        final ProviderDef provider = mApp.getProvider(providerId);
+        final String providerName = provider.mName;
+
+        mApp.callWhenServiceConnected(mHandler, new Runnable() {
+            public void run() {
+                if (mApp.serviceConnected()) {
+                    if (mSignInListener != null)
+                        mSignInListener.connectedToService();
+                    if (!isActive) {
+                        activateAccount(providerId, accountId);
+                    }
+                    signInAccount(password, providerId, providerName, accountId);
+                }
+            }
+        });
+    }
+
+    private void signInAccount(String password, long providerId, String providerName, long accountId) {
+        boolean autoLoadContacts = true;
+        boolean autoRetryLogin = false;
+
+        try {
+            IImConnection conn = mApp.getConnection(providerId);
+            if (conn != null) {
+                connections.add(conn);
+                conn.registerConnectionListener(mListener);
+                int state = conn.getState();
+                if (mSignInListener != null)
+                    mSignInListener.stateChanged(state, accountId);
+                if (state != ImConnection.LOGGING_IN) {
+                    // already signed in or failed
+                    connections.remove(conn);
+                    conn.unregisterConnectionListener(mListener);
+                    handleConnectionEvent(conn, state, null);
+                }
+            } else {
+                if (mApp.isBackgroundDataEnabled()) {
+                    conn = mApp.createConnection(providerId);
+                    if (conn == null) {
+                        // This can happen when service did not come up for any reason
+                        return;
+                    }
+
+                    connections.add(conn);
+                    conn.registerConnectionListener(mListener);
+                    // TODO UsrTor should probably be set in the intent rather than fetched from the settings
+                    final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                            mContext.getContentResolver(), providerId,
+                            false /* don't keep updated */, null /* no handler */);
+                    if (settings.getUseTor()) {
+                        conn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
+                                TorProxyInfo.PROXY_PORT);
+                    }
+                    settings.close();
+
+                    conn.login(accountId, password, autoLoadContacts, autoRetryLogin);
+
+                } else {
+                    promptForBackgroundDataSetting(providerName);
+                    return;
+                }
+            }
+
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+
+        }
+    }
+
+    private static final String SYNC_SETTINGS_ACTION = "android.settings.SYNC_SETTINGS";
+    private static final String SYNC_SETTINGS_CATEGORY = "android.intent.category.DEFAULT";
+
+    /**
+     * Popup a dialog to ask the user whether he/she wants to enable background
+     * connection to continue. If yes, enable the setting and broadcast the
+     * change. Otherwise, quit the signing in window immediately.
+     */
+    private void promptForBackgroundDataSetting(String providerName) {
+        new AlertDialog.Builder(mContext)
+                .setTitle(R.string.bg_data_prompt_title)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(mContext.getString(R.string.bg_data_prompt_message, providerName))
+                .setPositiveButton(R.string.bg_data_prompt_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Intent intent = new Intent(SYNC_SETTINGS_ACTION);
+                                intent.addCategory(SYNC_SETTINGS_CATEGORY);
+                                mContext.startActivity(intent);
+                            }
+                        })
+                .setNegativeButton(R.string.bg_data_prompt_cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        }).show();
+    }
+
+    private void activateAccount(long providerId, long accountId) {
+        // Update the active value. We restrict to only one active
+        // account per provider right now, so update all accounts of
+        // this provider to inactive first and then update this
+        // account to active.
+        ContentValues values = new ContentValues(1);
+        values.put(Imps.Account.ACTIVE, 0);
+        ContentResolver cr = mContext.getContentResolver();
+        cr.update(Imps.Account.CONTENT_URI, values, Imps.Account.PROVIDER + "=" + providerId, null);
+
+        values.put(Imps.Account.ACTIVE, 1);
+        cr.update(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), values, null,
+                null);
+    }
+
+}

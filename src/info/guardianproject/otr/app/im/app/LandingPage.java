@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import info.guardianproject.otr.app.im.R;
@@ -66,6 +67,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
 
+    private SignInHelper mSignInHelper;
+
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -91,6 +94,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -99,6 +103,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
+        mSignInHelper = new SignInHelper(this);
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
@@ -120,20 +125,17 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     @Override
+    protected void onDestroy() {
+        mSignInHelper.stop();
+        super.onDestroy();
+    }
+    
+    @Override
     protected void onResume() {
         super.onResume();
 
         mHandler.registerForBroadcastEvents();
     }
-
-//    private void signInAll() {
-//        Log.i(TAG, "signInAll");
-//        mProviderCursor.moveToFirst();
-//        do {
-//            int position = mProviderCursor.getPosition();
-//            signInAccountAtPosition(position);
-//        } while (mProviderCursor.moveToNext());
-//    }
 
     private void signInAccountAtPosition(int position) {
         Intent intent = null;
@@ -155,7 +157,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                     intent = getEditAccountIntent();
                 }
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                signIn(accountId);
+                gotoAccount();
             } else {
                 intent = getViewContactsIntent();
             }
@@ -185,9 +187,22 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         // Remember that the user signed in.
         setKeepSignedIn(accountId, true);
 
-        Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
+
+        long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+        String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
+        boolean isActive = true; // FIXME
+        mSignInHelper.signIn(password, providerId, accountId, isActive);
+    }
+
+    protected void gotoAccount() {
+        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+        Intent intent = new Intent(this, TabbedContainer.class);
+        // clear the back stack of the account setup
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
+        finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -351,6 +366,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info;
@@ -454,6 +470,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private final class ProviderAdapter extends CursorAdapter {
         private LayoutInflater mInflater;
 
+        @SuppressWarnings("deprecation")
         public ProviderAdapter(Context context, Cursor c) {
             super(context, c);
             mInflater = LayoutInflater.from(context).cloneInContext(context);

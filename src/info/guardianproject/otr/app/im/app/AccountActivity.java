@@ -17,17 +17,19 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.util.Locale;
-
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -53,15 +55,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class AccountActivity extends Activity {
 
@@ -101,6 +103,7 @@ public class AccountActivity extends Activity {
     private final static int DEFAULT_PORT = 5222;
 
     IOtrKeyManager otrKeyManager;
+    private SignInHelper mSignInHelper;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -108,6 +111,16 @@ public class AccountActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.account_activity);
 
+        mSignInHelper = new SignInHelper(this);
+        SignInHelper.Listener signInListener = new SignInHelper.Listener() {
+            public void connectedToService() {
+            }
+            public void stateChanged(int state, long accountId) {
+                if (state == ImConnection.LOGGING_IN)
+                    mSignInHelper.goToAccount(accountId);
+            }
+        };
+        mSignInHelper.setSignInListener(signInListener);
         mEditUserAccount = (EditText) findViewById(R.id.edtName);
         mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -253,6 +266,7 @@ public class AccountActivity extends Activity {
 
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
+                final boolean isActive = true; // FIXME
                 ContentResolver cr = getContentResolver();
 
                 if (!parseAccount(mEditUserAccount.getText().toString())) {
@@ -261,7 +275,7 @@ public class AccountActivity extends Activity {
                     return;
                 }
 
-                long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
+                final long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
                         rememberPass ? pass : null);
 
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
@@ -281,33 +295,28 @@ public class AccountActivity extends Activity {
                         confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                signIn(rememberPass, pass);
+                                mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                             }
                         });
                     } else {
-                        signIn(rememberPass, pass);
+                        mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                     }
                     isSignedIn = true;
                 }
                 updateWidgetState();
-            }
-
-            void signIn(boolean rememberPass, String pass) {
-
-                Intent intent = new Intent(AccountActivity.this, SigningInActivity.class);
-                intent.setData(mAccountUri);
-
-                if (!rememberPass) {
-                    intent.putExtra(ImApp.EXTRA_INTENT_PASSWORD, pass);
-                }
-                startActivityForResult(intent, REQUEST_SIGN_IN);
             }
         });
 
         updateWidgetState();
 
     }
-
+    
+    @Override
+    protected void onDestroy() {
+        mSignInHelper.stop();
+        super.onDestroy();
+    }
+    
     private void updateUseTor(boolean useTor) {
         checkUserChanged();
 

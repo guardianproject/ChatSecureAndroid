@@ -16,13 +16,15 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.util.Locale;
-
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
+
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -50,6 +52,7 @@ public class WelcomeActivity extends Activity {
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
     private String mDefaultLocale;
+    private SignInHelper mSignInHelper;
 
     static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
                                                  Imps.Provider.FULLNAME, Imps.Provider.CATEGORY,
@@ -75,8 +78,8 @@ public class WelcomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        
         super.onCreate(savedInstanceState);
+        mSignInHelper = new SignInHelper(this);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);
         setContentView(R.layout.welcome_activity);
@@ -93,6 +96,7 @@ public class WelcomeActivity extends Activity {
 
     }
 
+    @SuppressWarnings("deprecation")
     private boolean cursorUnlocked() {
         try {
             mApp = ImApp.getApplication(this);
@@ -125,12 +129,19 @@ public class WelcomeActivity extends Activity {
 
     @Override
     protected void onPause() {
-
         if (mHandler != null)
             mHandler.unregisterForBroadcastEvents();
 
         super.onPause();
     }
+
+    @Override
+    protected void onDestroy() {
+        mSignInHelper.stop();
+
+        super.onDestroy();
+    }
+    
 
     @Override
     protected void onResume() {
@@ -154,18 +165,35 @@ public class WelcomeActivity extends Activity {
 
         mHandler.registerForBroadcastEvents();
 
-        int count = accountsSignedIn();
-
-        if (count == 0) {
-            if (!mDidAutoLaunch) {
-                mDidAutoLaunch = true;
-                signInAll();
-            }
-        } else if (count == 1) {
-            showActiveAccount();
+        int countSignedIn = accountsSignedIn();
+        int countAvailable = accountsAvailable();
+        int countConfigured = accountsConfigured();
+        
+        if (countAvailable == 1) {
+            // If just one account is available for auto-signin, go there immediately after service starts trying
+            // to connect.
+            mSignInHelper.setSignInListener(new SignInHelper.Listener() {
+                public void connectedToService() {
+                }
+                public void stateChanged(int state, long accountId) {
+                    if (state == ImConnection.LOGGING_IN) {
+                        mSignInHelper.goToAccount(accountId);
+                    }
+                }
+            });
         } else {
+            mSignInHelper.setSignInListener(null);
+        }
+        
+        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch) {
+            mDidAutoLaunch = true;
+            signInAll();
+        } else if (countSignedIn == 1) {
+            showActiveAccount();
+        } else if (countConfigured > 0) {
             showAccounts();
         }
+        // Otherwise, stay on Getting Started view
     }
 
     // Show signed in account
@@ -174,18 +202,22 @@ public class WelcomeActivity extends Activity {
             return false;
         do {
             if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) && isSignedIn(mProviderCursor)) {
-                long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-                Intent intent = new Intent(this, TabbedContainer.class);
-                // clear the back stack of the account setup
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
-                startActivity(intent);
-                finish();
+                gotoAccount();
                 return true;
             }
         } while (mProviderCursor.moveToNext());
         return false;
+    }
+
+    protected void gotoAccount() {
+        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+        Intent intent = new Intent(this, TabbedContainer.class);
+        // clear the back stack of the account setup
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -245,9 +277,6 @@ public class WelcomeActivity extends Activity {
                     return true;
                 }
 
-            } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                signIn(accountId);
-                return true;
             }
         }
 
@@ -260,8 +289,8 @@ public class WelcomeActivity extends Activity {
             return;
         }
 
-        boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
-        if (isAccountEditible && mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
+        boolean isAccountEditable = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+        if (isAccountEditable && mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
             // no password, edit the account
             if (Log.isLoggable(TAG, Log.DEBUG))
                 Log.i(TAG, "no pw for account " + accountId);
@@ -271,11 +300,10 @@ public class WelcomeActivity extends Activity {
             return;
         }
 
-        Intent signIn = new Intent(this, SigningInActivity.class);
-        signIn.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
-        startActivity(signIn);
-
-        finish();
+        long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+        String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
+        boolean isActive = true; // FIXME
+        mSignInHelper.signIn(password, providerId, accountId, isActive);
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -296,6 +324,37 @@ public class WelcomeActivity extends Activity {
         int count = 0;
         do {
             if (isSignedIn(mProviderCursor)) {
+                count++;
+            }
+        } while (mProviderCursor.moveToNext());
+
+        return count;
+    }
+
+    private int accountsAvailable() {
+        if (!mProviderCursor.moveToFirst()) {
+            return 0;
+        }
+        int count = 0;
+        do {
+            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN) &&
+                    !mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) &&
+                    mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0) {
+                count++;
+            }
+        } while (mProviderCursor.moveToNext());
+
+        return count;
+    }
+
+    private int accountsConfigured() {
+        if (!mProviderCursor.moveToFirst()) {
+            return 0;
+        }
+        int count = 0;
+        do {
+            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN) &&
+                    !mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
                 count++;
             }
         } while (mProviderCursor.moveToNext());

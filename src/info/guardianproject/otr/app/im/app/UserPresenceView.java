@@ -40,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class UserPresenceView extends LinearLayout {
@@ -59,6 +60,8 @@ public class UserPresenceView extends LinearLayout {
     private String mLastStatusText;
     final List<StatusItem> mStatusItems = new ArrayList<StatusItem>();
 
+    private ProgressBar mProgressBar;
+
     public UserPresenceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -69,12 +72,16 @@ public class UserPresenceView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        if (isInEditMode())
+            return;
         mStatusDialogButton = (ImageButton) findViewById(R.id.statusDropDownButton);
         mStatusDialogButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showStatusListDialog();
             }
         });
+        
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
     }
 
     private void showStatusListDialog() {
@@ -292,5 +299,17 @@ public class UserPresenceView extends LinearLayout {
             View view = super.getView(position, convertView, parent);
             return view;
         }
+    }
+
+    public void loggingIn(boolean loggingIn) {
+        mProgressBar.setVisibility(loggingIn ? View.VISIBLE : View.GONE);
+        try {
+            Presence newPresence = mConn.getUserPresence();
+            if (newPresence != null)
+                mPresence = newPresence;
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+        updateView();
     }
 }
