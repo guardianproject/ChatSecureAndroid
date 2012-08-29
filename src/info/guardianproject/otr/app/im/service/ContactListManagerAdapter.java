@@ -69,7 +69,12 @@ public class ContactListManagerAdapter extends
     final RemoteCallbackList<ISubscriptionListener> mRemoteSubscriptionListeners = new RemoteCallbackList<ISubscriptionListener>();
 
     HashMap<Address, ContactListAdapter> mContactLists;
+    // Temporary contacts are created when a peer is encountered, and that peer
+    // is not yet on any contact list.
     HashMap<String, Contact> mTemporaryContacts;
+    // Offline contacts are created from the local DB before the server contact lists
+    // are loaded.
+    HashMap<String, Contact> mOfflineContacts;
 
     HashSet<String> mValidatedContactLists;
     HashSet<String> mValidatedContacts;
@@ -96,6 +101,7 @@ public class ContactListManagerAdapter extends
         mSubscriptionListenerAdapter = new SubscriptionRequestListenerAdapter();
         mContactLists = new HashMap<Address, ContactListAdapter>();
         mTemporaryContacts = new HashMap<String, Contact>();
+        mOfflineContacts = new HashMap<String, Contact>();
         mValidatedContacts = new HashSet<String>();
         mValidatedContactLists = new HashSet<String>();
         mValidatedBlockedContacts = new HashSet<String>();
@@ -119,6 +125,19 @@ public class ContactListManagerAdapter extends
         mContactUrl = builder.build();
         
         seedInitialPresences();
+        loadOfflineContacts();
+    }
+    
+    private void loadOfflineContacts() {
+        Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
+                null, null, null);
+        if (contactCursor != null && contactCursor.moveToFirst()) {
+            do {
+                String address = contactCursor.getString(0);
+                mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
+            } while (contactCursor.moveToNext());
+            contactCursor.close();
+        }
     }
 
     public int createContactList(String name, List<Contact> contacts) {
@@ -245,7 +264,6 @@ public class ContactListManagerAdapter extends
     }
 
     public void loadContactLists() {
-
         if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
             clearValidatedContactsAndLists();
             mAdaptee.loadContactListsAsync();
@@ -257,6 +275,10 @@ public class ContactListManagerAdapter extends
     }
 
     public Contact getContactByAddress(String address) {
+        if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
+            return mOfflineContacts.get(address);
+        }
+        
         Contact c = mAdaptee.getContact(address);
         if (c == null) {
             synchronized (mTemporaryContacts) {

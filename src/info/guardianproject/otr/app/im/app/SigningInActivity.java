@@ -251,7 +251,7 @@ public class SigningInActivity extends Activity {
                 }
             } else {
                 if (mApp.isBackgroundDataEnabled()) {
-                    mConn = mApp.createConnection(mProviderId);
+                    mConn = mApp.createConnection(mProviderId, mAccountId);
                     if (mConn == null) {
                         // This can happen when service did not come up for any reason
                         return;
@@ -267,7 +267,7 @@ public class SigningInActivity extends Activity {
                     }
                     settings.close();
 
-                    mConn.login(mAccountId, password, autoLoadContacts, autoRetryLogin);
+                    mConn.login(password, autoLoadContacts, autoRetryLogin);
 
                 } else {
                     promptForBackgroundDataSetting();

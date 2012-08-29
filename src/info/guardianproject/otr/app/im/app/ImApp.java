@@ -523,14 +523,14 @@ public class ImApp extends Application {
         return res == null ? mDefaultBrandingResources : res;
     }
 
-    public IImConnection createConnection(long providerId) throws RemoteException {
+    public IImConnection createConnection(long providerId, long accountId) throws RemoteException {
         if (mImService == null) {
             // Service hasn't been connected or has died.
             return null;
         }
         IImConnection conn = getConnection(providerId);
         if (conn == null) {
-            conn = mImService.createConnection(providerId);
+            conn = mImService.createConnection(providerId, accountId);
         }
         return conn;
     }

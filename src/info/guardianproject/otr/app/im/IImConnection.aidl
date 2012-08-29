@@ -35,13 +35,12 @@ interface IImConnection {
     /**
      * Login the IM server.
      *
-     * @param accountId the id of the account in content provider.
      * @Param one time password not to be saved, for use if password is not persisted
      * @param autoLoadContacts if true, contacts will be loaded from the server
      *          automatically after the user successfully login; otherwise, the
      *          client must load contacts manually.
      */
-    void login(long accountId, String passwordTempt, boolean autoLoadContacts, boolean retry);
+    void login(String passwordTempt, boolean autoLoadContacts, boolean retry);
     void logout();
     void cancelLogin();
 

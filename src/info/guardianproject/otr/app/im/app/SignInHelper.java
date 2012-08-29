@@ -155,7 +155,7 @@ public class SignInHelper {
 
     private void signInAccount(String password, long providerId, String providerName, long accountId) {
         boolean autoLoadContacts = true;
-        boolean autoRetryLogin = false;
+        boolean autoRetryLogin = true;
 
         try {
             IImConnection conn = mApp.getConnection(providerId);
@@ -173,7 +173,7 @@ public class SignInHelper {
                 }
             } else {
                 if (mApp.isBackgroundDataEnabled()) {
-                    conn = mApp.createConnection(providerId);
+                    conn = mApp.createConnection(providerId, accountId);
                     if (conn == null) {
                         // This can happen when service did not come up for any reason
                         return;
@@ -191,7 +191,7 @@ public class SignInHelper {
                     }
                     settings.close();
 
-                    conn.login(accountId, password, autoLoadContacts, autoRetryLogin);
+                    conn.login(password, autoLoadContacts, autoRetryLogin);
 
                 } else {
                     promptForBackgroundDataSetting(providerName);
