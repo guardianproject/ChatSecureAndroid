@@ -1,6 +1,5 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
-import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -13,6 +12,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.IOException;
@@ -54,8 +54,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.net.wifi.WifiManager.WifiLock;
-import android.os.Debug;
-import android.os.Parcel;
 import android.util.Log;
 
 public class LLXmppConnection extends ImConnection implements CallbackHandler {
@@ -701,48 +699,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "create temporary " + address);
             return makeContact(parseAddressName(address), address);
         }
-    }
-
-    public static class XmppAddress extends Address {
-
-        private String address;
-        private String name;
-
-        public XmppAddress() {
-        }
-
-        public XmppAddress(String name, String address) {
-            this.name = name;
-            this.address = address;
-        }
-
-        public XmppAddress(String address) {
-            this.name = parseAddressName(address);
-            this.address = address;
-        }
-
-        @Override
-        public String getFullName() {
-            return address;
-        }
-
-        @Override
-        public String getScreenName() {
-            return name;
-        }
-
-        @Override
-        public void readFromParcel(Parcel source) {
-            name = source.readString();
-            address = source.readString();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest) {
-            dest.writeString(name);
-            dest.writeString(address);
-        }
-
     }
 
     @Override

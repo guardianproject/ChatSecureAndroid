@@ -523,7 +523,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         public void onIncomingMessage(ChatSession ses, final Message msg) {
             String body = msg.getBody();
-            String username = msg.getFrom().getFullName();
+            String username = msg.getFrom().getContactName();
             String nickname = getNickName(username);
             long time = msg.getDateTime().getTime();
             if (mIsGroupChat) {

@@ -30,6 +30,12 @@ public abstract class Address {
      * @return a string representation of this address.
      */
     public abstract String getFullName();
+    
+    public String getContactName() {
+        String name = getFullName();
+        String[] split = name.split("/", 2);
+        return split[0];
+    }
 
     /**
      * Gets a user friendly screen name of this address object.
