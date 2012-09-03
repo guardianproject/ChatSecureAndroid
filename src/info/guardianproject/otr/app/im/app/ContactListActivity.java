@@ -135,17 +135,19 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     mApp.dismissNotifications(mProviderId);
                     mConn = mApp.getConnection(mProviderId);
                     if (mConn == null) {
-                        Log.e(ImApp.LOG_TAG, "The connection has disappeared!");
                         clearConnectionStatus();
-                        finish();
-                    } else {
-
-                        mFilterView.mPresenceView.setConnection(mConn);
-                        mFilterView.setConnection(mConn);
-                        mContactListView.setConnection(mConn);
-                        mContactListView.setHideOfflineContacts(mGlobalSettingMap
-                                .getHideOfflineContacts());
+                        try {
+                            mConn = mApp.createConnection(mProviderId, mAccountId);
+                        } catch (RemoteException e) {
+                            Log.e(ImApp.LOG_TAG, "The connection cannot be created");
+                            finish();
+                        }
                     }
+                    mFilterView.mPresenceView.setConnection(mConn);
+                    mFilterView.setConnection(mConn);
+                    mContactListView.setConnection(mConn);
+                    mContactListView.setHideOfflineContacts(mGlobalSettingMap
+                            .getHideOfflineContacts());
                 }
             }
         });

@@ -150,6 +150,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ServiceDiscoveryManager.setIdentityName("Gibberbot");
         ServiceDiscoveryManager.setIdentityType("phone");
+
+        mUser = makeUser();
+    }
+
+    Contact makeUser() {
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                contentResolver, mProviderId, false, null);
+        String userName = Imps.Account.getUserName(contentResolver, mAccountId);
+        String domain = providerSettings.getDomain();
+        String xmppName = userName + '@' + domain;
+        providerSettings.close();
+        
+        return new Contact(new XmppAddress(userName, xmppName), xmppName);
     }
 
     private void createExecutor() {
@@ -204,21 +218,28 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void run() {
                 if (mConnection == null) {
-                    Log.w(TAG, "dropped packet to " + packet.getTo()
+                    Log.w(TAG, "postponed packet to " + packet.getTo()
                                + " because we are not connected");
+                    postpone(packet);
                     return;
                 }
                 try {
                     mConnection.sendPacket(packet);
                 } catch (IllegalStateException ex) {
-                    if (mStreamHandler.isResumePossible())
-                        mStreamHandler.queue(packet);
-                    else
-                        Log.w(TAG, "dropped packet to " + packet.getTo()
-                                + " because socket is disconnected");
+                    postpone(packet);
+                    Log.w(TAG, "postponed packet to " + packet.getTo()
+                            + " because socket is disconnected");
                 }
             }
         });
+    }
+
+
+    void postpone(final org.jivesoftware.smack.packet.Packet packet) {
+        if (packet instanceof org.jivesoftware.smack.packet.Message) {
+            ChatSession session = findOrCreateSession(parseAddressBase(packet.getTo()));
+            session.onMessagePostponed(packet.getPacketID());
+        }
     }
 
     public VCard getVCard(String myJID) {
@@ -344,15 +365,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mProviderId = providerId;
         mRetryLogin = retry;
 
-        ContentResolver contentResolver = mContext.getContentResolver();
-        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                contentResolver, mProviderId, false, null);
-        String userName = Imps.Account.getUserName(contentResolver, mAccountId);
-        String domain = providerSettings.getDomain();
-        String xmppName = userName + '@' + domain;
-        providerSettings.close();
-        
-        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
+        mUser = makeUser();
         
         execute(new Runnable() {
             @Override

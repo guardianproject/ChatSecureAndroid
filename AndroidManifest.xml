@@ -209,16 +209,6 @@ android:anyDensity="true"
         </activity>
       
 
-        <activity android:name=".app.SigningInActivity"
-            android:configChanges="orientation|keyboardHidden|locale"
-         	
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity android:name=".app.SignoutActivity"
             android:configChanges="locale"
             >

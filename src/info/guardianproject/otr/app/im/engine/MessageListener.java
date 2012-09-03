@@ -40,6 +40,14 @@ public interface MessageListener {
     public void onSendMessageError(ChatSession ses, Message msg, ImErrorInfo error);
 
     /**
+     * Called when a message was not transmitted.
+     * 
+     * @param ses the ChatSession.
+     * @param msg the message which should be sent later.
+     */
+    public void onMessagePostponed(ChatSession ses, String id);
+
+    /**
      * Called when a message receipt was received.
      * 
      * @param ses the ChatSession.

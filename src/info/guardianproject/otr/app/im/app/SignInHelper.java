@@ -32,6 +32,9 @@ import android.util.Log;
  * 
  * <p>Users of this helper must call {@link SignInHelper#stop()} to clean up callbacks
  * in their onDestroy() or onPause() lifecycle methods.
+ * 
+ * <p>The helper listens to connection events.  It automatically stops listening when the
+ * connection state is logged-in or disconnected (failed).
  */
 public class SignInHelper {
     Activity mContext;
@@ -104,8 +107,17 @@ public class SignInHelper {
         if (mSignInListener != null)
             mSignInListener.stateChanged(state, accountId);
 
-        if (state == ImConnection.LOGGED_IN) {
-        } else if (state == ImConnection.DISCONNECTED) {
+        // Stop listening if we get into a resting state
+        if (state == ImConnection.LOGGED_IN || state == ImConnection.DISCONNECTED) {
+            connections.remove(connection);
+            try {
+                connection.unregisterConnectionListener(mListener);
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+            }
+        }
+        
+        if (state == ImConnection.DISCONNECTED) {
             // sign in failed
             final ProviderDef provider = mApp.getProvider(providerId);
             String providerName = provider.mName;
@@ -165,43 +177,43 @@ public class SignInHelper {
                 int state = conn.getState();
                 if (mSignInListener != null)
                     mSignInListener.stateChanged(state, accountId);
-                if (state != ImConnection.LOGGING_IN) {
-                    // already signed in or failed
-                    connections.remove(conn);
-                    conn.unregisterConnectionListener(mListener);
+                if (state != ImConnection.DISCONNECTED) {
+                    // already signed in or in the process
+                    if (state == ImConnection.LOGGED_IN) {
+                        connections.remove(conn);
+                        conn.unregisterConnectionListener(mListener);
+                    }
                     handleConnectionEvent(conn, state, null);
-                }
-            } else {
-                if (mApp.isBackgroundDataEnabled()) {
-                    conn = mApp.createConnection(providerId, accountId);
-                    if (conn == null) {
-                        // This can happen when service did not come up for any reason
-                        return;
-                    }
-
-                    connections.add(conn);
-                    conn.registerConnectionListener(mListener);
-                    // TODO UsrTor should probably be set in the intent rather than fetched from the settings
-                    final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                            mContext.getContentResolver(), providerId,
-                            false /* don't keep updated */, null /* no handler */);
-                    if (settings.getUseTor()) {
-                        conn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
-                                TorProxyInfo.PROXY_PORT);
-                    }
-                    settings.close();
-
-                    conn.login(password, autoLoadContacts, autoRetryLogin);
-
-                } else {
-                    promptForBackgroundDataSetting(providerName);
                     return;
                 }
+            } else {
+                conn = mApp.createConnection(providerId, accountId);
+                if (conn == null) {
+                    // This can happen when service did not come up for any reason
+                    return;
+                }
+
+                connections.add(conn);
+                conn.registerConnectionListener(mListener);
             }
 
+            if (mApp.isBackgroundDataEnabled()) {
+                // TODO UseTor should probably be set in the intent rather than fetched from the settings
+                final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        mContext.getContentResolver(), providerId, false, null);
+                if (settings.getUseTor()) {
+                    conn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
+                            TorProxyInfo.PROXY_PORT);
+                }
+                settings.close();
+
+                conn.login(password, autoLoadContacts, autoRetryLogin);
+            } else {
+                promptForBackgroundDataSetting(providerName);
+                return;
+            }
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
-
         }
     }
 
