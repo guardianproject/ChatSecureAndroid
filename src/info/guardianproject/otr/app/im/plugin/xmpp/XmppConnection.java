@@ -586,9 +586,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     debug(TAG, "got delivery receipt for " + dr.getId());
                     session.onMessageReceipt(dr.getId());
                 }
-                if (smackMessage.getBody() == null)
+                
+                String body = smackMessage.getBody();
+                
+                if (smackMessage.getError() != null) {
+                    if (body == null)
+                        body = "";
+                    body = body + " - " + smackMessage.getError().toString();
+                }
+                
+                if (body == null)
                     return;
-                Message rec = new Message(smackMessage.getBody());
+                
+                Message rec = new Message(body);
                 rec.setTo(mUser.getAddress());
                 rec.setFrom(new XmppAddress(smackMessage.getFrom()));
                 rec.setDateTime(new Date());
