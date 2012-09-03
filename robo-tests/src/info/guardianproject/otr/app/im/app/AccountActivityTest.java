@@ -85,7 +85,6 @@ public class AccountActivityTest {
 
         // Check that the signin activity was started
         Intent started = Robolectric.shadowOf(mActivity).getNextStartedActivity();
-        assertEquals(SigningInActivity.class.getName(), started.getComponent().getClassName());
         assertEquals("pass", started.getStringExtra(ImApp.EXTRA_INTENT_PASSWORD));
         assertTrue(started.getData().toString().startsWith(Imps.Account.CONTENT_URI.toString()));
     }

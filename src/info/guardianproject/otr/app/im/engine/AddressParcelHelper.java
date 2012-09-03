@@ -32,8 +32,7 @@ import android.util.Log;
 public class AddressParcelHelper {
     @SuppressWarnings("rawtypes")
     private static Class[] sAddressClasses =
-            new Class[] { XmppAddress.class,
-                          LLXmppConnection.XmppAddress.class };
+            new Class[] { XmppAddress.class };
 
     private AddressParcelHelper() {
     }
