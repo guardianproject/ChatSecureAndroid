@@ -27,7 +27,7 @@
   <string name="menu_view_profile">Profil anzeigen</string>
   <string name="menu_otr_start">Verschlüsselung aktivieren</string>
   <string name="menu_otr_stop">Verschlüsselung deaktivieren</string>
-  <string name="menu_clear_chat">Chat zurücksetzen</string>
+  <string name="menu_clear_chat">Chat leeren</string>
   <string name="menu_end_conversation">Chat beenden</string>
   <string name="menu_view_contact_list">Kontaktliste</string>
   <string name="menu_invite_contact">Einladen...</string>
@@ -54,7 +54,7 @@
   <string name="remember_password">Kennwort speichern</string>
   <string name="keep_me_signed_in">Automatisch anmelden</string>
   <string name="sign_up">Besitzen Sie kein Konto?</string>
-  <string name="check_save_password">Für Ihre Sicherheit, wenn Ihr Handy verloren geht oder gestohlen wird, gehen Sie zur Website auf Ihrem Computer und ändern Sie Ihr Kennwort.</string>
+  <string name="check_save_password">Wenn Ihr Handy verloren geht oder gestohlen wird, sollten Sie Ihr Kennwort zurücksetzen.</string>
   <string name="check_auto_sign_in">Mit dieser Option werden Sie bei jedem Öffnen der Anwendung automatisch angemeldet. Wenn Sie die Option deaktivieren möchten, melden Sie sich ab, und deaktivieren Sie das Kontrollkästchen \"Automatisch anmelden\".</string>
   <string name="sign_in">Anmelden</string>
   <string name="signing_in_to">Anmeldung bei <xliff:g id="ACCOUNT">%1$s</xliff:g> wird ausgeführt.</string>
@@ -98,7 +98,7 @@
   <string name="wbxml">WBXML</string>
   <string name="save">Speichern</string>
   <string name="chat_with">Mit <xliff:g id="USER">%1$s</xliff:g> chatten</string>
-  <string name="me">Eigene</string>
+  <string name="me">Ich</string>
   <string name="compose_hint">Zum Erstellen eintippen</string>
   <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> ist online.</string>
   <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> ist abwesend.</string>
@@ -302,7 +302,7 @@
   <string name="account_setup_error_keypair">Es ist ein Fehler beim Generieren eines Schlüsselpaares aufgetreten.</string>
   <string name="account_setup_error_server">Es ist ein Fehler während des Verbindungsaufbaus zum Chat-Server aufgetreten - bitte überprüfen Sie die Konfiguration und versuche Sie es erneut.</string>
   <string name="account_setup_error_connectivity">Es ist ein Verbindungsfehler aufgetreten - bitte überprüfe Sie die Netzwerkverbindung und versuchen Sie es erneut.</string>
-  <string name="label_fingerprint_remote">Ihren Fingerabdruck</string>
+  <string name="label_fingerprint_remote">Fingerabdruck des Gesprächspartners</string>
   <string name="label_fingerprint_local">Ihr Fingerabdruck</string>
   <string name="menu_sign_in">Anmelden</string>
   <string name="menu_gen_key">Schlüssel erneuern</string>
