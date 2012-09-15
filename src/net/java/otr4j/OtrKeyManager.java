@@ -11,10 +11,14 @@ public abstract interface OtrKeyManager {
 
     public abstract void removeListener(OtrKeyManagerListener l);
 
+    /** The local and remote verified each other with an SMP shared secret */
     public abstract void verify(SessionID sessionID);
 
     public abstract void unverify(SessionID sessionID);
 
+    /** The remote verified us with an SMP Q&A */
+    public abstract void remoteVerifiedUs(SessionID sessionID);
+    
     public abstract boolean isVerified(SessionID sessionID);
 
     public abstract String getRemoteFingerprint(SessionID sessionID);

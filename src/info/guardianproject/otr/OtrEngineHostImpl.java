@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.WarningDialogActivity;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -53,11 +54,18 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
             public void verificationStatusChanged(SessionID session) {
-
                 String msg = session + ": verification status="
                              + mOtrKeyManager.isVerified(session);
 
                 OtrDebugLogger.log(msg);
+            }
+
+            public void remoteVerifiedUs(SessionID session) {
+                String msg = session + ": remote verified us";
+
+                OtrDebugLogger.log(msg);
+                if (!isRemoteKeyVerified(session))
+                    showWarning(session, mContext.getString(R.string.remote_verified_us));
             }
         });
 
@@ -71,15 +79,15 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void removeConnection(ImConnectionAdapter connection) {
         mConnections.remove(connection);
     }
-    
+
     public void putSessionResource(SessionID session, String resource) {
         mSessionResources.put(session, resource);
     }
-    
+
     public void removeSessionResource(SessionID session) {
         mSessionResources.remove(session);
     }
-    
+
     public Address appendSessionResource(SessionID session, Address to) {
         String resource = mSessionResources.get(session);
         return to.appendResource(resource);
@@ -116,7 +124,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         return mOtrKeyManager.getRemoteFingerprint(sessionID);
     }
 
-    @Override
     public KeyPair getKeyPair(SessionID sessionID) {
         KeyPair kp = null;
         kp = mOtrKeyManager.loadLocalKeyPair(sessionID);
@@ -128,7 +135,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         return kp;
     }
 
-    @Override
     public OtrPolicy getSessionPolicy(SessionID sessionID) {
         return mPolicy;
     }
@@ -153,34 +159,27 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         msg.setDateTime(new Date());
         msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
         chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
-
     }
 
-    @Override
     public void injectMessage(SessionID sessionID, String text) {
         OtrDebugLogger.log(sessionID.toString() + ": injecting message: " + text);
 
         sendMessage(sessionID, text);
-
     }
 
-    @Override
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
         showDialog("Encryption Error", sessionID.getUserID() + " : " + error);
     }
 
-    @Override
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
 
-        showDialog("Encryption Warning",  "[" + sessionID.getUserID() + "] " + warning);
-
+        showDialog("Encryption Warning", "[" + sessionID.getUserID() + "] " + warning);
     }
 
     private void showDialog(String title, String msg) {
-
         Intent nIntent = new Intent(mContext, WarningDialogActivity.class);
         nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -188,7 +187,5 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         nIntent.putExtra("msg", msg);
 
         mContext.startActivity(nIntent);
-
     }
-
 }

@@ -287,4 +287,12 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
             l.verificationStatusChanged(sessionID);
     }
 
+    public void remoteVerifiedUs(SessionID sessionID) {
+        if (sessionID == null)
+            return;
+
+        for (OtrKeyManagerListener l : listeners)
+            l.remoteVerifiedUs(sessionID);
+    }
+
 }

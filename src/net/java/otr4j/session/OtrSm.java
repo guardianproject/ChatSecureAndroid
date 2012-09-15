@@ -198,7 +198,7 @@ public class OtrSm implements OtrTlvHandler {
                 qlen++;
             byte[] input = new byte[question.length - qlen];
             System.arraycopy(question, qlen, input, 0, question.length - qlen);
-            SM.step2a(smstate, input, 1);
+            SM.step2a(smstate, input, true);
             if (qlen != 0)
                 qlen--;
             byte[] plainq = new byte[qlen];
@@ -216,7 +216,7 @@ public class OtrSm implements OtrTlvHandler {
             /* We can only do the verification half now.
              * We must wait for the secret to be entered
              * to continue. */
-            SM.step2a(smstate, tlv.getValue(), 0);
+            SM.step2a(smstate, tlv.getValue(), false);
             if (smstate.smProgState != SM.PROG_CHEATED) {
                 engineHost.askForSecret(sessionID, null);
             } else {
@@ -242,12 +242,7 @@ public class OtrSm implements OtrTlvHandler {
             engineHost.showError(sessionID, "Error during verification (step 2)");
         } else if (tlvType == TLV.SMP3 && nextMsg == SM.EXPECT3) {
             byte[] nextmsg = SM.step4(smstate, tlv.getValue());
-            /* Set trust level based on result */
-            if (smstate.smProgState == SM.PROG_SUCCEEDED) {
-                keyManager.verify(sessionID);
-            } else {
-                keyManager.unverify(sessionID);
-            }
+            notifyKeyManager();
             if (smstate.smProgState != SM.PROG_CHEATED) {
                 /* Send msg with next smp msg content */
                 TLV sendtlv = new TLV(TLV.SMP4, nextmsg);
@@ -261,13 +256,8 @@ public class OtrSm implements OtrTlvHandler {
         } else if (tlvType == TLV.SMP3) {
             engineHost.showError(sessionID, "Error during verification (step 3)");
         } else if (tlvType == TLV.SMP4 && nextMsg == SM.EXPECT4) {
-
             SM.step5(smstate, tlv.getValue());
-            if (smstate.smProgState == SM.PROG_SUCCEEDED) {
-                keyManager.verify(sessionID);
-            } else {
-                keyManager.unverify(sessionID);
-            }
+            notifyKeyManager();
             if (smstate.smProgState != SM.PROG_CHEATED) {
                 smstate.nextExpected = SM.EXPECT1;
             } else {
@@ -284,6 +274,17 @@ public class OtrSm implements OtrTlvHandler {
 
         // Nothing to send
         return null;
+    }
+
+    private void notifyKeyManager() {
+        if (smstate.smProgState == SM.PROG_SUCCEEDED) {
+            if (smstate.isReceivedQuestion())
+                keyManager.remoteVerifiedUs(sessionID);
+            else
+                keyManager.verify(sessionID);
+        } else {
+            keyManager.unverify(sessionID);
+        }
     }
 
     private List<TLV> makeTlvList(TLV sendtlv) {

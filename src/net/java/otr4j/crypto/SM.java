@@ -36,12 +36,16 @@ public class SM {
     static public class SMState {
         BigInteger secret, x2, x3, g1, g2, g3, g3o, p, q, pab, qab;
         public int nextExpected;
-        int receivedQuestion;
+        boolean receivedQuestion;
         public int smProgState;
 
         public SMState() {
             g1 = new BigInteger(1, SM.GENERATOR_S);
             smProgState = SM.PROG_OK;
+        }
+        
+        public boolean isReceivedQuestion() {
+            return receivedQuestion;
         }
     }
 
@@ -363,7 +367,7 @@ public class SM {
         BigInteger secret_mpi = new BigInteger(1, secret);
 
         astate.secret = secret_mpi;
-        astate.receivedQuestion = 0;
+        astate.receivedQuestion = false;
         astate.x2 = randomExponent();
         astate.x3 = randomExponent();
 
@@ -390,7 +394,7 @@ public class SM {
      * 
      * @throws SMException
      */
-    public static void step2a(SMState bstate, byte[] input, int received_question)
+    public static void step2a(SMState bstate, byte[] input, boolean received_question)
             throws SMException {
 
         /* Initialize the sm state if needed */
@@ -659,25 +663,5 @@ public class SM {
         astate.smProgState = (comp != 0) ? PROG_FAILED : PROG_SUCCEEDED;
 
         return;
-    }
-
-    // ***************************************************
-    // Session stuff - perhaps factor out
-
-    public static void main(String[] args) throws SMException {
-        BigInteger res = SM.MODULUS_MINUS_2.subtract(SM.MODULUS_S).mod(SM.MODULUS_S);
-        String ss = Util.bytesToHexString(res.toByteArray());
-        System.out.println(ss);
-
-        byte[] secret1 = "abcdef".getBytes();
-        SMState a = new SMState();
-        SMState b = new SMState();
-
-        byte[] msg1 = SM.step1(a, secret1);
-        SM.step2a(b, msg1, 123);
-        byte[] msg2 = SM.step2b(b, secret1);
-        byte[] msg3 = SM.step3(a, msg2);
-        byte[] msg4 = SM.step4(b, msg3);
-        SM.step5(a, msg4);
     }
 }

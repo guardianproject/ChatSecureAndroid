@@ -4,4 +4,6 @@ import net.java.otr4j.session.SessionID;
 
 public interface OtrKeyManagerListener {
     public abstract void verificationStatusChanged(SessionID session);
+
+    public abstract void remoteVerifiedUs(SessionID session);
 }

@@ -436,6 +436,14 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             l.verificationStatusChanged(sessionID);
     }
 
+    public void remoteVerifiedUs(SessionID sessionID) {
+        if (sessionID == null)
+            return;
+
+        for (OtrKeyManagerListener l : listeners)
+            l.remoteVerifiedUs(sessionID);
+    }
+
     private static String buildPublicKeyVerifiedId(String userId, String fingerprint) {
         return userId + "." + fingerprint + ".publicKey.verified";
     }
