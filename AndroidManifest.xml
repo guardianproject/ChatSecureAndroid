@@ -189,6 +189,11 @@ android:anyDensity="true"
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="info.guardianproject.otr.app.im.QUIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/imps-providers" />
+            </intent-filter>
         </activity>
       
         <activity android:name=".app.AccountActivity"

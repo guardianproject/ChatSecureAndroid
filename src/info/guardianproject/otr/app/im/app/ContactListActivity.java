@@ -20,6 +20,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.Observable;
@@ -254,24 +255,12 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     }
 
     private void handleQuit() {
+        Intent intent = new Intent(ImApp.ACTION_QUIT);
+        intent.setType(Imps.Provider.CONTENT_TYPE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
-        try {
-            if (mConn != null) {
-                mConn.logout();
-
-            }
-
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-            finish();
-
-        } catch (RemoteException e) {
-            Log.e(ImApp.LOG_TAG, e.getMessage());
-        }
-
+        finish();
     }
 
     @Override

@@ -79,6 +79,7 @@ public class ImApp extends Application {
     public static final String EXTRA_INTENT_PROXY_PORT = "proxy.port";
 
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
+    public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
     public final static String PREF_DEFAULT_LOCALE = "defLoc";
 

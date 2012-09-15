@@ -106,6 +106,13 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                 Imps.Provider.CATEGORY + "=?" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
+        Intent intent = getIntent();
+
+        if (intent.getAction().equals(ImApp.ACTION_QUIT)) {
+            quit();
+            return;
+        }
+        
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
 
@@ -213,6 +220,22 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         return true;
     }
 
+    private void quit() {
+        if (!mProviderCursor.moveToFirst())
+            return;
+        
+        do {
+            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+            signOut(accountId);
+        } while (mProviderCursor.moveToNext());
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+    
     private void signOutAll() {
         DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
