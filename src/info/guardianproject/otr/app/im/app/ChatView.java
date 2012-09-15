@@ -169,6 +169,8 @@ public class ChatView extends LinearLayout {
 
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
+            mExpectingDelivery = false;
+            setDeliveryIcon();
             Cursor cursor = new DeltaCursor(c);
 
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
@@ -493,7 +495,6 @@ public class ChatView extends LinearLayout {
         if (mChatId != oldChatId) {
             startQuery();
             mComposeMessage.setText("");
-            mExpectingDelivery = false;
             mOtrChatSession = null;
         }
 
