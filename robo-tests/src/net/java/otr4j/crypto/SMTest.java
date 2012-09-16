@@ -40,7 +40,7 @@ public class SMTest {
     @Test
     public void testSuccess() throws Exception {
         byte[] msg1 = SM.step1(state_a, secret1);
-        SM.step2a(state_b, msg1, 123);
+        SM.step2a(state_b, msg1, true);
         byte[] msg2 = SM.step2b(state_b, secret1);
         byte[] msg3 = SM.step3(state_a, msg2);
         byte[] msg4 = SM.step4(state_b, msg3);
@@ -52,7 +52,7 @@ public class SMTest {
     @Test
     public void testFail() throws Exception {
         byte[] msg1 = SM.step1(state_a, secret1);
-        SM.step2a(state_b, msg1, 123);
+        SM.step2a(state_b, msg1, true);
         byte[] msg2 = SM.step2b(state_b, secret2);
         byte[] msg3 = SM.step3(state_a, msg2);
         byte[] msg4 = SM.step4(state_b, msg3);
