@@ -32,6 +32,8 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import java.util.ArrayList;
 import java.util.Date;
 
+import net.java.otr4j.session.SessionStatus;
+
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
@@ -139,7 +141,6 @@ public class ChatView extends LinearLayout {
     private IChatSession mChatSession;
     private IOtrKeyManager mOtrKeyManager;
     private IOtrChatSession mOtrChatSession;
-    private boolean mIsOtrChat = false;
 
     private long mChatId;
     int mType;
@@ -1049,14 +1050,14 @@ public class ChatView extends LinearLayout {
         String message = null;
         boolean isConnected;
 
-        mIsOtrChat = false;
+        SessionStatus sessionStatus = SessionStatus.PLAINTEXT;
 
         initOtr();
 
         //check if the chat is otr or not
         if (mOtrChatSession != null) {
             try {
-                mIsOtrChat = mOtrChatSession.isChatEncrypted();
+                sessionStatus = SessionStatus.values()[mOtrChatSession.getChatStatus()];
             } catch (RemoteException e) {
                 Log.w("Gibber", "Unable to call remote OtrChatSession from ChatView", e);
             }
@@ -1084,7 +1085,7 @@ public class ChatView extends LinearLayout {
 
             }
 
-            if (mIsOtrChat) {
+            if (sessionStatus == SessionStatus.ENCRYPTED) {
                 try {
 
                     if (mOtrKeyManager == null)
@@ -1116,13 +1117,16 @@ public class ChatView extends LinearLayout {
 
                     
                     mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
-                    
-                    
-
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+            } else if (sessionStatus == SessionStatus.FINISHED) {
+                mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
+
+                mWarningText.setTextColor(Color.WHITE);
+                mWarningText.setBackgroundColor(Color.DKGRAY);
+                message = mContext.getString(R.string.otr_session_status_finished);
             } else {
 
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);

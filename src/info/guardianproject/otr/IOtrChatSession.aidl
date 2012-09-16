@@ -20,13 +20,16 @@ interface IOtrChatSession {
      */
     boolean isChatEncrypted();
     
+    /** OTR session status - ordinal of SessionStatus */
+    int getChatStatus();
+    
     /**
      * start the SMP verification process
      */
     void initSmpVerification(String question, String answer);
     
     /**
-     * responsed to the SMP verification process
+     * respond to the SMP verification process
      */
     void respondSmpVerification(String answer);
     

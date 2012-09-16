@@ -225,7 +225,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             try {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
-                if (sessionStatus == SessionStatus.ENCRYPTED) {
+                if (sessionStatus != SessionStatus.PLAINTEXT) {
                     body = mOtrEngine.transformSending(sessionId, body);
                     message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
                 } else if (sessionPolicy.getRequireEncryption()) {
@@ -270,28 +270,15 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 mOtrSms.put(sessionID, otrSm);
             }
         } else if (sStatus == SessionStatus.PLAINTEXT) {
-
-            try {
-                if (otrSm != null) {
-                    session.removeTlvHandler(otrSm);
-                    mOtrSms.remove(sessionID);
-                }
-                mOtrEngine.endSession(sessionID);
-                mOtrEngineHost.removeSessionResource(sessionID);
-            } catch (OtrException e) {
-                OtrDebugLogger.log("error ending session", e);
+            if (otrSm != null) {
+                session.removeTlvHandler(otrSm);
+                mOtrSms.remove(sessionID);
             }
+            mOtrEngineHost.removeSessionResource(sessionID);
         } else if (sStatus == SessionStatus.FINISHED) {
-            try {
-                if (otrSm != null) {
-                    session.removeTlvHandler(otrSm);
-                    mOtrSms.remove(sessionID);
-                }
-                mOtrEngine.endSession(sessionID);
-                mOtrEngineHost.removeSessionResource(sessionID);
-            } catch (OtrException e) {
-                OtrDebugLogger.log("error ending session", e);
-            }
+            // Do nothing.  The user must take affirmative action to
+            // restart or end the session, so that they don't send
+            // plaintext by mistake.
         }
 
     }

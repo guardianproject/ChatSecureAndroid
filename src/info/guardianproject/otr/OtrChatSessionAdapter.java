@@ -38,6 +38,15 @@ public class OtrChatSessionAdapter extends Stub {
 
     }
 
+
+    @Override
+    public int getChatStatus() throws RemoteException {
+        SessionStatus sessionStatus = _chatManager.getSessionStatus(_localUser, _remoteUser);
+        if (sessionStatus == null)
+            sessionStatus = SessionStatus.PLAINTEXT;
+        return sessionStatus.ordinal();
+    }
+
     @Override
     public void initSmpVerification(String question, String secret) throws RemoteException {
 
@@ -60,5 +69,4 @@ public class OtrChatSessionAdapter extends Stub {
             throw new RemoteException();
         }
     }
-
 }

@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.java.otr4j.session.SessionStatus;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -237,13 +239,14 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         int toastMsgId;
 
         try {
-            boolean isOtrEnabled = otrChatSession.isChatEncrypted();
-            if (!isOtrEnabled) {
+            SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
+            if (sessionStatus == SessionStatus.PLAINTEXT) {
                 otrChatSession.startChatEncryption();
                 toastMsgId = R.string.starting_otr_chat;
             } else {
                 otrChatSession.stopChatEncryption();
                 toastMsgId = R.string.stopping_otr_chat;
+                mChatView.updateWarningView();
             }
             Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
         } catch (RemoteException e) {
@@ -256,9 +259,9 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
         if (otrChatSession != null) {
             try {
-                boolean isOtrEnabled = otrChatSession.isChatEncrypted();
+                SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
 
-                if (isOtrEnabled) {
+                if (sessionStatus != SessionStatus.PLAINTEXT) {
                     menuOtr.setTitle(R.string.menu_otr_stop);
                 } else {
                     menuOtr.setTitle(R.string.menu_otr_start);
