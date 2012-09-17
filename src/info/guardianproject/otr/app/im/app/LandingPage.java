@@ -108,7 +108,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                 Imps.Provider.DEFAULT_SORT_ORDER);
         Intent intent = getIntent();
 
-        if (intent.getAction().equals(ImApp.ACTION_QUIT)) {
+        if (ImApp.ACTION_QUIT.equals(intent.getAction())) {
             quit();
             return;
         }
