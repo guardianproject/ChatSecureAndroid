@@ -1,25 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Vyžadovat síly /</item>
-    <item>Automaticky pokusí</item>
-    <item>Jak bylo požadováno</item>
-    <item>Zakázáno / Nikdy</item>
+    <item>اجبارکن / الزامی</item>
+    <item>تلاش بطور خودکار</item>
+    <item>هرطور که درخواست شده</item>
+    <item>غیرفعال / هرگز</item>
   </string-array>
   <string-array name="otr_options_values">
-    <item>vynutit</item>
-    <item>auto</item>
-    <item>požadovat</item>
-    <item>zakázat</item>
+    <item>اجباری</item>
+    <item>اتوماتیک</item>
+    <item>بصورت درخواست شده</item>
+    <item>غیرفعال</item>
   </string-array>
   <string-array name="languages">
-    <item>Anglicky</item>
+    <item>English</item>
     <item>العربية</item>
     <item>پارسی</item>
     <item>中文(简体)</item>
-    <item>Německy</item>
-    <item>Španělsky</item>
-    <item>Výchozí</item>
+    <item>Deutsch</item>
+    <item>Español</item>
+    <item>Default</item>
   </string-array>
   <string-array name="languages_values">
     <item>en_us</item>

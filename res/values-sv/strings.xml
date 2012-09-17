@@ -1,375 +1,412 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="ro_perm_label">read instant messages</string>
-  <string name="ro_perm_desc">
-        Allows applications to read data from the IM content provider.
-    </string>
-  <string name="wo_perm_label">write instant messages</string>
-  <string name="wo_perm_desc">
-        Allows applications to write data to the IM content provider.
-    </string>
-  <string name="im_label">Gibberbot</string>
-  <string name="landing_page_title">Chat - Select an account</string>
-  <string name="menu_about">About</string>
-  <string name="menu_add_account">Add account</string>
-  <string name="menu_edit_account">Edit account</string>
-  <string name="menu_remove_account">Remove account</string>
-  <string name="menu_sign_out_all">Sign out all</string>
-  <string name="choose_account_title">Chat - Select an account</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+<resources>
+  <!--The application label. This appears in the application launcher on the
+    Home screen. This is a noun.-->
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <!--Landing page screen menu and context menu items.-->
+  <!--Conext menu item: add a new account.-->
+  <!--Conext menu item: edit an account.-->
+  <!--Conext menu item: remove an account.-->
+  <!--Screen menu item: sign out all service.-->
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <!--Displays the number of ongoing chats on the landing page.-->
+  <!--Sign in progress screen menu items.-->
+  <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
   <string name="menu_cancel_signin">Avbryt inloggning</string>
+  <!--Contact list screen menu and context menu items.-->
+  <!--This is a screen menu item for the Contact List Screen. It lets the
+    user to add a friend to the friend list. May be overrided by the plugin.-->
   <string name="menu_add_contact">Lägg till kontakt</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    remove a contact from the list. May be overrided by the plugin.-->
   <string name="menu_remove_contact">Ta bort kontakt</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    block a contact. May be overrided by the plugin.-->
   <string name="menu_block_contact">Blockera kontakt</string>
+  <!--Screen menu item on the contact list screen to go to the blocked list
+    screen.-->
   <string name="menu_view_blocked">Blockerad</string>
+  <!--Screen menu item on the contact list to go back to the landing page,
+    where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Kontolista</string>
-  <string name="menu_new_chat">New Chat</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <!--Screen menu item on accounts list to create new account-->
+  <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Inställningar</string>
-  <string name="menu_search_contacts">Search Contacts</string>
+  <!--Screen menu item on the contact list to trigger search dialog-->
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    start a chat with a friend. May be overried by the plugin.-->
   <string name="menu_start_chat">Öppna chatt</string>
+  <!--Screen menu item on the contact list to sign out the service.-->
   <string name="menu_sign_out">Logga ut</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the
+    user to view the contact's profile. May be overrided by the plugin.-->
   <string name="menu_view_profile">Visa profil</string>
-  <string name="menu_otr_start">Start Encryption</string>
-  <string name="menu_otr_stop">Stop Encryption</string>
-  <string name="menu_clear_chat">Clear Chat</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a conversation in the contact list. It lets the
+    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--OTRCHAT Adding in new menu options-->
   <string name="menu_end_conversation">Avsluta chatt</string>
+  <!--Chat screen menu and context menu items.-->
+  <!--Screen menu item on the chat screen to go back the contact list screen.
+    May be overrided by the plugin.-->
   <string name="menu_view_contact_list">Kontaktlista</string>
+  <!--Screen menu item on the chat screen to invite another contact to join the chat.
+    Currently not supported.-->
   <string name="menu_invite_contact">Bjud in…</string>
+  <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
+    switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Byt chatt</string>
+  <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Infoga känsloikon</string>
-  <string name="menu_scan">Scan Fingerprint</string>
-  <string name="menu_fingerprint">Your Fingerprint</string>
-  <string name="menu_verify">Verify Fingerprint</string>
+  <!--Strings for the contact info screen-->
+  <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
+     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
+     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
+     be appended to the end of this.-->
   <string name="menu_plus">Meny+</string>
+  <!--The title of a simple input dialog. Currently not used.-->
+  <!--Strings for the confirm dialogs-->
+  <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Bekräfta</string>
-  <string name="signout_all_confirm_message">Do you want to sign out all services?</string>
-  <string name="confirm_delete_contact">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; tas bort.</string>
-  <string name="confirm_block_contact">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; blockeras.</string>
-  <string name="confirm_unblock_contact">Blockering hävs för kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact"></string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact"></string>
+  <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact"></string>
+  <!--The "OK" button label for the error message dialog.-->
   <string name="ok">OK</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="cancel">Avbryt</string>
+  <!--The "OK" button label for the confirm dialogs.-->
   <string name="yes">OK</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">Avbryt</string>
-  <string name="signed_out_prompt">Du har loggats ut från &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">Du har loggats ut från &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; eftersom &lt;xliff:g id="REASON"&gt;%2$s&lt;/xliff:g&gt;.</string>
-  <string name="add_account">Lägg till kontot &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt"></string>
+  <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <string name="signed_out_prompt_with_error"></string>
+  <!--These strings displayed on the landing page.-->
+  <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account"></string>
+  <!--These strings are displayed on the account setup page.-->
+  <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">Användarnamn:</string>
+  <!--The password label.-->
   <string name="label_password">Lösenord</string>
+  <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
   <string name="remember_password">Kom ihåg mitt lösenord.</string>
+  <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
   <string name="keep_me_signed_in">Logga in mig automatiskt.</string>
+  <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Har du inget konto?</string>
-  <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
+  <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_auto_sign_in">Det här alternativet loggar in dig automatiskt varje gång du öppnar programmet. Om du vill inaktivera alternativet loggar du ut och avmarkerar kryssrutan Logga in mig automatiskt.</string>
+  <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Logga in</string>
-  <string name="signing_in_to">Loggar in på &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <!--These strings are displayed the sign in progress screen.-->
+  <!--The title of the sign-in progress screen.-->
+  <string name="signing_in_to"></string>
+  <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Loggar in…</string>
+  <!--Dialog title-->
+  <!--This is the title for the background data prompt dialog, asking the user whether
+    to enable the background data if it is disabled when launch the IM app-->
   <string name="bg_data_prompt_title">Bakgrundsdata inaktiverat</string>
-  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; fungerar bara om bakgrundsdata är aktiverat.</string>
+  <!--Dialog messages:-->
+  <!--This is the message displayed in the prompt dialog when we launch IM but found
+    the background data is disabled-->
+  <string name="bg_data_prompt_message"></string>
+  <!--Dialog buttons:-->
+  <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">Aktivera</string>
+  <!--Cancel button for the prompt dialog-->
   <string name="bg_data_prompt_cancel">Avsluta</string>
-  <string name="ongoing_conversation">Pågående chattar (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; online</string>
+  <!--These strings are displayed on the contact list page.-->
+  <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation"></string>
+  <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"></string>
+  <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">Kompisinbjudningar</string>
-  <string name="unknown_contact">("<i>"Okänd"</i>")</string>
+  <!--Prefix of the contact if he/she is not in the user's list.-->
+  <string name="unknown_contact">(\"<i>\"Okänd\"</i>\")</string>
+  <!--Displayed as a child item of the contact list if it's empty.-->
   <string name="empty_contact_group">Logga ut</string>
+  <!--Displayed as a child item of the ongoing chat group if it's empty.-->
   <string name="empty_conversation_group">Inga konversationer</string>
+  <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">Välj vilka kontakter du vill bjuda in</string>
   <string name="contact_filter_hint">Skriv för att hitta kontakt</string>
   <string name="empty_contact_list">Hittade inga kontakter.</string>
-  <string name="blocked_list_title">Blockerade kontakter – &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <!--The title of blocked contact list.-->
+  <string name="blocked_list_title"></string>
+  <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">Inga blockerade kontakter.</string>
+  <!--These strings are displayed in the contact info dialog.-->
+  <!--The title of the contact profile dialog.-->
   <string name="contact_profile_title">Kontaktprofil</string>
+  <!--The label of the status on the contact profile dialog.-->
   <string name="label_status">Status:</string>
+  <!--The label of the client type on the contact profile dialog.-->
   <string name="label_client_type">Klienttyp:</string>
+  <!--The client type which indicates the contact is sign in with a PC client.-->
   <string name="client_type_computer">Dator</string>
+  <!--The client type which indicates the contact is sign in with a mobile client.-->
   <string name="client_type_mobile">Mobil</string>
+  <!--The contact presence status. May be overrided by the plugin.-->
+  <!--This is an adjective describing the "online" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_available">Online</string>
+  <!--This is an adjective describing the "busy" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_busy">Upptagen</string>
+  <!--This is an adjective describing the "away" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_away">Borta</string>
+  <!--This is an adjective describing the "idle" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_idle">Inaktiv</string>
+  <!--This is an adjective describing the "offline" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_offline">Offline</string>
+  <!--This is an adjective describing the "invisible" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Visa som offline</string>
-  <string name="preference_title">&lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
-  <string name="data_channel_label">Data channel</string>
-  <string name="data_encoding_label">Data encoding</string>
-  <string name="cir_channel_label">CIR channel</string>
-  <string name="host_label">Host</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Save</string>
-  <string name="chat_with">Chatt med &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <!--These strings are displayed on the chat screen-->
+  <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with"></string>
+  <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Jag</string>
+  <!--On the chat screen, this is the hint text in the input field where the user enters the
+    chat. This needs to fit in both portrait and landscape mode-->
   <string name="compose_hint">Börja skriva</string>
-  <string name="contact_online">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är online</string>
-  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är borta</string>
-  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är upptagen</string>
-  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är offline</string>
-  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är med</string>
-  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har lämnat chatten</string>
-  <string name="time_stamp">\'Skickades \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g>\' den \'<xliff:g id="DATE">EEEE</xliff:g></string>
+  <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"></string>
+  <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <string name="contact_away"></string>
+  <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <string name="contact_busy"></string>
+  <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <string name="contact_offline"></string>
+  <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <string name="contact_joined"></string>
+  <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <string name="contact_left"></string>
+  <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <string name="time_stamp"></string>
+  <!--The send button on the chat screen.-->
   <string name="send">Skicka</string>
+  <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">Det gick inte att skicka meddelandet.</string>
+  <!--Warning message displayed in the chat screen when connection is lost.-->
   <string name="disconnected_warning">Anslutningen till servern bröts. Meddelandena skickas när du är online igen.</string>
-  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; är offline. Meddelanden som du skickar levereras när &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; är online igen.</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är inte med i din Kontaktlista.</string>
+  <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <string name="contact_offline_warning"></string>
+  <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <string name="contact_not_in_list_warning"></string>
+  <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">Välj länk</string>
+  <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Ingen aktiv chatt.</string>
+  <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <!--Add contact screen-->
+  <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Lägg till kontakt</string>
+  <!--The label of the email input box on the Add Contact Screen.-->
   <string name="input_contact_label">E-postadress till den du vill bjuda in:</string>
+  <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">Välj en lista:</string>
+  <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
   <string name="invite_instruction">Ange ett namn som du vill lägga till från Kontakter.</string>
+  <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Skicka inbjudan</string>
-  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
-  <string name="account_setup_title">Account Setup</string>
-  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <!--provider plugin names-->
+  <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="hide_offline_contacts">Dölj kontakter som är offline</string>
+  <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">Aviseringsinställningar</string>
+  <!--This is the text label of the setting for IM notifications; a summary is displayed in
+    smaller text below this label-->
   <string name="notification_enabled_title">Chattavisering</string>
+  <!--This is the summary of the setting for IM notifications-->
   <string name="notification_enabled_summary">Avisering i statusfältet när jag får chattmeddelanden</string>
+  <!--This is the text label of the vibrate notification setting; a summary is displayed in
+    smaller text below this label-->
   <string name="notification_vibrate_title">Vibrera</string>
+  <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Vibrera även när jag får chattmeddelanden</string>
+  <!--This is the text label of the sound notification setting; a summary is displayed in
+    smaller text below this label-->
   <string name="notification_sound_title">Ljud</string>
+  <!--This is the summary of the vibrate notification setting-->
   <string name="notification_sound_summary">Spela ringsignalen även när jag får chattmeddelande</string>
+  <!--This is the text label selecting the ringtone. Clicking on this will take the user to
+    the ringtone picker-->
   <string name="notification_ringtone_title">Välj ringsignal</string>
-  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har bjudit in dig till en gruppchatt.</string>
-  <string name="invitation_sent_prompt">Inbjudan har skickats till &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <!--Group chat invitation screen (Currently not used.)-->
+  <!--The prompt message displayed on the group chat invitation screen.-->
+  <string name="invitation_prompt"></string>
+  <!--Toast when group chat invitation has been sent to the contact.-->
+  <string name="invitation_sent_prompt"></string>
+  <!--The button for accepting an invitation.-->
   <string name="accept_invitation">Acceptera</string>
+  <!--The button for decline an invitation.-->
   <string name="decline_invitation">Avvisa</string>
-  <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har bjudit in dig till sin Kontaktlista.</string>
+  <!--Friend subscription screen-->
+  <string name="subscription_prompt"></string>
+  <!--The button for approving a subscription request.-->
   <string name="approve_subscription">Acceptera</string>
+  <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">Avvisa</string>
-  <string name="approve_subscription_error">Det gick inte att godkänna prenumeration från &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Försök igen lite senare.</string>
-  <string name="decline_subscription_error">Det gick inte att avvisa prenumeration från &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Försök igen senare.</string>
-  <string name="newMessages_label">Nya meddelanden från &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <string name="num_unread_chats">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; olästa chattar</string>
-  <string name="subscription_notify_text">Ny kompisinbjudan från <xliff:g id="USER">%s</xliff:g></string>
+  <!--Toast when approve a subscription request failed.-->
+  <string name="approve_subscription_error"></string>
+  <!--Toast when decline a subscription request failed.-->
+  <string name="decline_subscription_error"></string>
+  <!--Notification bar messages-->
+  <!--This is the notification bar message when a new IM arrives.-->
+  <string name="newMessages_label"></string>
+  <!--This is the notification bar message when new IMs comes from more than one contact.-->
+  <string name="num_unread_chats"></string>
+  <!--This is the notification bar message when an invitation from someone arrived.-->
+  <string name="subscription_notify_text"></string>
+  <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">Inbjudan till gruppchatt</string>
-  <string name="group_chat_invite_notify_text">Ny inbjudan till gruppchatt från <xliff:g id="USER">%s</xliff:g></string>
-  <string name="add_contact_success">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har lagts till.</string>
-  <string name="delete_contact_success">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har tagits bort.</string>
-  <string name="block_contact_success">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är blockerad.</string>
-  <string name="unblock_contact_success">Blockering hävs för kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
+  <string name="group_chat_invite_notify_text"></string>
+  <!--Toast when a contact is added into a list.-->
+  <string name="add_contact_success"></string>
+  <!--Toast when a contact is deleted from the list.-->
+  <string name="delete_contact_success"></string>
+  <!--Toast when a contact is blocked.-->
+  <string name="block_contact_success"></string>
+  <!--Toast when a contact is unblocked.-->
+  <string name="unblock_contact_success"></string>
+  <!--IM service permission-->
   <string name="perm_label">öppna chattjänsten</string>
   <string name="perm_desc">Tillåter att ett program avsiktligen öppnar chattjänsten.</string>
+  <!--Errors-->
+  <!--The title of the error dialog-->
   <string name="error">Obs!</string>
-  <string name="login_service_failed">Det gick inte att logga in till tjänsten &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Försök igen senare."\n"(Information: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <!--Error message for sign in failed.-->
+  <string name="login_service_failed"></string>
+  <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">Det gick inte att lägga till listan.</string>
+  <!--Error message for blocking contact failed.-->
   <string name="block_contact_failed">Kontakten blockerades inte.</string>
+  <!--Error message for unblocking contact failed.-->
   <string name="unblock_contact_failed">Blockeringen hävdes inte för kontakten.</string>
+  <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">Du måste välja en kontakt först.</string>
-  <string name="disconnected">"Frånkopplad!"\n</string>
+  <!--Error message for when the current connection disconnected.-->
+  <string name="disconnected">\"Frånkopplad!\"\n</string>
+  <!--Error message for when the IM service has died.-->
   <string name="service_error">Fel på tjänsten!</string>
+  <!--Error message for loading contact list failed.-->
   <string name="load_contact_list_failed">Det gick inte att hämta kontaktlistan.</string>
+  <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">Det går inte att ansluta till servern. Kontrollera anslutningen.</string>
-  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; finns redan i din Kontaktlista.</string>
-  <string name="contact_blocked">Kontakten &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har blockerats.</string>
+  <!--Error message for when the contact is already in the list.-->
+  <string name="contact_already_exist"></string>
+  <!--Error message for when the contact is blocked.-->
+  <string name="contact_blocked"></string>
+  <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">Vänta medan vi hämtar din Kontaktlista.</string>
+  <!--Error message for when a network error occurred.-->
   <string name="network_error">Ett nätverksfel har inträffat.</string>
+  <!--Error message for lack of server support error.-->
   <string name="service_not_support">Servern stöder inte den här funktionen.</string>
+  <!--Erorr message for bad password error.-->
   <string name="invalid_password">Lösenordet som du angav är ogiltigt.</string>
+  <!--Error message for server internal error.-->
   <string name="internal_server_error">Servern upptäckte ett fel.</string>
+  <!--Error message for when the server does not implement the feature.-->
   <string name="not_implemented">Servern stöder inte den här funktionen.</string>
+  <!--Error message for server not available error.-->
   <string name="service_unavaiable">Servern är inte tillgänglig för tillfället.</string>
+  <!--Error message for timeout error.-->
   <string name="timeout">Tidsgränsen för servern har överskridits.</string>
+  <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">Servern stöder inte den aktuella versionen.</string>
+  <!--Error message for when the message queue on the server is full.-->
   <string name="message_queue_full">Meddelandekön är full.</string>
+  <!--Error message for when the domain is not supported by the server.-->
   <string name="domain_not_supported">Servern stöder inte vidarebefordran till domänen.</string>
+  <!--Error message for a bad username error.-->
   <string name="unknown_user">Användarnamnet som du angav är okänt.</string>
+  <!--Error message for when the user is blocked by the recipient.-->
   <string name="recipient_blocked_the_user">Du har tyvärr blockerats av användaren.</string>
+  <!--Error message for session expired error.-->
   <string name="session_expired">Besöket har upphört att gälla. Logga in igen.</string>
+  <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
   <string name="forced_logout">du har loggat in från en annan klient.</string>
   <string name="already_logged_in">du redan har loggat in från en annan klient.</string>
+  <!--Error message for msisdn error.-->
   <string name="msisdn_error">Det går tyvärr inte att läsa telefonnumret från ditt SIM-kort. Kontakta din operatör.</string>
+  <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">Du är inte inloggad för närvarande.</string>
-  <string name="general_error">Felkod &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
-  <string-array name="default_smiley_names"><item>Glad</item>
-<item>Ledsen</item>
-<item>Blinkar</item>
-<item>Lipar</item>
-<item>Förvånad</item>
-<item>Pussar</item>
-<item>Skriker</item>
-<item>Cool</item>
-<item>Dollarmun</item>
-<item>Bortgjord</item>
-<item>Generad</item>
-<item>Ängel</item>
-<item>Tveksam</item>
-<item>Gråter</item>
-<item>Hemlis</item>
-<item>Skrattar</item>
-<item>Förvirrad</item>
-</string-array>
-  <string-array name="default_smiley_texts"><item>:-)</item>
-<item>:-(</item>
-<item>;-)</item>
-<item>:-P</item>
-<item>=-O</item>
-<item>:-*</item>
-<item>:O</item>
-<item>B-)</item>
-<item>:-$</item>
-<item>:-!</item>
-<item>:-[</item>
-<item>O:-)</item>
-<item>:-\\</item>
-<item>:\'(</item>
-<item>:-X</item>
-<item>:-D</item>
-<item>o_O</item>
-</string-array>
-  <string-array name="smiley_names"><item>Happy</item>
-<item>Sad</item>
-<item>Winking</item>
-<item>Tongue sticking out</item>
-<item>Surprised</item>
-<item>Kissing</item>
-<item>Yelling</item>
-<item>Cool</item>
-<item>Money mouth</item>
-<item>Foot in mouth</item>
-<item>Embarrassed</item>
-<item>Angel</item>
-<item>Undecided</item>
-<item>Crying</item>
-<item>Lips are sealed</item>
-<item>Laughing</item>
-<item>Confused</item>
-</string-array>
-  <string-array name="smiley_texts"><item>:-)</item>
-<item>:-(</item>
-<item>;-)</item>
-<item>:-P</item>
-<item>=-O</item>
-<item>:-*</item>
-<item>:O</item>
-<item>B-)</item>
-<item>:-$</item>
-<item>:-!</item>
-<item>:-[</item>
-<item>O:-)</item>
-<item>:-\\</item>
-<item>:\'(</item>
-<item>:-X</item>
-<item>:-D</item>
-<item>o_O</item>
-</string-array>
-  <string name="buddy_list_title">Contact List - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <string name="menu_contact_list">Contact List</string>
-  <string name="menu_view_encrypt_chat">Encrypt On/Off</string>
-  <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">First time using Gibberbot?</string>
-  <string name="welcome_skip">Can\'t wait to get started?</string>
-  <string name="welcome_about">Get Started</string>
-  <string name="welcome_account">Account Setup</string>
-  <string name="about_welcome_title">About Gibberbot</string>
-  <string name="about_welcome">Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
-  <string name="about_otr_title">How is it secure?</string>
-  <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.\n\nThe OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
-  <string name="about_security_title">Are My Chats Secure?</string>
-  <string name="about_security">Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
-  <string name="setup_passphrase_title">Passphrase Setup</string>
-  <string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibberbot data from unjust access.</string>
-  <string name="setup_passphrase_label1">Passphrase:</string>
-  <string name="setup_passphrase_label2">Passphrase (again):</string>
-  <string name="account_setup_example_email_address">user@domain.com</string>
-  <string name="account_setup_password">password</string>
-  <string name="account_setup_advanced_button">Advanced Account Settings</string>
-  <string name="account_setup_pers_sub">Persistence</string>
-  <string name="account_setup_pers_pw_title">Remember Password</string>
-  <string name="account_setup_pers_pw_on">Password cached</string>
-  <string name="account_setup_pers_pw_off">Password not cached</string>
-  <string name="account_setup_pers_auto_title">Automatically Sign In</string>
-  <string name="account_setup_pers_auto_on">Connect at Gibberbot start-up</string>
-  <string name="account_setup_pers_auto_off">Don\'t connect at Gibberbot start-up</string>
-  <string name="account_setup_pers_now_title">Sign In Now</string>
-  <string name="account_setup_pers_now_on">Connect following account setup</string>
-  <string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
-  <string name="account_setup_personal_sub">Personal (optional)</string>
-  <string name="account_setup_personal_alias_title">Account Alias (your name)</string>
-  <string name="account_setup_personal_alias_sub">How your account appears online</string>
-  <string name="account_setup_personal_profile_title">Profile</string>
-  <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
-  <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
-  <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
-  <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
-  <string name="account_setup_advanced_enc_off">Disable chat encryption</string>
-  <string name="account_setup_signin_a">Validating credentials...</string>
-  <string name="account_setup_signin_b">Generating keypair...</string>
-  <string name="account_setup_signin_c">Signing in...</string>
-  <string name="account_setup_error_validating">Gibberbot encountered an error while validating your username or password - please check them and try again.</string>
-  <string name="account_setup_error_keypair">Gibberbot encountered an error while generating a keypair.</string>
-  <string name="account_setup_error_server">Gibberbot encountered an error while connecting to the chat server - please check your configuration and try again.</string>
-  <string name="account_setup_error_connectivity">Gibberbot encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
-  <string name="label_fingerprint_remote">Their Fingerprint</string>
-  <string name="label_fingerprint_local">Your Fingerprint</string>
-  <string name="menu_sign_in">Sign In</string>
-  <string name="menu_gen_key">Regen Key</string>
-  <string name="error_suspended_connection">Gibberbot has lost a connection to the network</string>
-  <string name="error_reestablish_connection">Gibberbot is attempting to restablish a connection</string>
-  <string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
-  <string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
-  <string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
-  <string name="otr_session_status_verified">This chat is secured and verified</string>
-  <string name="account_wizard_setup_title">Account Wizard</string>
-  <string name="account_wizard_account_title">Your Account ID</string>
-  <string name="account_wizard_host_title">Configure Server</string>
-  <string name="account_wizard_ready_title">Are You Ready?</string>
-  <string name="account_wizard_setup_body">Enter your account ID to configure Gibberbot for your XMPP chat service. It looks like an email address:</string>
-  <string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
-  <string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
-  <string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
-  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
-  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
-  <string name="signin_password_prompt">Enter your password:</string>
-  <string name="pref_account_user">pref_account_user</string>
-  <string name="pref_account_pass">pref_account_pass</string>
-  <string name="pref_account_domain">pref_account_domain</string>
-  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
-  <string name="pref_account_port">pref_account_port</string>
-  <string name="pref_account_server">pref_account_server</string>
-  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
-  <string name="pref_security_require_tls">pref_security_require_tls</string>
-  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
-  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
-  <string name="pref_security_use_tor">pref_security_use_tor</string>
-  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
-  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
-  <string name="pref_enable_notification">pref_enable_notification</string>
-  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
-  <string name="pref_notification_sound">pref_notification_sound</string>
-  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
-  <string name="account_settings_title">Account Settings</string>
-  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
-  <string name="menu_view_groups">Groups</string>
-  <string name="otr_gen_key">Generating new OTR keypair...</string>
-  <string name="search_label">Contact</string>
-  <string name="search_hint">type the name of a contact to chat with</string>
-  <string name="search_button_text">Go</string>
-  <string name="menu_locale">Language</string>
-  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
-  <string name="do_srv_lookup">Do SRV Lookup</string>
-  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
-  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
-  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
-  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
-  <string name="tls_verification">TLS Verification</string>
-  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
-  <string name="transport_encryption">Transport Encryption</string>
-  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
-  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
-  <string name="connect_server">Connect Server</string>
-  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
-  <string name="server_port">Server Port</string>
-  <string name="xmpp_resource">XMPP Resource</string>
-  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
-  <string name="btn_next">Next</string>
-  <string name="btn_back">Back</string>
-  <string name="title_chats">Conversations</string>
+  <!--Generic error.-->
+  <string name="general_error"></string>
+  <!--Smiley names. May be overrided by the plugin.-->
+  <string-array name="default_smiley_names">
+    <item>Glad</item>
+    <item>Ledsen</item>
+    <item>Blinkar</item>
+    <item>Lipar</item>
+    <item>Förvånad</item>
+    <item>Pussar</item>
+    <item>Skriker</item>
+    <item>Cool</item>
+    <item>Dollarmun</item>
+    <item>Bortgjord</item>
+    <item>Generad</item>
+    <item>Ängel</item>
+    <item>Tveksam</item>
+    <item>Gråter</item>
+    <item>Hemlis</item>
+    <item>Skrattar</item>
+    <item>Förvirrad</item>
+  </string-array>
+  <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <string-array name="smiley_names">
+    <item>Glad</item>
+    <item>Ledsen</item>
+    <item>Blinkar</item>
+    <item>Lipar</item>
+    <item>Förvånad</item>
+    <item>Pussar</item>
+    <item>Skriker</item>
+    <item>Cool</item>
+    <item>Dollarmun</item>
+    <item>Bortgjord</item>
+    <item>Generad</item>
+    <item>Ängel</item>
+    <item>Tveksam</item>
+    <item>Gråter</item>
+    <item>Hemlis</item>
+    <item>Skrattar</item>
+    <item>Förvirrad</item>
+  </string-array>
+  <!--Welcome Splash Screen-->
+  <!--About: Welcome-->
+  <!--About: OTR-->
+  <!--About: Security-->
+  <!--Setup: Passphrase-->
+  <!--Account Setup: Account-->
+  <!--Account Setup: Persistence-->
+  <!--Account Setup: Personal-->
+  <!--Account Setup: Advanced-->
+  <!--Account Setup: First Sign In-->
+  <!--Account Setup: Sign In Errors-->
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <!--added 2011/09/01-->
 </resources>

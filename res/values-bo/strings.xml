@@ -1,0 +1,620 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="ro_perm_label">ད་ལྟ་འདིར་མེད།</string>
+  <string name="ro_perm_desc"></string>
+  <string name="wo_perm_label">ཡིག་འཕྲིན་བྲིས།</string>
+  <string name="wo_perm_desc">ཉེར་སྤྱོད་དག་ལ་IM ནང་དོན་མཁོ་སྤྲོད་ཀྱི་སྒང་དུ་རེའུ་མིག་འབྲི་རུ་བཅུག</string>
+  <!--The application label. This appears in the application launcher on the
+    Home screen. This is a noun.-->
+  <string name="im_label">Gibberbot</string>
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <string name="landing_page_title">གླེང་མོལ། - ཐོ་མཛོད་ཞིག་གདམ།</string>
+  <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">དེའི་སྐོར།</string>
+  <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">ཐོ་མཛོད་ཀྱི་སྐོར།</string>
+  <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">ཐོ་མཛོད་འདི་རྩོམ་སྒྲིག་བྱེད།</string>
+  <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">ཐོ་མཛོད་སུབ།</string>
+  <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">ཆ་ཚང་སྒོ་རྒྱོབས།</string>
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <string name="choose_account_title">གླེང་མོལ། - ཐོ་མཛོད་ཞིག་གདམ།</string>
+  <!--Displays the number of ongoing chats on the landing page.-->
+  <string name="conversations"></string>
+  <!--Sign in progress screen menu items.-->
+  <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
+  <string name="menu_cancel_signin">ནང་འཇུག་མཚམས་ཞོག</string>
+  <!--Contact list screen menu and context menu items.-->
+  <!--This is a screen menu item for the Contact List Screen. It lets the
+    user to add a friend to the friend list. May be overrided by the plugin.-->
+  <string name="menu_add_contact">འབྲེལ་གཏུག་ནང་འཇུག</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    remove a contact from the list. May be overrided by the plugin.-->
+  <string name="menu_remove_contact">འབྲེལ་མིང་སུབ།</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    block a contact. May be overrided by the plugin.-->
+  <string name="menu_block_contact">འབྲེལ་མིང་བཀག</string>
+  <!--Screen menu item on the contact list screen to go to the blocked list
+    screen.-->
+  <string name="menu_view_blocked">བཀག་ཟིན།</string>
+  <!--Screen menu item on the contact list to go back to the landing page,
+    where you can choose which IM service you want to use-->
+  <string name="menu_view_accounts">ཡིག་སྒམ།</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">གླེང་མོལ་གསར་བ།</string>
+  <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">ཁ་བྱང་གསར་བ།</string>
+  <!--Screen menu item on the contact list to go to the setting page.-->
+  <string name="menu_settings">སྒྲིག་བཟོ།</string>
+  <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">འབྲེལ་མིང་འཚོལ།</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    start a chat with a friend. May be overried by the plugin.-->
+  <string name="menu_start_chat">གླེང་མོལ་འགོ་འཛུགས།</string>
+  <!--Screen menu item on the contact list to sign out the service.-->
+  <string name="menu_sign_out">སྒོ་རྒྱོབས།</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the
+    user to view the contact's profile. May be overrided by the plugin.-->
+  <string name="menu_view_profile">བདེན་དཔང་བྱེད།</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a conversation in the contact list. It lets the
+    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">གསང་སྡོམ་འགོ་བརྩམ།</string>
+  <string name="menu_otr_stop">གསང་སྡོམ་མཚམས་འཇོག</string>
+  <string name="menu_clear_chat">གླེང་མོལ་གཙང་མ་བཟོས།</string>
+  <string name="menu_end_conversation">གླེང་མོལ་མཚམས་འཇོག</string>
+  <!--Chat screen menu and context menu items.-->
+  <!--Screen menu item on the chat screen to go back the contact list screen.
+    May be overrided by the plugin.-->
+  <string name="menu_view_contact_list">འབྲེལ་གཏུག་ཐོ་གཞུང་།</string>
+  <!--Screen menu item on the chat screen to invite another contact to join the chat.
+    Currently not supported.-->
+  <string name="menu_invite_contact">མགྲོན་འབོད་བྱེད།\u2026</string>
+  <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
+    switch between chats. May be overrided by the plugin.-->
+  <string name="menu_switch_chats">གླེང་མོལ་བརྗེ་པོ་རྒྱོབས།</string>
+  <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
+  <string name="menu_insert_smiley">སེམས་ཁམས་མཚོན་རྟགས་འཇུག</string>
+  <!--Strings for the contact info screen-->
+  <string name="menu_scan">མཛུབ་རིས་ཞིབ་བརྟག་བྱེད།</string>
+  <string name="menu_fingerprint">ཁྱེད་རང་གི་མཛུབ་རིས།</string>
+  <string name="menu_verify_fingerprint">མཛུབ་རིས་ཞིབ་བརྟག་བྱེད།</string>
+  <string name="menu_verify_secret">གསང་བ་ཞིབ་བརྟག་བྱེད།</string>
+  <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
+     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
+     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
+     be appended to the end of this.-->
+  <string name="menu_plus">དེམ་ཐོ།+</string>
+  <!--The title of a simple input dialog. Currently not used.-->
+  <!--Strings for the confirm dialogs-->
+  <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
+  <string name="confirm">ངེས་བརྟན་གྱིས།</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">ཁྱེད་ཀྱིས་ཞབས་ཞུ་ཚང་མ་སྒོ་རྒྱག་འདོད་དམ།</string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact"></string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact"></string>
+  <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact"></string>
+  <!--The "OK" button label for the error message dialog.-->
+  <string name="ok">འགྲིག</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="cancel">ཕྱིར་འཐེན་བྱེད།</string>
+  <!--The "OK" button label for the confirm dialogs.-->
+  <string name="yes">འགྲིག</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="no">ཕྱིར་འཐེན་བྱེད།</string>
+  <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt"></string>
+  <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <string name="signed_out_prompt_with_error"></string>
+  <!--These strings displayed on the landing page.-->
+  <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account"></string>
+  <!--These strings are displayed on the account setup page.-->
+  <!--The username label. May be overrided by the plugin.-->
+  <string name="label_username">User@Host</string>
+  <!--The password label.-->
+  <string name="label_password">གསང་ཚིག</string>
+  <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
+  <string name="remember_password">ངའི་གསང་ཚིག་དྲན་པར་བྱེད།</string>
+  <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
+  <string name="keep_me_signed_in">ངར་ རང་འགུལ་གྱིས་ནང་དུ་འཇུག</string>
+  <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
+  <string name="sign_up">ཁྱེད་རང་ལ་ཐོ་མཛོད་མེད་དམ། \u2019</string>
+  <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">ཁྱེད་རང་གི་བདེ་འཇགས་ཆེད། གལ་ཏེ་ཁྱེད་ཀྱི་ལག་འཁེར་ཁ་པར་བརླགས་པའམ་བརྐུས་པ་སོགས་བྱུང་ན། རྩི་ས་འཁོར་ནས་དྲ་གནས་ནང་འཛུལ་ཏེ་གསང་ཚིག་བརྗེ་བོ་རྒྱོབས།</string>
+  <string name="check_auto_sign_in">ཁྱེད་ཀྱིས་ཉེར་སྤྱོད་འདི་ཁ་ཕྱེས་ཐེངས་རེར་། གདམ་ཀ་འདིས་ཁྱེད་རང་ནང་འཇུག་བྱེད་གི་རེད་། གདམ་ཀ་དེ་ལས་མེད་བཟོ་ན། ཕྱི་ལ་ཐོན། དེ་ནས་\"ང་རང་བཞིན་གྱིས་ནང་འཇུག་བྱོས་\"ཟེར་བའི་སྒམ་ཆུང་ནང་གི་རྟགས་དེ་གསུབ།</string>
+  <!--The button label which lets the user to sign into the IM service.-->
+  <string name="sign_in">ནང་དུ་ཞུགས།</string>
+  <!--These strings are displayed the sign in progress screen.-->
+  <!--The title of the sign-in progress screen.-->
+  <string name="signing_in_to">getting the Gibberbot going...</string>
+  <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
+  <string name="signing_in_wait">ནང་ཞུགས་བྱེད་བཞིན་ཡོད། \u2026</string>
+  <!--Dialog title-->
+  <!--This is the title for the background data prompt dialog, asking the user whether
+    to enable the background data if it is disabled when launch the IM app-->
+  <string name="bg_data_prompt_title">རྒྱབ་ལྗོངས་ཀྱི་གཞི་གྲངས་ནུས་མེད་བཟོས།</string>
+  <!--Dialog messages:-->
+  <!--This is the message displayed in the prompt dialog when we launch IM but found
+    the background data is disabled-->
+  <string name="bg_data_prompt_message"></string>
+  <!--Dialog buttons:-->
+  <!--OK button for the prompt dialog-->
+  <string name="bg_data_prompt_ok">ཐུབ་པ་བཟོས།</string>
+  <!--Cancel button for the prompt dialog-->
+  <string name="bg_data_prompt_cancel"> ཕྱིར་དོན།</string>
+  <!--These strings are displayed on the contact list page.-->
+  <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation"></string>
+  <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"></string>
+  <!--The title of the subscription request group if there is any.-->
+  <string name="subscriptions">ངོ་ཤེས་ཀྱི་མགྲོན་འབོད།</string>
+  <!--Prefix of the contact if he/she is not in the user's list.-->
+  <string name="unknown_contact">(<i> རྒྱུས་མེད།</i>)</string>
+  <!--Displayed as a child item of the contact list if it's empty.-->
+  <string name="empty_contact_group"> སྟོང་པ།</string>
+  <!--Displayed as a child item of the ongoing chat group if it's empty.-->
+  <string name="empty_conversation_group">གླེང་མོལ་མེད།</string>
+  <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
+  <string name="contacts_picker_title">མགྲོན་འབོད་བྱེད་རྒྱུའི་འབྲེལ་མིང་(རྣམས་)གདམ།</string>
+  <string name="contact_filter_hint">འབྲེལ་གཏུགས་དེ་རྙེད་པར་ཡི་གེ་བཏགས།</string>
+  <string name="empty_contact_list">འབྲེལ་མིང་རྣམས་རྙེད་མ་བྱུང་།</string>
+  <!--The title of blocked contact list.-->
+  <string name="blocked_list_title"></string>
+  <!--Displayed if there isn't any blocked contact.-->
+  <string name="no_blocked_contact">འབྲེལ་མིང་བཀག་པ་མི་འདུག</string>
+  <!--These strings are displayed in the contact info dialog.-->
+  <!--The title of the contact profile dialog.-->
+  <string name="contact_profile_title">འབྲེལ་མིང་གི་ངོ་སྤྲོད་མདོར་བསྡུས།</string>
+  <!--The label of the status on the contact profile dialog.-->
+  <string name="label_status">རྣམ་པ། :</string>
+  <!--The label of the client type on the contact profile dialog.-->
+  <string name="label_client_type">མཁོ་མཁན་གྱི་རིགས།</string>
+  <!--The client type which indicates the contact is sign in with a PC client.-->
+  <string name="client_type_computer">རྩིས་འཁོར།</string>
+  <!--The client type which indicates the contact is sign in with a mobile client.-->
+  <string name="client_type_mobile">ལག་འཁྱེར་ཁ་པར།</string>
+  <!--The contact presence status. May be overrided by the plugin.-->
+  <!--This is an adjective describing the "online" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_available">འཁོར་མཐུད།</string>
+  <!--This is an adjective describing the "busy" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_busy">བྲེལ་བ་ཡོད།</string>
+  <!--This is an adjective describing the "away" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_away">ད་ལྟ་འདིར་མེད།</string>
+  <!--This is an adjective describing the "idle" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_idle">འགུལ་སྐྱོད་མེད་པར་བསྡད་ཡོད།</string>
+  <!--This is an adjective describing the "offline" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_offline">འཁོར་བྲལ།</string>
+  <!--This is an adjective describing the "invisible" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_invisible">དྲ་ཐོག་ན་མི་འདུག </string>
+  <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <string name="preference_title"></string>
+  <string name="data_channel_label">རེའུ་མིག་གི་བརྒྱུད་ལམ།</string>
+  <string name="data_encoding_label">རེའུ་མིག་ཨང་སྒྲིག</string>
+  <string name="cir_channel_label">CIR བརྒྱུད་ལམ།</string>
+  <string name="host_label">གནས་ཚང་།</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">འཕྲིན་ཐུང་།</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">XML</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">ཉར་ཚགས་བྱེད།</string>
+  <!--These strings are displayed on the chat screen-->
+  <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with"></string>
+  <!--In the chat history list, this label is added before the chats the user typed-->
+  <string name="me">ངས།</string>
+  <!--On the chat screen, this is the hint text in the input field where the user enters the
+    chat. This needs to fit in both portrait and landscape mode-->
+  <string name="compose_hint">ཡི་གེ་བཏགས།</string>
+  <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"></string>
+  <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <string name="contact_away"></string>
+  <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <string name="contact_busy"></string>
+  <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <string name="contact_offline"></string>
+  <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <string name="contact_joined"></string>
+  <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <string name="contact_left"></string>
+  <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <string name="time_stamp"></string>
+  <!--The send button on the chat screen.-->
+  <string name="send">གཏོང་།</string>
+  <!--Error message when a chat failed to be sent.-->
+  <string name="msg_sent_failed">འཕྲིན་ཐུང་འདི་བཏང་མི་ཐུབ།</string>
+  <!--Warning message displayed in the chat screen when connection is lost.-->
+  <string name="disconnected_warning">དྲ་ཐོག་ཞབས་ཞུའི་འཕྲུལ་ཆས་ལ་འབྲེལ་ལམ་ཆད་སོང་། འབྲེལ་ལམ་བསྐྱར་དུ་སྦྲེལ་མཚམས། འཕྲིན་ཐུང་དེ་གཏོང་ཐུབ</string>
+  <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <string name="contact_offline_warning"></string>
+  <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <string name="contact_not_in_list_warning"></string>
+  <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
+  <string name="select_link_title">འབྲེལ་ཐག་འདེམས།</string>
+  <!--Displayed when there is no active chats in the chat dashboard.-->
+  <string name="empty_chat_list">འགུལ་སྐྱོད་བྱེད་བཞིན་པའི་གླེང་མོལ་མི་འདུག</string>
+  <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">གསང་དམ་ཅན་གྱི་གླེང་མོལ་འགོ་ཚུགས་པ།</string>
+  <string name="stopping_otr_chat">གསང་དམ་ཅན་གྱི་གླེང་མོལ་འགོག་པ།</string>
+  <!--Add contact screen-->
+  <!--This is the title of the Add Contact Screen.-->
+  <string name="add_contact_title">འབྲེལ་གཏུག་ནང་འཇུག</string>
+  <!--The label of the email input box on the Add Contact Screen.-->
+  <string name="input_contact_label">ཁྱེད་ཀྱི་མགྲོན་འབོད་བྱེད་འདོད་ཡོད་པའི་གང་ཟག་དེའི་དྲ་རྒྱའི་ཁ་བྱང་། :</string>
+  <!--The label of the list spinner on the Add Contact Screen.-->
+  <string name="choose_list_label">ཐོ་ཞིག་གདམ།:</string>
+  <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
+  <string name="invite_instruction">འབྲེལ་ཁོངས་ནས་མིང་དེ་བཏགས་ནས་སྣོན།</string>
+  <!--The label of the button on the Add Contact Screen to send the invitation.-->
+  <string name="invite_label">མགྲོན་འབོད་གཏོང་།</string>
+  <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">སྟོང་བཤད་། </string>
+  <string name="provider_full_name_llxmpp">གཞི་རིམ་དྲ་ཐོག་ཞབས་ཞུ་མེད་པའི་ XMPP</string>
+  <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">ཐོ་མཛོད་སྒྲིག་འཇུག</string>
+  <string name="encryption_and_anonymity_title">གསང་སྡོམ་དང་བཀབ་མིང་།</string>
+  <string name="hide_offline_contacts">དྲ་ལམ་ན་མེད་པའི་འབྲེལ་གཏུགས་ཁག་སྦས།</string>
+  <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
+  <string name="notification_group_title">བརྡ་གཏོང་སྒྲིག་བཟོ།</string>
+  <!--This is the text label of the setting for IM notifications; a summary is displayed in
+    smaller text below this label-->
+  <string name="notification_enabled_title">འཕྲིན་ཐུང་འབྱོར་བརྡ།</string>
+  <!--This is the summary of the setting for IM notifications-->
+  <string name="notification_enabled_summary">འཕྲིན་ཐུང་འབྱོར་སྐབས་རྣམ་པའི་ཚན་བྱང་གི་ནང་དུ་སྟོན།</string>
+  <!--This is the text label of the vibrate notification setting; a summary is displayed in
+    smaller text below this label-->
+  <string name="foreground_service_title">སྔོན་སྤྱོད་རིམ་པ་གལ་ཆེ་ཤོས་དེ་བེད་སྤྱོད་ཐོངས་། </string>
+  <string name="foreground_service_summary">ཡིས་ང་ཚོའི་དྲ་འབྲེལ་ཞབས་ཞུ་བསྐྱར་དུ་འགོ་འཛུགས་བྱེད་པའི་གོ་སྐབས་ཉུང་དུ་ཐོངས་། འདི་ཡིས་བརྡ་གཏོང་ཁོར་ཡུག་ཏུ་བརྡ་འཇོག་གི་རེད་། </string>
+  <string name="notification_vibrate_title"> འདར་བཅུག</string>
+  <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_vibrate_summary">འཕྲིན་ཐུང་འབྱོར་སྐབས་ཡང་འདར་བཅུག</string>
+  <!--This is the text label of the sound notification setting; a summary is displayed in
+    smaller text below this label-->
+  <string name="notification_sound_title">སྒྲ།</string>
+  <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_sound_summary">འཕྲིན་ཐུང་འབྱོར་སྐབས་ཡང་དྲིལ་སྒྲ་གཏོང་།</string>
+  <!--This is the text label selecting the ringtone. Clicking on this will take the user to
+    the ringtone picker-->
+  <string name="notification_ringtone_title">དྲིལ་སྒྲ་གདམ།</string>
+  <!--Group chat invitation screen (Currently not used.)-->
+  <!--The prompt message displayed on the group chat invitation screen.-->
+  <string name="invitation_prompt"></string>
+  <!--Toast when group chat invitation has been sent to the contact.-->
+  <string name="invitation_sent_prompt"></string>
+  <!--The button for accepting an invitation.-->
+  <string name="accept_invitation">མོས་མཐུན་ཡོད།</string>
+  <!--The button for decline an invitation.-->
+  <string name="decline_invitation"> ཁས་མི་ལེན།</string>
+  <!--Friend subscription screen-->
+  <string name="subscription_prompt"></string>
+  <!--The button for approving a subscription request.-->
+  <string name="approve_subscription">མོས་མཐུན་ཡོད།</string>
+  <!--The button for delecling a subscription request.-->
+  <string name="decline_subscription"> ཁས་མི་ལེན།</string>
+  <!--Toast when approve a subscription request failed.-->
+  <string name="approve_subscription_error"></string>
+  <!--Toast when decline a subscription request failed.-->
+  <string name="decline_subscription_error"></string>
+  <!--Notification bar messages-->
+  <!--This is the notification bar message when a new IM arrives.-->
+  <string name="newMessages_label"></string>
+  <!--This is the notification bar message when new IMs comes from more than one contact.-->
+  <string name="num_unread_chats"></string>
+  <!--This is the notification bar message when an invitation from someone arrived.-->
+  <string name="subscription_notify_text"></string>
+  <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
+  <string name="notify_groupchat_label">མཉམ་འདུས་གླེང་མོལ་མགྲོན་འབོད་།</string>
+  <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
+  <string name="group_chat_invite_notify_text"></string>
+  <!--Toast when a contact is added into a list.-->
+  <string name="add_contact_success"></string>
+  <!--Toast when a contact is deleted from the list.-->
+  <string name="delete_contact_success"></string>
+  <!--Toast when a contact is blocked.-->
+  <string name="block_contact_success"></string>
+  <!--Toast when a contact is unblocked.-->
+  <string name="unblock_contact_success"></string>
+  <!--IM service permission-->
+  <string name="perm_label">IM ཞབས་ཞུ་འགོ་ཚུགས།</string>
+  <string name="perm_desc">ཉེར་སྤྱོད་ཁག་ལ། དྲ་ལམ་བརྒྱུད་IM ཞབས་ཞུ་བེད་སྤྱོད་གཏོང་བཅུག</string>
+  <!--Errors-->
+  <!--The title of the error dialog-->
+  <string name="error">དོ་སྣང་།</string>
+  <!--Error message for sign in failed.-->
+  <string name="login_service_failed"></string>
+  <!--Error message for creating contact list failed.-->
+  <string name="add_list_failed">ཐོ་གཞུང་དེ་བསྣན་མི་འདུག</string>
+  <!--Error message for blocking contact failed.-->
+  <string name="block_contact_failed">འབྲེལ་མིང་དེ་བཀག་མེད།</string>
+  <!--Error message for unblocking contact failed.-->
+  <string name="unblock_contact_failed">འབྲེལ་གཏུགས་དེ་བཀག་འདུག</string>
+  <!--Error message for when the user didn't select a contact as required.-->
+  <string name="select_contact">སྐུ་མཁྱེན། དང་པོ་འབྲེལ་མིང་ཞིག་འདེམས།</string>
+  <!--Error message for when the current connection disconnected.-->
+  <string name="disconnected">འབྲེལ་བ་བཅད་པ།</string>
+  <!--Error message for when the IM service has died.-->
+  <string name="service_error">ཞབས་ཞུའི་ནོར་འཁྲུལ།</string>
+  <!--Error message for loading contact list failed.-->
+  <string name="load_contact_list_failed">འབྲེལ་གཏུགས་ཐོ་གཞུང་དེ་སྣོན་འཇུག་བྱས་མི་འདུག</string>
+  <!--Error message for failed to connect to the server.-->
+  <string name="cant_connect_to_server">དྲ་ཐོག་ཞབས་ཞུར་སྦྲེལ་ཐུབ་གི་མི་འདུག སྐུ་མཁྱེན། དྲ་ལམ་ལ་བལྟ་རོགས།</string>
+  <!--Error message for when the contact is already in the list.-->
+  <string name="contact_already_exist"></string>
+  <!--Error message for when the contact is blocked.-->
+  <string name="contact_blocked"></string>
+  <!--Error message for when the contact list is not compeletely loaded.-->
+  <string name="contact_not_loaded">ཁྱེད་ཀྱི་འབྲེལ་གཏུགས་ཐོ་གཞུང་སྣོན་འཇུག་བྱེད་པའི་སྐབས་སུ། སྒུག་རོགས།</string>
+  <!--Error message for when a network error occurred.-->
+  <string name="network_error">དྲ་ལམ་གྱི་སྐྱོན་ཞིག་བྱུང་སོང་།</string>
+  <string name="wifi_not_connected_error">དྲ་འབྲེལ་འདི་ལ་ WiFi དགོས་ངེས་རེད་། </string>
+  <!--Error message for lack of server support error.-->
+  <string name="service_not_support">དྲ་ལམ་ཞབས་ཞུ་ཡིས་བྱེད་ལས་འདིར་རྒྱབ་སྐྱོར་བྱེད་ཀྱི་མི་འདུག</string>
+  <!--Erorr message for bad password error.-->
+  <string name="invalid_password">ཁྱེད་ཀྱིས་ནང་འཇུག་བྱས་བའི་གསང་ཚིག་དེར་ངོས་ལེན་མི་འདུག</string>
+  <!--Error message for server internal error.-->
+  <string name="internal_server_error">དྲ་ལམ་ཞབས་ཞུ་དེ་དཀའ་ངལ་ཞིག་ལ་འཕྲད་སོང་།</string>
+  <!--Error message for when the server does not implement the feature.-->
+  <string name="not_implemented">དྲ་ལམ་ཞབས་ཞུ་ཡིས་བྱེད་ལས་འདིར་རྒྱབ་སྐྱོར་བྱེད་ཀྱི་མི་འདུག</string>
+  <!--Error message for server not available error.-->
+  <string name="service_unavaiable">གནས་སྐབས་རིང་དྲ་ལམ་ཞབས་ཞུ་དེ་ཡོང་གི་མི་འདུག</string>
+  <!--Error message for timeout error.-->
+  <string name="timeout">དྲ་ལམ་ཞབས་ཞུ་ཡི་དུས་ཚོད་རྫོགས་འདུག</string>
+  <!--Error message for when the server does not support the current protocol version.-->
+  <string name="version_not_supported">དྲ་ལམ་ཞབས་ཞུ་ཡིས་པར་གཞི་གསར་བ་འདིར་རྒྱབ་སྐྱོར་བྱེད་ཀྱི་མི་འདུག</string>
+  <!--Error message for when the message queue on the server is full.-->
+  <string name="message_queue_full">འཕྲིན་ཐུང་གི་རུ་སྟར་ཁེངས་འདུག</string>
+  <!--Error message for when the domain is not supported by the server.-->
+  <string name="domain_not_supported">དྲ་ཐོག་ཞབས་ཞུ་ཡིས་དམིགས་བཀར་ཁྱབ་ཁོངས་སུ་གཏད་པར་རྒྱབ་སྐྱོར་བྱེད་ཀྱི་མི་འདུག</string>
+  <!--Error message for a bad username error.-->
+  <string name="unknown_user">བེད་སྤྱོད་གཏོང་མཁན་གྱི་མིང་ཁྱེད་ཀྱིས་ནང་འཇུག་བྱས་བ་དེ་ངོས་འཛིན་བྱས་མ་སོང་།</string>
+  <!--Error message for when the user is blocked by the recipient.-->
+  <string name="recipient_blocked_the_user">དགོངས་དག ཁྱེད་རང་བདག་པོས་བཀག་འདུག</string>
+  <!--Error message for session expired error.-->
+  <string name="session_expired">གཏམ་གླེང་དུས་ཡུན་རྫོགས་འདུག སྐུ་མཁྱེན། བསྐྱར་དུ་ནང་ཞུགས་བྱེད་རོགས།</string>
+  <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
+  <string name="forced_logout">ཁྱེད་ཀྱིས་མཁོ་མཁན་གཞན་ཞིག་བརྒྱུད་ནས་ནང་འཛུལ་བྱས་འདུག</string>
+  <string name="already_logged_in">ཁྱེད་ཀྱིས་གཞན་བརྒྱུད་ནས་ནང་འཛུལ་བྱས་འདུག</string>
+  <!--Error message for msisdn error.-->
+  <string name="msisdn_error">དགོངས་དག ཁྱེད་ཀྱི་བྱང་བུ་ནས་ཁ་པར་ཨང་གྲངས་བལྟ་ཐུབ་གི་མི་འདུག དེར་བརྟེན། ཁྱེད་ཀྱི་སྟངས་འཛིན་པའི་རྩ་ནས་རོགས་རམ་ལོངས།</string>
+  <!--Error message for when the user is not signed in.-->
+  <string name="not_signed_in">གནས་སྐབས་སུ་ཁྱེད་རང་ནང་འཛུལ་བྱས་མི་འདུག </string>
+  <!--Generic error.-->
+  <string name="general_error"></string>
+  <!--Smiley names. May be overrided by the plugin.-->
+  <string-array name="default_smiley_names">
+    <item>དགའ་པོ།</item>
+    <item> ཡིད་སྐྱོ་བོ།</item>
+    <item>མིག་འཚུམ།</item>
+    <item>ལྕེ་སྟོན་པ།</item>
+    <item> ཧང་སངས་བ།</item>
+    <item> ཁ་སྐྱེལ་པ།</item>
+    <item> སྐད་ཅོར་རྒྱག་པ།</item>
+    <item>བསིལ་པོ་བྱེད་པ།</item>
+    <item>Money mouth</item>
+    <item>Foot in mouth</item>
+    <item>ཁ་སྐྱེངས་པ།</item>
+    <item> མཁའ་འགྲོ།</item>
+    <item>སེམས་ཐག་མ་ཆོད་པ།</item>
+    <item> ངུ་བ།</item>
+    <item>Lips are sealed</item>
+    <item> གད་མོ་ཤོར་བ།</item>
+    <item> ཐེ་ཚོམ་སྐྱེས་པ།</item>
+  </string-array>
+  <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <string-array name="default_smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string-array name="smiley_names">
+    <item>དགའ་པོ།</item>
+    <item> ཡིད་སྐྱོ་བོ།</item>
+    <item>མིག་འཚུམ།</item>
+    <item>ལྕེ་སྟོན་པ།</item>
+    <item> ཧང་སངས་བ།</item>
+    <item> ཁ་སྐྱེལ་པ།</item>
+    <item> སྐད་ཅོར་རྒྱག་པ།</item>
+    <item>བསིལ་པོ་བྱེད་པ།</item>
+    <item>Money mouth</item>
+    <item>Foot in mouth</item>
+    <item>ཁ་སྐྱེངས་པ།</item>
+    <item> མཁའ་འགྲོ།</item>
+    <item>སེམས་ཐག་མ་ཆོད་པ།</item>
+    <item> ངུ་བ།</item>
+    <item>Lips are sealed</item>
+    <item> གད་མོ་ཤོར་བ།</item>
+    <item> ཐེ་ཚོམ་སྐྱེས་པ།</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="buddy_list_title"></string>
+  <string name="menu_contact_list">འབྲེལ་གཏུག་ཐོ་གཞུང་།</string>
+  <string name="menu_view_encrypt_chat">གསང་བ་སྡོམ་/མི་སྡོམ།</string>
+  <string name="use_tor">ཀྲོར་བརྒྱུད་ནས་འབྲེལ་མཐུད་བྱོས།</string>
+  <!--Welcome Splash Screen-->
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">ཐེངས་དང་པོར་(Gibberbot)བེད་སྤྱོད་གཏོང་གི་ཡོད་དམ།</string>
+  <string name="welcome_skip">འགོ་འཛུགས་པར་རྔམས་ཀྱི་འདུག</string>
+  <string name="welcome_about">འགོ་བཙུགས་།</string>
+  <string name="welcome_account">བང་མཛོད་སྒྲིག་འཇུག</string>
+  <!--About: Welcome-->
+  <string name="about_welcome_title">Gibberbot ཡི་སྐོར།</string>
+  <string name="about_welcome">Gibberbot ནི་ལག་འཁྱེར་ཁ་པར་གྱི་འཕྲིན་ཐུང་ཉེར་སྤྱོད་ཅིག་ཡིན་ཞིང་། དེས་བདེ་སྲུང་མ་ལག་འཕར་མ་མཁོ་སྤྲོད་བྱས་དེ་ཁྱེད་ཀྱི་གླེང་མོལ་དང་འབྲེལ་ལམ་ལ་རྩད་གཅོད་གཏོང་མཁན་ཚོ་འགོག་གི་རེད་། \n\nཉེར་སྤྱོད་དེས། དྲ་ཐོག་གླེང་མོལ་གྱི་ཞབས་ཞུ་གང་རུང་སྟེ་། Jabber དང་ XMPP protocal ཡི་ཁོངས་སུ་གཏོགས་པའི་ Google GTalk or Jabber.org རིགས་ལ་རྒྱབ་སྐྱོར་བྱེད་གི་རེད་། </string>
+  <!--About: OTR-->
+  <string name="about_otr_title">དེ་ཇི་ལྟར་བདེ་འཇགས་ཡིན་ནམ།</string>
+  <string name="about_otr">ཟིན་ཐོ་མེད་པའི་འཕྲིན་གཏོང་ནི་འཛམ་གླིང་ནང་གི་སྒེར་གྱི་གླེང་མོལ་ཚང་མ་གསང་བདེ་ཡོང་བའི་ཆེད་དུ་བཟོས་བའི་བདེ་འཇགས་མ་ལག་ཞིག་སྟེ། དེའི་ཁོངས་སུ་གསང་སྡོམ་དང་ར་སྤྲོད་། ཕྱི་འདོར་། གསང་གཏོང་བཅས་ཚུད་། \n\nOTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium དང་ཡང་ན་ Pidgin  ལྟ་བུའི་མཉམ་དུ་བསྟུན་ཐུབ་།\n\n</string>
+  <!--About: Security-->
+  <string name="about_security_title">ངའི་གླེང་མོལ་དེ་བདེ་འཇགས་ཡིན་ནམ།</string>
+  <string name="about_security">ཁྱེད་ནས་འཕྲིན་ཐུང་གཏོང་ས་དེས་ཀྱང་ཉར་སྤྱོད་མ་ལག་གཅིག་མཚུངས་བེད་སྤྱོད་བཏང་ན། ད་གཟོད་ཁྱེད་ཀྱི་ Gibberbot གླེང་མོལ་གསང་སྡོམ་པར་གཞི་དེས་ལས་ཀ་བྱེད་ཐུབ། དེར་བརྟེན། ཁྱེད་ཀྱིས་འབྲེལ་གཏུགས་བྱེད་ས་དེས་ལག་འཁྱེར་ཁ་པར་སྟེངGibberbot དང་གློག་ཀླད་སྟེང་Adiumདང་Pidgin བེད་སྤྱོད་གཏོང་གི་ཡོད་མེད་ཁག་ཐེག་བྱོས། ཁྱེད་ནས་ཇི་ལྟར་Gibberbot ཡིས་ཁྱེད་ཀྱི་གླེང་མོལ་གསང་ཉར་བྱེད་ཀྱི་ཡོད་མེད་རྟོགས་ཐུབ། \nམཉམ་དུ་འགོ་འཛུགས། </string>
+  <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">གསང་ཚིག་སྒྲིག་སྦྱོར་བྱེད།</string>
+  <string name="setup_passphrase">འགོ་འཛུགས་མ་བྱས་སྔོན་ལ། ཁྱེད་རང་གི Gibberbot རེའུ་མིག་དེ་ནང་འཛུལ་གཞན་ལས་འགོག་ཆེད་ཉེན་སྲུང་ཅན་གྱི་གསང་ཚིག་ཞིག་འདེམས། </string>
+  <string name="setup_passphrase_label1">གསང་ཚིག :</string>
+  <string name="setup_passphrase_label2">གསང་ཚིག (སླར་ཡང་།):</string>
+  <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">གསང་ཚིག :</string>
+  <string name="account_setup_advanced_button">ཚད་མཐོའི་ཐོ་བྱང་སྒྲིག་བཟོ།</string>
+  <string name="account_select_type">ཐོ་མཛོད་ཀྱི་རིགས། </string>
+  <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">རྒྱུན་མཐུད་།</string>
+  <string name="account_setup_pers_pw_title">གསང་ཚིག་བསྐྱར་དྲན།</string>
+  <string name="account_setup_pers_pw_on">གསང་ཚིག་ཉར་བ།</string>
+  <string name="account_setup_pers_pw_off">གསང་ཚིག་ཉར་མི་འདུག</string>
+  <string name="account_setup_pers_auto_title">རང་འགུལ་གྱིས་ནང་དུ་འཛུལ་འཇུག</string>
+  <string name="account_setup_pers_auto_on">Gibberbot start-up ལ་མཐུད་།</string>
+  <string name="account_setup_pers_auto_off">Gibberbot start-up ལ་མ་མཐུད་། </string>
+  <string name="account_setup_pers_now_title">ད་ལྟ་ནང་དུ་ཞུགས།</string>
+  <string name="account_setup_pers_now_on">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མཐུད་།</string>
+  <string name="account_setup_pers_now_off">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མ་མཐུད་།</string>
+  <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">དོ་བདག་གི་(འདམ་ཀ།)</string>
+  <string name="account_setup_personal_alias_title">ཐོ་བྱང་གི་མིང་གཞན།</string>
+  <string name="account_setup_personal_alias_sub">ཇི་ལྟར་ཁྱེད་ཀྱི་ཐོ་བྱང་དྲ་ཐོག་ལ་མངོན་གྱི་ཡོད་དམ།</string>
+  <string name="account_setup_personal_profile_title">སོ་སོའི་ངོ་སྤྲོད།</string>
+  <string name="account_setup_personal_profile_sub">ཁྱེད་ཀྱི་སྐོར་ལ་འགྲེལ་བརྗོད་མདོར་བསྡུས་ཤིག</string>
+  <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">ཡི་གེ་ངེས་ལེན་མ་བྱས/ གསང་སྡོམ་བཟོས། </string>
+  <string name="account_setup_advanced_enc_auto">གལ་སྲིད་ཐུབ་ན། གླེང་མོལ་ཆ་ཚང་རང་བཞིན་ནས་གསང་སྡོམ་ཐུབ་པ་བྱོས།</string>
+  <string name="account_setup_advanced_enc_req">རེ་སྐུལ་ལྟར་། གླེང་མོལ་གསང་སྡོམ་བྱས།</string>
+  <string name="account_setup_advanced_enc_off">གླེང་མོལ་གསང་སྡོམ་བཤིག</string>
+  <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">ཁྱད་ཆོས་ནུས་ལྡན་བཟོ་བ།</string>
+  <string name="account_setup_signin_b">ལྡེ་མིག་གི་ཆ་བསྐྲུན་གྱི་ཡོད།...</string>
+  <string name="account_setup_signin_c">ནང་དུ་ཞུགས་བཞིན་ཡོད།</string>
+  <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">ཁྱེད་ཀྱི་མིང་དང་གསང་ཚིག་དག་སྐྱེལ་བྱེད་དུས་།Gibberbot ལ་དཀའ་ངལ་ཞིག་འཕྲད་འདུག སྐུ་མཁྱེན། དེ་ལ་བསྐྱར་དུ་ཚོད་ལྟ་དང་རྟག་དཔྱད་ཐོངས།</string>
+  <string name="account_setup_error_keypair">གཙོ་ངོས་བཟོ་འདོན་གྱི་སྐབས་སུ་། Gibberbot དཀའ་ངལ་ཞིག་ལ་འཕྲད་འདུག</string>
+  <string name="account_setup_error_server">གླེང་མོལ་ཞབས་ཞུ་དང་འབྲེལ་མཐུད་རྒྱག་པའི་སྐབས་སུ། Gibberbot དཀའ་ངལ་ཞིག་ལ་འཕྲད་འདུག སྐུ་མཁྱེན། ཁྱེད་ཀྱི་སྡེབ་སྒྲིག་མ་ལག་ལ་བལྟ་ཞིབ་བྱས་ནས་བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
+  <string name="account_setup_error_connectivity">དྲ་འབྲེལ་གྱི་སྐབས་སུ། Gibberbot ལ་དཀའ་ངལ་འཕྲད་འདུག སྐུ་མཁྱེན། ཁྱེད་ཀྱི་དྲ་བའི་འབྲེལ་མཐུད་ལ་ཞིབ་ལྟ་བྱས་ནས་བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
+  <string name="label_fingerprint_remote">ཁོང་ཚོའི་མཛུབ་ཐེལ།</string>
+  <string name="label_fingerprint_local">ཁྱེད་ཀྱི་མཛུབ་ཐེལ། </string>
+  <string name="menu_sign_in">ནང་དུ་ཞུགས།</string>
+  <string name="menu_gen_key">ལྡེ་མིག་གི་ཚབ།</string>
+  <string name="error_suspended_connection">Gibbertbot ཡིས་དྲ་རྒྱ་དང་འབྲེལ་མཐུད་བརླགས་འདུག </string>
+  <string name="error_reestablish_connection">Gibberbot ཡིས་དྲ་འབྲེལ་སླར་གསོ་ལ་འབད་བརྩོན་བྱེད་བཞིན་ཡོད་། </string>
+  <string name="otr_session_status_plaintext">ཉེན་བརྡ། གླེང་མོལ་འདི་གསང་སྡོམ་བྱེད་མེད།</string>
+  <string name="otr_session_status_encrypted">གློག་མོལ་དེ་བདེ་འཇགས་ཡིན། འོན་ཀྱང་། གླེང་མོལ་བྱེད་མཁན་རྣམས་ཀྱི་ངོ་རྟགས་ར་སྤྲོད་བྱས་མེད་།</string>
+  <string name="otr_session_status_finished">ཉེན་བརྡ། གླེང་མོལ་གྱི་གསང་སྡོམ་བཀག་ཟིན།</string>
+  <string name="otr_session_status_verified">གླེང་མོལ་འདི་ལ་བདེ་འཇགས་དང་ཁག་ཐག་ཡོད་། </string>
+  <string name="account_wizard_setup_title">ཐོ་མཛོད་ཀྱི་སྣེ་ཤན། </string>
+  <string name="account_wizard_account_title">ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་ངོ་རྟགས།</string>
+  <string name="account_wizard_host_title">སྡེབ་སྒྲིག་ཞབས་ཞུའི་འཕྲུལ་ཆས།</string>
+  <string name="account_wizard_ready_title">ཁྱེད་རང་གྲ་སྒྲིག་ཡིན་ནམ།</string>
+  <string name="account_wizard_setup_body">ཁྱེད་ཀྱི་ XMPP ཡི་གླེང་མོལ་ཞབས་ཞུའི་ཆེད་དུ་། ཁྱེད་རང་གི་ཐོ་མཛོད་ཁ་བྱང་བཅུག་ནས་ Gibberbot དེ་སྡེབ་སྒྲིག་བྱོས།</string>
+  <string name="account_wizard_account_body">སྐུ་མཁྱེན། ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་གསང་གྲངས་བཅུག (user@hostname)</string>
+  <string name="account_wizard_host_body">སྐུ་མཁྱེན། ཁྱེད་རང་གི་ Jabber/XMPP གླེང་མོལ་ཞབས་ཞུའི་མིང་དང་ཨང་གྲངས་འཇུག་རོགས། \n(5222 ནི་གཏན་འཁེལ་ཡིན།)</string>
+  <string name="account_wizard_ready_body">Gibberbot དེ་སྡེབ་སྒྲིག་བྱས་ཟིན། དེ་ནི་ཁྱེད་ཀྱི་ཞབས་འབྲེལ་ལ་མཐུད་ནས། བདེ་འཇགས་ཡོད་པ་དང་ཉེན་སྲུང་ཡོད་པ། གསང་རྒྱ་ལྡན་པ་བཅས་ཀྱི་སྒོ་ནས་གླེང་མོལ་འགོ་བཙུགས། </string>
+  <string name="account_wizard_no_domain_warning">ཁྱེད་ཀྱིས་ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་ཁ་བྱང་གི་ཆེད་དུ་། hostname.com ལ་ནང་འཇུག་བྱས་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
+  <string name="account_wizard_no_root_domain_warning">ཁྱེད་རང་གི་དྲ་ཐོག་ཞབས་ཞུའི་མིང་ལ་ .com དང་ .net   ཡང་ན་ཟུར་སྣོན་སོགས་ཅི་ཡང་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
+  <string name="signin_password_prompt">ཁྱེད་རང་གི་གསང་ཡིག་འཇོག</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="pref_account_user">ཁ་བྱང་སྤྱོད་མཁན་།</string>
+  <string name="pref_account_pass">ཁ་བྱང་གི་གསང་ཚིག</string>
+  <string name="pref_account_domain">ཁ་བྱང་གི་ཁོངས། </string>
+  <string name="pref_account_xmpp_resource">ཁ་བྱང་གི་ཁུངས། </string>
+  <string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
+  <string name="pref_account_port">ཁ་བྱང་གི་མཐུད་ཁ</string>
+  <string name="pref_account_server">ཁ་བྱང་གི་ཞབས་ཞུ་འཕྲུལ་ཆས།</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">ཉེན་སྲུང་གིས་ Tor སྤྱོད་།</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">དྲ་ཐོག་ན་མེད་པའི་འབྲེལ་གཏུགས་སྐུང་། </string>
+  <string name="pref_enable_notification">དོ་སྣང་ཐུབ་པ།</string>
+  <string name="pref_foreground_service">pref_foreground_service</string>
+  <string name="pref_notification_vibrate">ཉན་འཇོག་འགུལ་བ།</string>
+  <string name="pref_notification_sound">ཉན་འཇོག་གི་སྒྲ</string>
+  <string name="pref_notification_ringtone">དོ་སྣང་གི་དྲིལ་སྒྲ</string>
+  <string name="account_settings_title">ཐོ་མཛོད་སྒྲིག་བཟོ།</string>
+  <string name="warning_alpha">ཉེན་བརྡ་། འདི་ནི་ Gibberbot ཡི་ཕྱིར་གཏོང་ཐོག་མ་དེ་ཡིན་ཞིང་ད་རུང་ཉེན་སྲུང་གི་བརྡོལ་ཁུང་ངམ་དྲ་འབུ་དེ་འདྲ་ཡོད་སྲིད་། </string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups"> ཚན་པ་ཁག</string>
+  <string name="otr_gen_key">OTR ལྡེ་མིག་གསར་བ་ཞིག་མཁོ་སྒྲུབ་བཞིན་པ། </string>
+  <string name="search_label">འབྲེལ་གཏུག</string>
+  <string name="search_hint">གླེང་མོལ་བྱེད་འདོད་ཡོད་པའི་འབྲེལ་གཏུག་གི་མིང་འཇུག</string>
+  <string name="search_button_text">འཛུལ། </string>
+  <string name="menu_locale">སྐད་ཡིག</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">སྐད་ཡིག་མི་འདྲ།</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">ནང་དུ་སྐད་ཡིག་གང་ཞིག་བསྟན་ཡོད་དམ།</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">དྲ་ཁོངས་ཀྱི་མིང་ནས་སྤྱིར་བཏང་གིXMPP ཞབས་ཞུ་དེ་འཚོལ་བར་། DRV བེད་སྤྱོད་ཐོངས་། </string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">གསང་དམ་མ་བྱས་བའི་འགྲུལ་བཞུད་སྐབས་སུ། མིང་དང་གསང་ཚིག་གཉིས་ཡི་གེར་གཏོང་བཅུག </string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">ལག་འཁྱེར་དེར་ཡིད་ཆེས་གཏད་ཆོག་པའི་ར་སྤྲོད་བྱོས། </string>
+  <string name="tls_verification">TLS ར་སྤྲོད་། </string>
+  <string name="require_tls_ssl_connection">TLS/SSL ཡི་འབྲེལ་མཐུད་དགོས།</string>
+  <string name="transport_encryption">གསང་སྡོམ་དེ་བསྐུར། </string>
+  <string name="how_encrypted_chats_are_started">ཇི་ལྟར་གསང་སྡོམ་ཅན་གྱི་གླེང་མོལ་འགོ་འཛུགས་གི་རེད་། </string>
+  <string name="the_server_to_connect_to_if_needed">གལ་སྲིད་དགོས་མཁོ་བྱུང་ན། འབྲེལ་མཐུད་རྒྱག་སའི་ཞབས་ཞུ་འདི་རེད་།</string>
+  <string name="connect_server">དྲ་ཐོག་ཞབས་ཞུར་མཐུད་།</string>
+  <string name="tcp_port_for_xmpp_server">ཞབས་འཕྲུལ་XMPP ཡི་མཐུད་སྣེ TCP</string>
+  <string name="server_port">དྲ་ཐོག་ཞབས་ཞུའི་མཐུད་ས།</string>
+  <string name="xmpp_resource">XMPP ཡི་ཁོངས་མཛོད་། </string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ཁ་བྱང་སྒོ་ཕྱེས་ཚར་བ་དེ་ནས་འབྲེལ་མཐུད་འདི་ལོགས་སུ་དབྱེ་བ།</string>
+  <string name="xmpp_resource_prio_title">XMPP ཡི་ཡོང་ཁུངས་སྔོན་སྤྱོད་རིམ་པ། </string>
+  <string name="xmpp_resource_prio_summary">ཐོན་ཁོངས་སྣ་མང་ཅན་གྱི་འཕྲིན་ཐུང་དེ་སྔོན་སྤྱོད་རིམ་པ་མཐོ་ཤོས་ཀྱི་ཁོངས་སུ་གཏོང་གི་རེད་། </string>
+  <string name="btn_next">མདུན་ངོས།</string>
+  <string name="btn_back">རྒྱབ་ངོས།</string>
+  <string name="title_chats">གླེང་མོལ་བྱེད་པ་རྣམས།</string>
+  <string name="new_messages_notify">འཕྲིན་ཐུང་(རྣམས་)གསར་པ་གཏོང་མཁན།</string>
+  <string name="smp_question_title">ར་སྤྲོད་ཁུངས་སྐྱེལ།</string>
+  <string name="smp_question_summary">ཁོང་ཚོ་སུ་ཡིན་པ་ར་སྤྲོད་པའི་ཕྱིར་། ཁྱེད་ཀྱི་འབྲེལ་མཐུད་ཚོར་དྲི་བ་དང་དེ་ལ་བབས་པའི་ལན་བསྐུར་།</string>
+  <string name="smp_question_hint">དྲི་བ་ནི། </string>
+  <string name="qmp_answer_hint">ཚོད་དཔག་གི་ལན།</string>
+</resources>

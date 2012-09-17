@@ -1,24 +1,35 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">mensajes instantáneos</string>
+  <string name="ro_perm_desc">Permite que las aplicaciones para leer los datos del proveedor de contenido de mensajería instantánea.</string>
+  <string name="wo_perm_label">escribir mensajes instantáneos</string>
+  <string name="wo_perm_desc">Permite que las aplicaciones para escribir datos en el proveedor de contenido de mensajería instantánea.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
+  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Chat - Seleccione una cuenta</string>
   <!--Landing page screen menu and context menu items.-->
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Añadir cuenta</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">Editar cuenta</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Eliminar la cuenta</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Cerrar todas las</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Chat - Seleccione una cuenta</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
-  <string name="menu_cancel_signin">Cancelar inicio de sesión</string>
+  <string name="menu_cancel_signin">Cancelar acceso</string>
   <!--Contact list screen menu and context menu items.-->
   <!--This is a screen menu item for the Contact List Screen. It lets the
     user to add a friend to the friend list. May be overrided by the plugin.-->
-  <string name="menu_add_contact">Agregar contacto</string>
+  <string name="menu_add_contact">Añadir contacto</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     remove a contact from the list. May be overrided by the plugin.-->
@@ -29,21 +40,22 @@
   <string name="menu_block_contact">Bloquear contacto</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
-  <string name="menu_view_blocked">Bloqueado</string>
+  <string name="menu_view_blocked">Bloqueados</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Lista de cuentas</string>
   <!--Screen menu item on active chat list to start new chat-->
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
-  <string name="menu_settings">Configuración</string>
+  <string name="menu_settings">Ajustes</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Búsqueda de Contactos</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
   <string name="menu_start_chat">Iniciar chat</string>
   <!--Screen menu item on the contact list to sign out the service.-->
-  <string name="menu_sign_out">Cerrar sesión</string>
+  <string name="menu_sign_out">Salir</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
@@ -52,6 +64,9 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">Inicio de cifrado</string>
+  <string name="menu_otr_stop">Deje de cifrado</string>
+  <string name="menu_clear_chat">Borrar Chat</string>
   <string name="menu_end_conversation">Finalizar chat</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
@@ -59,23 +74,27 @@
   <string name="menu_view_contact_list">Lista de contactos</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Invitar a...</string>
+  <string name="menu_invite_contact">Invitar…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">Modificar chats</string>
+  <string name="menu_switch_chats">Cambiar de chat</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
-  <string name="menu_insert_smiley">Insertar ícono gestual</string>
+  <string name="menu_insert_smiley">Insertar emoticono</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Exploración de huellas dactilares</string>
+  <string name="menu_fingerprint">Su huella digital</string>
+  <string name="menu_verify_fingerprint">Verificar la huella digital</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
      be appended to the end of this.-->
-  <string name="menu_plus">Menú+</string>
+  <string name="menu_plus">MENU+</string>
   <!--The title of a simple input dialog. Currently not used.-->
   <!--Strings for the confirm dialogs-->
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Confirmar</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">¿Quieres salir todos los servicios?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -103,24 +122,25 @@
   <!--The password label.-->
   <string name="label_password">Contraseña:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
-  <string name="remember_password">Recordar mi contraseña.</string>
+  <string name="remember_password">Recordar mi contraseña</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Iniciar sesión automát.</string>
+  <string name="keep_me_signed_in">Acceder automáticamente</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">¿No tienes una cuenta?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_auto_sign_in">Esta opción inicia la sesión automáticamente cada vez que abres la aplicación. Para desactivarla, sal de la sesión y quita la marca de verificación de la casilla \\"Iniciar sesión automáticamente\\".</string>
+  <string name="check_save_password">Para su seguridad, si su teléfono se pierde o es robado, vaya al sitio Web en su equipo y cambia tu contraseña.</string>
+  <string name="check_auto_sign_in">Esta opción te permite acceder automáticamente a tu cuenta cada vez que abres la aplicación. Para inhabilitarla, sal de la cuenta y desactiva la casilla de verificación \\"Acceder automáticamente\\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
-  <string name="sign_in">Inicia sesión</string>
+  <string name="sign_in">Acceder</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Iniciando sesión...</string>
+  <string name="signing_in_wait">Accediendo...</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Datos de fondo desactivados</string>
+  <string name="bg_data_prompt_title">Datos de referencia inhabilitados</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
@@ -138,34 +158,34 @@
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">Invitaciones de amigos</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
-  <string name="unknown_contact">(\"<i>\"Desconocida\"</i>\")</string>
+  <string name="unknown_contact">(\"<i>\"Desconocido\"</i>\")</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
   <string name="empty_contact_group">Vacío</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">No hay conversaciones</string>
+  <string name="empty_conversation_group">Ninguna conversación</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
-  <string name="contacts_picker_title">Seleccionar contacto(s) para invitar</string>
-  <string name="contact_filter_hint">Escribir para buscar contacto</string>
-  <string name="empty_contact_list">No se encontraron contactos.</string>
+  <string name="contacts_picker_title">Seleccionar contactos a los que se dirige la invitación</string>
+  <string name="contact_filter_hint">Escribe el nombre del contacto que quieras localizar.</string>
+  <string name="empty_contact_list">No se ha encontrado ningún contacto.</string>
   <!--The title of blocked contact list.-->
   <string name="blocked_list_title"></string>
   <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">No hay contactos bloqueados.</string>
+  <string name="no_blocked_contact">No hay ningún contacto bloqueado.</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">Perfil de contacto</string>
+  <string name="contact_profile_title">Perfil del contacto</string>
   <!--The label of the status on the contact profile dialog.-->
   <string name="label_status">Estado:</string>
   <!--The label of the client type on the contact profile dialog.-->
   <string name="label_client_type">Tipo de cliente:</string>
   <!--The client type which indicates the contact is sign in with a PC client.-->
-  <string name="client_type_computer">Computadora</string>
+  <string name="client_type_computer">Equipo</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
-  <string name="client_type_mobile">Celular</string>
+  <string name="client_type_mobile">Móvil</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_available">En línea</string>
+  <string name="presence_available">Conectado</string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
   <string name="presence_busy">Ocupado</string>
@@ -182,6 +202,17 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Aparecer desconectado</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <string name="data_channel_label">Canal de datos</string>
+  <string name="data_encoding_label">Codificación de datos</string>
+  <string name="cir_channel_label">CIR canal</string>
+  <string name="host_label">Anfitrión</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">SMS</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">XML</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">Guardar</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -189,7 +220,7 @@
   <string name="me">Yo</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Escribir para componer</string>
+  <string name="compose_hint">Escribe el texto aquí</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
   <string name="contact_online"></string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
@@ -207,52 +238,53 @@
   <!--The send button on the chat screen.-->
   <string name="send">Enviar</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Este mensaje no pudo enviarse.</string>
+  <string name="msg_sent_failed">No se ha podido enviar el mensaje.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Se ha perdido la conexión con el servidor. Los mensajes se enviarán cuando estés en línea.</string>
+  <string name="disconnected_warning">Se ha perdido la conexión con el servidor. Los mensajes se enviarán cuando se restablezca la conexión.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
   <string name="contact_not_in_list_warning"></string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
-  <string name="select_link_title">Seleccionar vínculo</string>
+  <string name="select_link_title">Seleccionar enlace</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">No hay chats activos.</string>
+  <string name="empty_chat_list">No hay ningún chat activo.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
-  <string name="add_contact_title">Agregar contacto</string>
+  <string name="add_contact_title">Añadir contacto</string>
   <!--The label of the email input box on the Add Contact Screen.-->
-  <string name="input_contact_label">Dirección de correo electrónico de la persona que deseas invitar:</string>
+  <string name="input_contact_label">Dirección de correo electrónico de la persona a la que deseas invitar:</string>
   <!--The label of the list spinner on the Add Contact Screen.-->
-  <string name="choose_list_label">Selecciona una lista:</string>
+  <string name="choose_list_label">Seleccionar una lista:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Escribe un nombre de Contactos para agregarlo.</string>
+  <string name="invite_instruction">Escribe el nombre del contacto que quieras añadir.</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Enviar invitación</string>
   <!--provider plugin names-->
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="hide_offline_contacts">Ocultar contactos desconectados</string>
+  <string name="account_setup_title">Configuración de cuenta</string>
+  <string name="hide_offline_contacts">Ocultar desconectados</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
-  <string name="notification_group_title">Configuración de notificación</string>
+  <string name="notification_group_title">Configuración de notificaciones</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">Notific. de mensaj. instantánea</string>
+  <string name="notification_enabled_title">Notificaciones de MI</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Notificar en la barra de estado cuando llega mensajería instantánea</string>
+  <string name="notification_enabled_summary">Avisar en la barra de estado al recibir un mensaje instantáneo</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_vibrate_title">Vibrar</string>
+  <string name="notification_vibrate_title">Vibración</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Vibrar también cuando llega mensajería instantánea</string>
+  <string name="notification_vibrate_summary">Vibración al recibir mensaje instantáneo</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_sound_title">Sonido</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Reproducir también tono de timbre cuando llega mensajería instantánea</string>
+  <string name="notification_sound_summary">Reproducir tono al recibir mensaje instantáneo</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Seleccionar tono de timbre</string>
+  <string name="notification_ringtone_title">Seleccionar tono</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
   <string name="invitation_prompt"></string>
@@ -280,7 +312,7 @@
   <!--This is the notification bar message when an invitation from someone arrived.-->
   <string name="subscription_notify_text"></string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
-  <string name="notify_groupchat_label">Invitación para chat en grupo</string>
+  <string name="notify_groupchat_label">Invitación a chat en grupo</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
   <string name="group_chat_invite_notify_text"></string>
   <!--Toast when a contact is added into a list.-->
@@ -292,87 +324,87 @@
   <!--Toast when a contact is unblocked.-->
   <string name="unblock_contact_success"></string>
   <!--IM service permission-->
-  <string name="perm_label">iniciar servicio de mensajería instantánea</string>
-  <string name="perm_desc">Permite a las aplicaciones iniciar el servicio de mensajería instantánea por medio de intent.</string>
+  <string name="perm_label">iniciar servicio de MI</string>
+  <string name="perm_desc">Permite que las aplicaciones inicien el servicio de MI mediante la ejecución de un intento.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
   <string name="error">Atención</string>
   <!--Error message for sign in failed.-->
   <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">La lista no se agregó.</string>
+  <string name="add_list_failed">La lista no se ha añadido.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">El contacto no se bloqueó.</string>
+  <string name="block_contact_failed">No se ha podido bloquear el contacto.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">El contacto no se desbloqueó.</string>
+  <string name="unblock_contact_failed">No se ha podido desbloquear el contacto.</string>
   <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">Selecciona primero un contacto.</string>
   <!--Error message for when the current connection disconnected.-->
   <string name="disconnected">\"Desconectado\"\n</string>
   <!--Error message for when the IM service has died.-->
-  <string name="service_error">Error del servidor</string>
+  <string name="service_error">Error del servicio</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">La lista de contactos no se cargó.</string>
+  <string name="load_contact_list_failed">No se ha podido cargar la lista de contactos.</string>
   <!--Error message for failed to connect to the server.-->
-  <string name="cant_connect_to_server">No es posible conectarse al servidor. Verifica tu conexión.</string>
+  <string name="cant_connect_to_server">No se puede establecer conexión con el servidor. Comprueba la conexión.</string>
   <!--Error message for when the contact is already in the list.-->
   <string name="contact_already_exist"></string>
   <!--Error message for when the contact is blocked.-->
   <string name="contact_blocked"></string>
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">Espera mientras se carga tu lista de contactos</string>
+  <string name="contact_not_loaded">Por favor, espera mientras se carga la lista de contactos.</string>
   <!--Error message for when a network error occurred.-->
-  <string name="network_error">Se ha producido un error en la red.</string>
+  <string name="network_error">Se ha producido un error de red.</string>
   <!--Error message for lack of server support error.-->
-  <string name="service_not_support">El servidor no admite esta funcionalidad.</string>
+  <string name="service_not_support">El servidor no admite esta función.</string>
   <!--Erorr message for bad password error.-->
-  <string name="invalid_password">La contraseña ingresada no es válida.</string>
+  <string name="invalid_password">La contraseña introducida no es válida.</string>
   <!--Error message for server internal error.-->
-  <string name="internal_server_error">EL servidor encontró un error.</string>
+  <string name="internal_server_error">Se ha producido un error en el servidor.</string>
   <!--Error message for when the server does not implement the feature.-->
-  <string name="not_implemented">El servidor no admite esta funcionalidad.</string>
+  <string name="not_implemented">El servidor no admite esta función.</string>
   <!--Error message for server not available error.-->
   <string name="service_unavaiable">El servidor no está disponible en este momento.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">El tiempo del servidor se ha agotado.</string>
+  <string name="timeout">Se ha agotado el tiempo de espera del servidor.</string>
   <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">El servidor no admite la versión actual.</string>
   <!--Error message for when the message queue on the server is full.-->
-  <string name="message_queue_full">La lista de mensajes está llena.</string>
+  <string name="message_queue_full">La cola de mensajes está llena.</string>
   <!--Error message for when the domain is not supported by the server.-->
-  <string name="domain_not_supported">El servidor no admite reenviar al dominio.</string>
+  <string name="domain_not_supported">El servidor no admite el reenvío al dominio.</string>
   <!--Error message for a bad username error.-->
-  <string name="unknown_user">El nombre de usuario que has ingresado no está reconocido.</string>
+  <string name="unknown_user">El nombre de usuario introducido no se reconoce.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Lo sentimos, el usuario te ha bloqueado.</string>
+  <string name="recipient_blocked_the_user">El usuario te ha bloqueado.</string>
   <!--Error message for session expired error.-->
-  <string name="session_expired">La sesión ha expirado. Vuelve a iniciar sesión</string>
+  <string name="session_expired">La sesión ha caducado. Accede de nuevo.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
-  <string name="forced_logout">has iniciado sesión desde otro cliente.</string>
-  <string name="already_logged_in">ya has iniciado sesión desde otro cliente.</string>
+  <string name="forced_logout">has accedido desde otro cliente.</string>
+  <string name="already_logged_in">ya has accedido desde otro cliente.</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">El número de teléfono no puede leerse de tu tarjeta SIM. Ponte en contacto con tu operador para obtener ayuda.</string>
+  <string name="msisdn_error">No se puede leer el número de teléfono de la tarjeta SIM. Ponte en contacto con tu operador para obtener ayuda.</string>
   <!--Error message for when the user is not signed in.-->
-  <string name="not_signed_in">Actualmente, no has iniciado sesión.</string>
+  <string name="not_signed_in">No has accedido a tu cuenta.</string>
   <!--Generic error.-->
   <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>Feliz</item>
     <item>Triste</item>
-    <item>Guiñando un ojo</item>
-    <item>Con la lengua afuera</item>
+    <item>Parpadeo</item>
+    <item>Lengua fuera</item>
     <item>Sorprendido</item>
-    <item>Besando</item>
-    <item>Gritando</item>
-    <item>En la onda</item>
-    <item>Dinero en boca</item>
-    <item>Meter la pata</item>
+    <item>Besos</item>
+    <item>Gritar</item>
+    <item>Fresco</item>
+    <item>Dinero boca</item>
+    <item>Los pies en la boca</item>
     <item>Avergonzado</item>
-    <item>Ángel</item>
+    <item>Angel</item>
     <item>Indeciso</item>
-    <item>Llorando</item>
-    <item>Los labios están cerrados</item>
+    <item>Llorar</item>
+    <item>Los labios están sellados</item>
     <item>Riendo</item>
     <item>Confundido</item>
   </string-array>
@@ -380,33 +412,93 @@
   <string-array name="smiley_names">
     <item>Feliz</item>
     <item>Triste</item>
-    <item>Guiñando un ojo</item>
-    <item>Con la lengua afuera</item>
+    <item>Parpadeo</item>
+    <item>Lengua fuera</item>
     <item>Sorprendido</item>
-    <item>Besando</item>
-    <item>Gritando</item>
-    <item>En la onda</item>
-    <item>Dinero en boca</item>
-    <item>Meter la pata</item>
+    <item>Besos</item>
+    <item>Gritar</item>
+    <item>Fresco</item>
+    <item>Dinero boca</item>
+    <item>Los pies en la boca</item>
     <item>Avergonzado</item>
-    <item>Ángel</item>
+    <item>Angel</item>
     <item>Indeciso</item>
-    <item>Llorando</item>
-    <item>Los labios están cerrados</item>
+    <item>Llorar</item>
+    <item>Los labios están sellados</item>
     <item>Riendo</item>
     <item>Confundido</item>
   </string-array>
+  <string name="menu_contact_list">Lista de contactos</string>
+  <string name="menu_view_encrypt_chat">Cifrar On/Off</string>
+  <string name="use_tor">Conectar a través de Tor (Requiere aplicación Orbot)</string>
   <!--Welcome Splash Screen-->
+  <string name="app_name">Gibberbot</string>
+  <string name="welcome_first">La primera vez utilizando Gibberbot?</string>
+  <string name="welcome_skip">Can\'t esperar para empezar?</string>
+  <string name="welcome_about">Acerca de Gibberbot</string>
+  <string name="welcome_account">Configuración de cuenta</string>
   <!--About: Welcome-->
+  <string name="about_welcome_title">Bienvenido a Gibberbot</string>
   <!--About: OTR-->
+  <string name="about_otr_title">¿Cómo es seguro?</string>
   <!--About: Security-->
+  <string name="about_security_title">Si Foros Mi seguro?</string>
   <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">Frase de contraseña de configuración</string>
+  <string name="setup_passphrase">Antes de empezar por favor, elija una contraseña segura para proteger sus datos contra el acceso Gibberbot injusto.</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">Frase de contraseña (otra vez) :</string>
   <!--Account Setup: Account-->
   <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">Persistencia</string>
+  <string name="account_setup_pers_pw_title">Recordar contraseña</string>
+  <string name="account_setup_pers_pw_on">Contraseña en caché</string>
+  <string name="account_setup_pers_pw_off">La clave no en caché</string>
+  <string name="account_setup_pers_auto_title">Iniciar sesión automáticamente</string>
+  <string name="account_setup_pers_auto_on">Conectar a Gibberbot puesta en marcha</string>
+  <string name="account_setup_pers_auto_off">Don\'t conectarse a Gibberbot puesta en marcha</string>
+  <string name="account_setup_pers_now_title">Entra ya!</string>
+  <string name="account_setup_pers_now_on">Conecte la configuración de cuentas siguientes</string>
+  <string name="account_setup_pers_now_off">Don\'t conectará la siguiente configuración de la cuenta</string>
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">Personal (opcional)</string>
+  <string name="account_setup_personal_alias_title">Cuenta Alias (su nombre)</string>
+  <string name="account_setup_personal_alias_sub">¿Cómo su cuenta aparece en línea</string>
+  <string name="account_setup_personal_profile_title">Perfil</string>
+  <string name="account_setup_personal_profile_sub">Una breve nota publicitaria acerca de ti</string>
   <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">Forzar cifrado de texto plano se niegan /</string>
+  <string name="account_setup_advanced_enc_auto">Cuando charlas posible, cifrar automáticamente</string>
+  <string name="account_setup_advanced_enc_req">Cifrar charlas a lo solicitado</string>
+  <string name="account_setup_advanced_enc_off">Inhabilitar el chat cifrado</string>
   <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">Validación de credenciales ...</string>
+  <string name="account_setup_signin_b">Generación de par de claves ...</string>
+  <string name="account_setup_signin_c">Accediendo ..</string>
   <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">Gibberbot encontró un error al validar su nombre de usuario o contraseña - por favor, comprobar y vuelva a intentarlo.</string>
+  <string name="account_setup_error_keypair">Gibberbot encontró un error al generar un par de claves.</string>
+  <string name="account_setup_error_server">Gibberbot ha detectado un error al conectar con el servidor de chat - por favor revise su configuración y vuelva a intentarlo.</string>
+  <string name="account_setup_error_connectivity">Gibberbot encontró un error al conectar - por favor doublecheck la conectividad de red y vuelva a intentarlo.</string>
+  <string name="label_fingerprint_remote">Sus huellas dactilares</string>
+  <string name="label_fingerprint_local">Su huella digital</string>
+  <string name="menu_sign_in">Iniciar sesión</string>
+  <string name="menu_gen_key">Regen clave</string>
+  <string name="error_suspended_connection">Gibberbot ha perdido una conexión a la red</string>
+  <string name="error_reestablish_connection">Gibberbot está tratando de reestablecer una conexión</string>
+  <string name="otr_session_status_plaintext">Warning: este chat no está cifrado</string>
+  <string name="otr_session_status_encrypted">Este chat es seguro, pero las identidades de los participantes no han sido verificadas</string>
+  <string name="otr_session_status_finished">cifrado Warning: chat ha sido detenido.</string>
+  <string name="otr_session_status_verified">Este chat está garantizado y comprobado</string>
+  <string name="account_wizard_setup_title">Asistente para cuenta</string>
+  <string name="account_wizard_account_title">Su ID de la cuenta</string>
+  <string name="account_wizard_host_title">Configurar el servidor</string>
+  <string name="account_wizard_ready_title">¿Está usted listo?</string>
+  <string name="account_wizard_setup_body">Ingrese su ID de cuenta para configurar automáticamente Gibberbot para chatear service.\n\nIt probablemente se parece a una dirección de correo electrónico - para yourname@gmail.com o someone@jabber.org, por ejemplo.</string>
+  <string name="account_wizard_account_body">Por favor, introduzca su ID de cuenta (usuario @ nombre de host) :</string>
+  <string name="account_wizard_host_body">Por favor, introduzca o edite su jabber/xmpp chat nombre del servidor y número de puerto (5222 por defecto).</string>
+  <string name="account_wizard_ready_body">Gibberbot se ha configurado, y ahora es el momento de conectarse a su servicio, y empezar a chatear de forma segura, segura y privada!</string>
+  <string name="signin_password_prompt">Ingrese su password:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <!--added 2011/09/01-->
 </resources>

@@ -1,91 +1,214 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
   <string name="ro_perm_label">قراءة الرسائل الفورية</string>
-  <string name="ro_perm_desc">يسمح للتطبيقات لقراءة البيانات من مزود محتوى الرسائل الفورية.</string>
+  <string name="ro_perm_desc">يسمح للتطبيقات بقراءة البيانات من مزود محتوى الرسائل الفورية.</string>
   <string name="wo_perm_label">كتابة رسائل فورية</string>
-  <string name="wo_perm_desc">يسمح للتطبيقات لكتابة البيانات إلى مزود محتوى الرسائل الفورية.</string>
+  <string name="wo_perm_desc">يسمح للتطبيقات بكتابة البيانات إلى مزود محتوى الرسائل الفورية.</string>
+  <!--The application label. This appears in the application launcher on the
+    Home screen. This is a noun.-->
   <string name="im_label">جيبربوت</string>
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
   <string name="landing_page_title">دردشة -- حدد حساب</string>
+  <!--Landing page screen menu and context menu items.-->
   <string name="menu_about">عن جيبربوت</string>
+  <!--Conext menu item: add a new account.-->
   <string name="menu_add_account">إضافة حساب</string>
+  <!--Conext menu item: edit an account.-->
   <string name="menu_edit_account">تحرير حساب</string>
+  <!--Conext menu item: remove an account.-->
   <string name="menu_remove_account">إزالة حساب</string>
+  <!--Screen menu item: sign out all service.-->
   <string name="menu_sign_out_all">الخروج من الجميع</string>
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
   <string name="choose_account_title">دردشة -- حدد حساب</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <!--Displays the number of ongoing chats on the landing page.-->
+  <string name="conversations"></string>
+  <!--Sign in progress screen menu items.-->
+  <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
   <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
+  <!--Contact list screen menu and context menu items.-->
+  <!--This is a screen menu item for the Contact List Screen. It lets the
+    user to add a friend to the friend list. May be overrided by the plugin.-->
   <string name="menu_add_contact">إضافة اسم</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    remove a contact from the list. May be overrided by the plugin.-->
   <string name="menu_remove_contact">حذف الاتصال</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    block a contact. May be overrided by the plugin.-->
   <string name="menu_block_contact">حجب الاتصال</string>
+  <!--Screen menu item on the contact list screen to go to the blocked list
+    screen.-->
   <string name="menu_view_blocked">محجوب</string>
+  <!--Screen menu item on the contact list to go back to the landing page,
+    where you can choose which IM service you want to use-->
   <string name="menu_view_accounts"> الحساب</string>
+  <!--Screen menu item on active chat list to start new chat-->
   <string name="menu_new_chat">محادثة جديدة</string>
+  <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">حساب جديد</string>
+  <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">إعدادات</string>
+  <!--Screen menu item on the contact list to trigger search dialog-->
   <string name="menu_search_contacts">ابحث بالأسماء</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    start a chat with a friend. May be overried by the plugin.-->
   <string name="menu_start_chat">إبدأ الدردشة</string>
+  <!--Screen menu item on the contact list to sign out the service.-->
   <string name="menu_sign_out">تسجيل الخروج</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the
+    user to view the contact's profile. May be overrided by the plugin.-->
   <string name="menu_view_profile">تحقق</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a conversation in the contact list. It lets the
+    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">بدء التشفير</string>
   <string name="menu_otr_stop">وقف التشفير</string>
   <string name="menu_clear_chat">امسح سجل المحادثة</string>
   <string name="menu_end_conversation">نهاية دردشة</string>
+  <!--Chat screen menu and context menu items.-->
+  <!--Screen menu item on the chat screen to go back the contact list screen.
+    May be overrided by the plugin.-->
   <string name="menu_view_contact_list">قائمة الاتصال</string>
+  <!--Screen menu item on the chat screen to invite another contact to join the chat.
+    Currently not supported.-->
   <string name="menu_invite_contact">دعوة</string>
+  <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
+    switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">انتقل بين المحادثات</string>
+  <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">أدخل ابتسامة</string>
+  <string name="menu_resend">إعادة إرسال</string>
+  <!--Strings for the contact info screen-->
   <string name="menu_scan">مسح بصمة المفتاح</string>
   <string name="menu_fingerprint">البصمة الخاصة بمفتاحك</string>
-  <string name="menu_verify">تحقق من البصمات</string>
-  <string name="menu_plus">القائمة + "</string>
+  <string name="menu_verify_fingerprint">تحقق من البصمات</string>
+  <string name="menu_verify_secret">تحقق من السر</string>
+  <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
+     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
+     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
+     be appended to the end of this.-->
+  <string name="menu_plus">القائمة + \"</string>
+  <!--The title of a simple input dialog. Currently not used.-->
+  <!--Strings for the confirm dialogs-->
+  <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">تأكيد</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات؟</string>
-  <string name="confirm_delete_contact">سيتم حذف "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="confirm_block_contact">سيتم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن "<xliff:g id="user">%1$s</xliff:g>"</string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact"></string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact"></string>
+  <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact"></string>
+  <!--The "OK" button label for the error message dialog.-->
   <string name="ok">موافق</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="cancel">إلغاء</string>
+  <!--The "OK" button label for the confirm dialogs.-->
   <string name="yes">موافق</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">إلغاء</string>
-  <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
-  <string name="signed_out_prompt_with_error">لقد تم إخراجك من <xliff:g id="account">٪ 1 $ ق</xliff:g>لأن<xliff:g id="reason">٪ 2 $ ليالي</xliff:g>.</string>
-  <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
+  <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt"></string>
+  <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <string name="signed_out_prompt_with_error"></string>
+  <!--These strings displayed on the landing page.-->
+  <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account"></string>
+  <!--These strings are displayed on the account setup page.-->
+  <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">المستخدم @ المضيف</string>
+  <!--The password label.-->
   <string name="label_password">كلمة السر:</string>
+  <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
   <string name="remember_password">تذكر كلمة السر الخاصة بي.</string>
+  <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
   <string name="keep_me_signed_in">تسجيل دخولي تلقائيا.</string>
+  <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">ليس لديك حساب؟</string>
+  <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">لأمنك الخاص ، وإذا فقد أو سرق هاتفك ، انتقل إلى الموقع على جهاز الكمبيوتر الخاص بك و غير كلمة السر الخاصة بك.</string>
   <string name="check_auto_sign_in">هذا الخيار يقوم بتسجيل الدخول تلقائياً كل مرة تفتح فيها هذا التطبيق. لتعطيل الخيار ،قم بتسجيل الخروج ثم امسح اختيار تسجيل الدخول التلقائي.</string>
+  <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">تسجيل الدخول</string>
+  <!--These strings are displayed the sign in progress screen.-->
+  <!--The title of the sign-in progress screen.-->
   <string name="signing_in_to">انطلق يا جيبربوت!</string>
+  <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
+  <!--Dialog title-->
+  <!--This is the title for the background data prompt dialog, asking the user whether
+    to enable the background data if it is disabled when launch the IM app-->
   <string name="bg_data_prompt_title">تم تعطيل البيانات الخلفية</string>
-  <string name="bg_data_prompt_message">⏎ <xliff:g id="provider">%1$s</xliff:g> يحتاج لمعلومات خلفية ليتم التفعيل. ⏎ </string>
+  <!--Dialog messages:-->
+  <!--This is the message displayed in the prompt dialog when we launch IM but found
+    the background data is disabled-->
+  <string name="bg_data_prompt_message"></string>
+  <!--Dialog buttons:-->
+  <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">تمكين</string>
+  <!--Cancel button for the prompt dialog-->
   <string name="bg_data_prompt_cancel">خروج</string>
-  <string name="ongoing_conversation">المحادثات الصادرة (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> متصل</string>
+  <!--These strings are displayed on the contact list page.-->
+  <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation"></string>
+  <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"></string>
+  <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">دعوات الإضافة</string>
+  <!--Prefix of the contact if he/she is not in the user's list.-->
   <string name="unknown_contact">(<i>غير معروف</i>) </string>
+  <!--Displayed as a child item of the contact list if it's empty.-->
   <string name="empty_contact_group">فارغة</string>
+  <!--Displayed as a child item of the ongoing chat group if it's empty.-->
   <string name="empty_conversation_group">لا توجد محادثات</string>
+  <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
   <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
   <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.</string>
-  <string name="blocked_list_title">الأسماء المحجوبة <xliff:g id="user">%1$s</xliff:g></string>
+  <!--The title of blocked contact list.-->
+  <string name="blocked_list_title"></string>
+  <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">لا توجد أسماء محظورة.</string>
+  <!--These strings are displayed in the contact info dialog.-->
+  <!--The title of the contact profile dialog.-->
   <string name="contact_profile_title">معلومات جهة الاتصال</string>
+  <!--The label of the status on the contact profile dialog.-->
   <string name="label_status">الحالة:</string>
+  <!--The label of the client type on the contact profile dialog.-->
   <string name="label_client_type">نوعية العميل:</string>
+  <!--The client type which indicates the contact is sign in with a PC client.-->
   <string name="client_type_computer">الكمبيوتر</string>
+  <!--The client type which indicates the contact is sign in with a mobile client.-->
   <string name="client_type_mobile">جوال</string>
+  <!--The contact presence status. May be overrided by the plugin.-->
+  <!--This is an adjective describing the "online" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_available">متصل</string>
+  <!--This is an adjective describing the "busy" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_busy">مشغول</string>
+  <!--This is an adjective describing the "away" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_away">بعيدا</string>
+  <!--This is an adjective describing the "idle" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_idle">خامل</string>
+  <!--This is an adjective describing the "offline" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_offline">غير متصل</string>
+  <!--This is an adjective describing the "invisible" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">الظهور دون اتصال</string>
-  <string name="preference_title">إعدادات <xliff:g id="provider">%1$s</xliff:g> (للمطورين فقط)</string>
+  <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <string name="preference_title"></string>
   <string name="data_channel_label">قناة البيانات</string>
   <string name="data_encoding_label">ترميز البيانات</string>
   <string name="cir_channel_label">قناة سي آي آر</string>
@@ -97,188 +220,297 @@
   <string name="xml">إكس إم إل</string>
   <string name="wbxml">WBXML</string>
   <string name="save">حفظ</string>
-  <string name="chat_with">تحدث مع <xliff:g id="user">%1$s</xliff:g></string>
+  <!--These strings are displayed on the chat screen-->
+  <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with"></string>
+  <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">أنا</string>
+  <!--On the chat screen, this is the hint text in the input field where the user enters the
+    chat. This needs to fit in both portrait and landscape mode-->
   <string name="compose_hint">اكتب</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> متصل</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> بالخارج</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> مشغول</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> غير متصل.</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> قام بالدخول</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> قام بالخروج</string>
-  <string name="time_stamp">\'ارسل في\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+  <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"></string>
+  <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <string name="contact_away"></string>
+  <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <string name="contact_busy"></string>
+  <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <string name="contact_offline"></string>
+  <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <string name="contact_joined"></string>
+  <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <string name="contact_left"></string>
+  <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <string name="time_stamp"></string>
+  <!--The send button on the chat screen.-->
   <string name="send">إرسال</string>
+  <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
+  <!--Warning message displayed in the chat screen when connection is lost.-->
   <string name="disconnected_warning">فقد الاتصال بمزود الخدمة. سوف ترسل الرسائل عندما يعود الاتصال.</string>
-  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> غير موجود بقائمة الأسماء لديك.</string>
+  <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <string name="contact_offline_warning"></string>
+  <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <string name="contact_not_in_list_warning"></string>
+  <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">حدد الرابط</string>
+  <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">لا توجد محادثات حالياً.</string>
+  <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">البدء بالتشفير...</string>
+  <string name="stopping_otr_chat">ايقاف التشفير...</string>
+  <!--Add contact screen-->
+  <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">إضافة اسم</string>
+  <!--The label of the email input box on the Add Contact Screen.-->
   <string name="input_contact_label">عنوان البريد الإلكتروني للشخص الذي ترغب بإضافته:</string>
+  <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">إختر قائمة:</string>
+  <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
   <string name="invite_instruction">اكتب اسماً لإضافته من قائمة الأسماء.</string>
+  <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">إرسال دعوة</string>
+  <!--provider plugin names-->
   <string name="provider_full_name_xmpp">جابر\ إكس أم بي بي</string>
+  <string name="provider_full_name_llxmpp">اكس ام بي بي محلي من دون خادم</string>
+  <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">إعداد الحساب</string>
   <string name="encryption_and_anonymity_title">التشفير و الخصوصية</string>
   <string name="hide_offline_contacts">اخفاء الأسماء الغير متصلة بالشبكة</string>
+  <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">إعدادات التنبيهات</string>
+  <!--This is the text label of the setting for IM notifications; a summary is displayed in
+    smaller text below this label-->
   <string name="notification_enabled_title">تنبيهات المحادثة</string>
+  <!--This is the summary of the setting for IM notifications-->
   <string name="notification_enabled_summary">قم بالتنبيه بشريط التنبيه العلوي عندما تصل رسالة</string>
+  <!--This is the text label of the vibrate notification setting; a summary is displayed in
+    smaller text below this label-->
+  <string name="foreground_service_title">استخدم أولوية المقدمة</string>
+  <string name="foreground_service_summary">قلل من احتمالية ان يقوم الاندرويد بإعادة الاتصال</string>
   <string name="notification_vibrate_title">اهتز</string>
+  <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">اهتز أيضا عند وصول الرسائل الفورية</string>
+  <!--This is the text label of the sound notification setting; a summary is displayed in
+    smaller text below this label-->
   <string name="notification_sound_title">الصوت</string>
+  <!--This is the summary of the vibrate notification setting-->
   <string name="notification_sound_summary">كما يلعب النغمة عندما يصل الدردشة</string>
+  <!--This is the text label selecting the ringtone. Clicking on this will take the user to
+    the ringtone picker-->
   <string name="notification_ringtone_title">حدد النغمة</string>
-  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لمحادثة جماعية.</string>
-  <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
+  <!--Group chat invitation screen (Currently not used.)-->
+  <!--The prompt message displayed on the group chat invitation screen.-->
+  <string name="invitation_prompt"></string>
+  <!--Toast when group chat invitation has been sent to the contact.-->
+  <string name="invitation_sent_prompt"></string>
+  <!--The button for accepting an invitation.-->
   <string name="accept_invitation">قبول</string>
+  <!--The button for decline an invitation.-->
   <string name="decline_invitation">انخفاض</string>
-  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لتكون بقائمة أسمائه.</string>
+  <!--Friend subscription screen-->
+  <string name="subscription_prompt"></string>
+  <!--The button for approving a subscription request.-->
   <string name="approve_subscription">قبول</string>
+  <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">انخفاض</string>
-  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
-  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
-  <string name="newMessages_label">رسائل جديدة من <xliff:g id="provider">%1$s</xliff:g></string>
-  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> محادثة جديدة</string>
-  <string name="subscription_notify_text"> دعوة إضافة جديدة من <xliff:g id="user">%s</xliff:g></string>
+  <!--Toast when approve a subscription request failed.-->
+  <string name="approve_subscription_error"></string>
+  <!--Toast when decline a subscription request failed.-->
+  <string name="decline_subscription_error"></string>
+  <!--Notification bar messages-->
+  <!--This is the notification bar message when a new IM arrives.-->
+  <string name="newMessages_label"></string>
+  <!--This is the notification bar message when new IMs comes from more than one contact.-->
+  <string name="num_unread_chats"></string>
+  <!--This is the notification bar message when an invitation from someone arrived.-->
+  <string name="subscription_notify_text"></string>
+  <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
-  <string name="group_chat_invite_notify_text">دعوة محادثة جماعية من <xliff:g id="user">%s</xliff:g></string>
-  <string name="add_contact_success">تمت إضافة "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="delete_contact_success">تم حذف "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="block_contact_success">تم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="unblock_contact_success">أزيل الحجب عن "<xliff:g id="user">%1$s</xliff:g>"</string>
+  <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
+  <string name="group_chat_invite_notify_text"></string>
+  <!--Toast when a contact is added into a list.-->
+  <string name="add_contact_success"></string>
+  <!--Toast when a contact is deleted from the list.-->
+  <string name="delete_contact_success"></string>
+  <!--Toast when a contact is blocked.-->
+  <string name="block_contact_success"></string>
+  <!--Toast when a contact is unblocked.-->
+  <string name="unblock_contact_success"></string>
+  <!--IM service permission-->
   <string name="perm_label">بدء تشغيل خدمة المراسلة الفورية</string>
   <string name="perm_desc">يسمح للتطبيقات ببدء تشغيل خدمة المحادثة عن طريق الIntent.</string>
+  <!--Errors-->
+  <!--The title of the error dialog-->
   <string name="error">انتباه</string>
-  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى <xliff:g id="service">%1$s</xliff:g> . حاول مرة أخرى لاحقاً. التفاصيل:    <xliff:g id="description">%2$s</xliff:g>
-</string>
+  <!--Error message for sign in failed.-->
+  <string name="login_service_failed"></string>
+  <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">لم يتم إضافة القائمة.</string>
+  <!--Error message for blocking contact failed.-->
   <string name="block_contact_failed">لم يتم حظر جهة الاتصال</string>
+  <!--Error message for unblocking contact failed.-->
   <string name="unblock_contact_failed">لم تتم إزالة الحظر عن جهة الاتصال</string>
+  <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">اختر جهة إتصال أولاً</string>
+  <!--Error message for when the current connection disconnected.-->
   <string name="disconnected">قطع الاتصال!</string>
+  <!--Error message for when the IM service has died.-->
   <string name="service_error">خطأ بالخدمة!</string>
+  <!--Error message for loading contact list failed.-->
   <string name="load_contact_list_failed">لم يتم تحميل قائمة الاتصال.</string>
+  <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">لا يمكن الاتصال بالموقع. يرجى التحقق من اتصالك.</string>
-  <string name="contact_already_exist"><xliff:g id="user">%1$s</xliff:g> موجود بقائمة الأسماء لديك.</string>
-  <string name="contact_blocked">تم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
+  <!--Error message for when the contact is already in the list.-->
+  <string name="contact_already_exist"></string>
+  <!--Error message for when the contact is blocked.-->
+  <string name="contact_blocked"></string>
+  <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">الرجاء الانتظار بينما نقوم بتحميل قائمة الاتصال الخاصة بك.</string>
+  <!--Error message for when a network error occurred.-->
   <string name="network_error">حدث خطأ في الشبكة.</string>
+  <string name="wifi_not_connected_error">مطلوب اتصال واي فاي</string>
+  <!--Error message for lack of server support error.-->
   <string name="service_not_support">الموقع لا يدعم هذه الوظيفة.</string>
+  <!--Erorr message for bad password error.-->
   <string name="invalid_password">كلمة السر التي أدخلتها غير صالحة.</string>
+  <!--Error message for server internal error.-->
   <string name="internal_server_error">حصل خطأ بالموقع</string>
+  <!--Error message for when the server does not implement the feature.-->
   <string name="not_implemented">الموقع لا يدعم هذه الوظيفة.</string>
+  <!--Error message for server not available error.-->
   <string name="service_unavaiable">الموقع غير متوفر حاليا.</string>
+  <!--Error message for timeout error.-->
   <string name="timeout">لم يتم تنفيذ الطلب بالوقت المحدد</string>
+  <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">الموقع لا يدعم الإصدار الحالي.</string>
+  <!--Error message for when the message queue on the server is full.-->
   <string name="message_queue_full">قائمة انتظار الرسائل ممتلئة</string>
+  <!--Error message for when the domain is not supported by the server.-->
   <string name="domain_not_supported">الموقع لا يدعم إعادة التوجيه لاسم النطاق</string>
+  <!--Error message for a bad username error.-->
   <string name="unknown_user">لم يتم التعرف على اسم المستخدم الذي أدخلته.</string>
+  <!--Error message for when the user is blocked by the recipient.-->
   <string name="recipient_blocked_the_user">عذرا ، تم حظر لك من قبل هذا المستخدم.</string>
+  <!--Error message for session expired error.-->
   <string name="session_expired">انتهت فترة الاتصال، الرجاء تسجيل الدخول مرة أخرى.</string>
+  <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
   <string name="forced_logout">قمت بتسجيل الدخول ببرنامج آخر</string>
   <string name="already_logged_in">لقد قمت بتسجيل الدخول من برنامج آخر</string>
+  <!--Error message for msisdn error.-->
   <string name="msisdn_error">عذرا ، تعذرت قراءة رقم الهاتف من البطاقة. يرجى الاتصال بمشغل الشبكة للحصول على مساعدة.</string>
+  <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">لم تقم بتسجيل الدخول</string>
-  <string name="general_error">رمز الخطأ: <xliff:g id="code">%1$d</xliff:g></string>
-  <string-array name="default_smiley_names"><item>سعيد</item>
-<item>حزين</item>
-<item>الرمش</item>
-<item>اللسان تخرج</item>
-<item>مندهش</item>
-<item>تقبيل</item>
-<item>صراخ</item>
-<item>بارد</item>
-<item>المال الفم</item>
-<item>قدم في الفم</item>
-<item>بالحرج</item>
-<item>ملاك</item>
-<item>بعد</item>
-<item>بكاء</item>
-<item>شفاه مغلقة</item>
-<item>يضحك</item>
-<item>الخلط</item>
-</string-array>
-  <string-array name="default_smiley_texts"><item>:-)</item>
-<item>:-(</item>
-<item>;-)</item>
-<item>:-P</item>
-<item>=-O</item>
-<item>:-*</item>
-<item>:O</item>
-<item>B-)</item>
-<item>:-$</item>
-<item>:-!</item>
-<item>:-[</item>
-<item>O:-)</item>
-<item>:-\\</item>
-<item>:\'(</item>
-<item>:-X</item>
-<item>:-D</item>
-<item>o_O</item>
-</string-array>
-  <string-array name="smiley_names"><item>سعيد</item>
-<item>حزين</item>
-<item>الرمش</item>
-<item>اللسان تخرج</item>
-<item>مندهش</item>
-<item>تقبيل</item>
-<item>صراخ</item>
-<item>بارد</item>
-<item>المال الفم</item>
-<item>قدم في الفم</item>
-<item>بالحرج</item>
-<item>ملاك</item>
-<item>بعد</item>
-<item>بكاء</item>
-<item>شفاه مغلقة</item>
-<item>يضحك</item>
-<item>الخلط</item>
-</string-array>
-  <string-array name="smiley_texts"><item>:-)</item>
-<item>:-(</item>
-<item>;-)</item>
-<item>:-P</item>
-<item>=-O</item>
-<item>:-*</item>
-<item>:O</item>
-<item>B-)</item>
-<item>:-$</item>
-<item>:-!</item>
-<item>:-[</item>
-<item>O:-)</item>
-<item>:-\\</item>
-<item>:\'(</item>
-<item>:-X</item>
-<item>:-D</item>
-<item>o_O</item>
-</string-array>
-  <string name="buddy_list_title">قائمة الاتصال - <xliff:g id="username">%1$s</xliff:g></string>
+  <!--Generic error.-->
+  <string name="general_error"></string>
+  <!--Smiley names. May be overrided by the plugin.-->
+  <string-array name="default_smiley_names">
+    <item>سعيد</item>
+    <item>حزين</item>
+    <item>الرمش</item>
+    <item>اللسان تخرج</item>
+    <item>مندهش</item>
+    <item>تقبيل</item>
+    <item>صراخ</item>
+    <item>بارد</item>
+    <item>المال الفم</item>
+    <item>قدم في الفم</item>
+    <item>بالحرج</item>
+    <item>ملاك</item>
+    <item>بعد</item>
+    <item>بكاء</item>
+    <item>شفاه مغلقة</item>
+    <item>يضحك</item>
+    <item>الخلط</item>
+  </string-array>
+  <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <string-array name="default_smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string-array name="smiley_names">
+    <item>سعيد</item>
+    <item>حزين</item>
+    <item>الرمش</item>
+    <item>اللسان تخرج</item>
+    <item>مندهش</item>
+    <item>تقبيل</item>
+    <item>صراخ</item>
+    <item>بارد</item>
+    <item>المال الفم</item>
+    <item>قدم في الفم</item>
+    <item>بالحرج</item>
+    <item>ملاك</item>
+    <item>بعد</item>
+    <item>بكاء</item>
+    <item>شفاه مغلقة</item>
+    <item>يضحك</item>
+    <item>الخلط</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="buddy_list_title"></string>
   <string name="menu_contact_list">قائمة الاتصال</string>
   <string name="menu_view_encrypt_chat">تشفير On/Off</string>
   <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
+  <!--Welcome Splash Screen-->
   <string name="app_name">Gibberbot</string>
   <string name="welcome_first">هل هذه أول مرة تستخدم بها جيبربوت؟</string>
   <string name="welcome_skip">غير قادر على الانتظار؟</string>
   <string name="welcome_about">إبدأ</string>
   <string name="welcome_account">إعداد الحساب</string>
+  <!--About: Welcome-->
   <string name="about_welcome_title">عن جيبربوت</string>
   <string name="about_welcome">جيبربوت هو تطبيق للرسائل الفورية يقوم بتوفير مميزات أمنية كثيرة تمنع الآخرين من التنصت على محادثاتك و اتصالاتك. يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك.</string>
+  <!--About: OTR-->
   <string name="about_otr_title">ما هي المميزات الأمنية؟</string>
-  <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة و ضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك و أمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر. </string>
+  <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة وضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك وأمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر.</string>
+  <!--About: Security-->
   <string name="about_security_title">هل محادثاتي آمنة؟</string>
-  <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل) ، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهة. 
-
-هل أنت جاهز للتحدث بكامل الخصوصية و الأمان؟ هيا بنا!</string>
+  <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل)، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهمة. هل أنت جاهز للتحدث بكامل الخصوصية والأمان؟ هيا بنا!</string>
+  <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">إعداد كلمة السر</string>
   <string name="setup_passphrase">قبل أن نبدأ باستخدام جيبربوت، يرجى إدخال كلمة سر آمنة و محكمة حتى تمنع الدخول غير المصرح به على بيانات جيبربوت لديك.</string>
   <string name="setup_passphrase_label1">كلمة السر:</string>
   <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
+  <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">الاسم@العنوان.كوم</string>
   <string name="account_setup_password">كلمة السر</string>
   <string name="account_setup_advanced_button">إعدادات الحساب المتقدمة</string>
+  <string name="account_select_type">نوع الحساب</string>
+  <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">إصرار</string>
   <string name="account_setup_pers_pw_title">تذكر كلمة المرور</string>
   <string name="account_setup_pers_pw_on">تم حفظ كلمة السر مؤقتاً</string>
@@ -289,18 +521,22 @@
   <string name="account_setup_pers_now_title">تسجيل الدخول الآن</string>
   <string name="account_setup_pers_now_on">قم بالاتصال بعد الانتهاء من إعداد الحساب</string>
   <string name="account_setup_pers_now_off">لا تقم بالاتصال تلقائياً بعد إعداد الحساب</string>
+  <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">معلومات شخصية (اختياري):</string>
   <string name="account_setup_personal_alias_title">الاسم المستعار</string>
   <string name="account_setup_personal_alias_sub">كيف تظهر حالة الحساب على الانترنت</string>
   <string name="account_setup_personal_profile_title">الملف الشخصي</string>
   <string name="account_setup_personal_profile_sub">نبذة موجزة عن نفسك</string>
+  <!--Account Setup: Advanced-->
   <string name="account_setup_advanced_enc_force">أوجب استخدام التشفير، لا ترضى بالتحدث دون تشفير</string>
   <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي</string>
   <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
   <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
+  <!--Account Setup: First Sign In-->
   <string name="account_setup_signin_a">التحقق من صحة البيانات...</string>
   <string name="account_setup_signin_b">توليد زوج المفاتيح السرية...</string>
   <string name="account_setup_signin_c">تسجيل الدخول...</string>
+  <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">واجه جيبربوت خطاً أثناء محاولة التحقق من البيانات، تأكد من صحتها ثم حاول مرة أخرى</string>
   <string name="account_setup_error_keypair">حصل خطأ أثناء توليد زوج المفاتيح السرية.</string>
   <string name="account_setup_error_server">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من إعدادات الاتصال ثم حاول مرة أخرى</string>
@@ -326,10 +562,12 @@
   <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
   <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
   <string name="signin_password_prompt">أدخل كلمة السر:</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="pref_account_user">pref_account_user</string>
   <string name="pref_account_pass">pref_account_pass</string>
   <string name="pref_account_domain">pref_account_domain</string>
   <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
   <string name="pref_account_port">pref_account_port</string>
   <string name="pref_account_server">pref_account_server</string>
   <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
@@ -340,11 +578,13 @@
   <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
   <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
   <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_foreground_service">pref_foreground_service</string>
   <string name="pref_notification_vibrate">pref_notification_vibrate</string>
   <string name="pref_notification_sound">pref_notification_sound</string>
   <string name="pref_notification_ringtone">pref_notification_ringtone</string>
   <string name="account_settings_title">إعدادات الحساب</string>
   <string name="warning_alpha">تحذير: هذه نسخة تجريبية من جيبربوت و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
+  <!--added 2011/09/01-->
   <string name="menu_view_groups">المجموعات</string>
   <string name="otr_gen_key">يتم إنشاء زوج من مفاتيح التشفير خارج السجل OTR</string>
   <string name="search_label">اتصال</string>
@@ -368,7 +608,14 @@
   <string name="server_port">منفذ الموقع</string>
   <string name="xmpp_resource">مصدر إكس أم بي بي XMPP</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ليتم تمييز هذا الاتصال من الاتصالات الأخرى التي سجلت الدخول</string>
+  <string name="xmpp_resource_prio_title">أولوية مصدر اكس ام بي بي</string>
+  <string name="xmpp_resource_prio_summary">الرسائل المرسلة لأصدقاء لديهم أكثر من مصدر فعال في نفس الوقت سترسل للمصدر ذو الاولوية الأعلى.</string>
   <string name="btn_next">التالي</string>
   <string name="btn_back">عودة</string>
   <string name="title_chats">المحادثات</string>
+  <string name="new_messages_notify">رسالة جديدة من</string>
+  <string name="smp_question_title">التحقق من الهوية</string>
+  <string name="smp_question_summary">أدخل سؤال لصديقك، و الاجابة التي تتوقع منهم وضعها، حتى تتحقق من هويتهم.</string>
+  <string name="smp_question_hint">السؤال</string>
+  <string name="qmp_answer_hint">الاجابة المتوقعة</string>
 </resources>
