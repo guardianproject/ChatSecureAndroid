@@ -17,22 +17,26 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.provider.Imps;
-
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.provider.Imps;
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ContactListFilterView extends LinearLayout {
 
@@ -41,15 +45,26 @@ public class ContactListFilterView extends LinearLayout {
     private ContactAdapter mContactAdapter;
 
     private Uri mUri;
-    private Context mContext;
+    private final Context mContext;
+    private final SimpleAlertHandler mHandler;
+    private final ConnectionListenerAdapter mConnectionListener;
 
     UserPresenceView mPresenceView;
     private ContactListActivity mActivity;
+    private IImConnection mConn;
 
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mContext = context;
+        mHandler = new SimpleAlertHandler((Activity)context);
+        mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+            @Override
+            public void onConnectionStateChange(IImConnection connection, int state,
+                    ImErrorInfo error) {
+                mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+            }  
+        };
     }
 
     @Override
@@ -59,7 +74,7 @@ public class ContactListFilterView extends LinearLayout {
         mFilterList.setTextFilterEnabled(true);
 
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
                 mActivity.mContactListView.startChat(c);
@@ -67,7 +82,8 @@ public class ContactListFilterView extends LinearLayout {
             }
         });
 
-        mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+        if (!isInEditMode())
+            mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
 
     }
 
@@ -77,6 +93,43 @@ public class ContactListFilterView extends LinearLayout {
 
     public Cursor getContactAtPosition(int position) {
         return (Cursor) mContactAdapter.getItem(position);
+    }
+
+    public void setConnection(IImConnection conn) {
+        if (mConn != conn) {
+            if (mConn != null) {
+                unregisterListeners();
+            }
+            
+            mConn = conn;
+
+            if (conn != null) {
+                try {
+                    mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+                } catch (RemoteException e) {
+                    mPresenceView.loggingIn(false);
+                    mHandler.showServiceErrorAlert();
+                }
+                
+                registerListeners();
+            }
+        }
+    }
+
+    private void registerListeners() {
+        try {
+            mConn.registerConnectionListener(mConnectionListener);
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
+
+    private void unregisterListeners() {
+        try {
+            mConn.unregisterConnectionListener(mConnectionListener);
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
     }
 
     public void doFilter(Uri uri, String filterString) {
@@ -119,6 +172,7 @@ public class ContactListFilterView extends LinearLayout {
     private class ContactAdapter extends ResourceCursorAdapter {
         private String mSearchString;
 
+        @SuppressWarnings("deprecation")
         public ContactAdapter(Context context, Cursor cursor) {
             super(context, R.layout.contact_view, cursor);
         }

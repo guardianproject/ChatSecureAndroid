@@ -136,11 +136,8 @@ public class ImUrlActivity extends Activity {
     }
 
     private void signInAccount(long accountId) {
-        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-        Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(accountUri);
-        intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
-        startActivity(intent);
+        editAccount(accountId);
+        // TODO sign in?  security implications?
     }
 
     private void showContactList(long accountId) {

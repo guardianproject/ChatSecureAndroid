@@ -267,9 +267,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
         while (cursor.moveToNext()) {
             long accountId = cursor.getLong(ACCOUNT_ID_COLUMN);
             long providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
-            IImConnection conn = createConnection(providerId);
+            IImConnection conn = createConnection(providerId, accountId);
             try {
-                conn.login(accountId, null, true, true);
+                conn.login(null, true, true);
             } catch (RemoteException e) {
                 Log.w(TAG, "Logging error while automatically login!");
             }
@@ -369,13 +369,13 @@ public class RemoteImService extends Service implements OtrEngineListener {
         }, delay);
     }
 
-    IImConnection createConnection(long providerId) {
+    IImConnection createConnection(long providerId, long accountId) {
         Map<String, String> settings = loadProviderSettings(providerId);
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
             ImConnection conn = factory.createConnection(settings, this);
-            ImConnectionAdapter imConnectionAdapter = new ImConnectionAdapter(providerId, conn,
-                    this);
+            ImConnectionAdapter imConnectionAdapter = 
+                    new ImConnectionAdapter(providerId, accountId, conn, this);
             mConnections.add(imConnectionAdapter);
 
             initOtr();
@@ -512,8 +512,8 @@ public class RemoteImService extends Service implements OtrEngineListener {
             }
         }
 
-        public IImConnection createConnection(long providerId) {
-            return RemoteImService.this.createConnection(providerId);
+        public IImConnection createConnection(long providerId, long accountId) {
+            return RemoteImService.this.createConnection(providerId, accountId);
         }
 
         public List getActiveConnections() {

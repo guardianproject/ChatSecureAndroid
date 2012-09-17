@@ -1,12 +1,10 @@
 package info.guardianproject.otr;
 
-import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionStatus;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
-import android.util.Log;
+import net.java.otr4j.session.SessionStatus;
 
 public class OtrChatListener implements MessageListener {
 
@@ -55,6 +53,11 @@ public class OtrChatListener implements MessageListener {
         mMessageListener.onIncomingReceipt(ses, id);
     }
 
+    @Override
+    public void onMessagePostponed(ChatSession ses, String id) {
+        mMessageListener.onMessagePostponed(ses, id);
+    }
+    
     @Override
     public void onReceiptsExpected(ChatSession ses) {
         mMessageListener.onReceiptsExpected(ses);

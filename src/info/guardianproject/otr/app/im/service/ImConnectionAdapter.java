@@ -17,6 +17,10 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IConnectionListener;
+import info.guardianproject.otr.app.im.IContactListManager;
+import info.guardianproject.otr.app.im.IInvitationListener;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ConnectionListener;
 import info.guardianproject.otr.app.im.engine.Contact;
@@ -32,11 +36,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.guardianproject.otr.app.im.IChatSessionManager;
-import info.guardianproject.otr.app.im.IConnectionListener;
-import info.guardianproject.otr.app.im.IContactListManager;
-import info.guardianproject.otr.app.im.IInvitationListener;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -44,7 +43,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.util.Log;
 
 public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConnection.Stub {
 
@@ -71,8 +69,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     boolean mAutoLoadContacts;
     int mConnectionState = ImConnection.DISCONNECTED;
 
-    public ImConnectionAdapter(long providerId, ImConnection connection, RemoteImService service) {
+    public ImConnectionAdapter(long providerId, long accountId, ImConnection connection, RemoteImService service) {
         mProviderId = providerId;
+        mAccountId = accountId;
         mConnection = connection;
         mService = service;
         mConnectionListener = new ConnectionListenerAdapter();
@@ -82,6 +81,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             mInvitationListener = new InvitationListenerAdapter();
             mGroupManager.setInvitationListener(mInvitationListener);
         }
+
+        mChatSessionManager = new ChatSessionManagerAdapter(this);
+        mContactListManager = new ContactListManagerAdapter(this);
     }
 
     public ImConnection getAdaptee() {
@@ -134,12 +136,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return builder.build();
     }
 
-    public void login(long accountId, String passwordTemp, boolean autoLoadContacts, boolean retry) {
-        mAccountId = accountId;
+    public void login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
-        mChatSessionManager = new ChatSessionManagerAdapter(this);
-        mContactListManager = new ContactListManagerAdapter(this);
 
         mConnection.loginAsync(mAccountId, passwordTemp, mProviderId, retry);
     }
@@ -394,11 +393,6 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 if (mContactListManager != null) {
                     mContactListManager.clearOnLogout();
                 }
-                if (mChatSessionManager != null) {
-                    mChatSessionManager.closeAllChatSessions();
-                }
-
-                //             mService.getStatusBarNotifier().notifyDisconnected(mProviderId, mAccountId);
 
                 mConnectionState = state;
             } else if (state == ImConnection.SUSPENDED && error != null) {

@@ -136,16 +136,19 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                     mApp.dismissNotifications(mProviderId);
                     mConn = mApp.getConnection(mProviderId);
                     if (mConn == null) {
-                        Log.e(ImApp.LOG_TAG, "The connection has disappeared!");
                         clearConnectionStatus();
-                        finish();
-                    } else {
-
-                        mFilterView.mPresenceView.setConnection(mConn);
-                        mContactListView.setConnection(mConn);
-                        mContactListView.setHideOfflineContacts(mGlobalSettingMap
-                                .getHideOfflineContacts());
+                        try {
+                            mConn = mApp.createConnection(mProviderId, mAccountId);
+                        } catch (RemoteException e) {
+                            Log.e(ImApp.LOG_TAG, "The connection cannot be created");
+                            finish();
+                        }
                     }
+                    mFilterView.mPresenceView.setConnection(mConn);
+                    mFilterView.setConnection(mConn);
+                    mContactListView.setConnection(mConn);
+                    mContactListView.setHideOfflineContacts(mGlobalSettingMap
+                            .getHideOfflineContacts());
                 }
             }
         });
@@ -222,34 +225,19 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         return super.onOptionsItemSelected(item);
     }
 
-    private static final String[] PROVIDER_PROJECTION = {
-                                                         Imps.Provider._ID,
-                                                         Imps.Provider.NAME,
-                                                         Imps.Provider.FULLNAME,
-                                                         Imps.Provider.CATEGORY,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+    Intent getEditAccountIntent(boolean isSignedIn) {
+        Uri uri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId);
 
-    static final int PROVIDER_CATEGORY_COLUMN = 3;
-    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
-
-    Intent getEditAccountIntent() {
-
-        Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
-                PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        mProviderCursor.moveToFirst();
+        @SuppressWarnings("deprecation")
+        Cursor cursor = managedQuery(uri,
+                new String[] { Imps.Provider.CATEGORY }, null, null, null);
+        cursor.moveToFirst();
 
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
-                Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
-        intent.addCategory(mProviderCursor.getString(PROVIDER_CATEGORY_COLUMN));
-        intent.putExtra("isSignedIn", true);
+                Imps.Account.CONTENT_URI, mAccountId));
+        intent.addCategory(cursor.getString(0));
+        cursor.close();
+        intent.putExtra("isSignedIn", isSignedIn);
 
         return intent;
     }
@@ -399,6 +387,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         mDestroyed = true;
         // set connection to null to unregister listeners.
         mContactListView.setConnection(null);
+        mFilterView.setConnection(null);
         if (mGlobalSettingMap != null) {
             mGlobalSettingMap.close();
         }
@@ -546,13 +535,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                         log("Current connection disconnected, finish");
                     }
 
-                    //TODO Gibber manually launch back to main
-                    Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                    intent.putExtra("showSettings", false);
-                    intent.putExtra("doSignIn", false);
-                    startActivity(intent);
+                    startActivity(getEditAccountIntent(false));
 
                     finish();
                 }
