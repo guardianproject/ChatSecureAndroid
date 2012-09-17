@@ -3,6 +3,7 @@ package info.guardianproject.otr.app.im.ui;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
+import info.guardianproject.otr.app.im.app.ImApp;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -55,4 +56,20 @@ public class TabbedContainer extends TabActivity {
         //Value in parathes controls which tab element to view 
         tabHost.setCurrentTab(0);
     }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        boolean updated = ((ImApp)getApplication()).checkLocale();
+        
+        if (updated)
+        {
+                     
+           startActivity(getIntent());
+           finish(); 
+        }
+        
+    }
+
 }

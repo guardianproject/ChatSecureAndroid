@@ -330,6 +330,9 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     @Override
     protected void onResume() {
         super.onResume();
+           
+        ((ImApp)getApplication()).checkLocale();
+        
         mApp.registerForConnEvents(mHandler);
         mActiveChatListView.setAutoRefreshContacts(true);
     }

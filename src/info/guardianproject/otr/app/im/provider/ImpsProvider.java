@@ -2072,7 +2072,7 @@ public class ImpsProvider extends ContentProvider {
                 int numUpdated = db
                         .update(TABLE_PRESENCE, presenceValues, selection, selectionArgs);
                 if (numUpdated == 0) {
-                    Log.e(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
+                    Log.w(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
                 } else {
                     sum += numUpdated;
                 }

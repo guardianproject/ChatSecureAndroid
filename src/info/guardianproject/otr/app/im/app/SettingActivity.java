@@ -17,10 +17,13 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.Locale;
+
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -74,6 +77,11 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         } else if (key.equals(getString(R.string.pref_foreground_service))) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
         }
+        else if (key.equals(getString(R.string.pref_default_locale)))
+        {
+           
+        }
+        
         settings.close();
     }
 

@@ -81,7 +81,7 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         mSignInHelper = new SignInHelper(this);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mDefaultLocale = prefs.getString(ImApp.PREF_DEFAULT_LOCALE, null);
+        mDefaultLocale = prefs.getString(getString(R.string.pref_default_locale), null);
         setContentView(R.layout.welcome_activity);
         Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
 
@@ -466,8 +466,7 @@ public class WelcomeActivity extends Activity {
                         String[] locs = getResources().getStringArray(R.array.languages_values);
 
                         if (which < locs.length) {
-                            Locale locale = new Locale(locs[which]);
-                            ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locale);
+                            ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
 
                             Intent intent = getIntent();
                             finish();

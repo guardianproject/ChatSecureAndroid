@@ -81,7 +81,6 @@ public class ImApp extends Application {
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
     public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
-    public final static String PREF_DEFAULT_LOCALE = "defLoc";
 
     private Locale locale = null;
 
@@ -207,11 +206,16 @@ public class ImApp extends Application {
         super.onCreate();
         mBroadcaster = new Broadcaster();
 
+        checkLocale();
+    }
+    
+    public boolean checkLocale ()
+    {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         Configuration config = getResources().getConfiguration();
 
-        String lang = settings.getString(PREF_DEFAULT_LOCALE, "");
+        String lang = settings.getString(getString(R.string.pref_default_locale), "");
         if ("".equals(lang)) {
             Properties props = AssetUtil.getProperties("gibberbot.properties", this);
             if (props != null) {
@@ -219,19 +223,24 @@ public class ImApp extends Application {
                 if (configuredLocale != null && !"CHOOSE".equals(configuredLocale)) {
                     lang = configuredLocale;
                     Editor editor = settings.edit();
-                    editor.putString(ImApp.PREF_DEFAULT_LOCALE, lang);
+                    editor.putString(getString(R.string.pref_default_locale), lang);
                     editor.commit();
                 }
             }
         }
+        
+        boolean updatedLocale = false;
+        
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
-            locale = new Locale(lang);
-            Locale.setDefault(locale);
+            locale = new Locale(lang);            
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            updatedLocale = true;
         }
 
         loadDefaultBrandingRes();
+        
+        return updatedLocale;
     }
 
     @Override
@@ -767,23 +776,23 @@ public class ImApp extends Application {
         return mImService;
     }
 
-    public static boolean setNewLocale(Context context, Locale locale) {
+    public static boolean setNewLocale(Context context, String localeString) {
 
+        Locale locale = new Locale(localeString);
         Configuration config = context.getResources().getConfiguration();
         config.locale = locale;
-        //Locale.setDefault(locale);
+        
         context.getResources().updateConfiguration(config,
                 context.getResources().getDisplayMetrics());
 
         Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
         Editor prefEdit = prefs.edit();
-
-        prefEdit.putString(ImApp.PREF_DEFAULT_LOCALE, locale.getISO3Language());
+        prefEdit.putString(context.getString(R.string.pref_default_locale), localeString);
         prefEdit.commit();
-
+        
+        
         return true;
     }
     

@@ -20,6 +20,13 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    
+ <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
+   android:key="@string/pref_default_locale"
+   android:entryValues="@array/languages_values"
+   android:entries="@array/languages"
+  >
+ </ListPreference>
 
   <CheckBoxPreference android:key="@string/pref_hide_offline_contacts"
     android:title="@string/hide_offline_contacts"

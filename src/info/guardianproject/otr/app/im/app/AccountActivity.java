@@ -654,9 +654,6 @@ public class AccountActivity extends Activity {
             otrGenKey();
             return true;
 
-        case R.id.menu_locale:
-            showLocaleDialog();
-            return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -737,29 +734,6 @@ public class AccountActivity extends Activity {
         return out.toString();
     }
 
-    private void showLocaleDialog() {
-        AlertDialog.Builder ad = new AlertDialog.Builder(this);
-        ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
-
-        ad.setItems(getResources().getStringArray(R.array.languages),
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Locale locale = new Locale(getResources().getStringArray(
-                                R.array.languages_values)[which]);
-                        ImApp.setNewLocale(AccountActivity.this.getBaseContext(), locale);
-
-                        Intent intent = getIntent();
-                        finish();
-                        startActivity(intent);
-
-                    }
-                });
-
-        AlertDialog alert = ad.create();
-        alert.show();
-    }
+   
 
 }

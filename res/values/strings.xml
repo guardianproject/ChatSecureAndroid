@@ -681,6 +681,7 @@
 	<string name="pref_notification_sound">pref_notification_sound</string>
 	<string name="pref_notification_ringtone">pref_notification_ringtone</string>
 	<string name="account_settings_title">Account Settings</string>
+	<string name="pref_default_locale">defLoc</string>
 	
 	
 	<string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>

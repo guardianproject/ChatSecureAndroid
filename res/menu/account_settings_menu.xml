@@ -29,8 +29,4 @@
         android:id="@+id/menu_gen_key"
         android:icon="@drawable/ic_menu_key"
         android:title="@string/menu_gen_key"/>
-    <item
-        android:id="@+id/menu_locale"
-        android:icon="@drawable/ic_menu_settings"
-        android:title="@string/menu_locale"/>
 </menu>
