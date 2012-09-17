@@ -40,17 +40,19 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import android.widget.Toast;
 
-public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class ChatListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -151,7 +153,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.chat_list_menu, menu);
         return true;
     }
@@ -444,10 +446,15 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
+            return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
             return true;
         }
     }

@@ -21,10 +21,6 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
-import info.guardianproject.otr.app.im.ui.TabbedContainer;
-
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -36,15 +32,17 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class WelcomeActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class WelcomeActivity extends SherlockActivity {
     
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
@@ -188,6 +186,7 @@ public class WelcomeActivity extends Activity {
         if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch) {
             mDidAutoLaunch = true;
             signInAll();
+            showAccounts();
         } else if (countSignedIn == 1) {
             showActiveAccount();
         } else if (countConfigured > 0) {
@@ -212,7 +211,7 @@ public class WelcomeActivity extends Activity {
     protected void gotoAccount() {
         long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-        Intent intent = new Intent(this, TabbedContainer.class);
+        Intent intent = new Intent(this, ContactListActivity.class);
         // clear the back stack of the account setup
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
@@ -223,7 +222,7 @@ public class WelcomeActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.main_list_menu, menu);
 
         return true;

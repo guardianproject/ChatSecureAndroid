@@ -20,45 +20,35 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.java.otr4j.session.SessionStatus;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Toast;
 
-public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class NewChatActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
@@ -78,7 +68,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+     //   requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.chat_view);
 
@@ -151,7 +141,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
@@ -449,7 +439,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         }
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         int mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
@@ -466,6 +456,21 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             }
 
             return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
+            Cursor c;
+            c = mChatView.getMessageAtPosition(mPosition);
+
+            switch (item.getItemId()) {
+            case MENU_RESEND:
+                String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
+                mChatView.getComposedMessage().setText(text);
+                break;
+            default:
+                return false;
+            }            return false;
         }
     }
 

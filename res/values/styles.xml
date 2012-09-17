@@ -18,6 +18,9 @@
 -->
 
 <resources>
+    
+    <style name="AppTheme" parent="Theme.Sherlock.ForceOverflow" />
+    
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>
         <item name="android:windowNoTitle">true</item>

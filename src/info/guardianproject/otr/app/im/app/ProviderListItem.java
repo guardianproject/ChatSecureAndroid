@@ -39,7 +39,7 @@ public class ProviderListItem extends LinearLayout {
     private static final boolean LOCAL_DEBUG = false;
 
     private LandingPage mActivity;
-    private ImageView mProviderIcon;
+    //private ImageView mProviderIcon;
     private ImageView mStatusIcon;
     private TextView mProviderName;
     private TextView mLoginName;
@@ -65,7 +65,7 @@ public class ProviderListItem extends LinearLayout {
     }
 
     public void init(Cursor c) {
-        mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
+        //mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
         mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
@@ -91,7 +91,7 @@ public class ProviderListItem extends LinearLayout {
 
     public void bindView(Cursor cursor) {
         Resources r = getResources();
-        ImageView providerIcon = mProviderIcon;
+       // ImageView providerIcon = mProviderIcon;
         ImageView statusIcon = mStatusIcon;
         TextView providerName = mProviderName;
         TextView loginName = mLoginName;
@@ -102,7 +102,7 @@ public class ProviderListItem extends LinearLayout {
 
         ImApp app = ImApp.getApplication(mActivity);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
-        providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
         mUnderBubble.setBackgroundDrawable(mDefaultBackground);
         statusIcon.setVisibility(View.GONE);

@@ -122,8 +122,8 @@ public class ChatView extends LinearLayout {
     SimpleAlertHandler mHandler;
     Cursor mCursor;
 
-    private ImageView mStatusIcon;
-    private TextView mTitle;
+    //private ImageView mStatusIcon;
+   // private TextView mTitle;
     /*package*/ListView mHistory;
     EditText mComposeMessage;
     private Button mSendButton;
@@ -329,9 +329,9 @@ public class ChatView extends LinearLayout {
 
     @Override
     protected void onFinishInflate() {
-        mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
+      //  mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
         mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
-        mTitle = (TextView) findViewById(R.id.title);
+       // mTitle = (TextView) findViewById(R.id.title);
         mHistory = (ListView) findViewById(R.id.history);
         mComposeMessage = (EditText) findViewById(R.id.composeMessage);
         mSendButton = (Button) findViewById(R.id.btnSend);
@@ -529,21 +529,28 @@ public class ChatView extends LinearLayout {
                 }
                 c.close();
             }
-            mTitle.setText(mContext.getString(R.string.chat_with, buf.toString()));
+            
+            //mTitle.setText(mContext.getString(R.string.chat_with, buf.toString()));
+            mScreen.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
+            
         } else {
-            mTitle.setText(mContext.getString(R.string.chat_with, mNickName));
+            
+            
+            //mTitle.setText(mContext.getString(R.string.chat_with, mNickName));
+            mScreen.setTitle(mContext.getString(R.string.chat_with, mNickName));
         }
     }
 
     private void setStatusIcon() {
         if (mType == Imps.Contacts.TYPE_GROUP) {
             // hide the status icon for group chat.
-            mStatusIcon.setVisibility(GONE);
+         //   mStatusIcon.setVisibility(GONE);
         } else {
-            mStatusIcon.setVisibility(VISIBLE);
+          //  mStatusIcon.setVisibility(VISIBLE);
             BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
             int presenceResId = PresenceUtils.getStatusIconId(mPresenceStatus);
-            mStatusIcon.setImageDrawable(brandingRes.getDrawable(presenceResId));
+            //mStatusIcon.setImageDrawable(brandingRes.getDrawable(presenceResId));
+            
         }
     }
 
@@ -625,7 +632,7 @@ public class ChatView extends LinearLayout {
 
             TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
             mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
-            mTitle.setText(mContext.getString(R.string.chat_with, sender));
+            mScreen.setTitle(mContext.getString(R.string.chat_with, sender));
         }
 
         if (cursor != null) {
@@ -642,7 +649,7 @@ public class ChatView extends LinearLayout {
         TextView text = (TextView) findViewById(R.id.txtSubscription);
         String displayableAddr = ImpsAddressUtils.getDisplayableAddress(from);
         text.setText(mContext.getString(R.string.subscription_prompt, displayableAddr));
-        mTitle.setText(mContext.getString(R.string.chat_with, displayableAddr));
+        mScreen.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
     }

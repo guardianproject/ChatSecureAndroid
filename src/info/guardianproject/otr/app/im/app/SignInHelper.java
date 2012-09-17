@@ -8,7 +8,6 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -136,7 +135,7 @@ public class SignInHelper {
 
     public void goToAccount(long accountId) {
         Intent intent;
-        intent = new Intent(mContext, TabbedContainer.class);
+        intent = new Intent(mContext, ContactListActivity.class);
         // clear the back stack of the account setup
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
 

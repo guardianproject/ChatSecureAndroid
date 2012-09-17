@@ -20,7 +20,6 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.Observable;
@@ -40,20 +39,23 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-public class ContactListActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class ContactListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -83,7 +85,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+        //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
 
@@ -119,14 +121,16 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mHandler = new MyHandler(this);
+
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
         c.close();
 
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+       // BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+       // setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
+        setTitle(username);
+       // getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+         //       brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 
@@ -180,7 +184,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
         return true;
     }
@@ -479,10 +483,45 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
+            Cursor c;
+            if (mIsFiltering) {
+                c = mFilterView.getContactAtPosition((int) mPosition);
+            } else {
+                c = mContactListView.getContactAtPosition(mPosition);
+            }
+
+            switch (item.getItemId()) {
+            case MENU_START_CONVERSATION:
+                mContactListView.startChat(c);
+                break;
+            case MENU_VIEW_PROFILE:
+                mContactListView.viewContactPresence(c);
+                break;
+            case MENU_BLOCK_CONTACT:
+                mContactListView.blockContact(c);
+                break;
+            case MENU_DELETE_CONTACT:
+                mContactListView.removeContact(c);
+                break;
+            case MENU_END_CONVERSATION:
+                mContactListView.endChat(c);
+                break;
+            default:
+                return false;
+            }
+
+            if (mIsFiltering) {
+                showContactListView();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
             Cursor c;
             if (mIsFiltering) {
                 c = mFilterView.getContactAtPosition((int) mPosition);
