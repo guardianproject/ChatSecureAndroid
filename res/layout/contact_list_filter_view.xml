@@ -17,74 +17,78 @@
  * limitations under the License.
  */
 -->
-<info.guardianproject.otr.app.im.app.ContactListFilterView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.otr.app.im.app.ContactListFilterView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contactFilterView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/contactFilterView"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
-    <ListView android:id="@+id/filteredList"
+    <ListView
+        android:id="@+id/filteredList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        		android:layout_weight="1"   
-        		  android:background="#00000000"
-         android:cacheColorHint="#00000000"     
-         />
+        android:layout_weight="1"
+        android:background="#00000000"
+        android:cacheColorHint="#00000000" />
 
-
-         <info.guardianproject.otr.app.im.app.UserPresenceView
+    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_centerVertical="true"
-        android:paddingTop="0dip"
-        android:paddingLeft="0dip"
+        android:orientation="horizontal"
         android:paddingBottom="0dip"
+        android:paddingLeft="0dip"
         android:paddingRight="0dip"
-        >
+        android:paddingTop="0dip" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical" >
 
-           <ImageButton android:id="@+id/statusDropDownButton"
-               android:paddingTop="2dip"
-                android:layout_marginRight="4dip"
-                android:paddingBottom="2dip"
-                android:scaleType="fitCenter"
+            <ImageButton
+                android:id="@+id/statusDropDownButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dip"
+                android:paddingBottom="2dip"
+                android:paddingTop="2dip"
+                android:scaleType="fitCenter" />
 
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal" >
+            </ProgressBar>
         </LinearLayout>
 
-        <EditText android:id="@+id/statusEdit"
-            android:inputType="textCapSentences|textAutoCorrect"
-            android:selectAllOnFocus="true"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+        <EditText
+            android:id="@+id/statusEdit"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:hint="enter custom status"
-            />
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse" />
 
-        <TextView android:id="@+id/statusView"
+        <TextView
+            android:id="@+id/statusView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingTop="5dip"
-            android:paddingLeft="3dip"
-            android:singleLine="true"
-            android:visibility="gone"
             android:background="#55999999"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
-
+            android:gravity="center_vertical"
+            android:paddingLeft="3dip"
+            android:paddingTop="5dip"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:visibility="gone" />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>

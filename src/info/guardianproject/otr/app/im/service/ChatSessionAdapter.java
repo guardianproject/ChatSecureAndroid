@@ -266,7 +266,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         msg.setFrom(mConnection.getLoginUser().getAddress());
         mAdaptee.sendMessageAsync(msg);
         long now = System.currentTimeMillis();
-        // TODO remember message ID so we can notify user on receipt (XEP-0184)
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
     }
 
@@ -286,6 +285,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     void sendPostponedMessages() {
         String[] projection = new String[] { BaseColumns._ID, Imps.Messages.BODY,
+                                             Imps.Messages.PACKET_ID,
                                             Imps.Messages.DATE, Imps.Messages.TYPE, };
         String selection = Imps.Messages.TYPE + "=?";
 
@@ -298,13 +298,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         while (c.moveToNext()) {
             String body = c.getString(1);
+            String id = c.getString(2);
             Message msg = new Message(body);
             // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
             msg.setFrom(mConnection.getLoginUser().getAddress());
+            msg.setID(id);
+            updateMessageInDb(id, Imps.MessageType.OUTGOING, System.currentTimeMillis());
             mAdaptee.sendMessageAsync(msg);
 
-            //TODO c.updateLong(2, System.currentTimeMillis());
-            //c.updateInt(3, Imps.MessageType.OUTGOING);
         }
         //c.commitUpdates();
         c.close();
@@ -519,6 +520,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         return mContentResolver.update(messageUri, values, null, null);
     }
 
+    int updateMessageInDb(String id, int type, long time) {
+        Uri messageUri = Uri.parse(Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID + "/" + id);
+        ContentValues values = new ContentValues(1);
+        values.put(Imps.Messages.TYPE, type);
+        values.put(Imps.Messages.DATE, time);
+        return mContentResolver.update(messageUri, values, null, null);
+    }
+
     class ListenerAdapter implements MessageListener, GroupMemberListener {
 
         public void onIncomingMessage(ChatSession ses, final Message msg) {
@@ -631,8 +640,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         @Override
         public void onIncomingReceipt(ChatSession ses, String id) {
-            // TODO this just generates a debug message in the chat log.
-            // TODO Needs a real implementation.
             updateConfirmInDb(id, 1);
 
             int N = mRemoteListeners.beginBroadcast();
@@ -646,6 +653,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 }
             }
             mRemoteListeners.finishBroadcast();
+        }
+
+        @Override
+        public void onMessagePostponed(ChatSession ses, String id) {
+            updateMessageInDb(id, Imps.MessageType.POSTPONED, -1);
         }
 
         @Override

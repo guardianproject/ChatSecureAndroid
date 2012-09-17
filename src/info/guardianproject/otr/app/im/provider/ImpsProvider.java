@@ -26,6 +26,7 @@ import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import android.content.ContentProvider;
@@ -241,13 +242,8 @@ public class ImpsProvider extends ContentProvider {
         private SQLiteDatabase dbRead;
         private SQLiteDatabase dbWrite;
 
-        private String key;
-
         DatabaseHelper(Context context) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
-
-            key = "foo";
-
         }
 
         public SQLiteDatabase getReadableDatabase() {
@@ -1286,7 +1282,13 @@ public class ImpsProvider extends ContentProvider {
             // Put them together
             final String query = qb.buildUnionQuery(new String[] { query1, query2 }, sort, null);
             final SQLiteDatabase db = getDBHelper().getWritableDatabase();
-            Cursor c = db.rawQueryWithFactory(null, query, null, TABLE_MESSAGES);
+            String[] doubleArgs = null;
+            if (selectionArgs != null) {
+                doubleArgs = Arrays.copyOf(selectionArgs, selectionArgs.length * 2);
+                System.arraycopy(selectionArgs, 0, doubleArgs, selectionArgs.length, selectionArgs.length);
+            }
+            
+            Cursor c = db.rawQueryWithFactory(null, query, doubleArgs, TABLE_MESSAGES);
             if ((c != null) && !isTemporary()) {
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }

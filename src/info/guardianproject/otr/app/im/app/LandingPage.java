@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.TabbedContainer;
 
 import info.guardianproject.otr.app.im.R;
@@ -66,6 +67,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
 
+    private SignInHelper mSignInHelper;
+
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -91,6 +94,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -99,6 +103,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
+        mSignInHelper = new SignInHelper(this);
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
@@ -127,20 +132,17 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     }
 
     @Override
+    protected void onDestroy() {
+        mSignInHelper.stop();
+        super.onDestroy();
+    }
+    
+    @Override
     protected void onResume() {
         super.onResume();
 
         mHandler.registerForBroadcastEvents();
     }
-
-//    private void signInAll() {
-//        Log.i(TAG, "signInAll");
-//        mProviderCursor.moveToFirst();
-//        do {
-//            int position = mProviderCursor.getPosition();
-//            signInAccountAtPosition(position);
-//        } while (mProviderCursor.moveToNext());
-//    }
 
     private void signInAccountAtPosition(int position) {
         Intent intent = null;
@@ -162,7 +164,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
                     intent = getEditAccountIntent();
                 }
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                signIn(accountId);
+                gotoAccount();
             } else {
                 intent = getViewContactsIntent();
             }
@@ -192,9 +194,22 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         // Remember that the user signed in.
         setKeepSignedIn(accountId, true);
 
-        Intent intent = new Intent(this, SigningInActivity.class);
-        intent.setData(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId));
+
+        long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+        String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
+        boolean isActive = false; // TODO(miron)
+        mSignInHelper.signIn(password, providerId, accountId, isActive);
+    }
+
+    protected void gotoAccount() {
+        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+        Intent intent = new Intent(this, TabbedContainer.class);
+        // clear the back stack of the account setup
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
+        finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -346,6 +361,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         if (providerCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
             menu.add(0, ID_ADD_ACCOUNT, 0, R.string.menu_edit_account);
+            menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account).setIcon(
+                    android.R.drawable.ic_menu_delete);
             return;
         }
 
@@ -354,19 +371,19 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         boolean isLoggedIn = isSignedIn(providerCursor);
 
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
+        menu.add(0, ID_VIEW_CONTACT_LIST, 0,
+                brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
         if (!isLoggedIn) {
             menu.add(0, ID_SIGN_IN, 0, R.string.sign_in)
             // TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_login)
             ;
         } else {
-            menu.add(0, ID_VIEW_CONTACT_LIST, 0,
-                    brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
             menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
                     android.R.drawable.ic_menu_close_clear_cancel);
         }
 
-        boolean isAccountEditible = providerCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
-        if (isAccountEditible && !isLoggingIn && !isLoggedIn) {
+        boolean isAccountEditable = providerCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+        if (isAccountEditable && !isLoggingIn && !isLoggedIn) {
             menu.add(0, ID_EDIT_ACCOUNT, 0, R.string.menu_edit_account).setIcon(
                     android.R.drawable.ic_menu_edit);
             menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account).setIcon(
@@ -374,6 +391,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info;
@@ -453,7 +471,8 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
     Intent getViewContactsIntent() {
         Intent intent = new Intent(this, TabbedContainer.class);
-        intent.putExtra("accountId", mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;
     }
 
@@ -477,6 +496,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
     private final class ProviderAdapter extends CursorAdapter {
         private LayoutInflater mInflater;
 
+        @SuppressWarnings("deprecation")
         public ProviderAdapter(Context context, Cursor c) {
             super(context, c);
             mInflater = LayoutInflater.from(context).cloneInContext(context);

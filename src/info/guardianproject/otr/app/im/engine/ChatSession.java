@@ -144,6 +144,12 @@ public class ChatSession {
         }
     }
 
+    public void onMessagePostponed(String id) {
+        for (MessageListener listener : mListeners) {
+            listener.onMessagePostponed(this, id);
+        }
+    }
+
     public void onReceiptsExpected() {
         for (MessageListener listener : mListeners) {
             listener.onReceiptsExpected(this);
