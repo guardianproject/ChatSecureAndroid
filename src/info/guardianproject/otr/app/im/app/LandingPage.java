@@ -190,7 +190,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
         long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
         String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
-        boolean isActive = true; // FIXME
+        boolean isActive = false; // TODO(miron)
         mSignInHelper.signIn(password, providerId, accountId, isActive);
     }
 

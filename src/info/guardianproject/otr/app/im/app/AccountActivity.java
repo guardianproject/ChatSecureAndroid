@@ -266,7 +266,7 @@ public class AccountActivity extends Activity {
 
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
-                final boolean isActive = true; // FIXME
+                final boolean isActive = false; // TODO(miron) does this ever need to be true?
                 ContentResolver cr = getContentResolver();
 
                 if (!parseAccount(mEditUserAccount.getText().toString())) {
