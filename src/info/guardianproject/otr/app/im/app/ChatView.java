@@ -745,7 +745,7 @@ public class ChatView extends LinearLayout {
         }
 
         mQueryHandler.startQuery(QUERY_TOKEN, null, uri, null, null /* selection */,
-                null /* selection args */, null);
+                null /* selection args */, "date");
     }
 
     void scheduleRequery(long interval) {
