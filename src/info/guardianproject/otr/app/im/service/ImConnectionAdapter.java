@@ -145,7 +145,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     @Override
     public void sendHeartbeat() throws RemoteException {
-        mConnection.sendHeartbeat();
+        mConnection.sendHeartbeat(mService.getHeartbeatInterval());
     }
 
     @Override

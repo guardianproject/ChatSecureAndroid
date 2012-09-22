@@ -2061,22 +2061,22 @@ public class Imps {
             }
 
             /**
-             * Set the last received heartbeat interval from the server.
-             * 
-             * @param interval the last received heartbeat interval from the
-             *            server.
+             * Set the heartbeat interval.
              */
             public void setHeartbeatInterval(long interval) {
+                if (interval <= 0) {
+                    interval = 1;
+                } else if (interval > 99) {
+                    interval = 99;
+                }
                 ProviderSettings.setHeartbeatInterval(mContentResolver, mProviderId, interval);
             }
 
             /**
-             * Get the last received heartbeat interval from the server.
-             * 
-             * @return the last received heartbeat interval from the server.
+             * Get the heartbeat interval, default to 1.
              */
             public long getHeartbeatInterval() {
-                return getLong(HEARTBEAT_INTERVAL, 0L /* an invalid default interval */);
+                return getLong(HEARTBEAT_INTERVAL, 1);
             }
 
             /**

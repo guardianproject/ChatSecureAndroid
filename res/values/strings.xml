@@ -346,6 +346,8 @@
     smaller text below this label -->
     <string name="foreground_service_title">Use foreground priority</string>
     <string name="foreground_service_summary">Reduce the chance that Android will restart our connection service.  This will place a notification in the notification area.</string>
+    <string name="heartbeat_interval_title">Heartbeat interval</string>
+    <string name="heartbeat_interval_summary">Use a higher value (in minutes) to save battery.  A high value may cause the provider to close your connection due to inactivity.</string>
     <string name="notification_vibrate_title">Vibrate</string>
     <!-- This is the summary of the vibrate notification setting-->
     <string name="notification_vibrate_summary">Also vibrate when IM arrives</string>
@@ -677,6 +679,7 @@
 	<string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
 	<string name="pref_enable_notification">pref_enable_notification</string>
 	<string name="pref_foreground_service">pref_foreground_service</string>
+	<string name="pref_heartbeat_interval">pref_heartbeat_interval</string>
 	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
 	<string name="pref_notification_sound">pref_notification_sound</string>
 	<string name="pref_notification_ringtone">pref_notification_ringtone</string>

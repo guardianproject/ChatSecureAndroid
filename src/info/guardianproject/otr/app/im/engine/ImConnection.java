@@ -241,7 +241,12 @@ public abstract class ImConnection {
 
     protected abstract void doUpdateUserPresenceAsync(Presence presence);
 
-    public abstract void sendHeartbeat();
+    /**
+     * Handle a heartbeat.
+     * 
+     * @param heartbeatInterval the number of heartbeats before a ping should be sent.
+     */
+    public abstract void sendHeartbeat(long heartbeatInterval);
 
     public abstract void setProxy(String type, String host, int port);
 }
