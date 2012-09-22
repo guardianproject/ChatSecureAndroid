@@ -373,13 +373,16 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
         menu.add(0, ID_VIEW_CONTACT_LIST, 0,
                 brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
-        if (!isLoggedIn) {
+        if (isLoggedIn) {
+            menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
+                    android.R.drawable.ic_menu_close_clear_cancel);
+        } else if (isLoggingIn) {
+            menu.add(0, ID_SIGN_OUT, 0, R.string.menu_cancel_signin).setIcon(
+                    android.R.drawable.ic_menu_close_clear_cancel);
+        } else {
             menu.add(0, ID_SIGN_IN, 0, R.string.sign_in)
             // TODO .setIcon(info.guardianproject.otr.app.internal.R.drawable.ic_menu_login)
             ;
-        } else {
-            menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
-                    android.R.drawable.ic_menu_close_clear_cancel);
         }
 
         boolean isAccountEditable = providerCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
