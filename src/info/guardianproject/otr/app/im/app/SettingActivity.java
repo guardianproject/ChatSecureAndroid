@@ -28,16 +28,19 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 
 public class SettingActivity extends android.preference.PreferenceActivity implements
         OnSharedPreferenceChangeListener {
+    private static final int DEFAULT_HEARTBEAT_INTERVAL = 1;
     ListPreference mOtrMode;
     CheckBoxPreference mHideOfflineContacts;
     CheckBoxPreference mEnableNotification;
     CheckBoxPreference mNotificationVibrate;
     CheckBoxPreference mNotificationSound;
     CheckBoxPreference mForegroundService;
+    EditTextPreference mHeartbeatInterval;
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();
@@ -49,6 +52,9 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
         mForegroundService.setChecked(settings.getUseForegroundPriority());
+        long heartbeatInterval = settings.getHeartbeatInterval();
+        if (heartbeatInterval == 0) heartbeatInterval = DEFAULT_HEARTBEAT_INTERVAL;
+        mHeartbeatInterval.setText(String.valueOf(heartbeatInterval));
 
         settings.close();
     }
@@ -76,6 +82,8 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
             }
         } else if (key.equals(getString(R.string.pref_foreground_service))) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
+        } else if (key.equals(getString(R.string.pref_heartbeat_interval))) {
+            settings.setHeartbeatInterval(Integer.valueOf(prefs.getString(key, String.valueOf(DEFAULT_HEARTBEAT_INTERVAL))));
         }
         else if (key.equals(getString(R.string.pref_default_locale)))
         {
@@ -98,6 +106,7 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         // TODO re-enable Ringtone preference
         //mNotificationRingtone = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
         mForegroundService = (CheckBoxPreference) findPreference(getString(R.string.pref_foreground_service));
+        mHeartbeatInterval = (EditTextPreference) findPreference(getString(R.string.pref_heartbeat_interval));
     }
 
     @Override

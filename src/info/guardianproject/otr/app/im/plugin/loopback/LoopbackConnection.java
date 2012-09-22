@@ -267,7 +267,7 @@ public class LoopbackConnection extends ImConnection {
 
     }
 
-    public void sendHeartbeat() {
+    public void sendHeartbeat(long heartbeatInterval) {
     }
 
     public void setProxy(String type, String host, int port) {

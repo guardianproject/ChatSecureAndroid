@@ -79,6 +79,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
+    
+    // Our heartbeat interval in seconds.
+    // The user controlled preference heartbeat interval is in these units (i.e. minutes).
     private static final long HEARTBEAT_INTERVAL = 1000 * 60;
 
     private StatusBarNotifier mStatusBarNotifier;
@@ -100,13 +103,18 @@ public class RemoteImService extends Service implements OtrEngineListener {
 
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     private ForegroundStarter mForegroundStarter;
+    public long mHeartbeatInterval;
+
+    private static final String TAG = "Gibberbot.ImService";
 
     public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
         mHandler = new Handler();
     }
 
-    private static final String TAG = "Gibberbot.ImService";
+    public long getHeartbeatInterval() {
+        return mHeartbeatInterval;
+    }
 
     public static void debug(String msg) {
         Log.d(TAG, msg);
@@ -217,6 +225,9 @@ public class RemoteImService extends Service implements OtrEngineListener {
                     mNeedCheckAutoLogin = false;
                     autoLogin();
                 }
+                
+                mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
+                
                 for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter.hasNext();) {
                     ImConnectionAdapter conn = iter.next();
                     conn.sendHeartbeat();

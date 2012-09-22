@@ -130,6 +130,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private static int mGlobalCount;
     
     private final Random rnd = new Random();
+    
+    // Maintains a sequence counting up to the user configured heartbeat interval
+    private int heartbeatSequence = 0;
 
     public XmppConnection(Context context) {
         super(context);
@@ -1376,18 +1379,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
-    /*
-     * Alarm event fired
-     * @see info.guardianproject.otr.app.im.engine.ImConnection#sendHeartbeat()
-     */
-    public void sendHeartbeat() {
+    public void sendHeartbeat(final long heartbeatInterval) {
         // Don't let heartbeats queue up if we have long running tasks - only
         // do the heartbeat if executor is idle.
         boolean success = executeIfIdle(new Runnable() {
             @Override
             public void run() {
                 debug(TAG, "heartbeat state = " + getState());
-                doHeartbeat();
+                doHeartbeat(heartbeatInterval);
             }
         });
 
@@ -1397,7 +1396,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    public void doHeartbeat() {
+    public void doHeartbeat(long heartbeatInterval) {
+        heartbeatSequence++;
+        
         if (mConnection == null && mRetryLogin) {
             debug(TAG, "reconnect with login");
             do_login();
@@ -1414,11 +1415,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mNeedReconnect) {
             reconnect();
         } else if (mConnection.isConnected() && getState() == LOGGED_IN) {
-            debug(TAG, "ping");
-            if (PING_ENABLED && !sendPing()) {
-                Log.w(TAG, "reconnect on ping failed");
-                setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
-                force_reconnect();
+            if (PING_ENABLED) {
+                // Check ping on every heartbeat.  checkPing() will return true immediately if we already checked.
+                if (!checkPing()) {
+                    Log.w(TAG, "reconnect on ping failed");
+                    setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
+                    force_reconnect();
+                } else {
+                    // Send pings only at intervals configured by the user
+                    if (heartbeatSequence >= heartbeatInterval) {
+                        heartbeatSequence = 0;
+                        debug(TAG, "ping");
+                        sendPing();
+                    }
+                }
             }
         }
     }
@@ -1426,21 +1436,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void clearPing() {
         debug(TAG, "clear ping");
         mPingCollector = null;
+        heartbeatSequence = 0;
     }
 
     // Runs in executor thread
-    private boolean sendPing() {
-        // Check ping result from previous send
-        if (mPingCollector != null) {
-            IQ result = (IQ) mPingCollector.pollResult();
-            mPingCollector.cancel();
-            if (result == null || result.getError() != null) {
-                clearPing();
-                Log.e(TAG, "ping timeout");
-                return false;
-            }
-        }
-
+    private void sendPing() {
         IQ req = new IQ() {
             public String getChildElementXML() {
                 return "<ping xmlns='urn:xmpp:ping'/>";
@@ -1452,6 +1452,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 new PacketTypeFilter(IQ.class));
         mPingCollector = mConnection.createPacketCollector(filter);
         mConnection.sendPacket(req);
+    }
+
+    // Runs in executor thread
+    private boolean checkPing() {
+        if (mPingCollector != null) {
+            IQ result = (IQ) mPingCollector.pollResult();
+            mPingCollector.cancel();
+            if (result == null || result.getError() != null) {
+                mPingCollector = null;
+                Log.e(TAG, "ping timeout");
+                return false;
+            }
+        }
         return true;
     }
 

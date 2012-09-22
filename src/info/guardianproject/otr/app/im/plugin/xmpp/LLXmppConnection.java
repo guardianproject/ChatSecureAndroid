@@ -735,7 +735,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     @Override
-    public void sendHeartbeat() {
+    public void sendHeartbeat(long heartbeatInterval) {
         InetAddress newAddress = getMyAddress(serviceName, false);
         if (!ipAddress.equals(newAddress)) {
             debug(TAG, "new address, reconnect");

@@ -46,6 +46,14 @@
           android:summary="@string/foreground_service_summary"
           android:defaultValue="false" />
 
+  <EditTextPreference 
+          android:key="@string/pref_heartbeat_interval"
+          android:title="@string/heartbeat_interval_title"
+          android:summary="@string/heartbeat_interval_summary"
+          android:numeric="integer"
+          android:maxLength="2"
+          android:defaultValue="1" />
+  
   <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference
@@ -71,6 +79,7 @@
                 android:summary="@string/notification_sound_summary"
                 android:defaultValue="false"
                  />
+
 <!-- 
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
