@@ -18,14 +18,25 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
- <item android:id="@+id/menu_sign_out_all"
-        android:title="@string/menu_sign_out_all"
-         android:icon="@android:drawable/ic_menu_close_clear_cancel"
-         />
+
  <item android:id="@+id/menu_new_account"
         android:title="@string/menu_new_account"
          android:icon="@android:drawable/ic_menu_add"
+                 android:showAsAction="always"
+         
          /><item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
-        android:icon="@drawable/ic_menu_settings" />
+        android:icon="@drawable/ic_menu_settings"
+                android:showAsAction="never|withText"
+        
+         />
+          <item android:id="@+id/menu_sign_out_all"
+     
+        android:title="@string/menu_sign_out_all"
+                android:icon="@drawable/ic_menu_sign_out"
+        
+                 android:showAsAction="never|withText"
+         
+         
+         />
 </menu>
