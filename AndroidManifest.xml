@@ -46,7 +46,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:configChanges="locale"
-             android:theme="@style/AppTheme"
+             android:theme="@style/Theme.Sherlock.ForceOverflow"
 			>
  <!-- android:uiOptions="splitActionBarWhenNarrow"-->
      		 

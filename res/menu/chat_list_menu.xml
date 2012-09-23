@@ -22,7 +22,7 @@
 
      <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
-        android:icon="@drawable/ic_menu_new_chat" 
+        android:icon="@android:drawable/ic_menu_add" 
                 android:showAsAction="always"
         
         />
@@ -46,7 +46,7 @@
   <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
-                android:showAsAction="always"
+                android:showAsAction="never"
         
          />
  

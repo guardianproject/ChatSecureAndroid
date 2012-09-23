@@ -198,6 +198,8 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
 
     private void setupActionBarList (long accountId)
     {
+
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         getSherlock().getActionBar().setTitle("");
         
@@ -213,18 +215,23 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 
-               finish();
-               Intent intent = new Intent(ContactListActivity.this,ContactListActivity.class);
-               intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, (long)itemPosition);
-               
-               startActivity(intent);
-               
+                if (itemPosition != mAccountId)
+                {
+                  // finish();
+                  // Intent intent = new Intent(ContactListActivity.this,ContactListActivity.class);
+                  // intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, (long)itemPosition);
+                   
+                  // startActivity(intent);
+                }
+                
                 return false;
             }
             
         });
         
         this.getSherlock().getActionBar().setSelectedNavigationItem((int)mAccountId);
+
+        
 
     }
     @Override

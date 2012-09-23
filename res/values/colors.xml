@@ -24,4 +24,10 @@
     <color name="nonchat_contact">#fff</color>
     <color name="status_popup_text">#ff000000</color>
     <color name="error">#ffcc5555</color>
+    
+        <color name="android_green">#FFA4C639</color>
+    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="soft_grey">#FF777777</color>
+    <color name="background">#FFEFEFEF</color>
+    
 </resources>

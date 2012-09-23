@@ -62,6 +62,8 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
     private ChatSwitcher mChatSwitcher;
     private LayoutInflater mInflater;
 
+    private long mAccountId = -1;
+    
     ContextMenuHandler mContextMenuHandler;
 
     @Override
@@ -71,6 +73,9 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
      //   requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.chat_view);
+        
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mChatView = (ChatView) findViewById(R.id.chatView);
         mHandler = mChatView.getHandler();
@@ -110,9 +115,9 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
     void resolveIntent(Intent intent) {
         if (requireOpenDashboardOnStart(intent)) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1L);
-            final long accountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
+            mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
                     -1L);
-            if (providerId == -1L || accountId == -1L) {
+            if (providerId == -1L || mAccountId == -1L) {
                 finish();
             } else {
                 mChatSwitcher.open();
@@ -122,6 +127,8 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
 
         if (ImServiceConstants.ACTION_MANAGE_SUBSCRIPTION.equals(intent.getAction())) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
+            mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
+                    -1L);
             String from = intent.getStringExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS);
             if ((providerId == -1) || (from == null)) {
                 finish();
@@ -179,6 +186,10 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
             }
             return true;
 
+        case android.R.id.home:
+            showChatList();
+            return true;
+            
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
@@ -207,6 +218,14 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void showChatList ()
+    {
+     //   Intent intent = new Intent (this, ChatListActivity.class);
+      //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+       // startActivity(intent);
+        finish();
     }
 
     @Override

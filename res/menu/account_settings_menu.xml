@@ -29,6 +29,6 @@
         android:id="@+id/menu_gen_key"
         android:icon="@drawable/ic_menu_key"
         android:title="@string/menu_gen_key"
-        android:showAsAction="always"
+        android:showAsAction="never|withText"
         />
 </menu>

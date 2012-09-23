@@ -63,7 +63,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountActivity extends SherlockActivity {
+public class AccountSimpleActivity extends SherlockActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -83,11 +83,8 @@ public class AccountActivity extends SherlockActivity {
 
     Uri mAccountUri;
     EditText mEditUserAccount;
-    EditText mEditPass;
-    CheckBox mRememberPass;
-    CheckBox mUseTor;
+   
     Button mBtnSignIn;
-    Button mBtnAdvanced;
     TextView mTxtFingerprint;
 
     boolean isEdit = false;
@@ -107,7 +104,7 @@ public class AccountActivity extends SherlockActivity {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-        setContentView(R.layout.account_activity);
+        setContentView(R.layout.account_activity_simple);
 
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -130,26 +127,9 @@ public class AccountActivity extends SherlockActivity {
             }
         });
 
-        mEditPass = (EditText) findViewById(R.id.edtPass);
-        mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
-        mUseTor = (CheckBox) findViewById(R.id.useTor);
-        mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateUseTor(isChecked);
-            }
-        });
 
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
-        mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
-
-        mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateWidgetState();
-            }
-        });
-
+      
         mApp = ImApp.getApplication(this);
         Intent i = getIntent();
         String action = i.getAction();
@@ -211,11 +191,7 @@ public class AccountActivity extends SherlockActivity {
             mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
                                    + settings.getDomain();
             mEditUserAccount.setText(mOriginalUserAccount);
-            mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
-
-            mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
-
-            mUseTor.setChecked(settings.getUseTor());
+         
 
             getOTRKeyInfo();
 
@@ -234,39 +210,16 @@ public class AccountActivity extends SherlockActivity {
 
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
 
-        mRememberPass.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                CheckBox mRememberPass = (CheckBox) v;
-
-                if (mRememberPass.isChecked()) {
-                    String msg = brandingRes
-                            .getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
+       
         mEditUserAccount.addTextChangedListener(mTextWatcher);
-        mEditPass.addTextChangedListener(mTextWatcher);
-
-        mBtnAdvanced.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showAdvanced();
-            }
-        });
-
-        mBtnSignIn.setOnClickListener(new OnClickListener() {
+       mBtnSignIn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 checkUserChanged();
 
-                final String pass = mEditPass.getText().toString();
-                final boolean rememberPass = mRememberPass.isChecked();
+                final String pass = "xxx";
+                final boolean rememberPass = true;
                 final boolean isActive = false; // TODO(miron) does this ever need to be true?
                 ContentResolver cr = getContentResolver();
 
@@ -318,37 +271,7 @@ public class AccountActivity extends SherlockActivity {
         super.onDestroy();
     }
     
-    private void updateUseTor(boolean useTor) {
-        checkUserChanged();
-
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
-
-        // if using Tor, disable DNS SRV to reduce anonymity leaks
-        settings.setDoDnsSrv(!useTor);
-
-        String server = "";
-
-        if (useTor) {
-            server = settings.getDomain();
-            String domain = settings.getDomain().toLowerCase();
-
-            // a little bit of custom handling here
-            if (domain.equals("gmail.com")) {
-                server = "talk.l.google.com";
-            } else if (domain.equals("jabber.ccc.de")) {
-                server = "okj7xc6j2szr2y75.onion";
-            } else if (domain.equals("jabber.org")) {
-                server = "hermes.jabber.org";
-            } else if (domain.equals("chat.facebook.com")) {
-                server = "chat.facebook.com";
-            }
-
-        }
-        settings.setServer(server);
-        settings.setUseTor(useTor);
-        settings.close();
-    }
+  
 
     private void getOTRKeyInfo() {
 
@@ -407,7 +330,7 @@ public class AccountActivity extends SherlockActivity {
                     // TODO move these strings to strings.xml
                     isGood = false;
                     Toast.makeText(
-                            AccountActivity.this,
+                            AccountSimpleActivity.this,
                             "The port value '" + splitColon[1]
                                     + "' after the : could not be parsed as a number!",
                             Toast.LENGTH_LONG).show();
@@ -505,7 +428,7 @@ public class AccountActivity extends SherlockActivity {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
-        Intent intent = new Intent(AccountActivity.this, SignoutActivity.class);
+        Intent intent = new Intent(AccountSimpleActivity.this, SignoutActivity.class);
         intent.setData(mAccountUri);
 
         settings.close();
@@ -522,7 +445,7 @@ public class AccountActivity extends SherlockActivity {
         values.put(AccountColumns.KEEP_SIGNED_IN, 0);
         getContentResolver().update(mAccountUri, values, null, null);
 
-        mApp = ImApp.getApplication(AccountActivity.this);
+        mApp = ImApp.getApplication(AccountSimpleActivity.this);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             @Override
@@ -582,26 +505,8 @@ public class AccountActivity extends SherlockActivity {
 
     void updateWidgetState() {
         boolean goodUsername = mEditUserAccount.getText().length() > 0;
-        boolean goodPassword = mEditPass.getText().length() > 0;
+        boolean goodPassword = true;
         boolean hasNameAndPassword = goodUsername && goodPassword;
-
-        mEditPass.setEnabled(goodUsername);
-        mEditPass.setFocusable(goodUsername);
-        mEditPass.setFocusableInTouchMode(goodUsername);
-
-        // enable keep sign in only when remember password is checked.
-        boolean rememberPass = mRememberPass.isChecked();
-        if (rememberPass && !hasNameAndPassword) {
-            mRememberPass.setChecked(false);
-            rememberPass = false;
-        }
-        mRememberPass.setEnabled(hasNameAndPassword);
-        mRememberPass.setFocusable(hasNameAndPassword);
-
-        mEditUserAccount.setEnabled(!isSignedIn);
-        mEditPass.setEnabled(!isSignedIn);
-        mBtnAdvanced.setEnabled(!isSignedIn);
-        mUseTor.setEnabled(!isSignedIn);
 
         if (!isSignedIn) {
             mBtnSignIn.setEnabled(hasNameAndPassword);
@@ -693,7 +598,7 @@ public class AccountActivity extends SherlockActivity {
                     otrKeyManager.generateLocalKeyPair();
 
                 } else {
-                    Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
+                    Toast.makeText(AccountSimpleActivity.this, "OTR is not initialized yet",
                             Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {

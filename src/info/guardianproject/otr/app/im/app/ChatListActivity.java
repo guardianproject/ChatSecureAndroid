@@ -89,6 +89,10 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
 
         setContentView(mActiveChatListView);
 
+
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
         if (mAccountId == -1) {
@@ -152,6 +156,13 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
         c.close();
     }
 
+    private void showContactsList ()
+    {
+        Intent intent = new Intent (this, ContactListActivity.class);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+        startActivity(intent);
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -159,11 +170,19 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
         inflater.inflate(R.menu.chat_list_menu, menu);
         return true;
     }
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         
+        case R.id.menu_new_chat:
+            
+            showContactsList ();
+            
+            return true;
+            
+        case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();

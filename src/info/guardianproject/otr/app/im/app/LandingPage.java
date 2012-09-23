@@ -164,7 +164,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
             } else if (state == Imps.ConnectionStatus.CONNECTING) {
                 gotoAccount();
             } else {
-                intent = getViewContactsIntent();
+                intent = getViewChatsIntent();
             }
         }
 
@@ -473,6 +473,13 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
 
     Intent getViewContactsIntent() {
         Intent intent = new Intent(this, ContactListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
+        return intent;
+    }
+    
+    Intent getViewChatsIntent() {
+        Intent intent = new Intent(this, ChatListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;

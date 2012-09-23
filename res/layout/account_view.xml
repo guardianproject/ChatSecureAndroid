@@ -52,7 +52,6 @@
                 android:layout_height="wrap_content">
 
                 <TextView android:id="@+id/providerName"
-                    android:textColor="@color/landing_page_text"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold"
                     android:singleLine="true"
@@ -62,7 +61,6 @@
                     android:layout_height="wrap_content" />
                 <TextView android:id="@+id/conversations"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/landing_page_text_secondary"
                     android:singleLine="true"
                     android:paddingRight="3dip"
                     android:paddingLeft="5dip"
@@ -72,7 +70,6 @@
 
             <TextView android:id="@+id/loginName"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/landing_page_text"
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:layout_width="fill_parent"
