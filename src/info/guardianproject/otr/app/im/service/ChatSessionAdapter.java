@@ -77,7 +77,9 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     private ContentResolver mContentResolver;
     /*package*/Uri mChatURI;
+
     private Uri mMessageURI;
+    private Uri mOtrMessageURI;
 
     private boolean mConvertingToGroupChat;
 
@@ -136,7 +138,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mIsGroupChat = true;
         long groupId = insertGroupContactInDb(group);
         group.addMemberListener(mListenerAdapter);
+
         mMessageURI = Imps.Messages.getContentUriByThreadId(groupId);
+        mOtrMessageURI = Imps.Messages.getOtrMessagesContentUriByThreadId(groupId);
+        
         mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, groupId);
         insertOrUpdateChat(null);
 
@@ -152,6 +157,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         long contactId = listManager.queryOrInsertContact(contact);
 
         mMessageURI = Imps.Messages.getContentUriByThreadId(contactId);
+        mOtrMessageURI = Imps.Messages.getOtrMessagesContentUriByThreadId(contactId);
+
         mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, contactId);
         insertOrUpdateChat(null);
 
@@ -510,7 +517,15 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         values.put(Imps.Messages.IS_DELIVERED, 0);
         values.put(Imps.Messages.PACKET_ID, id);
 
-        return mContentResolver.insert(mMessageURI, values);
+        boolean isEncrypted = true;
+        try {
+            isEncrypted = mOtrChatSession.isChatEncrypted();
+        } catch (RemoteException e) {
+            // Leave it as encrypted so it gets stored in memory
+            // TODO(miron)
+        }
+        
+        return mContentResolver.insert(isEncrypted ? mOtrMessageURI : mMessageURI, values);
     }
 
     int updateConfirmInDb(String id, int value) {
