@@ -167,7 +167,6 @@
         <Button android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:drawableLeft="@drawable/ic_menu_unencrypt"
             android:text="@string/send" />
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ChatView>

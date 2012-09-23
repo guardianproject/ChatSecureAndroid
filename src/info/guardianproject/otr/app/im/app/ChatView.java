@@ -1118,13 +1118,13 @@ public class ChatView extends LinearLayout {
 //                    imgSec.setImageResource(R.drawable.ic_menu_encrypt);
 
                     
-                    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
+                 //   mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
                 } catch (RemoteException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } else if (sessionStatus == SessionStatus.FINISHED) {
-                mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
+            //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
 
                 mWarningText.setTextColor(Color.WHITE);
                 mWarningText.setBackgroundColor(Color.DKGRAY);
@@ -1134,7 +1134,7 @@ public class ChatView extends LinearLayout {
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
 
-                mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
+            //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
                 
                 mWarningText.setTextColor(Color.WHITE);
                 mWarningText.setBackgroundColor(Color.RED);

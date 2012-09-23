@@ -106,7 +106,7 @@ public class AccountActivity extends SherlockActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+        //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.account_activity);
 
         mSignInHelper = new SignInHelper(this);

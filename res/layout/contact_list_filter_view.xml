@@ -23,29 +23,22 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/filteredList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#00000000"
-        android:cacheColorHint="#00000000" />
-
     <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
-        android:paddingBottom="0dip"
-        android:paddingLeft="0dip"
-        android:paddingRight="0dip"
-        android:paddingTop="0dip" >
+        android:padding="3dip"
+        android:background="#55999999"
+        
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical" >
+            android:layout_gravity="center_vertical" 
+            >
 
             <ImageButton
                 android:id="@+id/statusDropDownButton"
@@ -53,15 +46,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="4dip"
-                android:paddingBottom="2dip"
-                android:paddingTop="2dip"
                 android:scaleType="fitCenter" />
 
             <ProgressBar
                 android:visibility="gone"
                 android:id="@+id/progressBar1"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal" >
             </ProgressBar>
         </LinearLayout>
@@ -91,4 +82,13 @@
             android:visibility="gone" />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
 
+        <ListView
+        android:id="@+id/filteredList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#00000000"
+        android:cacheColorHint="#00000000" />
+
+   
 </info.guardianproject.otr.app.im.app.ContactListFilterView>

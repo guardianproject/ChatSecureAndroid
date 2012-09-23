@@ -47,8 +47,9 @@ android:anyDensity="true"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:configChanges="locale"
              android:theme="@style/AppTheme"
-             >
-
+			>
+ <!-- android:uiOptions="splitActionBarWhenNarrow"-->
+     		 
          <activity android:name=".app.WelcomeActivity"
          	android:configChanges="locale"
          	>
@@ -157,7 +158,6 @@ android:anyDensity="true"
             android:grantUriPermissions="true" />
 
         <activity android:name=".app.ChooseAccountActivity"
-                android:theme="@android:style/Theme.NoDisplay"
                 android:configChanges="locale"
          	
                 >

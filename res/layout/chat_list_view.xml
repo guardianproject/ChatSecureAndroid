@@ -28,7 +28,6 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_centerVertical="true"
         android:paddingTop="9dip"
         android:paddingLeft="5dip"
         android:paddingBottom="5dip"

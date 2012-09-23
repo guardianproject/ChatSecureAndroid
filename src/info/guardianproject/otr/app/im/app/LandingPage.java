@@ -16,16 +16,13 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -39,18 +36,20 @@ import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
-public class LandingPage extends ListActivity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class LandingPage extends SherlockListActivity implements View.OnCreateContextMenuListener {
     private static final String TAG = ImApp.LOG_TAG;
 
     private static final int ID_SIGN_IN = Menu.FIRST + 1;
@@ -99,7 +98,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         super.onCreate(icicle);
 
         setTitle(R.string.landing_page_title);
-
+        this.
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
@@ -307,7 +306,7 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.accounts_menu, menu);
         return true;
     }
@@ -393,9 +392,10 @@ public class LandingPage extends ListActivity implements View.OnCreateContextMen
         }
     }
 
+    
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();

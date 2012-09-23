@@ -34,7 +34,7 @@
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
-    <string name="landing_page_title">Chat - Select an account</string>
+    <string name="landing_page_title">Select an account</string>
 
     <!-- Landing page screen menu and context menu items. -->
 	<string name="menu_about">About</string>
@@ -50,7 +50,7 @@
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
-    <string name="choose_account_title">Chat - Select an account</string>
+    <string name="choose_account_title">Select an account</string>
     <!-- Displays the number of ongoing chats on the landing page.-->
     <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
 
@@ -327,8 +327,8 @@
     <string name="invite_label">Send invitation</string>
 
 	<!-- provider plugin names -->
-	<string name="provider_full_name_xmpp">Jabber/XMPP</string>
-	<string name="provider_full_name_llxmpp">Local Serverless XMPP</string>
+	<string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+	<string name="provider_full_name_llxmpp">Bonjour (ZeroConf)</string>
 	
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
 
