@@ -19,6 +19,15 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionListener;
+import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IContactList;
+import info.guardianproject.otr.app.im.IContactListListener;
+import info.guardianproject.otr.app.im.IContactListManager;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
@@ -33,17 +42,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import net.java.otr4j.session.SessionStatus;
-
-import info.guardianproject.otr.app.im.IChatListener;
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionListener;
-import info.guardianproject.otr.app.im.IChatSessionManager;
-import info.guardianproject.otr.app.im.IContactList;
-import info.guardianproject.otr.app.im.IContactListListener;
-import info.guardianproject.otr.app.im.IContactListManager;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
@@ -77,9 +75,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
@@ -88,8 +87,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -408,6 +405,7 @@ public class ChatView extends LinearLayout {
                     }
                 }
 
+                mComposeMessage.clearFocus();
                 sendMessage();
                 return true;
             }
@@ -963,9 +961,6 @@ public class ChatView extends LinearLayout {
     }
 
     void sendMessage() {
-        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isFullscreenMode())
-            imm.hideSoftInputFromWindow(mComposeMessage.getWindowToken(), 0);
         String msg = mComposeMessage.getText().toString();
 
         if (TextUtils.isEmpty(msg.trim())) {
