@@ -269,12 +269,12 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
 
     }
 
-//    private void showRosterScreen() {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setClass(this, ContactListActivity.class);
-//        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
-//        startActivity(intent);
-//    }
+   private void showRosterScreen() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setClass(this, ContactListActivity.class);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
+        startActivity(intent);
+    }
 
 //    private void showSmileyDialog() {
 //        if (mSmileyDialog == null) {
@@ -353,21 +353,21 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
         mChatSwitcher.rotateChat(delta, contact, accountId, providerId);
     }
 
-//    private void startContactPicker() {
-//        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
-//        ContentUris.appendId(builder, mChatView.getProviderId());
-//        ContentUris.appendId(builder, mChatView.getAccountId());
-//        Uri data = builder.build();
-//
-//        try {
-//            Intent i = new Intent(Intent.ACTION_PICK, data);
-//            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
-//                    .getCurrentChatSession().getPariticipants());
-//            startActivityForResult(i, REQUEST_PICK_CONTACTS);
-//        } catch (RemoteException e) {
-//            mHandler.showServiceErrorAlert();
-//        }
-//    }
+    private void startContactPicker() {
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, mChatView.getProviderId());
+        ContentUris.appendId(builder, mChatView.getAccountId());
+        Uri data = builder.build();
+
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, data);
+            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
+                    .getCurrentChatSession().getPariticipants());
+            startActivityForResult(i, REQUEST_PICK_CONTACTS);
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

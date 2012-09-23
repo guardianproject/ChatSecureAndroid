@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -24,8 +26,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.HashMap;
 
 import org.jsoup.Jsoup;
-
-import info.guardianproject.otr.app.im.R;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -113,7 +113,7 @@ public class StatusBarNotifier {
 
     public void notifyLoggedIn(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ContactListActivity.class);
+        Intent intent = new Intent(mContext, ChatListActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);
@@ -123,7 +123,7 @@ public class StatusBarNotifier {
 
     public void notifyDisconnected(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ContactListActivity.class);
+        Intent intent = new Intent(mContext, ChatListActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);

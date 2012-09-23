@@ -211,7 +211,7 @@ public class WelcomeActivity extends SherlockActivity {
     protected void gotoAccount() {
         long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-        Intent intent = new Intent(this, ContactListActivity.class);
+        Intent intent = new Intent(this, ChatListActivity.class);
         // clear the back stack of the account setup
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);

@@ -82,7 +82,7 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+      //  getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
         mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
@@ -114,10 +114,12 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
         mHandler = new MyHandler(this);
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        
+        //BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+        //setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
+      //  getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+        //        brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        setTitle(username);
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 

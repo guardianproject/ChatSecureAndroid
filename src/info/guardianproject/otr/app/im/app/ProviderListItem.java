@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 
 import info.guardianproject.otr.app.im.R;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -38,7 +39,7 @@ public class ProviderListItem extends LinearLayout {
     private static final String TAG = "IM";
     private static final boolean LOCAL_DEBUG = false;
 
-    private LandingPage mActivity;
+    private Activity mActivity;
     //private ImageView mProviderIcon;
     private ImageView mStatusIcon;
     private TextView mProviderName;
@@ -59,7 +60,7 @@ public class ProviderListItem extends LinearLayout {
     private ColorStateList mLoginNameColors;
     private ColorStateList mChatViewColors;
 
-    public ProviderListItem(Context context, LandingPage activity) {
+    public ProviderListItem(Context context, Activity activity) {
         super(context);
         mActivity = activity;
     }

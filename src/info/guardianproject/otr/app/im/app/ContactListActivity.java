@@ -37,6 +37,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -44,12 +45,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -85,8 +89,6 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-
         LayoutInflater inflate = getLayoutInflater();
 
         mContactListView = (ContactListView) inflate.inflate(R.layout.contact_list_view, null);
@@ -104,6 +106,27 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             finish();
             return;
         }
+        
+        initAccount ();
+        
+
+        // Get the intent, verify the action and get the query
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            if (mIsFiltering) {
+                String filterText = intent.getStringExtra(SearchManager.QUERY);
+
+                mFilterView.doFilter(filterText);
+            }
+        }
+    }
+    
+    private void initAccount ()
+    {
+
+        setupActionBarList (mAccountId);
+        
+                
         mApp = ImApp.getApplication(this);
 
         ContentResolver cr = getContentResolver();
@@ -171,17 +194,39 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
 
         showFilterView();
 
-        // Get the intent, verify the action and get the query
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            if (mIsFiltering) {
-                String filterText = intent.getStringExtra(SearchManager.QUERY);
-
-                mFilterView.doFilter(filterText);
-            }
-        }
     }
 
+    private void setupActionBarList (long accountId)
+    {
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSherlock().getActionBar().setTitle("");
+        
+        Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        ProviderAdapter mAdapter = new ProviderAdapter(this, mProviderCursor);
+        
+        this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        this.getSherlock().getActionBar().setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
+
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                
+               finish();
+               Intent intent = new Intent(ContactListActivity.this,ContactListActivity.class);
+               intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, (long)itemPosition);
+               
+               startActivity(intent);
+               
+                return false;
+            }
+            
+        });
+        
+        this.getSherlock().getActionBar().setSelectedNavigationItem((int)mAccountId);
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
@@ -204,6 +249,7 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             startActivity(i);
             return true;
 
+        case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
@@ -583,5 +629,67 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             super.handleMessage(msg);
         }
     }
+    
+    private class ProviderListItemFactory implements LayoutInflater.Factory {
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (name != null && name.equals(ProviderListItem.class.getName())) {
+                return new ProviderListItem(context, ContactListActivity.this);
+            }
+            return null;
+        }
+    }
+    
+    private final class ProviderAdapter extends CursorAdapter {
+        private LayoutInflater mInflater;
 
+        @SuppressWarnings("deprecation")
+        public ProviderAdapter(Context context, Cursor c) {
+            super(context, c);
+            mInflater = LayoutInflater.from(context).cloneInContext(context);
+            mInflater.setFactory(new ProviderListItemFactory());
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            // create a custom view, so we can manage it ourselves. Mainly, we want to
+            // initialize the widget views (by calling getViewById()) in newView() instead of in
+            // bindView(), which can be called more often.
+            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
+                    parent, false);
+            view.init(cursor);
+            return view;
+        }
+        
+        
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ((ProviderListItem) view).bindView(cursor);
+        }
+    }
+
+    private static final String[] PROVIDER_PROJECTION = {
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+
+    static final int PROVIDER_ID_COLUMN = 0;
+    static final int PROVIDER_NAME_COLUMN = 1;
+    static final int PROVIDER_FULLNAME_COLUMN = 2;
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
+    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
+    static final int ACTIVE_ACCOUNT_LOCKED = 7;
+    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
+    static final int ACCOUNT_PRESENCE_STATUS = 9;
+    static final int ACCOUNT_CONNECTION_STATUS = 10;
 }
