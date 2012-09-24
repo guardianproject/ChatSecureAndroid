@@ -24,6 +24,7 @@
 		<item>中文(简体)</item>
 		<item>Deutsch</item>
 		<item>Español</item>
+		<item>Tibetan</item>
 		<item>Default</item>
 		
 	</string-array>
@@ -34,6 +35,7 @@
 		<item>zh</item>
 		<item>de</item>
 		<item>es</item>
+		<item>bo</item>
 		<item>xx</item>
 	</string-array>
     
