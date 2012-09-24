@@ -59,6 +59,8 @@ public class ProviderListItem extends LinearLayout {
    // private ColorStateList mProviderNameColors;
    // private ColorStateList mLoginNameColors;
    // private ColorStateList mChatViewColors;
+    
+    private long mAccountId;
 
     public ProviderListItem(Context context, Activity activity) {
         super(context);
@@ -101,6 +103,8 @@ public class ProviderListItem extends LinearLayout {
         int providerId = cursor.getInt(mProviderIdColumn);
         String providerDisplayName = cursor.getString(mProviderFullnameColumn);
 
+        mAccountId = cursor.getLong(mActiveAccountIdColumn);
+        
         ImApp app = ImApp.getApplication(mActivity);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
@@ -169,6 +173,11 @@ public class ProviderListItem extends LinearLayout {
             mChatView.setVisibility(View.GONE);
             mProviderName.setText(providerDisplayName);
         }
+    }
+    
+    public Long getAccountID ()
+    {
+        return mAccountId;
     }
 
     private int getConversationCount(ContentResolver cr, long accountId) {

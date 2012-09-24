@@ -35,7 +35,7 @@
         android:title="@string/menu_switch_chats"
         android:icon="@drawable/ic_menu_switch"
         android:alphabeticShortcut=" "
-         android:showAsAction="never|withText"
+         android:showAsAction="always"
         />
 
     <!-- 
@@ -60,7 +60,7 @@
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
-         android:showAsAction="never|withText"
+         android:showAsAction="always"
          />
         
 

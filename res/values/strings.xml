@@ -733,5 +733,8 @@
 	<string name="smp_question_hint">the question to ask</string>
 	<string name="qmp_answer_hint">the expected answer</string>
 	<string name="remote_verified_us">Your contact has successfully authenticated you.  Now authenticate your contact by asking your own question.</string>
+
+
+	<string name="no_messages">No conversations.\n\nTap here to start one!</string>
 </resources>
 

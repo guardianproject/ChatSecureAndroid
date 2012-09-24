@@ -28,6 +28,7 @@
         <color name="android_green">#FFA4C639</color>
     <color name="honeycombish_blue">#FF58BAED</color>
     <color name="soft_grey">#FF777777</color>
-    <color name="background">#FFEFEFEF</color>
+    <color name="background_light">#FFEFEFEF</color>
+    <color name="background_dark">#FF343434</color>
     
 </resources>

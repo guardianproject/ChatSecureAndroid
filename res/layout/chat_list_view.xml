@@ -23,55 +23,63 @@
     android:id="@+id/ActiveChatListView"
     android:orientation="vertical">
 
-    <info.guardianproject.otr.app.im.app.UserPresenceView
+   <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:paddingTop="9dip"
-        android:paddingLeft="5dip"
-        android:paddingBottom="5dip"
-        android:paddingRight="5dip"
-        android:background="#D00000">	
+        android:layout_height="40dip"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:padding="3dip"
+        android:background="#55999999"
+        
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical" 
+            >
 
-           <ImageButton android:id="@+id/statusDropDownButton"
-               android:paddingTop="2dip"
-                android:layout_marginRight="4dip"
-                android:paddingBottom="2dip"
-                android:scaleType="fitCenter"
+            <ImageButton
+                android:id="@+id/statusDropDownButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dip"
+                android:scaleType="fitCenter" />
 
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+            </ProgressBar>
         </LinearLayout>
 
-        <EditText android:id="@+id/statusEdit"
-            android:inputType="textCapSentences|textAutoCorrect"
-            android:selectAllOnFocus="true"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+        <EditText
+            android:id="@+id/statusEdit"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="enter custom status"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMediumInverse"
-            android:visibility="gone"/>
+            android:textAppearance="?android:attr/textAppearanceMediumInverse" />
 
-        <TextView android:id="@+id/statusView"
+        <TextView
+            android:id="@+id/statusView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingTop="5dip"
-            android:paddingLeft="3dip"
-            android:singleLine="true"
-            android:visibility="gone"
             android:background="#55999999"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse"/>
-
+            android:gravity="center_vertical"
+            android:paddingLeft="3dip"
+            android:paddingTop="5dip"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:visibility="gone" />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
 
     <ListView android:id="@+id/chatsList"
@@ -81,5 +89,12 @@
          android:cacheColorHint="#00000000"
 
         />
-
+	<TextView
+	    android:id="@+id/empty"
+	    android:text="@string/no_messages"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="center"
+	    android:textSize="24dp"
+	    />
 </info.guardianproject.otr.app.im.app.ActiveChatListView>

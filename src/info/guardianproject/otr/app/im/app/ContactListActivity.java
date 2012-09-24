@@ -51,6 +51,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.SearchView;
+import android.support.v4.widget.SearchViewCompat;
+import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
@@ -71,6 +74,8 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
 
     ImApp mApp;
 
+    ProviderAdapter mAdapter; 
+    
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
@@ -80,10 +85,13 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
 
     ContextMenuHandler mContextMenuHandler;
 
-    boolean mIsFiltering;
+    boolean mIsFiltering = true;
 
     Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
+    
+    View mSearchView;
+    
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -107,6 +115,11 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             return;
         }
         
+        setupActionBarList (mAccountId);
+        
+
+        mApp = ImApp.getApplication(this);
+        
         initAccount ();
         
 
@@ -115,7 +128,6 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             if (mIsFiltering) {
                 String filterText = intent.getStringExtra(SearchManager.QUERY);
-
                 mFilterView.doFilter(filterText);
             }
         }
@@ -124,10 +136,7 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
     private void initAccount ()
     {
 
-        setupActionBarList (mAccountId);
-        
-                
-        mApp = ImApp.getApplication(this);
+               
 
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
@@ -171,7 +180,7 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
                             finish();
                         }
                     }
-                    mFilterView.mPresenceView.setConnection(mConn);
+                  //  mFilterView.mPresenceView.setConnection(mConn);
                     mFilterView.setConnection(mConn);
                     mContactListView.setConnection(mConn);
                     mContactListView.setHideOfflineContacts(mGlobalSettingMap
@@ -195,7 +204,9 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
         showFilterView();
 
     }
-
+    
+    long[] mAccountIds;
+    
     private void setupActionBarList (long accountId)
     {
 
@@ -207,7 +218,26 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
                 Imps.Provider.CATEGORY + "=?" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
-        ProviderAdapter mAdapter = new ProviderAdapter(this, mProviderCursor);
+        
+        mAccountIds = new long[mProviderCursor.getCount()];
+        
+        mProviderCursor.moveToFirst();
+        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+        int currentAccountIndex = -1;
+        
+        for (int i = 0; i < mAccountIds.length; i++)
+        {
+            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);
+            mProviderCursor.moveToNext();
+            
+            if (mAccountIds[i] == mAccountId)
+                currentAccountIndex = i;
+        }
+
+        mProviderCursor.moveToFirst();
+        
+        mAdapter = new ProviderAdapter(this, mProviderCursor);
         
         this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         this.getSherlock().getActionBar().setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
@@ -215,13 +245,12 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 
-                if (itemPosition != mAccountId)
+                if (mAccountIds[itemPosition] != mAccountId)
                 {
-                  // finish();
-                  // Intent intent = new Intent(ContactListActivity.this,ContactListActivity.class);
-                  // intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, (long)itemPosition);
-                   
-                  // startActivity(intent);
+                    mAccountId = mAccountIds[itemPosition];
+                    initAccount ();
+                    
+                    
                 }
                 
                 return false;
@@ -229,15 +258,47 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             
         });
         
-        this.getSherlock().getActionBar().setSelectedNavigationItem((int)mAccountId);
-
         
+        getSherlock().getActionBar().setSelectedNavigationItem(currentAccountIndex);
+
 
     }
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
+        
+        mSearchView = SearchViewCompat.newSearchView(this);
+        
+        if (mSearchView != null)
+        {
+            MenuItem item = menu.add("Search")
+                    .setIcon(android.R.drawable.ic_menu_search)
+                    .setActionView(mSearchView);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+    
+            SearchViewCompat.setOnQueryTextListener(mSearchView, new SearchViewCompat.OnQueryTextListenerCompat() {
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    mFilterView.doFilter(newText);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    mFilterView.doFilter(query);
+                    return true;
+                }
+                
+                
+            });
+        
+            
+        }
+
         return true;
     }
 
@@ -271,6 +332,7 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
             handleQuit();
             return true;
 
+            
         case R.id.menu_view_groups:
             if (mIsFiltering)
                 showContactListView();
@@ -637,6 +699,7 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
         }
     }
     
+    
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
@@ -675,6 +738,21 @@ public class ContactListActivity extends SherlockActivity implements View.OnCrea
         }
     }
 
+    private void setupSearchView(MenuItem searchItem) {
+        
+      
+        
+        
+    }
+  
+    public boolean onClose() {
+        
+        return false;
+    }
+    protected boolean isAlwaysExpanded() {
+        return false;
+    }
+    
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,

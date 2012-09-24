@@ -46,7 +46,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:configChanges="locale"
-             android:theme="@style/Theme.Sherlock.ForceOverflow"
+             android:theme="@style/Theme.Gibberbot"
 			>
  <!-- android:uiOptions="splitActionBarWhenNarrow"-->
      		 
@@ -233,6 +233,8 @@ android:anyDensity="true"
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
                 <data android:mimeType="vnd.android.cursor.dir/imps-contacts"/>
+                 <action android:name="android.intent.action.SEARCH" />
+                
             </intent-filter>
             <meta-data android:name="android.app.searchable"
                    android:resource="@xml/searchable"/>
@@ -247,6 +249,8 @@ android:anyDensity="true"
         <activity android:name=".app.NewChatActivity"
                 android:configChanges="orientation|keyboardHidden|locale"
                 android:windowSoftInputMode="stateUnchanged"
+                 android:uiOptions="splitActionBarWhenNarrow"
+                
                 >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

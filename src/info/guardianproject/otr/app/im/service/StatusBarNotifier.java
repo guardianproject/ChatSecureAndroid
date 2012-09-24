@@ -268,7 +268,7 @@ public class StatusBarNotifier {
         }
 
         public Notification createNotification(String tickerText, boolean lightWeightNotify) {
-            Notification notification = new Notification(R.drawable.status,
+            Notification notification = new Notification(R.drawable.ic_stat_status,
                     lightWeightNotify ? null : tickerText, System.currentTimeMillis());
 
             Intent intent = getIntent();

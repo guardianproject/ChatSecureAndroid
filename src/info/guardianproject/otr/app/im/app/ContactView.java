@@ -193,7 +193,7 @@ public class ContactView extends LinearLayout {
         } else {
             contactInfoPanel.setBackgroundDrawable(null);
             contactInfoPanel.setPadding(4, 0, 0, 0);
-           // mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
+            mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
         }
     }
 

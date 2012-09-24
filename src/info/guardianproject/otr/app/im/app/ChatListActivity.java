@@ -18,6 +18,9 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -42,10 +45,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -74,9 +79,11 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
     ContextMenuHandler mContextMenuHandler;
 
     boolean mIsFiltering;
-
+    UserPresenceView mPresenceView;
     Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
+
+    private ConnectionListenerAdapter mConnectionListener;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -88,7 +95,14 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
         mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
 
         setContentView(mActiveChatListView);
-
+         mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+         mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+             @Override
+             public void onConnectionStateChange(IImConnection connection, int state,
+                     ImErrorInfo error) {
+            //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+             }  
+         };
 
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -104,6 +118,7 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
+      
         if (c == null) {
             finish();
             return;
@@ -137,7 +152,18 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
                         clearConnectionStatus();
                         finish();
                     } else {
-                        mActiveChatListView.setConnection(mConn);
+                        mActiveChatListView.setConnection(mConn);     
+                        
+                        mPresenceView.setConnection(mConn);
+                        try {
+                            mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+                        } catch (RemoteException e) {
+                            mPresenceView.loggingIn(false);
+                            mHandler.showServiceErrorAlert();
+                        }
+                        
+                       
+                        
                     }
                 }
             }
@@ -510,5 +536,25 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
             }
             super.handleMessage(msg);
         }
+    }
+    
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+
+        View empty = findViewById(R.id.empty);
+        empty.setOnClickListener(new OnClickListener (){
+
+            @Override
+            public void onClick(View arg0) {
+                showContactsList ();
+                
+            }
+        
+        });
+        
+        ListView list = (ListView) findViewById(R.id.chatsList);
+        list.setEmptyView(empty);
     }
 }

@@ -40,14 +40,12 @@
         android:title="@string/menu_view_accounts" />
 -->
 
-<!-- 
-	<item android:id="@+id/menu_search_contacts"
+	<item android:id="@+id/action_search"
 		android:title="@string/menu_search_contacts"
-		android:icon="@drawable/ic_menu_search"
+		android:icon="@android:drawable/ic_menu_search"
 				        android:showAsAction="always"
-		
+		android:actionViewClass="android.widget.SearchView"
 		 />
-  -->
   
          
          

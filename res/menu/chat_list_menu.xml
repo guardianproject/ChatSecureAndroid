@@ -35,14 +35,14 @@
          />
 
 
-
+<!-- 
 	<item android:id="@+id/menu_search_contacts"
 		android:title="@string/menu_search_contacts"
 		android:icon="@drawable/ic_menu_search" 
 		        android:showAsAction="never"
 		
 		/>
- 
+  -->
   <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
