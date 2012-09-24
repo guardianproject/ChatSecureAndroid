@@ -42,8 +42,9 @@
             android:src="@drawable/ic_im_message_not_sent" />
 
         <TextView android:id="@+id/warningText"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:paddingLeft="5dip"
             android:textColor="#aaff0000"
             android:text="@string/disconnected_warning"
@@ -51,7 +52,7 @@
              />
 
         <ImageView android:id="@+id/deliveryIcon"
-            android:layout_marginRight="3dip"
+            android:layout_margin="3dip"
             android:layout_width="16dip"
             android:layout_height="16dip"
             android:scaleType="fitCenter"

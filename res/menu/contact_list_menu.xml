@@ -38,7 +38,7 @@
 <!--  
     <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_view_accounts" />
--->
+
 
 	<item android:id="@+id/action_search"
 		android:title="@string/menu_search_contacts"
@@ -47,7 +47,7 @@
 		android:actionViewClass="android.widget.SearchView"
 		 />
   
-         
+         -->
          
  <item android:id="@+id/menu_view_groups"
         android:title="@string/menu_view_groups"
