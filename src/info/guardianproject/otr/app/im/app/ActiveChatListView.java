@@ -23,7 +23,9 @@ import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ContactListManager;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -59,6 +61,7 @@ public class ActiveChatListView extends LinearLayout {
     ListView mChatList;
     private ChatListAdapter mAdapter;
     private boolean mAutoRefresh = true;
+    private final ConnectionListenerAdapter mConnectionListener;
 
     public ActiveChatListView(Context screen, AttributeSet attrs) {
         super(screen, attrs);
@@ -66,6 +69,14 @@ public class ActiveChatListView extends LinearLayout {
         mScreen = (Activity) screen;
         mHandler = new SimpleAlertHandler(mScreen);
         mChatListListener = new MyChatSessionListener(mHandler);
+        
+        mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+            @Override
+            public void onConnectionStateChange(IImConnection connection, int state,
+                    ImErrorInfo error) {
+                    mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+            }  
+        };
     }
 
     private class MyChatSessionListener extends ChatSessionListenerAdapter {
@@ -106,8 +117,9 @@ public class ActiveChatListView extends LinearLayout {
             mConn = conn;
 
             if (conn != null) {
-                registerListeners();
                 mPresenceView.setConnection(conn);
+
+                registerListeners();
 
                 if (mAdapter == null) {
                     mAdapter = new ChatListAdapter(conn, mScreen);
@@ -280,8 +292,16 @@ public class ActiveChatListView extends LinearLayout {
         try {
             IChatSessionManager chatManager = mConn.getChatSessionManager();
             chatManager.registerChatSessionListener(mChatListListener);
+            
+
         } 
         catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+        
+        try {
+            mConn.registerConnectionListener(mConnectionListener);
+        } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
     }

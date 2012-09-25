@@ -20,45 +20,35 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.java.otr4j.session.SessionStatus;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Toast;
 
-public class NewChatActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class NewChatActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
@@ -72,15 +62,20 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     private ChatSwitcher mChatSwitcher;
     private LayoutInflater mInflater;
 
+    private long mAccountId = -1;
+    
     ContextMenuHandler mContextMenuHandler;
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+     //   requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.chat_view);
+        
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mChatView = (ChatView) findViewById(R.id.chatView);
         mHandler = mChatView.getHandler();
@@ -120,9 +115,9 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
     void resolveIntent(Intent intent) {
         if (requireOpenDashboardOnStart(intent)) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1L);
-            final long accountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
+            mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
                     -1L);
-            if (providerId == -1L || accountId == -1L) {
+            if (providerId == -1L || mAccountId == -1L) {
                 finish();
             } else {
                 mChatSwitcher.open();
@@ -132,6 +127,8 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
         if (ImServiceConstants.ACTION_MANAGE_SUBSCRIPTION.equals(intent.getAction())) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
+            mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
+                    -1L);
             String from = intent.getStringExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS);
             if ((providerId == -1) || (from == null)) {
                 finish();
@@ -151,7 +148,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
@@ -189,6 +186,10 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             }
             return true;
 
+        case android.R.id.home:
+            showChatList();
+            return true;
+            
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
@@ -217,6 +218,14 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void showChatList ()
+    {
+     //   Intent intent = new Intent (this, ChatListActivity.class);
+      //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+       // startActivity(intent);
+        finish();
     }
 
     @Override
@@ -279,12 +288,12 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
 
     }
 
-//    private void showRosterScreen() {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setClass(this, ContactListActivity.class);
-//        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
-//        startActivity(intent);
-//    }
+   private void showRosterScreen() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setClass(this, ContactListActivity.class);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
+        startActivity(intent);
+    }
 
 //    private void showSmileyDialog() {
 //        if (mSmileyDialog == null) {
@@ -363,21 +372,21 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         mChatSwitcher.rotateChat(delta, contact, accountId, providerId);
     }
 
-//    private void startContactPicker() {
-//        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
-//        ContentUris.appendId(builder, mChatView.getProviderId());
-//        ContentUris.appendId(builder, mChatView.getAccountId());
-//        Uri data = builder.build();
-//
-//        try {
-//            Intent i = new Intent(Intent.ACTION_PICK, data);
-//            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
-//                    .getCurrentChatSession().getPariticipants());
-//            startActivityForResult(i, REQUEST_PICK_CONTACTS);
-//        } catch (RemoteException e) {
-//            mHandler.showServiceErrorAlert();
-//        }
-//    }
+    private void startContactPicker() {
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, mChatView.getProviderId());
+        ContentUris.appendId(builder, mChatView.getAccountId());
+        Uri data = builder.build();
+
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, data);
+            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
+                    .getCurrentChatSession().getPariticipants());
+            startActivityForResult(i, REQUEST_PICK_CONTACTS);
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -449,7 +458,7 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
         }
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         int mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
@@ -466,6 +475,21 @@ public class NewChatActivity extends Activity implements View.OnCreateContextMen
             }
 
             return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
+            Cursor c;
+            c = mChatView.getMessageAtPosition(mPosition);
+
+            switch (item.getItemId()) {
+            case MENU_RESEND:
+                String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
+                mChatView.getComposedMessage().setText(text);
+                break;
+            default:
+                return false;
+            }            return false;
         }
     }
 

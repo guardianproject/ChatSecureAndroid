@@ -49,7 +49,7 @@ public class ContactListFilterView extends LinearLayout {
     private final SimpleAlertHandler mHandler;
     private final ConnectionListenerAdapter mConnectionListener;
 
-    UserPresenceView mPresenceView;
+    //UserPresenceView mPresenceView;
     private ContactListActivity mActivity;
     private IImConnection mConn;
 
@@ -62,7 +62,7 @@ public class ContactListFilterView extends LinearLayout {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
-                mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+           //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
             }  
         };
     }
@@ -82,8 +82,8 @@ public class ContactListFilterView extends LinearLayout {
             }
         });
 
-        if (!isInEditMode())
-            mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+        //if (!isInEditMode())
+          //  mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
 
     }
 
@@ -104,12 +104,14 @@ public class ContactListFilterView extends LinearLayout {
             mConn = conn;
 
             if (conn != null) {
+                /*
                 try {
-                    mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+                    //mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
                 } catch (RemoteException e) {
-                    mPresenceView.loggingIn(false);
+                    //mPresenceView.loggingIn(false);
                     mHandler.showServiceErrorAlert();
                 }
+                */
                 
                 registerListeners();
             }

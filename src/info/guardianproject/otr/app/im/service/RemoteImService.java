@@ -201,7 +201,7 @@ public class RemoteImService extends Service implements OtrEngineListener {
     }
 
     private void startForegroundCompat() {
-        Notification notification = new Notification(R.drawable.status, "Gibberbot",
+        Notification notification = new Notification(R.drawable.ic_stat_status, "Gibberbot",
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
         Intent notificationIntent = new Intent(this, LandingPage.class);

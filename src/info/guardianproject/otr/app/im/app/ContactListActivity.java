@@ -20,7 +20,6 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.Observable;
@@ -38,22 +37,32 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.Window;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.SearchView;
+import android.support.v4.widget.SearchViewCompat;
+import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 
-public class ContactListActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class ContactListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -65,6 +74,8 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     ImApp mApp;
 
+    ProviderAdapter mAdapter; 
+    
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
@@ -74,16 +85,17 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
     ContextMenuHandler mContextMenuHandler;
 
-    boolean mIsFiltering;
+    boolean mIsFiltering = true;
 
     Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
+    
+    View mSearchView;
+    
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
 
@@ -102,7 +114,29 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             finish();
             return;
         }
+        
+        setupActionBarList (mAccountId);
+        
+
         mApp = ImApp.getApplication(this);
+        
+        initAccount ();
+        
+
+        // Get the intent, verify the action and get the query
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            if (mIsFiltering) {
+                String filterText = intent.getStringExtra(SearchManager.QUERY);
+                mFilterView.doFilter(filterText);
+            }
+        }
+    }
+    
+    private void initAccount ()
+    {
+
+               
 
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
@@ -119,14 +153,16 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mHandler = new MyHandler(this);
+
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
         c.close();
 
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+       // BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+       // setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
+        setTitle(username);
+       // getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+         //       brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 
@@ -144,7 +180,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
                             finish();
                         }
                     }
-                    mFilterView.mPresenceView.setConnection(mConn);
+                  //  mFilterView.mPresenceView.setConnection(mConn);
                     mFilterView.setConnection(mConn);
                     mContactListView.setConnection(mConn);
                     mContactListView.setHideOfflineContacts(mGlobalSettingMap
@@ -167,21 +203,102 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
 
         showFilterView();
 
-        // Get the intent, verify the action and get the query
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            if (mIsFiltering) {
-                String filterText = intent.getStringExtra(SearchManager.QUERY);
-
-                mFilterView.doFilter(filterText);
-            }
-        }
     }
+    
+    long[] mAccountIds;
+    
+    private void setupActionBarList (long accountId)
+    {
 
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSherlock().getActionBar().setTitle("");
+        
+        Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        
+        mAccountIds = new long[mProviderCursor.getCount()];
+        
+        mProviderCursor.moveToFirst();
+        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+        int currentAccountIndex = -1;
+        
+        for (int i = 0; i < mAccountIds.length; i++)
+        {
+            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);
+            mProviderCursor.moveToNext();
+            
+            if (mAccountIds[i] == mAccountId)
+                currentAccountIndex = i;
+        }
+
+        mProviderCursor.moveToFirst();
+        
+        mAdapter = new ProviderAdapter(this, mProviderCursor);
+        
+        this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        this.getSherlock().getActionBar().setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
+
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                
+                if (mAccountIds[itemPosition] != mAccountId)
+                {
+                    mAccountId = mAccountIds[itemPosition];
+                    initAccount ();
+                    
+                    
+                }
+                
+                return false;
+            }
+            
+        });
+        
+        
+        getSherlock().getActionBar().setSelectedNavigationItem(currentAccountIndex);
+
+
+    }
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
+        
+        mSearchView = SearchViewCompat.newSearchView(this);
+        
+        if (mSearchView != null)
+        {
+            MenuItem item = menu.add("Search")
+                    .setIcon(android.R.drawable.ic_menu_search)
+                    .setActionView(mSearchView);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+    
+            SearchViewCompat.setOnQueryTextListener(mSearchView, new SearchViewCompat.OnQueryTextListenerCompat() {
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    mFilterView.doFilter(newText);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    mFilterView.doFilter(query);
+                    return true;
+                }
+                
+                
+            });
+        
+            
+        }
+
         return true;
     }
 
@@ -200,6 +317,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             startActivity(i);
             return true;
 
+        case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
@@ -214,6 +332,7 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             handleQuit();
             return true;
 
+            
         case R.id.menu_view_groups:
             if (mIsFiltering)
                 showContactListView();
@@ -479,10 +598,45 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
+            Cursor c;
+            if (mIsFiltering) {
+                c = mFilterView.getContactAtPosition((int) mPosition);
+            } else {
+                c = mContactListView.getContactAtPosition(mPosition);
+            }
+
+            switch (item.getItemId()) {
+            case MENU_START_CONVERSATION:
+                mContactListView.startChat(c);
+                break;
+            case MENU_VIEW_PROFILE:
+                mContactListView.viewContactPresence(c);
+                break;
+            case MENU_BLOCK_CONTACT:
+                mContactListView.blockContact(c);
+                break;
+            case MENU_DELETE_CONTACT:
+                mContactListView.removeContact(c);
+                break;
+            case MENU_END_CONVERSATION:
+                mContactListView.endChat(c);
+                break;
+            default:
+                return false;
+            }
+
+            if (mIsFiltering) {
+                showContactListView();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
             Cursor c;
             if (mIsFiltering) {
                 c = mFilterView.getContactAtPosition((int) mPosition);
@@ -544,5 +698,83 @@ public class ContactListActivity extends Activity implements View.OnCreateContex
             super.handleMessage(msg);
         }
     }
+    
+    
+    private class ProviderListItemFactory implements LayoutInflater.Factory {
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (name != null && name.equals(ProviderListItem.class.getName())) {
+                return new ProviderListItem(context, ContactListActivity.this);
+            }
+            return null;
+        }
+    }
+    
+    private final class ProviderAdapter extends CursorAdapter {
+        private LayoutInflater mInflater;
 
+        @SuppressWarnings("deprecation")
+        public ProviderAdapter(Context context, Cursor c) {
+            super(context, c);
+            mInflater = LayoutInflater.from(context).cloneInContext(context);
+            mInflater.setFactory(new ProviderListItemFactory());
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            // create a custom view, so we can manage it ourselves. Mainly, we want to
+            // initialize the widget views (by calling getViewById()) in newView() instead of in
+            // bindView(), which can be called more often.
+            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
+                    parent, false);
+            view.init(cursor);
+            return view;
+        }
+        
+        
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ((ProviderListItem) view).bindView(cursor);
+        }
+    }
+
+    private void setupSearchView(MenuItem searchItem) {
+        
+      
+        
+        
+    }
+  
+    public boolean onClose() {
+        
+        return false;
+    }
+    protected boolean isAlwaysExpanded() {
+        return false;
+    }
+    
+    private static final String[] PROVIDER_PROJECTION = {
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+
+    static final int PROVIDER_ID_COLUMN = 0;
+    static final int PROVIDER_NAME_COLUMN = 1;
+    static final int PROVIDER_FULLNAME_COLUMN = 2;
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
+    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
+    static final int ACTIVE_ACCOUNT_LOCKED = 7;
+    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
+    static final int ACCOUNT_PRESENCE_STATUS = 9;
+    static final int ACCOUNT_CONNECTION_STATUS = 10;
 }

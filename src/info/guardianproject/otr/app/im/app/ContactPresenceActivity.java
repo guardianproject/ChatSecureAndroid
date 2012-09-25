@@ -17,24 +17,17 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
-
-import info.guardianproject.otr.app.im.R;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -44,18 +37,21 @@ import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ContactPresenceActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+public class ContactPresenceActivity extends SherlockActivity {
 
     private String remoteFingerprint;
     private boolean remoteFingerprintVerified = false;
@@ -250,7 +246,7 @@ public class ContactPresenceActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if (remoteFingerprint != null) {
-            MenuInflater inflater = getMenuInflater();
+            MenuInflater inflater = getSupportMenuInflater();
             inflater.inflate(R.menu.contact_info_menu, menu);
         }
 

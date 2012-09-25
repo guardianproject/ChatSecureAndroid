@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TabHost;
 
-public class TabbedContainer extends TabActivity {
+public class OldTabbedContainer extends TabActivity {
 
     @Override
     public void onCreate(Bundle smurfy) {
