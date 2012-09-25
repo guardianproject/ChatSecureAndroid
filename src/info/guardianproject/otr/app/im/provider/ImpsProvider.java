@@ -3106,7 +3106,7 @@ public class ImpsProvider extends ContentProvider {
         String contact = null;
         String packetId = null;
         long threadId = 0;
-        int count;
+        int count = 0;
 
         StringBuilder whereClause = new StringBuilder();
         if (userWhere != null) {
@@ -3268,6 +3268,9 @@ public class ImpsProvider extends ContentProvider {
             tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
             appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
             notifyMessagesContentUri = true;
+
+            // Try updating OTR message
+            count += db.update(TABLE_IN_MEMORY_MESSAGES, values, whereClause.toString(), whereArgs);
             break;
 
         case MATCH_OTR_MESSAGE:
@@ -3376,7 +3379,7 @@ public class ImpsProvider extends ContentProvider {
         if (DBG)
             log("update " + url + " WHERE " + whereClause);
 
-        count = db.update(tableToChange, values, whereClause.toString(), whereArgs);
+        count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
 
         if (count > 0) {
             ContentResolver resolver = getContext().getContentResolver();
