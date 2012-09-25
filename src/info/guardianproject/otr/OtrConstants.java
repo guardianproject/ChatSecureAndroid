@@ -19,8 +19,8 @@ public interface OtrConstants {
     public static final String QueryMessage_V12 = "?OTR?v2?";
     public static final String QueryMessage_V14x = "?OTRv24x?";
     public static final String QueryMessage_V124x = "?OTR?v24x?";
-    public static final String QueryMessage_CommonRequest = "?OTR?v2? You are being requested to have an Off-the-Record private conversation &lt;http://otr.cypherpunks.ca/&gt;.  However, you do not have a plugin to support that. See http://otr.cypherpunks.ca/ for more information.";
+    public static final String QueryMessage_CommonRequest = "?OTR?v2? You are being requested to have an Off-the-Record private conversation &lt;http://otr.cypherpunks.ca/&gt;. Please install Gibberbot (Android), ChatSecure (iOS), Pidgin (Win/Linux), Adium (Mac) or any other OTR-enabled app.";
     public static final String PlainText_V12 = "This is a plain text that has hidden support for V1 and V2! 	  				 	 	 	    		  	  	 	  	 ";
     public static final String PlainText_V1 = "This is a plain text that has hidden support for V1! 	  				 	 	 	    		  	 ";
-    public static final String CommonRequest = " You are being requested to have an Off-the-Record private conversation.  However, you do not have a plugin to support that. See http://otr.cypherpunks.ca/ for more information.";
+    public static final String CommonRequest = " You are being requested to have an Off-the-Record private conversation &lt;http://otr.cypherpunks.ca/&gt;. Please install Gibberbot (Android), ChatSecure (iOS), Pidgin (Win/Linux), Adium (Mac) or any other OTR-enabled app.";
 }

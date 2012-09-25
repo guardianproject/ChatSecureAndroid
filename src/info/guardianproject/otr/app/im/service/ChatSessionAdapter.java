@@ -569,9 +569,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             mRemoteListeners.finishBroadcast();
 
-            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, "", false);
-
+            if (N == 0)
+            {
+                //reinstated body display here in the notification; perhaps add preferences to turn that off
+                mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                        getId(), username, nickname, body, false);
+            }
+            
             mHasUnreadMessages = true;
         }
 

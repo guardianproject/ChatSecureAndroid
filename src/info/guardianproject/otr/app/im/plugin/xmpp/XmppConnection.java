@@ -699,7 +699,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                  * - Network error
                  * - We forced a socket shutdown
                  */
-                Log.e(TAG, "reconnect on error", e);
+                Log.w(TAG, "reconnect on error", e);
                 if (e.getMessage().contains("conflict")) {
                     execute(new Runnable() {
                         @Override
@@ -1614,7 +1614,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
             } catch (Exception e) {
                 mStreamHandler.quickShutdown();
-                Log.e(TAG, "reconnection attempt failed", e);
+                Log.w(TAG, "reconnection attempt failed", e);
                 // Smack incorrectly notified us that reconnection was successful, reset in case it fails
                 mNeedReconnect = true;
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));

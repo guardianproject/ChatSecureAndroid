@@ -18,6 +18,9 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -40,17 +43,21 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import android.widget.Toast;
+import android.widget.ListView;
 
-public class ChatListActivity extends Activity implements View.OnCreateContextMenuListener {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class ChatListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -72,21 +79,34 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
     ContextMenuHandler mContextMenuHandler;
 
     boolean mIsFiltering;
-
+    UserPresenceView mPresenceView;
     Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
+
+    private ConnectionListenerAdapter mConnectionListener;
 
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
+      //  getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
         mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
 
         setContentView(mActiveChatListView);
+         mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+         mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+             @Override
+             public void onConnectionStateChange(IImConnection connection, int state,
+                     ImErrorInfo error) {
+            //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+             }  
+         };
 
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
         if (mAccountId == -1) {
@@ -98,6 +118,7 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
+      
         if (c == null) {
             finish();
             return;
@@ -112,10 +133,12 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         mHandler = new MyHandler(this);
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        
+        //BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+        //setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
+      //  getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+        //        brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        setTitle(username);
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 
@@ -129,7 +152,18 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
                         clearConnectionStatus();
                         finish();
                     } else {
-                        mActiveChatListView.setConnection(mConn);
+                        mActiveChatListView.setConnection(mConn);     
+                        
+                        mPresenceView.setConnection(mConn);
+                        try {
+                            mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+                        } catch (RemoteException e) {
+                            mPresenceView.loggingIn(false);
+                            mHandler.showServiceErrorAlert();
+                        }
+                        
+                       
+                        
                     }
                 }
             }
@@ -148,18 +182,33 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         c.close();
     }
 
+    private void showContactsList ()
+    {
+        Intent intent = new Intent (this, ContactListActivity.class);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+        startActivity(intent);
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.chat_list_menu, menu);
         return true;
     }
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         
+        case R.id.menu_new_chat:
+            
+            showContactsList ();
+            
+            return true;
+            
+        case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
             finish();
@@ -444,10 +493,15 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
+            return true;
+        }
+
+        @Override
+        public boolean onMenuItemClick(android.view.MenuItem item) {
             return true;
         }
     }
@@ -482,5 +536,25 @@ public class ChatListActivity extends Activity implements View.OnCreateContextMe
             }
             super.handleMessage(msg);
         }
+    }
+    
+
+    @Override
+    public void onContentChanged() {
+        super.onContentChanged();
+
+        View empty = findViewById(R.id.empty);
+        empty.setOnClickListener(new OnClickListener (){
+
+            @Override
+            public void onClick(View arg0) {
+                showContactsList ();
+                
+            }
+        
+        });
+        
+        ListView list = (ListView) findViewById(R.id.chatsList);
+        list.setEmptyView(empty);
     }
 }

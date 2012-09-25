@@ -2072,7 +2072,8 @@ public class ImpsProvider extends ContentProvider {
                 int numUpdated = db
                         .update(TABLE_PRESENCE, presenceValues, selection, selectionArgs);
                 if (numUpdated == 0) {
-                    Log.w(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
+                    // this is really generating a lot of log output that doesn't seem necessary
+                   // Log.w(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
                 } else {
                     sum += numUpdated;
                 }

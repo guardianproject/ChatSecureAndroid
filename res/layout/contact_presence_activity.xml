@@ -41,7 +41,7 @@
         <TextView android:id="@+id/txtName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="40dip"
+            android:textSize="28dip"
             android:text="name here"/>
 
         <TextView android:id="@+id/labelStatus"

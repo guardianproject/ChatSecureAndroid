@@ -21,9 +21,13 @@
 
     android:label="@string/search_label"
     android:hint="@string/search_hint"
-    android:searchButtonText="@string/search_button_text"
+    
+    
+/>
+<!-- 
+android:searchButtonText="@string/search_button_text"
     android:searchMode="queryRewriteFromData"
     android:inputType="textUri"
     android:imeOptions="actionGo"
 
-/>
+ -->

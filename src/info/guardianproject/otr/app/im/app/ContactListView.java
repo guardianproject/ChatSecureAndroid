@@ -16,22 +16,19 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
-import info.guardianproject.otr.app.im.app.adapter.ContactListListenerAdapter;
-import info.guardianproject.otr.app.im.engine.Contact;
-import info.guardianproject.otr.app.im.engine.ContactListManager;
-import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
-
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.adapter.ContactListListenerAdapter;
+import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.ContactListManager;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -48,8 +45,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.LinearLayout;
 
 public class ContactListView extends LinearLayout {
 
@@ -188,7 +185,10 @@ public class ContactListView extends LinearLayout {
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                 Intent i = new Intent(Intent.ACTION_VIEW, data);
                 i.addCategory(ImApp.IMPS_CATEGORY);
+                
                 mScreen.startActivity(i);
+                mScreen.finish();
+                
                 setAutoRefreshContacts(false);
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
