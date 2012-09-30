@@ -75,6 +75,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -405,7 +406,10 @@ public class ChatView extends LinearLayout {
                     }
                 }
 
-                mComposeMessage.clearFocus();
+                InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null && imm.isActive(v)) {
+                    imm.hideSoftInputFromWindow(getWindowToken(), 0);
+                }
                 sendMessage();
                 return true;
             }
