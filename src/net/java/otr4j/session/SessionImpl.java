@@ -182,9 +182,6 @@ public class SessionImpl implements Session {
 
     private void setSessionStatus(SessionStatus sessionStatus) throws OtrException {
 
-        if (sessionStatus == this.sessionStatus)
-            return;
-
         switch (sessionStatus) {
         case ENCRYPTED:
             AuthContext auth = this.getAuthContext();
@@ -209,6 +206,9 @@ public class SessionImpl implements Session {
             auth.reset();
             break;
         }
+
+        if (sessionStatus == this.sessionStatus)
+            return;
 
         this.sessionStatus = sessionStatus;
 
