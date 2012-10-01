@@ -302,7 +302,7 @@ public class SerializationUtils {
                 default:
                     throw new IOException("Illegal message type.");
                 }
-            case SerializationConstants.HEAD_ERROR:
+            case SerializationConstants.HEAD_MESSAGE:
                 return new ErrorMessage(AbstractMessage.MESSAGE_ERROR, content);
             case SerializationConstants.HEAD_QUERY_V:
             case SerializationConstants.HEAD_QUERY_Q:

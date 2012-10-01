@@ -10,9 +10,10 @@ public interface SerializationConstants {
 
     public static final String HEAD = "?OTR";
     public static final char HEAD_ENCODED = ':';
-    public static final char HEAD_ERROR = ' ';
+    public static final char HEAD_MESSAGE = ' ';
     public static final char HEAD_QUERY_Q = '?';
     public static final char HEAD_QUERY_V = 'v';
+    public static final String HEAD_ERROR = " Error:";
 
     public static final int TYPE_LEN_BYTE = 1;
     public static final int TYPE_LEN_SHORT = 2;
