@@ -1,0 +1,6 @@
+[submodule "ActionBarSherlock"]
+	path = ActionBarSherlock
+	url = git://github.com/JakeWharton/ActionBarSherlock.git
+[submodule "asmack"]
+	path = asmack
+	url = https://github.com/guardianproject/asmack

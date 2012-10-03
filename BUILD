@@ -1,5 +1,24 @@
+== Preparation
 
+    git submodule update --init
+    android update project --path ActionBarSherlock/library/ --target android-15 --name ActionBarSherlock
+    (cd asmack && ./build.bash && cp build/asmack-android-4.jar ../libs)
 
+== Building with ant
+
+Follow the steps from the prep section, then:
+
+    ant debug
+
+== Eclipse
+
+Add the following as Android projects, after following the steps in the prep section:
+
+    * Gibberbot/ActionBarSherlock/library (use ActionBarSherlock as project name)
+    * Gibberbot
+    
+
+== Old Stuff
 
 Patching Smack library for Android [1]
 
