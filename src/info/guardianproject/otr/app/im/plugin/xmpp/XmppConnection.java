@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -68,6 +69,8 @@ import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
+
+import de.duenndns.ssl.MemorizingTrustManager;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -110,7 +113,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String KEYMANAGER_TYPE = "X509";
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-    private ServerTrustManager sTrustManager;
+    private X509TrustManager mTrustManager;
     private SSLContext sslContext;
     private KeyStore ks = null;
     private KeyManager[] kms = null;
@@ -482,8 +485,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
         boolean tlsCertVerify = providerSettings.getTlsCertVerify();
-        boolean allowSelfSignedCerts = !tlsCertVerify;
-        boolean doVerifyDomain = tlsCertVerify;
 
         boolean useSASL = true;//!allowPlainAuth;
 
@@ -572,11 +573,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
-        mConfig.setVerifyChainEnabled(tlsCertVerify);
-        mConfig.setVerifyRootCAEnabled(tlsCertVerify);
-        mConfig.setExpiredCertificatesCheckEnabled(tlsCertVerify);
-        mConfig.setNotMatchingDomainCheckEnabled(doVerifyDomain && (!allowSelfSignedCerts));
-        mConfig.setSelfSignedCertificateEnabled(allowSelfSignedCerts);
+        mConfig.setVerifyChainEnabled(true);
+        mConfig.setVerifyRootCAEnabled(true);
+        mConfig.setExpiredCertificatesCheckEnabled(true);
+        mConfig.setNotMatchingDomainCheckEnabled(true);
+        mConfig.setSelfSignedCertificateEnabled(false);
 
         mConfig.setTruststoreType(TRUSTSTORE_TYPE);
         mConfig.setTruststorePath(TRUSTSTORE_PATH);
@@ -795,9 +796,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-        sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
+        
+        ServerTrustManager sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
+        mTrustManager = new MemorizingTrustManager(aContext, sTrustManager, null);
 
-        sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager },
+        sslContext.init(kms, new javax.net.ssl.TrustManager[] { mTrustManager },
                 new java.security.SecureRandom());
 
         config.setCustomSSLContext(sslContext);

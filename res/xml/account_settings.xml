@@ -55,12 +55,6 @@
 			android:summary="@string/require_tls_ssl_connection"
 			android:enabled="true" />
 
-		<CheckBoxPreference android:key="@string/pref_security_tls_cert_verify"
-			android:title="@string/tls_verification"
-			android:defaultValue="true"
-			android:enabled="true"
-			android:summary="@string/verify_that_the_certificate_is_trusted" />
-			
 		<CheckBoxPreference android:key="@string/pref_security_allow_plain_auth"
 			android:enabled="true"
 			android:defaultValue="false"

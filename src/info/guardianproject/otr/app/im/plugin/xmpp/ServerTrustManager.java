@@ -25,7 +25,6 @@ import info.guardianproject.bouncycastle.asn1.DERString;
 import info.guardianproject.bouncycastle.asn1.x509.GeneralName;
 import info.guardianproject.bouncycastle.asn1.x509.X509Extensions;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.CertDisplayActivity;
 import info.guardianproject.otr.app.im.service.RemoteImService;
 
 import java.io.IOException;
@@ -52,11 +51,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 /**
@@ -83,8 +78,6 @@ class ServerTrustManager implements X509TrustManager {
     private String domain;
     private KeyStore trustStore;
 
-    private Context context;
-
     /**
      * Construct a trust manager for XMPP connections. Certificates are
      * considered verified if:
@@ -100,8 +93,6 @@ class ServerTrustManager implements X509TrustManager {
      */
     public ServerTrustManager(Context context, String domain, String requestedServer,
             ConnectionConfiguration configuration) {
-
-        this.context = context;
         this.configuration = configuration;
         this.domain = domain;
         this.server = requestedServer;
@@ -174,15 +165,13 @@ class ServerTrustManager implements X509TrustManager {
                         }
 
                         catch (GeneralSecurityException generalsecurityexception) {
-                            showCertMessage("signature verification failed",
-                                    principalIssuer.getName(), x509Certificates[i], null);
+                            Log.d("GB.TLS", "signature verification failed " + principalIssuer.getName());
 
                             throw new CertificateException("signature verification failed of "
                                                            + principalIssuer.getName());
                         }
                     } else {
-                        showCertMessage("subject/issuer verification failed",
-                                principalIssuer.getName(), x509Certificates[i], null);
+                        Log.d("GB.TLS", "subject/issuer verification failed " + principalIssuer.getName());
 
                         throw new CertificateException("subject/issuer verification failed of "
                                                        + principalIssuer.getName());
@@ -212,9 +201,7 @@ class ServerTrustManager implements X509TrustManager {
                         fingerprint = "unable to read fingerprint";
                     }
                     
-                    showCertMessage("Self-signed certificate",
-                            fingerprint,
-                            x509Certificates[0], fingerprint);
+                    Log.d("GB.TLS", "self-signed certificate");
 
                     trusted = true;
                 } else {
@@ -282,8 +269,7 @@ class ServerTrustManager implements X509TrustManager {
                     fingerprint = "unable to read fingerprint";
                 }
                 
-                showCertMessage("root certificate not trusted",
-                        fingerprint, x509Certificates[0], fingerprint);
+                Log.d("GB.TLS", "root certificate not trusted");
                 throw new CertificateException("root certificate not trusted of " + peerIdentities);
             }
         }
@@ -294,9 +280,8 @@ class ServerTrustManager implements X509TrustManager {
             boolean found = checkMatchingDomain(domain, server, peerIdentities);
 
             if (!found) {
-                showCertMessage("domain check failed", join(peerIdentities) + " does not contain '"
-                                                       + server + "' or '" + domain + "'",
-                        x509Certificates[0],null);
+                Log.d("GB.TLS", "domain check failed " + join(peerIdentities) + " does not contain '"
+                                                       + server + "' or '" + domain + "'");
 
                 throw new CertificateException("target verification failed of " + peerIdentities);
             }
@@ -310,8 +295,7 @@ class ServerTrustManager implements X509TrustManager {
                 try {
                     x509Certificates[i].checkValidity(date);
                 } catch (GeneralSecurityException generalsecurityexception) {
-                    showCertMessage("certificate expired", x509Certificates[i].getNotAfter()
-                            .toLocaleString(), x509Certificates[i], null);
+                    Log.d("GB.TLS", "certificate expired " + x509Certificates[i].getNotAfter());
                     throw new CertificateException("invalid date of " + server);
                 }
             }
@@ -359,60 +343,6 @@ class ServerTrustManager implements X509TrustManager {
             buf.append(str);
         }
         return buf.toString();
-    }
-
-    private int DEFAULT_NOTIFY_ID = 10;
-
-    private void showCertMessage(String title, String msg, X509Certificate cert, String fingerprint) {
-
-        Intent nIntent = new Intent(context, CertDisplayActivity.class);
-
-        nIntent.putExtra("issuer", cert.getIssuerDN().getName());
-        nIntent.putExtra("subject", cert.getSubjectDN().getName());
-        
-        if (fingerprint != null)
-            nIntent.putExtra("fingerprint", fingerprint);
-        
-        nIntent.putExtra("issued", cert.getNotBefore().toGMTString());
-        nIntent.putExtra("expires", cert.getNotAfter().toGMTString());
-        
-        showMessage(title, msg, nIntent);
-
-    }
-
-    private void showMessage(String title, String msg, Intent intent) {
-
-        RemoteImService.debug(msg);
-
-        try {
-            showToolbarNotification(title, msg, DEFAULT_NOTIFY_ID, R.drawable.ic_menu_key,
-                    Notification.FLAG_AUTO_CANCEL, intent);
-        } catch (Exception e) {
-            RemoteImService.debug("could not show notification", e);
-        }
-    }
-
-    private void showToolbarNotification(String title, String notifyMsg, int notifyId, int icon,
-            int flags, Intent nIntent) throws Exception {
-        NotificationManager mNotificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        CharSequence tickerText = notifyMsg;
-        long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, tickerText, when);
-        if (flags > 0) {
-            notification.flags |= flags;
-        }
-
-        CharSequence contentTitle = context.getString(R.string.app_name) + ": " + title;
-        CharSequence contentText = notifyMsg;
-
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, nIntent, 0);
-
-        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-
-        mNotificationManager.notify(notifyId, notification);
     }
 
     /**

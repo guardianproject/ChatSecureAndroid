@@ -338,12 +338,15 @@ android:anyDensity="true"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
+
+          <activity
+              android:name="de.duenndns.ssl.MemorizingActivity"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar" />
           
           <receiver android:name=".app.AutoConnectListener" >
-              <intent-filter>
-                  <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-              </intent-filter>
-          </receiver>
-
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

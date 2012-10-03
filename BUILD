@@ -2,6 +2,7 @@
 
     git submodule update --init
     android update project --path ActionBarSherlock/library/ --target android-15 --name ActionBarSherlock
+    android update project --path MemorizingTrustManager --target android-15 --name MemorizingTrustManager
     (cd asmack && ./build.bash && cp build/asmack-android-4.jar ../libs)
 
 == Building with ant
