@@ -70,8 +70,6 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-     //   requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.chat_view);
         
         getSherlock().getActionBar().setHomeButtonEnabled(true);
@@ -230,10 +228,17 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        /*
+         * this behavior doesn't make sense to me. i hit the back key
+         * and the chat disappears, as opposed to just going back to the message
+         * list. i think the user should have it to use the 'end chat' button to really clear a chat
+         * n8fr8 2012/09/26
+         *
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
             && event.getAction() == KeyEvent.ACTION_DOWN) {
             mChatView.closeChatSessionIfInactive();
-        }
+        }*/
+        
         return super.dispatchKeyEvent(event);
     }
 
