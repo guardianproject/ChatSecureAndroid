@@ -56,9 +56,9 @@ public class ProviderListItem extends LinearLayout {
     private int mAccountPresenceStatusColumn;
     private int mAccountConnectionStatusColumn;
 
-   // private ColorStateList mProviderNameColors;
-   // private ColorStateList mLoginNameColors;
-   // private ColorStateList mChatViewColors;
+    private ColorStateList mProviderNameColors;
+    private ColorStateList mLoginNameColors;
+    private ColorStateList mChatViewColors;
     
     private long mAccountId;
 
@@ -87,9 +87,9 @@ public class ProviderListItem extends LinearLayout {
         mAccountConnectionStatusColumn = c
                 .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_CONNECTION_STATUS);
 
-     //   mProviderNameColors = mProviderName.getTextColors();
-     //   mLoginNameColors = mLoginName.getTextColors();
-     //   mChatViewColors = mChatView.getTextColors();
+        mProviderNameColors = mProviderName.getTextColors();
+        mLoginNameColors = mLoginName.getTextColors();
+        mChatViewColors = mChatView.getTextColors();
     }
 
     public void bindView(Cursor cursor) {
@@ -112,9 +112,9 @@ public class ProviderListItem extends LinearLayout {
         mUnderBubble.setBackgroundDrawable(mDefaultBackground);
         statusIcon.setVisibility(View.GONE);
 
-      //  providerName.setTextColor(mProviderNameColors);
-       // loginName.setTextColor(mLoginNameColors);
-       // chatView.setTextColor(mChatViewColors);
+        providerName.setTextColor(mProviderNameColors);
+       loginName.setTextColor(mLoginNameColors);
+       chatView.setTextColor(mChatViewColors);
 
         if (!cursor.isNull(mActiveAccountIdColumn)) {
             mLoginName.setVisibility(View.VISIBLE);
@@ -150,8 +150,8 @@ public class ProviderListItem extends LinearLayout {
                     if (mUnderBubble.getVisibility() != mUnderBubble.GONE)
                     {
                      providerName.setTextColor(0xff000000);
-                    loginName.setTextColor(0xff000000);
-                    chatView.setTextColor(0xff000000);
+                     loginName.setTextColor(0xff000000);
+                     chatView.setTextColor(0xff000000);
                     }
                 } else {
                     chatView.setVisibility(View.GONE);
