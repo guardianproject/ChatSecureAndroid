@@ -81,6 +81,7 @@
     -->
     <property name="gibberbot.locale" value="CHOOSE" />
     <target name="-post-compile">
+        <mkdir dir="${asset.absolute.dir}" />
         <propertyfile file="${asset.absolute.dir}/gibberbot.properties" comment="Build specific properties - auto generated">
             <entry key="locale" value="${gibberbot.locale}"/>
         </propertyfile>
