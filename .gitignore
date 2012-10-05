@@ -2,3 +2,4 @@ bin/
 gen/
 local.properties
 proguard.cfg
+assets/gibberbot.properties
