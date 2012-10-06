@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 public class StatusBarNotifier {
@@ -200,20 +201,21 @@ public class StatusBarNotifier {
                 info.createNotification(tickerText, lightWeightNotify));
     }
 
-    private void setRinger(long providerId, Notification notification) {
+    private void setRinger(long providerId, NotificationCompat.Builder builder) {
         String ringtoneUri = getGlobalSettings().getRingtoneURI();
         boolean vibrate = getGlobalSettings().getVibrate();
 
-        notification.sound = TextUtils.isEmpty(ringtoneUri) ? null : Uri.parse(ringtoneUri);
-        if (notification.sound != null) {
+        Uri sound = TextUtils.isEmpty(ringtoneUri) ? null : Uri.parse(ringtoneUri);
+        builder.setSound(sound);
+        if (sound != null) {
             mLastSoundPlayedMs = SystemClock.elapsedRealtime();
         }
 
         if (DBG)
-            log("setRinger: notification.sound = " + notification.sound);
+            log("setRinger: notification.sound = " + sound);
 
         if (vibrate) {
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            builder.setDefaults(Notification.DEFAULT_VIBRATE);
             if (DBG)
                 log("setRinger: defaults |= vibrate");
         }
@@ -268,18 +270,24 @@ public class StatusBarNotifier {
         }
 
         public Notification createNotification(String tickerText, boolean lightWeightNotify) {
-            Notification notification = new Notification(R.drawable.ic_stat_status,
-                    lightWeightNotify ? null : tickerText, System.currentTimeMillis());
-
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
             Intent intent = getIntent();
+            builder
+                .setSmallIcon(R.drawable.ic_stat_status)
+                .setTicker(lightWeightNotify ? null : tickerText)
+                .setWhen(System.currentTimeMillis())
+                .setLights(0xff00ff00, 300, 1000)
+                .setContentTitle(getTitle())
+                .setContentText(getMessage())
+                .setContentIntent(PendingIntent.getActivity(mContext, 0, intent, 0))
+                .setAutoCancel(true)
+                ;
 
-            notification.setLatestEventInfo(mContext, getTitle(), getMessage(),
-                    PendingIntent.getActivity(mContext, 0, intent, 0));
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
             if (!(lightWeightNotify || shouldSuppressSoundNotification())) {
-                setRinger(mProviderId, notification);
+                setRinger(mProviderId, builder);
             }
-            return notification;
+            
+            return builder.getNotification();
         }
 
         private Intent getDefaultIntent() {
