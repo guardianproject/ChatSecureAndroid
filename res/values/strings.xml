@@ -160,7 +160,7 @@
     <!-- This is the toast message displayed when the user has been signed out of the service.-->
     <string name="signed_out_prompt">You have been signed out of <xliff:g id="account">%1$s</xliff:g>.</string>
     <!-- This is the toast message displayed when the user has been signed out of the service due to an error.-->
-    <string name="signed_out_prompt_with_error">You have been signed out of <xliff:g id="account">%1$s</xliff:g> because <xliff:g id="reason">%2$s</xliff:g>.</string>
+    <string name="signed_out_prompt_with_error">You have been signed out of <xliff:g id="account">%1$s</xliff:g> because <xliff:g id="reason">%2$s</xliff:g></string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
@@ -468,7 +468,7 @@
     <string name="session_expired">The session has expired, please sign in again.</string>
     <!-- forced_logout and already_logged_in are used within another sentence so y is not capped. -->
     <string name="forced_logout">you have signed in from another client.</string>
-    <string name="already_logged_in">you have already signed in from another client.</string>
+    <string name="already_logged_in">you have signed in from another client.</string>
     <!-- Error message for msisdn error.-->
     <string name="msisdn_error">Sorry, the phone number cannot be read from your SIM card. Please contact your operator for help.</string>
     <!-- Error message for when the user is not signed in.-->

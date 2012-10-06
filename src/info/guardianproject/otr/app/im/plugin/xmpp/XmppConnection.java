@@ -15,6 +15,7 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 
 import java.io.File;
@@ -705,7 +706,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         @Override
                         public void run() {
                             disconnect();
-                            disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
+                            disconnected(new ImErrorInfo(ImpsErrorInfo.ALREADY_LOGGED,
                                     "logged in from another location"));
                         }
                     });

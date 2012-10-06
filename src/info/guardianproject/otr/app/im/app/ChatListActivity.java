@@ -518,21 +518,6 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
                     log("Handle event connection disconnected.");
                 }
                 promptDisconnectedEvent(msg);
-                long providerId = ((long) msg.arg1 << 32) | msg.arg2;
-                if (providerId == mProviderId) {
-                    if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                        log("Current connection disconnected, finish");
-                    }
-
-                    //TODO Gibber manually launch back to main
-                    Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-                    intent.putExtra("showSettings", false);
-                    intent.putExtra("doSignIn", false);
-                    startActivity(intent);
-
-                    finish();
-                }
-                return;
             }
             super.handleMessage(msg);
         }

@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Message;
@@ -113,9 +114,7 @@ public class XmppStreamHandler {
                 if (isSmAvailable) {
                     sendEnablePacket();
                 } else {
-                    isSmEnabled = false;
-                    isOutgoingSmEnabled = false;
-                    sessionId = null;
+                    close();
                 }
             }
 
@@ -126,7 +125,14 @@ public class XmppStreamHandler {
             }
 
             public void connectionClosedOnError(Exception e) {
-                closeOnError();
+                if (e instanceof XMPPException &&
+                        ((XMPPException)e).getStreamError() != null) {
+                    // Non-resumable stream error
+                    close();
+                } else {
+                    // Resumable
+                    closeOnError();
+                }
             }
 
             public void connectionClosed() {
@@ -343,5 +349,11 @@ public class XmppStreamHandler {
         }
         outgoingStanzaCount++;
         outgoingQueue.add(packet);
+    }
+
+    private void close() {
+        isSmEnabled = false;
+        isOutgoingSmEnabled = false;
+        sessionId = null;
     }
 }
