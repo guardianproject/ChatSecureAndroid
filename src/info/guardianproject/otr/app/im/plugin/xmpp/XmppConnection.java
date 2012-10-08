@@ -1459,8 +1459,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mPingCollector != null) {
             IQ result = (IQ) mPingCollector.pollResult();
             mPingCollector.cancel();
+            mPingCollector = null;
             if (result == null || result.getError() != null) {
-                mPingCollector = null;
                 Log.e(TAG, "ping timeout");
                 return false;
             }
