@@ -603,10 +603,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 debug(TAG, "receive message");
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
                 String address = parseAddressBase(smackMessage.getFrom());
-                ChatSession session = findOrCreateSession(address);
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
                 if (dr != null) {
+                    ChatSession session = findOrCreateSession(address);
                     debug(TAG, "got delivery receipt for " + dr.getId());
                     session.onMessageReceipt(dr.getId());
                 }
@@ -626,6 +626,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 rec.setTo(mUser.getAddress());
                 rec.setFrom(new XmppAddress(smackMessage.getFrom()));
                 rec.setDateTime(new Date());
+
+                ChatSession session = findOrCreateSession(address);
                 session.onReceiveMessage(rec);
                 if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                     debug(TAG, "got delivery receipt request");
