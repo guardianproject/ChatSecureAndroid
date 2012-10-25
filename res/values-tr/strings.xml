@@ -227,7 +227,7 @@
   <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">Liste seçin:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Kişiler\\'den eklemek için bir ad yazın.</string>
+  <string name="invite_instruction">Kişiler\'den eklemek için bir ad yazın.</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Davetiye gönder</string>
   <!--provider plugin names-->

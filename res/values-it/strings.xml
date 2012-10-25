@@ -129,7 +129,7 @@
   <string name="sign_up">Non hai un account?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">Per la tua sicurezza, se il telefono viene perso o rubato, visitare il sito Web sul proprio computer e cambiare la password.</string>
-  <string name="check_auto_sign_in">Questa opzione ti consente di accedere automaticamente ogni volta che apri l\\'applicazione. Per disattivare l\\'opzione, disconnettiti e deseleziona la casella \\"Accesso automatico\\".</string>
+  <string name="check_auto_sign_in">Questa opzione ti consente di accedere automaticamente ogni volta che apri l\'applicazione. Per disattivare l\'opzione, disconnettiti e deseleziona la casella \\"Accesso automatico\\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Accedi</string>
   <!--These strings are displayed the sign in progress screen.-->
@@ -271,17 +271,17 @@
     smaller text below this label-->
   <string name="notification_enabled_title">Notifiche chat</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Notifica in barra di stato all\\'arrivo di un messaggio</string>
+  <string name="notification_enabled_summary">Notifica in barra di stato all\'arrivo di un messaggio</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_vibrate_title">Vibrazione</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Vibra anche all\\'arrivo di msg chat</string>
+  <string name="notification_vibrate_summary">Vibra anche all\'arrivo di msg chat</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_sound_title">Allarme</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Usa anche suoneria all\\'arrivo di msg chat</string>
+  <string name="notification_sound_summary">Usa anche suoneria all\'arrivo di msg chat</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
   <string name="notification_ringtone_title">Seleziona suoneria</string>
@@ -325,14 +325,14 @@
   <string name="unblock_contact_success"></string>
   <!--IM service permission-->
   <string name="perm_label">avviare servizio IM</string>
-  <string name="perm_desc">Consente l\\'avvio del servizio IM tramite intent.</string>
+  <string name="perm_desc">Consente l\'avvio del servizio IM tramite intent.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
   <string name="error">Attenzione</string>
   <!--Error message for sign in failed.-->
   <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">L\\'elenco non è stato aggiunto.</string>
+  <string name="add_list_failed">L\'elenco non è stato aggiunto.</string>
   <!--Error message for blocking contact failed.-->
   <string name="block_contact_failed">Il contatto non è stato bloccato.</string>
   <!--Error message for unblocking contact failed.-->
@@ -352,7 +352,7 @@
   <!--Error message for when the contact is blocked.-->
   <string name="contact_blocked"></string>
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">Attendere il caricamento dell\\'elenco contatti.</string>
+  <string name="contact_not_loaded">Attendere il caricamento dell\'elenco contatti.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Errore di rete.</string>
   <!--Error message for lack of server support error.-->
@@ -372,18 +372,18 @@
   <!--Error message for when the message queue on the server is full.-->
   <string name="message_queue_full">La coda messaggi è piena.</string>
   <!--Error message for when the domain is not supported by the server.-->
-  <string name="domain_not_supported">Il server non supporta l\\'inoltro al dominio.</string>
+  <string name="domain_not_supported">Il server non supporta l\'inoltro al dominio.</string>
   <!--Error message for a bad username error.-->
   <string name="unknown_user">Nome utente inserito non riconosciuto.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Spiacenti. Sei stato bloccato dall\\'utente.</string>
+  <string name="recipient_blocked_the_user">Spiacenti. Sei stato bloccato dall\'utente.</string>
   <!--Error message for session expired error.-->
   <string name="session_expired">Sessione scaduta. Accedi di nuovo.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
   <string name="forced_logout">accesso effettuato da un altro client</string>
   <string name="already_logged_in">accesso già effettuato da un altro client</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">Spiacenti. Impossibile leggere il numero di telefono sulla scheda SIM. Contattare l\\'operatore.</string>
+  <string name="msisdn_error">Spiacenti. Impossibile leggere il numero di telefono sulla scheda SIM. Contattare l\'operatore.</string>
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">Accesso non effettuato.</string>
   <!--Generic error.-->

@@ -135,7 +135,7 @@
   <string name="sign_up">Heeft u geen account?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">Ga voor uw eigen veiligheid, als uw telefoon kwijt of gestolen is, naar de Website op uw computer en verander uw wachtwoord.</string>
-  <string name="check_auto_sign_in">Met deze optie wordt u automatisch aangemeld wanneer u deze toepassing opent. Als u deze optie wilt uitschakelen, verwijdert u het vinkje uit het selectievakje \\'Automatisch aanmelden\\'.</string>
+  <string name="check_auto_sign_in">Met deze optie wordt u automatisch aangemeld wanneer u deze toepassing opent. Als u deze optie wilt uitschakelen, verwijdert u het vinkje uit het selectievakje \'Automatisch aanmelden\'.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Aanmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
@@ -267,7 +267,7 @@
   <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">Een lijst kiezen:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Typ een naam om toe te voegen vanuit \\'Contacten\\'.</string>
+  <string name="invite_instruction">Typ een naam om toe te voegen vanuit \'Contacten\'.</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Uitnodiging verzenden</string>
   <!--provider plugin names-->
