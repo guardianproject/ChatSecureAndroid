@@ -12,7 +12,7 @@
   <string name="menu_remove_account">删除帐户</string>
   <string name="menu_sign_out_all">登出所有</string>
   <string name="choose_account_title">聊天 - 选择一个帐户</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <string name="menu_cancel_signin">取消登录</string>
   <string name="menu_add_contact">添加联系人</string>
   <string name="menu_remove_contact">删除联系人</string>
@@ -39,16 +39,16 @@
   <string name="menu_plus">MENU+</string>
   <string name="confirm">确认</string>
   <string name="signout_all_confirm_message">你要退出所有的服务？</string>
-  <string name="confirm_delete_contact">将会删除联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
-  <string name="confirm_block_contact">将会阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
-  <string name="confirm_unblock_contact">将会解除阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="confirm_delete_contact">将会删除联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="confirm_block_contact">将会阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="confirm_unblock_contact">将会解除阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
   <string name="ok">确定</string>
   <string name="cancel">取消</string>
   <string name="yes">确定</string>
   <string name="no">取消</string>
-  <string name="signed_out_prompt">您已经退出了 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;。</string>
-  <string name="signed_out_prompt_with_error">由于&lt;xliff:g id="REASON"&gt;%2$s&lt;/xliff:g&gt;，您已经退出 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;。</string>
-  <string name="add_account">添加 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; 帐户</string>
+  <string name="signed_out_prompt">您已经退出了 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="signed_out_prompt_with_error">由于<xliff:g id="REASON">%2$s</xliff:g>，您已经退出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="add_account">添加 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帐户</string>
   <string name="label_username">用户名：</string>
   <string name="label_password">密码：</string>
   <string name="remember_password">记住密码。</string>
@@ -57,14 +57,14 @@
   <string name="check_save_password">为了您的安全，如果您的手机丢失或被盗，请在您的电脑网站，并更改密码。</string>
   <string name="check_auto_sign_in">启用该选项后，您每次打开此应用程序时都会自动登录。要停用该选项，请退出，然后取消选中“自动登录”复选框。</string>
   <string name="sign_in">登录</string>
-  <string name="signing_in_to">正在登录 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="signing_in_to">正在登录 <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
   <string name="signing_in_wait">正在登录...</string>
   <string name="bg_data_prompt_title">已停用背景数据</string>
-  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; 需要启用背景数据。</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要启用背景数据。</string>
   <string name="bg_data_prompt_ok">启用</string>
   <string name="bg_data_prompt_cancel">退出</string>
-  <string name="ongoing_conversation">当前聊天 (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; 人在线</string>
+  <string name="ongoing_conversation">当前聊天 (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> 人在线</string>
   <string name="subscriptions">好友邀请</string>
   <string name="unknown_contact">（"<i>"未知"</i>"）</string>
   <string name="empty_contact_group">空</string>
@@ -72,7 +72,7 @@
   <string name="contacts_picker_title">选择要邀请的联系人</string>
   <string name="contact_filter_hint">输入拼音以查找联系人</string>
   <string name="empty_contact_list">未找到联系人。</string>
-  <string name="blocked_list_title">已阻止的联系人 - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">已阻止的联系人 - <xliff:g id="USER">%1$s</xliff:g></string>
   <string name="no_blocked_contact">无受阻止的联系人。</string>
   <string name="contact_profile_title">联系人个人资料</string>
   <string name="label_status">状态：</string>
@@ -85,7 +85,7 @@
   <string name="presence_idle">空闲</string>
   <string name="presence_offline">离线</string>
   <string name="presence_invisible">显示为离线</string>
-  <string name="preference_title">&lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; settings (dev only)</string>
+  <string name="preference_title"><xliff:g id="provider">%1$s</xliff:g> settings (dev only)</string>
   <string name="data_channel_label">数据通道</string>
   <string name="data_encoding_label">数据编码</string>
   <string name="cir_channel_label">税务局局长通道</string>
@@ -97,22 +97,22 @@
   <string name="xml">XML的</string>
   <string name="wbxml">WBXML</string>
   <string name="save">保存</string>
-  <string name="chat_with">与&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;聊天</string>
+  <string name="chat_with">与<xliff:g id="USER">%1$s</xliff:g>聊天</string>
   <string name="me">我</string>
   <string name="compose_hint">输入内容</string>
-  <string name="contact_online">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;在线</string>
-  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;离开</string>
-  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;正忙</string>
-  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;处于离线状态</string>
-  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已加入</string>
-  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已离开</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>在线</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>离开</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>正忙</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>处于离线状态</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>已加入</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>已离开</string>
   <string name="time_stamp">\'发送时间：\'<xliff:g id="DATE">EEEE</xliff:g>
         <xliff:g id="AMPM">a</xliff:g>\' \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g></string>
   <string name="send">发送</string>
   <string name="msg_sent_failed">无法发送此消息。</string>
   <string name="disconnected_warning">与服务器失去连接。消息将在下次上线时发送。</string>
-  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt;处于离线状态。您发送的消息将在&lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt;下次上线时传送出去。</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;不在您的联系人列表中。</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>处于离线状态。您发送的消息将在<xliff:g id="USER_1">%1$s</xliff:g>下次上线时传送出去。</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的联系人列表中。</string>
   <string name="select_link_title">选择链接</string>
   <string name="empty_chat_list">无活动聊天。</string>
   <string name="add_contact_title">添加联系人</string>
@@ -132,28 +132,28 @@
   <string name="notification_sound_title">声音</string>
   <string name="notification_sound_summary">在收到即时消息的同时播放铃声</string>
   <string name="notification_ringtone_title">选择铃声</string>
-  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;邀请您加入群聊。</string>
-  <string name="invitation_sent_prompt">已向&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;发送邀请。</string>
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>邀请您加入群聊。</string>
+  <string name="invitation_sent_prompt">已向<xliff:g id="USER">%1$s</xliff:g>发送邀请。</string>
   <string name="accept_invitation">接受</string>
   <string name="decline_invitation">拒绝</string>
-  <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已邀请您加入其联系人列表。</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g>已邀请您加入其联系人列表。</string>
   <string name="approve_subscription">接受</string>
   <string name="decline_subscription">拒绝</string>
-  <string name="approve_subscription_error">无法批准来自&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;的好友申请。请稍后再试。</string>
-  <string name="decline_subscription_error">无法拒绝来自&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;的好友申请。请稍后再试。</string>
-  <string name="newMessages_label">来自&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;的新消息</string>
-  <string name="num_unread_chats">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; 条未读聊天消息</string>
+  <string name="approve_subscription_error">无法批准来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
+  <string name="decline_subscription_error">无法拒绝来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
+  <string name="newMessages_label">来自<xliff:g id="PROVIDER">%1$s</xliff:g>的新消息</string>
+  <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> 条未读聊天消息</string>
   <string name="subscription_notify_text">来自<xliff:g id="USER">%s</xliff:g>的新好友邀请</string>
   <string name="notify_groupchat_label">群聊邀请</string>
   <string name="group_chat_invite_notify_text">来自<xliff:g id="USER">%s</xliff:g>的新群聊邀请</string>
-  <string name="add_contact_success">已添加联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
-  <string name="delete_contact_success">联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”已删除。</string>
-  <string name="block_contact_success">已阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
-  <string name="unblock_contact_success">联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”已解除阻止。</string>
+  <string name="add_contact_success">已添加联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="delete_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已删除。</string>
+  <string name="block_contact_success">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="unblock_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已解除阻止。</string>
   <string name="perm_label">启动即时消息服务</string>
   <string name="perm_desc">允许应用程序通过 intent 启动即时消息服务。</string>
   <string name="error">注意</string>
-  <string name="login_service_failed">无法登录&lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;服务。请稍后再试。"\n"（详细信息：&lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;）</string>
+  <string name="login_service_failed">无法登录<xliff:g id="SERVICE">%1$s</xliff:g>服务。请稍后再试。"\n"（详细信息：<xliff:g id="DESCRIPTION">%2$s</xliff:g>）</string>
   <string name="add_list_failed">未添加该列表。</string>
   <string name="block_contact_failed">未阻止联系人。</string>
   <string name="unblock_contact_failed">联系人未解除阻止。</string>
@@ -162,8 +162,8 @@
   <string name="service_error">服务错误！</string>
   <string name="load_contact_list_failed">未载入联系人列表。</string>
   <string name="cant_connect_to_server">无法连接到服务器。请检查您的连接。</string>
-  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已在您的联系人列表中。</string>
-  <string name="contact_blocked">已阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>已在您的联系人列表中。</string>
+  <string name="contact_blocked">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
   <string name="contact_not_loaded">正在载入联系人列表，请稍候。</string>
   <string name="network_error">出现网络错误。</string>
   <string name="service_not_support">服务器不支持此功能。</string>
@@ -182,7 +182,7 @@
   <string name="already_logged_in">您已从另一个客户端登录。</string>
   <string name="msisdn_error">抱歉，无法从您的 SIM 卡读取手机号码。请与运营商联系寻求帮助。</string>
   <string name="not_signed_in">您当前未登录。</string>
-  <string name="general_error">错误代码 &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="general_error">错误代码 <xliff:g id="CODE">%1$d</xliff:g></string>
   <string-array name="default_smiley_names"><item>幸福</item>
 <item>悲伤</item>
 <item>眨眼</item>
@@ -255,7 +255,7 @@
 <item>:-D</item>
 <item>o_O</item>
 </string-array>
-  <string name="buddy_list_title">Contact List - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_contact_list">联系人列表</string>
   <string name="menu_view_encrypt_chat">加密On/Off</string>
   <string name="use_tor">通过Tor连接（需要Orbot应用程序）</string>
