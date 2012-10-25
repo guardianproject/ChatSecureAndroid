@@ -72,7 +72,7 @@ public class MessageView extends LinearLayout {
         // TODO SQLCipher decrypt messages from encrypted message store here
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
-        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
+     //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
@@ -81,7 +81,7 @@ public class MessageView extends LinearLayout {
         String contact = mResources.getString(R.string.me);
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
-        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
+     //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         if (delivery == DeliveryState.DELIVERED) {
             mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
             mDeliveryIcon.setVisibility(VISIBLE);
