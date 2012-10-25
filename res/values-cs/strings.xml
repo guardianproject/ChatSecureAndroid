@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">číst rachlé zprávy</string>
+  <string name="ro_perm_desc">\n        Umožňuje aplikacím číst data od IM poskytovatele obsahu.\n    </string>
+  <string name="wo_perm_label">psát rychlé zprávy</string>
+  <string name="wo_perm_desc">\n        Umožňuje aplikacím psát data na IM poskytovatele obsahu.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <string name="im_label">Gibberbot</string>
@@ -204,6 +208,7 @@
   <string name="data_channel_label">Datový kanál</string>
   <string name="data_encoding_label">Kódování dat</string>
   <string name="cir_channel_label">CIR kanál</string>
+  <string name="host_label">Host</string>
   <string name="msisdn_label">MSISDN</string>
   <string name="http">HTTP</string>
   <string name="sms">SMS</string>
@@ -533,6 +538,7 @@
   <string name="warning_alpha">UPOZORNĚNÍ: Toto je předčasné uvolnění Gibberbotu, které může stále obsahovat bezpečnostní díry nebo chyby.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupiny</string>
+  <string name="search_label">Kontakt</string>
   <string name="menu_locale">Jazyk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Jazyky</string>
   <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaký jazyk by měl InTheClear zobrazovat?</string>

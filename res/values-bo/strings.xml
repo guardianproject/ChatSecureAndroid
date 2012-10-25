@@ -246,7 +246,7 @@
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">འཕྲིན་ཐུང་འདི་བཏང་མི་ཐུབ།</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">དྲ་ཐོག་ཞབས་ཞུའི་འཕྲུལ་ཆས་ལ་འབྲེལ་ལམ་ཆད་སོང་། འབྲེལ་ལམ་བསྐྱར་དུ་སྦྲེལ་མཚམས། འཕྲིན་ཐུང་དེ་གཏོང་ཐུབ</string>
+  <string name="disconnected_warning">དྲ་ཐོག་ཞབས་ཞུའི་འཕྲུལ་ཆས་ལ་འབྲེལ་ལམ་ཆད་སོང་། འབྲེལ་ལམ་བསྐྱར་དུ་སྦྲེལ་མཚམས། འཕྲིན་ཐུང་དེ་གཏོང་ཐུབ།</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
@@ -368,7 +368,7 @@
   <string name="contact_not_loaded">ཁྱེད་ཀྱི་འབྲེལ་གཏུགས་ཐོ་གཞུང་སྣོན་འཇུག་བྱེད་པའི་སྐབས་སུ། སྒུག་རོགས།</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">དྲ་ལམ་གྱི་སྐྱོན་ཞིག་བྱུང་སོང་།</string>
-  <string name="wifi_not_connected_error">དྲ་འབྲེལ་འདི་ལ་ WiFi དགོས་ངེས་རེད་། </string>
+  <string name="wifi_not_connected_error">དྲ་འབྲེལ་འདི་ལ་ WiFi དགོས་ངེས་རེད། </string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">དྲ་ལམ་ཞབས་ཞུ་ཡིས་བྱེད་ལས་འདིར་རྒྱབ་སྐྱོར་བྱེད་ཀྱི་མི་འདུག</string>
   <!--Erorr message for bad password error.-->
@@ -495,7 +495,7 @@
   <string name="about_welcome">Gibberbot ནི་ལག་འཁྱེར་ཁ་པར་གྱི་འཕྲིན་ཐུང་ཉེར་སྤྱོད་ཅིག་ཡིན་ཞིང་། དེས་བདེ་སྲུང་མ་ལག་འཕར་མ་མཁོ་སྤྲོད་བྱས་དེ་ཁྱེད་ཀྱི་གླེང་མོལ་དང་འབྲེལ་ལམ་ལ་རྩད་གཅོད་གཏོང་མཁན་ཚོ་འགོག་གི་རེད་། \n\nཉེར་སྤྱོད་དེས། དྲ་ཐོག་གླེང་མོལ་གྱི་ཞབས་ཞུ་གང་རུང་སྟེ་། Jabber དང་ XMPP protocal ཡི་ཁོངས་སུ་གཏོགས་པའི་ Google GTalk or Jabber.org རིགས་ལ་རྒྱབ་སྐྱོར་བྱེད་གི་རེད་། </string>
   <!--About: OTR-->
   <string name="about_otr_title">དེ་ཇི་ལྟར་བདེ་འཇགས་ཡིན་ནམ།</string>
-  <string name="about_otr">ཟིན་ཐོ་མེད་པའི་འཕྲིན་གཏོང་ནི་འཛམ་གླིང་ནང་གི་སྒེར་གྱི་གླེང་མོལ་ཚང་མ་གསང་བདེ་ཡོང་བའི་ཆེད་དུ་བཟོས་བའི་བདེ་འཇགས་མ་ལག་ཞིག་སྟེ། དེའི་ཁོངས་སུ་གསང་སྡོམ་དང་ར་སྤྲོད་། ཕྱི་འདོར་། གསང་གཏོང་བཅས་ཚུད་། \n\nOTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium དང་ཡང་ན་ Pidgin  ལྟ་བུའི་མཉམ་དུ་བསྟུན་ཐུབ་།\n\n</string>
+  <string name="about_otr">ཟིན་ཐོ་མེད་པའི་འཕྲིན་གཏོང་ནི་འཛམ་གླིང་ནང་གི་སྒེར་གྱི་གླེང་མོལ་ཚང་མ་གསང་བདེ་ཡོང་བའི་ཆེད་དུ་བཟོས་བའི་བདེ་འཇགས་མ་ལག་ཞིག་སྟེ། དེའི་ཁོངས་སུ་གསང་སྡོམ་དང་ར་སྤྲོད། ཕྱི་འདོར་། གསང་གཏོང་བཅས་ཚུད། \n\nOTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium དང་ཡང་ན་ Pidgin  ལྟ་བུའི་མཉམ་དུ་བསྟུན་ཐུབ་།\n\n</string>
   <!--About: Security-->
   <string name="about_security_title">ངའི་གླེང་མོལ་དེ་བདེ་འཇགས་ཡིན་ནམ།</string>
   <string name="about_security">ཁྱེད་ནས་འཕྲིན་ཐུང་གཏོང་ས་དེས་ཀྱང་ཉར་སྤྱོད་མ་ལག་གཅིག་མཚུངས་བེད་སྤྱོད་བཏང་ན། ད་གཟོད་ཁྱེད་ཀྱི་ Gibberbot གླེང་མོལ་གསང་སྡོམ་པར་གཞི་དེས་ལས་ཀ་བྱེད་ཐུབ། དེར་བརྟེན། ཁྱེད་ཀྱིས་འབྲེལ་གཏུགས་བྱེད་ས་དེས་ལག་འཁྱེར་ཁ་པར་སྟེངGibberbot དང་གློག་ཀླད་སྟེང་Adiumདང་Pidgin བེད་སྤྱོད་གཏོང་གི་ཡོད་མེད་ཁག་ཐེག་བྱོས། ཁྱེད་ནས་ཇི་ལྟར་Gibberbot ཡིས་ཁྱེད་ཀྱི་གླེང་མོལ་གསང་ཉར་བྱེད་ཀྱི་ཡོད་མེད་རྟོགས་ཐུབ། \nམཉམ་དུ་འགོ་འཛུགས། </string>
@@ -515,11 +515,11 @@
   <string name="account_setup_pers_pw_on">གསང་ཚིག་ཉར་བ།</string>
   <string name="account_setup_pers_pw_off">གསང་ཚིག་ཉར་མི་འདུག</string>
   <string name="account_setup_pers_auto_title">རང་འགུལ་གྱིས་ནང་དུ་འཛུལ་འཇུག</string>
-  <string name="account_setup_pers_auto_on">Gibberbot start-up ལ་མཐུད་།</string>
-  <string name="account_setup_pers_auto_off">Gibberbot start-up ལ་མ་མཐུད་། </string>
+  <string name="account_setup_pers_auto_on">Gibberbot start-up ལ་མཐུད།</string>
+  <string name="account_setup_pers_auto_off">Gibberbot start-up ལ་མ་མཐུད། </string>
   <string name="account_setup_pers_now_title">ད་ལྟ་ནང་དུ་ཞུགས།</string>
-  <string name="account_setup_pers_now_on">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མཐུད་།</string>
-  <string name="account_setup_pers_now_off">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མ་མཐུད་།</string>
+  <string name="account_setup_pers_now_on">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མཐུད།</string>
+  <string name="account_setup_pers_now_off">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མ་མཐུད།</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">དོ་བདག་གི་(འདམ་ཀ།)</string>
   <string name="account_setup_personal_alias_title">ཐོ་བྱང་གི་མིང་གཞན།</string>
@@ -545,7 +545,7 @@
   <string name="menu_sign_in">ནང་དུ་ཞུགས།</string>
   <string name="menu_gen_key">ལྡེ་མིག་གི་ཚབ།</string>
   <string name="error_suspended_connection">Gibbertbot ཡིས་དྲ་རྒྱ་དང་འབྲེལ་མཐུད་བརླགས་འདུག </string>
-  <string name="error_reestablish_connection">Gibberbot ཡིས་དྲ་འབྲེལ་སླར་གསོ་ལ་འབད་བརྩོན་བྱེད་བཞིན་ཡོད་། </string>
+  <string name="error_reestablish_connection">Gibberbot ཡིས་དྲ་འབྲེལ་སླར་གསོ་ལ་འབད་བརྩོན་བྱེད་བཞིན་ཡོད། </string>
   <string name="otr_session_status_plaintext">ཉེན་བརྡ། གླེང་མོལ་འདི་གསང་སྡོམ་བྱེད་མེད།</string>
   <string name="otr_session_status_encrypted">གློག་མོལ་དེ་བདེ་འཇགས་ཡིན། འོན་ཀྱང་། གླེང་མོལ་བྱེད་མཁན་རྣམས་ཀྱི་ངོ་རྟགས་ར་སྤྲོད་བྱས་མེད་།</string>
   <string name="otr_session_status_finished">ཉེན་བརྡ། གླེང་མོལ་གྱི་གསང་སྡོམ་བཀག་ཟིན།</string>
@@ -582,7 +582,7 @@
   <string name="pref_notification_sound">ཉན་འཇོག་གི་སྒྲ</string>
   <string name="pref_notification_ringtone">དོ་སྣང་གི་དྲིལ་སྒྲ</string>
   <string name="account_settings_title">ཐོ་མཛོད་སྒྲིག་བཟོ།</string>
-  <string name="warning_alpha">ཉེན་བརྡ་། འདི་ནི་ Gibberbot ཡི་ཕྱིར་གཏོང་ཐོག་མ་དེ་ཡིན་ཞིང་ད་རུང་ཉེན་སྲུང་གི་བརྡོལ་ཁུང་ངམ་དྲ་འབུ་དེ་འདྲ་ཡོད་སྲིད་། </string>
+  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups"> ཚན་པ་ཁག</string>
   <string name="otr_gen_key">OTR ལྡེ་མིག་གསར་བ་ཞིག་མཁོ་སྒྲུབ་བཞིན་པ། </string>
@@ -601,8 +601,8 @@
   <string name="require_tls_ssl_connection">TLS/SSL ཡི་འབྲེལ་མཐུད་དགོས།</string>
   <string name="transport_encryption">གསང་སྡོམ་དེ་བསྐུར། </string>
   <string name="how_encrypted_chats_are_started">ཇི་ལྟར་གསང་སྡོམ་ཅན་གྱི་གླེང་མོལ་འགོ་འཛུགས་གི་རེད་། </string>
-  <string name="the_server_to_connect_to_if_needed">གལ་སྲིད་དགོས་མཁོ་བྱུང་ན། འབྲེལ་མཐུད་རྒྱག་སའི་ཞབས་ཞུ་འདི་རེད་།</string>
-  <string name="connect_server">དྲ་ཐོག་ཞབས་ཞུར་མཐུད་།</string>
+  <string name="the_server_to_connect_to_if_needed">གལ་སྲིད་དགོས་མཁོ་བྱུང་ན། འབྲེལ་མཐུད་རྒྱག་སའི་ཞབས་ཞུ་འདི་རེད།</string>
+  <string name="connect_server">དྲ་ཐོག་ཞབས་ཞུར་མཐུད།</string>
   <string name="tcp_port_for_xmpp_server">ཞབས་འཕྲུལ་XMPP ཡི་མཐུད་སྣེ TCP</string>
   <string name="server_port">དྲ་ཐོག་ཞབས་ཞུའི་མཐུད་ས།</string>
   <string name="xmpp_resource">XMPP ཡི་ཁོངས་མཛོད་། </string>

@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="ro_perm_label">خواندن پیام های فوری</string>
-  <string name="ro_perm_desc">اجازه می دهد برنامه های کاربردی به خواندن اطلاعات از ارائه دهنده محتوا فوری.</string>
+  <string name="ro_perm_desc">\nبه برنامه ها اجازه  خواندن اطلاعات از ارایه دهنده محتوا در مسنجر را میدهد\n</string>
   <string name="wo_perm_label">نوشتن پیام های فوری</string>
-  <string name="wo_perm_desc">اجازه می دهد برنامه های کاربردی برای نوشتن داده ها به ارائه محتوای فوری.</string>
+  <string name="wo_perm_desc">\nبه برنامه ها اجازه میدهد به ارایه دهنده محتوا در مسنجر اطلاعات وارد کنند \n</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">رباط پرچونه</string>
+  <string name="im_label">ربات پرچونه</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
-  <string name="landing_page_title">گفتگو - انتخاب یک حساب کاربری</string>
+  <string name="landing_page_title">یک حساب کاربری انتخاب کنید</string>
   <!--Landing page screen menu and context menu items.-->
   <string name="menu_about">درباره</string>
   <!--Conext menu item: add a new account.-->
@@ -19,10 +19,10 @@
   <!--Conext menu item: remove an account.-->
   <string name="menu_remove_account">حذف حساب کاربری</string>
   <!--Screen menu item: sign out all service.-->
-  <string name="menu_sign_out_all">خروج همه از سیستم</string>
+  <string name="menu_sign_out_all">خروج کامل از سیستم</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
-  <string name="choose_account_title">گفتگو - یک حساب کاربری انتخاب کنید</string>
+  <string name="choose_account_title"> یک حساب کاربری انتخاب کنید</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
@@ -104,11 +104,11 @@
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
   <!--The "OK" button label for the error message dialog.-->
-  <string name="ok">صحیح</string>
+  <string name="ok">باشه</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="cancel">انصراف</string>
   <!--The "OK" button label for the confirm dialogs.-->
-  <string name="yes">صحیح</string>
+  <string name="yes">باشه</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">انصراف</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
@@ -128,13 +128,14 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">برای امنیت خودتان، اگر گوشی شما گم یا دزدیده شده ، به وب سایت بر روی کامپیوتر خود مراجعه کنید و رمز عبور خود را تغییر دهید.</string>
-  <string name="check_auto_sign_in">این گزینه شما را هربار بصورت خودکار وارد برنامه میکند. برای غیرفعال کردن این گزینه، از حساب کاربری خود خارج شوید و گزینه </string>
+  <string name="check_auto_sign_in">این گزینه شما را هربار بصورت خودکار وارد برنامه میکند. برای غیرفعال کردن این گزینه، از حساب کاربری خود خارج شوید و گزینه ؛بصورت خودکار من را وارد کن؛ را غیر فعال کنید</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">ورود</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">درحال راه اندازی رباط پرچونه...</string>
+  <string name="signing_in_to">درحال راه اندازی ربات پرچونه...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
+  <string name="signing_in_wait">امضا\u2026\n</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -232,7 +233,7 @@
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">لینک را انتخاب کنید</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">بدون گفتگوی فعال</string>
+  <string name="empty_chat_list">گفتگوی فعالی نیست</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
   <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو...</string>
   <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو...</string>
@@ -249,11 +250,11 @@
   <string name="invite_label">ارسال دعوت نامه</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber/XMPP</string>
-  <string name="provider_full_name_llxmpp">XMPP محلی و بدون سرور</string>
+  <string name="provider_full_name_llxmpp">بنجور (زیروکانف)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">راه اندازی حساب کاربری</string>
   <string name="encryption_and_anonymity_title">رمزگذاری و گمنامی</string>
-  <string name="hide_offline_contacts">تماس هایی که روی خط نیستند را مخفی کن</string>
+  <string name="hide_offline_contacts">کاربرهایی که روی خط نیستند را مخفی کن</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">تنظیمات رخدادها</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
@@ -265,6 +266,7 @@
     smaller text below this label-->
   <string name="foreground_service_title">از اولویت پیش زمینه استفاده کن</string>
   <string name="foreground_service_summary">احتمال قطع و وصل شدن سرویس ارتباطمان توسط اندروید را کاهش میدهد. این تنظیم یک رخداد به بخش رخدادها اضافه خواهد کرد.</string>
+  <string name="heartbeat_interval_title">فاصله ضربان</string>
   <string name="notification_vibrate_title">ویبره</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">وقتی یک پیام فوری میرسد ویبره را فعال کن</string>
@@ -272,7 +274,7 @@
     smaller text below this label-->
   <string name="notification_sound_title">صدا</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">وقتی یک پیام فوری میرسد زنگ را پخش کن</string>
+  <string name="notification_sound_summary">وقتی یک پیام فوری میرسد زنگ بزن</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
   <string name="notification_ringtone_title">انتخاب آهنگ زنگ</string>
@@ -304,32 +306,32 @@
   <!--Toast when a contact is blocked.-->
   <!--Toast when a contact is unblocked.-->
   <!--IM service permission-->
-  <string name="perm_label">شروع سرویس پیام رسانی فوری</string>
+  <string name="perm_label">شروع سرویس مسنجر</string>
   <string name="perm_desc">به برنامه ها اجازه میدهد که از طریق intent سرویس پیام فوری را شروع کنند.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
   <string name="error">توجه</string>
   <!--Error message for sign in failed.-->
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">لیست اضافه نشده بود.</string>
+  <string name="add_list_failed">لیست اضافه نشد.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">تماس مسدود نشده بود.</string>
+  <string name="block_contact_failed">تماس مسدود نشد.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">تماس از حالت انسداد خارج نشده بود</string>
+  <string name="unblock_contact_failed">تماس از حالت انسداد خارج نشد</string>
   <!--Error message for when the user didn't select a contact as required.-->
-  <string name="select_contact">لطفن ابتدا یک تماس انتخاب کنید</string>
+  <string name="select_contact">لطفا ابتدا یک تماس انتخاب کنید</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">قطع شده!\n\n</string>
+  <string name="disconnected">قطع شد!\n</string>
   <!--Error message for when the IM service has died.-->
   <string name="service_error">خطای سرویس!</string>
   <!--Error message for loading contact list failed.-->
   <string name="load_contact_list_failed">لیست تماس بارگیری نشد.</string>
   <!--Error message for failed to connect to the server.-->
-  <string name="cant_connect_to_server">نمیتواند به سرور متصل شود. لطفن ارتباط خود را بررسی کنید.</string>
+  <string name="cant_connect_to_server">نمیتواند به سرور متصل شود. لطفا ارتباط خود را بررسی کنید.</string>
   <!--Error message for when the contact is already in the list.-->
   <!--Error message for when the contact is blocked.-->
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">لطفن تا زمان بارگیری لیست تماس صبر کنید.</string>
+  <string name="contact_not_loaded">لطفا تا زمان بارگیری لیست تماس صبر کنید</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">در شبکه خطا رخ داده است.</string>
   <string name="wifi_not_connected_error">برای این ارتباط، WiFi مورد نیاز است.</string>
@@ -447,23 +449,23 @@
   <string name="menu_view_encrypt_chat">رمزگذاری روشن/خاموش</string>
   <string name="use_tor">اتصال به واسطه تور (به برنامه رباط پیازی احتیاج دارد)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">رباط پرچونه</string>
-  <string name="welcome_first">آیا اولین بار است که از رباط پرچونه استفاده میکنید؟</string>
+  <string name="app_name">ربات پرچونه</string>
+  <string name="welcome_first">آیا اولین بار است که از ربات پرچونه استفاده میکنید؟</string>
   <string name="welcome_skip">نمیتوانید برای شروع منتظر شوید؟</string>
   <string name="welcome_about">شروع کنید</string>
   <string name="welcome_account">راه اندازی حساب کاربری</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">درباره رباط پرچونه</string>
-  <string name="about_welcome">رباط پرچونه یک برنامه پیام رسان همراه است که ویژگیهای امنیتی اضافی را فراهم میکند تا از جاسوسی دیگران بر ارتباطات و گفتگوهای شما جلوگیری کند. این برنامه هر سرویس گفتگویی که از Jabber و یا پروتکل XMPP استفاده میکند، از قبیل Gtalk گوگل و Jabber.org.</string>
+  <string name="about_welcome_title">درباره ربات پرچونه</string>
+  <string name="about_welcome">ربات پرچونه یک برنامه پیام رسان همراه است که ویژگیهای امنیتی اضافی را فراهم میکند تا از جاسوسی دیگران بر ارتباطات و گفتگوهای شما جلوگیری کند.\n این برنامه از هر سرویس گفتگویی که از پروتکل ایکس ام پی پی XMPP یا جبرJabber استفاده میکند، مانند Gtalk گوگل و Jabber.org حمایت میکند</string>
   <!--About: OTR-->
-  <string name="about_otr_title">چطور امن است؟</string>
+  <string name="about_otr_title">چگونه امن است؟</string>
   <string name="about_otr">\'پیام رسانی محرمانه\' یک سیستم امنیتی است که برای بوجود آوردن حریم خصوصی، بر مبنای تقلید از ویژگیهای یک مکالمه خصوصی در دنیای حقیقی طراحی شده است، که شامل رمزگذاری، احراز هویت، قابلیت انکار و رازداری میشود. پروتکل محرمانه با کلاینتهای گفتگوی دستکتاپ از قبیل Pidgin و Adium سازگار است.</string>
   <!--About: Security-->
   <string name="about_security_title">آیا گفتگوهای من امن هستند؟</string>
-  <string name="about_security">ویژگی رمزگذاری گفتگوی رباط پرچونه، تنها زمانی که بقیه هم از یک برنامه یا نرم افزار سازگار دیگر استفاده میکنند کار میکند. پس شما باید اطمینان حاصل کنید که افراد درحال تماس با شما از رباط پرچونه برای موبایل و یا Adium یا Pidgin برای کامپیوترهای دسکتاپ استفاده میکنند. شما میتوانید وارد تنظیمات حساب کاربری شده و تنظیم کنید که بطور دقیق، چه وقت و چگونه رباط پرچونه برای رمزگذاری گفتگوهای شما اقدام کند.\nاجازه بدید شروع کنیم!</string>
+  <string name="about_security">ویژگی رمزگذاری گفتگوی رباط پرچونه، تنها زمانی که بقیه هم از یک برنامه یا نرم افزار سازگار دیگر استفاده میکنند کار میکند. پس شما باید اطمینان حاصل کنید که افراد درحال تماس با شما از ربات پرچونه برای موبایل و یا Adium یا Pidgin برای کامپیوترهای دسکتاپ استفاده میکنند. شما میتوانید وارد تنظیمات حساب کاربری شده و تنظیم کنید که بطور دقیق، چه وقت و چگونه ربات پرچونه برای رمزگذاری گفتگوهای شما اقدام کند.\nاجازه بدید شروع کنیم!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">راه اندازی گذرواژه</string>
-  <string name="setup_passphrase">قبل از شروع، یک گذرواژه امن برای حفاظت اطلاعات خود در رباط پرچونه از دسترسی غیرمجاز انتخاب کنید.</string>
+  <string name="setup_passphrase">قبل از شروع، یک گذرواژه امن برای حفاظت اطلاعات خود  از دسترسی غیرمجاز در ربات پرچونه انتخاب کنید.</string>
   <string name="setup_passphrase_label1">گذرواژه:</string>
   <string name="setup_passphrase_label2">گذرواژه (دوباره):</string>
   <!--Account Setup: Account-->
@@ -477,15 +479,15 @@
   <string name="account_setup_pers_pw_on">رمز عبور کش شده</string>
   <string name="account_setup_pers_pw_off">رمز عبور کش نشده</string>
   <string name="account_setup_pers_auto_title">ورود خودکار</string>
-  <string name="account_setup_pers_auto_on">بهنگام راه اندازی رباط پرچونه متصل شو</string>
+  <string name="account_setup_pers_auto_on">بهنگام راه اندازی ربات پرچونه متصل شو</string>
   <string name="account_setup_pers_auto_off">بهنگام راه اندازی رباط پرچونه متصل نشو</string>
   <string name="account_setup_pers_now_title">الان وارد شوید</string>
-  <string name="account_setup_pers_now_on">راه اندازی حساب زیر را متصل کن</string>
-  <string name="account_setup_pers_now_off">راه اندازی حساب زیر را متصل نکن</string>
+  <string name="account_setup_pers_now_on">پس از انجام تنظیمات، متصل شو</string>
+  <string name="account_setup_pers_now_off">پس از انجام تنظیمات، متصل نشو</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">شخصی (انتخابی)</string>
   <string name="account_setup_personal_alias_title">نام مستعار حساب کاربری (نام شما)</string>
-  <string name="account_setup_personal_alias_sub">چگونه حساب کاربری شما روی خط به نظر میرسد</string>
+  <string name="account_setup_personal_alias_sub">حساب کاربری شما روی خط  چگونه دیده میشود</string>
   <string name="account_setup_personal_profile_title">نمایه</string>
   <string name="account_setup_personal_profile_sub">شرح مختصری از خودتان</string>
   <!--Account Setup: Advanced-->
@@ -498,30 +500,30 @@
   <string name="account_setup_signin_b">درحال تولید یک جفت کلید...</string>
   <string name="account_setup_signin_c">درحال ورود...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">رباط پرچونه در زمان تایید نام کاربری یا رمز ورود شما با خطا مواجه شد - لطفن پس از بررسی دوباره تلاش کنید.</string>
-  <string name="account_setup_error_keypair">رباط پرچونه، در هنگام تولید یک جفت کلید با خطا مواجه شد.</string>
-  <string name="account_setup_error_server">رباط پرچونه، در هنگام ارتباط با سرور گفتگو با یک خطا مواجه شد - لطفن تنظیمات را بررسی و دوباره تلاش کنید.</string>
-  <string name="account_setup_error_connectivity">رباط پرچونه، درهنگام ارتباط با یک خطا مواجه شد - لطفن ارتباط خود را با شبکه را بررسی و دوباره تلاش کنید.</string>
+  <string name="account_setup_error_validating">ربات پرچونه در زمان تایید نام کاربری یا رمز ورود شما با خطا مواجه شد - لطفا پس از بررسی دوباره تلاش کنید.</string>
+  <string name="account_setup_error_keypair">ربات پرچونه، در هنگام تولید یک جفت کلید با خطا مواجه شد.</string>
+  <string name="account_setup_error_server">ربات پرچونه، در هنگام ارتباط با سرور گفتگو با یک خطا مواجه شد - لطفا تنظیمات را بررسی و دوباره تلاش کنید.</string>
+  <string name="account_setup_error_connectivity">ربات پرچونه، درهنگام ارتباط با یک خطا مواجه شد - لطفا ارتباط خود با شبکه را بررسی و دوباره تلاش کنید.</string>
   <string name="label_fingerprint_remote">اثر انگشت آنها</string>
   <string name="label_fingerprint_local">اثر انگشت شما</string>
   <string name="menu_sign_in">ورود</string>
-  <string name="menu_gen_key">کلید Regen</string>
-  <string name="error_suspended_connection">رباط پرچونه یک ارتباط با شبکه را از دست داده است</string>
-  <string name="error_reestablish_connection">رباط پرچونه در تلاش است تا دوباره یک ارتباط برقرار کند</string>
+  <string name="menu_gen_key">تولید دوباره کلید</string>
+  <string name="error_suspended_connection">ربات پرچونه یک ارتباط با شبکه را از دست داده است</string>
+  <string name="error_reestablish_connection">ربات پرچونه در تلاش است تا دوباره یک ارتباط برقرار کند</string>
   <string name="otr_session_status_plaintext">هشدار: این گفتگو رمزگذاری نشده</string>
   <string name="otr_session_status_encrypted">این گفتگو امن است اما هویت شرکت کنندگان تایید نشده</string>
   <string name="otr_session_status_finished">هشدار: رمزگذاری گفتگو متوقف شده است.</string>
   <string name="otr_session_status_verified">این گفتگو امن و تایید شده است</string>
-  <string name="account_wizard_setup_title">جادوگر حساب کاربری</string>
+  <string name="account_wizard_setup_title">ویزارد حساب کاربری</string>
   <string name="account_wizard_account_title">شناسه حساب کاربری شما</string>
   <string name="account_wizard_host_title">پیکربندی سرور</string>
   <string name="account_wizard_ready_title">آماده اید؟</string>
-  <string name="account_wizard_setup_body">شناسه حساب کاربری خود را برای پیکربندی رباط پرچونه برای سرویس گفتگوی XMPP تان وارد کنید. این شناسه شبیه یک آدرس ایمیل است:</string>
-  <string name="account_wizard_account_body">لطفن حساب کاربری خود را وارد کنید (user@hostname):</string>
-  <string name="account_wizard_host_body">لطفن عدد پورت (پیشفرض 5222 است) و نام میزبان سرور خود را وارد و یا ویرایش کنی.</string>
+  <string name="account_wizard_setup_body">شناسه حساب کاربری خود را برای پیکربندی ربات پرچونه برای سرویس گفتگوی XMPP تان وارد کنید. این شناسه شبیه یک آدرس ایمیل است:</string>
+  <string name="account_wizard_account_body">لطفا حساب کاربری خود را وارد کنید (user@hostname):</string>
+  <string name="account_wizard_host_body">لطفا عدد پورت (پیشفرض 5222 است) و نام میزبان سرور خود را وارد و یا ویرایش کنید.</string>
   <string name="account_wizard_ready_body">رباط پرچونه پیکربندی شده، حالا وقت این است که به سرویس خود متصل شوید و بصورت امن، مطمین و خصوصی گفتگو کنید!</string>
   <string name="account_wizard_no_domain_warning">شما برای شناسه حساب کاربری خود، قسمت @hostname.com را وارد نکرده اید. لطفن دوباره تلاش کنید!</string>
-  <string name="account_wizard_no_root_domain_warning">نام میزبان شما پسوند .com یا .net یا شبیه به اینها را نداشت. لطفن دوباره تلاش کنید!</string>
+  <string name="account_wizard_no_root_domain_warning">نام میزبان شما پسوند .com یا .net یا شبیه به اینها را نداشت. لطفا دوباره تلاش کنید!</string>
   <string name="signin_password_prompt">رمز عبور خود را وارد کنید:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="pref_account_user">pref_account_user</string>
@@ -544,7 +546,8 @@
   <string name="pref_notification_sound">pref_notification_sound</string>
   <string name="pref_notification_ringtone">pref_notification_ringtone</string>
   <string name="account_settings_title">تنظیمات حساب کاربری</string>
-  <string name="warning_alpha">هشدار: این یک انتشار زودهنگام از رباط پرچونه است که ممکن است حفره های امنیتی و اشکالاتی داشته باشد.</string>
+  <string name="pref_default_locale">defLoc\n</string>
+  <string name="warning_alpha">هشدار: این یک انتشار غیر پایانی از ربات پرچونه است که ممکن است حفره های امنیتی و اشکالاتی داشته باشد.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">گروه ها</string>
   <string name="otr_gen_key">درحال تولید یک جفت کلید OTR...</string>
@@ -555,7 +558,7 @@
   <string name="KEY_PREF_LANGUAGE_TITLE">زبان ها</string>
   <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear چه زبانی را باید نمایش بدهد؟</string>
   <string name="do_srv_lookup">جستجوی SRV انجام بده</string>
-  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">از DNS SRV برای پیدا کردن سرور حقیقی XMPP از نام دامنه استفاده کن</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">از DNS SRV برای پیدا کردن سرور حقیقی XMPP از نام دامنه، استفاده کن</string>
   <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">اجازه فرستادن نام کاربری و رمز عبور با متن ساده، وقتی از حمل و نقل رمزگذاری نشده استفاده میشود</string>
   <string name="allow_plain_text_auth">اجازه احراز هویت با متن ساده</string>
   <string name="verify_that_the_certificate_is_trusted">تایید کن که گواهی مورد اطمینان است</string>
@@ -568,7 +571,7 @@
   <string name="tcp_port_for_xmpp_server">درگاه TCP برای سرور XMPP</string>
   <string name="server_port">پورت سرور</string>
   <string name="xmpp_resource">XMPP منبع</string>
-  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">برای تشخیص این ارتباط از بقیه کلاینت هایی که وارد شده اند.</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">برای تشخیص این ارتباط از بقیه کلاینت هایی که وارد شده اند</string>
   <string name="xmpp_resource_prio_title">XMPP اولویت منابع</string>
   <string name="xmpp_resource_prio_summary">پیامهای ارسالی به کلاینت هایی که بیشتر از یک منبع فعال دارند به منبعی فرستاده میشود که بالاترین اولویت را دارد</string>
   <string name="btn_next">بعدی</string>
@@ -576,7 +579,9 @@
   <string name="title_chats">گفت و شنود</string>
   <string name="new_messages_notify">پیام(های) تازه از طرف</string>
   <string name="smp_question_title">تصدیق</string>
-  <string name="smp_question_summary">بمنظور تایید ارتباط، یک سوال و پاسخی که از ایشان انتظار دارید را وارد کنید.</string>
+  <string name="smp_question_summary">بمنظور تایید ارتباط و هویت، یک سوال و پاسخی که از ایشان انتظار دارید را وارد کنید.</string>
   <string name="smp_question_hint">سوال برای پرسیدن</string>
   <string name="qmp_answer_hint">پاسخ مورد انتظار</string>
+  <string name="remote_verified_us">دوست شما، هویت شما را تایید کرده. حالا شما برای تایید هویت دوستتان سوال خود را بپرسید</string>
+  <string name="no_messages">گفتگویی وجود ندارد\n\nاینجا را کلیک کنید تا شروع کنید</string>
 </resources>

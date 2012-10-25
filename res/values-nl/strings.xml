@@ -84,6 +84,7 @@
   <string name="menu_switch_chats">Schakelen tussen chats</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Smiley invoegen</string>
+  <string name="menu_resend">Opnieuw versturen</string>
   <!--Strings for the contact info screen-->
   <string name="menu_scan">Scan Vingerafdruk</string>
   <string name="menu_fingerprint">Uw Vingerafdruk</string>
@@ -134,7 +135,7 @@
   <string name="sign_up">Heeft u geen account?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">Ga voor uw eigen veiligheid, als uw telefoon kwijt of gestolen is, naar de Website op uw computer en verander uw wachtwoord.</string>
-  <string name="check_auto_sign_in">Met deze optie wordt u automatisch aangemeld wanneer u deze toepassing opent. Als u deze optie wilt uitschakelen, verwijdert u het vinkje uit het selectievakje \'Automatisch aanmelden\'.</string>
+  <string name="check_auto_sign_in">Met deze optie wordt u automatisch aangemeld wanneer u deze toepassing opent. Als u deze optie wilt uitschakelen, verwijdert u het vinkje uit het selectievakje \\'Automatisch aanmelden\\'.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Aanmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
@@ -266,7 +267,7 @@
   <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">Een lijst kiezen:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Typ een naam om toe te voegen vanuit \'Contacten\'.</string>
+  <string name="invite_instruction">Typ een naam om toe te voegen vanuit \\'Contacten\\'.</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Uitnodiging verzenden</string>
   <!--provider plugin names-->
@@ -287,6 +288,8 @@
     smaller text below this label-->
   <string name="foreground_service_title">Gebruik voorgrond prioriteit</string>
   <string name="foreground_service_summary">Verminder de kans dat Android onze verbindingsservice herstart. Dit zal een melding in de notificatiebalk plaatsen.</string>
+  <string name="heartbeat_interval_title">Hartslag interval</string>
+  <string name="heartbeat_interval_summary">Gebruik een hogere waarde (in minuten) om uw batterij te sparen. Een hogere waarde kan veroorzaken dat de provider de connectie sluit vanwege inactiviteit.</string>
   <string name="notification_vibrate_title">Trillen</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Ook trillen wanneer een chatbericht wordt ontvangen</string>
@@ -578,10 +581,12 @@
   <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
   <string name="pref_enable_notification">pref_enable_notification</string>
   <string name="pref_foreground_service">pref_foreground_service</string>
+  <string name="pref_heartbeat_interval">pref_heartbeat_interval</string>
   <string name="pref_notification_vibrate">pref_notification_vibrate</string>
   <string name="pref_notification_sound">pref_notification_sound</string>
   <string name="pref_notification_ringtone">pref_notification_ringtone</string>
   <string name="account_settings_title">Account Instellingen</string>
+  <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">LET OP: Dit is een prille versie van Gibberbot die beveiligingslekken of fouten kan bevatten.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groepen</string>
@@ -617,4 +622,6 @@
   <string name="smp_question_summary">Voer een vraag in om naar de ander te sturen en het antwoord wat je verwacht te krijgen, zodat je de identiteit van de ander kan verifieren.</string>
   <string name="smp_question_hint">de vraag om te stellen</string>
   <string name="qmp_answer_hint">het verwachte antwoord</string>
+  <string name="remote_verified_us">Uw contact heeft u succesvol geauthentificeerd. Authentificeer nu uw contact door uw eigen vraag te stellen.</string>
+  <string name="no_messages">Nog geen conversaties.\n\nKlik hier om te beginnen!</string>
 </resources>

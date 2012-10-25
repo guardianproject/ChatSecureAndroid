@@ -1,401 +1,287 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">đọc tin nhắn nhanh</string>
+  <string name="wo_perm_label">viết tin nhắn nhanh</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Chọn một tài khoản</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">Về chúng tôi</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Thêm tài khoản</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">chỉnh sửa tài khoản</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Loại bỏ tài khoản</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Đăng xuất ra hết</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Chọn một tài khoản</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
-  <string name="menu_cancel_signin">Oturum açmayı iptal et</string>
+  <string name="menu_cancel_signin">Hủy bỏ đăng nhập </string>
   <!--Contact list screen menu and context menu items.-->
   <!--This is a screen menu item for the Contact List Screen. It lets the
     user to add a friend to the friend list. May be overrided by the plugin.-->
-  <string name="menu_add_contact">Kişi ekle</string>
+  <string name="menu_add_contact">Thêm liên hệ</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     remove a contact from the list. May be overrided by the plugin.-->
-  <string name="menu_remove_contact">Kişiyi sil</string>
+  <string name="menu_remove_contact">Xoá liên hệ</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     block a contact. May be overrided by the plugin.-->
-  <string name="menu_block_contact">Kişiyi engelle</string>
+  <string name="menu_block_contact">Chặn liên lạc</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
-  <string name="menu_view_blocked">Engellenenler</string>
+  <string name="menu_view_blocked">Đã được chặn</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
-  <string name="menu_view_accounts">Hesap listesi</string>
+  <string name="menu_view_accounts">Các tài khoản</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Mở cuộc trò chuyện mới</string>
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
-  <string name="menu_settings">Ayarlar</string>
+  <string name="menu_settings">Cài Đặt</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Tìm kiếm danh bạ</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
-  <string name="menu_start_chat">Sohbeti başlat</string>
+  <string name="menu_start_chat">Bắt đầu trò chuyện</string>
   <!--Screen menu item on the contact list to sign out the service.-->
-  <string name="menu_sign_out">Çıkış</string>
+  <string name="menu_sign_out">Đăng Xuất</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Profili görüntüle</string>
+  <string name="menu_view_profile">Xác minh</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_end_conversation">Sohbeti sonlandır</string>
+  <string name="menu_otr_start">Bắt đầu mã hoá</string>
+  <string name="menu_otr_stop">Ngừng mã hoá</string>
+  <string name="menu_clear_chat">Xoá cuộc trò chuyện</string>
+  <string name="menu_end_conversation">Kết thúc cuộc trò chuyện</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
-  <string name="menu_view_contact_list">Kişi listesi</string>
+  <string name="menu_view_contact_list">Danh sách liên lạc</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Davet et...</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">Sohbetler arasında geçiş yap</string>
+  <string name="menu_switch_chats">chuyển đổi cuộc trò chuyện</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
-  <string name="menu_insert_smiley">İfade ekle</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Quét vân tay</string>
+  <string name="menu_fingerprint">Vân tay của bạn</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
      be appended to the end of this.-->
-  <string name="menu_plus">Menü+</string>
   <!--The title of a simple input dialog. Currently not used.-->
   <!--Strings for the confirm dialogs-->
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
-  <string name="confirm">Doğrula</string>
+  <string name="confirm">Xác nhận</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">Bạn muốn đăng xuất ra khỏi tất cả các dịch vụ?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
   <!--The "OK" button label for the error message dialog.-->
-  <string name="ok">Tamam</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="cancel">İptal</string>
+  <string name="cancel">Hủy bỏ</string>
   <!--The "OK" button label for the confirm dialogs.-->
-  <string name="yes">Tamam</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="no">İptal</string>
+  <string name="no">Hủy bỏ</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
-  <string name="label_username">Kullanıcı adı:</string>
+  <string name="label_username">Người dùng@Máy chủ</string>
   <!--The password label.-->
-  <string name="label_password">Şifre:</string>
+  <string name="label_password">Mật mã:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
-  <string name="remember_password">Şifremi hatırla.</string>
+  <string name="remember_password">Hãy lưu trữ mật mã của tôi</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Oturumumu otomatik olarak aç.</string>
+  <string name="keep_me_signed_in">Tự động đăng nhập</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
-  <string name="sign_up">Hesabınız yok mu?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_auto_sign_in">Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \\"Oturumumu otomatik olarak aç\\" onay kutusunun işaretini kaldırın.</string>
+  <string name="check_save_password">Vì lý do an ninh, nếu điện thoại của bạn bị đánh cắp hoạc mất, hãy vào trang mạng dùng máy vi tính của bạn để thay đổi mật mã.</string>
+  <string name="check_auto_sign_in">Cho</string>
   <!--The button label which lets the user to sign into the IM service.-->
-  <string name="sign_in">Oturum aç</string>
+  <string name="sign_in">Đăng nhập</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">đang khởi động Gibberbot</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Oturum açılıyor...</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Arka plan verileri devre dışı</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
-  <string name="bg_data_prompt_ok">Etkinleştir</string>
+  <string name="bg_data_prompt_ok">Kích hoạt</string>
   <!--Cancel button for the prompt dialog-->
-  <string name="bg_data_prompt_cancel">Çık</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
   <!--The title of the subscription request group if there is any.-->
-  <string name="subscriptions">Arkadaş davetiyeleri</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
-  <string name="unknown_contact">(\"<i>\"Bilinmiyor\"</i>\")</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
-  <string name="empty_contact_group">Boş</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">Konuşma yok</string>
+  <string name="empty_conversation_group">Không có cuộc đối thoại nào</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
-  <string name="contacts_picker_title">Davet edilecek kişileri seç</string>
-  <string name="contact_filter_hint">Kişiyi bulmak üzere yazın</string>
-  <string name="empty_contact_list">Hiçbir kişi bulunamadı.</string>
+  <string name="contacts_picker_title">Chọn liên lạc để mời vào cuộc đối thoại</string>
+  <string name="contact_filter_hint">Đánh vào để tìm liên lạc</string>
+  <string name="empty_contact_list">Không tìm thấy liên lạc </string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
   <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">Engellenmiş kişi yok.</string>
+  <string name="no_blocked_contact">Không có liên lạc bị chặn</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">Kişi profili</string>
+  <string name="contact_profile_title">Hồ sơ về liên lạc</string>
   <!--The label of the status on the contact profile dialog.-->
-  <string name="label_status">Durum:</string>
   <!--The label of the client type on the contact profile dialog.-->
-  <string name="label_client_type">İstemci türü:</string>
   <!--The client type which indicates the contact is sign in with a PC client.-->
-  <string name="client_type_computer">Bilgisayar</string>
+  <string name="client_type_computer">Máy vi tính</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
-  <string name="client_type_mobile">Mobil</string>
+  <string name="client_type_mobile">Máy di động</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_available">Çevrimiçi</string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_busy">Meşgul</string>
+  <string name="presence_busy">Đang bận</string>
   <!--This is an adjective describing the "away" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_away">Dışarıda</string>
   <!--This is an adjective describing the "idle" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_idle">Boşta</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_offline">Çevrimdışı</string>
   <!--This is an adjective describing the "invisible" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_invisible">Çevrimdışı göster</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <string name="data_channel_label">Kênh dữ liệu</string>
+  <string name="data_encoding_label">Mã hoá dữ liệu</string>
+  <string name="cir_channel_label">Kênh CIR</string>
+  <string name="host_label">Máy chủ</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
-  <string name="me">Ben</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Oluşturmak için yazın</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
   <!--The send button on the chat screen.-->
-  <string name="send">Gönder</string>
+  <string name="send">Gửi đi</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Bu ileti gönderilemedi.</string>
+  <string name="msg_sent_failed">Tin nhắn này đã không gửi đi được</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Sunucu bağlantısı kesildi. İletiler çevrimiçi olunduğunda gönderilecek.</string>
+  <string name="disconnected_warning">Mất liên lạc với máy chủ. Các tin nhắn sẽ được gửi đi khi vào lại mạng</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
-  <string name="select_link_title">Bağlantıyı seç</string>
+  <string name="select_link_title">Chọn đường dẫn</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">Etkin sohbet yok.</string>
+  <string name="empty_chat_list">Không có cuộc trò chuyện nào hoạt động</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
-  <string name="add_contact_title">Kişi ekle</string>
+  <string name="add_contact_title">Thêm vào liên lạc</string>
   <!--The label of the email input box on the Add Contact Screen.-->
-  <string name="input_contact_label">Davet etmek istediğiniz kullanıcının e-posta adresi:</string>
+  <string name="input_contact_label">Địa chỉ điện thư của người bạn muốn mời vào:</string>
   <!--The label of the list spinner on the Add Contact Screen.-->
-  <string name="choose_list_label">Liste seçin:</string>
+  <string name="choose_list_label">Chọn một danh sách:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Kişiler\\'den eklemek için bir ad yazın.</string>
+  <string name="invite_instruction">Đánh vào tên để thêm vào Danh Bạ</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
-  <string name="invite_label">Davetiye gönder</string>
+  <string name="invite_label">Gửi thư mời</string>
   <!--provider plugin names-->
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="hide_offline_contacts">Çevrimdışı kişileri gizle</string>
+  <string name="account_setup_title">Thiết lập tài khoản</string>
+  <string name="encryption_and_anonymity_title">Mã hoá và Ẩn Danh</string>
+  <string name="hide_offline_contacts">Dấu liên lạc không trực tuyến</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
-  <string name="notification_group_title">Bildirim ayarları</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">IM bildirimleri</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">IM geldiğinde durum çubuğunda bildir</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_vibrate_title">Titreşim</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">IM geldiğinde aynı zamanda titret</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_sound_title">Ses</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">IM geldiğinde aynı zamanda zil sesi çal</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Zil sesini seç</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
   <!--The button for accepting an invitation.-->
-  <string name="accept_invitation">Kabul Et</string>
   <!--The button for decline an invitation.-->
-  <string name="decline_invitation">Reddet</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
   <!--The button for approving a subscription request.-->
-  <string name="approve_subscription">Kabul Et</string>
   <!--The button for delecling a subscription request.-->
-  <string name="decline_subscription">Reddet</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
-  <string name="notify_groupchat_label">Grup sohbeti davetiyeleri</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
   <!--IM service permission-->
-  <string name="perm_label">IM hizmetini başlat</string>
-  <string name="perm_desc">Amacını bildirerek uygulamaların IM hizmetini başlatmasına izin verir.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
-  <string name="error">Dikkat</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">Liste eklenmedi.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">Kişi engellenmedi.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">Kişinin engellemesi kaldırılmadı.</string>
   <!--Error message for when the user didn't select a contact as required.-->
-  <string name="select_contact">Lütfen önce bir kişi seçin.</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">\"Bağlantı kesildi!\"\n</string>
   <!--Error message for when the IM service has died.-->
-  <string name="service_error">Hizmet hatası!</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">Kişi listesi yüklenmedi.</string>
   <!--Error message for failed to connect to the server.-->
-  <string name="cant_connect_to_server">Sunucuya bağlanılamıyor. Lütfen bağlantınızı kontrol edin.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">Kişi listeniz yüklenirken lütfen bekleyin.</string>
   <!--Error message for when a network error occurred.-->
-  <string name="network_error">Bir ağ hatası oluştu.</string>
   <!--Error message for lack of server support error.-->
-  <string name="service_not_support">Sunucu bu işlevi desteklemiyor.</string>
   <!--Erorr message for bad password error.-->
-  <string name="invalid_password">Girdiğiniz şifre geçerli değil.</string>
   <!--Error message for server internal error.-->
-  <string name="internal_server_error">Sunucu bir hata ile karşılaştı.</string>
   <!--Error message for when the server does not implement the feature.-->
-  <string name="not_implemented">Sunucu bu işlevi desteklemiyor.</string>
   <!--Error message for server not available error.-->
-  <string name="service_unavaiable">Sunucu şu an kullanılamıyor.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">Sunucu zaman aşımına uğradı.</string>
   <!--Error message for when the server does not support the current protocol version.-->
-  <string name="version_not_supported">Sunucu geçerli sürümü desteklemiyor.</string>
   <!--Error message for when the message queue on the server is full.-->
-  <string name="message_queue_full">İleti kuyruğu dolu.</string>
   <!--Error message for when the domain is not supported by the server.-->
-  <string name="domain_not_supported">Sunucu alan adına yönlendirmeyi desteklemiyor.</string>
   <!--Error message for a bad username error.-->
-  <string name="unknown_user">Girdiğiniz kullanıcı adı tanınmıyor.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Maalesef, kullanıcı tarafından engellenmişsiniz.</string>
   <!--Error message for session expired error.-->
-  <string name="session_expired">Oturum zaman aşımına uğradı, lütfen tekrar oturum açın.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
-  <string name="forced_logout">başka bir istemciden oturum açtınız.</string>
-  <string name="already_logged_in">başka bir istemciden zaten oturum açtınız.</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">Maalesef, telefon numarası SIM kartınızdan okunamıyor. Lütfen yardım için operatörünüze başvurun.</string>
   <!--Error message for when the user is not signed in.-->
-  <string name="not_signed_in">Şu anda oturumunuz açık değil.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
-  <string-array name="default_smiley_names">
-    <item>Mutlu</item>
-    <item>Üzgün</item>
-    <item>Göz kırpma</item>
-    <item>Dil çıkarmış</item>
-    <item>Şaşırmış</item>
-    <item>Öpücük</item>
-    <item>Bağırma</item>
-    <item>Sakin</item>
-    <item>Para ağızlı</item>
-    <item>Ayak ağızda</item>
-    <item>Utanmış</item>
-    <item>Melek</item>
-    <item>Kararsız</item>
-    <item>Ağlama</item>
-    <item>Dudakları mühürlü</item>
-    <item>Gülme</item>
-    <item>Kafası karışmış</item>
-  </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="smiley_names">
-    <item>Mutlu</item>
-    <item>Üzgün</item>
-    <item>Göz kırpma</item>
-    <item>Dil çıkarmış</item>
-    <item>Şaşırmış</item>
-    <item>Öpücük</item>
-    <item>Bağırma</item>
-    <item>Sakin</item>
-    <item>Para ağızlı</item>
-    <item>Ayak ağızda</item>
-    <item>Utanmış</item>
-    <item>Melek</item>
-    <item>Kararsız</item>
-    <item>Ağlama</item>
-    <item>Dudakları mühürlü</item>
-    <item>Gülme</item>
-    <item>Kafası karışmış</item>
-  </string-array>
   <!--Welcome Splash Screen-->
   <!--About: Welcome-->
   <!--About: OTR-->

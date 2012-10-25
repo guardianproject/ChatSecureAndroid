@@ -19,7 +19,7 @@
 
 <resources>
     
-    <style name="AppTheme" parent="Theme.Sherlock.ForceOverflow" />
+    <style name="AppTheme" parent="Theme.Sherlock" />
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>
@@ -46,7 +46,7 @@
     </style>
     
      <!-- Variation on the Holo Light theme that styles the Action Bar -->
-    <style name="Theme.Gibberbot.Light" parent="Theme.Sherlock.Light.ForceOverflow">
+    <style name="Theme.Gibberbot.Light" parent="Theme.Sherlock.Light">
         <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>
         <item name="actionBarItemBackground">@drawable/ad_selectable_background</item>
         <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
@@ -61,7 +61,7 @@
         <item name="android:listChoiceIndicatorSingle">@drawable/ad_btn_radio_holo_light</item>
     </style>
     
-    <style name="Theme.Gibberbot" parent="Theme.Sherlock.ForceOverflow">
+    <style name="Theme.Gibberbot" parent="Theme.Sherlock">
          <item name="actionBarStyle">@style/MyActionBarStyle</item>
     	<item name="android:actionBarStyle">@style/MyActionBarStyle</item>
         <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>

@@ -118,7 +118,7 @@
   <string name="add_account"></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
-  <string name="label_username">Nom d\'utilisateur :</string>
+  <string name="label_username">Nom d\\'utilisateur :</string>
   <!--The password label.-->
   <string name="label_password">Mot de passe :</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
@@ -129,7 +129,7 @@
   <string name="sign_up">Vous ne possédez pas de compte ?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">Pour votre sécurité, si votre téléphone est perdu ou volé, allez sur le site Web sur votre ordinateur et de changer votre mot de passe.</string>
-  <string name="check_auto_sign_in">Cette option vous connecte automatiquement à chaque fois que vous ouvrez cette application. Pour désactiver l\'option, déconnectez-vous, puis décochez la case \\"Connexion automatique\\".</string>
+  <string name="check_auto_sign_in">Cette option vous connecte automatiquement à chaque fois que vous ouvrez cette application. Pour désactiver l\\'option, déconnectez-vous, puis décochez la case \\"Connexion automatique\\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Se connecter</string>
   <!--These strings are displayed the sign in progress screen.-->
@@ -140,7 +140,7 @@
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Données d\'arrière-plan désactivées</string>
+  <string name="bg_data_prompt_title">Données d\\'arrière-plan désactivées</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
@@ -238,7 +238,7 @@
   <!--The send button on the chat screen.-->
   <string name="send">Envoyer</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Ce message n\'a pas pu être envoyé.</string>
+  <string name="msg_sent_failed">Ce message n\\'a pas pu être envoyé.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
   <string name="disconnected_warning">Connexion au serveur interrompue. Les messages seront transmis lorsque vous serez de nouveau connecté.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
@@ -271,17 +271,17 @@
     smaller text below this label-->
   <string name="notification_enabled_title">Notifications de chat</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Signaler la réception d\'un chat dans la barre d\'état</string>
+  <string name="notification_enabled_summary">Signaler la réception d\\'un chat dans la barre d\\'état</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_vibrate_title">Vibreur</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Vibre également à la réception d\'un chat</string>
+  <string name="notification_vibrate_summary">Vibre également à la réception d\\'un chat</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_sound_title">Son</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Déclencher la sonnerie lors de la réception d\'un chat</string>
+  <string name="notification_sound_summary">Déclencher la sonnerie lors de la réception d\\'un chat</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
   <string name="notification_ringtone_title">Sélectionner une sonnerie</string>
@@ -332,19 +332,19 @@
   <!--Error message for sign in failed.-->
   <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">La liste n\'a pas été ajoutée.</string>
+  <string name="add_list_failed">La liste n\\'a pas été ajoutée.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">Le contact n\'a pas été bloqué.</string>
+  <string name="block_contact_failed">Le contact n\\'a pas été bloqué.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">Le contact n\'a pas été débloqué.</string>
+  <string name="unblock_contact_failed">Le contact n\\'a pas été débloqué.</string>
   <!--Error message for when the user didn't select a contact as required.-->
-  <string name="select_contact">Veuillez d\'abord sélectionner un contact.</string>
+  <string name="select_contact">Veuillez d\\'abord sélectionner un contact.</string>
   <!--Error message for when the current connection disconnected.-->
   <string name="disconnected">\"Déconnecté !\"\n</string>
   <!--Error message for when the IM service has died.-->
   <string name="service_error">Erreur du service !</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">La liste de contact n\'a pas pu être chargée.</string>
+  <string name="load_contact_list_failed">La liste de contact n\\'a pas pu être chargée.</string>
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">Connexion au serveur impossible. Veuillez vérifier votre connexion.</string>
   <!--Error message for when the contact is already in the list.-->
@@ -354,38 +354,38 @@
   <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">Veuillez patienter pendant le chargement de votre liste de contacts.</string>
   <!--Error message for when a network error occurred.-->
-  <string name="network_error">Une erreur réseau s\'est produite.</string>
+  <string name="network_error">Une erreur réseau s\\'est produite.</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Le serveur ne prend pas en charge cette fonctionnalité.</string>
   <!--Erorr message for bad password error.-->
-  <string name="invalid_password">Le mot de passe saisi n\'est pas correct.</string>
+  <string name="invalid_password">Le mot de passe saisi n\\'est pas correct.</string>
   <!--Error message for server internal error.-->
   <string name="internal_server_error">Le serveur a rencontré une erreur.</string>
   <!--Error message for when the server does not implement the feature.-->
   <string name="not_implemented">Le serveur ne prend pas en charge cette fonctionnalité.</string>
   <!--Error message for server not available error.-->
-  <string name="service_unavaiable">Le serveur n\'est pas disponible actuellement.</string>
+  <string name="service_unavaiable">Le serveur n\\'est pas disponible actuellement.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">Le délai d\'inactivité du serveur est écoulé.</string>
+  <string name="timeout">Le délai d\\'inactivité du serveur est écoulé.</string>
   <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">Le serveur ne prend pas en charge la version actuelle.</string>
   <!--Error message for when the message queue on the server is full.-->
-  <string name="message_queue_full">La file d\'attente des messages est pleine.</string>
+  <string name="message_queue_full">La file d\\'attente des messages est pleine.</string>
   <!--Error message for when the domain is not supported by the server.-->
   <string name="domain_not_supported">Le serveur ne prend pas en charge le transfert vers le domaine.</string>
   <!--Error message for a bad username error.-->
-  <string name="unknown_user">Le nom d\'utilisateur que vous avez saisi n\'est pas reconnu.</string>
+  <string name="unknown_user">Le nom d\\'utilisateur que vous avez saisi n\\'est pas reconnu.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Désolé, l\'utilisateur vous a bloqué.</string>
+  <string name="recipient_blocked_the_user">Désolé, l\\'utilisateur vous a bloqué.</string>
   <!--Error message for session expired error.-->
   <string name="session_expired">La session a expiré. Veuillez vous reconnecter.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
   <string name="forced_logout">vous vous êtes connecté depuis un autre client.</string>
   <string name="already_logged_in">vous êtes déjà connecté depuis un autre client.</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">Impossible de lire le numéro de téléphone de votre carte SIM. Veuillez contacter votre opérateur pour obtenir de l\'aide.</string>
+  <string name="msisdn_error">Impossible de lire le numéro de téléphone de votre carte SIM. Veuillez contacter votre opérateur pour obtenir de l\\'aide.</string>
   <!--Error message for when the user is not signed in.-->
-  <string name="not_signed_in">Vous n\'êtes pas connecté actuellement.</string>
+  <string name="not_signed_in">Vous n\\'êtes pas connecté actuellement.</string>
   <!--Generic error.-->
   <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
