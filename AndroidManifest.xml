@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.10-RC2"
-     android:versionCode="37"
+     android:versionName="0.0.10-RC3"
+     android:versionCode="38"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -46,7 +46,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:configChanges="locale"
-             android:theme="@style/Theme.Gibberbot"
+             android:theme="@style/Theme.Gibberbot.Light"
 			>
  <!-- android:uiOptions="splitActionBarWhenNarrow"-->
      		 
@@ -102,7 +102,7 @@ android:anyDensity="true"
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
             </intent-filter>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
-                android:value="XMPP"/>
+                android:value="Jabber (XMPP)"/>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
                 android:value="@string/provider_full_name_xmpp"/>
             <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
@@ -117,7 +117,7 @@ android:anyDensity="true"
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
             </intent-filter>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_name"
-                android:value="Local"/>
+                android:value="Bonjour (ZeroConf)"/>
             <meta-data android:name="info.guardianproject.otr.app.im.provider_full_name"
                 android:value="@string/provider_full_name_llxmpp"/>
             <meta-data android:name="info.guardianproject.otr.app.im.signup_url"
@@ -184,7 +184,7 @@ android:anyDensity="true"
         </activity>
  -->
         <activity android:name=".app.LandingPage"
-            android:configChanges="orientation|keyboardHidden|locale"
+            android:configChanges="orientation|keyboardHidden|locale|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -199,7 +199,7 @@ android:anyDensity="true"
         </activity>
       
         <activity android:name=".app.AccountActivity"
-            android:configChanges="orientation|keyboardHidden|locale"
+            android:configChanges="orientation|keyboardHidden|locale|screenSize"
             android:windowSoftInputMode="stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -247,9 +247,9 @@ android:anyDensity="true"
             />
 
         <activity android:name=".app.NewChatActivity"
-                android:configChanges="orientation|keyboardHidden|locale"
+                android:configChanges="orientation|keyboardHidden|locale|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
-                 android:uiOptions="splitActionBarWhenNarrow"
+               
                 
                 >
             <intent-filter>
@@ -293,7 +293,9 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.ContactPresenceActivity" 
-            android:configChanges="locale">
+            android:configChanges="locale"
+              android:uiOptions="splitActionBarWhenNarrow"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

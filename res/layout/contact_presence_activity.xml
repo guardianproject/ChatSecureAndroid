@@ -42,8 +42,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="28dip"
-            android:text="name here"/>
+           />
 
+        <!-- 
         <TextView android:id="@+id/labelStatus"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -51,19 +52,24 @@
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_status" />
-
+ -->
+ 
         <TextView android:id="@+id/txtStatus"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+             android:textAppearance="?android:attr/textAppearanceMedium"
+            
+             />
 
         <TextView android:id="@+id/txtStatusText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dip"
             android:layout_marginTop="4dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:maxLines="4"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+           
+             />
 
 <!-- 
         <TextView android:id="@+id/labelClientType"

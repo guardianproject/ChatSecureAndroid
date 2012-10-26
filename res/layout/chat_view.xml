@@ -60,12 +60,8 @@
              />
     </LinearLayout>
 
-    <View android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#ff202020" />
 
     <ListView android:id="@+id/history"
-        android:cacheColorHint="#00000000"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
