@@ -18,25 +18,21 @@
     </string-array>
     
     <string-array name="languages">
-		<item>English</item>
+        <item>Default</item>
 		<item>العربية</item>
 		<item>پارسی</item>
 		<item>中文(简体)</item>
-		<item>Deutsch</item>
-		<item>Español</item>
-		<item>Tibetan</item>
-		<item>Default</item>
+		<item>Tibetan བོད་སྐད།</item>
+		<item>Tiếng Việt</item>
 		
 	</string-array>
 	<string-array name="languages_values">
-		<item>en_us</item>
+	    <item>xx</item>
 		<item>ar</item>
 		<item>fa</item>
-		<item>zh</item>
-		<item>de</item>
-		<item>es</item>
-		<item>bo</item>
-		<item>xx</item>
+		<item>zh-rCN</item>
+		<item>bo</item>	
+		<item>vi</item>	
 	</string-array>
     
 </resources>

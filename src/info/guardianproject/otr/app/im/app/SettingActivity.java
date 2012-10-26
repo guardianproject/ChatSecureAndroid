@@ -87,7 +87,8 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         }
         else if (key.equals(getString(R.string.pref_default_locale)))
         {
-           
+           ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
+           setResult(2);
         }
         
         settings.close();

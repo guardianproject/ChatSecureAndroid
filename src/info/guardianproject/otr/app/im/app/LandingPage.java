@@ -322,7 +322,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
-            startActivity(sintent);
+            startActivityForResult(sintent,1);
             return true;
 
         }
@@ -337,6 +337,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
                 helper.createAdditionalProvider(items[pos]);
+
                 mApp.resetProviderSettings();
             }
         });
@@ -542,5 +543,19 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
             }
             super.handleMessage(msg);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        
+        if (requestCode == 1 && resultCode == 2)
+        {
+            finish();
+            Intent intent = new Intent(this,LandingPage.class);
+            startActivity(intent);
+        }
+        
+        super.onActivityResult(requestCode, resultCode, data);
+        
     }
 }
