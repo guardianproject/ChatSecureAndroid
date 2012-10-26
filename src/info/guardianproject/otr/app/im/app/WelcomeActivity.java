@@ -53,6 +53,8 @@ public class WelcomeActivity extends SherlockActivity {
     private String mDefaultLocale;
     private SignInHelper mSignInHelper;
 
+    private boolean mDoSignIn = true;
+    
     static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
                                                  Imps.Provider.FULLNAME, Imps.Provider.CATEGORY,
                                                  Imps.Provider.ACTIVE_ACCOUNT_ID,
@@ -93,6 +95,7 @@ public class WelcomeActivity extends SherlockActivity {
             }
         });
 
+        mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
     }
 
     @SuppressWarnings("deprecation")
@@ -184,7 +187,8 @@ public class WelcomeActivity extends SherlockActivity {
             mSignInHelper.setSignInListener(null);
         }
         
-        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch) {
+        
+        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
             mDidAutoLaunch = true;
             signInAll();
             showAccounts();

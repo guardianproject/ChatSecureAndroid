@@ -158,6 +158,7 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
                         try {
                             mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
                         } catch (RemoteException e) {
+                            
                             mPresenceView.loggingIn(false);
                             mHandler.showServiceErrorAlert();
                         }
