@@ -37,10 +37,18 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -78,7 +86,27 @@ public class NewChatActivity extends SherlockActivity implements View.OnCreateCo
         mChatView = (ChatView) findViewById(R.id.chatView);
         mHandler = mChatView.getHandler();
         mInflater = LayoutInflater.from(this);
+        
+        EditText mCompose = (EditText)findViewById(R.id.composeMessage);
+        mCompose.setOnLongClickListener(new OnLongClickListener ()
+        {
 
+
+            @Override
+            public boolean onLongClick(View arg0) {
+               
+                if (getSherlock().getActionBar().isShowing())
+                    getSherlock().getActionBar().hide();
+                else
+                    getSherlock().getActionBar().show();     
+                
+                return false;
+            }
+
+            
+        });
+       
+        
         mApp = ImApp.getApplication(this);
         mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
 

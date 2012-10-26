@@ -29,29 +29,15 @@
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_menu_info"
-         android:showAsAction="always"
+         android:showAsAction="never"
          />
     <item android:id="@+id/menu_switch_chats"
         android:title="@string/menu_switch_chats"
         android:icon="@drawable/ic_menu_switch"
         android:alphabeticShortcut=" "
-         android:showAsAction="always"
+         android:showAsAction="never"
         />
 
-    <!-- 
-  <item android:id="@+id/menu_view_accounts"
-        android:title="@string/menu_view_accounts"
-        android:icon="@drawable/ic_menu_sign_in"
-         android:showAsAction="ifRoom"
-         />
-          -->
-<!-- 
-    <item android:id="@+id/menu_view_friend_list"
-        android:title="@string/menu_view_contact_list"
-         android:showAsAction="never"
-        
-        />
-         -->
 <!-- 
 	<item android:id="@+id/menu_clear_chat"
 		android:title="@string/menu_clear_chat"
@@ -60,7 +46,7 @@
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
-         android:showAsAction="always"
+         android:showAsAction="never"
          />
         
 

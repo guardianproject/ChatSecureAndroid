@@ -532,14 +532,13 @@ public class ChatView extends LinearLayout {
                 c.close();
             }
             
-            //mTitle.setText(mContext.getString(R.string.chat_with, buf.toString()));
-            mScreen.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
+            
+           // mScreen.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
+            mScreen.setTitle(buf.toString());
             
         } else {
             
-            
-            //mTitle.setText(mContext.getString(R.string.chat_with, mNickName));
-            mScreen.setTitle(mContext.getString(R.string.chat_with, mNickName));
+            mScreen.setTitle(mNickName);
         }
     }
 
@@ -1625,8 +1624,8 @@ public class ChatView extends LinearLayout {
             }
 
             //if (!isScrolling()) {
-            mBgMaker.setBackground(messageView, contact, type);
-            //}
+             //   mBgMaker.setBackground(messageView, contact, type);
+           // }
 
             updateWarningView();
 
