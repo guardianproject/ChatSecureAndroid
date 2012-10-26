@@ -27,6 +27,7 @@ import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Message;
@@ -456,7 +457,14 @@ public class WelcomeActivity extends SherlockActivity {
         AlertDialog.Builder ad = new AlertDialog.Builder(this);
         ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
 
-        ad.setItems(getResources().getStringArray(R.array.languages),
+        Configuration config = getResources().getConfiguration();
+        String defaultLangName = config.locale.getDefault().getDisplayName();
+        String defaultLangCode = config.locale.getDefault().getCountry();
+        
+        String[] langs = getResources().getStringArray(R.array.languages);
+        langs[0] = langs[0] + " (" + defaultLangName + ")";
+        
+        ad.setItems(langs,
                 new DialogInterface.OnClickListener() {
 
                     @Override
