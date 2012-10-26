@@ -189,11 +189,11 @@ public class ContactView extends LinearLayout {
         View contactInfoPanel = findViewById(R.id.contactInfo);
         if (hasChat && showChatMsg) { // HERE the bubble is set
             contactInfoPanel.setBackgroundResource(R.drawable.bubble);
-            mLine1.setTextColor(r.getColor(R.color.chat_contact));
+      //      mLine1.setTextColor(r.getColor(R.color.chat_contact));
         } else {
             contactInfoPanel.setBackgroundDrawable(null);
             contactInfoPanel.setPadding(4, 0, 0, 0);
-            mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
+         //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
         }
     }
 
