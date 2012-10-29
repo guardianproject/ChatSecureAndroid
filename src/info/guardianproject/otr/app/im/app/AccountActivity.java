@@ -63,7 +63,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountActivity extends SherlockActivity {
+public class AccountActivity extends ThemeableActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -133,12 +133,7 @@ public class AccountActivity extends SherlockActivity {
         mEditPass = (EditText) findViewById(R.id.edtPass);
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
         mUseTor = (CheckBox) findViewById(R.id.useTor);
-        mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateUseTor(isChecked);
-            }
-        });
+       
 
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
@@ -307,6 +302,13 @@ public class AccountActivity extends SherlockActivity {
                 updateWidgetState();
             }
         });
+        
+        mUseTor.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateUseTor(isChecked);
+            }
+        });
 
         updateWidgetState();
 
@@ -327,9 +329,9 @@ public class AccountActivity extends SherlockActivity {
         // if using Tor, disable DNS SRV to reduce anonymity leaks
         settings.setDoDnsSrv(!useTor);
 
-        String server = "";
+        String server = settings.getServer();
 
-        if (useTor) {
+        if (useTor && (server == null || server.length() == 0)) {
             server = settings.getDomain();
             String domain = settings.getDomain().toLowerCase();
 
@@ -342,9 +344,17 @@ public class AccountActivity extends SherlockActivity {
                 server = "hermes.jabber.org";
             } else if (domain.equals("chat.facebook.com")) {
                 server = "chat.facebook.com";
+            } else if (domain.equals("dukgo.com")) {
+                server = "dukgo.com";
+                settings.setTlsCertVerify(false);
+            }
+            else
+            {
+                Toast.makeText(this, getString(R.string.warning_tor_connect), Toast.LENGTH_LONG).show();
             }
 
         }
+        
         settings.setServer(server);
         settings.setUseTor(useTor);
         settings.close();
@@ -368,7 +378,8 @@ public class AccountActivity extends SherlockActivity {
                         mTxtFingerprint.setText("");
                     }
                 } else {
-                    Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT).show();
+                    //don't need to notify people if there is nothing to show here
+//                    Toast.makeText(this, "OTR is not initialized yet", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (Exception e) {
