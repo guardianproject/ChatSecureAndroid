@@ -1,5 +1,6 @@
 package info.guardianproject.otr.app.im.ui;
 
+import info.guardianproject.otr.app.im.app.ThemeableActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ChatActivity extends Activity implements OnClickListener {
+public class ChatActivity extends ThemeableActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

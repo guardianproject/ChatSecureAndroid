@@ -56,7 +56,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class NewChatActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;

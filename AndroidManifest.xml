@@ -48,7 +48,6 @@ android:anyDensity="true"
              android:configChanges="locale"
              android:theme="@style/Theme.Gibberbot.Light"
 			>
- <!-- android:uiOptions="splitActionBarWhenNarrow"-->
      		 
          <activity android:name=".app.WelcomeActivity"
          	android:configChanges="locale"

@@ -26,8 +26,14 @@
    android:entryValues="@array/languages_values"
    android:entries="@array/languages"
   >
+  
+  
  </ListPreference>
 
+ <CheckBoxPreference android:key="themeDark"
+    android:title="@string/pref_theme_dark"
+    android:defaultValue="false" />
+  
   <CheckBoxPreference android:key="@string/pref_hide_offline_contacts"
     android:title="@string/hide_offline_contacts"
     android:defaultValue="false" />

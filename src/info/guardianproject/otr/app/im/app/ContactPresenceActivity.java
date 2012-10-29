@@ -51,7 +51,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ContactPresenceActivity extends SherlockActivity {
+public class ContactPresenceActivity extends ThemeableActivity {
 
     private String remoteFingerprint;
     private boolean remoteFingerprintVerified = false;

@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ThemeableActivity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AppPassphraseActivity extends Activity {
+public class AppPassphraseActivity extends ThemeableActivity {
 
     private Dialog dl;
 

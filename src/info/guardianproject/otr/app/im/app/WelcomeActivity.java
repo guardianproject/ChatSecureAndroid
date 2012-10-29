@@ -43,7 +43,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class WelcomeActivity extends SherlockActivity {
+public class WelcomeActivity extends ThemeableActivity {
     
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
@@ -165,6 +165,7 @@ public class WelcomeActivity extends SherlockActivity {
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
         }
 
+        mApp.setAppTheme(this);
         mHandler.registerForBroadcastEvents();
 
         int countSignedIn = accountsSignedIn();

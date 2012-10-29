@@ -62,7 +62,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContactListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
+public class ContactListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;

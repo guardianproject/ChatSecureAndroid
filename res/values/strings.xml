@@ -736,5 +736,9 @@
 
 
 	<string name="no_messages">No conversations.\n\nTap here to start one!</string>
+	
+	<string name="pref_theme_dark">Use Dark Theme</string>
+	
+	<string name="warning_tor_connect">Since you are using Tor, you must enter the XMPP \'Connect Server\' hostname directly into Advanced Account Settings</string>
 </resources>
 

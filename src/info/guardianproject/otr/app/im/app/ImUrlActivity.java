@@ -39,7 +39,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class ImUrlActivity extends Activity {
+public class ImUrlActivity extends ThemeableActivity {
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PW_COLUMN = 1;

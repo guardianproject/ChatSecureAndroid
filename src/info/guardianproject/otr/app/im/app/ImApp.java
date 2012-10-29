@@ -206,7 +206,34 @@ public class ImApp extends Application {
         super.onCreate();
         mBroadcaster = new Broadcaster();
 
+        setAppTheme(null);
+        
         checkLocale();
+    }
+    
+    public void setAppTheme (Activity activity)
+    {
+        
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
+        boolean themeDark = settings.getBoolean("themeDark", false);
+        
+        if (themeDark)
+        {            
+            setTheme(R.style.Theme_Gibberbot);
+            
+            if (activity != null)
+                activity.setTheme(R.style.Theme_Gibberbot);
+        }
+        else
+        {
+            setTheme(R.style.Theme_Gibberbot_Light);
+            
+            
+            if (activity != null)
+                activity.setTheme(R.style.Theme_Gibberbot_Light);
+        }
+        
     }
     
     public boolean checkLocale ()

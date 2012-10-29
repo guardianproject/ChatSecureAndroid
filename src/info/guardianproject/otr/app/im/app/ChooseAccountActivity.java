@@ -23,7 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class ChooseAccountActivity extends Activity {
+public class ChooseAccountActivity extends ThemeableActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);

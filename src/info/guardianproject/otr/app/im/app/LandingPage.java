@@ -50,6 +50,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 public class LandingPage extends SherlockListActivity implements View.OnCreateContextMenuListener {
+
     private static final String TAG = ImApp.LOG_TAG;
 
     private static final int ID_SIGN_IN = Menu.FIRST + 1;
@@ -92,13 +93,15 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
 
+        ((ImApp)getApplication()).setAppTheme(this);
+        
+        super.onCreate(icicle);
+        
         setTitle(R.string.landing_page_title);
-        this.
+        
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
@@ -137,9 +140,10 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
     
     @Override
     protected void onResume() {
-        super.onResume();
-
+        
+        ((ImApp)getApplication()).setAppTheme (this);
         mHandler.registerForBroadcastEvents();
+        super.onResume();
     }
 
     private void signInAccountAtPosition(int position) {
@@ -548,14 +552,9 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         
-        if (requestCode == 1 && resultCode == 2)
-        {
-            finish();
-            Intent intent = new Intent(this,LandingPage.class);
-            startActivity(intent);
-        }
-        
-        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
         
     }
 }

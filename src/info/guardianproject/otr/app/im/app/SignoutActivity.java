@@ -31,7 +31,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-public class SignoutActivity extends Activity {
+public class SignoutActivity extends ThemeableActivity {
 
     private String[] ACCOUNT_SELECTION = new String[] { Imps.Account._ID, Imps.Account.PROVIDER, };
     private ImApp mApp;

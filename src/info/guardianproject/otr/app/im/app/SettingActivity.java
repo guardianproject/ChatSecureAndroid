@@ -17,8 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.util.Locale;
-
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
@@ -31,7 +29,9 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 
-public class SettingActivity extends android.preference.PreferenceActivity implements
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
+public class SettingActivity extends SherlockPreferenceActivity implements
         OnSharedPreferenceChangeListener {
     private static final int DEFAULT_HEARTBEAT_INTERVAL = 1;
     ListPreference mOtrMode;
@@ -89,6 +89,12 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
         {
            ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
            setResult(2);
+           
+        }
+        else if (key.equals("themeDark"))
+        {
+         
+            setResult(2);
         }
         
         settings.close();
@@ -113,7 +119,6 @@ public class SettingActivity extends android.preference.PreferenceActivity imple
     @Override
     protected void onResume() {
         super.onResume();
-
         setInitialValues();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }

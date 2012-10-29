@@ -57,7 +57,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ChatListActivity extends SherlockActivity implements View.OnCreateContextMenuListener {
+public class ChatListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -88,8 +88,6 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-      //  getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
 
         LayoutInflater inflate = getLayoutInflater();
         mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
@@ -217,7 +215,7 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
 
         case R.id.menu_settings:
             Intent intent = new Intent(this, SettingActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
             return true;
 
         case R.id.menu_quit:
@@ -277,6 +275,19 @@ public class ChatListActivity extends SherlockActivity implements View.OnCreateC
             Log.e(ImApp.LOG_TAG, e.getMessage());
         }
 
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        
+        if (requestCode == 1 && resultCode == 2)
+        {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            
+        }
+        
     }
 
     @Override

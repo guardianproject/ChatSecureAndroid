@@ -63,7 +63,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountSimpleActivity extends SherlockActivity {
+public class AccountSimpleActivity extends ThemeableActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
