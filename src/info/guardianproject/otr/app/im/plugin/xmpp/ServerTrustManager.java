@@ -41,6 +41,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -139,15 +140,14 @@ class ServerTrustManager implements X509TrustManager {
     }
 
     public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+        //not yet implemented
     }
 
     public void checkServerTrusted(X509Certificate[] x509Certificates, String keyExchangeAlgo)
             throws CertificateException {
-
-        android.os.Debug.waitForDebugger();
         
         int nSize = x509Certificates.length;
-
+       
         Collection<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
 
         if (configuration.isVerifyChainEnabled()) {
@@ -158,24 +158,24 @@ class ServerTrustManager implements X509TrustManager {
             for (int i = 0; i < x509Certificates.length; i++)
             {
                 X509Certificate x509certCurr = x509Certificates[i];
-                
-                Log.d(TAG,i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN());
+               
+                debug(i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN());
 
                 X509Certificate x509match = null;
                 
                 for (X509Certificate x509search : x509Certificates)
-                {
-                    if (x509search.getSubjectX500Principal().getName("RFC1779").equals(x509certCurr.getIssuerX500Principal().getName("RFC1779")))                                       
+                {                  
+                    if (Arrays.equals(x509certCurr.getIssuerX500Principal().getEncoded(), x509search.getSubjectX500Principal().getEncoded()))
                     {                                                          
                         x509match = x509search;                    
-                        Log.d(TAG,"found signer for current cert in chain: " + x509match.getSubjectDN());
+                        debug("found signer for current cert in chain: " + x509match.getSubjectDN());
                         break;
                     }
                 }                           
                 
                 if (x509match == null)
                 {
-                    Log.d(TAG,i + ": searching CA ROOT store for issuer: " + x509certCurr.getIssuerDN());
+                    debug(i + ": searching CA ROOT store for issuer: " + x509certCurr.getIssuerDN());
 
                     //check in our local root CA Store
                     Enumeration<String> enumAliases;
@@ -186,10 +186,11 @@ class ServerTrustManager implements X509TrustManager {
                             x509search = (X509Certificate) trustStore
                                     .getCertificate(enumAliases.nextElement());
                             
-                            if (x509search.getSubjectX500Principal().getName("RFC1779").equals(x509certCurr.getIssuerX500Principal().getName("RFC1779")))                                       
+                           // if (x509search.getSubjectX500Principal().getName("RFC1779").equals(x509certCurr.getIssuerX500Principal().getName("RFC1779")))
+                            if (Arrays.equals(x509certCurr.getIssuerX500Principal().getEncoded(), x509search.getSubjectX500Principal().getEncoded()))
                             {                            
                                x509match = x509search;                    
-                               Log.d(TAG,"found signer for current cert in chain in ROOT CA store: " + x509match.getSubjectDN());
+                               debug("found signer for current cert in chain in ROOT CA store: " + x509match.getSubjectDN());
                                break;
                            }
                         }
@@ -202,27 +203,28 @@ class ServerTrustManager implements X509TrustManager {
                 if (x509match != null) {
                     
                     try {
+                        
                         x509match.checkValidity();                        
                         x509certCurr.verify(x509match.getPublicKey());
-                        Log.d(TAG,"SUCCESS: verified issuer: " + x509certCurr.getIssuerDN());
+                        debug("SUCCESS: verified issuer: " + x509certCurr.getIssuerDN());
                     }
 
-                    catch (GeneralSecurityException generalsecurityexception) {
+                    catch (GeneralSecurityException gse) {
                         Log.e(TAG,"ERROR: unverified issuer: " + x509certCurr.getIssuerDN());
 
-                        
-                        showCertMessage("signature chain verification failed",
+                        showCertMessage("signature chain verification failed: " + gse.getMessage(),
                                 x509match.getIssuerDN().getName(), x509match, null);
 
                         throw new CertificateException("signature chain verification failed of "
-                                                       + x509match.getIssuerDN().getName());
+                                                       + x509match.getIssuerDN().getName() + ": " + gse.getMessage());
                     }
                 } else {
                     
 
-                    String errMsg = "Could not find cert issuer certificate in chain";
-                    Log.e(TAG,"ERROR: " + errMsg + ": " + x509certCurr.getIssuerDN().getName());
-
+                    String errMsg = "Could not find cert issuer certificate in chain: " + x509certCurr.getIssuerDN().getName();
+                    
+                    Log.e(TAG,errMsg);
+                    
                     showCertMessage(errMsg,
                             x509certCurr.getIssuerDN().getName(), x509certCurr, null);
 
@@ -252,7 +254,7 @@ class ServerTrustManager implements X509TrustManager {
                         fingerprint = "unable to read fingerprint";
                     }
                     
-                    showCertMessage("Self-signed certificate",
+                    showCertMessage("WARNING: Self-signed certificate",
                             fingerprint,
                             x509Certificates[0], fingerprint);
 
@@ -267,28 +269,14 @@ class ServerTrustManager implements X509TrustManager {
                         X509Certificate cert = (X509Certificate) trustStore
                                 .getCertificate(enumAliases.nextElement());
 
-                        String caSubject = cert.getSubjectDN().getName();
-                        String issuerSubject = certFinal.getIssuerDN().getName();
-
-                        Matcher matcher = oPattern.matcher(caSubject);
-                        if (matcher.find()) {
-                            caSubject = matcher.group(2);
-                        }
-
-                        matcher = oPattern.matcher(issuerSubject);
-                        if (matcher.find()) {
-                            issuerSubject = matcher.group(2);
-                        }
-
-                        if (caSubject.equals(issuerSubject)) {
+                        if (Arrays.equals(cert.getSubjectX500Principal().getEncoded(),certFinal.getIssuerX500Principal().getEncoded())) {
                             try {
+                                certFinal.checkValidity();
                                 certFinal.verify(cert.getPublicKey());
                                 trusted = true;
 
-                          //      Log.d(TAG, "TLS/SSL Certificate Verified " + getFingerprint(certFinal, FINGERPRINT_TYPE));
-//                                showCertMessage("TLS/SSL Certificate Verified",
-//                                        getFingerprint(certFinal, FINGERPRINT_TYPE), certFinal);
-
+                          //    SUCCESS
+                                
                             } catch (Exception e) {
                                 RemoteImService.debug("error on ssl verify", e);
                                 trusted = false;
@@ -591,6 +579,11 @@ class ServerTrustManager implements X509TrustManager {
 
             return hexString.toString();
 
+    }
+    
+    private void debug (String msg)
+    {
+        Log.d(TAG, msg);
     }
 
 }
