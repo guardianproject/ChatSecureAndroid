@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smack.packet.Packet;
+
 import net.java.otr4j.session.SessionID;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -501,7 +503,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type) {
-        return insertMessageInDb(contact, body, time, type, 0/*No error*/, null);
+        return insertMessageInDb(contact, body, time, type, 0/*No error*/, Packet.nextID());
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {
