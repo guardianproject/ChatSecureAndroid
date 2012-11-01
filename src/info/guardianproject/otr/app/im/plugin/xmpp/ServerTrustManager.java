@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -76,6 +77,7 @@ class ServerTrustManager implements X509TrustManager {
 
     private final static String FINGERPRINT_TYPE = "SHA1";
 
+    private int DEFAULT_NOTIFY_ID = 10;
     private ConnectionConfiguration configuration;
 
     /** Holds the domain of the remote server we are trying to connect */
@@ -97,9 +99,13 @@ class ServerTrustManager implements X509TrustManager {
      * @param domain - the domain requested by the user
      * @param requestedServer - the connect server requested by the user
      * @param configuration - the XMPP configuration
+     * @throws KeyStoreException 
+     * @throws IOException 
+     * @throws CertificateException 
+     * @throws NoSuchAlgorithmException 
      */
     public ServerTrustManager(Context context, String domain, String requestedServer,
-            ConnectionConfiguration configuration) {
+            ConnectionConfiguration configuration) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
 
         this.context = context;
         this.configuration = configuration;
@@ -110,34 +116,22 @@ class ServerTrustManager implements X509TrustManager {
         }
 
         InputStream in = null;
-        try {
-            trustStore = KeyStore.getInstance(configuration.getTruststoreType());
+        
+        trustStore = KeyStore.getInstance(configuration.getTruststoreType());
 
-            //TODO add the ability to load  custom cacerts file from SDCard
-            /*
-             *
-            if (new File(configuration.getTruststorePath()).exists())
-            	in = new FileInputStream(configuration.getTruststorePath());
-            else
-            */
+        //TODO add the ability to load  custom cacerts file from SDCard
+        /*
+         *
+        if (new File(configuration.getTruststorePath()).exists())
+        	in = new FileInputStream(configuration.getTruststorePath());
+        else
+        */
 
-            //load our bundled cacerts from raw assets
-            in = context.getResources().openRawResource(R.raw.cacerts);
+        //load our bundled cacerts from raw assets
+        in = context.getResources().openRawResource(R.raw.cacerts);
 
-            trustStore.load(in, configuration.getTruststorePassword().toCharArray());
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            // Disable root CA checking
-            configuration.setVerifyRootCAEnabled(false);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ioe) {
-                    // Ignore.
-                }
-            }
-        }
+        trustStore.load(in, configuration.getTruststorePassword().toCharArray());
+       
     }
 
     public X509Certificate[] getAcceptedIssuers() {
@@ -147,10 +141,10 @@ class ServerTrustManager implements X509TrustManager {
     public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
     }
 
-    public void checkServerTrusted(X509Certificate[] x509Certificates, String arg1)
+    public void checkServerTrusted(X509Certificate[] x509Certificates, String keyExchangeAlgo)
             throws CertificateException {
 
-       // android.os.Debug.waitForDebugger();
+        android.os.Debug.waitForDebugger();
         
         int nSize = x509Certificates.length;
 
@@ -160,35 +154,81 @@ class ServerTrustManager implements X509TrustManager {
             // Working down the chain, for every certificate in the chain,
             // verify that the subject of the certificate is the issuer of the
             // next certificate in the chain.
-            Principal principalLast = null;
-            for (int i = nSize - 1; i >= 0; i--) {
-                X509Certificate x509certificate = x509Certificates[i];
+           
+            for (int i = 0; i < x509Certificates.length; i++)
+            {
+                X509Certificate x509certCurr = x509Certificates[i];
+                
+                Log.d(TAG,i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN());
 
-                Principal principalIssuer = x509certificate.getIssuerDN();
-                Principal principalSubject = x509certificate.getSubjectDN();
-                if (principalLast != null) {
-                    if (principalIssuer.equals(principalLast)) {
-                        try {
-                            PublicKey publickey = x509Certificates[i + 1].getPublicKey();
-                            x509Certificates[i].verify(publickey);
-                        }
-
-                        catch (GeneralSecurityException generalsecurityexception) {
-                            showCertMessage("signature verification failed",
-                                    principalIssuer.getName(), x509Certificates[i], null);
-
-                            throw new CertificateException("signature verification failed of "
-                                                           + principalIssuer.getName());
-                        }
-                    } else {
-                        showCertMessage("subject/issuer verification failed",
-                                principalIssuer.getName(), x509Certificates[i], null);
-
-                        throw new CertificateException("subject/issuer verification failed of "
-                                                       + principalIssuer.getName());
+                X509Certificate x509match = null;
+                
+                for (X509Certificate x509search : x509Certificates)
+                {
+                    if (x509search.getSubjectX500Principal().getName("RFC1779").equals(x509certCurr.getIssuerX500Principal().getName("RFC1779")))                                       
+                    {                                                          
+                        x509match = x509search;                    
+                        Log.d(TAG,"found signer for current cert in chain: " + x509match.getSubjectDN());
+                        break;
                     }
+                }                           
+                
+                if (x509match == null)
+                {
+                    Log.d(TAG,i + ": searching CA ROOT store for issuer: " + x509certCurr.getIssuerDN());
+
+                    //check in our local root CA Store
+                    Enumeration<String> enumAliases;
+                    try {
+                        enumAliases = trustStore.aliases();
+                        X509Certificate x509search = null;
+                        while (enumAliases.hasMoreElements()) {
+                            x509search = (X509Certificate) trustStore
+                                    .getCertificate(enumAliases.nextElement());
+                            
+                            if (x509search.getSubjectX500Principal().getName("RFC1779").equals(x509certCurr.getIssuerX500Principal().getName("RFC1779")))                                       
+                            {                            
+                               x509match = x509search;                    
+                               Log.d(TAG,"found signer for current cert in chain in ROOT CA store: " + x509match.getSubjectDN());
+                               break;
+                           }
+                        }
+                    } catch (KeyStoreException e) {
+                      Log.e(TAG, "problem searching keystore",e);
+                    }
+                   
                 }
-                principalLast = principalSubject;
+                
+                if (x509match != null) {
+                    
+                    try {
+                        x509match.checkValidity();                        
+                        x509certCurr.verify(x509match.getPublicKey());
+                        Log.d(TAG,"SUCCESS: verified issuer: " + x509certCurr.getIssuerDN());
+                    }
+
+                    catch (GeneralSecurityException generalsecurityexception) {
+                        Log.e(TAG,"ERROR: unverified issuer: " + x509certCurr.getIssuerDN());
+
+                        
+                        showCertMessage("signature chain verification failed",
+                                x509match.getIssuerDN().getName(), x509match, null);
+
+                        throw new CertificateException("signature chain verification failed of "
+                                                       + x509match.getIssuerDN().getName());
+                    }
+                } else {
+                    
+
+                    String errMsg = "Could not find cert issuer certificate in chain";
+                    Log.e(TAG,"ERROR: " + errMsg + ": " + x509certCurr.getIssuerDN().getName());
+
+                    showCertMessage(errMsg,
+                            x509certCurr.getIssuerDN().getName(), x509certCurr, null);
+
+                    throw new CertificateException(errMsg);
+                }
+                
             }
         }
 
@@ -318,6 +358,49 @@ class ServerTrustManager implements X509TrustManager {
         }
 
     }
+    /*
+    private boolean checkCertificatePrincipalMatch (Principal certSource, Principal certTarget)
+    {
+        Pattern patternCN = Pattern.compile("CN\\=(.*?)\\,"); //common name
+        Pattern patternOU = Pattern.compile("OU\\=(.*?)\\,");  //organizational unit
+        Pattern patternO = Pattern.compile("O\\=(.*?)\\,"); // organization
+      
+        Matcher m;
+        
+        m = patternOU.matcher(certSource.toString());
+        while (m.find()) {
+            String ouSource = m.group(1).trim();
+            
+            Matcher m2 = patternO.matcher(certSource.toString());
+            while (m2.find ())
+            {
+                String oSource = m2.group(1).trim();
+                
+                if (certTarget.toString().contains(ouSource) && certTarget.toString().contains(oSource))
+                    return true;
+            }
+            
+        }
+        
+        
+        Matcher m = patternCN.matcher(certSource.toString());
+        while (m.find()) {
+            String cnSource = m.group(1).trim();
+            
+            Matcher m2 = patternO.matcher(certSource.toString());
+            while (m2.find ())
+            {
+                String oSource = m2.group(1).trim();
+                
+                if (certTarget.toString().contains(cnSource) && certTarget.toString().contains(oSource))
+                    return true;
+            }
+            
+        }
+        
+        
+        return false;
+    }*/
 
     static boolean checkMatchingDomain(String domain, String server, Collection<String> peerIdentities) {
         boolean found = false;
@@ -361,7 +444,6 @@ class ServerTrustManager implements X509TrustManager {
         return buf.toString();
     }
 
-    private int DEFAULT_NOTIFY_ID = 10;
 
     private void showCertMessage(String title, String msg, X509Certificate cert, String fingerprint) {
 
@@ -375,6 +457,7 @@ class ServerTrustManager implements X509TrustManager {
         
         nIntent.putExtra("issued", cert.getNotBefore().toGMTString());
         nIntent.putExtra("expires", cert.getNotAfter().toGMTString());
+        nIntent.putExtra("msg", title + ": " + msg);
         
         showMessage(title, msg, nIntent);
 
@@ -394,9 +477,12 @@ class ServerTrustManager implements X509TrustManager {
 
     private void showToolbarNotification(String title, String notifyMsg, int notifyId, int icon,
             int flags, Intent nIntent) throws Exception {
+        
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
+        mNotificationManager.cancel(DEFAULT_NOTIFY_ID);
+        
         CharSequence tickerText = notifyMsg;
         long when = System.currentTimeMillis();
 
@@ -489,7 +575,6 @@ class ServerTrustManager implements X509TrustManager {
 
     public String getFingerprint(X509Certificate cert, String type) throws NoSuchAlgorithmException, CertificateEncodingException 
     {
-        
             MessageDigest md = MessageDigest.getInstance(type);
             byte[] publicKey = md.digest(cert.getEncoded());
 
