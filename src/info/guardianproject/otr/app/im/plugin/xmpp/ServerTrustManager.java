@@ -31,12 +31,15 @@ import info.guardianproject.otr.app.im.service.RemoteImService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Principal;
 import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -75,9 +78,6 @@ class ServerTrustManager implements X509TrustManager {
 
     private static final String TAG = "GB.SSL";
     private final static Pattern cnPattern = Pattern.compile("(?i)(cn=)([^,]*)");
-    private final static Pattern oPattern = Pattern.compile("(?i)(o=)([^,]*)");
-
-    private final static String FINGERPRINT_TYPE = "SHA1";
 
     private int DEFAULT_NOTIFY_ID = 10;
     private ConnectionConfiguration configuration;
@@ -147,7 +147,6 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String keyExchangeAlgo)
             throws CertificateException {
         
- 
         if (configuration.isVerifyChainEnabled())
         {
             boolean verifiedRootCA = false;
@@ -164,7 +163,7 @@ class ServerTrustManager implements X509TrustManager {
                 boolean isRootCA = false;
                 
                 for (X509Certificate x509search : x509Certificates)
-                {                  
+                {                                      
                     if(checkSubjectMatchesIssuer(x509search.getSubjectX500Principal(),x509certCurr.getIssuerX500Principal()))                 
                     {                                                          
                         x509issuer = x509search;           
@@ -245,9 +244,68 @@ class ServerTrustManager implements X509TrustManager {
                 x509cert.checkValidity();
         
         }        
+        
+        if (configuration.isSelfSignedCertificateEnabled())
+        {
+            boolean foundSelfSig = false;
+                    
+            // for every certificate in the chain,
+            // verify its issuer exists in the chain, or our local root CA store            
+            for (int i = 0; i < x509Certificates.length; i++)
+            {
+                X509Certificate x509certCurr = x509Certificates[i];
+                
+                debug(i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN());
+
+                X509Certificate x509issuer = null;
+                
+                for (X509Certificate x509search : x509Certificates)
+                {                  
+                    if(checkSubjectMatchesIssuer(x509search.getSubjectX500Principal(),x509certCurr.getIssuerX500Principal()))                 
+                    {                                                          
+                        x509issuer = x509search;           
+                        debug("found issuer for current cert in chain: " + x509issuer.getSubjectDN());
+                       
+                        //check expiry
+                        x509issuer.checkValidity();  
+                        try {
+                            x509certCurr.verify(x509issuer.getPublicKey());
+                            foundSelfSig = true;
+                        }
+
+                        catch (GeneralSecurityException gse) {
+                            Log.e(TAG,"ERROR: unverified issuer: " + x509certCurr.getIssuerDN());
+
+                            showCertMessage("signature chain verification failed: " + gse.getMessage(),
+                                    x509issuer.getIssuerDN().getName(), x509issuer, null);
+
+                            throw new CertificateException("signature chain verification failed of "
+                                                           + x509issuer.getIssuerDN().getName() + ": " + gse.getMessage());
+                        }
+                        
+                        debug("SUCCESS: verified issuer: " + x509certCurr.getIssuerDN());
+
+                        break;
+                    }
+                }                           
+            }            
+            
+            if (!foundSelfSig)
+            {
+                String errMsg = "Could not find self-signed certificate in chain";
+                
+                Log.e(TAG,errMsg);
+                
+                showCertMessage(errMsg,
+                        x509Certificates[0].getIssuerDN().getName(), x509Certificates[0], null);
+
+                throw new CertificateException(errMsg);
+            }
+        }
 
         if (configuration.isNotMatchingDomainCheckEnabled())
         {
+            //get peer identities available in the first cert in the chain
             Collection<String> peerIdentities = getPeerIdentity(x509Certificates[0]);
     
             // Verify that the first certificate in the chain corresponds to
@@ -267,28 +325,25 @@ class ServerTrustManager implements X509TrustManager {
    
     static boolean checkMatchingDomain(String domain, String server, Collection<String> peerIdentities) {
         boolean found = false;
+
         for (String peerIdentity : peerIdentities) {
             // Check if the certificate uses a wildcard.
             // This indicates that immediate subdomains are valid.
             if (peerIdentity.startsWith("*.")) {
                 // Remove wildcard: *.foo.info -> .foo.info
                 String stem = peerIdentity.substring(1);
-
+                
                 // Remove a single label: baz.bar.foo.info -> .bar.foo.info and compare
-                if (server.equalsIgnoreCase(stem)
-                        || domain.equalsIgnoreCase(stem)
-                        || server.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)
-                    || domain.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)
-        
+                if (server.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)
+                    || domain.replaceFirst("[^.]+", "").equalsIgnoreCase(stem)        
                         ) {
                     found = true;
                     break;
                 }
-            } else {
-                if (server.equalsIgnoreCase(peerIdentity) || domain.equalsIgnoreCase(peerIdentity)) {
+            } else if (server.equalsIgnoreCase(peerIdentity) 
+                    || domain.equalsIgnoreCase(peerIdentity)) {
                     found = true;
-                    break;
-                }
+                    break;              
             }
         }
         return found;
@@ -491,8 +546,8 @@ class ServerTrustManager implements X509TrustManager {
     {
         boolean result = false;
                 
-        if (Arrays.equals(subject.getEncoded(), issuer.getEncoded()))
-            if (subject.getName("RFC1779").equals(issuer.getName("RFC1779")))
+        if (Arrays.equals(subject.getEncoded(), issuer.getEncoded())) //byte by byte check
+            if (subject.getName("RFC1779").equals(issuer.getName("RFC1779"))) //name check
                     result = true;
         
         return result;        
