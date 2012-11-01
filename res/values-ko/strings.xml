@@ -129,14 +129,14 @@
   <string name="sign_up">계정이 없으세요?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">보안을 위해 휴대 전화를 분실하거나 도난, 사용자의 컴퓨터에있는 웹 사이트로 이동하여 비밀 번호를 변경할 수 있습니다.</string>
-  <string name="check_auto_sign_in">이 옵션을 선택하면 응용프로그램을 열 때마다 자동으로 로그인됩니다. 옵션을 사용 중지하려면 로그아웃한 다음 \\\'자동으로 로그인\\ 확인란을 선택 취소하세요.</string>
+  <string name="check_auto_sign_in">이 옵션을 선택하면 응용프로그램을 열 때마다 자동으로 로그인됩니다. 옵션을 사용 중지하려면 로그아웃한 다음 \'자동으로 로그인\' 확인란을 선택 취소하세요.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">로그인</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">로그인하는 중</string>
+  <string name="signing_in_wait">로그인하는 중...</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->

@@ -1,2 +1,31 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources/>
+<resources>
+  <string-array name="otr_options">
+    <item>Bắt buộc</item>
+    <item>Tự động thử</item>
+    <item>Như đã yêu cầu</item>
+    <item>Vô hiệu hoá</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>bắt buộc</item>
+    <item>tự động</item>
+    <item>yêu cầu</item>
+    <item>vô hiệu hoá</item>
+  </string-array>
+  <string-array name="languages">
+    <item>Default</item>
+    <item>العربية</item>
+    <item>پارسی</item>
+    <item>中文(简体)</item>
+    <item>Tibetan བོད་སྐད།</item>
+    <item>Tiếng Việt</item>
+  </string-array>
+  <string-array name="languages_values">
+    <item>xx</item>
+    <item>ar</item>
+    <item>fa</item>
+    <item>zh-rCN</item>
+    <item>bo</item>
+    <item>vi</item>
+  </string-array>
+</resources>

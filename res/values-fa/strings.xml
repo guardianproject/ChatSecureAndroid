@@ -101,8 +101,11 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">آیا میخواهید از همه خدمات خارج شوید؟</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact"></string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact"></string>
   <!--The "OK" button label for the error message dialog.-->
   <string name="ok">باشه</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
@@ -112,10 +115,12 @@
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">انصراف</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt"></string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
   <string name="signed_out_prompt_with_error"></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account"></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">کاربر@میزبان</string>
@@ -143,6 +148,7 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
+  <string name="bg_data_prompt_message"></string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">فعال</string>
@@ -150,7 +156,9 @@
   <string name="bg_data_prompt_cancel">خارج شو</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation"></string>
   <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"></string>
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">دعوتنامه های دوستی</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
@@ -164,6 +172,7 @@
   <string name="contact_filter_hint">برای پیدا کردن تماس، تایپ کنید</string>
   <string name="empty_contact_list">تماسی پیدا نشد.</string>
   <!--The title of blocked contact list.-->
+  <string name="blocked_list_title"></string>
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">تماس مسدودشده ای وجود ندارد.</string>
   <!--These strings are displayed in the contact info dialog.-->
@@ -210,18 +219,26 @@
   <string name="save">ذخیره</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with"></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">من</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
   <string name="compose_hint">برای نوشتن پیام شروع به تایپ کنید</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"></string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <string name="contact_away"></string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <string name="contact_busy"></string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <string name="contact_offline"></string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <string name="contact_joined"></string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <string name="time_stamp"></string>
   <!--The send button on the chat screen.-->
   <string name="send">ارسال</string>
   <!--Error message when a chat failed to be sent.-->
@@ -229,7 +246,9 @@
   <!--Warning message displayed in the chat screen when connection is lost.-->
   <string name="disconnected_warning">ارتباط با سرور از دست رفت. پیام شما وقتی ارسال میشود که روی خط باشید.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <string name="contact_not_in_list_warning"></string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">لینک را انتخاب کنید</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
@@ -280,6 +299,7 @@
   <string name="notification_ringtone_title">انتخاب آهنگ زنگ</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
+  <string name="invitation_prompt"></string>
   <!--Toast when group chat invitation has been sent to the contact.-->
   <string name="invitation_sent_prompt"></string>
   <!--The button for accepting an invitation.-->
@@ -287,24 +307,34 @@
   <!--The button for decline an invitation.-->
   <string name="decline_invitation">رد کن</string>
   <!--Friend subscription screen-->
+  <string name="subscription_prompt"></string>
   <!--The button for approving a subscription request.-->
   <string name="approve_subscription">بپذیر</string>
   <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">رد کن</string>
   <!--Toast when approve a subscription request failed.-->
+  <string name="approve_subscription_error"></string>
   <!--Toast when decline a subscription request failed.-->
+  <string name="decline_subscription_error"></string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
+  <string name="newMessages_label"></string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
+  <string name="num_unread_chats"></string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
+  <string name="subscription_notify_text"></string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">دعوتنامه گفتگوی گروهی</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
   <string name="group_chat_invite_notify_text"></string>
   <!--Toast when a contact is added into a list.-->
+  <string name="add_contact_success"></string>
   <!--Toast when a contact is deleted from the list.-->
+  <string name="delete_contact_success"></string>
   <!--Toast when a contact is blocked.-->
+  <string name="block_contact_success"></string>
   <!--Toast when a contact is unblocked.-->
+  <string name="unblock_contact_success"></string>
   <!--IM service permission-->
   <string name="perm_label">شروع سرویس مسنجر</string>
   <string name="perm_desc">به برنامه ها اجازه میدهد که از طریق intent سرویس پیام فوری را شروع کنند.</string>
@@ -312,6 +342,7 @@
   <!--The title of the error dialog-->
   <string name="error">توجه</string>
   <!--Error message for sign in failed.-->
+  <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">لیست اضافه نشد.</string>
   <!--Error message for blocking contact failed.-->
@@ -329,7 +360,9 @@
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">نمیتواند به سرور متصل شود. لطفا ارتباط خود را بررسی کنید.</string>
   <!--Error message for when the contact is already in the list.-->
+  <string name="contact_already_exist"></string>
   <!--Error message for when the contact is blocked.-->
+  <string name="contact_blocked"></string>
   <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">لطفا تا زمان بارگیری لیست تماس صبر کنید</string>
   <!--Error message for when a network error occurred.-->
@@ -367,6 +400,7 @@
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">شما درحال حاضر وارد سیستم نشده اید.</string>
   <!--Generic error.-->
+  <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>خوشحال</item>
@@ -445,6 +479,7 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="buddy_list_title"></string>
   <string name="menu_contact_list">لیست تماس</string>
   <string name="menu_view_encrypt_chat">رمزگذاری روشن/خاموش</string>
   <string name="use_tor">اتصال به واسطه تور (به برنامه رباط پیازی احتیاج دارد)</string>
