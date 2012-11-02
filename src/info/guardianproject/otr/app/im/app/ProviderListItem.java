@@ -181,15 +181,17 @@ public class ProviderListItem extends LinearLayout {
     }
 
     private int getConversationCount(ContentResolver cr, long accountId) {
+        
         // TODO: this is code used to get Google Talk's chat count. Not sure if this will work
         // for IMPS chat count.
+        
         StringBuilder where = new StringBuilder();
         where.append(Imps.Chats.CONTACT_ID);
         where.append(" in (select _id from contacts where ");
         where.append(Imps.Contacts.ACCOUNT);
         where.append("=");
         where.append(accountId);
-        where.append(")");
+        where.append(")");        
 
         Cursor cursor = cr.query(Imps.Chats.CONTENT_URI, null, where.toString(), null, null);
 

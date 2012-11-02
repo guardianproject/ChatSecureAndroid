@@ -49,11 +49,12 @@
                 android:showAsAction="never"
         
          />
- 
+ <!-- 
     <item android:id="@+id/menu_quit"
         android:title="@string/bg_data_prompt_cancel" 
         android:icon="@drawable/ic_menu_sign_out"
                 android:showAsAction="never"
         
          />
+          -->
 </menu>

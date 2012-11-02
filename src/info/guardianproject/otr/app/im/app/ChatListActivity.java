@@ -218,10 +218,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             startActivityForResult(intent,1);
             return true;
 
-        case R.id.menu_quit:
-            handleQuit();
-
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -258,24 +254,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     static final int PROVIDER_CATEGORY_COLUMN = 3;
     static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
 
-    private void handleQuit() {
-
-        try {
-            if (mConn != null) {
-                mConn.logout();
-            }
-
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-
-        } catch (RemoteException e) {
-            Log.e(ImApp.LOG_TAG, e.getMessage());
-        }
-
-    }
+   
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

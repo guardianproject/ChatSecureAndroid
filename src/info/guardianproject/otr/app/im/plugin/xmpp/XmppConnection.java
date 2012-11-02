@@ -476,7 +476,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initConnection(String userName, final String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
-        //android.os.Debug.waitForDebugger();
 
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -798,7 +797,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
         sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
-
+        
         sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager },
                 new java.security.SecureRandom());
 
@@ -807,9 +806,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
 
-    void sslCertificateError() {
-        this.disconnect();
-    }
+    /*
+     * this does nothing
+    void sslCertificateError() {        
+        disconnect();
+        disconnected(new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
+                "SSL Certificate Error"));
+    }*/
 
     // We must release resources here, because we will not be reused
     void disconnected(ImErrorInfo info) {

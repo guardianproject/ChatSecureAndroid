@@ -328,11 +328,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             startActivity(sintent);
             return true;
 
-        case R.id.menu_quit:
-            handleQuit();
-            return true;
-
-            
         case R.id.menu_view_groups:
             if (mIsFiltering)
                 showContactListView();
@@ -359,15 +354,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         intent.putExtra("isSignedIn", isSignedIn);
 
         return intent;
-    }
-
-    private void handleQuit() {
-        Intent intent = new Intent(ImApp.ACTION_QUIT);
-        intent.setType(Imps.Provider.CONTENT_TYPE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-
-        finish();
     }
 
     @Override
