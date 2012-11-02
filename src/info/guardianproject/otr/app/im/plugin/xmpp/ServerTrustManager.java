@@ -147,6 +147,13 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String keyExchangeAlgo)
             throws CertificateException {
         
+        //first check the main cert
+        X509Certificate certSite = x509Certificates[0];
+        checkStrongCrypto(certSite);        
+        if (configuration.isExpiredCertificatesCheckEnabled())
+            certSite.checkValidity();
+        
+        //then go through the chain
         if (configuration.isVerifyChainEnabled())
         {
             boolean verifiedRootCA = false;
@@ -157,7 +164,7 @@ class ServerTrustManager implements X509TrustManager {
             {
                 X509Certificate x509certCurr = x509Certificates[i];
                 
-                debug(i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN());
+                debug(i + ": verifying cert issuer for: " + x509certCurr.getSubjectDN() + "; " + x509certCurr.getSigAlgName());
 
                 X509Certificate x509issuer = null;
                 boolean isRootCA = false;
@@ -167,7 +174,7 @@ class ServerTrustManager implements X509TrustManager {
                     if(checkSubjectMatchesIssuer(x509search.getSubjectX500Principal(),x509certCurr.getIssuerX500Principal()))                 
                     {                                                          
                         x509issuer = x509search;           
-                        debug("found issuer for current cert in chain: " + x509issuer.getSubjectDN());
+                        debug("found issuer for current cert in chain: " + x509issuer.getSubjectDN() + "; " + x509certCurr.getSigAlgName());
                         
                         //now check if it is a root
                         X509Certificate x509root = findCertIssuerInStore(x509certCurr);
@@ -192,10 +199,12 @@ class ServerTrustManager implements X509TrustManager {
                         //check expiry
                         x509issuer.checkValidity();  
                         
+                        checkStrongCrypto(x509issuer);
+                                                
                         //verify cert with issuer public key
                         x509certCurr.verify(x509issuer.getPublicKey());
                         debug("SUCCESS: verified issuer: " + x509certCurr.getIssuerDN());
-                        
+
                         if (isRootCA)
                             verifiedRootCA = true;
                     }
@@ -267,7 +276,9 @@ class ServerTrustManager implements X509TrustManager {
                         debug("found issuer for current cert in chain: " + x509issuer.getSubjectDN());
                        
                         //check expiry
-                        x509issuer.checkValidity();  
+                        x509issuer.checkValidity();
+                        
+                        
                         try {
                             x509certCurr.verify(x509issuer.getPublicKey());
                             foundSelfSig = true;
@@ -556,8 +567,22 @@ class ServerTrustManager implements X509TrustManager {
     private void debug (String msg)
     {
         
-        Log.d(TAG, msg);
+     //   Log.d(TAG, msg);
     }
 
+    private void checkStrongCrypto (X509Certificate cert) throws CertificateException
+    {
+        String algo = cert.getSigAlgName().toLowerCase();
+        if (!algo.contains("sha1") || algo.contains("sha256"))
+        {
+            debug("cert uses weak crypto: " + algo);
+
+            showCertMessage("cert uses weak crypto: " + algo,
+                    cert.getIssuerDN().getName(), cert, null);
+
+            throw new CertificateException("issuer uses weak crypto: " + algo);
+        }
+        
+    }
     
 }
