@@ -531,6 +531,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mConfig = new ConnectionConfiguration(domain, serverPort);
             else
                 mConfig = new ConnectionConfiguration(domain, serverPort, mProxyInfo);
+            
+            server = domain;
 
         } else {
             debug(TAG, "(use server) ConnectionConfiguration(" + server + ", " + serverPort + ", "
@@ -743,7 +745,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        if (server.contains(IS_GOOGLE)) {
+        if (server != null && server.contains(IS_GOOGLE)) {
             this.mUsername = userName + '@' + domain;
         } else {
             this.mUsername = userName;
