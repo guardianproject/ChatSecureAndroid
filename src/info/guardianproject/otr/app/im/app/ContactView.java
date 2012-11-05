@@ -131,8 +131,14 @@ public class ContactView extends LinearLayout {
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
             contact = queryGroupMembers(resolver, id);
         } else {
-            contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
-                                               : nickname;
+
+            //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
+             String address = ImpsAddressUtils.getDisplayableAddress(username);
+             
+            if (TextUtils.isEmpty(nickname) || nickname.equals(address))
+                contact = nickname;    
+            else
+                contact = nickname + " (" + ImpsAddressUtils.getDisplayableAddress(username) + ")";
 
             if (!TextUtils.isEmpty(underLineText)) {
                 // highlight/underline the word being searched

@@ -109,7 +109,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
         if (c.moveToFirst()) {
             providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-//            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
 //            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c
@@ -121,7 +121,13 @@ public class ContactPresenceActivity extends ThemeableActivity {
 //            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
 //                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
 
-            txtName.setText(ImpsAddressUtils.getDisplayableAddress(remoteAddress));
+            String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
+            String displayName = nickname;
+            
+            if (!nickname.equals(address))
+                displayName = nickname + "\n" + address;
+             
+            txtName.setText(displayName);
 
             String statusString = brandingRes.getString(PresenceUtils.getStatusStringRes(status));
             SpannableString s = new SpannableString("+ " + statusString);
@@ -225,6 +231,8 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
     public void displayQRCode(String text) {
         IntentIntegrator.shareText(this, text);
+        
+        
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

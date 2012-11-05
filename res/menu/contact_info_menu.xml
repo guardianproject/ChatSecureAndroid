@@ -22,25 +22,26 @@
     <item android:id="@+id/menu_scan"
         android:title="@string/menu_scan"
         android:icon="@drawable/ic_menu_barcode"
-         android:showAsAction="always"
+         android:showAsAction="always|withText"
          />
 
     <item android:id="@+id/menu_fingerprint"
         android:title="@string/menu_fingerprint"
          android:icon="@drawable/ic_menu_fingerprint"
-          android:showAsAction="always"
+          android:showAsAction="always|withText"
          />
 
-    <item android:id="@+id/menu_verify_fingerprint"
-        android:title="@string/menu_verify_fingerprint"
-         android:icon="@drawable/ic_menu_verify"
-          android:showAsAction="always"
-         />
+    
 
     <item android:id="@+id/menu_verify_secret"
         android:title="@string/menu_verify_secret"
-         android:icon="@drawable/ic_menu_key"
-          android:showAsAction="always"
+         android:icon="@android:drawable/ic_menu_help"
+          android:showAsAction="always|withText"
          />
     
+    <item android:id="@+id/menu_verify_fingerprint"
+        android:title="@string/menu_verify_fingerprint"
+         android:icon="@drawable/ic_menu_verify"
+          android:showAsAction="always|withText"
+         />
 </menu>
