@@ -85,7 +85,9 @@ class ServerTrustManager implements X509TrustManager {
     /** Holds the domain of the remote server we are trying to connect */
     private String server;
     private String domain;
-    private KeyStore trustStore;
+    
+    private KeyStore mTrustStore; //root CAs
+    private KeyStore mPinnedStore; //pinned certs
 
     private Context context;
 
@@ -119,25 +121,20 @@ class ServerTrustManager implements X509TrustManager {
 
         InputStream in = null;
         
-        trustStore = KeyStore.getInstance(configuration.getTruststoreType());
-
-        //TODO add the ability to load  custom cacerts file from SDCard
-        /*
-         *
-        if (new File(configuration.getTruststorePath()).exists())
-        	in = new FileInputStream(configuration.getTruststorePath());
-        else
-        */
-
+        mTrustStore = KeyStore.getInstance(configuration.getTruststoreType());
         //load our bundled cacerts from raw assets
         in = context.getResources().openRawResource(R.raw.cacerts);
-
-        trustStore.load(in, configuration.getTruststorePassword().toCharArray());
+        mTrustStore.load(in, configuration.getTruststorePassword().toCharArray());
+        
+        mPinnedStore = KeyStore.getInstance(configuration.getTruststoreType());
+        //load our bundled cacerts from raw assets
+        in = context.getResources().openRawResource(R.raw.pinnedcacerts);
+        mPinnedStore.load(in, configuration.getTruststorePassword().toCharArray());
        
     }
 
     public X509Certificate[] getAcceptedIssuers() {
-        return new X509Certificate[0];
+        return new X509Certificate[0]; //we accept anyone now, but this should return the list from our trust Root CA Store
     }
 
     public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
@@ -147,9 +144,11 @@ class ServerTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] x509Certificates, String keyExchangeAlgo)
             throws CertificateException {
         
+        
         //first check the main cert
         X509Certificate certSite = x509Certificates[0];
         checkStrongCrypto(certSite);        
+        checkPinning(certSite);
         if (configuration.isExpiredCertificatesCheckEnabled())
             certSite.checkValidity();
         
@@ -177,7 +176,7 @@ class ServerTrustManager implements X509TrustManager {
                         debug("found issuer for current cert in chain: " + x509issuer.getSubjectDN() + "; " + x509certCurr.getSigAlgName());
                         
                         //now check if it is a root
-                        X509Certificate x509root = findCertIssuerInStore(x509certCurr);
+                        X509Certificate x509root = findCertIssuerInStore(x509certCurr, mTrustStore);
                         if (x509root != null)
                             isRootCA = true;
                         
@@ -189,7 +188,7 @@ class ServerTrustManager implements X509TrustManager {
                 //did not find signing cert in chain, so check our store
                 if (x509issuer == null)
                 {
-                   x509issuer = findCertIssuerInStore(x509certCurr);
+                   x509issuer = findCertIssuerInStore(x509certCurr, mTrustStore);
                    isRootCA = true;
                 }
                 
@@ -199,7 +198,8 @@ class ServerTrustManager implements X509TrustManager {
                         //check expiry
                         x509issuer.checkValidity();  
                         
-                        checkStrongCrypto(x509issuer);
+                        if (!isRootCA) //MD5 collision not a risk for the Root CA in our store
+                            checkStrongCrypto(x509issuer);
                                                 
                         //verify cert with issuer public key
                         x509certCurr.verify(x509issuer.getPublicKey());
@@ -373,19 +373,19 @@ class ServerTrustManager implements X509TrustManager {
         return buf.toString();
     }
 
-    private X509Certificate findCertIssuerInStore (X509Certificate x509cert) throws CertificateException
+    private X509Certificate findCertIssuerInStore (X509Certificate x509cert, KeyStore kStore) throws CertificateException
     {
         X509Certificate x509issuer = null;
         
-        debug("searching CA ROOT store for issuer: " + x509cert.getIssuerDN());
+        debug("searching store for issuer: " + x509cert.getIssuerDN());
 
         //check in our local root CA Store
         Enumeration<String> enumAliases;
         try {
-            enumAliases = trustStore.aliases();
+            enumAliases = kStore.aliases();
             X509Certificate x509search = null;
             while (enumAliases.hasMoreElements()) {
-                x509search = (X509Certificate) trustStore
+                x509search = (X509Certificate) kStore
                         .getCertificate(enumAliases.nextElement());
                 
                 if(checkSubjectMatchesIssuer(x509search.getSubjectX500Principal(),x509cert.getIssuerX500Principal()))                 
@@ -566,23 +566,69 @@ class ServerTrustManager implements X509TrustManager {
     
     private void debug (String msg)
     {
-        
-     //   Log.d(TAG, msg);
+        //disable for now
+        //            Log.d(TAG, msg);
     }
 
     private void checkStrongCrypto (X509Certificate cert) throws CertificateException
     {
         String algo = cert.getSigAlgName().toLowerCase();
+        
         if (!algo.contains("sha1") || algo.contains("sha256"))
         {
             debug("cert uses weak crypto: " + algo);
 
-            showCertMessage("cert uses weak crypto: " + algo,
+            showCertMessage(context.getString(R.string.warning_weak_crypto),
                     cert.getIssuerDN().getName(), cert, null);
 
-            throw new CertificateException("issuer uses weak crypto: " + algo);
+          // we will just WARN and not block for this, for now
+          //  throw new CertificateException("issuer uses weak crypto: " + algo);
         }
         
+    }
+    
+    private void checkPinning (X509Certificate x509cert) throws CertificateException
+    {
+        
+        X500Principal certPrincipal = x509cert.getSubjectX500Principal();
+        debug("checking pinning for: " + certPrincipal.getName("RFC1779"));
+        
+         Enumeration<String> enumAliases;
+        try {
+            enumAliases = mPinnedStore.aliases();
+            X509Certificate x509search = null;
+            while (enumAliases.hasMoreElements()) {
+                x509search = (X509Certificate) mPinnedStore
+                        .getCertificate(enumAliases.nextElement());
+                
+                X500Principal searchPrincipal = x509search.getSubjectX500Principal();
+                debug("checking pinning against: " + searchPrincipal.getName("RFC1779"));
+                
+                if (certPrincipal.getName("RFC1779").equals(searchPrincipal.getName("RFC1779"))) //name check
+                {
+                    debug("matched pinning to: " + certPrincipal.getName("RFC1779"));
+                    //found matching pinned cert, now check if the certs are the same
+                    if (!Arrays.equals(certPrincipal.getEncoded(), searchPrincipal.getEncoded())) //byte by byte check                    
+                    {
+                        
+                        showCertMessage(context.getString(R.string.warning_pinned_cert_mismatch),
+                                x509cert.getSubjectDN().getName(), x509cert, null);
+                        
+                        debug("Provided Certificate Does Not Match PINNED Cert: " + certPrincipal.getName("RFC1779"));
+                        
+                        // just warn for now, don't block
+                       // throw new CertificateException(context.getString(R.string.warning_pinned_cert_mismatch) + certPrincipal.getName("RFC1779"));
+                        
+                    }
+                    
+                    break;
+                }
+            }
+        } catch (KeyStoreException e) {
+          Log.e(TAG, "problem access local keystore",e);
+          throw new CertificateException("problem access local keystore");
+        }
+
     }
     
 }

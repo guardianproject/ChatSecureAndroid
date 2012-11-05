@@ -740,5 +740,9 @@
 	<string name="pref_theme_dark">Use Dark Theme</string>
 	
 	<string name="warning_tor_connect">Since you are using Tor, you must enter the XMPP \'Connect Server\' hostname directly into Advanced Account Settings</string>
+	
+	<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>
 </resources>
 
