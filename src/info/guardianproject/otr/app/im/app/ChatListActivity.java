@@ -181,6 +181,17 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         c.close();
     }
 
+    private void signOut ()
+    {
+        try {
+            mConn.logout();
+            finish();
+        } catch (RemoteException e) {
+
+            Log.e("ChatList","error signing out",e);
+        }
+    }
+    
     private void showContactsList ()
     {
         Intent intent = new Intent (this, ContactListActivity.class);
@@ -218,7 +229,12 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             startActivityForResult(intent,1);
             return true;
 
+        case R.id.menu_sign_out:
+            signOut();
+            return true;
+            
         }
+        
         return super.onOptionsItemSelected(item);
     }
 
