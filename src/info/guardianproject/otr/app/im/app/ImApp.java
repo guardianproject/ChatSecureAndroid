@@ -60,6 +60,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
@@ -195,7 +196,11 @@ public class ImApp extends Application {
         super.onConfigurationChanged(newConfig);
 
         if (locale != null) {
-            newConfig.locale = locale;
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                // This causes flicker of death in Jelly Bean MR1 
+                newConfig.locale = locale;
+            }
+            
             Locale.setDefault(locale);
             getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
         }
