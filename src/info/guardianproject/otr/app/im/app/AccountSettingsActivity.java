@@ -63,7 +63,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
-        if (text != null && text != "5222") {
+        if (text != null && text != "5222" && text != "0") {
             mPort.setSummary(text);
         }
         text = settings.getServer();
@@ -105,14 +105,14 @@ public class AccountSettingsActivity extends PreferenceActivity implements
             }
             mXmppResourcePrio.setSummary(value);
         } else if (key.equals(getString(R.string.pref_account_port))) {
-            value = prefs.getString(key, "5222");
+            value = prefs.getString(key, "0");
             try {
                 settings.setPort(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
                 Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
                         .show();
             }
-            if (value != "5222")
+            if (value != "5222" && value != "0")
                 mPort.setSummary(value);
         } else if (key.equals(getString(R.string.pref_account_server))) {
             value = prefs.getString(key, null);

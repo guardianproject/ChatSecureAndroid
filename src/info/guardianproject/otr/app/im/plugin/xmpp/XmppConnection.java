@@ -73,6 +73,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
@@ -475,8 +476,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, final String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
-
-
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
@@ -521,6 +520,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "(DNS SRV) resolved: " + domain + "=" + server + ":" + serverPort);
 
         }
+        
+        if (serverPort == 0)
+            serverPort = 5222;
 
         // No server requested and SRV lookup wasn't requested or returned nothing - use domain
         if (server == null) {
