@@ -180,33 +180,28 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrEngine.getSessionStatus(getSessionId(localUserId, remoteUserId)).toString();
     }
 
-    public String decryptMessage(String localUserId, String remoteUserId, String msg) {
+    public String decryptMessage(String localUserId, String remoteUserId, String msg) throws OtrException {
         String plain = null;
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
         OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
 
         if (mOtrEngine != null && sessionId != null) {
-            try {
-                mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
-                plain = mOtrEngine.transformReceiving(sessionId, msg);
-                OtrSm otrSm = mOtrSms.get(sessionId);
+            mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
+            plain = mOtrEngine.transformReceiving(sessionId, msg);
+            OtrSm otrSm = mOtrSms.get(sessionId);
 
-                if (otrSm != null) {
-                    List<TLV> tlvs = otrSm.getPendingTlvs();
-                    if (tlvs != null) {
-                        String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
-                        mOtrEngineHost.injectMessage(sessionId, encrypted);
+            if (otrSm != null) {
+                List<TLV> tlvs = otrSm.getPendingTlvs();
+                if (tlvs != null) {
+                    String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
+                    mOtrEngineHost.injectMessage(sessionId, encrypted);
 
-                    }
                 }
-
-                if (plain != null && plain.length() == 0)
-                    return null;
-            } catch (OtrException e) {
-                OtrDebugLogger.log("error decrypting message", e);
             }
 
+            if (plain != null && plain.length() == 0)
+                return null;
         }
         return plain;
     }

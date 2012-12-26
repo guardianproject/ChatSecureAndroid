@@ -4,6 +4,7 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
+import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
 
 public class OtrChatListener implements MessageListener {
@@ -17,7 +18,7 @@ public class OtrChatListener implements MessageListener {
     }
 
     @Override
-    public void onIncomingMessage(ChatSession session, Message msg) {
+    public boolean onIncomingMessage(ChatSession session, Message msg) {
 
         OtrDebugLogger.log("processing incoming message: " + msg.getID());
 
@@ -29,7 +30,12 @@ public class OtrChatListener implements MessageListener {
 
         OtrDebugLogger.log("session status: " + otrStatus.name());
 
-        body = mOtrChatManager.decryptMessage(to, from, body);
+        try {
+            body = mOtrChatManager.decryptMessage(to, from, body);
+        } catch (OtrException e) {
+            OtrDebugLogger.log("error decrypting message", e);
+            return false;
+        }
 
         if (body != null) {
             msg.setBody(body);
@@ -39,6 +45,8 @@ public class OtrChatListener implements MessageListener {
         if (mOtrChatManager.getSessionStatus(to, from) != otrStatus) {
             mMessageListener.onStatusChanged(session);
         }
+        
+        return true;
     }
 
     @Override

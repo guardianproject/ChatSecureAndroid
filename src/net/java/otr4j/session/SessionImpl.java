@@ -368,8 +368,7 @@ public class SessionImpl implements Session {
             SessionKeys matchingKeys = this.getSessionKeysByID(receipientKeyID, senderKeyID);
 
             if (matchingKeys == null) {
-                logger.finest("No matching keys found.");
-                return null;
+                throw new OtrException("no matching keys found");
             }
 
             // Verify received MAC with a locally calculated MAC.
@@ -388,8 +387,7 @@ public class SessionImpl implements Session {
                     matchingKeys.getReceivingMACKey(), SerializationConstants.TYPE_LEN_MAC);
 
             if (!Arrays.equals(computedMAC, data.mac)) {
-                logger.finest("MAC verification failed, ignoring message");
-                return null;
+                throw new OtrException("MAC verification failed, ignoring message");
             }
 
             logger.finest("Computed HmacSHA1 value matches sent one.");
@@ -468,8 +466,7 @@ public class SessionImpl implements Session {
 
             injectMessage(new ErrorMessage(AbstractMessage.MESSAGE_ERROR,
                     "You sent me an unreadable encrypted message"));
-
-            break;
+            throw new OtrException("Unreadable encrypted message received");
         }
 
         return null;
