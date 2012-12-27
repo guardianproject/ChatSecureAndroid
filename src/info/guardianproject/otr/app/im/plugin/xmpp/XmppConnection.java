@@ -17,7 +17,7 @@ import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.DNSUtil;
 
-import info.guardianproject.onionkit.trust.*;
+import info.guardianproject.onionkit.trust.*; //switching to OnionKit library
 
 import java.io.File;
 import java.io.FileInputStream;
