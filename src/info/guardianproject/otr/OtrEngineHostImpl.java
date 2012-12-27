@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.WarningDialogActivity;
 import info.guardianproject.otr.app.im.engine.Address;
@@ -9,6 +10,7 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
+import info.guardianproject.otr.app.im.service.RemoteImService;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 /*
  * OtrEngineHostImpl is the connects this app and the OtrEngine
@@ -39,17 +42,17 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     private final static String OTR_KEYSTORE_PATH = "otr_keystore";
 
-    private Context mContext;
+    private ImService mContext;
 
     private Hashtable<SessionID, String> mSessionResources;
 
-    public OtrEngineHostImpl(OtrPolicy policy, Context context) throws IOException {
+    public OtrEngineHostImpl(OtrPolicy policy, ImService context) throws IOException {
         mPolicy = policy;
         mContext = context;
 
         mSessionResources = new Hashtable<SessionID, String>();
 
-        File storeFile = new File(context.getFilesDir(), OTR_KEYSTORE_PATH);
+        File storeFile = new File(context.getApplicationContext().getFilesDir(), OTR_KEYSTORE_PATH);
         mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile.getAbsolutePath());
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
@@ -65,7 +68,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
                 OtrDebugLogger.log(msg);
                 if (!isRemoteKeyVerified(session))
-                    showWarning(session, mContext.getString(R.string.remote_verified_us));
+                    showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
             }
         });
 
@@ -175,17 +178,24 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
+        
+        if (!warning.contains(sessionID.getUserID()))
+            warning = "[" + sessionID.getUserID() + "] " + warning; 
 
-        showDialog("Encryption Warning", "[" + sessionID.getUserID() + "] " + warning);
+        showToast(warning);
     }
 
     private void showDialog(String title, String msg) {
-        Intent nIntent = new Intent(mContext, WarningDialogActivity.class);
+        Intent nIntent = new Intent(mContext.getApplicationContext(), WarningDialogActivity.class);
         nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         nIntent.putExtra("title", title);
         nIntent.putExtra("msg", msg);
 
-        mContext.startActivity(nIntent);
+        mContext.getApplicationContext().startActivity(nIntent);
+    }
+    
+    private void showToast(String msg) {
+        mContext.showToast(msg, Toast.LENGTH_LONG);
     }
 }

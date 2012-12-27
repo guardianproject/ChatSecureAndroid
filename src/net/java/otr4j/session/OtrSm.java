@@ -283,6 +283,7 @@ public class OtrSm implements OtrTlvHandler {
             else
                 keyManager.verify(sessionID);
         } else {
+            engineHost.showError(sessionID, "verification failed - check answer");
             keyManager.unverify(sessionID);
         }
     }

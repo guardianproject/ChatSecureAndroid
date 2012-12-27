@@ -2,6 +2,7 @@ package info.guardianproject.otr;
 
 // Originally: package com.zadov.beem;
 
+import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
@@ -23,7 +24,6 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
-import android.content.Context;
 import android.content.Intent;
 
 /*
@@ -39,11 +39,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     private Hashtable<String, SessionID> mSessions;
     private Hashtable<SessionID, OtrSm> mOtrSms;
 
-    private Context mContext;
+    private ImService mContext;
 
-    private OtrChatManager(int otrPolicy, Context context) throws Exception {
+    private OtrChatManager(int otrPolicy, ImService context) throws Exception {
         mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy),
-                context.getApplicationContext());
+                context);
 
         mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
         mOtrEngine.addOtrEngineListener(this);
@@ -54,7 +54,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mContext = context;
     }
 
-    public static synchronized OtrChatManager getInstance(int otrPolicy, Context context)
+    public static synchronized OtrChatManager getInstance(int otrPolicy, ImService context)
             throws Exception {
         if (mInstance == null) {
             mInstance = new OtrChatManager(otrPolicy, context);
@@ -220,13 +220,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             try {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
-                if (sessionStatus != SessionStatus.PLAINTEXT) {
+                if (sessionStatus != SessionStatus.PLAINTEXT || sessionPolicy.getRequireEncryption()) {
                     body = mOtrEngine.transformSending(sessionId, body);
                     message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
-                } else if (sessionPolicy.getRequireEncryption()) {
-                    mOtrEngine.startSession(sessionId);
-                    body = null;
-                    // TODO postpone this message until encryption negotiated
                 } else if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getAllowV2()
                            && sessionPolicy.getSendWhitespaceTag()) {
                     // Work around asmack not sending whitespace tag for auto discovery
@@ -328,7 +324,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     @Override
     public void askForSecret(SessionID sessionID, String question) {
 
-        Intent dialog = new Intent(mContext, SmpResponseActivity.class);
+        Intent dialog = new Intent(mContext.getApplicationContext(), SmpResponseActivity.class);
         dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         dialog.putExtra("q", question);
@@ -340,39 +336,49 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         }
         dialog.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, connection.getProviderId());
 
-        mContext.startActivity(dialog);
+        mContext.getApplicationContext().startActivity(dialog);
 
     }
 
     public void respondSmp(SessionID sessionID, String secret) throws OtrException {
-
         OtrSm otrSm = mOtrSms.get(sessionID);
 
         List<TLV> tlvs;
 
+        if (otrSm == null) {
+            showError(sessionID, "Could not respond to verification because conversation is not encrypted");
+            return;
+        }
+        
         tlvs = otrSm.initRespondSmp(null, secret, false);
         String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
         mOtrEngineHost.injectMessage(sessionID, encrypted);
-
     }
 
     public void initSmp(SessionID sessionID, String question, String secret) throws OtrException {
         OtrSm otrSm = mOtrSms.get(sessionID);
 
         List<TLV> tlvs;
+
+        if (otrSm == null) {
+            showError(sessionID, "Could not perform verification because conversation is not encrypted");
+            return;
+        }
+        
         tlvs = otrSm.initRespondSmp(question, secret, true);
         String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
         mOtrEngineHost.injectMessage(sessionID, encrypted);
-
     }
 
     public void abortSmp(SessionID sessionID) throws OtrException {
         OtrSm otrSm = mOtrSms.get(sessionID);
+        
+        if (otrSm == null)
+            return;
 
         List<TLV> tlvs = otrSm.abortSmp();
         String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
         mOtrEngineHost.injectMessage(sessionID, encrypted);
-
     }
 
 }
