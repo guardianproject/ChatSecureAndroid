@@ -329,7 +329,7 @@ android:anyDensity="true"
             />
          
           <activity android:name=".app.CertDisplayActivity"
-            android:configChanges="locale"
+            android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
