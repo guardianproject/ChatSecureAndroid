@@ -17,6 +17,8 @@ import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.DNSUtil;
 
+import info.guardianproject.onionkit.trust.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -110,7 +112,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String KEYMANAGER_TYPE = "X509";
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-    private ServerTrustManager sTrustManager;
+    private StrongTrustManager sTrustManager;
     private SSLContext sslContext;
     private KeyStore ks = null;
     private KeyManager[] kms = null;
@@ -798,7 +800,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-        sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
+        sTrustManager = new StrongTrustManager(aContext);//, domain, requestedServer, config);
+        sTrustManager.setDomain(domain);
+        sTrustManager.setServer(requestedServer);
         
         sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager },
                 new java.security.SecureRandom());
