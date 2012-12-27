@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -31,7 +33,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-public class AccountSettingsActivity extends PreferenceActivity implements
+public class AccountSettingsActivity extends SherlockPreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
     private long mProviderId;
