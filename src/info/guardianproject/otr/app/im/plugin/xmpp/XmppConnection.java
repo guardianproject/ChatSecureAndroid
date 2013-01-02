@@ -26,6 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -111,6 +114,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private long mProviderId = -1;
     private String mPasswordTemp;
 
+    
     private final static String TRUSTSTORE_TYPE = "BKS";
     private final static String TRUSTSTORE_PATH = "cacerts.bks";
     private final static String TRUSTSTORE_PASS = "changeit";
@@ -118,8 +122,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String SSLCONTEXT_TYPE = "TLS";
 
     private StrongTrustManager sTrustManager;
-    private X509TrustManager mTrustManager;
+  //  private X509TrustManager mTrustManager;
     private SSLContext sslContext;
+    
     private KeyStore ks = null;
     private KeyManager[] kms = null;
     private Context aContext;
@@ -142,7 +147,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Maintains a sequence counting up to the user configured heartbeat interval
     private int heartbeatSequence = 0;
 
-    public XmppConnection(Context context) {
+    public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
 
         synchronized (XmppConnection.class) {
@@ -150,6 +155,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         aContext = context;
+
+        //setup SSL managers
+      //  mTrustManager = new MemorizingTrustManager(aContext); //MemTrust constructor only has one argument now it seems
+        sTrustManager = new StrongTrustManager(aContext);//, domain, requestedServer, config);
 
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
@@ -586,10 +595,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setNotMatchingDomainCheckEnabled(true);
         mConfig.setSelfSignedCertificateEnabled(false);
 
+        /*
         mConfig.setTruststoreType(TRUSTSTORE_TYPE);
         mConfig.setTruststorePath(TRUSTSTORE_PATH);
         mConfig.setTruststorePassword(TRUSTSTORE_PASS);
-
+        */
+        
         // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
         // can enable MITM.
         initSSLContext(domain, requestedServer, mConfig);
@@ -805,14 +816,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-        sTrustManager = new StrongTrustManager(aContext);//, domain, requestedServer, config);
+        
+     
         sTrustManager.setDomain(domain);
         sTrustManager.setServer(requestedServer);
-        
-        mTrustManager = new MemorizingTrustManager(aContext); //MemTrust constructor only has one argument now it seems
 
         //chaining together trustmanagers here
-        sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager, mTrustManager },
+        sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager },
                 new java.security.SecureRandom());
 
         config.setCustomSSLContext(sslContext);
