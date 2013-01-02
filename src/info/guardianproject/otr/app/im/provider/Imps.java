@@ -1863,7 +1863,7 @@ public class Imps {
             }
 
             public int getPort() {
-                return (int) getLong(PORT, 5222 /* by default use XMPP's default port */);
+                return (int) getLong(PORT, 0 /* by default use XMPP's default port */);
             }
 
             public void setServer(String server) {

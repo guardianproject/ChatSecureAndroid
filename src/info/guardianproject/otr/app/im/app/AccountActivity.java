@@ -405,7 +405,7 @@ public class AccountActivity extends ThemeableActivity {
         String[] splitAt = userField.trim().split("@");
         mUserName = splitAt[0];
         mDomain = null;
-        mPort = 5222;
+        mPort = 0;
 
         if (splitAt.length > 1) {
             mDomain = splitAt[1].toLowerCase();
