@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.10-RC6"
-     android:versionCode="41"
+     android:versionName="0.0.11-alpha-1"
+     android:versionCode="42"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -303,8 +303,9 @@ android:anyDensity="true"
          	 android:taskAffinity=""
             />
          
-          <activity android:name=".app.CertDisplayActivity"
-            android:configChanges="screenSize|orientation"
+          
+           <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
+            android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
