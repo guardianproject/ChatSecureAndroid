@@ -1,12 +1,9 @@
 [submodule "external/ActionBarSherlock"]
-    path = external/ActionBarSherlock
-    url = git://github.com/JakeWharton/ActionBarSherlock.git
-    ignore = dirty
+	path = external/ActionBarSherlock
+	url = git://github.com/JakeWharton/ActionBarSherlock.git
 [submodule "external/asmack"]
-    path = external/asmack
-    url = https://github.com/guardianproject/asmack
-    ignore = dirty
+	path = external/asmack
+	url = https://github.com/guardianproject/asmack
 [submodule "external/MemorizingTrustManager"]
-    path = external/MemorizingTrustManager
-    url = git@github.com:devrandom/MemorizingTrustManager.git
-    ignore = dirty
+	path = external/MemorizingTrustManager
+	url = git@github.com:devrandom/MemorizingTrustManager.git
