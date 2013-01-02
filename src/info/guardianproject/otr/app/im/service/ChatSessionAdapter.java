@@ -547,7 +547,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     class ListenerAdapter implements MessageListener, GroupMemberListener {
 
-        public void onIncomingMessage(ChatSession ses, final Message msg) {
+        public boolean  onIncomingMessage(ChatSession ses, final Message msg) {
             String body = msg.getBody();
             String username = msg.getFrom().getContactName();
             String nickname = getNickName(username);
@@ -579,6 +579,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             
             mHasUnreadMessages = true;
+            return true;
         }
 
         public void onSendMessageError(ChatSession ses, final Message msg, final ImErrorInfo error) {

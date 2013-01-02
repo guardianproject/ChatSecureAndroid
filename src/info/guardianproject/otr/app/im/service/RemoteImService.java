@@ -25,13 +25,14 @@ import info.guardianproject.otr.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
+import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.LandingPage;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
+import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
-import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -45,7 +46,6 @@ import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -57,7 +57,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -66,7 +65,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-public class RemoteImService extends Service implements OtrEngineListener {
+public class RemoteImService extends Service implements OtrEngineListener, ImService {
 
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PROVIDER,
                                                         Imps.Account.USERNAME,

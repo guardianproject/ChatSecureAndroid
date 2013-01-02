@@ -647,12 +647,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 rec.setDateTime(new Date());
 
                 ChatSession session = findOrCreateSession(address);
-                session.onReceiveMessage(rec);
+                boolean good = session.onReceiveMessage(rec);
+                
                 if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                    debug(TAG, "got delivery receipt request");
-                    // got XEP-0184 request, send receipt
-                    sendReceipt(smackMessage);
-                    session.onReceiptsExpected();
+                    if (good) {
+                        debug(TAG, "sending delivery receipt");
+                        // got XEP-0184 request, send receipt
+                        sendReceipt(smackMessage);
+                        session.onReceiptsExpected();
+                    } else {
+                        debug(TAG, "not sending delivery receipt due to processing error");
+                    }
+                } else if (!good) {
+                    debug(TAG, "packet processing error");
                 }
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
