@@ -806,9 +806,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         sTrustManager.setDomain(domain);
         sTrustManager.setServer(requestedServer);
         
-        mTrustManager = new MemorizingTrustManager(aContext, sTrustManager, null);
+        mTrustManager = new MemorizingTrustManager(aContext); //MemTrust constructor only has one argument now it seems
 
-        sslContext.init(kms, new javax.net.ssl.TrustManager[] { mTrustManager },
+        //chaining together trustmanagers here
+        sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager, mTrustManager },
                 new java.security.SecureRandom());
 
         config.setCustomSSLContext(sslContext);
