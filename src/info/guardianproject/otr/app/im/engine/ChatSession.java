@@ -129,13 +129,20 @@ public class ChatSession {
      * All the listeners registered in this session will be notified.
      * 
      * @param message the received message.
+     * 
+     * @return true if the message was processed correctly, or false
+     *   otherwise (e.g. decryption error)
      */
-    public void onReceiveMessage(Message message) {
+    public boolean onReceiveMessage(Message message) {
         mHistoryMessages.add(message);
         //  BUG it only seems to find the most recently added listener.
+        boolean good = true;
+        
         for (MessageListener listener : mListeners) {
-            listener.onIncomingMessage(this, message);
+            good = good && listener.onIncomingMessage(this, message);
         }
+        
+        return good;
     }
 
     public void onMessageReceipt(String id) {

@@ -53,6 +53,9 @@ public class SessionImpl implements Session {
     private static Logger logger = Logger.getLogger(SessionImpl.class.getName());
     private List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
     private BigInteger ess;
+    private String lastSentMessage;
+    private boolean doTransmitLastMessage = false;
+    private boolean isLastMessageRetransmit = false;
 
     public SessionImpl(SessionID sessionID, OtrEngineHost listener) {
 
@@ -204,16 +207,28 @@ public class SessionImpl implements Session {
             this.setRemotePublicKey(auth.getRemoteLongTermPublicKey());
 
             auth.reset();
+            
             break;
         }
 
-        if (sessionStatus == this.sessionStatus)
-            return;
-
+        SessionStatus oldSessionStatus = this.sessionStatus;
+        
+        // This must be set correctly for transformSending
         this.sessionStatus = sessionStatus;
+        
+        if (sessionStatus == SessionStatus.ENCRYPTED && doTransmitLastMessage && lastSentMessage != null) {
+            String msg = this.transformSending((isLastMessageRetransmit ? "[resent] " : "") + lastSentMessage, null);
+            getHost().injectMessage(getSessionID(), msg);
+        }
 
-        for (OtrEngineListener l : this.listeners)
-            l.sessionStatusChanged(getSessionID());
+        doTransmitLastMessage = false;
+        isLastMessageRetransmit = false;
+        lastSentMessage = null;
+        
+        if (sessionStatus != oldSessionStatus) {
+            for (OtrEngineListener l : this.listeners)
+                l.sessionStatusChanged(getSessionID());
+        }
     }
 
     /*
@@ -337,11 +352,14 @@ public class SessionImpl implements Session {
                       + getSessionID().getUserID() + " throught " + getSessionID().getUserID()
                       + ".");
 
-        getHost().showError(this.getSessionID(), errorMessage.error);
-
         OtrPolicy policy = getSessionPolicy();
         if (policy.getErrorStartAKE()) {
+            showWarning(errorMessage.error + " Initiating encryption.");
+
             logger.finest("Error message starts AKE.");
+            doTransmitLastMessage = true;
+            isLastMessageRetransmit = true;
+
             Vector<Integer> versions = new Vector<Integer>();
             if (policy.getAllowV1())
                 versions.add(1);
@@ -351,6 +369,8 @@ public class SessionImpl implements Session {
 
             logger.finest("Sending Query");
             injectMessage(new QueryMessage(versions));
+        } else {
+            showError(errorMessage.error);
         }
     }
 
@@ -368,8 +388,7 @@ public class SessionImpl implements Session {
             SessionKeys matchingKeys = this.getSessionKeysByID(receipientKeyID, senderKeyID);
 
             if (matchingKeys == null) {
-                logger.finest("No matching keys found.");
-                return null;
+                throw new OtrException("no matching keys found");
             }
 
             // Verify received MAC with a locally calculated MAC.
@@ -388,8 +407,7 @@ public class SessionImpl implements Session {
                     matchingKeys.getReceivingMACKey(), SerializationConstants.TYPE_LEN_MAC);
 
             if (!Arrays.equals(computedMAC, data.mac)) {
-                logger.finest("MAC verification failed, ignoring message");
-                return null;
+                throw new OtrException("MAC verification failed, ignoring message");
             }
 
             logger.finest("Computed HmacSHA1 value matches sent one.");
@@ -463,13 +481,11 @@ public class SessionImpl implements Session {
 
         case FINISHED:
         case PLAINTEXT:
-            getHost()
-                    .showWarning(this.getSessionID(), "Unreadable encrypted message was received.");
+            showError("Unreadable encrypted message was received.");
 
             injectMessage(new ErrorMessage(AbstractMessage.MESSAGE_ERROR,
                     "You sent me an unreadable encrypted message"));
-
-            break;
+            throw new OtrException("Unreadable encrypted message received");
         }
 
         return null;
@@ -499,7 +515,7 @@ public class SessionImpl implements Session {
             case FINISHED:
                 // Display the message to the user, but warn him that the
                 // message was received unencrypted.
-                getHost().showWarning(this.getSessionID(), "The message was received unencrypted.");
+                showError("The message was received unencrypted.");
                 return plainTextMessage.cleanText;
             case PLAINTEXT:
                 // Simply display the message to the user. If
@@ -507,8 +523,7 @@ public class SessionImpl implements Session {
                 // is set, warn him that the message was received
                 // unencrypted.
                 if (policy.getRequireEncryption()) {
-                    getHost().showWarning(this.getSessionID(),
-                            "The message was received unencrypted.");
+                    showError("The message was received unencrypted.");
                 }
                 return plainTextMessage.cleanText;
             }
@@ -520,15 +535,14 @@ public class SessionImpl implements Session {
                 // Remove the whitespace tag and display the message to the
                 // user, but warn him that the message was received
                 // unencrypted.
-                getHost().showWarning(this.getSessionID(), "The message was received unencrypted.");
+                showError("The message was received unencrypted.");
             case PLAINTEXT:
                 // Remove the whitespace tag and display the message to the
                 // user. If REQUIRE_ENCRYPTION is set, warn him that the
                 // message
                 // was received unencrypted.
                 if (policy.getRequireEncryption())
-                    getHost().showWarning(this.getSessionID(),
-                            "The message was received unencrypted.");
+                    showError("The message was received unencrypted.");
             }
 
             if (policy.getWhitespaceStartAKE()) {
@@ -548,15 +562,16 @@ public class SessionImpl implements Session {
 
     // Retransmit last sent message. Spec document does not mention where or
     // when that should happen, must check libotr code.
-    private String lastSentMessage;
 
     public String transformSending(String msgText, List<TLV> tlvs) throws OtrException {
 
         switch (this.getSessionStatus()) {
         case PLAINTEXT:
             if (getSessionPolicy().getRequireEncryption()) {
-                this.lastSentMessage = msgText;
+                lastSentMessage = msgText;
+                doTransmitLastMessage = true;
                 this.startSession();
+                return null;
             } else
                 // TODO this does not precisly behave according to
                 // specification.
@@ -564,7 +579,7 @@ public class SessionImpl implements Session {
         case ENCRYPTED:
             this.lastSentMessage = msgText;
             logger.finest(getSessionID().getAccountID() + " sends an encrypted message to "
-                          + getSessionID().getUserID() + " throught "
+                          + getSessionID().getUserID() + " through "
                           + getSessionID().getProtocolName() + ".");
 
             // Get encryption keys.
@@ -641,12 +656,9 @@ public class SessionImpl implements Session {
             }
         case FINISHED:
             this.lastSentMessage = msgText;
-            getHost()
-                    .showError(
-                            sessionID,
-                            "Your message to "
-                                    + sessionID.getUserID()
-                                    + " was not sent.  Either end your private conversation, or restart it.");
+            showError("Your message to "
+                    + sessionID.getUserID()
+                    + " was not sent.  Either end your private conversation, or restart it.");
             return null;
         default:
             logger.finest("Uknown message state, not processing.");
@@ -735,6 +747,10 @@ public class SessionImpl implements Session {
 
     public KeyPair getLocalKeyPair() {
         return getHost().getKeyPair(this.getSessionID());
+    }
+    
+    public void showError(String warning) {
+        getHost().showError(sessionID, warning);
     }
     
     public void showWarning(String warning) {
