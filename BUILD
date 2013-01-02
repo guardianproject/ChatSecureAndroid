@@ -1,9 +1,10 @@
 == Preparation
 
     git submodule update --init
-    android update project --path ActionBarSherlock/library/ --target android-15 --name ActionBarSherlock
-    android update project --path MemorizingTrustManager --target android-15 --name MemorizingTrustManager
-    (cd asmack && ./build.bash && cp build/asmack-android-4.jar ../libs)
+    android update project --path external/ActionBarSherlock/library/ --target android-15 --name ActionBarSherlock
+    android update project --path external/MemorizingTrustManager --target android-15 --name MemorizingTrustManager
+    * setup external/asmack/local.properties to point to your android sdk *
+    (cd external/asmack && ./build.bash && cp build/asmack-android-4.jar ../../libs)
 
 == Building with ant
 
@@ -16,6 +17,8 @@ Follow the steps from the prep section, then:
 Add the following as Android projects, after following the steps in the prep section:
 
     * Gibberbot/ActionBarSherlock/library (use ActionBarSherlock as project name)
+    * OnionKit
+    * MemorizingTrustManager
     * Gibberbot
     
 
