@@ -1212,7 +1212,11 @@ public class ChatView extends LinearLayout {
                 log("Connection suspended");
                 updateWarningView();
                 return;
-
+            case ImApp.EVENT_CONNECTION_DISCONNECTED:
+                log("Handle event connection disconnected.");
+                updateWarningView();
+                promptDisconnectedEvent(msg);
+                return;
             }
 
             super.handleMessage(msg);
