@@ -212,7 +212,7 @@ public class AccountActivity extends ThemeableActivity {
 
             mUseTor.setChecked(settings.getUseTor());
 
-            getOTRKeyInfo();
+          //  getOTRKeyInfo();
 
             settings.close();
             cursor.close();
