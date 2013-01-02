@@ -1,12 +1,12 @@
-[submodule "ActionBarSherlock"]
+[submodule "external/ActionBarSherlock"]
     path = external/ActionBarSherlock
     url = git://github.com/JakeWharton/ActionBarSherlock.git
     ignore = dirty
-[submodule "asmack"]
+[submodule "external/asmack"]
     path = external/asmack
     url = https://github.com/guardianproject/asmack
     ignore = dirty
-[submodule "MemorizingTrustManager"]
+[submodule "external/MemorizingTrustManager"]
     path = external/MemorizingTrustManager
     url = git@github.com:devrandom/MemorizingTrustManager.git
     ignore = dirty
