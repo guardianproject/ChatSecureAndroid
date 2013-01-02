@@ -1,0 +1,12 @@
+[submodule "ActionBarSherlock"]
+    path = ActionBarSherlock
+    url = git://github.com/JakeWharton/ActionBarSherlock.git
+    ignore = dirty
+[submodule "asmack"]
+    path = asmack
+    url = https://github.com/guardianproject/asmack
+    ignore = dirty
+[submodule "MemorizingTrustManager"]
+    path = MemorizingTrustManager
+    url = git@github.com:devrandom/MemorizingTrustManager.git
+    ignore = dirty

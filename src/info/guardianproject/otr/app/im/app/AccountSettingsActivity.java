@@ -44,7 +44,6 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
     private EditTextPreference mServer;
     private CheckBoxPreference mAllowPlainAuth;
     private CheckBoxPreference mRequireTls;
-    private CheckBoxPreference mTlsCertVerify;
     private CheckBoxPreference mDoDnsSrv;
 
     private void setInitialValues() {
@@ -75,7 +74,6 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         }
         mAllowPlainAuth.setChecked(settings.getAllowPlainAuth());
         mRequireTls.setChecked(settings.getRequireTls());
-        mTlsCertVerify.setChecked(settings.getTlsCertVerify());
         mDoDnsSrv.setChecked(settings.getDoDnsSrv());
 
         settings.close();
@@ -157,7 +155,6 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
         mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
         mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
-        mTlsCertVerify = (CheckBoxPreference) findPreference(getString(R.string.pref_security_tls_cert_verify));
         mDoDnsSrv = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
     }
 
