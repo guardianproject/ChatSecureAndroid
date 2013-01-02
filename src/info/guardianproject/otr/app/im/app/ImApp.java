@@ -60,7 +60,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -195,9 +194,13 @@ public class ImApp extends Application {
         super.onConfigurationChanged(newConfig);
 
         if (locale != null) {
-            newConfig.locale = locale;
+            // We have to create a new configuration, because changing the passed-in Configuration
+            // object causes an infinite relaunch loop in Android 4.2 (JB MR1)
+            Configuration myConfig = new Configuration(newConfig);
+            myConfig.locale = locale;
+            
             Locale.setDefault(locale);
-            getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
+            getResources().updateConfiguration(myConfig, getResources().getDisplayMetrics());
         }
     }
 

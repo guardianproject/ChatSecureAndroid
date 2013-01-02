@@ -45,12 +45,10 @@ android:anyDensity="true"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
-             android:configChanges="locale"
              android:theme="@style/Theme.Gibberbot.Light"
 			>
      		 
          <activity android:name=".app.WelcomeActivity"
-         	android:configChanges="locale"
          	>
             
               <intent-filter>
@@ -61,34 +59,23 @@ android:anyDensity="true"
         
         <!-- Brian's NEW Activities 
         <activity android:name=".ui.TabbedContainer"
-        android:configChanges="locale"
         />-->
         <activity android:name=".app.ChatListActivity"
-            android:configChanges="locale"
-         	
             />
         <activity android:name=".app.ActiveChatListView"
-            android:configChanges="locale"
-         	
             />
         
         
         
-         <activity android:name=".ui.AboutActivity"
-         	android:configChanges="locale"
-         	
-         	 />
-                 <activity android:name=".ui.AccountWizardActivity"
-                     android:configChanges="locale"
-         	
-                     />
+        <activity android:name=".ui.AboutActivity"
+         	/>
+        <activity android:name=".ui.AccountWizardActivity"
+            />
         
         <activity android:name=".ui.AppPassphraseActivity"
-            android:configChanges="locale"
          	
             />
          <activity android:name=".ui.SettingsActivity"
-             android:configChanges="locale"
          	
              />
         
@@ -157,8 +144,6 @@ android:anyDensity="true"
             android:grantUriPermissions="true" />
 
         <activity android:name=".app.ChooseAccountActivity"
-                android:configChanges="locale"
-         	
                 >
         </activity>
         
@@ -183,7 +168,6 @@ android:anyDensity="true"
         </activity>
  -->
         <activity android:name=".app.LandingPage"
-            android:configChanges="orientation|keyboardHidden|locale|screenSize"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -198,7 +182,6 @@ android:anyDensity="true"
         </activity>
       
         <activity android:name=".app.AccountActivity"
-            android:configChanges="orientation|keyboardHidden|locale|screenSize"
             android:windowSoftInputMode="stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -216,7 +199,6 @@ android:anyDensity="true"
       
 
         <activity android:name=".app.SignoutActivity"
-            android:configChanges="locale"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -225,7 +207,6 @@ android:anyDensity="true"
         </activity>
         <activity android:name=".app.ContactListActivity" android:launchMode="singleTop"
             
-            android:configChanges="locale"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -242,11 +223,10 @@ android:anyDensity="true"
         <activity android:name=".app.AddContactActivity"
             android:label="@string/add_contact_title"
             
-            android:configChanges="locale"
             />
 
         <activity android:name=".app.NewChatActivity"
-                android:configChanges="orientation|keyboardHidden|locale|screenSize"
+                android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                
                 
@@ -270,8 +250,6 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.ContactsPickerActivity" android:label="@string/contacts_picker_title"
-            
-            android:configChanges="locale"
             >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -282,7 +260,6 @@ android:anyDensity="true"
 
         <activity android:name=".app.BlockedContactsActivity" android:label="@string/blocked_list_title"
             
-            android:configChanges="locale"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -292,7 +269,6 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.ContactPresenceActivity" 
-            android:configChanges="locale"
               android:uiOptions="splitActionBarWhenNarrow"
             >
             <intent-filter>
@@ -303,7 +279,7 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.AccountSettingsActivity" 
-            android:configChanges="locale">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
@@ -313,7 +289,7 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.SettingActivity" 
-            android:configChanges="locale">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
@@ -323,19 +299,17 @@ android:anyDensity="true"
         </activity>
 
          <activity android:name=".app.SmpResponseActivity"
-            android:configChanges="locale"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
          
           <activity android:name=".app.CertDisplayActivity"
-            android:configChanges="locale|screenSize|orientation"
+            android:configChanges="screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
           
           <activity android:name=".app.WarningDialogActivity"
-            android:configChanges="locale"
          	android:theme="@android:style/Theme.Dialog"
          	 android:taskAffinity=""
             />
