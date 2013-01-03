@@ -18,8 +18,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 
-import info.guardianproject.onionkit.trust.*; //switching to OnionKit library
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -76,8 +74,6 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
 
-import de.duenndns.ssl.MemorizingTrustManager;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Environment;
@@ -121,8 +117,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String KEYMANAGER_TYPE = "X509";
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-    private StrongTrustManager sTrustManager;
-  //  private X509TrustManager mTrustManager;
+    private X509TrustManager mTrustManager;
     private SSLContext sslContext;
     
     private KeyStore ks = null;
@@ -157,9 +152,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         aContext = context;
 
         //setup SSL managers
-      //  mTrustManager = new MemorizingTrustManager(aContext); //MemTrust constructor only has one argument now it seems
-        sTrustManager = new StrongTrustManager(aContext);//, domain, requestedServer, config);
-
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
         // Create a single threaded executor.  This will serialize actions on the underlying connection.
@@ -595,11 +587,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setNotMatchingDomainCheckEnabled(true);
         mConfig.setSelfSignedCertificateEnabled(false);
 
-        /*
         mConfig.setTruststoreType(TRUSTSTORE_TYPE);
         mConfig.setTruststorePath(TRUSTSTORE_PATH);
         mConfig.setTruststorePassword(TRUSTSTORE_PASS);
-        */
         
         // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
         // can enable MITM.
@@ -825,11 +815,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
         
      
-        sTrustManager.setDomain(domain);
-        sTrustManager.setServer(requestedServer);
+        ServerTrustManager sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
+        mTrustManager = new MemorizingTrustManager(aContext, sTrustManager, null);
 
-        //chaining together trustmanagers here
-        sslContext.init(kms, new javax.net.ssl.TrustManager[] { sTrustManager },
+        sslContext.init(kms, new javax.net.ssl.TrustManager[] { mTrustManager },
                 new java.security.SecureRandom());
 
         config.setCustomSSLContext(sslContext);
