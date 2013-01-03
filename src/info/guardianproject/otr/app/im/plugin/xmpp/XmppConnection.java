@@ -587,11 +587,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setNotMatchingDomainCheckEnabled(true);
         mConfig.setSelfSignedCertificateEnabled(false);
 
-        /*
         mConfig.setTruststoreType(TRUSTSTORE_TYPE);
         mConfig.setTruststorePath(TRUSTSTORE_PATH);
         mConfig.setTruststorePassword(TRUSTSTORE_PASS);
-        */
         
         // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
         // can enable MITM.
