@@ -346,7 +346,7 @@ public class AccountActivity extends ThemeableActivity {
                 server = "chat.facebook.com";
             } else if (domain.equals("dukgo.com")) {
                 server = "dukgo.com";
-                settings.setTlsCertVerify(false);
+                //settings.setTlsCertVerify(false); //remove this - MemorizingTrustManager will now prompt
             }
             else
             {
