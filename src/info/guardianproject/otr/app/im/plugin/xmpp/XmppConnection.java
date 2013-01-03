@@ -1,5 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
+import info.guardianproject.onionkit.trust.StrongTrustManager;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -118,6 +119,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String SSLCONTEXT_TYPE = "TLS";
 
     private X509TrustManager mTrustManager;
+    private StrongTrustManager mStrongTrustManager;
     private SSLContext sslContext;
     
     private KeyStore ks = null;
@@ -151,6 +153,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         aContext = context;
 
+        mStrongTrustManager = new StrongTrustManager(aContext);
+        
         //setup SSL managers
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
@@ -814,9 +818,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
         
-     
-        ServerTrustManager sTrustManager = new ServerTrustManager(aContext, domain, requestedServer, config);
-        mTrustManager = new MemorizingTrustManager(aContext, sTrustManager, null);
+        mStrongTrustManager.setDomain(domain);
+        mStrongTrustManager.setServer(requestedServer);
+        
+        mTrustManager = new MemorizingTrustManager(aContext, mStrongTrustManager, null);
 
         sslContext.init(kms, new javax.net.ssl.TrustManager[] { mTrustManager },
                 new java.security.SecureRandom());
