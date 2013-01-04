@@ -16,6 +16,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.io.File;
+
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -96,8 +98,17 @@ public class WelcomeActivity extends ThemeableActivity {
         });
 
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
+        
+        clearBootFlag ();
     }
 
+    private void clearBootFlag ()
+    {
+        File file = new File(getFilesDir(),AutoConnectListener.BOOTFLAG);
+        if (file.exists())
+            file.delete();
+    }
+    
     @SuppressWarnings("deprecation")
     private boolean cursorUnlocked() {
         try {
