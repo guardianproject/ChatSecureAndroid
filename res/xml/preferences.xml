@@ -46,6 +46,13 @@
     android:defaultValue="auto">
   </ListPreference>
 
+  
+  <CheckBoxPreference
+          android:key="@string/pref_start_on_boot"
+          android:title="@string/start_on_boot"
+          android:summary="@string/start_on_boot_summary"
+          android:defaultValue="true" />
+  
   <CheckBoxPreference
           android:key="@string/pref_foreground_service"
           android:title="@string/foreground_service_title"
