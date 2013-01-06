@@ -1110,7 +1110,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     contacts.addAll(unfiled);
                 }
 
-                ContactList cl = new ContactList(mUser.getAddress(), group.getName(), group
+                XmppAddress groupAddress = new XmppAddress(group.getName());
+                ContactList cl = new ContactList(groupAddress, group.getName(), group
                         .getName().equals(generalGroupName), contacts, this);
 
                 notifyContactListCreated(cl);
