@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="15" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -88,7 +88,6 @@ android:anyDensity="true"
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
                android:process=":remote"
-               android:exported="false"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -103,7 +102,6 @@ android:anyDensity="true"
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
                android:process=":remote"
-        	   android:exported="false"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />

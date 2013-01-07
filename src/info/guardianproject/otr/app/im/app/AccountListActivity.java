@@ -114,7 +114,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         super.onCreate(icicle);
         
-        setTitle(R.string.landing_page_title);
+      //  setTitle(R.string.landing_page_title);
         
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
