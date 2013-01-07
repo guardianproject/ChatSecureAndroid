@@ -246,6 +246,7 @@ public class ImApp extends Application {
         Configuration config = getResources().getConfiguration();
 
         String lang = settings.getString(getString(R.string.pref_default_locale), "");
+        
         if ("".equals(lang)) {
             Properties props = AssetUtil.getProperties("gibberbot.properties", this);
             if (props != null) {
@@ -273,6 +274,35 @@ public class ImApp extends Application {
         return updatedLocale;
     }
 
+    public boolean setNewLocale(Context context, String localeString) {
+
+        /*
+        Locale locale = new Locale(localeString);
+       
+        Configuration config = context.getResources().getConfiguration();
+        config.locale = locale;
+        
+        context.getResources().updateConfiguration(config,
+                context.getResources().getDisplayMetrics());
+
+        Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
+        */
+        
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Editor prefEdit = prefs.edit();
+        prefEdit.putString(context.getString(R.string.pref_default_locale), localeString);
+        prefEdit.commit();
+        
+        Configuration config = getResources().getConfiguration();
+
+        locale = new Locale(localeString);            
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+      
+        
+        return true;
+    }
+    
     @Override
     public void onTerminate() {
         stopImServiceIfInactive();
@@ -806,26 +836,7 @@ public class ImApp extends Application {
         return mImService;
     }
 
-    public static boolean setNewLocale(Context context, String localeString) {
-
-        Locale locale = new Locale(localeString);
-        Configuration config = context.getResources().getConfiguration();
-        config.locale = locale;
-        
-        context.getResources().updateConfiguration(config,
-                context.getResources().getDisplayMetrics());
-
-        Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Editor prefEdit = prefs.edit();
-        prefEdit.putString(context.getString(R.string.pref_default_locale), localeString);
-        prefEdit.commit();
-        
-        
-        return true;
-    }
-    
+   
     public IChatSession getChatSession(long providerId, String remoteAddress) {
         IImConnection conn = getConnection(providerId);
 

@@ -492,7 +492,7 @@ public class WelcomeActivity extends ThemeableActivity {
                         String[] locs = getResources().getStringArray(R.array.languages_values);
 
                         if (which < locs.length) {
-                            ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
+                            ((ImApp)getApplication()).setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
 
                             Intent intent = getIntent();
                             finish();
