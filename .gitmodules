@@ -10,3 +10,6 @@
 [submodule "external/OnionKit"]
 	path = external/OnionKit
 	url = git://github.com/guardianproject/OnionKit.git
+[submodule "external/otr4j"]
+	path = external/otr4j
+	url = https://github.com/gpolitis/otr4j.git
