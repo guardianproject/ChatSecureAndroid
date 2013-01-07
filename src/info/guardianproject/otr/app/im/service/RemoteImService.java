@@ -241,8 +241,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
+        
+        if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
+            mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
                 false);
+        else
+            mNeedCheckAutoLogin = true;
 
         debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
               + " startId =" + startId);
