@@ -79,7 +79,8 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
                                                          Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
                                                          Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
                                                          Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                        };
 
     static final int PROVIDER_ID_COLUMN = 0;
     static final int PROVIDER_NAME_COLUMN = 1;

@@ -292,6 +292,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     protected void doUpdateUserPresenceAsync(Presence presence) {
         org.jivesoftware.smack.packet.Presence packet = makePresencePacket(presence);
 
+        
         sendPacket(packet);
         mUserPresence = presence;
         notifyUserPresenceUpdated();
@@ -401,16 +402,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ContentResolver contentResolver = mContext.getContentResolver();
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
                 contentResolver, mProviderId, false, null);
-        // providerSettings is closed in initConnection()
+        
+        // providerSettings is closed in initConnection();
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String password = Imps.Account.getPassword(contentResolver, mAccountId);
 
+        String defaultStatus = null;
+        
         if (mPasswordTemp != null)
             password = mPasswordTemp;
 
         mNeedReconnect = true;
         setState(LOGGING_IN, null);
-        mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
+        
+        mUserPresence = new Presence(Presence.AVAILABLE, defaultStatus, Presence.CLIENT_TYPE_MOBILE);
 
         try {
             if (userName.length() == 0)

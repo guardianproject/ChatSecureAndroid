@@ -131,6 +131,9 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         } else if (key.equals(getString(R.string.pref_security_do_dns_srv))) {
             settings.setDoDnsSrv(prefs.getBoolean(key, true));
         }
+        
+        settings.setShowMobileIndicator(true);
+        
         settings.close();
     }
 

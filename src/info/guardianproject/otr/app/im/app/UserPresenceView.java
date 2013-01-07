@@ -244,7 +244,9 @@ public class UserPresenceView extends LinearLayout {
         if (status != -1) {
             newPresence.setStatus(status);
         }
-        newPresence.setStatusText(statusText);
+        
+        if (statusText != null)
+            newPresence.setStatusText(statusText);
 
         try {
             int res = mConn.updateUserPresence(newPresence);
