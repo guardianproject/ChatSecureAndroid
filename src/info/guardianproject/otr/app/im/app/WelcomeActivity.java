@@ -321,7 +321,7 @@ public class WelcomeActivity extends ThemeableActivity {
         boolean isActive = false; // TODO(miron)
         mSignInHelper.signIn(password, providerId, accountId, isActive);
     }
-
+    
     boolean isSigningIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
         return connectionStatus == Imps.ConnectionStatus.CONNECTING;
@@ -369,7 +369,7 @@ public class WelcomeActivity extends ThemeableActivity {
         }
         int count = 0;
         do {
-            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN) &&
+            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_USERNAME_COLUMN) &&
                     !mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
                 count++;
             }
@@ -427,10 +427,11 @@ public class WelcomeActivity extends ThemeableActivity {
     //    }
 
     void showAccounts() {
-        startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+        startActivity(new Intent(getBaseContext(), AccountListActivity.class));
         finish();
     }
-
+    
+    /*
     Intent getCreateAccountIntent() {
         Intent intent = new Intent(getBaseContext(), AccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
@@ -441,7 +442,8 @@ public class WelcomeActivity extends ThemeableActivity {
         //TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
         return intent;
     }
-
+    */
+    
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
                 Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
@@ -449,7 +451,8 @@ public class WelcomeActivity extends ThemeableActivity {
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
     }
-
+    
+    
     private String getProviderCategory(Cursor cursor) {
         return cursor.getString(PROVIDER_CATEGORY_COLUMN);
     }
@@ -489,7 +492,7 @@ public class WelcomeActivity extends ThemeableActivity {
                         String[] locs = getResources().getStringArray(R.array.languages_values);
 
                         if (which < locs.length) {
-                            ImApp.setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
+                            ((ImApp)getApplication()).setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
 
                             Intent intent = getIntent();
                             finish();

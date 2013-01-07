@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="4"></uses-sdk>
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="15" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -22,6 +22,12 @@ android:anyDensity="true"
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
+    
+    
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+  <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"></uses-permission> 
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"></uses-permission>
+    <uses-permission android:name="com.google.android.googleapps.permission.GOOGLE_AUTH"/>
 
     <permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE"
             android:permissionGroup="android.permission-group.MESSAGES"
@@ -82,7 +88,6 @@ android:anyDensity="true"
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
                android:process=":remote"
-        
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -97,7 +102,6 @@ android:anyDensity="true"
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
                android:process=":remote"
-        
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -167,7 +171,7 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
  -->
-        <activity android:name=".app.LandingPage"
+        <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

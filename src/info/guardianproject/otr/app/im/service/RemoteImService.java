@@ -28,7 +28,7 @@ import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
-import info.guardianproject.otr.app.im.app.LandingPage;
+import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -203,7 +203,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         Notification notification = new Notification(R.drawable.ic_stat_status, "Gibberbot",
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-        Intent notificationIntent = new Intent(this, LandingPage.class);
+        Intent notificationIntent = new Intent(this, AccountListActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -241,8 +241,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-        mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
+        
+        if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
+            mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
                 false);
+        else
+            mNeedCheckAutoLogin = true;
 
         debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
               + " startId =" + startId);

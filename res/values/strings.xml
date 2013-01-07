@@ -328,7 +328,7 @@
 
 	<!-- provider plugin names -->
 	<string name="provider_full_name_xmpp">Jabber (XMPP)</string>
-	<string name="provider_full_name_llxmpp">Bonjour (ZeroConf)</string>
+	<string name="provider_full_name_llxmpp">Local Network Chat (Bonjour/ZeroConf)</string>
 	
     <!-- setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title. -->
 
@@ -751,6 +751,6 @@
 	 <string name="start_on_boot">Start Gibberbot Automatically</string>
 	 <string name="start_on_boot_summary">Always start and automatically sign into previously logged in accounts</string>
 	 
-	
+	 <string name="empty_account_message">You have no accounts configured.\n\nTap here to add one!</string>
 </resources>
 
