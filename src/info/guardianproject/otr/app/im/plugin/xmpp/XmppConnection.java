@@ -15,6 +15,7 @@ import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.XmppAddress;
+import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
@@ -491,7 +492,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(String userName, final String password,
+    private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -590,6 +591,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
+        if (password.startsWith(GTalkOAuth2.NAME))
+        {
+            SASLAuthentication.unsupportSASLMechanism("PLAIN");
+            SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
+            
+            
+            //add gtalk auth in
+            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
+            
+            password = password.substring(GTalkOAuth2.NAME.length());
+        }
+        
         mConfig.setVerifyChainEnabled(true);
         mConfig.setVerifyRootCAEnabled(true);
         mConfig.setExpiredCertificatesCheckEnabled(true);

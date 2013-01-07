@@ -2,6 +2,7 @@ package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.AccountActivity;
+import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.app.ThemeableActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
@@ -15,9 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class AboutActivity extends ThemeableActivity implements OnClickListener {
-    // TODO get mProviderId for real
-    long mProviderId = 1;
-
+   
     private int title[] = { R.string.about_welcome_title, R.string.about_otr_title,
                            R.string.about_security_title };
 
@@ -54,11 +53,7 @@ public class AboutActivity extends ThemeableActivity implements OnClickListener 
         @Override
         public void onClick(View v) {
             finish();
-            Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-            intent.setAction(Intent.ACTION_INSERT_OR_EDIT);
-            intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId));
-            // clear the back stack of the wizard
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(getBaseContext(), AccountListActivity.class);
             startActivity(intent);
         }
     } },
