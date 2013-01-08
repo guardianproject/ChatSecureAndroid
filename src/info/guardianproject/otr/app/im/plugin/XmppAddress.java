@@ -35,7 +35,9 @@ public class XmppAddress extends Address {
     public Address appendResource(String resource) {
         if (resource == null || "".equals(resource))
             return this;
-        return new XmppAddress(name, address + "/" + resource);
+        
+        this.address =  address + "/" + resource;
+        return this;
     }
 
     @Override
