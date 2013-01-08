@@ -104,12 +104,13 @@ public class ImPluginHelper {
         return names;
     }
 
-    public void createAdditionalProvider(String name) {
+    public long createAdditionalProvider(String name) {
         List<ResolveInfo> plugins = getPlugins();
         ResolveInfo info = null;
         ServiceInfo serviceInfo = null;
         Bundle metaData = null;
-
+        long providerId = -1;
+        
         for (ResolveInfo _info : plugins) {
             serviceInfo = _info.serviceInfo;
             if (serviceInfo == null) {
@@ -129,7 +130,7 @@ public class ImPluginHelper {
 
         if (info == null) {
             Log.e(TAG, "Did not find plugin " + name);
-            return;
+            return -1;
         }
 
         String providerName = metaData.getString(ImPluginConstants.METADATA_PROVIDER_NAME);
@@ -138,30 +139,32 @@ public class ImPluginHelper {
 
         if (TextUtils.isEmpty(providerName) || TextUtils.isEmpty(providerFullName)) {
             Log.e(TAG, "Ignore bad IM plugin: " + info + ". Lack of required meta data");
-            return;
+            return -1;
         }
 
         if (!serviceInfo.packageName.equals(mContext.getPackageName())) {
             Log.e(TAG, "Ignore plugin in package: " + serviceInfo.packageName);
-            return;
+            return -1;
         }
+        
         ImPluginInfo pluginInfo = new ImPluginInfo(providerName, serviceInfo.packageName,
                 serviceInfo.name, serviceInfo.applicationInfo.sourceDir);
 
         ImPlugin plugin = loadPlugin(pluginInfo);
         if (plugin == null) {
             Log.e(TAG, "Ignore bad IM plugin");
-            return;
+            return -1;
         }
 
         try {
-            insertProviderDb(plugin, pluginInfo, providerFullName, signUpUrl);
+           providerId = insertProviderDb(plugin, pluginInfo, providerFullName, signUpUrl);
         } catch (SQLiteFullException e) {
             Log.e(TAG, "Storage full", e);
-            return;
+            return -1;
         }
         mPluginsInfo.add(pluginInfo);
         mPluginObjects.add(plugin);
+        return providerId;
     }
 
     public void loadAvailablePlugins() {

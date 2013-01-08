@@ -68,6 +68,10 @@ public class ProviderListItem extends LinearLayout {
     }
 
     public void init(Cursor c) {
+
+
+        mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
+
         //mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
         mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
         mProviderName = (TextView) findViewById(R.id.providerName);
@@ -77,7 +81,6 @@ public class ProviderListItem extends LinearLayout {
         mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
         mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
 
-        mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
         mProviderFullnameColumn = c.getColumnIndexOrThrow(Imps.Provider.FULLNAME);
         mActiveAccountIdColumn = c.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
         mActiveAccountUserNameColumn = c
@@ -103,6 +106,11 @@ public class ProviderListItem extends LinearLayout {
         int providerId = cursor.getInt(mProviderIdColumn);
         String providerDisplayName = cursor.getString(mProviderFullnameColumn);
 
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(),
+                providerId, false /* keep updated */, null /* no handler */);
+      
+        String userDomain = settings.getDomain();
+        
         mAccountId = cursor.getLong(mActiveAccountIdColumn);
         
         ImApp app = ImApp.getApplication(mActivity);
@@ -121,7 +129,8 @@ public class ProviderListItem extends LinearLayout {
             providerName.setVisibility(View.VISIBLE);
             
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
-            providerName.setText(activeUserName);
+            
+            providerName.setText(activeUserName + '@' + userDomain);
 
             long accountId = cursor.getLong(mActiveAccountIdColumn);
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
@@ -143,25 +152,57 @@ public class ProviderListItem extends LinearLayout {
 
                 int count = getConversationCount(cr, accountId);
                 if (count > 0) {
+                    /*
                     mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
                     chatView.setVisibility(View.VISIBLE);
                     chatView.setText(r.getString(R.string.conversations, count));
-
+                       
                     if (mUnderBubble.getVisibility() != mUnderBubble.GONE)
                     {
                      providerName.setTextColor(0xff000000);
                      loginName.setTextColor(0xff000000);
                      chatView.setTextColor(0xff000000);
-                    }
-                } else {
-                    chatView.setVisibility(View.GONE);
+                    }*/
+                    secondRowText = count + " open conversation(s)";
+                    
                 }
-
-                secondRowText = providerDisplayName;
+                else
+                {
+                    secondRowText = getPresenceString(cursor, getContext());
+                    if (settings.getServer() != null && settings.getServer().length() > 0)
+                    {
+                        secondRowText +=  " on " + settings.getServer() + ':' + settings.getPort();
+                            
+                    }
+                    else
+                    {
+                        secondRowText += " on " + settings.getDomain();
+                    }
+                    
+                }
+         //       chatView.setVisibility(View.GONE);
+                
                 break;
 
             default:
+                
+
                 secondRowText = providerDisplayName;
+                if (settings.getServer() != null && settings.getServer().length() > 0)
+                {
+                    secondRowText +=  " to " + settings.getServer() + ':' + settings.getPort();
+                        
+                }
+                else
+                {
+                    secondRowText += " to " + settings.getDomain();
+                }
+                
+                if (settings.getUseTor())
+                {
+                    secondRowText += " via Orbot";
+                }
+                
                 break;
             }
 
@@ -199,6 +240,33 @@ public class ProviderListItem extends LinearLayout {
             return cursor.getCount();
         } finally {
             cursor.close();
+        }
+    }
+    
+    private String getPresenceString(Cursor cursor, Context context) {
+        int presenceStatus = cursor.getInt(mAccountPresenceStatusColumn);
+
+        switch (presenceStatus) {
+
+
+        case Imps.Presence.AVAILABLE:
+            return context.getString(R.string.presence_available);
+
+        case Imps.Presence.IDLE:
+            return context.getString(R.string.presence_idle);
+            
+        case Imps.Presence.AWAY:
+            return context.getString(R.string.presence_away);
+
+        case Imps.Presence.DO_NOT_DISTURB:
+
+            return context.getString(R.string.presence_busy);
+
+        case Imps.Presence.INVISIBLE:
+            return context.getString(R.string.presence_invisible);
+
+        default:
+            return context.getString(R.string.presence_offline);
         }
     }
 

@@ -70,19 +70,23 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
     private static final int TOKEN_ONGOING_CONVERSATION = -2;
     //   private static final int TOKEN_SUBSCRIPTION = -3;
 
+    /*
     private static final String NON_CHAT_AND_BLOCKED_CONTACTS = "("
                                                                 + Imps.Contacts.LAST_MESSAGE_DATE
                                                                 + " IS NULL) AND ("
                                                                 + Imps.Contacts.TYPE + "!="
                                                                 + Imps.Contacts.TYPE_BLOCKED + ")";
 
+    
     private static final String CONTACTS_SELECTION = Imps.Contacts.CONTACTLIST + "=? AND "
                                                      + NON_CHAT_AND_BLOCKED_CONTACTS;
 
+    
     private static final String ONLINE_CONTACT_SELECTION = CONTACTS_SELECTION + " AND "
                                                            + Imps.Contacts.PRESENCE_STATUS + " != "
                                                            + Imps.Presence.OFFLINE;
-
+*/
+    
     static final void log(String msg) {
         Log.d(ImApp.LOG_TAG, "<ContactListAdapter>" + msg);
     }

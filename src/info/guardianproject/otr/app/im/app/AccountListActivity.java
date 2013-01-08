@@ -16,11 +16,22 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.io.IOException;
+import java.util.List;
+
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.Provider;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.FontUtils;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -30,6 +41,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
@@ -39,6 +51,7 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
@@ -49,7 +62,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class LandingPage extends SherlockListActivity implements View.OnCreateContextMenuListener {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -79,7 +92,8 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
                                                          Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
                                                          Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
                                                          Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS, };
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                        };
 
     static final int PROVIDER_ID_COLUMN = 0;
     static final int PROVIDER_NAME_COLUMN = 1;
@@ -100,7 +114,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         
         super.onCreate(icicle);
         
-        setTitle(R.string.landing_page_title);
+      //  setTitle(R.string.landing_page_title);
         
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
@@ -109,7 +123,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" /* selection */,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         Intent intent = getIntent();
@@ -121,8 +135,42 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
+        
 
+        ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
+        FontUtils.setRobotoFont(this, godfatherView);
+        
         registerForContextMenu(getListView());
+        
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
+        getListView().setEmptyView(emptyView);
+        emptyView.setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View arg0) {
+               
+                if (getListView().getCount() == 0)
+                {
+                    showNewAccountListDialog();
+                }
+                        
+                
+            }
+            
+        });
+    }
+    
+    
+    private void reloadList ()
+    {
+        mProviderCursor.close();
+        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        mAdapter = new ProviderAdapter(this, mProviderCursor);
+        setListAdapter(mAdapter);
     }
 
     @Override
@@ -151,8 +199,8 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         mProviderCursor.moveToPosition(position);
 
         if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            // add account
-            intent = getCreateAccountIntent();
+            showNewAccountListDialog();
+            
         } else {
             int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
@@ -322,7 +370,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
             signOutAll();
             return true;
         case R.id.menu_new_account:
-            createAccount();
+            showNewAccountListDialog();
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -333,20 +381,110 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         return super.onOptionsItemSelected(item);
     }
 
-    private void createAccount() {
-        final ImPluginHelper helper = ImPluginHelper.getInstance(this);
+    private String[] mAccountList;
+    private String mNewUser;
+    
+    private ImPluginHelper helper = ImPluginHelper.getInstance(this);
+
+    private void showNewAccountListDialog() {
+      
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
-        final String[] items = helper.getProviderNames().toArray(new String[0]);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        
+        List<String> listProviders = helper.getProviderNames();
+        
+        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
+        
+        mAccountList = new String[listProviders.size() + accounts.length];
+        
+        int i = 0;
+        
+        for (String providerName : listProviders)
+            mAccountList[i++] = providerName;
+                
+        int n = 0;
+        for (; i < mAccountList.length; i++)
+            mAccountList[i] = accounts[n++].name;
+        
+        builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
-                helper.createAdditionalProvider(items[pos]);
 
-                mApp.resetProviderSettings();
+                if (pos > helper.getProviderNames().size()-1) //google accounts based on xmpp
+                {           
+                    mNewUser = mAccountList[pos];                     
+                    Thread thread = new Thread ()
+                    {
+                        public void run ()
+                        {
+                            //get the oauth token and prepend it with a tag for the XMPP to know to use it
+                            String token = GTalkOAuth2.NAME + getGoogleAuthToken(mNewUser);
+                          //use the XMPP type plugin for google accounts
+                            String type = mAccountList[0];
+                            showNewAccountForm(type, mNewUser,token);
+                        }
+                    };
+                    thread.start();
+                }
+                else
+                {
+                    //otherwise support the actual plugin-type
+                    showNewAccountForm(mAccountList[pos],null, null);
+                }
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+
+    }
+    
+    public void showNewAccountForm (String providerType, String username, String token)
+    {
+        long providerId = helper.createAdditionalProvider(providerType);//xmpp
+        ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
+        
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_INSERT);
+        
+        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
+        intent.addCategory(ImApp.IMPS_CATEGORY);
+        
+        if (username != null)
+            intent.putExtra("newuser", username);
+        
+        if (token != null)
+            intent.putExtra("newpass", token);
+        
+        startActivity(intent);
+    }
+    
+    public String getGoogleAuthToken(String name)
+    {
+        Context context = getApplicationContext();
+        Activity activity = this;
+        String retVal = "";
+        Account account = new Account(name, "com.google");
+        AccountManagerFuture<Bundle> accFut = AccountManager.get(context).getAuthToken(account, "mail", null, activity, null, null);
+        try
+        {
+            Bundle authTokenBundle = accFut.getResult();
+            retVal = authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString();
+        }
+        catch (OperationCanceledException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (AuthenticatorException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
     @Override
@@ -434,7 +572,9 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
             return true;
         }
         case ID_ADD_ACCOUNT: {
-            startActivity(getCreateAccountIntent());
+           
+            showNewAccountListDialog();
+           
             return true;
         }
 
@@ -459,6 +599,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         signInAccountAtPosition(position);
     }
 
+    /*
     Intent getCreateAccountIntent() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_INSERT);
@@ -467,12 +608,12 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
-    }
+    }*/
 
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
                 Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
-        intent.addCategory(getProviderCategory(mProviderCursor));
+        intent.addCategory(ImApp.IMPS_CATEGORY);
         return intent;
     }
 
@@ -490,9 +631,10 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
         return intent;
     }
 
+    /*
     private String getProviderCategory(Cursor cursor) {
         return cursor.getString(PROVIDER_CATEGORY_COLUMN);
-    }
+    }*/
 
     static void log(String msg) {
         Log.d(TAG, "[LandingPage]" + msg);
@@ -501,7 +643,7 @@ public class LandingPage extends SherlockListActivity implements View.OnCreateCo
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, LandingPage.this);
+                return new ProviderListItem(context, AccountListActivity.this);
             }
             return null;
         }

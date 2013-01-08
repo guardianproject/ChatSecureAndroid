@@ -22,16 +22,27 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+
+import java.io.IOException;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -49,7 +60,6 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -58,7 +68,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -90,6 +99,8 @@ public class AccountActivity extends ThemeableActivity {
     Button mBtnAdvanced;
     TextView mTxtFingerprint;
 
+    Imps.ProviderSettings.QueryMap settings;
+    
     boolean isEdit = false;
     boolean isSignedIn = false;
 
@@ -108,7 +119,8 @@ public class AccountActivity extends ThemeableActivity {
         super.onCreate(icicle);
         //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.account_activity);
-
+        Intent i = getIntent();
+        
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -145,16 +157,19 @@ public class AccountActivity extends ThemeableActivity {
             }
         });
 
+        
         mApp = ImApp.getApplication(this);
-        Intent i = getIntent();
+
         String action = i.getAction();
 
         if (i.hasExtra("isSignedIn"))
             isSignedIn = i.getBooleanExtra("isSignedIn", false);
+        
 
         final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
+
         Uri uri = i.getData();
         // check if there is account information and direct accordingly
         if (Intent.ACTION_INSERT_OR_EDIT.equals(action)) {
@@ -171,6 +186,11 @@ public class AccountActivity extends ThemeableActivity {
             mProviderId = ContentUris.parseId(i.getData());
             provider = mApp.getProvider(mProviderId);
             setTitle(getResources().getString(R.string.add_account, provider.mFullName));
+
+            settings = new Imps.ProviderSettings.QueryMap(
+                    cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+
+            
         } else if (Intent.ACTION_EDIT.equals(action)) {
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
                 Log.w(ImApp.LOG_TAG, "<AccountActivity>Bad data");
@@ -199,9 +219,11 @@ public class AccountActivity extends ThemeableActivity {
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = mApp.getProvider(mProviderId);
 
+            settings = new Imps.ProviderSettings.QueryMap(
+                    cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+
+            
             ContentResolver contentResolver = getContentResolver();
-            Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                    contentResolver, mProviderId, false, null);
 
             mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
                                    + settings.getDomain();
@@ -212,9 +234,9 @@ public class AccountActivity extends ThemeableActivity {
 
             mUseTor.setChecked(settings.getUseTor());
 
+            
           //  getOTRKeyInfo();
 
-            settings.close();
             cursor.close();
         } else {
             Log.w(ImApp.LOG_TAG, "<AccountActivity> unknown intent action " + action);
@@ -311,12 +333,31 @@ public class AccountActivity extends ThemeableActivity {
         });
 
         updateWidgetState();
+        
+
+        if (i.hasExtra("newuser"))
+        {
+            String newuser = i.getExtras().getString("newuser");
+            mEditUserAccount.setText(newuser);
+            
+            parseAccount(newuser);
+            settingsForDomain(mDomain,mPort);
+            
+        }
+        
+        if (i.hasExtra("newpass"))
+        {
+            mEditPass.setText(i.getExtras().getString("newpass"));
+            mRememberPass.setChecked(true);
+        }
+
 
     }
     
     @Override
     protected void onDestroy() {
         mSignInHelper.stop();
+        settings.close();
         super.onDestroy();
     }
     
@@ -357,7 +398,7 @@ public class AccountActivity extends ThemeableActivity {
         
         settings.setServer(server);
         settings.setUseTor(useTor);
-        settings.close();
+      
     }
 
     private void getOTRKeyInfo() {
@@ -397,8 +438,12 @@ public class AccountActivity extends ThemeableActivity {
             //Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
             settingsForDomain(mDomain, mPort);
             mOriginalUserAccount = username;
+            
         }
+        
     }
+    
+   
 
     boolean parseAccount(String userField) {
         boolean isGood = true;
@@ -443,8 +488,6 @@ public class AccountActivity extends ThemeableActivity {
 
     void settingsForDomain(String domain, int port) {
 
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
@@ -456,7 +499,19 @@ public class AccountActivity extends ThemeableActivity {
             settings.setRequireTls(true);
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
-        } else if (domain.equals("jabber.org")) {
+        } 
+        else if (mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
+        {
+            //this is not @gmail but IS a google account
+            settings.setDoDnsSrv(false);
+            settings.setServer("talk.google.com"); //set the google connect server
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
+        }
+        else if (domain.equals("jabber.org")) {
             settings.setDoDnsSrv(true);
             settings.setDomain(domain);
             settings.setPort(DEFAULT_PORT);
@@ -481,7 +536,6 @@ public class AccountActivity extends ThemeableActivity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         }
-        settings.close();
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -513,13 +567,9 @@ public class AccountActivity extends ThemeableActivity {
     }
 
     void signOutUsingActivity() {
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
         Intent intent = new Intent(AccountActivity.this, SignoutActivity.class);
         intent.setData(mAccountUri);
-
-        settings.close();
 
         startActivity(intent);
     }
