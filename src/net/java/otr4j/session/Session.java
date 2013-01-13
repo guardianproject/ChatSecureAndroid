@@ -10,6 +10,7 @@ import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.crypto.OtrTlvHandler;
 import net.java.otr4j.io.messages.AbstractMessage;
+import net.java.otr4j.io.messages.ExtraSymmetricData;
 
 public interface Session {
 
@@ -23,9 +24,9 @@ public interface Session {
 
     public abstract OtrPolicy getSessionPolicy();
 
-    public abstract String transformReceiving(String content) throws OtrException;
+    public abstract String transformReceiving(String msgText, List<ExtraSymmetricData> extras) throws OtrException;
 
-    public abstract String transformSending(String content, List<TLV> tlvs) throws OtrException;
+    public abstract String transformSending(String content, List<TLV> tlvs, List<ExtraSymmetricData> extras) throws OtrException;
 
     public abstract void startSession() throws OtrException;
 

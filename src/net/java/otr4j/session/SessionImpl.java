@@ -37,6 +37,7 @@ import net.java.otr4j.io.messages.AbstractEncodedMessage;
 import net.java.otr4j.io.messages.AbstractMessage;
 import net.java.otr4j.io.messages.DataMessage;
 import net.java.otr4j.io.messages.ErrorMessage;
+import net.java.otr4j.io.messages.ExtraSymmetricData;
 import net.java.otr4j.io.messages.MysteriousT;
 import net.java.otr4j.io.messages.PlainTextMessage;
 import net.java.otr4j.io.messages.QueryMessage;
@@ -217,7 +218,7 @@ public class SessionImpl implements Session {
         this.sessionStatus = sessionStatus;
         
         if (sessionStatus == SessionStatus.ENCRYPTED && doTransmitLastMessage && lastSentMessage != null) {
-            String msg = this.transformSending((isLastMessageRetransmit ? "[resent] " : "") + lastSentMessage, null);
+            String msg = this.transformSending((isLastMessageRetransmit ? "[resent] " : "") + lastSentMessage, null, null);
             getHost().injectMessage(getSessionID(), msg);
         }
 
@@ -286,7 +287,7 @@ public class SessionImpl implements Session {
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
-    public String transformReceiving(String msgText) throws OtrException {
+    public String transformReceiving(String msgText, List<ExtraSymmetricData> extras) throws OtrException {
         OtrPolicy policy = getSessionPolicy();
         if (!policy.getAllowV1() && !policy.getAllowV2()) {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
@@ -563,7 +564,7 @@ public class SessionImpl implements Session {
     // Retransmit last sent message. Spec document does not mention where or
     // when that should happen, must check libotr code.
 
-    public String transformSending(String msgText, List<TLV> tlvs) throws OtrException {
+    public String transformSending(String msgText, List<TLV> tlvs, List<ExtraSymmetricData> extras) throws OtrException {
 
         switch (this.getSessionStatus()) {
         case PLAINTEXT:
@@ -693,7 +694,7 @@ public class SessionImpl implements Session {
             Vector<TLV> tlvs = new Vector<TLV>();
             tlvs.add(new TLV(1, null));
 
-            String msg = this.transformSending(null, tlvs);
+            String msg = this.transformSending(null, tlvs, null);
             getHost().injectMessage(getSessionID(), msg);
             this.setSessionStatus(SessionStatus.PLAINTEXT);
             break;
