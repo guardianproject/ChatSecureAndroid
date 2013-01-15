@@ -24,9 +24,9 @@ public interface Session {
 
     public abstract OtrPolicy getSessionPolicy();
 
-    public abstract String transformReceiving(String msgText, List<ExtraSymmetricData> extras) throws OtrException;
+    public abstract String transformReceiving(String msgText, ExtraSymmetricData extras) throws OtrException;
 
-    public abstract String transformSending(String content, List<TLV> tlvs, List<ExtraSymmetricData> extras) throws OtrException;
+    public abstract String transformSending(String content, List<TLV> tlvs, ExtraSymmetricData extras) throws OtrException;
 
     public abstract void startSession() throws OtrException;
 

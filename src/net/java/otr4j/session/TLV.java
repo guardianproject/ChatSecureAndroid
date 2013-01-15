@@ -15,6 +15,7 @@ public class TLV {
     /* Like OTRL_TLV_SMP1, but there's a question for the buddy at the
      * beginning */
     public static final int SMP1Q = 0x0007;
+    public static final int EXTRA_SYMMETRIC_KEY = 0x0008;
 
     public TLV(int type, byte[] value) {
         this.setType(type);

@@ -64,8 +64,8 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformReceiving(msgText, null);
     }
 
-    public String transformReceiving(SessionID sessionID, String msgText, List<ExtraSymmetricData> extras) throws OtrException {
-        return this.getSession(sessionID).transformReceiving(msgText, extras);
+    public String transformReceiving(SessionID sessionID, String msgText, ExtraSymmetricData extra) throws OtrException {
+        return this.getSession(sessionID).transformReceiving(msgText, extra);
     }
 
     public String transformSending(SessionID sessionID, String msgText) throws OtrException {
@@ -77,9 +77,9 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformSending(msgText, tlvs, null);
     }
 
-    public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs, List<ExtraSymmetricData> extras)
+    public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs, ExtraSymmetricData extra)
             throws OtrException {
-        return this.getSession(sessionID).transformSending(msgText, tlvs, extras);
+        return this.getSession(sessionID).transformSending(msgText, tlvs, extra);
     }
 
     public void endSession(SessionID sessionID) throws OtrException {

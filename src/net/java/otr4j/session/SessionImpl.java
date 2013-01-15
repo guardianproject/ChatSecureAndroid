@@ -287,7 +287,7 @@ public class SessionImpl implements Session {
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
-    public String transformReceiving(String msgText, List<ExtraSymmetricData> extras) throws OtrException {
+    public String transformReceiving(String msgText, ExtraSymmetricData extra) throws OtrException {
         OtrPolicy policy = getSessionPolicy();
         if (!policy.getAllowV1() && !policy.getAllowV2()) {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
@@ -306,7 +306,7 @@ public class SessionImpl implements Session {
 
         switch (m.messageType) {
         case AbstractEncodedMessage.MESSAGE_DATA:
-            return handleDataMessage((DataMessage) m);
+            return handleDataMessage((DataMessage) m, extra);
         case AbstractMessage.MESSAGE_ERROR:
             handleErrorMessage((ErrorMessage) m);
             return null;
@@ -375,7 +375,7 @@ public class SessionImpl implements Session {
         }
     }
 
-    private String handleDataMessage(DataMessage data) throws OtrException {
+    private String handleDataMessage(DataMessage data, ExtraSymmetricData extra) throws OtrException {
         logger.finest(getSessionID().getAccountID() + " received a data message from "
                       + getSessionID().getUserID() + ".");
 
@@ -429,6 +429,10 @@ public class SessionImpl implements Session {
             }
 
             logger.finest("Decrypted message: \"" + decryptedMsgContent + "\"");
+            
+            if (extra != null) {
+                extra.setExtraKey(authContext.getExtraSymmetricKey());
+            }
 
             // Rotate keys if necessary.
             SessionKeys mostRecent = this.getMostRecentSessionKeys();
@@ -470,6 +474,15 @@ public class SessionImpl implements Session {
                     case TLV.DISCONNECTED:
                         this.setSessionStatus(SessionStatus.FINISHED);
                         return null;
+                    case TLV.EXTRA_SYMMETRIC_KEY:
+                        byte[] tlvValue = tlv.getValue();
+                        if (tlvValue.length >= 4) {
+                            int use = readInt(tlvValue, 0);
+                            byte[] value = new byte[tlvValue.length - 4];
+                            System.arraycopy(tlvValue, 4, value, 0, tlvValue.length - 4);
+                            extra.addData(new ExtraSymmetricData.Data(use, value));
+                        }
+                        break;
                     default:
                         for (OtrTlvHandler handler : tlvHandlers) {
                             handler.processTlv(tlv);
@@ -490,6 +503,16 @@ public class SessionImpl implements Session {
         }
 
         return null;
+    }
+
+    private int readInt(byte[] b, int offset) {
+        int value = 0;
+        for (int i = 0; i < 4; i++) {
+            int shift = (3 - i) * 8;
+            value += (b[offset + i] & 0x000000FF) << shift;
+        }
+
+        return value;
     }
 
     public void injectMessage(AbstractMessage m) throws OtrException {
@@ -564,7 +587,7 @@ public class SessionImpl implements Session {
     // Retransmit last sent message. Spec document does not mention where or
     // when that should happen, must check libotr code.
 
-    public String transformSending(String msgText, List<TLV> tlvs, List<ExtraSymmetricData> extras) throws OtrException {
+    public String transformSending(String msgText, List<TLV> tlvs, ExtraSymmetricData extra) throws OtrException {
 
         switch (this.getSessionStatus()) {
         case PLAINTEXT:
