@@ -3,6 +3,7 @@
     git submodule update --init
     android update project --path external/ActionBarSherlock/library/ --target android-15 --name ActionBarSherlock
     android update project --path external/MemorizingTrustManager --target android-15 --name MemorizingTrustManager
+    android update project --path external/OnionKit --target android-15 --name OnionKit
     * setup external/asmack/local.properties to point to your android sdk *
     (cd external/asmack && ./build.bash && cp build/asmack-android-4.jar ../../libs)
 
@@ -16,10 +17,10 @@ Follow the steps from the prep section, then:
 
 Add the following as Android projects, after following the steps in the prep section:
 
-    * Gibberbot/ActionBarSherlock/library (use ActionBarSherlock as project name)
-    * OnionKit
-    * MemorizingTrustManager
-    * Gibberbot
+    * external/ActionBarSherlock/library (use ActionBarSherlock as project name)
+    * external/OnionKit
+    * external/MemorizingTrustManager
+    * Gibberbot itself
     
 
 == Old Stuff
