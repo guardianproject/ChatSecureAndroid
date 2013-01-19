@@ -171,7 +171,7 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
  -->
-        <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
+        <activity android:name=".app.AccountListActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
