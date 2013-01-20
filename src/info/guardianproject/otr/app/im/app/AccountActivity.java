@@ -278,6 +278,17 @@ public class AccountActivity extends ThemeableActivity {
             public void onClick(View v) {
 
                 checkUserChanged();
+                
+                if (mUseTor.isChecked())
+                {
+                    OrbotHelper oh = new OrbotHelper(AccountActivity.this);
+                    if (!oh.isOrbotRunning())
+                    {
+                        oh.requestOrbotStart(AccountActivity.this);
+                        return;
+                    }
+                }
+                
 
                 final String pass = mEditPass.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
@@ -319,6 +330,7 @@ public class AccountActivity extends ThemeableActivity {
                     isSignedIn = true;
                 }
                 updateWidgetState();
+                
             }
         });
         

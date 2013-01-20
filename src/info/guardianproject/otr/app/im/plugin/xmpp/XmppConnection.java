@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.trust.StrongTrustManager;
+import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
