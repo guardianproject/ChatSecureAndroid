@@ -393,45 +393,26 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         List<String> listProviders = helper.getProviderNames();
         
-        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
-        
-        mAccountList = new String[listProviders.size() + accounts.length];
+        mAccountList = new String[listProviders.size()+1];
         
         int i = 0;
         
         for (String providerName : listProviders)
             mAccountList[i++] = providerName;
                 
-        int n = 0;
-        for (; i < mAccountList.length; i++)
-            mAccountList[i] = accounts[n++].name;
+        mAccountList[i] = getString(R.string.google_account);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
 
                 if (pos > helper.getProviderNames().size()-1) //google accounts based on xmpp
                 {           
-                    mNewUser = mAccountList[pos];                     
-                    Thread thread = new Thread ()
-                    {
-                        public void run ()
-                        {
-                            //get the oauth token and prepend it with a tag for the XMPP to know to use it
-                            String oauthToken = GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
-                            //don't store anything just make sure it works!
-                            
-                            String tmpPassword = GTalkOAuth2.NAME;
-                          //use the XMPP type plugin for google accounts
-                            String type = mAccountList[0];
-                            showNewAccountForm(type, mNewUser,tmpPassword);
-                        }
-                    };
-                    thread.start();
+                    showGoogleAccountListDialog();
                 }
                 else
                 {
                     //otherwise support the actual plugin-type
-                    showNewAccountForm(mAccountList[pos],null, null);
+                    showSetupAccountForm(mAccountList[pos],null, null);
                 }
             }
         });
@@ -440,7 +421,44 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     }
     
-    public void showNewAccountForm (String providerType, String username, String token)
+    private void showGoogleAccountListDialog() {
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.account_select_type);
+        
+        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
+        
+        mAccountList = new String[accounts.length];
+        
+        for (int i = 0; i < mAccountList.length; i++)
+            mAccountList[i] = accounts[i].name;
+        
+        builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int pos) {
+   
+                    mNewUser = mAccountList[pos];                     
+                    Thread thread = new Thread ()
+                    {
+                        public void run ()
+                        {
+                            //get the oauth token
+                          //don't store anything just make sure it works!
+                            GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
+                            
+                          //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,GTalkOAuth2.NAME);
+                        }
+                    };
+                    thread.start();
+              
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+    
+    public void showSetupAccountForm (String providerType, String username, String token)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
         ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list

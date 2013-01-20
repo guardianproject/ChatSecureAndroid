@@ -23,7 +23,6 @@ import android.util.Log;
 
 public class GTalkOAuth2 extends SASLMechanism {
 public static final String NAME="X-GOOGLE-TOKEN";
-
 private static final String TOKEN_TYPE = "mail";
 
 /*

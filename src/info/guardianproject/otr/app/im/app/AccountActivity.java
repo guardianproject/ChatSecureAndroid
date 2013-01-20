@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -222,9 +223,6 @@ public class AccountActivity extends ThemeableActivity {
             settings = new Imps.ProviderSettings.QueryMap(
                     cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
-            
-            ContentResolver contentResolver = getContentResolver();
-
             mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
                                    + settings.getDomain();
             mEditUserAccount.setText(mOriginalUserAccount);
@@ -237,7 +235,6 @@ public class AccountActivity extends ThemeableActivity {
             
           //  getOTRKeyInfo();
 
-            cursor.close();
         } else {
             Log.w(ImApp.LOG_TAG, "<AccountActivity> unknown intent action " + action);
             finish();
@@ -363,41 +360,59 @@ public class AccountActivity extends ThemeableActivity {
     
     private void updateUseTor(boolean useTor) {
         checkUserChanged();
-
+    
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
-
-        // if using Tor, disable DNS SRV to reduce anonymity leaks
-        settings.setDoDnsSrv(!useTor);
-
-        String server = settings.getServer();
-
-        if (useTor && (server == null || server.length() == 0)) {
-            server = settings.getDomain();
-            String domain = settings.getDomain().toLowerCase();
-
-            // a little bit of custom handling here
-            if (domain.equals("gmail.com")) {
-                server = "talk.l.google.com";
-            } else if (domain.equals("jabber.ccc.de")) {
-                server = "okj7xc6j2szr2y75.onion";
-            } else if (domain.equals("jabber.org")) {
-                server = "hermes.jabber.org";
-            } else if (domain.equals("chat.facebook.com")) {
-                server = "chat.facebook.com";
-            } else if (domain.equals("dukgo.com")) {
-                server = "dukgo.com";
-                //settings.setTlsCertVerify(false); //remove this - MemorizingTrustManager will now prompt
+    
+        OrbotHelper orbotHelper = new OrbotHelper(this);
+        
+        if (!orbotHelper.isOrbotInstalled())
+        {
+            //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
+            
+            orbotHelper.promptToInstall(this);
+            
+            mUseTor.setChecked(false);
+            settings.setUseTor(false);
+            settings.setServer("");
+        }
+        else
+        {
+        
+            // if using Tor, disable DNS SRV to reduce anonymity leaks
+            settings.setDoDnsSrv(!useTor);
+        
+            String server = settings.getServer();
+        
+            if (useTor && (server == null || server.length() == 0)) {
+                server = settings.getDomain();
+                String domain = settings.getDomain().toLowerCase();
+        
+                // a little bit of custom handling here
+                if (domain.equals("gmail.com")) {
+                    server = "talk.l.google.com";
+                } else if (domain.equals("jabber.ccc.de")) {
+                    server = "okj7xc6j2szr2y75.onion";
+                } else if (domain.equals("jabber.org")) {
+                    server = "hermes.jabber.org";
+                } else if (domain.equals("chat.facebook.com")) {
+                    server = "chat.facebook.com";
+                } else if (domain.equals("dukgo.com")) {
+                    server = "dukgo.com";
+                    //settings.setTlsCertVerify(false); //remove this - MemorizingTrustManager will now prompt
+                }
+                else
+                {
+                    Toast.makeText(this, getString(R.string.warning_tor_connect), Toast.LENGTH_LONG).show();
+                }
+        
             }
-            else
-            {
-                Toast.makeText(this, getString(R.string.warning_tor_connect), Toast.LENGTH_LONG).show();
-            }
-
+            
+            settings.setServer(server);
+            settings.setUseTor(useTor);
         }
         
-        settings.setServer(server);
-        settings.setUseTor(useTor);
+        settings.close();
       
     }
 
@@ -661,8 +676,6 @@ public class AccountActivity extends ThemeableActivity {
 
         mEditUserAccount.setEnabled(!isSignedIn);
         mEditPass.setEnabled(!isSignedIn);
-        mBtnAdvanced.setEnabled(!isSignedIn);
-        mUseTor.setEnabled(!isSignedIn);
 
         if (!isSignedIn) {
             mBtnSignIn.setEnabled(hasNameAndPassword);
