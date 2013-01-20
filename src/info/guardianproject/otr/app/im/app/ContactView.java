@@ -96,6 +96,7 @@ public class ContactView extends LinearLayout {
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
         Resources r = getResources();
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
+        
         String username = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
@@ -134,12 +135,19 @@ public class ContactView extends LinearLayout {
 
             //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
              String address = ImpsAddressUtils.getDisplayableAddress(username);
+             contact = nickname;
              
-            if (TextUtils.isEmpty(nickname) || nickname.equals(address))
+             if (address.indexOf('/')!=-1)
+             {
+                 contact = nickname + " (" + address.substring(address.indexOf('/')+1) + ")";
+             }
+             /*
+            if (nickname.equals(address))
                 contact = nickname;    
             else
                 contact = nickname + " (" + ImpsAddressUtils.getDisplayableAddress(username) + ")";
-
+                */
+             
             if (!TextUtils.isEmpty(underLineText)) {
                 // highlight/underline the word being searched
                 String lowercase = contact.toString().toLowerCase();

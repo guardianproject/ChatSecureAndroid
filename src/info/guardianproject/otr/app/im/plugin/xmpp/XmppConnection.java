@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.trust.StrongTrustManager;
+import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -69,6 +70,7 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -76,8 +78,15 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -494,6 +503,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
+        
+      //  android.os.Debug.waitForDebugger();
+        
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
@@ -593,6 +605,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (password.startsWith(GTalkOAuth2.NAME))
         {
+            
             SASLAuthentication.unsupportSASLMechanism("PLAIN");
             SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
             
@@ -601,7 +614,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             
-            password = password.substring(GTalkOAuth2.NAME.length());
+            password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain,mContext);
         }
         
         mConfig.setVerifyChainEnabled(true);
@@ -1070,7 +1083,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             Collection<Contact> contacts = new ArrayList<Contact>();
             for (RosterEntry entry : entryIter) {
-                String address = parseAddressBase(entry.getUser());
+                
+                String address = entry.getUser();// parseAddressBase(entry.getUser());
 
                 /* Skip entries present in the skip list */
                 if (skipList != null && !skipList.add(address))
@@ -1081,15 +1095,33 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     name = address;
 
                 XmppAddress xaddress = new XmppAddress(name, address);
+                
+                org.jivesoftware.smack.packet.Presence presence = roster.getPresence(address);
+                
+                String status = presence.getStatus();
+                String resource = null;
+                
+                String from = presence.getFrom();
+                if (from != null && from.lastIndexOf("/") > 0) {
+                    resource = from.substring(from.lastIndexOf("/") + 1);
+                   
+                    if (resource.indexOf('.')!=-1)
+                        resource = resource.substring(0,resource.indexOf('.'));
+                    
+                    
+                }
+            
+                if (resource != null)
+                    xaddress.appendResource(resource);
 
                 Contact contact = mContactListManager.getContact(xaddress.getFullName());
 
                 if (contact == null)
                     contact = new Contact(xaddress, name);
 
-                org.jivesoftware.smack.packet.Presence presence = roster.getPresence(address);
-
-                contact.setPresence(new Presence(parsePresence(presence), presence.getStatus(),
+                
+               
+                contact.setPresence(new Presence(parsePresence(presence), status,
                         null, null, Presence.CLIENT_TYPE_DEFAULT));
 
                 contacts.add(contact);
@@ -1280,8 +1312,24 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             String name = parseAddressName(presence.getFrom());
             String address = parseAddressBase(presence.getFrom());
 
+            String status = presence.getStatus();
+            String resource = null;
+            
+            String from = presence.getFrom();
+            if (from != null && from.lastIndexOf("/") > 0) {
+                resource = from.substring(from.lastIndexOf("/") + 1);
+               
+                if (resource.indexOf('.')!=-1)
+                    resource = resource.substring(0,resource.indexOf('.'));
+                
+                
+            }
+            
+            
             XmppAddress xaddress = new XmppAddress(name, address);
-
+            if (resource != null)
+                xaddress.appendResource(resource);
+            
             if (mConnection == null)
                 return;
             
@@ -1307,7 +1355,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         + contact.getAddress().getFullName() + " presence:" + type);
             }
 
-            Presence p = new Presence(type, presence.getStatus(), null, null,
+            
+            
+            Presence p = new Presence(type, status, null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
             contact.setPresence(p);
 
@@ -1792,5 +1842,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         sdm.addFeature("http://jabber.org/protocol/disco#info");
         sdm.addFeature(DeliveryReceipts.NAMESPACE);
     }
+    
+  
+   
 
 }
