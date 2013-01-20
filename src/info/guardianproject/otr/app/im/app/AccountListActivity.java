@@ -164,7 +164,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
     private void reloadList ()
     {
-        mProviderCursor.close();
+     //   mProviderCursor.close();
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
@@ -417,10 +417,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                         public void run ()
                         {
                             //get the oauth token and prepend it with a tag for the XMPP to know to use it
-                            String token = GTalkOAuth2.NAME + getGoogleAuthToken(mNewUser);
+                            String oauthToken = GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
+                            //don't store anything just make sure it works!
+                            
+                            String tmpPassword = GTalkOAuth2.NAME;
                           //use the XMPP type plugin for google accounts
                             String type = mAccountList[0];
-                            showNewAccountForm(type, mNewUser,token);
+                            showNewAccountForm(type, mNewUser,tmpPassword);
                         }
                     };
                     thread.start();
@@ -457,35 +460,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         startActivity(intent);
     }
     
-    public String getGoogleAuthToken(String name)
-    {
-        Context context = getApplicationContext();
-        Activity activity = this;
-        String retVal = "";
-        Account account = new Account(name, "com.google");
-        AccountManagerFuture<Bundle> accFut = AccountManager.get(context).getAuthToken(account, "mail", null, activity, null, null);
-        try
-        {
-            Bundle authTokenBundle = accFut.getResult();
-            retVal = authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString();
-        }
-        catch (OperationCanceledException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (AuthenticatorException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return retVal;
-    }
+   
+    
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {

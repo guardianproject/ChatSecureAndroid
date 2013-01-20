@@ -77,8 +77,15 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -495,6 +502,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
+        
+      //  android.os.Debug.waitForDebugger();
+        
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
@@ -594,6 +604,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (password.startsWith(GTalkOAuth2.NAME))
         {
+            
             SASLAuthentication.unsupportSASLMechanism("PLAIN");
             SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
             
@@ -602,7 +613,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             
-            password = password.substring(GTalkOAuth2.NAME.length());
+            password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain,mContext);
         }
         
         mConfig.setVerifyChainEnabled(true);
@@ -1830,5 +1841,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         sdm.addFeature("http://jabber.org/protocol/disco#info");
         sdm.addFeature(DeliveryReceipts.NAMESPACE);
     }
+    
+  
+   
 
 }
