@@ -40,6 +40,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -114,6 +115,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         super.onCreate(icicle);
         
+        
       //  setTitle(R.string.landing_page_title);
         
         mApp = ImApp.getApplication(this);
@@ -135,7 +137,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
-        
 
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
         FontUtils.setRobotoFont(this, godfatherView);
@@ -443,10 +444,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                         {
                             //get the oauth token
                           //don't store anything just make sure it works!
-                            GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
+                           String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
                             
                           //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,GTalkOAuth2.NAME);
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password);
                         }
                     };
                     thread.start();
