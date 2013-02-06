@@ -115,7 +115,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             return;
         }
         
-        setupActionBarList (mAccountId);
+    //    setupActionBarList (mAccountId);
         
 
         mApp = ImApp.getApplication(this);
@@ -131,12 +131,15 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                 mFilterView.doFilter(filterText);
             }
         }
+        
+
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        
     }
     
     private void initAccount ()
     {
-
-               
 
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
@@ -146,7 +149,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             return;
         }
         if (!c.moveToFirst()) {
-            c.close();
+           // c.close();
             finish();
             return;
         }
@@ -156,7 +159,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
         String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
-        c.close();
+        //c.close();
 
        // BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
        // setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
@@ -205,65 +208,8 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
     }
     
-    long[] mAccountIds;
     
-    private void setupActionBarList (long accountId)
-    {
-
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlock().getActionBar().setTitle("");
-        
-        Cursor mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        
-        mAccountIds = new long[mProviderCursor.getCount()];
-        
-        mProviderCursor.moveToFirst();
-        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
-
-        int currentAccountIndex = -1;
-        
-        for (int i = 0; i < mAccountIds.length; i++)
-        {
-            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);
-            mProviderCursor.moveToNext();
-            
-            if (mAccountIds[i] == mAccountId)
-                currentAccountIndex = i;
-        }
-
-        mProviderCursor.moveToFirst();
-        
-        mAdapter = new ProviderAdapter(this, mProviderCursor);
-        
-        this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        this.getSherlock().getActionBar().setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
-
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                
-                if (mAccountIds[itemPosition] != mAccountId)
-                {
-                    mAccountId = mAccountIds[itemPosition];
-                    initAccount ();
-                    
-                    
-                }
-                
-                return false;
-            }
-            
-        });
-        
-        
-        getSherlock().getActionBar().setSelectedNavigationItem(currentAccountIndex);
-
-
-    }
-    
+   
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -350,7 +296,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
                 Imps.Account.CONTENT_URI, mAccountId));
         intent.addCategory(cursor.getString(0));
-        cursor.close();
+      //  cursor.close();
         intent.putExtra("isSignedIn", isSignedIn);
 
         return intent;
@@ -571,6 +517,8 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                     .setIcon(android.R.drawable.ic_menu_delete)
                     .setOnMenuItemClickListener(mContextMenuHandler);
         }
+        
+      //  contactCursor.close();
     }
 
     void clearConnectionStatus() {
@@ -695,7 +643,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         }
     }
     
-    private final class ProviderAdapter extends CursorAdapter {
+    private class ProviderAdapter extends CursorAdapter {
         private LayoutInflater mInflater;
 
         @SuppressWarnings("deprecation")
@@ -724,12 +672,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         }
     }
 
-    private void setupSearchView(MenuItem searchItem) {
-        
-      
-        
-        
-    }
   
     public boolean onClose() {
         
