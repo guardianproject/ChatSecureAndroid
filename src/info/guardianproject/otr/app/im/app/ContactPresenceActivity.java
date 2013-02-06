@@ -144,7 +144,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 txtCustomStatus.setVisibility(View.GONE);
             }
         }
-        c.close();
+      //  c.close();
     }
 
     private void updateUI() {

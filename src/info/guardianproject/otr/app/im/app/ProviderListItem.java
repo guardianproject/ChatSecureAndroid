@@ -214,6 +214,8 @@ public class ProviderListItem extends LinearLayout {
             mChatView.setVisibility(View.GONE);
             mProviderName.setText(providerDisplayName);
         }
+        
+        settings.close();
     }
     
     public Long getAccountID ()

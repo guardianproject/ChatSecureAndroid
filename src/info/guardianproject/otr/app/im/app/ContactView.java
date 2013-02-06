@@ -223,7 +223,6 @@ public class ContactView extends LinearLayout {
                     buf.append(',');
                 }
             }
-            c.close();
         }
         return buf.toString();
     }
