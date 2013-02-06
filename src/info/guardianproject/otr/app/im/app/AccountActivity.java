@@ -378,7 +378,7 @@ public class AccountActivity extends ThemeableActivity {
     
         OrbotHelper orbotHelper = new OrbotHelper(this);
         
-        if (!orbotHelper.isOrbotInstalled())
+        if (useTor && (!orbotHelper.isOrbotInstalled()))
         {
             //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
             
@@ -503,12 +503,14 @@ public class AccountActivity extends ThemeableActivity {
             //Toast.makeText(AccountActivity.this, 
             //	R.string.account_wizard_no_domain_warning,
             //	Toast.LENGTH_LONG).show();
-        } else if (mDomain.indexOf(".") == -1) {
+        } 
+        /*//removing requirement of a . in the domain
+        else if (mDomain.indexOf(".") == -1) { 
             isGood = false;
             //	Toast.makeText(AccountActivity.this, 
             //		R.string.account_wizard_no_root_domain_warning,
             //	Toast.LENGTH_LONG).show();
-        }
+        }*/
 
         return isGood;
     }
