@@ -7,7 +7,6 @@ public class XmppAddress extends Address {
 
     private String address;
     private String name;
-    private String resource;
     
     public XmppAddress() {
     }
@@ -29,21 +28,12 @@ public class XmppAddress extends Address {
 
     @Override
     public String getScreenName() {
-        if (resource != null)
-            return name + " (" + resource + ")";
-        else 
-            return name;
+        return name;
     }
     
     @Override
     public String getContactName() {
         return super.getContactName();
-    }
-
-    @Override
-    public Address appendResource(String resource) {
-        this.resource = resource;
-        return this;
     }
 
     @Override
@@ -56,11 +46,6 @@ public class XmppAddress extends Address {
     public void writeToParcel(Parcel dest) {
         dest.writeString(name);
         dest.writeString(address);
-    }
-    
-    public String getResource ()
-    {
-        return resource;
     }
 
 }
