@@ -729,8 +729,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 } else {
                     int type = parsePresence(presence);
 
-                    contact.setPresence(new Presence(type, presence.getStatus(), null, null,
-                            Presence.CLIENT_TYPE_DEFAULT));
+                    Presence p = new Presence(type, presence.getStatus(), null, null,
+                            Presence.CLIENT_TYPE_DEFAULT);
+                    
+                    String from = presence.getFrom();
+                    String resource = null;
+                    if (from != null && from.lastIndexOf("/") > 0) {
+                        resource = from.substring(from.lastIndexOf("/") + 1);
+                       
+                        if (resource.indexOf('.')!=-1)
+                            resource = resource.substring(0,resource.indexOf('.'));
+
+                        p.setResource(resource);
+                    }
+                    
+                    contact.setPresence(p);
 
                 }
             }
@@ -1126,28 +1139,25 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String status = presence.getStatus();
                 String resource = null;
                 
+                Presence p = new Presence(parsePresence(presence), status,
+                        null, null, Presence.CLIENT_TYPE_DEFAULT);
+                
                 String from = presence.getFrom();
                 if (from != null && from.lastIndexOf("/") > 0) {
                     resource = from.substring(from.lastIndexOf("/") + 1);
                    
                     if (resource.indexOf('.')!=-1)
                         resource = resource.substring(0,resource.indexOf('.'));
-                    
-                    
+
+                    p.setResource(resource);
                 }
             
-                if (resource != null)
-                    xaddress.appendResource(resource);
-
                 Contact contact = mContactListManager.getContact(xaddress.getFullName());
 
                 if (contact == null)
-                    contact = new Contact(xaddress, name);
+                    contact = new Contact(xaddress, xaddress.getScreenName());
 
-                
-               
-                contact.setPresence(new Presence(parsePresence(presence), status,
-                        null, null, Presence.CLIENT_TYPE_DEFAULT));
+                contact.setPresence(p);
 
                 contacts.add(contact);
 
@@ -1367,6 +1377,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             Contact contact = getContact(xaddress.getFullName());
 
+            Presence p = new Presence(type, status, null, null,
+                    Presence.CLIENT_TYPE_DEFAULT);
+            p.setResource(resource);
+            
             if (contact == null) {
                 contact = new Contact(xaddress, name);
 
@@ -1380,10 +1394,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         + contact.getAddress().getFullName() + " presence:" + type);
             }
 
-            
-            
-            Presence p = new Presence(type, status, null, null,
-                    Presence.CLIENT_TYPE_DEFAULT);
             contact.setPresence(p);
 
             Contact[] contacts = new Contact[] { contact };
