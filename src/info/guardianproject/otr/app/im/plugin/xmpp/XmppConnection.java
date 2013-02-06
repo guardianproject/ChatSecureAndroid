@@ -122,6 +122,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private long mProviderId = -1;
     private String mPasswordTemp;
 
+    private boolean mLastLoginFailed = false;
     
     private final static String TRUSTSTORE_TYPE = "BKS";
     private final static String TRUSTSTORE_PATH = "cacerts.bks";
@@ -432,12 +433,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
             initConnection(userName, password, providerSettings);
-
+            mLastLoginFailed = false;
         } catch (Exception e) {
            debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
-
+            mLastLoginFailed = true;
+            
             if (e == null || e.getMessage() == null) {
                 debug(TAG, "NPE: " + e.getMessage());
                 e.printStackTrace();
@@ -619,14 +621,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             password = password.split(":")[1];
             
-            if (mRetryLogin)
+            if (mLastLoginFailed) //google oauth2 token may be expired
             {
+        
+                //invalidate our old one, that is locally cached
                 AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password);
             
+                //request a new one
                 password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
 
-                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, mUsername,
-                        password);
+                //now store the new one, for future use until it expires
+                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                        GTalkOAuth2.NAME + ':' + password);
                 
                 
             
