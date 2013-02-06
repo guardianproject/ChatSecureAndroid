@@ -141,12 +141,6 @@ public class ContactView extends LinearLayout {
              {
                  contact = nickname + " (" + address.substring(address.indexOf('/')+1) + ")";
              }
-             /*
-            if (nickname.equals(address))
-                contact = nickname;    
-            else
-                contact = nickname + " (" + ImpsAddressUtils.getDisplayableAddress(username) + ")";
-                */
              
             if (!TextUtils.isEmpty(underLineText)) {
                 // highlight/underline the word being searched
