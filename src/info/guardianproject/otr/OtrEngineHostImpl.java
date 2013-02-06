@@ -53,7 +53,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         mSessionResources = new Hashtable<SessionID, String>();
 
         File storeFile = new File(context.getApplicationContext().getFilesDir(), OTR_KEYSTORE_PATH);
-        mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile.getAbsolutePath());
+        mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile);
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
             public void verificationStatusChanged(SessionID session) {

@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -22,7 +22,6 @@ android:anyDensity="true"
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
-    
     
     <uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
   <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"></uses-permission> 
@@ -52,6 +51,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:theme="@style/Theme.Gibberbot.Light"
+             android:allowBackup="false"
 			>
      		 
          <activity android:name=".app.WelcomeActivity"
@@ -60,6 +60,34 @@ android:anyDensity="true"
               <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+               <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+				<action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern="*.otr"
+                    android:scheme="content" />
+            </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern="*.otr"
+                    android:scheme="file" />
             </intent-filter>
         </activity>
         
@@ -88,6 +116,7 @@ android:anyDensity="true"
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
                android:process=":remote"
+               android:exported="false"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -102,6 +131,8 @@ android:anyDensity="true"
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
                android:process=":remote"
+                android:exported="false"
+               
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -172,6 +203,7 @@ android:anyDensity="true"
         </activity>
  -->
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
+            android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -186,7 +218,9 @@ android:anyDensity="true"
         </activity>
       
         <activity android:name=".app.AccountActivity"
-            android:windowSoftInputMode="stateUnchanged">
+            android:windowSoftInputMode="stateUnchanged"
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -203,6 +237,7 @@ android:anyDensity="true"
       
 
         <activity android:name=".app.SignoutActivity"
+            android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -210,7 +245,7 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
         <activity android:name=".app.ContactListActivity" android:launchMode="singleTop"
-            
+            android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -232,7 +267,7 @@ android:anyDensity="true"
         <activity android:name=".app.NewChatActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
-               
+               android:exported="false"
                 
                 >
             <intent-filter>
@@ -254,6 +289,7 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.ContactsPickerActivity" android:label="@string/contacts_picker_title"
+            android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -263,7 +299,7 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.BlockedContactsActivity" android:label="@string/blocked_list_title"
-            
+            android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -274,6 +310,8 @@ android:anyDensity="true"
 
         <activity android:name=".app.ContactPresenceActivity" 
               android:uiOptions="splitActionBarWhenNarrow"
+                          android:exported="false"
+              
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -283,6 +321,8 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.AccountSettingsActivity" 
+                        android:exported="false"
+            
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -293,6 +333,8 @@ android:anyDensity="true"
         </activity>
 
         <activity android:name=".app.SettingActivity" 
+                        android:exported="false"
+            
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
