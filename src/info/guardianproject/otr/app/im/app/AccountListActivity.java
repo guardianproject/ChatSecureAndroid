@@ -40,6 +40,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -114,6 +115,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         super.onCreate(icicle);
         
+        
       //  setTitle(R.string.landing_page_title);
         
         mApp = ImApp.getApplication(this);
@@ -135,7 +137,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
-        
 
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
         FontUtils.setRobotoFont(this, godfatherView);
@@ -164,7 +165,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
     private void reloadList ()
     {
-        mProviderCursor.close();
+     //   mProviderCursor.close();
         mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
@@ -393,42 +394,26 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         List<String> listProviders = helper.getProviderNames();
         
-        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
-        
-        mAccountList = new String[listProviders.size() + accounts.length];
+        mAccountList = new String[listProviders.size()+1];
         
         int i = 0;
         
         for (String providerName : listProviders)
             mAccountList[i++] = providerName;
                 
-        int n = 0;
-        for (; i < mAccountList.length; i++)
-            mAccountList[i] = accounts[n++].name;
+        mAccountList[i] = getString(R.string.google_account);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
 
                 if (pos > helper.getProviderNames().size()-1) //google accounts based on xmpp
                 {           
-                    mNewUser = mAccountList[pos];                     
-                    Thread thread = new Thread ()
-                    {
-                        public void run ()
-                        {
-                            //get the oauth token and prepend it with a tag for the XMPP to know to use it
-                            String token = GTalkOAuth2.NAME + getGoogleAuthToken(mNewUser);
-                          //use the XMPP type plugin for google accounts
-                            String type = mAccountList[0];
-                            showNewAccountForm(type, mNewUser,token);
-                        }
-                    };
-                    thread.start();
+                    showGoogleAccountListDialog();
                 }
                 else
                 {
                     //otherwise support the actual plugin-type
-                    showNewAccountForm(mAccountList[pos],null, null);
+                    showSetupAccountForm(mAccountList[pos],null, null);
                 }
             }
         });
@@ -437,7 +422,44 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     }
     
-    public void showNewAccountForm (String providerType, String username, String token)
+    private void showGoogleAccountListDialog() {
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.account_select_type);
+        
+        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
+        
+        mAccountList = new String[accounts.length];
+        
+        for (int i = 0; i < mAccountList.length; i++)
+            mAccountList[i] = accounts[i].name;
+        
+        builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int pos) {
+   
+                    mNewUser = mAccountList[pos];                     
+                    Thread thread = new Thread ()
+                    {
+                        public void run ()
+                        {
+                            //get the oauth token
+                          //don't store anything just make sure it works!
+                           String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
+                            
+                          //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password);
+                        }
+                    };
+                    thread.start();
+              
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+    
+    public void showSetupAccountForm (String providerType, String username, String token)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
         ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
@@ -457,35 +479,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         startActivity(intent);
     }
     
-    public String getGoogleAuthToken(String name)
-    {
-        Context context = getApplicationContext();
-        Activity activity = this;
-        String retVal = "";
-        Account account = new Account(name, "com.google");
-        AccountManagerFuture<Bundle> accFut = AccountManager.get(context).getAuthToken(account, "mail", null, activity, null, null);
-        try
-        {
-            Bundle authTokenBundle = accFut.getResult();
-            retVal = authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString();
-        }
-        catch (OperationCanceledException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (AuthenticatorException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return retVal;
-    }
+   
+    
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {

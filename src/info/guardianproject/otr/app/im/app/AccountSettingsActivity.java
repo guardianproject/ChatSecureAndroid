@@ -76,7 +76,6 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         mRequireTls.setChecked(settings.getRequireTls());
         mDoDnsSrv.setChecked(settings.getDoDnsSrv());
 
-        settings.close();
     }
 
     /* save the preferences in Imps so they are accessible everywhere */
@@ -134,7 +133,6 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         
         settings.setShowMobileIndicator(true);
         
-        settings.close();
     }
 
     @Override

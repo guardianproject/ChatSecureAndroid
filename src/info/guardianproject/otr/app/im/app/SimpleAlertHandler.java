@@ -53,7 +53,7 @@ public class SimpleAlertHandler extends Handler {
         } else {
             promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
-        showAlert(R.string.error, promptMsg);
+     //   showAlert(R.string.error, promptMsg); //TODO debug issue
     }
 
     public void registerForBroadcastEvents() {

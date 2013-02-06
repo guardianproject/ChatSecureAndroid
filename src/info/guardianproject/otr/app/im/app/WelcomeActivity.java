@@ -17,7 +17,9 @@
 package info.guardianproject.otr.app.im.app;
 
 import java.io.File;
+import java.io.IOException;
 
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -26,14 +28,17 @@ import info.guardianproject.otr.app.im.ui.AboutActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -100,7 +105,9 @@ public class WelcomeActivity extends ThemeableActivity {
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
         clearBootFlag ();
+      
     }
+    
 
     private void clearBootFlag ()
     {
@@ -183,33 +190,68 @@ public class WelcomeActivity extends ThemeableActivity {
         int countAvailable = accountsAvailable();
         int countConfigured = accountsConfigured();
         
-        if (countAvailable == 1) {
-            // If just one account is available for auto-signin, go there immediately after service starts trying
-            // to connect.
-            mSignInHelper.setSignInListener(new SignInHelper.Listener() {
-                public void connectedToService() {
-                }
-                public void stateChanged(int state, long accountId) {
-                    if (state == ImConnection.LOGGING_IN) {
-                        mSignInHelper.goToAccount(accountId);
+        boolean doKeyStoreImport = false;
+        
+        if (getIntent().getData() != null)
+        {
+            Uri uriData = getIntent().getData();
+            String path = null;
+            
+            if(uriData.getScheme() != null && uriData.getScheme().equals("file"))
+            {
+                path = uriData.toString().replace("file://", "");
+            
+                File file = new File(path);
+                
+                doKeyStoreImport = true;
+                
+                importOtrKeyStore(file);
+            }
+        }
+        
+        if (!doKeyStoreImport)
+        {
+            if (countAvailable == 1) {
+                // If just one account is available for auto-signin, go there immediately after service starts trying
+                // to connect.
+                mSignInHelper.setSignInListener(new SignInHelper.Listener() {
+                    public void connectedToService() {
                     }
-                }
-            });
-        } else {
-            mSignInHelper.setSignInListener(null);
+                    public void stateChanged(int state, long accountId) {
+                        if (state == ImConnection.LOGGING_IN) {
+                            mSignInHelper.goToAccount(accountId);
+                        }
+                    }
+                });
+            } else {
+                mSignInHelper.setSignInListener(null);
+            }
+            
+            
+            if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
+                mDidAutoLaunch = true;
+                signInAll();
+                showAccounts();
+            } else if (countSignedIn == 1) {
+                showActiveAccount();
+            } else if (countConfigured > 0) {
+                showAccounts();
+            }
+            // Otherwise, stay on Getting Started view
         }
-        
-        
-        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
-            mDidAutoLaunch = true;
-            signInAll();
-            showAccounts();
-        } else if (countSignedIn == 1) {
-            showActiveAccount();
-        } else if (countConfigured > 0) {
-            showAccounts();
+    }
+    
+    
+    private void importOtrKeyStore (File file)
+    {
+        //ask user if they want to overwrite existing entries or just add
+        try {
+            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(null);
+            boolean overWriteExisting = true;
+            oakm.importKeyStore(file, overWriteExisting);
+        } catch (IOException e) {
+          Log.e(TAG,"error opening keystore",e);
         }
-        // Otherwise, stay on Getting Started view
     }
 
     // Show signed in account

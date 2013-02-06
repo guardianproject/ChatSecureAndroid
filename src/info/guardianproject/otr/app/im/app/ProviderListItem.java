@@ -106,14 +106,15 @@ public class ProviderListItem extends LinearLayout {
         int providerId = cursor.getInt(mProviderIdColumn);
         String providerDisplayName = cursor.getString(mProviderFullnameColumn);
 
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(),
-                providerId, false /* keep updated */, null /* no handler */);
+        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(),
+                providerId, false , null);
       
         String userDomain = settings.getDomain();
         
+        
         mAccountId = cursor.getLong(mActiveAccountIdColumn);
         
-        ImApp app = ImApp.getApplication(mActivity);
+       ImApp app = ImApp.getApplication(mActivity);
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
@@ -214,6 +215,8 @@ public class ProviderListItem extends LinearLayout {
             mChatView.setVisibility(View.GONE);
             mProviderName.setText(providerDisplayName);
         }
+        
+        settings.close();
     }
     
     public Long getAccountID ()

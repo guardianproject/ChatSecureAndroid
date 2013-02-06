@@ -7,7 +7,7 @@ public class XmppAddress extends Address {
 
     private String address;
     private String name;
-
+    
     public XmppAddress() {
     }
 
@@ -32,10 +32,8 @@ public class XmppAddress extends Address {
     }
     
     @Override
-    public Address appendResource(String resource) {
-        if (resource == null || "".equals(resource))
-            return this;
-        return new XmppAddress(name, address + "/" + resource);
+    public String getContactName() {
+        return super.getContactName();
     }
 
     @Override

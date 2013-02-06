@@ -18,6 +18,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -42,28 +43,28 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private static OtrAndroidKeyManagerImpl _instance;
 
-    public static synchronized OtrAndroidKeyManagerImpl getInstance(String filepath)
+    public static synchronized OtrAndroidKeyManagerImpl getInstance(File filepath)
             throws IOException {
-        if (_instance == null) {
+        if (_instance == null && filepath != null) {
             _instance = new OtrAndroidKeyManagerImpl(filepath);
         }
 
         return _instance;
     }
 
-    private OtrAndroidKeyManagerImpl(String filepath) throws IOException {
+    private OtrAndroidKeyManagerImpl(File filepath) throws IOException {
         this.store = new SimplePropertiesStore(filepath);
 
         cryptoEngine = new OtrCryptoEngineImpl();
     }
 
     class SimplePropertiesStore implements OtrKeyManagerStore {
-        private Properties properties = new Properties();
+        private Properties mProperties = new Properties();
         private File mStoreFile;
 
-        public SimplePropertiesStore(String filepath) {
-            mStoreFile = new File(filepath);
-            properties.clear();
+        public SimplePropertiesStore(File storeFile) {
+            mStoreFile = storeFile;
+            mProperties.clear();
 
             load();
         }
@@ -75,7 +76,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
                 InputStream in = new BufferedInputStream(fis);
                 try {
-                    properties.load(in);
+                    mProperties.load(in);
                 } finally {
                     in.close();
                 }
@@ -84,7 +85,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 mStoreFile.getParentFile().mkdirs();
 
                 try {
-                    store();
+                    save();
                 } catch (Exception ioe) {
                     OtrDebugLogger.log("Properties store error", ioe);
                 }
@@ -93,32 +94,37 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 OtrDebugLogger.log("Properties store error", ioe);
             }
         }
+        
+        public Properties getProperties ()
+        {
+            return mProperties;
+        }
 
         public void setProperty(String id, boolean value) {
-            properties.setProperty(id, "true");
+            mProperties.setProperty(id, "true");
             try {
-                this.store();
+                this.save();
             } catch (Exception e) {
                 OtrDebugLogger.log("Properties store error", e);
             }
         }
 
-        private void store() throws FileNotFoundException, IOException {
+        private void save() throws FileNotFoundException, IOException {
 
             //Log.d(TAG,"saving otr keystore to: " + filepath);
 
             FileOutputStream fos = new FileOutputStream(mStoreFile);
 
-            properties.store(fos, null);
+            mProperties.store(fos, null);
 
             fos.close();
         }
 
         public void setProperty(String id, byte[] value) {
-            properties.setProperty(id, new String(Base64.encodeBytes(value)));
+            mProperties.setProperty(id, new String(Base64.encodeBytes(value)));
 
             try {
-                this.store();
+                this.save();
             } catch (Exception e) {
                 OtrDebugLogger.log("store not saved", e);
             }
@@ -126,22 +132,22 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         // Store as hex bytes
         public void setPropertyHex(String id, byte[] value) {
-            properties.setProperty(id, new String(Hex.encode(value)));
+            mProperties.setProperty(id, new String(Hex.encode(value)));
 
             try {
-                this.store();
+                this.save();
             } catch (Exception e) {
                 OtrDebugLogger.log("store not saved", e);
             }
         }
 
         public void removeProperty(String id) {
-            properties.remove(id);
+            mProperties.remove(id);
 
         }
 
         public byte[] getPropertyBytes(String id) {
-            String value = properties.getProperty(id);
+            String value = mProperties.getProperty(id);
 
             if (value != null)
                 return Base64.decode(value);
@@ -150,7 +156,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         // Load from hex bytes
         public byte[] getPropertyHexBytes(String id) {
-            String value = properties.getProperty(id);
+            String value = mProperties.getProperty(id);
 
             if (value != null)
                 return Hex.decode(value);
@@ -159,7 +165,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         public boolean getPropertyBoolean(String id, boolean defaultValue) {
             try {
-                return Boolean.valueOf(properties.get(id).toString());
+                return Boolean.valueOf(mProperties.get(id).toString());
             } catch (Exception e) {
                 return defaultValue;
             }
@@ -227,6 +233,29 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         } catch (OtrCryptoException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void importKeyStore(File filePath, boolean overWriteExisting) throws IOException
+    {
+        SimplePropertiesStore storeNew = new SimplePropertiesStore(filePath);
+        
+        Properties pNew = storeNew.getProperties();
+        Enumeration<Object> enumKeys = pNew.keys();
+        
+        Object key;
+        
+        while (enumKeys.hasMoreElements())
+        {
+            key = enumKeys.nextElement();
+            
+            boolean hasKey = store.getProperties().containsKey(key);
+            
+            if (!hasKey || overWriteExisting)
+                store.getProperties().put(key, pNew.get(key));
+            
+            store.save();
+        }
+        
     }
 
     public String getLocalFingerprint(SessionID sessionID) {
@@ -379,6 +408,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String userId = sessionID.getUserID();
+        
         this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
         // and is useful for transferring rosters to other apps.

@@ -48,11 +48,12 @@ public final class Presence implements Parcelable {
     private byte[] mAvatarData;
     private String mAvatarType;
     private int mClientType;
-
+    private String mResource;
+    
     private Map<String, String> mExtendedInfo;
 
     public Presence() {
-        this(Presence.OFFLINE, null, null, null, CLIENT_TYPE_DEFAULT, null);
+        this(Presence.OFFLINE, null, null, null, CLIENT_TYPE_DEFAULT, null, null);
     }
 
     public Presence(int status, String statusText, int clientType) {
@@ -61,20 +62,21 @@ public final class Presence implements Parcelable {
 
     public Presence(int status, String statusText, byte[] avatarData, String avatarType,
             int clientType) {
-        this(status, statusText, avatarData, avatarType, clientType, null);
+        this(status, statusText, avatarData, avatarType, clientType, null, null);
     }
 
     public Presence(int status, String statusText, byte[] avatarData, String avatarType,
-            int clientType, Map<String, String> extendedInfo) {
+            int clientType, Map<String, String> extendedInfo, String resource) {
         setStatus(status);
         mStatusText = statusText;
         setAvatar(avatarData, avatarType);
         mClientType = clientType;
         mExtendedInfo = extendedInfo;
+        mResource = resource;
     }
 
     public Presence(Presence p) {
-        this(p.mStatus, p.mStatusText, p.mAvatarData, p.mAvatarType, p.mClientType, p.mExtendedInfo);
+        this(p.mStatus, p.mStatusText, p.mAvatarData, p.mAvatarType, p.mClientType, p.mExtendedInfo, p.mResource);
     }
 
     public Presence(Parcel source) {
@@ -86,6 +88,7 @@ public final class Presence implements Parcelable {
         // TODO - what ClassLoader should be passed to readMap?
         // TODO - switch to Bundle
         mExtendedInfo = source.readHashMap(null);
+        mResource = source.readString();
     }
 
     /**
@@ -169,6 +172,7 @@ public final class Presence implements Parcelable {
         dest.writeString(mAvatarType);
         dest.writeInt(mClientType);
         dest.writeMap(mExtendedInfo);
+        dest.writeString(mResource);
     }
 
     public int describeContents() {
@@ -184,4 +188,14 @@ public final class Presence implements Parcelable {
             return new Presence[size];
         }
     };
+    
+    public String getResource ()
+    {
+        return mResource;
+    }
+    
+    public void setResource (String resource)
+    {
+        mResource = resource;
+    }
 }

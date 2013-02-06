@@ -529,7 +529,7 @@ public class ChatView extends LinearLayout {
                         buf.append(',');
                     }
                 }
-                c.close();
+              
             }
             
             
@@ -636,9 +636,7 @@ public class ChatView extends LinearLayout {
             mScreen.setTitle(mContext.getString(R.string.chat_with, sender));
         }
 
-        if (cursor != null) {
-            cursor.close();
-        }
+       
     }
 
     public void bindSubscription(long providerId, String from) {

@@ -136,7 +136,7 @@ public class ContactListManagerAdapter extends
                 String address = contactCursor.getString(0);
                 mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
             } while (contactCursor.moveToNext());
-            contactCursor.close();
+         //   contactCursor.close();
         }
     }
 
@@ -312,7 +312,7 @@ public class ContactListManagerAdapter extends
         }
 
         if (cursor != null) {
-            cursor.close();
+          //  cursor.close();
         }
         return result;
     }
@@ -796,7 +796,7 @@ public class ContactListManagerAdapter extends
 
             uri = mResolver.insert(mContactUrl, values);
         }
-        cursor.close();
+       // cursor.close();
         return uri;
     }
 
@@ -898,7 +898,7 @@ public class ContactListManagerAdapter extends
                 uri = ContentUris.withAppendedId(Imps.ContactList.CONTENT_URI, listId);
             }
         } finally {
-            cursor.close();
+          //  cursor.close();
         }
         if (uri == null) {
             ContentValues contactListValues = new ContentValues(3);
