@@ -3,6 +3,7 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
 import info.guardianproject.onionkit.trust.StrongTrustManager;
 import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -433,26 +434,27 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             initConnection(userName, password, providerSettings);
 
         } catch (Exception e) {
-            Log.w(TAG, "login failed", e);
+           debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
 
             if (e == null || e.getMessage() == null) {
-                Log.w(TAG, "NPE", e);
+                debug(TAG, "NPE: " + e.getMessage());
+                e.printStackTrace();
                 info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "unknown error");
                 disconnected(info);
                 mRetryLogin = false;
             } else if (e.getMessage().contains("not-authorized")
                        || e.getMessage().contains("authentication failed")) {
-                Log.w(TAG, "not authorized - will not retry");
+                debug(TAG, "not authorized - will not retry");
                 info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
                 disconnected(info);
                 mRetryLogin = false;
             } else if (mRetryLogin) {
-                Log.w(TAG, "will retry");
+                debug(TAG, "will retry");
                 setState(LOGGING_IN, info);
             } else {
-                Log.w(TAG, "will not retry");
+                debug(TAG, "will not retry");
                 mConnection = null;
                 disconnected(info);
             }
@@ -574,6 +576,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
         }
 
+        
         mConfig.setDebuggerEnabled(DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
@@ -602,19 +605,32 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // Android has no support for Kerberos or GSSAPI, so disable completely
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
-
+        
         if (password.startsWith(GTalkOAuth2.NAME))
         {
-            
+            mConfig.setSASLAuthenticationEnabled(true);
+
             SASLAuthentication.unsupportSASLMechanism("PLAIN");
             SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
-            
             
             //add gtalk auth in
             SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             
-            password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain,mContext);
+            password = password.split(":")[1];
+            
+            if (mRetryLogin)
+            {
+                AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password);
+            
+                password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+
+                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, mUsername,
+                        password);
+                
+                
+            
+            }
         }
         
         mConfig.setVerifyChainEnabled(true);
@@ -753,7 +769,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                  * - Network error
                  * - We forced a socket shutdown
                  */
-                Log.w(TAG, "reconnect on error", e);
+                debug(TAG, "reconnect on error: " + e.getMessage());
                 if (e.getMessage().contains("conflict")) {
                     execute(new Runnable() {
                         @Override
@@ -805,6 +821,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         this.mPassword = password;
         this.mResource = xmppResource;
 
+        //disable compression based on statement by Ge0rg
+        mConfig.setCompressionEnabled(false);
+        
         mStreamHandler = new XmppStreamHandler(mConnection);
         mConnection.login(mUsername, mPassword, mResource);
         mStreamHandler.notifyInitialLogin();
@@ -873,7 +892,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     // We must release resources here, because we will not be reused
     void disconnected(ImErrorInfo info) {
-        Log.w(TAG, "disconnected");
+        debug(TAG, "disconnected");
         join();
         setState(DISCONNECTED, info);
     }
@@ -1381,12 +1400,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             try {
                 RosterGroup group = roster.getGroup(list.getName());
                 if (group == null) {
-                    Log.e(TAG, "could not find group " + list.getName() + " in roster");
+                    debug(TAG, "could not find group " + list.getName() + " in roster");
                     return;
                 }
                 RosterEntry entry = roster.getEntry(address);
                 if (entry == null) {
-                    Log.e(TAG, "could not find entry " + address + " in group " + list.getName());
+                    debug(TAG, "could not find entry " + address + " in group " + list.getName());
                     return;
                 }
 
@@ -1396,7 +1415,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 group.removeEntry(entry);
             } catch (XMPPException e) {
-                Log.e(TAG, "remove entry failed", e);
+                debug(TAG, "remove entry failed: " + e.getMessage());
                 throw new RuntimeException(e);
             }
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
@@ -1467,7 +1486,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             try {
                 mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
             } catch (ImException e) {
-                Log.e(TAG, "failed to add " + contact + " to default list");
+                debug(TAG, "failed to add " + contact + " to default list");
             }
             mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
         }

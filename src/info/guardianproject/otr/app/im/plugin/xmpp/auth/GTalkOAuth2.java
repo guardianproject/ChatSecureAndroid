@@ -22,8 +22,9 @@ import android.util.Log;
 
 
 public class GTalkOAuth2 extends SASLMechanism {
-public static final String NAME="X-GOOGLE-TOKEN";
-private static final String TOKEN_TYPE = "mail";
+    
+public static final String NAME="X-GOOGLE-TOKEN";//"X-OAUTH2";//
+private static final String TOKEN_TYPE = "mail";// "https://www.googleapis.com/auth/googletalk";//"mail";
 
 /*
  * Taken from here: http://stackoverflow.com/questions/7358392/how-to-authenticate-to-google-talk-with-accountmanagers-authentication-token-us
@@ -42,20 +43,24 @@ static void enable() { }
 @Override
 protected void authenticate() throws IOException, XMPPException
 {
-    String authCode = password;
-    String jidAndToken = "\0" + URLEncoder.encode( authenticationId, "utf-8" ) + "\0" + authCode;
+   //Log.d(NAME, "authId=" + authenticationId + "; password=" + password);
+    
+    String jidAndToken = "\0" + URLEncoder.encode( authenticationId, "utf-8" ) + "\0" + password;
 
     StringBuilder stanza = new StringBuilder();
     stanza.append( "<auth mechanism=\"" ).append( getName() );
     stanza.append( "\" xmlns=\"urn:ietf:params:xml:ns:xmpp-sasl\">" );
-    stanza.append( new String(Base64.encode( jidAndToken.getBytes( "UTF-8" ), Base64.DEFAULT ) ) );
-
+    
+    stanza.append( new String(Base64.encode( jidAndToken.getBytes( "UTF-8" ), Base64.NO_WRAP ) ));
     stanza.append( "</auth>" );
 
-  //  Log.v("BlueTalk", "Authentication text is "+stanza);
-    // Send the authentication to the server
+  //  Log.d(NAME,stanza.toString());
+
+    
     getSASLAuthentication().send( new Auth2Mechanism(stanza.toString()) );
+    
 }
+
 
 /*
  * This is used the first time, on account setup, in order to display the proper perms dialog
@@ -64,28 +69,18 @@ public static String getGoogleAuthTokenAllow(String name, Context context, Activ
 {
     AccountManager aMgr = AccountManager.get(context);
     
-    String retVal = "";
+    String retVal = null;
     Account account = getAccount(name, aMgr);
     AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, null, activity, null, null);
+    
     try
     {
         Bundle authTokenBundle = accFut.getResult();
         retVal = authTokenBundle.get(AccountManager.KEY_AUTHTOKEN).toString();
     }
-    catch (OperationCanceledException e)
+    catch (Exception e)
     {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-    catch (AuthenticatorException e)
-    {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-    catch (IOException e)
-    {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        Log.e(NAME,"error getting auth token result",e);
     }
     return retVal;
 }
@@ -94,7 +89,7 @@ public static String getGoogleAuthTokenAllow(String name, Context context, Activ
  * need to refresh the google auth token everytime you login (no user prompt)
  */
 public static String getGoogleAuthToken(String accountName, Context context) {
- //   Log.d("GTalk","Getting authToken for " + accountName);
+ //   Log.d(NAME,"Getting authToken for " + accountName);
     String authTokenType = TOKEN_TYPE;
     AccountManager aMgr = AccountManager.get(context);
     Account account = getAccount(accountName,aMgr);
@@ -103,6 +98,7 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     
     if (account != null) {
       try {
+          
         return aMgr.blockingGetAuthToken(account, authTokenType, true);
       } catch (OperationCanceledException e) {
         Log.e(NAME, "auth canceled", e);
