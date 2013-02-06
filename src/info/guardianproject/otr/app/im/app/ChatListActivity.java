@@ -32,27 +32,33 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -85,6 +91,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
 
     private ConnectionListenerAdapter mConnectionListener;
 
+    long[] mAccountIds;
+
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -113,57 +121,18 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         }
         mApp = ImApp.getApplication(this);
 
-        ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
-                null, null, null);
-      
-        if (c == null) {
-            finish();
-            return;
-        }
-        if (!c.moveToFirst()) {
-            c.close();
-            finish();
-            return;
-        }
-
-        mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
-        mHandler = new MyHandler(this);
-        String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
-
+        initAccount();
         
-        //BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-        //setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-      //  getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-        //        brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-        setTitle(username);
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {
                 if (!mDestroyed) {
-                    mApp.dismissNotifications(mProviderId);
-                    mConn = mApp.getConnection(mProviderId);
-                    if (mConn == null) {
-                        Log.e(ImApp.LOG_TAG, "The connection has disappeared!");
-                        clearConnectionStatus();
-                        finish();
-                    } else {
-                        mActiveChatListView.setConnection(mConn);     
-                        
-                        mPresenceView.setConnection(mConn);
-                        try {
-                            mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
-                        } catch (RemoteException e) {
-                            
-                            mPresenceView.loggingIn(false);
-                            mHandler.showServiceErrorAlert();
-                        }
-                        
-                       
-                        
-                    }
+                    
+                    initConnection();
+                    
+                    
                 }
             }
         });
@@ -177,9 +146,161 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
                 }
             }
         });
+        
+        setupActionBarList(mAccountId);
+        
+    }
+    
+    private void initAccount ()
+    {
 
+        ContentResolver cr = getContentResolver();
+        Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
+                null, null, null);
+      
+        if (c == null) {
+           // finish();
+            return;
+        }
+        if (!c.moveToFirst()) {
+            c.close();
+          //  finish();
+            return;
+        }
+
+        mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+        mHandler = new MyHandler(this);
+        
         c.close();
     }
+    
+    private void initConnection ()
+    {
+        mApp.dismissNotifications(mProviderId);
+        mConn = mApp.getConnection(mProviderId);
+        
+        if (mConn == null) {
+            Log.e(ImApp.LOG_TAG, "The connection has disappeared!");
+            clearConnectionStatus();
+            mActiveChatListView.setConnection(null);
+            
+          //  finish();
+            
+        } else {
+            mActiveChatListView.setConnection(mConn);     
+            
+            mPresenceView.setConnection(mConn);
+            try {
+                mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+            } catch (RemoteException e) {
+                
+                mPresenceView.loggingIn(false);
+                mHandler.showServiceErrorAlert();
+            }
+            
+           
+            
+        }
+    }
+    
+    private void setupActionBarList (long accountId)
+    {
+
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSherlock().getActionBar().setTitle("");
+        
+        Cursor providerCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" 
+                + " AND " + Imps.Provider.ACCOUNT_CONNECTION_STATUS + " != 0"
+                /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        
+        mAccountIds = new long[providerCursor.getCount()];
+        
+        providerCursor.moveToFirst();
+        int activeAccountIdColumn = providerCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+        int currentAccountIndex = -1;
+        
+        for (int i = 0; i < mAccountIds.length; i++)
+        {
+            mAccountIds[i] = providerCursor.getLong(activeAccountIdColumn);
+            providerCursor.moveToNext();
+            
+            if (mAccountIds[i] == mAccountId)
+                currentAccountIndex = i;
+        }
+
+        providerCursor.moveToFirst();
+
+        ProviderAdapter pAdapter = new ProviderAdapter(this, providerCursor);
+        
+        this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        this.getSherlock().getActionBar().setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
+
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                
+                if (mAccountIds[itemPosition] != mAccountId)
+                {
+                    
+                    mAccountId = mAccountIds[itemPosition];
+                    //update account list
+                    initAccount();
+                    initConnection();
+                    
+                }
+                
+                return true;
+            }
+            
+        });
+        
+        getSherlock().getActionBar().setSelectedNavigationItem(currentAccountIndex);
+
+
+    }
+    
+    private class ProviderAdapter extends CursorAdapter {
+        private LayoutInflater mInflater;
+
+        @SuppressWarnings("deprecation")
+        public ProviderAdapter(Context context, Cursor c) {
+            super(context, c);
+            mInflater = LayoutInflater.from(context).cloneInContext(context);
+            mInflater.setFactory(new ProviderListItemFactory());
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            // create a custom view, so we can manage it ourselves. Mainly, we want to
+            // initialize the widget views (by calling getViewById()) in newView() instead of in
+            // bindView(), which can be called more often.
+            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
+                    parent, false);
+            view.init(cursor);
+            return view;
+        }
+        
+        
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ((ProviderListItem) view).bindView(cursor);
+        }
+    }
+    
+    private class ProviderListItemFactory implements LayoutInflater.Factory {
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (name != null && name.equals(ProviderListItem.class.getName())) {
+                return new ProviderListItem(context, ChatListActivity.this);
+            }
+            return null;
+        }
+    }
+    
 
     private void signOut ()
     {
@@ -535,18 +656,26 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     public void onContentChanged() {
         super.onContentChanged();
 
-        View empty = findViewById(R.id.empty);
-        empty.setOnClickListener(new OnClickListener (){
-
-            @Override
-            public void onClick(View arg0) {
-                showContactsList ();
+        if (mActiveChatListView != null && mActiveChatListView.getListView().getCount() == 0)
+        {
                 
+            View empty = findViewById(R.id.empty);
+            
+            if (empty != null)
+            {
+                empty.setOnClickListener(new OnClickListener (){
+        
+                    @Override
+                    public void onClick(View arg0) {
+                        showContactsList ();
+                        
+                    }
+                
+                });
+                
+                ListView list = (ListView) findViewById(R.id.chatsList);
+                list.setEmptyView(empty);
             }
-        
-        });
-        
-        ListView list = (ListView) findViewById(R.id.chatsList);
-        list.setEmptyView(empty);
+        }
     }
 }
