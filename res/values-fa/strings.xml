@@ -560,26 +560,6 @@
   <string name="account_wizard_no_domain_warning">شما برای شناسه حساب کاربری خود، قسمت @hostname.com را وارد نکرده اید. لطفن دوباره تلاش کنید!</string>
   <string name="account_wizard_no_root_domain_warning">نام میزبان شما پسوند .com یا .net یا شبیه به اینها را نداشت. لطفا دوباره تلاش کنید!</string>
   <string name="signin_password_prompt">رمز عبور خود را وارد کنید:</string>
-  <!--Do not localize! Symbols for looking up preferences in Java code.-->
-  <string name="pref_account_user">pref_account_user</string>
-  <string name="pref_account_pass">pref_account_pass</string>
-  <string name="pref_account_domain">pref_account_domain</string>
-  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
-  <string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
-  <string name="pref_account_port">pref_account_port</string>
-  <string name="pref_account_server">pref_account_server</string>
-  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
-  <string name="pref_security_require_tls">pref_security_require_tls</string>
-  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
-  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
-  <string name="pref_security_use_tor">pref_security_use_tor</string>
-  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
-  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
-  <string name="pref_enable_notification">pref_enable_notification</string>
-  <string name="pref_foreground_service">pref_foreground_service</string>
-  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
-  <string name="pref_notification_sound">pref_notification_sound</string>
-  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
   <string name="account_settings_title">تنظیمات حساب کاربری</string>
   <string name="pref_default_locale">defLoc\n</string>
   <string name="warning_alpha">هشدار: این یک انتشار غیر پایانی از ربات پرچونه است که ممکن است حفره های امنیتی و اشکالاتی داشته باشد.</string>

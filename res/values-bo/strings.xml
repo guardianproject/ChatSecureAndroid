@@ -561,26 +561,6 @@
   <string name="account_wizard_no_domain_warning">ཁྱེད་ཀྱིས་ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་ཁ་བྱང་གི་ཆེད་དུ་། hostname.com ལ་ནང་འཇུག་བྱས་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="account_wizard_no_root_domain_warning">ཁྱེད་རང་གི་དྲ་ཐོག་ཞབས་ཞུའི་མིང་ལ་ .com དང་ .net   ཡང་ན་ཟུར་སྣོན་སོགས་ཅི་ཡང་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="signin_password_prompt">ཁྱེད་རང་གི་གསང་ཡིག་འཇོག</string>
-  <!--Do not localize! Symbols for looking up preferences in Java code.-->
-  <string name="pref_account_user">ཁ་བྱང་སྤྱོད་མཁན་།</string>
-  <string name="pref_account_pass">ཁ་བྱང་གི་གསང་ཚིག</string>
-  <string name="pref_account_domain">ཁ་བྱང་གི་ཁོངས། </string>
-  <string name="pref_account_xmpp_resource">ཁ་བྱང་གི་ཁུངས། </string>
-  <string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
-  <string name="pref_account_port">ཁ་བྱང་གི་མཐུད་ཁ</string>
-  <string name="pref_account_server">ཁ་བྱང་གི་ཞབས་ཞུ་འཕྲུལ་ཆས།</string>
-  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
-  <string name="pref_security_require_tls">pref_security_require_tls</string>
-  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
-  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
-  <string name="pref_security_use_tor">ཉེན་སྲུང་གིས་ Tor སྤྱོད་།</string>
-  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
-  <string name="pref_hide_offline_contacts">དྲ་ཐོག་ན་མེད་པའི་འབྲེལ་གཏུགས་སྐུང་། </string>
-  <string name="pref_enable_notification">དོ་སྣང་ཐུབ་པ།</string>
-  <string name="pref_foreground_service">pref_foreground_service</string>
-  <string name="pref_notification_vibrate">ཉན་འཇོག་འགུལ་བ།</string>
-  <string name="pref_notification_sound">ཉན་འཇོག་གི་སྒྲ</string>
-  <string name="pref_notification_ringtone">དོ་སྣང་གི་དྲིལ་སྒྲ</string>
   <string name="account_settings_title">ཐོ་མཛོད་སྒྲིག་བཟོ།</string>
   <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
   <!--added 2011/09/01-->

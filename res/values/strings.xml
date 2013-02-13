@@ -663,30 +663,8 @@
 
     <!-- Do not localize! Symbols for looking up preferences in Java code. -->
 
-	<string name="pref_account_user">pref_account_user</string>
-	<string name="pref_account_pass">pref_account_pass</string>
-	<string name="pref_account_domain">pref_account_domain</string>
-	<string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
-	<string name="pref_account_xmpp_resource_prio">pref_account_xmpp_resource_prio</string>
-	<string name="pref_account_port">pref_account_port</string>
-	<string name="pref_account_server">pref_account_server</string>
-	<string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
-	<string name="pref_security_require_tls">pref_security_require_tls</string>
-	<string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
-	<string name="pref_security_otr_mode">pref_security_otr_mode</string>
-	<string name="pref_security_use_tor">pref_security_use_tor</string>
-	<string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
-	<string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
-	<string name="pref_enable_notification">pref_enable_notification</string>
-	<string name="pref_foreground_service">pref_foreground_service</string>
-	<string name="pref_heartbeat_interval">pref_heartbeat_interval</string>
-	<string name="pref_notification_vibrate">pref_notification_vibrate</string>
-	<string name="pref_notification_sound">pref_notification_sound</string>
-	<string name="pref_notification_ringtone">pref_notification_ringtone</string>
 	<string name="account_settings_title">Account Settings</string>
 	<string name="pref_default_locale">defLoc</string>
-	<string name="pref_start_on_boot">pref_start_on_boot</string>
-		
 	
 	<string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
 
@@ -754,5 +732,8 @@
 	 <string name="empty_account_message">You have no accounts configured.\n\nTap here to add one!</string>
 	 
 	 <string name="google_account">Google Account</string>
+	 
+	 <string name="pref_in_memory_db_title">In-Memory Message Storage Only</string>
+	 <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>
 </resources>
 
