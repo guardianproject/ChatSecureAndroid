@@ -158,10 +158,17 @@
             android:hint="@string/compose_hint"
             
             />
+        
+         <ImageButton android:id="@+id/btnSend"
+        android:paddingLeft="20sp"
+	    android:paddingRight="20sp"
+        android:paddingTop="3sp"
+        android:paddingBottom="3sp"
+   		android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+        android:src="@drawable/ic_send_holo_light"
+        android:background="@drawable/ad_selectable_background"/>
 
-        <Button android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="@string/send" />
+      
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ChatView>
