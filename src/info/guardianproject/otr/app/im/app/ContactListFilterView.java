@@ -182,7 +182,7 @@ public class ContactListFilterView extends LinearLayout {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-            v.setPadding(0, 0, 0, 0);
+          //  v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mSearchString, false);
         }
 

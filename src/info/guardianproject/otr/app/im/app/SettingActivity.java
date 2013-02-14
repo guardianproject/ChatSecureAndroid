@@ -65,27 +65,27 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), false /* don't keep updated */, null /* no handler */);
 
-        if (key.equals(getString(R.string.pref_security_otr_mode))) {
+        if (key.equals("pref_security_otr_mode")) {
             settings.setOtrMode(prefs.getString(key, "auto"));
-        } else if (key.equals(getString(R.string.pref_hide_offline_contacts))) {
+        } else if (key.equals("pref_hide_offline_contacts")) {
             settings.setHideOfflineContacts(prefs.getBoolean(key, false));
-        } else if (key.equals(getString(R.string.pref_enable_notification))) {
+        } else if (key.equals("pref_enable_notification")) {
             settings.setEnableNotification(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_notification_vibrate))) {
+        } else if (key.equals("pref_notification_vibrate")) {
             settings.setVibrate(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_notification_sound))) {
+        } else if (key.equals("pref_notification_sound")) {
             // TODO sort out notification sound pref
             if (prefs.getBoolean(key, false)) {
                 settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
             } else {
                 settings.setRingtoneURI(null);
             }
-        } else if (key.equals(getString(R.string.pref_foreground_service))) {
+        } else if (key.equals("pref_foreground_service")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
-        } else if (key.equals(getString(R.string.pref_heartbeat_interval))) {
+        } else if (key.equals("pref_heartbeat_interval")) {
             settings.setHeartbeatInterval(Integer.valueOf(prefs.getString(key, String.valueOf(DEFAULT_HEARTBEAT_INTERVAL))));
         }
-        else if (key.equals(getString(R.string.pref_default_locale)))
+        else if (key.equals("pref_default_locale"))
         {
            ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
            setResult(2);
@@ -105,15 +105,15 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        mHideOfflineContacts = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
-        mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
-        mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notification));
-        mNotificationVibrate = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
-        mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
+        mHideOfflineContacts = (CheckBoxPreference) findPreference("pref_hide_offline_contacts");
+        mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
+        mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
+        mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
+        mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         // TODO re-enable Ringtone preference
-        //mNotificationRingtone = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
-        mForegroundService = (CheckBoxPreference) findPreference(getString(R.string.pref_foreground_service));
-        mHeartbeatInterval = (EditTextPreference) findPreference(getString(R.string.pref_heartbeat_interval));
+        //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
+        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
+        mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
     }
 
     @Override
