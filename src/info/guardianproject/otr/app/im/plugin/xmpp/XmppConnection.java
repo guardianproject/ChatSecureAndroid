@@ -1288,11 +1288,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             roster.addRosterListener(rListener);
         }
 
+        
         RosterListener rListener = new RosterListener() {
 
-            			private Stack<String> entriesToAdd = new Stack<String>();
-            			private Stack<String> entriesToDel = new Stack<String>();
-
+            		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
@@ -1303,65 +1302,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
-                debug(TAG, "roster entries updated");
-
-                entriesAdded(addresses);
+               
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
 
-                debug(TAG, "roster entries deleted: " + addresses.size());
-
-                
-                if (addresses != null)
-                	entriesToDel.addAll(addresses);
-                
-                if (mContactListManager.getState() == ContactListManager.LISTS_LOADED)
-                {
-                	
-
-                	synchronized (entriesToDel)
-                	{
-                		while (!entriesToDel.empty())
-                			try {
-                				Contact contact = mContactListManager.getContact(entriesToDel.pop());
-                				mContactListManager.removeContactFromListAsync(contact, mContactListManager.getDefaultContactList());
-                			} catch (ImException e) {
-                				Log.e(TAG,e.getMessage(),e);
-                			}
-                	}
-                }
-                else
-                {
-                	debug(TAG, "roster delete entries queued");
-                }
+               
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-                debug(TAG, "roster entries added: " + addresses.size());
-
-                
-                if (addresses != null)
-                	entriesToAdd.addAll(addresses);
-                
-                if (mContactListManager.getState() == ContactListManager.LISTS_LOADED)
-                {							
-                	debug(TAG, "roster entries added");
-
-                	while (!entriesToAdd.empty())
-                		try {
-                			mContactListManager.addContactToListAsync(entriesToAdd.pop(), mContactListManager.getDefaultContactList());
-                		} catch (ImException e) {
-                			Log.e(TAG,e.getMessage(),e);
-                		}
-                }
-                else
-                {
-                	debug(TAG, "roster add entries queued");
-                }
             }
         };
 
