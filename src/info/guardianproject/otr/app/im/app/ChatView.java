@@ -84,6 +84,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -115,7 +116,7 @@ public class ChatView extends LinearLayout {
 
     Markup mMarkup;
 
-    Activity mScreen;
+    NewChatActivity mActivity;
     ImApp mApp;
     SimpleAlertHandler mHandler;
     Cursor mCursor;
@@ -124,7 +125,7 @@ public class ChatView extends LinearLayout {
    // private TextView mTitle;
     /*package*/ListView mHistory;
     EditText mComposeMessage;
-    private Button mSendButton;
+    private ImageButton mSendButton;
     private View mStatusWarningView;
     private ImageView mWarningIcon;
     private TextView mWarningText;
@@ -215,9 +216,9 @@ public class ChatView extends LinearLayout {
             for (URLSpan u : links) {
                 linkUrls.add(u.getURL());
             }
-            ArrayAdapter<String> a = new ArrayAdapter<String>(mScreen,
+            ArrayAdapter<String> a = new ArrayAdapter<String>(mActivity,
                     android.R.layout.select_dialog_item, linkUrls);
-            AlertDialog.Builder b = new AlertDialog.Builder(mScreen);
+            AlertDialog.Builder b = new AlertDialog.Builder(mActivity);
             b.setTitle(R.string.select_link_title);
             b.setCancelable(true);
             b.setAdapter(a, new DialogInterface.OnClickListener() {
@@ -226,8 +227,8 @@ public class ChatView extends LinearLayout {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                     intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, mScreen.getPackageName());
-                    mScreen.startActivity(intent);
+                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, mActivity.getPackageName());
+                    mActivity.startActivity(intent);
                 }
             });
             b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -310,9 +311,9 @@ public class ChatView extends LinearLayout {
 
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mScreen = (Activity) context;
-        mApp = ImApp.getApplication(mScreen);
-        mHandler = new ChatViewHandler();
+        mActivity = (NewChatActivity) context;
+        mApp = ImApp.getApplication(mActivity);
+        mHandler = new ChatViewHandler(mActivity);
         mContext = context;
 
     }
@@ -332,7 +333,7 @@ public class ChatView extends LinearLayout {
        // mTitle = (TextView) findViewById(R.id.title);
         mHistory = (ListView) findViewById(R.id.history);
         mComposeMessage = (EditText) findViewById(R.id.composeMessage);
-        mSendButton = (Button) findViewById(R.id.btnSend);
+        mSendButton = (ImageButton) findViewById(R.id.btnSend);
         mHistory.setOnItemClickListener(mOnItemClickListener);
 
         mStatusWarningView = findViewById(R.id.warning);
@@ -485,12 +486,12 @@ public class ChatView extends LinearLayout {
         if (conn == null) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
                 log("Connection has been signed out");
-            mScreen.finish();
+            mActivity.finish();
             return;
         }
 
         if (mMessageAdapter == null) {
-            mMessageAdapter = new MessageAdapter(mScreen, null);
+            mMessageAdapter = new MessageAdapter(mActivity, null);
             mHistory.setAdapter(mMessageAdapter);
         }
 
@@ -519,7 +520,7 @@ public class ChatView extends LinearLayout {
         if (mType == Imps.Contacts.TYPE_GROUP) {
             final String[] projection = { Imps.GroupMembers.NICKNAME };
             Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, mChatId);
-            ContentResolver cr = mScreen.getContentResolver();
+            ContentResolver cr = mActivity.getContentResolver();
             Cursor c = cr.query(memberUri, projection, null, null, null);
             StringBuilder buf = new StringBuilder();
             if (c != null) {
@@ -533,12 +534,12 @@ public class ChatView extends LinearLayout {
             }
             
             
-           // mScreen.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
-            mScreen.setTitle(buf.toString());
+           // mActivity.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
+            mActivity.setTitle(buf.toString());
             
         } else {
             
-            mScreen.setTitle(mNickName);
+            mActivity.setTitle(mNickName);
         }
     }
 
@@ -568,12 +569,12 @@ public class ChatView extends LinearLayout {
             mCursor.deactivate();
         }
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
-        mCursor = mScreen.managedQuery(contactUri, CHAT_PROJECTION, null, null, null);
+        mCursor = mActivity.managedQuery(contactUri, CHAT_PROJECTION, null, null, null);
         if (mCursor == null || !mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + chatId);
             }
-            mScreen.finish();
+            mActivity.finish();
             return;
         } else {
             mChatSession = getChatSession(mCursor);
@@ -617,13 +618,13 @@ public class ChatView extends LinearLayout {
 
     public void bindInvitation(long invitationId) {
         Uri uri = ContentUris.withAppendedId(Imps.Invitation.CONTENT_URI, invitationId);
-        ContentResolver cr = mScreen.getContentResolver();
+        ContentResolver cr = mActivity.getContentResolver();
         Cursor cursor = cr.query(uri, INVITATION_PROJECT, null, null, null);
         if (cursor == null || !cursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query invitation: " + invitationId);
             }
-            mScreen.finish();
+            mActivity.finish();
         } else {
             setViewType(VIEW_TYPE_INVITATION);
 
@@ -633,7 +634,7 @@ public class ChatView extends LinearLayout {
 
             TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
             mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
-            mScreen.setTitle(mContext.getString(R.string.chat_with, sender));
+            mActivity.setTitle(mContext.getString(R.string.chat_with, sender));
         }
 
        
@@ -648,7 +649,7 @@ public class ChatView extends LinearLayout {
         TextView text = (TextView) findViewById(R.id.txtSubscription);
         String displayableAddr = ImpsAddressUtils.getDisplayableAddress(from);
         text.setText(mContext.getString(R.string.subscription_prompt, displayableAddr));
-        mScreen.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
+        mActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
     }
@@ -674,7 +675,7 @@ public class ChatView extends LinearLayout {
             if (conn != null) {
                 conn.rejectInvitation(mInvitationId);
             }
-            mScreen.finish();
+            mActivity.finish();
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
@@ -689,7 +690,7 @@ public class ChatView extends LinearLayout {
         } catch (RemoteException ex) {
             mHandler.showServiceErrorAlert();
         }
-        mScreen.finish();
+        mActivity.finish();
     }
 
     void declineSubscription() {
@@ -701,7 +702,7 @@ public class ChatView extends LinearLayout {
         } catch (RemoteException ex) {
             mHandler.showServiceErrorAlert();
         }
-        mScreen.finish();
+        mActivity.finish();
     }
 
     private void setViewType(int type) {
@@ -814,7 +815,7 @@ public class ChatView extends LinearLayout {
             ContentResolver cr = mContext.getContentResolver();
             cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mChatId), null, null);
         }
-        mScreen.finish();
+        mActivity.finish();
     }
 
     public void closeChatSessionIfInactive() {
@@ -858,7 +859,7 @@ public class ChatView extends LinearLayout {
             intent.putExtra("remoteVerified", isVerified);
         }
 
-        mScreen.startActivity(intent);
+        mActivity.startActivity(intent);
 
     }
 
@@ -870,7 +871,7 @@ public class ChatView extends LinearLayout {
                     IImConnection conn = mApp.getConnection(mProviderId);
                     IContactListManager manager = conn.getContactListManager();
                     manager.blockContact(mUserName);
-                    mScreen.finish();
+                    mActivity.finish();
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert();
                 }
@@ -1056,6 +1057,8 @@ public class ChatView extends LinearLayout {
         SessionStatus sessionStatus = SessionStatus.PLAINTEXT;
 
         initOtr();
+        
+        mActivity.updateOtrMenuState();
 
         //check if the chat is otr or not
         if (mOtrChatSession != null) {
@@ -1189,8 +1192,10 @@ public class ChatView extends LinearLayout {
     }
 
     private final class ChatViewHandler extends SimpleAlertHandler {
-        public ChatViewHandler() {
-            super(mScreen);
+      
+
+        public ChatViewHandler(Activity activity) {
+            super(activity);
         }
 
         @Override

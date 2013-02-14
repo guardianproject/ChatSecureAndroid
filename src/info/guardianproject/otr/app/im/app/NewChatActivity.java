@@ -279,24 +279,31 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
         IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
         int toastMsgId;
-
+        
         try {
             SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
             if (sessionStatus == SessionStatus.PLAINTEXT) {
                 otrChatSession.startChatEncryption();
                 toastMsgId = R.string.starting_otr_chat;
+
             } else {
                 otrChatSession.stopChatEncryption();
                 toastMsgId = R.string.stopping_otr_chat;
                 mChatView.updateWarningView();
             }
+            updateOtrMenuState();
+            
             Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
         } catch (RemoteException e) {
             Log.d("Gibber", "error getting remote activity", e);
         }
     }
 
-    private void updateOtrMenuState() {
+    public void updateOtrMenuState() {
+        
+        if (menuOtr == null)
+            return;
+
         IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
 
         if (otrChatSession != null) {
@@ -305,8 +312,12 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
                 if (sessionStatus != SessionStatus.PLAINTEXT) {
                     menuOtr.setTitle(R.string.menu_otr_stop);
+                    menuOtr.setIcon(this.getResources().getDrawable(R.drawable.ic_menu_encrypt));
+                    
                 } else {
                     menuOtr.setTitle(R.string.menu_otr_start);
+                    menuOtr.setIcon(this.getResources().getDrawable(R.drawable.ic_menu_unencrypt));
+
                 }
 
             } catch (RemoteException e) {
@@ -316,9 +327,6 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             menuOtr.setTitle(R.string.menu_otr_start);
 
         }
-
-        mChatView.updateWarningView();
-
     }
 
    private void showRosterScreen() {
