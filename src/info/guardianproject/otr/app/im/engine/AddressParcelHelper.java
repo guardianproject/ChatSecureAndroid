@@ -17,7 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
-import info.guardianproject.otr.app.im.plugin.XmppAddress;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 
 import android.os.Parcel;
 import android.util.Log;
