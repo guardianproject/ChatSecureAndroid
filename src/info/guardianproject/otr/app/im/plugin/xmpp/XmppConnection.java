@@ -16,7 +16,6 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
-import info.guardianproject.otr.app.im.plugin.XmppAddress;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
@@ -39,6 +38,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -123,6 +123,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private String mPasswordTemp;
 
     private boolean mLastLoginFailed = false;
+    private boolean mIsGoogleAuth = false;
     
     private final static String TRUSTSTORE_TYPE = "BKS";
     private final static String TRUSTSTORE_PATH = "cacerts.bks";
@@ -448,10 +449,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mRetryLogin = false;
             } else if (e.getMessage().contains("not-authorized")
                        || e.getMessage().contains("authentication failed")) {
-                debug(TAG, "not authorized - will not retry");
-                info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
-                disconnected(info);
-                mRetryLogin = false;
+                
+                if (mIsGoogleAuth)
+                {
+                    debug (TAG, "google failed; may need to refresh");
+                    mLastLoginFailed = true;
+                    mRetryLogin = true;
+                    setState(LOGGING_IN, info);
+
+                }
+                else
+                {
+                    debug(TAG, "not authorized - will not retry");
+                    info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
+                    disconnected(info);
+                    mRetryLogin = false;
+                }
             } else if (mRetryLogin) {
                 debug(TAG, "will retry");
                 setState(LOGGING_IN, info);
@@ -507,8 +520,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
-        
-      //  android.os.Debug.waitForDebugger();
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -610,6 +621,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         if (password.startsWith(GTalkOAuth2.NAME))
         {
+            mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
 
             SASLAuthentication.unsupportSASLMechanism("PLAIN");
@@ -620,23 +632,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             
             password = password.split(":")[1];
+                  
             
-            if (mLastLoginFailed) //google oauth2 token may be expired
-            {
-        
-                //invalidate our old one, that is locally cached
-                AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password);
-            
-                //request a new one
-                password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
-
-                //now store the new one, for future use until it expires
-                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                        GTalkOAuth2.NAME + ':' + password);
-                
-                
-            
-            }
         }
         
         mConfig.setVerifyChainEnabled(true);
@@ -844,7 +841,31 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setCompressionEnabled(false);
         
         mStreamHandler = new XmppStreamHandler(mConnection);
-        mConnection.login(mUsername, mPassword, mResource);
+        
+        try
+        {
+            mConnection.login(mUsername, mPassword, mResource);
+        }
+        catch (Exception e)
+        {
+            //if err on login and Google try again
+            if (mIsGoogleAuth)
+            {
+                //invalidate our old one, that is locally cached
+                AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password);
+            
+                //request a new one
+                password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+    
+                //now store the new one, for future use until it expires
+                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                        GTalkOAuth2.NAME + ':' + password);
+            
+                mConnection.login(mUsername, mPassword, mResource);
+                mIsGoogleAuth = false;
+            }            
+
+        }
         mStreamHandler.notifyInitialLogin();
 
         sendPresencePacket();
@@ -1026,7 +1047,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private static Contact makeContact(String name, String address) {
-        Contact contact = new Contact(new XmppAddress(name, address), address);
+        Contact contact = new Contact(new XmppAddress(name, address), name);
 
         return contact;
     }
@@ -1122,7 +1143,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Collection<Contact> contacts = new ArrayList<Contact>();
             for (RosterEntry entry : entryIter) {
                 
-                String address = entry.getUser();// parseAddressBase(entry.getUser());
+                String address = parseAddressBase(entry.getUser());
 
                 /* Skip entries present in the skip list */
                 if (skipList != null && !skipList.add(address))
@@ -1150,6 +1171,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         resource = resource.substring(0,resource.indexOf('.'));
 
                     p.setResource(resource);
+                    xaddress.appendResource(resource);
                 }
             
                 Contact contact = mContactListManager.getContact(xaddress.getFullName());
@@ -1268,8 +1290,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         RosterListener rListener = new RosterListener() {
 
-            //			private Stack<String> entriesToAdd = new Stack<String>();
-            //			private Stack<String> entriesToDel = new Stack<String>();
+            			private Stack<String> entriesToAdd = new Stack<String>();
+            			private Stack<String> entriesToDel = new Stack<String>();
 
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
@@ -1283,7 +1305,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 debug(TAG, "roster entries updated");
 
-                //entriesAdded(addresses);
+                entriesAdded(addresses);
             }
 
             @Override
@@ -1291,7 +1313,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 debug(TAG, "roster entries deleted: " + addresses.size());
 
-                /*
+                
                 if (addresses != null)
                 	entriesToDel.addAll(addresses);
                 
@@ -1313,7 +1335,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 else
                 {
                 	debug(TAG, "roster delete entries queued");
-                }*/
+                }
             }
 
             @Override
@@ -1321,7 +1343,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 debug(TAG, "roster entries added: " + addresses.size());
 
-                /*
+                
                 if (addresses != null)
                 	entriesToAdd.addAll(addresses);
                 
@@ -1339,11 +1361,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 else
                 {
                 	debug(TAG, "roster add entries queued");
-                }*/
+                }
             }
         };
 
         private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+            
             String name = parseAddressName(presence.getFrom());
             String address = parseAddressBase(presence.getFrom());
 
@@ -1357,7 +1380,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (resource.indexOf('.')!=-1)
                     resource = resource.substring(0,resource.indexOf('.'));
                 
-                
             }
             
             
@@ -1369,21 +1391,27 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 return;
             
             // Get presence from the Roster to handle priorities and such
+            /*
             final Roster roster = mConnection.getRoster();
             if (roster != null) {
                 presence = roster.getPresence(address);
             }
             int type = parsePresence(presence);
-
+               */
+            
+            int type = parsePresence(presence);
+            
             Contact contact = getContact(xaddress.getFullName());
 
             Presence p = new Presence(type, status, null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
             p.setResource(resource);
-            
-            if (contact == null) {
-                contact = new Contact(xaddress, name);
+            xaddress.appendResource(resource);
 
+            if (contact == null) {
+                
+                contact = new Contact(xaddress, xaddress.getScreenName());      
+                
                 debug(TAG, "got presence updated for NEW user: "
                            + contact.getAddress().getFullName() + " presence:" + type);
                 //store the latest presence notification for this user in this queue
@@ -1771,7 +1799,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     public void debug(String tag, String msg) {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
+      //  if (Log.isLoggable(TAG, Log.DEBUG)) {
+        if (DEBUG_ENABLED) {
             Log.d(tag, "" + mGlobalId + " : " + msg);
         }
     }
