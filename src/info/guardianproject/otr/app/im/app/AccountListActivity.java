@@ -44,6 +44,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.AttributeSet;
@@ -144,6 +145,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         registerForContextMenu(getListView());
         
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
+        emptyView.setVisibility(View.GONE);
+        ((ViewGroup)getListView().getParent()).addView(emptyView);
+        
         getListView().setEmptyView(emptyView);
         emptyView.setOnClickListener(new OnClickListener()
         {
@@ -422,12 +426,27 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     }
     
+
+private Handler mHandlerGoogleAuth = new Handler ()
+{
+
+    @Override
+    public void handleMessage(Message msg) {
+       
+        super.handleMessage(msg);
+        
+        Log.d(TAG,"Got handler callback from auth: " + msg.what);
+    }
+        
+};
+
+    
     private void showGoogleAccountListDialog() {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
         
-        Account[] accounts = AccountManager.get(this).getAccountsByType("com.google");
+        Account[] accounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
         
         mAccountList = new String[accounts.length];
         
@@ -443,10 +462,11 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                         public void run ()
                         {
                             //get the oauth token
-                          //don't store anything just make sure it works!
-                           String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this);
                             
-                          //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
+                          //don't store anything just make sure it works!
+                           String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
+                   
+                           //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
                             showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password);
                         }
                     };
