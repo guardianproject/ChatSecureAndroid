@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-alpha-2"
-     android:versionCode="43"
+     android:versionName="0.0.11-alpha-4"
+     android:versionCode="45"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -52,6 +52,7 @@ android:anyDensity="true"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
+             android:largeHeap="true"
 			>
      		 
          <activity android:name=".app.WelcomeActivity"
@@ -204,6 +205,7 @@ android:anyDensity="true"
  -->
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
+             android:launchMode="singleTop"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -244,7 +246,7 @@ android:anyDensity="true"
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.ContactListActivity" android:launchMode="singleTop"
+        <activity android:name=".app.ContactListActivity"
             android:exported="false"
             >
             <intent-filter>
