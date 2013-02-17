@@ -20,14 +20,20 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
@@ -41,6 +47,8 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     CheckBoxPreference mNotificationSound;
     CheckBoxPreference mForegroundService;
     EditTextPreference mHeartbeatInterval;
+    
+    EditTextPreference mThemeBackground;
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();
@@ -114,6 +122,73 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
         mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
+        
+        mThemeBackground = (EditTextPreference) findPreference("pref_background");
+        
+        mThemeBackground.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+
+            @Override
+            public boolean onPreferenceClick(Preference arg0) {
+              
+                showThemeChooserDialog ();
+                return true;
+            }
+            
+        });
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 888 && data != null && data.getData() != null){
+            Uri _uri = data.getData();
+
+            if (_uri != null) {
+                //User had pick an image.
+                Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
+                cursor.moveToFirst();
+
+                //Link to the image
+                final String imageFilePath = cursor.getString(0);
+                mThemeBackground.setText(imageFilePath);                
+                mThemeBackground.getDialog().cancel();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+        
+    }
+
+    private void showThemeChooserDialog ()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Choose Background");
+        builder.setMessage("Do you want to select a background image from the Gallery?");
+
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 888);
+
+                dialog.dismiss();
+            }
+
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // I do not need any action here you might
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override

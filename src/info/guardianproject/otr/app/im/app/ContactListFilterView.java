@@ -62,8 +62,20 @@ public class ContactListFilterView extends LinearLayout {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
-           //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+                
+            }
+
+            @Override
+            public void onUpdateSelfPresenceError(IImConnection connection, ImErrorInfo error) {
+                super.onUpdateSelfPresenceError(connection, error);
+            }
+
+            @Override
+            public void onSelfPresenceUpdated(IImConnection connection) {
+                super.onSelfPresenceUpdated(connection);
             }  
+            
+            
         };
     }
 
@@ -134,6 +146,7 @@ public class ContactListFilterView extends LinearLayout {
         }
     }
 
+    
     public void doFilter(Uri uri, String filterString) {
         if (!uri.equals(mUri)) {
             mUri = uri;

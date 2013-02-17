@@ -34,6 +34,7 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.WallpaperManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -41,6 +42,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -113,9 +115,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onCreate(Bundle icicle) {
 
         ((ImApp)getApplication()).setAppTheme(this);
-        
+      
         super.onCreate(icicle);
-        
+      
+        ThemeableActivity.setBackgroundImage(this);
         
       //  setTitle(R.string.landing_page_title);
         
@@ -165,6 +168,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
     }
+    
     
     
     private void reloadList ()

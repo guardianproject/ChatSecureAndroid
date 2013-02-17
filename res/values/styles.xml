@@ -47,7 +47,10 @@
     
      <!-- Variation on the Holo Light theme that styles the Action Bar -->
     <style name="Theme.Gibberbot.Light" parent="Theme.Sherlock.Light">
-        
+          <item name="android:windowAnimationStyle">@null</item>
+           <item name="actionBarStyle">@style/MyActionBarStyleLight</item>
+    	<item name="android:actionBarStyle">@style/MyActionBarStyleLight</item>
+     
         <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>
         <item name="actionBarItemBackground">@drawable/ad_selectable_background</item>
         <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
@@ -63,6 +66,8 @@
     </style>
     
     <style name="Theme.Gibberbot" parent="Theme.Sherlock">
+          <item name="android:windowAnimationStyle">@null</item>
+        
          <item name="actionBarStyle">@style/MyActionBarStyle</item>
     	<item name="android:actionBarStyle">@style/MyActionBarStyle</item>
         <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>
@@ -81,9 +86,15 @@
     
     </style>
 
+    
+    <style name="MyActionBarStyleLight" parent="Widget.Sherlock.ActionBar">
+    <item name="android:background">#bbcccccc</item>
+    <item name="background">#bbcccccc</item>
+</style>
+    
     <style name="MyActionBarStyle" parent="Widget.Sherlock.ActionBar">
-    <item name="android:background">#ff333333</item>
-    <item name="background">#ff333333</item>
+    <item name="android:background">#bb333333</item>
+    <item name="background">#bb333333</item>
 </style>
 
     <!-- style the overflow menu -->

@@ -295,7 +295,11 @@
     <!-- Inline status message in the chat history list, when a friend left the chat. -->
     <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> has left</string>
     <!-- Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-    <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+    
+    <!-- <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+    
+    <string name="time_stamp" format="date"><xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g><xliff:g id="ampm">a</xliff:g></string>
+    
     <!-- The send button on the chat screen. -->
     <string name="send">Send</string>
     <!-- Error message when a chat failed to be sent.-->
@@ -735,5 +739,13 @@
 	 
 	 <string name="pref_in_memory_db_title">In-Memory Message Storage Only</string>
 	 <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>
+
+
+	 <string name="pref_background_title">Background Image</string>
+	 <string name="pref_background_summary">Set path ("/sdcard/foo.jpg") to a background image wallpaper for the app</string>
+	 
+	 <string name="pref_group_security_title">Security and Privacy</string>
+	 <string name="pref_group_looknfeel_title">User Interface</string>
+	 <string name="pref_group_tuning_title">Other Tuning</string>
 </resources>
 
