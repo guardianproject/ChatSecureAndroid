@@ -41,6 +41,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
@@ -80,11 +81,12 @@ public class MessageView extends LinearLayout {
             boolean scrolling) {
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
       
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(100,3,3,3);        
+        ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+       // lp.setMargins(100,3,3,3);        
         setGravity(Gravity.RIGHT);
         setLayoutParams(lp);     
         setPadding(100, 3, 3, 3);
+        
         
       
         mTextViewForMessages.setText(message);
@@ -102,8 +104,8 @@ public class MessageView extends LinearLayout {
             DeliveryState delivery) {
         String contact = mResources.getString(R.string.me);
         
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(3,3,100,3);
+        ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+       // lp.setMargins(3,3,100,3);
         setLayoutParams(lp);
         setGravity(Gravity.LEFT);
         setPadding(3,3,100,3);
