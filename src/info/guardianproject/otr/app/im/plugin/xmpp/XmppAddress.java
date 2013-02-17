@@ -1,4 +1,4 @@
-package info.guardianproject.otr.app.im.plugin;
+package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.app.im.engine.Address;
 import android.os.Parcel;

@@ -33,6 +33,7 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -43,6 +44,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -242,8 +244,12 @@ public class ImpsProvider extends ContentProvider {
         private SQLiteDatabase dbRead;
         private SQLiteDatabase dbWrite;
 
-        DatabaseHelper(Context context) throws Exception {
+        boolean mInMemoryDB = false;
+        
+        DatabaseHelper(Context context, boolean inMemoryDb) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
+            
+            mInMemoryDB = inMemoryDb;
         }
 
         public SQLiteDatabase getReadableDatabase() {
@@ -664,11 +670,20 @@ public class ImpsProvider extends ContentProvider {
             if (DBG)
                 log("##### createTransientTables");
 
+            
             // Create transient tables
             String cpDbName;
-            db.execSQL("ATTACH DATABASE ':memory:' AS " + mTransientDbName + ";");
-            cpDbName = mTransientDbName + ".";
-
+            
+            if (mInMemoryDB)
+            {
+                db.execSQL("ATTACH DATABASE ':memory:' AS " + mTransientDbName + ";");
+                cpDbName = mTransientDbName + ".";
+            }
+            else
+            {
+               cpDbName = "";
+            }
+            
             // in-memory message table
             createInMemoryMessageTables(db, cpDbName);
 
@@ -997,8 +1012,12 @@ public class ImpsProvider extends ContentProvider {
 
         if (mDbHelper == null) {
             Context ctx = getContext();
-            // SQLiteDatabase.loadLibs(ctx);
-            mDbHelper = new DatabaseHelper(ctx);
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
+            //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
+            boolean inMemoryDb = settings.getBoolean("pref_in_memory_db", true);
+            
+            mDbHelper = new DatabaseHelper(ctx,inMemoryDb);
         }
 
         return mDbHelper;

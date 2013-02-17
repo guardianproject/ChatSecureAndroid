@@ -91,6 +91,9 @@ public class WelcomeActivity extends ThemeableActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         mDefaultLocale = prefs.getString(getString(R.string.pref_default_locale), null);
         setContentView(R.layout.welcome_activity);
+        
+        this.getSupportActionBar().hide();
+        
         Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
 
         getStarted.setOnClickListener(new OnClickListener() {

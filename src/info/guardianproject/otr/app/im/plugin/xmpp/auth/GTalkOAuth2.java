@@ -11,12 +11,15 @@ import org.jivesoftware.smack.sasl.SASLMechanism;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 
@@ -25,6 +28,7 @@ public class GTalkOAuth2 extends SASLMechanism {
     
 public static final String NAME="X-GOOGLE-TOKEN";//"X-OAUTH2";//
 private static final String TOKEN_TYPE = "mail";// "https://www.googleapis.com/auth/googletalk";//"mail";
+public static final String TYPE_GOOGLE_ACCT = "com.google";
 
 /*
  * Taken from here: http://stackoverflow.com/questions/7358392/how-to-authenticate-to-google-talk-with-accountmanagers-authentication-token-us
@@ -38,7 +42,10 @@ protected String getName() {
     return NAME;
 }
 
-static void enable() { }
+static void enable() {
+
+        Log.d(NAME,"Google OAuth2 enabled");
+}
 
 @Override
 protected void authenticate() throws IOException, XMPPException
@@ -61,17 +68,26 @@ protected void authenticate() throws IOException, XMPPException
     
 }
 
-
 /*
  * This is used the first time, on account setup, in order to display the proper perms dialog
  */
-public static String getGoogleAuthTokenAllow(String name, Context context, Activity activity)
+public static String getGoogleAuthTokenAllow(String name, Context context, Activity activity, Handler handler)
 {
     AccountManager aMgr = AccountManager.get(context);
     
     String retVal = null;
-    Account account = getAccount(name, aMgr);
-    AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, null, activity, null, null);
+    Account account = getAccount(TYPE_GOOGLE_ACCT,name, aMgr);
+    Bundle bundle = new Bundle();
+    AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, bundle, activity, 
+            new AccountManagerCallback<Bundle>() {
+
+                @Override
+                public void run(AccountManagerFuture<Bundle> bundle) {
+                   
+                    //this is the result bundle?
+                    
+                    
+                }} ,handler);
     
     try
     {
@@ -92,7 +108,7 @@ public static String getGoogleAuthToken(String accountName, Context context) {
  //   Log.d(NAME,"Getting authToken for " + accountName);
     String authTokenType = TOKEN_TYPE;
     AccountManager aMgr = AccountManager.get(context);
-    Account account = getAccount(accountName,aMgr);
+    Account account = getAccount(TYPE_GOOGLE_ACCT,accountName,aMgr);
     if (accountName == null)
         accountName = account.name;
     
@@ -112,8 +128,8 @@ public static String getGoogleAuthToken(String accountName, Context context) {
   }
 
 //help method for getting proper account
-public static Account getAccount(String name, AccountManager aMgr) {
-    Account[] accounts = aMgr.getAccounts();
+public static Account getAccount(String type, String name, AccountManager aMgr) {
+    Account[] accounts = aMgr.getAccountsByType(type);
     
     if (name == null)
         return accounts[0];

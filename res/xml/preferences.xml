@@ -21,8 +21,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     
+   <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
  <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
-   android:key="@string/pref_default_locale"
+   android:key="pref_default_locale"
    android:entryValues="@array/languages_values"
    android:entries="@array/languages"
   >
@@ -33,52 +34,76 @@
  <CheckBoxPreference android:key="themeDark"
     android:title="@string/pref_theme_dark"
     android:defaultValue="false" />
+ 
+   <EditTextPreference 
+          android:key="pref_background"
+          android:title="@string/pref_background_title"
+          android:summary="@string/pref_background_summary"
+           />
+ </PreferenceCategory>
   
-  <CheckBoxPreference android:key="@string/pref_hide_offline_contacts"
-    android:title="@string/hide_offline_contacts"
-    android:defaultValue="false" />
-
+  
+   <PreferenceCategory android:title="@string/pref_group_security_title">
+  
   <ListPreference android:title="Chat Encryption"
-    android:key="@string/pref_security_otr_mode"
+    android:key="pref_security_otr_mode"
     android:entryValues="@array/otr_options_values"
     android:entries="@array/otr_options"
     android:summary="@string/how_encrypted_chats_are_started"
     android:defaultValue="auto">
   </ListPreference>
-
+  
   
   <CheckBoxPreference
-          android:key="@string/pref_start_on_boot"
+          android:key="pref_in_memory_db"
+          android:title="@string/pref_in_memory_db_title"
+          android:summary="@string/pref_in_memory_db_summary"
+          android:defaultValue="true" />
+  
+
+  </PreferenceCategory>
+  
+      <PreferenceCategory android:title="@string/pref_group_tuning_title">
+   
+  <CheckBoxPreference
+          android:key="pref_start_on_boot"
           android:title="@string/start_on_boot"
           android:summary="@string/start_on_boot_summary"
           android:defaultValue="true" />
   
   <CheckBoxPreference
-          android:key="@string/pref_foreground_service"
+          android:key="pref_foreground_service"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
-          android:defaultValue="false" />
+          android:defaultValue="true" />
 
   <EditTextPreference 
-          android:key="@string/pref_heartbeat_interval"
+          android:key="pref_heartbeat_interval"
           android:title="@string/heartbeat_interval_title"
           android:summary="@string/heartbeat_interval_summary"
           android:numeric="integer"
           android:maxLength="2"
-          android:defaultValue="1" />
+          android:defaultValue="15" />
+  
+   
+   <CheckBoxPreference android:key="pref_hide_offline_contacts"
+    android:title="@string/hide_offline_contacts"
+    android:defaultValue="false" />
+   
+  </PreferenceCategory>
   
   <PreferenceCategory android:title="@string/notification_group_title">
 
         <CheckBoxPreference
-                android:key="@string/pref_enable_notification"
+                android:key="pref_enable_notification"
                 android:title="@string/notification_enabled_title"
                 android:summary="@string/notification_enabled_summary"
                 android:defaultValue="true" />
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="@string/pref_enable_notification"
-                android:key="@string/pref_notification_vibrate"
+                android:dependency="pref_enable_notification"
+                android:key="pref_notification_vibrate"
                 android:title="@string/notification_vibrate_title"
                 android:summary="@string/notification_vibrate_summary"
                 android:defaultValue="true"
@@ -86,8 +111,8 @@
 
         <CheckBoxPreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="@string/pref_enable_notification"
-                android:key="@string/pref_notification_sound"
+                android:dependency="pref_enable_notification"
+                android:key="pref_notification_sound"
                 android:title="@string/notification_sound_title"
                 android:summary="@string/notification_sound_summary"
                 android:defaultValue="false"
@@ -97,7 +122,7 @@
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="@string/pref_notification_sound"
-                android:key="@string/pref_notification_ringtone"
+                android:key="pref_notification_ringtone"
                 android:persistent="false"
                 android:title="@string/notification_ringtone_title"
                 android:ringtoneType="notification" />
