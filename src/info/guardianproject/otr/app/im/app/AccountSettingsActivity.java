@@ -85,7 +85,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
         String value;
 
-        if (key.equals(getString(R.string.pref_account_xmpp_resource))) {
+        if (key.equals("pref_account_xmpp_resource")) {
             value = prefs.getString(key, null);
             settings.setXmppResource(value);
             if (value != null) {
@@ -93,7 +93,8 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 mXmppResource.setSummary(value);
                 mXmppResource.setText(value); // In case it was trimmed
             }
-        } else if (key.equals(getString(R.string.pref_account_xmpp_resource_prio))) {
+        } else if (key.equals("pref_account_xmpp_resource_prio")) {
+            
             value = prefs.getString(key, "20");
             try {
                 settings.setXmppResourcePrio(Integer.parseInt(value));
@@ -103,7 +104,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                         .show();
             }
             mXmppResourcePrio.setSummary(value);
-        } else if (key.equals(getString(R.string.pref_account_port))) {
+        } else if (key.equals("pref_account_port")) {
             value = prefs.getString(key, "0");
             try {
                 settings.setPort(Integer.parseInt(value));
@@ -113,7 +114,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
             }
             if (value != "5222" && value != "0")
                 mPort.setSummary(value);
-        } else if (key.equals(getString(R.string.pref_account_server))) {
+        } else if (key.equals("pref_account_server")) {
             value = prefs.getString(key, null);
             settings.setServer(value);
             if (value != null) {
@@ -121,13 +122,13 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 mServer.setSummary(value);
                 mServer.setText(value); // In case it was trimmed
             }
-        } else if (key.equals(getString(R.string.pref_security_allow_plain_auth))) {
+        } else if (key.equals("pref_security_allow_plain_auth")) {
             settings.setAllowPlainAuth(prefs.getBoolean(key, false));
-        } else if (key.equals(getString(R.string.pref_security_require_tls))) {
+        } else if (key.equals("pref_security_require_tls")) {
             settings.setRequireTls(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_security_tls_cert_verify))) {
+        } else if (key.equals("pref_security_tls_cert_verify")) {
             settings.setTlsCertVerify(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_security_do_dns_srv))) {
+        } else if (key.equals("pref_security_do_dns_srv")) {
             settings.setDoDnsSrv(prefs.getBoolean(key, true));
         }
         
@@ -150,13 +151,13 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
             throw new RuntimeException(
                     "AccountSettingsActivity must be created with an provider id");
         }
-        mXmppResource = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource));
-        mXmppResourcePrio = (EditTextPreference) findPreference(getString(R.string.pref_account_xmpp_resource_prio));
-        mPort = (EditTextPreference) findPreference(getString(R.string.pref_account_port));
-        mServer = (EditTextPreference) findPreference(getString(R.string.pref_account_server));
-        mAllowPlainAuth = (CheckBoxPreference) findPreference(getString(R.string.pref_security_allow_plain_auth));
-        mRequireTls = (CheckBoxPreference) findPreference(getString(R.string.pref_security_require_tls));
-        mDoDnsSrv = (CheckBoxPreference) findPreference(getString(R.string.pref_security_do_dns_srv));
+        mXmppResource = (EditTextPreference) findPreference(("pref_account_xmpp_resource"));
+        mXmppResourcePrio = (EditTextPreference) findPreference(("pref_account_xmpp_resource_prio"));
+        mPort = (EditTextPreference) findPreference(("pref_account_port"));
+        mServer = (EditTextPreference) findPreference(("pref_account_server"));
+        mAllowPlainAuth = (CheckBoxPreference) findPreference(("pref_security_allow_plain_auth"));
+        mRequireTls = (CheckBoxPreference) findPreference(("pref_security_require_tls"));
+        mDoDnsSrv = (CheckBoxPreference) findPreference(("pref_security_do_dns_srv"));
     }
 
     @Override

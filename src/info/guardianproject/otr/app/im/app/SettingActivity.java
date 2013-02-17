@@ -20,14 +20,20 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
@@ -41,6 +47,8 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     CheckBoxPreference mNotificationSound;
     CheckBoxPreference mForegroundService;
     EditTextPreference mHeartbeatInterval;
+    
+    EditTextPreference mThemeBackground;
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();
@@ -65,27 +73,27 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), false /* don't keep updated */, null /* no handler */);
 
-        if (key.equals(getString(R.string.pref_security_otr_mode))) {
+        if (key.equals("pref_security_otr_mode")) {
             settings.setOtrMode(prefs.getString(key, "auto"));
-        } else if (key.equals(getString(R.string.pref_hide_offline_contacts))) {
+        } else if (key.equals("pref_hide_offline_contacts")) {
             settings.setHideOfflineContacts(prefs.getBoolean(key, false));
-        } else if (key.equals(getString(R.string.pref_enable_notification))) {
+        } else if (key.equals("pref_enable_notification")) {
             settings.setEnableNotification(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_notification_vibrate))) {
+        } else if (key.equals("pref_notification_vibrate")) {
             settings.setVibrate(prefs.getBoolean(key, true));
-        } else if (key.equals(getString(R.string.pref_notification_sound))) {
+        } else if (key.equals("pref_notification_sound")) {
             // TODO sort out notification sound pref
             if (prefs.getBoolean(key, false)) {
                 settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
             } else {
                 settings.setRingtoneURI(null);
             }
-        } else if (key.equals(getString(R.string.pref_foreground_service))) {
+        } else if (key.equals("pref_foreground_service")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
-        } else if (key.equals(getString(R.string.pref_heartbeat_interval))) {
+        } else if (key.equals("pref_heartbeat_interval")) {
             settings.setHeartbeatInterval(Integer.valueOf(prefs.getString(key, String.valueOf(DEFAULT_HEARTBEAT_INTERVAL))));
         }
-        else if (key.equals(getString(R.string.pref_default_locale)))
+        else if (key.equals("pref_default_locale"))
         {
            ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
            setResult(2);
@@ -105,15 +113,82 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        mHideOfflineContacts = (CheckBoxPreference) findPreference(getString(R.string.pref_hide_offline_contacts));
-        mOtrMode = (ListPreference) findPreference(getString(R.string.pref_security_otr_mode));
-        mEnableNotification = (CheckBoxPreference) findPreference(getString(R.string.pref_enable_notification));
-        mNotificationVibrate = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_vibrate));
-        mNotificationSound = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_sound));
+        mHideOfflineContacts = (CheckBoxPreference) findPreference("pref_hide_offline_contacts");
+        mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
+        mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
+        mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
+        mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         // TODO re-enable Ringtone preference
-        //mNotificationRingtone = (CheckBoxPreference) findPreference(getString(R.string.pref_notification_ringtone));
-        mForegroundService = (CheckBoxPreference) findPreference(getString(R.string.pref_foreground_service));
-        mHeartbeatInterval = (EditTextPreference) findPreference(getString(R.string.pref_heartbeat_interval));
+        //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
+        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
+        mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
+        
+        mThemeBackground = (EditTextPreference) findPreference("pref_background");
+        
+        mThemeBackground.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+
+            @Override
+            public boolean onPreferenceClick(Preference arg0) {
+              
+                showThemeChooserDialog ();
+                return true;
+            }
+            
+        });
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 888 && data != null && data.getData() != null){
+            Uri _uri = data.getData();
+
+            if (_uri != null) {
+                //User had pick an image.
+                Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
+                cursor.moveToFirst();
+
+                //Link to the image
+                final String imageFilePath = cursor.getString(0);
+                mThemeBackground.setText(imageFilePath);                
+                mThemeBackground.getDialog().cancel();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+        
+    }
+
+    private void showThemeChooserDialog ()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Choose Background");
+        builder.setMessage("Do you want to select a background image from the Gallery?");
+
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 888);
+
+                dialog.dismiss();
+            }
+
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // I do not need any action here you might
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override

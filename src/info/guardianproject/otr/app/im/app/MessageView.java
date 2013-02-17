@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.util.FontUtils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -36,6 +37,8 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,6 +49,8 @@ public class MessageView extends LinearLayout {
     }
 
     private TextView mTextViewForMessages;
+    private TextView mTextViewForTimestamp;
+    
     private ImageView mDeliveryIcon;
     private Resources mResources;
 
@@ -58,9 +63,13 @@ public class MessageView extends LinearLayout {
         super.onFinishInflate();
 
         mTextViewForMessages = (TextView) findViewById(R.id.message);
+        mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
 
         mResources = getResources();
+        
+        FontUtils.setRobotoFont(getContext(), mTextViewForMessages);
+       
     }
 
     public URLSpan[] getMessageLinks() {
@@ -69,16 +78,36 @@ public class MessageView extends LinearLayout {
 
     public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
             boolean scrolling) {
-        // TODO SQLCipher decrypt messages from encrypted message store here
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
+      
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(100,3,3,3);        
+        setGravity(Gravity.RIGHT);
+        setLayoutParams(lp);     
+        setPadding(100, 3, 3, 3);
+        
+      
         mTextViewForMessages.setText(message);
      //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         mDeliveryIcon.setVisibility(INVISIBLE);
+        
+        if (date != null)
+        {
+        mTextViewForTimestamp.setText(formatTimeStamp(date));
+        mTextViewForTimestamp.setGravity(Gravity.CENTER);
+        }
     }
 
     public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery) {
         String contact = mResources.getString(R.string.me);
+        
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(3,3,100,3);
+        setLayoutParams(lp);
+        setGravity(Gravity.LEFT);
+        setPadding(3,3,100,3);
+        
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
      //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
@@ -90,6 +119,13 @@ public class MessageView extends LinearLayout {
             mDeliveryIcon.setVisibility(VISIBLE);
         } else {
             mDeliveryIcon.setVisibility(GONE);
+        }
+        
+
+        if (date != null)
+        {
+            mTextViewForTimestamp.setText(formatTimeStamp(date));
+            mTextViewForTimestamp.setGravity(Gravity.CENTER);
         }
     }
 
@@ -121,10 +157,12 @@ public class MessageView extends LinearLayout {
 
         SpannableStringBuilder buf = new SpannableStringBuilder();
 
+        /*
         if (contact != null) {
             buf.append(contact);
             buf.append(": ");
         }
+        */
 
         if (scrolling) {
             buf.append(body);
@@ -132,14 +170,18 @@ public class MessageView extends LinearLayout {
             buf.setSpan(ChatView.STYLE_BOLD, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             buf.append(body);
 
-            if (date != null) {
-                appendTimeStamp(buf, date);
-            }
+           
         }
+        
+        /*
+        if (date != null) {
+            appendTimeStamp(buf, date);
+        }*/
+        
         return buf;
     }
 
-    private void appendTimeStamp(SpannableStringBuilder buf, Date date) {
+    private SpannableString formatTimeStamp(Date date) {
         DateFormat format = new SimpleDateFormat(mResources.getString(R.string.time_stamp));
         String dateStr = format.format(date);
         SpannableString spanText = new SpannableString(dateStr);
@@ -148,8 +190,8 @@ public class MessageView extends LinearLayout {
         spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spanText.setSpan(new ForegroundColorSpan(mResources.getColor(android.R.color.darker_gray)),
                 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        buf.append('\n');
-        buf.append(spanText);
+      
+        return spanText;
     }
 
     private CharSequence formatPresenceUpdates(String contact, int type, boolean isGroupChat,

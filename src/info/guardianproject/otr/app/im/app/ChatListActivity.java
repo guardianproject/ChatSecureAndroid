@@ -211,12 +211,15 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         getSherlock().getActionBar().setTitle("");
         
         Cursor providerCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" 
-                + " AND " + Imps.Provider.ACCOUNT_CONNECTION_STATUS + " != 0"
-                /* selection */,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
+        
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         
+
+        //        + " AND " + Imps.Provider.ACCOUNT_CONNECTION_STATUS + " != 0"
+        
+                /* selection */
         mAccountIds = new long[providerCursor.getCount()];
         
         providerCursor.moveToFirst();
@@ -305,7 +308,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     private void signOut ()
     {
         try {
-            mConn.logout();
+            if (mConn != null)
+                mConn.logout();
             finish();
         } catch (RemoteException e) {
 

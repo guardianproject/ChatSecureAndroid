@@ -22,20 +22,23 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="6dip"    
-    android:paddingBottom="6dip"
+   
      >
 
-	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:orientation="horizontal">
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:padding="6dip"
+    android:background="#66AAAAAA"
+		>
 
 	    <TextView android:id="@+id/message"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	         android:autoLink="web"
 	         />
+	    
 		<ImageView
 		    android:id="@+id/iconView"
 		    android:layout_width="wrap_content"
@@ -45,5 +48,13 @@
 		    /> 
 
    	</LinearLayout>
+   	
+	
+	    <TextView android:id="@+id/messagets"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	         />
 
 </view>

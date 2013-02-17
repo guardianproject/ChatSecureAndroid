@@ -121,6 +121,7 @@ public class SignInHelper {
             final ProviderDef provider = mApp.getProvider(providerId);
             String providerName = provider.mName;
 
+            /*
             Resources r = mContext.getResources();
             new AlertDialog.Builder(mContext).setTitle(R.string.error)
                     .setMessage(r.getString(R.string.login_service_failed, providerName, // FIXME
@@ -130,6 +131,7 @@ public class SignInHelper {
                             // FIXME
                         }
                     }).setCancelable(false).show();
+                    */
         }
     }
 
