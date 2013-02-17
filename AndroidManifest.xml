@@ -53,6 +53,7 @@ android:anyDensity="true"
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
              android:largeHeap="true"
+             android:hardwareAccelerated="true"
 			>
      		 
          <activity android:name=".app.WelcomeActivity"
@@ -360,7 +361,8 @@ android:anyDensity="true"
           
           <activity android:name=".app.WarningDialogActivity"
          	android:theme="@android:style/Theme.Dialog"
-         	 android:taskAffinity=""
+         	             android:launchMode="singleTop"
+         	
             />
           <activity
               android:name="de.duenndns.ssl.MemorizingActivity"
