@@ -196,7 +196,7 @@ public class ContactView extends LinearLayout {
 
         View contactInfoPanel = findViewById(R.id.contactInfo);
         if (hasChat && showChatMsg) { // HERE the bubble is set
-            contactInfoPanel.setBackgroundResource(R.drawable.bubble);
+        //    contactInfoPanel.setBackgroundResource(R.drawable.bubble);
       //      mLine1.setTextColor(r.getColor(R.color.chat_contact));
         } else {
             contactInfoPanel.setBackgroundDrawable(null);

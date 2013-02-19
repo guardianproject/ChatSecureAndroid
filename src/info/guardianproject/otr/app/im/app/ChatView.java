@@ -517,15 +517,24 @@ public class ChatView extends LinearLayout {
     }
 
     private void setTitle() {
+        
         if (mType == Imps.Contacts.TYPE_GROUP) {
             final String[] projection = { Imps.GroupMembers.NICKNAME };
             Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, mChatId);
             ContentResolver cr = mActivity.getContentResolver();
             Cursor c = cr.query(memberUri, projection, null, null, null);
             StringBuilder buf = new StringBuilder();
+            BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+
             if (c != null) {
                 while (c.moveToNext()) {
-                    buf.append(c.getString(0));
+
+                    String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+                    int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
+                    buf.append(nickname);
+                    buf.append(" (");
+                    buf.append(brandingRes.getString(PresenceUtils.getStatusStringRes(this.mPresenceStatus)));
+                    buf.append(")");
                     if (!c.isLast()) {
                         buf.append(',');
                     }
@@ -533,13 +542,20 @@ public class ChatView extends LinearLayout {
               
             }
             
-            
-           // mActivity.setTitle(mContext.getString(R.string.chat_with, buf.toString()));
             mActivity.setTitle(buf.toString());
             
         } else {
             
-            mActivity.setTitle(mNickName);
+            StringBuilder buf = new StringBuilder();
+           
+            BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+           
+            buf.append(this.mNickName);
+            buf.append(" (");
+            buf.append(brandingRes.getString(PresenceUtils.getStatusStringRes(this.mPresenceStatus)));
+            buf.append(")");
+            mActivity.setTitle(buf.toString());
+       
         }
     }
 
@@ -1608,6 +1624,7 @@ public class ChatView extends LinearLayout {
                 deliveryState = DeliveryState.UNDELIVERED;
             }
 
+            
             switch (type) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
