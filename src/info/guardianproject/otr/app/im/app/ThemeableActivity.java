@@ -58,15 +58,18 @@ public class ThemeableActivity extends SherlockActivity {
                 options.inSampleSize = 4;
 
                 Bitmap b = BitmapFactory.decodeFile(themebg, options);
-                   
-                b = Bitmap.createBitmap(b, 0, 0,Math.min(b.getWidth(),width),Math.min(b.getHeight(),height));
+            
+                float ratio = ((float)width)/((float)height);
+                int bgHeight = b.getHeight();
+                int bgWidth = (int)(((float)b.getHeight()) * ratio);
+                
+                b = Bitmap.createBitmap(b, 0, 0,Math.min(b.getWidth(),bgWidth),bgHeight);
                 
                 mThemeDrawable = new BitmapDrawable(b);
                 
             }
             
-            //WallpaperManager wallpaperManager = WallpaperManager.getInstance(activity);
-            //Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+            
             activity.getWindow().setBackgroundDrawable(mThemeDrawable);
         }
         
