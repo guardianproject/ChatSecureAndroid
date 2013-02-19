@@ -87,16 +87,18 @@ public class MessageView extends LinearLayout {
         setLayoutParams(lp);     
         setPadding(100, 3, 3, 3);
         
-        
       
         mTextViewForMessages.setText(message);
-     //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
-        mDeliveryIcon.setVisibility(INVISIBLE);
+       mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)
         {
         mTextViewForTimestamp.setText(formatTimeStamp(date));
         mTextViewForTimestamp.setGravity(Gravity.CENTER);
+        }
+        else
+        {
+            mTextViewForTimestamp.setText("");
         }
     }
 
@@ -129,6 +131,11 @@ public class MessageView extends LinearLayout {
             mTextViewForTimestamp.setText(formatTimeStamp(date));
             mTextViewForTimestamp.setGravity(Gravity.CENTER);
         }
+        else
+        {
+            mTextViewForTimestamp.setText("");
+        }
+
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
