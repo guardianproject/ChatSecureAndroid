@@ -32,7 +32,7 @@
 		>
 
 	    <TextView android:id="@+id/message"
-	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"

@@ -38,6 +38,7 @@ import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,12 +83,10 @@ public class MessageView extends LinearLayout {
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
       
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-       // lp.setMargins(100,3,3,3);        
         setGravity(Gravity.RIGHT);
         setLayoutParams(lp);     
-        setPadding(100, 3, 3, 3);
-        
-      
+        setPadding(100, 0, 3, 3);
+              
         mTextViewForMessages.setText(message);
        mDeliveryIcon.setVisibility(INVISIBLE);
         
@@ -110,7 +109,7 @@ public class MessageView extends LinearLayout {
        // lp.setMargins(3,3,100,3);
         setLayoutParams(lp);
         setGravity(Gravity.LEFT);
-        setPadding(3,3,100,3);
+        setPadding(3,0,100,3);
         
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
@@ -130,10 +129,16 @@ public class MessageView extends LinearLayout {
         {
             mTextViewForTimestamp.setText(formatTimeStamp(date));
             mTextViewForTimestamp.setGravity(Gravity.CENTER);
+            mTextViewForTimestamp.setVisibility(View.VISIBLE);
+            mTextViewForTimestamp.setPadding(0,0,0,12);
+
         }
         else
         {
             mTextViewForTimestamp.setText("");
+            mTextViewForTimestamp.setVisibility(View.GONE);
+            mTextViewForTimestamp.setPadding(0,0,0,0);
+
         }
 
     }
