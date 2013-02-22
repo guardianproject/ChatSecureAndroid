@@ -50,6 +50,7 @@ public class SignoutActivity extends ThemeableActivity {
         }
 
         ContentResolver cr = getContentResolver();
+        
         Cursor c = cr.query(data, ACCOUNT_SELECTION, null /* selection */,
                 null /* selection args */, null /* sort order */);
         final long providerId;

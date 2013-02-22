@@ -81,14 +81,35 @@ public class ContactsPickerActivity extends ListActivity {
     }
 
     private boolean resolveIntent() {
-        Intent i = getIntent();
-        mData = i.getData();
+        Intent intent = getIntent();
+        mData = intent.getData();
 
         if (mData == null) {
             return false;
         }
-        mExcludeClause = buildExcludeClause(i.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS));
-        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, null,
+        
+//        mExcludeClause = buildExcludeClause(intent.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS));
+
+        StringBuilder clause = new StringBuilder();
+        clause.append(Imps.Contacts.USERNAME);
+        clause.append(" NOT IN (");
+        
+        String[] excluded = intent.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS);
+        String[] excludedVals = new String[excluded.length];
+        
+        int len = excluded.length;
+        
+        for (int i = 0; i < len; i++) {
+            clause.append('?');
+            
+            excludedVals[i] = DatabaseUtils.sqlEscapeString(excluded[i]);
+            
+            if (i+1 < len)
+                clause.append(',');
+        }
+        clause.append(')');
+        
+        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, excludedVals,
                 Imps.Contacts.DEFAULT_SORT_ORDER);
         if (cursor == null) {
             return false;
@@ -109,6 +130,7 @@ public class ContactsPickerActivity extends ListActivity {
         finish();
     }
 
+    /*
     private static String buildExcludeClause(String[] excluded) {
         if (excluded == null || excluded.length == 0) {
             return null;
@@ -126,11 +148,15 @@ public class ContactsPickerActivity extends ListActivity {
         clause.append(')');
         return clause.toString();
     }
-
+    */
+    
     Cursor runQuery(CharSequence constraint) {
         String where;
         if (constraint == null) {
             where = mExcludeClause;
+
+            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, null,
+                    Imps.Contacts.DEFAULT_SORT_ORDER);
         } else {
             StringBuilder buf = new StringBuilder();
             if (mExcludeClause != null) {
@@ -138,13 +164,14 @@ public class ContactsPickerActivity extends ListActivity {
             }
 
             buf.append(Imps.Contacts.NICKNAME);
-            buf.append(" LIKE ");
-            DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");
-
+            buf.append(" LIKE ?");
+            
+            String[] whereVal = { DatabaseUtils.sqlEscapeString("%" + constraint + "%")};          
             where = buf.toString();
+
+            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, whereVal,
+                    Imps.Contacts.DEFAULT_SORT_ORDER);
         }
-        return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, null,
-                Imps.Contacts.DEFAULT_SORT_ORDER);
     }
 
     private class ContactsAdapter extends ResourceCursorAdapter {
