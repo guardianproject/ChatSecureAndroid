@@ -88,7 +88,10 @@ public final class Presence implements Parcelable {
         // TODO - what ClassLoader should be passed to readMap?
         // TODO - switch to Bundle
         mExtendedInfo = source.readHashMap(null);
-        mResource = source.readString();
+        
+        //this may not exist for older persisted presence data
+        if (source.dataAvail() > 0)
+            mResource = source.readString();
     }
 
     /**
