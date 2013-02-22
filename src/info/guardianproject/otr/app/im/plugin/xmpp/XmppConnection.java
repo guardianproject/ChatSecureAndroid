@@ -443,7 +443,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             if (e == null || e.getMessage() == null) {
                 debug(TAG, "NPE: " + e.getMessage());
-                e.printStackTrace();
+                Log.e(TAG,"login error",e);
                 info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "unknown error");
                 disconnected(info);
                 mRetryLogin = false;
@@ -597,42 +597,36 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             mConfig.setSecurityMode(SecurityMode.required);
 
-            SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-            SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
 
         } else {
             // if it finds a cert, still use it, but don't check anything since 
             // TLS errors are not expected by the user
             mConfig.setSecurityMode(SecurityMode.enabled);
 
-            if (allowPlainAuth) {
-                SASLAuthentication.supportSASLMechanism("PLAIN", 0);
-                SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 1);
-
-            } else {
-                SASLAuthentication.unsupportSASLMechanism("PLAIN");
-                SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 0);
-            }
+          
 
         }
+
         // Android has no support for Kerberos or GSSAPI, so disable completely
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
+
+        //add gtalk auth in
+        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+        
+        SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);        
+        SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+        SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
+        
+        if (!allowPlainAuth)
+            SASLAuthentication.unsupportSASLMechanism("PLAIN");
         
         if (password.startsWith(GTalkOAuth2.NAME))
         {
             mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
 
-            SASLAuthentication.unsupportSASLMechanism("PLAIN");
-            SASLAuthentication.unsupportSASLMechanism("DIGEST-MD5");
-            
-            //add gtalk auth in
-            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
-            
             password = password.split(":")[1];
-                  
             
         }
         
