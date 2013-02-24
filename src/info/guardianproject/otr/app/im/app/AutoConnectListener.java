@@ -17,16 +17,16 @@ import android.util.Log;
  */
 public class AutoConnectListener extends BroadcastReceiver {
     private static final String TAG = "Gibberbot.AutoConnectListener";
-    static boolean firstCall = true;
-
+  //  static boolean firstCall = true;
     public final static String BOOTFLAG = "BOOTFLAG";
     
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "AppConnectivityListener");
+    public synchronized void onReceive(Context context, Intent intent) {
         
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
+            
+        //    Log.d(TAG, "BOOT_COMPLETED RECEIVED");
             
             try
             {
@@ -40,34 +40,53 @@ public class AutoConnectListener extends BroadcastReceiver {
         
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             
+            
             boolean noConnectivity = intent.getBooleanExtra(
                     ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+            
+         //   Log.d(TAG, "CONNECTIVITY_ACTION: autostart IM service noconn=" + noConnectivity);
             
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
             boolean hasBootFlag = hasBootFlag (context);
             
-            Log.d(TAG, "autostart IM service firstCall=" + firstCall + " noconn=" + noConnectivity);
-            if (firstCall && !noConnectivity) {
+            if (!noConnectivity) {
                 
                 if ((!hasBootFlag) || prefStartOnBoot) //either we have already booted, so let's restart, or we want to start on boot
                 {
+           //         Log.d(TAG,"Starting IM Service (if needed)!");
                     ImApp.getApplication().startImServiceIfNeed(true);
-                    firstCall = false;
+                    clearBootFlag(context);
+                }
+                else
+                {
+            //        Log.d(TAG,"Killing autoconnect process (not needed)");
+                    android.os.Process.killProcess(android.os.Process.myPid()); 
+                    System.exit(0);
+                    
                 }
             }
         }
+        
     }
     
-    private void setBootFlag (Context context) throws IOException
+    public static void setBootFlag (Context context) throws IOException
     {
         File file = new File(context.getFilesDir(),BOOTFLAG);
         file.createNewFile();
     }
     
-    private boolean hasBootFlag (Context context)
+    public static boolean hasBootFlag (Context context)
     {
         return new File(context.getFilesDir(),BOOTFLAG).exists();
     }
+    
+    public static void clearBootFlag (Context context)
+    {
+        File file = new File(context.getFilesDir(),AutoConnectListener.BOOTFLAG);
+        if (file.exists())
+            file.delete();
+    }
+    
 }

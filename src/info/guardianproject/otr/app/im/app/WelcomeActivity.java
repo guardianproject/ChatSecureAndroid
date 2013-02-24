@@ -107,18 +107,12 @@ public class WelcomeActivity extends ThemeableActivity {
 
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
-        clearBootFlag ();
+        AutoConnectListener.clearBootFlag (this);
       
     }
     
 
-    private void clearBootFlag ()
-    {
-        File file = new File(getFilesDir(),AutoConnectListener.BOOTFLAG);
-        if (file.exists())
-            file.delete();
-    }
-    
+   
     @SuppressWarnings("deprecation")
     private boolean cursorUnlocked() {
         try {
