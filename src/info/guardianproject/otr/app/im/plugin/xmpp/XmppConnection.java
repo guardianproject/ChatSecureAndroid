@@ -546,6 +546,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         debug(TAG, "Do SRV check? " + doDnsSrv);
         debug(TAG, "cert verification? " + tlsCertVerify);
 
+        if (providerSettings.getUseTor()) {
+            setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
+                    TorProxyInfo.PROXY_PORT);
+        }
+        
         if (mProxyInfo == null)
             mProxyInfo = ProxyInfo.forNoProxy();
 
