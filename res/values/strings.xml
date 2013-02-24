@@ -747,5 +747,7 @@
 	 <string name="pref_group_security_title">Security and Privacy</string>
 	 <string name="pref_group_looknfeel_title">User Interface</string>
 	 <string name="pref_group_tuning_title">Other Tuning</string>
+	 <string name="_open_conversations">" open conversation(s)"</string>
+	 <string name="_via_orbot">"Orbot (Tor)"</string>
 </resources>
 
