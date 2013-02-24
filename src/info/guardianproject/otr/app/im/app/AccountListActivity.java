@@ -120,8 +120,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
       
         ThemeableActivity.setBackgroundImage(this);
         
-      //  setTitle(R.string.landing_page_title);
-        
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
