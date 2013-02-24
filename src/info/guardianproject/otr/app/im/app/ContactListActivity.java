@@ -107,7 +107,10 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         mFilterView.setActivity(this);
 
         mFilterView.getListView().setOnCreateContextMenuListener(this);
-
+        
+        getSherlock().getActionBar().setHomeButtonEnabled(true);
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
         if (mAccountId == -1) {
@@ -115,26 +118,11 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             return;
         }
         
-    //    setupActionBarList (mAccountId);
-        
-
         mApp = ImApp.getApplication(this);
         
-        initAccount ();
+
         
-
-        // Get the intent, verify the action and get the query
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            if (mIsFiltering) {
-                String filterText = intent.getStringExtra(SearchManager.QUERY);
-                mFilterView.doFilter(filterText);
-            }
-        }
-        
-
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+     
         
     }
     
@@ -428,9 +416,25 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     @Override
     protected void onResume() {
         super.onResume();
+        
+        initAccount ();
+        
         mApp.registerForConnEvents(mHandler);
         mContactListView.setAutoRefreshContacts(true);
+        
+        // Get the intent, verify the action and get the query
 
+
+        showFilterView();
+        
+        Intent intent = getIntent();
+        
+        if (intent.getAction() != null && Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            if (mIsFiltering) {
+                String filterText = intent.getStringExtra(SearchManager.QUERY);
+                mFilterView.doFilter(filterText);
+            }
+        }
     }
 
     @Override
