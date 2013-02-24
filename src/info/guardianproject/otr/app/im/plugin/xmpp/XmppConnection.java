@@ -167,6 +167,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         aContext = context;
 
         mStrongTrustManager = new StrongTrustManager(aContext);
+        mStrongTrustManager.setNotifyVerificationSuccess(false);
+        mStrongTrustManager.setNotifyVerificationFail(false);
         
         //setup SSL managers
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
