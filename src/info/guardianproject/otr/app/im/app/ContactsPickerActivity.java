@@ -129,26 +129,6 @@ public class ContactsPickerActivity extends ListActivity {
         setResult(RESULT_OK, data);
         finish();
     }
-
-    /*
-    private static String buildExcludeClause(String[] excluded) {
-        if (excluded == null || excluded.length == 0) {
-            return null;
-        }
-
-        StringBuilder clause = new StringBuilder();
-        clause.append(Imps.Contacts.USERNAME);
-        clause.append(" NOT IN (");
-        int len = excluded.length;
-        for (int i = 0; i < len - 1; i++) {
-            DatabaseUtils.appendValueToSql(clause, excluded[i]);
-            clause.append(',');
-        }
-        DatabaseUtils.appendValueToSql(clause, excluded[len - 1]);
-        clause.append(')');
-        return clause.toString();
-    }
-    */
     
     Cursor runQuery(CharSequence constraint) {
         String where;
