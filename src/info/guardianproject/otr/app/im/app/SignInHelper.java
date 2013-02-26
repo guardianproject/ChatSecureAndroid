@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Handle sign-in process for activities.
@@ -121,11 +122,15 @@ public class SignInHelper {
             final ProviderDef provider = mApp.getProvider(providerId);
             String providerName = provider.mName;
 
-            /*
+
             Resources r = mContext.getResources();
+            String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
+                    error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
+            
+            Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
+            /*
             new AlertDialog.Builder(mContext).setTitle(R.string.error)
-                    .setMessage(r.getString(R.string.login_service_failed, providerName, // FIXME
-                            error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode())))
+                    .setMessage()
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // FIXME
