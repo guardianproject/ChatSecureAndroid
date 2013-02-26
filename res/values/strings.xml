@@ -142,6 +142,7 @@
     <string name="confirm">Confirm</string>
     <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
     <string name="signout_all_confirm_message">Do you want to sign out all services?</string>
+    
     <!-- This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
     <string name="confirm_delete_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be deleted.</string>
     <!-- This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -749,5 +750,11 @@
 	 <string name="pref_group_tuning_title">Other Tuning</string>
 	 <string name="_open_conversations">" open conversation(s)"</string>
 	 <string name="_via_orbot">"Orbot (Tor)"</string>
+	 
+	 <string name="menu_exit">Exit</string>
+	 
+	 <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
+    <string name="signout_kill_confirm_message">Do you want to sign out all services AND kill all processes (hard exit)?</string>
+    
 </resources>
 

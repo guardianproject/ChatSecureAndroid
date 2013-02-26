@@ -550,6 +550,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
                     TorProxyInfo.PROXY_PORT);
         }
+        else
+        {
+            setProxy(null, null, -1);
+        }
         
         if (mProxyInfo == null)
             mProxyInfo = ProxyInfo.forNoProxy();

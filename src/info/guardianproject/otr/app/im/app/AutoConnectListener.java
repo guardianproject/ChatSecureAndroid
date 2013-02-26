@@ -22,46 +22,36 @@ public class AutoConnectListener extends BroadcastReceiver {
     
     @Override
     public synchronized void onReceive(Context context, Intent intent) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        boolean hasConnectivity = !intent.getBooleanExtra(
+                ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+        
+        boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
+        boolean hasBgData = ImApp.getApplication().isBackgroundDataEnabled();
         
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
-            
-        //    Log.d(TAG, "BOOT_COMPLETED RECEIVED");
-            
-            try
+            if (prefStartOnBoot)
             {
-                setBootFlag(context);
+                ImApp.getApplication().startImServiceIfNeed(true);
             }
-            catch (Exception e)
-            {
-                Log.e(TAG, "Unable to set BOOTFLAG file",e);
-            }
+            
+            return;
         }
         
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             
-            
-            boolean noConnectivity = intent.getBooleanExtra(
-                    ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            
-         //   Log.d(TAG, "CONNECTIVITY_ACTION: autostart IM service noconn=" + noConnectivity);
-            
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-            boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
-            boolean hasBootFlag = hasBootFlag (context);
-            
-            if (!noConnectivity) {
+            if (hasConnectivity) {
                 
-                if ((!hasBootFlag) || prefStartOnBoot) //either we have already booted, so let's restart, or we want to start on boot
+                if (ImApp.getApplication().hasActiveConnections() && hasBgData)
                 {
-           //         Log.d(TAG,"Starting IM Service (if needed)!");
                     ImApp.getApplication().startImServiceIfNeed(true);
-                    clearBootFlag(context);
+                
                 }
                 else
                 {
-            //        Log.d(TAG,"Killing autoconnect process (not needed)");
                     android.os.Process.killProcess(android.os.Process.myPid()); 
                     System.exit(0);
                     
@@ -71,6 +61,7 @@ public class AutoConnectListener extends BroadcastReceiver {
         
     }
     
+    /*
     public static void setBootFlag (Context context) throws IOException
     {
         File file = new File(context.getFilesDir(),BOOTFLAG);
@@ -88,5 +79,5 @@ public class AutoConnectListener extends BroadcastReceiver {
         if (file.exists())
             file.delete();
     }
-    
+    */
 }

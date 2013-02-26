@@ -106,8 +106,6 @@ public class WelcomeActivity extends ThemeableActivity {
         });
 
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
-        
-        AutoConnectListener.clearBootFlag (this);
       
     }
     

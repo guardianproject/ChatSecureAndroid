@@ -59,6 +59,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
@@ -338,6 +339,12 @@ public class ImApp extends Application {
         }
     }
 
+    public boolean hasActiveConnections ()
+    {
+        return !mConnections.isEmpty();
+        
+    }
+    
     public synchronized void stopImServiceIfInactive() {
         boolean hasActiveConnection = true;
         synchronized (mConnections) {
@@ -358,6 +365,46 @@ public class ImApp extends Application {
             mServiceStarted = false;
         }
     }
+    
+    private boolean mKillServerOnStart = false;
+    
+    public synchronized void forceStopImService() 
+    {
+        if (mServiceStarted && mImService != null) {
+            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+                log("force stop ImService");
+
+            try
+            {
+                mImService.setKillProcessOnStop(true);
+            }
+            catch (RemoteException re)
+            {
+                if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+                    log("unable to set kill process");
+
+            }
+            
+            mApplicationContext.unbindService(mImServiceConn);
+            mImService = null;
+            
+
+            Intent intent = new Intent();
+            intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
+            mApplicationContext.stopService(intent);
+            mServiceStarted = false;
+        }
+        else
+        {
+            
+            mKillServerOnStart = true;
+            startImServiceIfNeed(true);
+            
+        }
+         
+    }
+    
+  
 
     private ServiceConnection mImServiceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -375,6 +422,11 @@ public class ImApp extends Application {
             }
             Message msg = Message.obtain(null, EVENT_SERVICE_CONNECTED);
             mBroadcaster.broadcast(msg);
+            
+            if (mKillServerOnStart)
+            {
+                forceStopImService();
+            }
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -393,7 +445,13 @@ public class ImApp extends Application {
     public boolean isBackgroundDataEnabled() {
         ConnectivityManager manager = (ConnectivityManager) mApplicationContext
                 .getSystemService(CONNECTIVITY_SERVICE);
-        return manager.getBackgroundDataSetting();
+        
+        NetworkInfo nInfo = manager.getActiveNetworkInfo();
+
+        if (nInfo != null)
+            return nInfo.isAvailable() && nInfo.isConnected();
+        else
+            return false;
     }
 
     public static long insertOrUpdateAccount(ContentResolver cr, long providerId, String userName,
