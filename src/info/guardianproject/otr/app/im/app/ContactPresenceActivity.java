@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.Locale;
+
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.R;
@@ -28,6 +30,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -90,8 +93,13 @@ public class ContactPresenceActivity extends ThemeableActivity {
             remoteFingerprint = i.getExtras().getString("remoteFingerprint");
 
             if (remoteFingerprint != null) {
+                remoteFingerprint = remoteFingerprint.toUpperCase(Locale.ENGLISH);
+                
                 remoteFingerprintVerified = i.getExtras().getBoolean("remoteVerified");
                 localFingerprint = i.getExtras().getString("localFingerprint");
+                
+                if (localFingerprint != null)
+                    localFingerprint = localFingerprint.toUpperCase(Locale.ENGLISH);
             }
 
         }
@@ -144,7 +152,15 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 txtCustomStatus.setVisibility(View.GONE);
             }
         }
-      //  c.close();
+        c.close();
+    }
+
+    
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        
+        super.onConfigurationChanged(newConfig);
     }
 
     private void updateUI() {
@@ -244,7 +260,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
             String otherFingerprint = scanResult.getContents();
 
-            if (otherFingerprint != null && otherFingerprint.equals(remoteFingerprint)) {
+            if (otherFingerprint != null && otherFingerprint.equalsIgnoreCase(remoteFingerprint)) {
                 verifyRemoteFingerprint();
             }
 
