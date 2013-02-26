@@ -93,25 +93,33 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
         
-        <!-- Brian's NEW Activities 
-        <activity android:name=".ui.TabbedContainer"
-        />-->
         <activity android:name=".app.ChatListActivity"
+                          android:exported="false"
+            
             />
         <activity android:name=".app.ActiveChatListView"
+                          android:exported="false"
+            
             />
         
         
         
         <activity android:name=".ui.AboutActivity"
+                          android:exported="false"
+            
          	/>
         <activity android:name=".ui.AccountWizardActivity"
+                          android:exported="false"
+            
             />
         
         <activity android:name=".ui.AppPassphraseActivity"
+                          android:exported="false"
+            
          	
             />
          <activity android:name=".ui.SettingsActivity"
+         	              android:exported="false"
          	
              />
         
@@ -134,7 +142,6 @@ android:anyDensity="true"
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
                android:process=":remote"
                 android:exported="false"
-               
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -163,7 +170,7 @@ android:anyDensity="true"
             
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
-            android:exported="true"
+            android:exported="false"
             android:process=":remote"            
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
@@ -178,9 +185,14 @@ android:anyDensity="true"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
-            android:grantUriPermissions="true" />
+            android:grantUriPermissions="true"
+                          android:exported="false"
+            
+             />
 
         <activity android:name=".app.ChooseAccountActivity"
+                          android:exported="false"
+            
                 >
         </activity>
         
@@ -264,6 +276,7 @@ android:anyDensity="true"
 
         <activity android:name=".app.AddContactActivity"
             android:label="@string/add_contact_title"
+                          android:exported="false"
             
             />
 
@@ -349,14 +362,15 @@ android:anyDensity="true"
 
          <activity android:name=".app.SmpResponseActivity"
          	android:theme="@android:style/Theme.Dialog"
-         	 android:taskAffinity=""
+         	               android:exported="false"
+         	 
             />
          
           
            <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
             android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
-         	 android:taskAffinity=""
+         	 android:exported="false"
             />
           
           <activity android:name=".app.WarningDialogActivity"
@@ -367,11 +381,17 @@ android:anyDensity="true"
           <activity
               android:name="de.duenndns.ssl.MemorizingActivity"
               android:configChanges="orientation|locale"
-              android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"
+              android:exported="false"
+               />
           
-          <receiver android:name=".app.AutoConnectListener" >
+          <receiver android:name=".app.AutoConnectListener" 
+              android:exported="true"
+              android:enabled="true"
+              >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
     </application>

@@ -120,8 +120,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
       
         ThemeableActivity.setBackgroundImage(this);
         
-      //  setTitle(R.string.landing_page_title);
-        
         mApp = ImApp.getApplication(this);
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
@@ -135,7 +133,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         Intent intent = getIntent();
 
         if (ImApp.ACTION_QUIT.equals(intent.getAction())) {
-            quit();
+            signOutAndKillProcess();
             return;
         }
         
@@ -294,25 +292,47 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         return true;
     }
 
-    private void quit() {
-        if (!mProviderCursor.moveToFirst())
-            return;
-        
-        do {
-            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-            signOut(accountId);
-        } while (mProviderCursor.moveToNext());
+    private void signOutAndKillPrompt ()
+    {
+        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
 
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+               
+            }
+        };
+
+        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+                .setMessage(R.string.signout_kill_confirm_message)
+                .setPositiveButton(R.string.yes, confirmListener) // default button
+                .setNegativeButton(R.string.no, null).setCancelable(true).show();
     }
-    
+    private void signOutAndKillProcess() {
+        
+        if (ImApp.getApplication().hasActiveConnections())
+        {
+            if (!mProviderCursor.moveToFirst())
+                return;
+            do {
+                long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                signOut(accountId);
+            } while (mProviderCursor.moveToNext());
+          
+            try {Thread.sleep(3000);}
+            catch (Exception e){} //wait a second for account to log out
+        }
+        
+        
+        ImApp.getApplication().forceStopImService();
+
+    }
+ 
     private void signOutAll() {
         DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+
+                if (!mProviderCursor.moveToFirst())
+                    return;
                 do {
                     long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                     signOut(accountId);
@@ -385,7 +405,11 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             Intent sintent = new Intent(this, SettingActivity.class);
             startActivityForResult(sintent,1);
             return true;
-
+        case R.id.menu_exit:
+           
+            signOutAndKillPrompt();
+            
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -695,7 +719,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         }
     }
 
-    private final static class MyHandler extends SimpleAlertHandler {
+    private final static int HANDLE_COMPLETE_EXIT = -999;
+    
+    private final class MyHandler extends SimpleAlertHandler {
 
         public MyHandler(Activity activity) {
             super(activity);
@@ -705,6 +731,10 @@ private Handler mHandlerGoogleAuth = new Handler ()
         public void handleMessage(Message msg) {
             if (msg.what == ImApp.EVENT_CONNECTION_DISCONNECTED) {
                 promptDisconnectedEvent(msg);
+            }
+            else if (msg.what == HANDLE_COMPLETE_EXIT)
+            {
+                signOutAndKillProcess ();
             }
             super.handleMessage(msg);
         }

@@ -507,6 +507,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {
+        
         ContentValues values = new ContentValues(mIsGroupChat ? 4 : 3);
         values.put(Imps.Messages.BODY, body);
         values.put(Imps.Messages.DATE, time);
@@ -531,18 +532,23 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     int updateConfirmInDb(String id, int value) {
-        Uri messageUri = Uri.parse(Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID + "/" + id);
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
+        builder.appendPath(id);
+        
         ContentValues values = new ContentValues(1);
         values.put(Imps.Messages.IS_DELIVERED, value);
-        return mContentResolver.update(messageUri, values, null, null);
+        return mContentResolver.update(builder.build(), values, null, null);
     }
 
     int updateMessageInDb(String id, int type, long time) {
-        Uri messageUri = Uri.parse(Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID + "/" + id);
+        
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
+        builder.appendPath(id);
+        
         ContentValues values = new ContentValues(1);
         values.put(Imps.Messages.TYPE, type);
         values.put(Imps.Messages.DATE, time);
-        return mContentResolver.update(messageUri, values, null, null);
+        return mContentResolver.update(builder.build(), values, null, null);
     }
 
     class ListenerAdapter implements MessageListener, GroupMemberListener {

@@ -22,6 +22,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Handler;
 import android.provider.BaseColumns;
 
@@ -80,12 +81,13 @@ public class Imps {
         }
 
         public static final long getProviderIdForName(ContentResolver cr, String providerName) {
-            String[] selectionArgs = new String[1];
-            selectionArgs[0] = providerName;
+            
+            
+            String select = NAME + "=?";
+            String[] selectionArgs = {providerName};
 
-            Cursor cursor = cr.query(CONTENT_URI, PROVIDER_PROJECTION, NAME + "=?", selectionArgs,
-                    null);
-
+            Cursor cursor = cr.query(CONTENT_URI, PROVIDER_PROJECTION, select, selectionArgs, null);
+                    
             long retVal = 0;
             try {
                 if (cursor.moveToFirst()) {
@@ -1527,6 +1529,8 @@ public class Imps {
             v.put(VALUE, value);
 
             cr.insert(CONTENT_URI, v);
+            
+            
         }
 
         /**
@@ -1804,10 +1808,12 @@ public class Imps {
 
             public QueryMap(ContentResolver contentResolver, long providerId, boolean keepUpdated,
                     Handler handlerForUpdateNotifications) {
-                super(contentResolver.query(CONTENT_URI, new String[] { NAME, VALUE },
-                        PROVIDER + "=" + providerId, null, // no selection args
+                
+                super(contentResolver.query(CONTENT_URI,new String[] {NAME, VALUE},PROVIDER + "=?",new String[] { Long.toString(providerId)},
                         null), // no sort order
                         NAME, keepUpdated, handlerForUpdateNotifications);
+                
+               
                 mContentResolver = contentResolver;
                 mProviderId = providerId;
             }

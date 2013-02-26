@@ -65,4 +65,9 @@ interface IRemoteImService {
     * Get OTR Key Manager
     */
     IOtrKeyManager getOtrKeyManager(String accountId);
+    
+    /**
+    * cleaning up rpocess
+    **/
+    void setKillProcessOnStop (boolean killProcess);
 }
