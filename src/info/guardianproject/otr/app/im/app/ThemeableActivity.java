@@ -66,7 +66,7 @@ public class ThemeableActivity extends SherlockActivity {
                 b = Bitmap.createBitmap(b, 0, 0,Math.min(b.getWidth(),bgWidth),bgHeight);
                 
                 mThemeDrawable = new BitmapDrawable(b);
-                
+                mThemeDrawable.setAlpha(200);
             }
             
             
