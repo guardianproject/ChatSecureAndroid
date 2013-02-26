@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-beta-3"
-     android:versionCode="48"
+     android:versionName="0.0.11-beta-4a"
+     android:versionCode="50"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -20,6 +20,7 @@ android:anyDensity="true"
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />  
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
+       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
     
