@@ -387,6 +387,9 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
     private void showFilterView() {
 
+        if (mGlobalSettingMap == null)
+            return;
+        
         Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                                                             : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
