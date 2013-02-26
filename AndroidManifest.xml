@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-beta-3"
-     android:versionCode="48"
+     android:versionName="0.0.11-beta-4b"
+     android:versionCode="51"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -326,8 +326,8 @@ android:anyDensity="true"
 
         <activity android:name=".app.ContactPresenceActivity" 
               android:uiOptions="splitActionBarWhenNarrow"
-                          android:exported="false"
-              
+             android:configChanges="orientation|keyboardHidden|screenSize"
+                          android:exported="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
