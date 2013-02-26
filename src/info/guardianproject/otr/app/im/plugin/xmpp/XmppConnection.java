@@ -409,11 +409,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     // Runs in executor thread
     private void do_login() {
+        
         if (mConnection != null) {
             setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
                     "still trying..."));
             return;
         }
+        
         ContentResolver contentResolver = mContext.getContentResolver();
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
                 contentResolver, mProviderId, false, null);
@@ -614,7 +616,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // TLS errors are not expected by the user
             mConfig.setSecurityMode(SecurityMode.enabled);
 
-          
+            if (!allowPlainAuth)
+                SASLAuthentication.unsupportSASLMechanism("PLAIN");
 
         }
 
@@ -629,16 +632,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
         
-        if (!allowPlainAuth)
-            SASLAuthentication.unsupportSASLMechanism("PLAIN");
-        
         if (password.startsWith(GTalkOAuth2.NAME))
         {
             mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
 
+            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             password = password.split(":")[1];
             
+        }
+        else
+        {
+
+            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);   
         }
         
         mConfig.setVerifyChainEnabled(true);
@@ -869,6 +875,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mConnection.login(mUsername, mPassword, mResource);
                 mIsGoogleAuth = false;
             }            
+            else
+            {
+                throw (e);
+            }
+            
 
         }
         mStreamHandler.notifyInitialLogin();
