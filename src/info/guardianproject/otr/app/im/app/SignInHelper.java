@@ -199,15 +199,7 @@ public class SignInHelper {
             }
 
             if (mApp.isBackgroundDataEnabled()) {
-                // TODO UseTor should probably be set in the intent rather than fetched from the settings
-                final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        mContext.getContentResolver(), providerId, false, null);
-                if (settings.getUseTor()) {
-                    conn.setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
-                            TorProxyInfo.PROXY_PORT);
-                }
-                settings.close();
-
+               
                 conn.login(password, autoLoadContacts, autoRetryLogin);
             } else {
                 promptForBackgroundDataSetting(providerName);

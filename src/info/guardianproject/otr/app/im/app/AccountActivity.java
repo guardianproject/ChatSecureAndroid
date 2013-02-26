@@ -29,21 +29,11 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import java.io.IOException;
-
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;

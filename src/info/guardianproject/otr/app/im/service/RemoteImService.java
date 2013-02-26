@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
@@ -183,9 +184,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         intentFilter.addAction(ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED);
         registerReceiver(mSettingsMonitor, intentFilter);
 
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        setBackgroundData(manager.getBackgroundDataSetting());
-
+   //     ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+     //   setBackgroundData(manager.getActiveNetworkInfo().isAvailable() && manager.getActiveNetworkInfo().isConnectedOrConnecting());
+        setBackgroundData(ImApp.getApplication().isBackgroundDataEnabled());
+        
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
         AndroidSystemService.getInstance().initialize(this);
@@ -258,6 +260,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             autoLogin();
         }
     }
+    
+    
 
     private void autoLogin() {
         if (!mConnections.isEmpty()) {
@@ -347,6 +351,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
+        
+        if (mKillProcessOnStop)
+        {
+            int pid = android.os.Process.myPid();
+            Log.w(TAG, "ImService: killing process: " + pid);
+
+            android.os.Process.killProcess(pid); 
+        }
 
     }
 
@@ -551,7 +563,15 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
             return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
         }
+        
+        public void setKillProcessOnStop (boolean killProcessOnStop)
+        {
+            mKillProcessOnStop = killProcessOnStop;
+        }
+        
     };
+    
+    private boolean mKillProcessOnStop = false;
 
     private final class SettingsMonitor extends BroadcastReceiver {
         @Override

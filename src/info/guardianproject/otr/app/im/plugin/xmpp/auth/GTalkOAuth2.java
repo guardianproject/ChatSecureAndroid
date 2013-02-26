@@ -1,9 +1,12 @@
 package info.guardianproject.otr.app.im.plugin.xmpp.auth;
 
 
+import info.guardianproject.bouncycastle.util.encoders.Base64;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Packet;
@@ -20,7 +23,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 
 
@@ -48,6 +50,22 @@ static void enable() {
 }
 
 @Override
+public void authenticate(String arg0, String arg1, CallbackHandler arg2) throws IOException,
+        XMPPException {
+    super.authenticate(arg0, arg1, arg2);
+}
+
+@Override
+public void authenticate(String arg0, String arg1, String arg2) throws IOException, XMPPException {
+    super.authenticate(arg0, arg1, arg2);
+}
+
+@Override
+public void challengeReceived(String arg0) throws IOException {
+    super.challengeReceived(arg0);
+}
+
+@Override
 protected void authenticate() throws IOException, XMPPException
 {
    //Log.d(NAME, "authId=" + authenticationId + "; password=" + password);
@@ -58,12 +76,9 @@ protected void authenticate() throws IOException, XMPPException
     stanza.append( "<auth mechanism=\"" ).append( getName() );
     stanza.append( "\" xmlns=\"urn:ietf:params:xml:ns:xmpp-sasl\">" );
     
-    stanza.append( new String(Base64.encode( jidAndToken.getBytes( "UTF-8" ), Base64.NO_WRAP ) ));
+    stanza.append( new String(Base64.encode( jidAndToken.getBytes( "UTF-8" ) ) ));
     stanza.append( "</auth>" );
 
-  //  Log.d(NAME,stanza.toString());
-
-    
     getSASLAuthentication().send( new Auth2Mechanism(stanza.toString()) );
     
 }

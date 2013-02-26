@@ -129,6 +129,9 @@ public class ProviderListItem extends LinearLayout {
             mLoginName.setVisibility(View.VISIBLE);
             providerName.setVisibility(View.VISIBLE);
             
+            mProviderName.setEnabled(false);
+            mLoginName.setEnabled(false);
+            
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
             
             providerName.setText(activeUserName + '@' + userDomain);
@@ -136,49 +139,64 @@ public class ProviderListItem extends LinearLayout {
             long accountId = cursor.getLong(mActiveAccountIdColumn);
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
 
-            String secondRowText;
+            StringBuffer secondRowText = new StringBuffer();
 
             chatView.setVisibility(View.GONE);
 
             switch (connectionStatus) {
             case Imps.ConnectionStatus.CONNECTING:
-                secondRowText = r.getString(R.string.signing_in_wait);
+                secondRowText.append(r.getString(R.string.signing_in_wait));
+
+                mProviderName.setEnabled(true);
+                mLoginName.setEnabled(true);
                 break;
 
             case Imps.ConnectionStatus.ONLINE:
+
+                mProviderName.setEnabled(true);
+                mLoginName.setEnabled(true);
+                
                 int presenceIconId = getPresenceIconId(cursor);
                 statusIcon.setImageDrawable(brandingRes.getDrawable(presenceIconId));
                 statusIcon.setVisibility(View.VISIBLE);
                 ContentResolver cr = mActivity.getContentResolver();
 
                 int count = getConversationCount(cr, accountId);
+
+                secondRowText.append(getPresenceString(cursor, getContext()));
+
                 if (count > 0) {
-                    /*
-                    mUnderBubble.setBackgroundDrawable(mBubbleDrawable);
-                    chatView.setVisibility(View.VISIBLE);
-                    chatView.setText(r.getString(R.string.conversations, count));
-                       
-                    if (mUnderBubble.getVisibility() != mUnderBubble.GONE)
-                    {
-                     providerName.setTextColor(0xff000000);
-                     loginName.setTextColor(0xff000000);
-                     chatView.setTextColor(0xff000000);
-                    }*/
-                    secondRowText = count + " open conversation(s)";
                     
+
+                    secondRowText.append(" - ");
+                    secondRowText.append(count);
+                    secondRowText.append(r.getString(R.string._open_conversations));
                 }
                 else
                 {
-                    secondRowText = getPresenceString(cursor, getContext());
+                    secondRowText.append(" - ");
+                    
                     if (settings.getServer() != null && settings.getServer().length() > 0)
                     {
-                        secondRowText +=  " on " + settings.getServer() + ':' + settings.getPort();
+                        secondRowText.append(settings.getServer());
                             
                     }
                     else
                     {
-                        secondRowText += " on " + settings.getDomain();
+                        secondRowText.append(settings.getDomain());
                     }
+                 
+                    
+                    if (settings.getPort() != 5222 && settings.getPort() != 0)
+                        secondRowText.append(':').append(settings.getPort());
+                    
+                    
+                    if (settings.getUseTor())
+                    {
+                        secondRowText.append(" - ");
+                        secondRowText.append(r.getString(R.string._via_orbot));
+                    }
+                    
                     
                 }
          //       chatView.setVisibility(View.GONE);
@@ -188,20 +206,30 @@ public class ProviderListItem extends LinearLayout {
             default:
                 
 
-                secondRowText = providerDisplayName;
+                secondRowText.append(providerDisplayName);
+
+                secondRowText.append(" - ");
+                
                 if (settings.getServer() != null && settings.getServer().length() > 0)
                 {
-                    secondRowText +=  " to " + settings.getServer() + ':' + settings.getPort();
-                        
+                    secondRowText.append(settings.getServer());
+                       
                 }
                 else
                 {
-                    secondRowText += " to " + settings.getDomain();
+                    secondRowText.append(settings.getDomain());
                 }
+                
+                
+                if (settings.getPort() != 5222 && settings.getPort() != 0)
+                    secondRowText.append(':').append(settings.getPort());
+                
+               
                 
                 if (settings.getUseTor())
                 {
-                    secondRowText += " via Orbot";
+                    secondRowText.append(" - ");
+                    secondRowText.append(r.getString(R.string._via_orbot));
                 }
                 
                 break;
