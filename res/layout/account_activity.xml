@@ -25,7 +25,7 @@
 			
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    android:padding="10dp" android:layout_gravity="fill_vertical">
 	
@@ -49,19 +49,24 @@
 	        
 	    <CheckBox android:id="@+id/rememberPassword"
 	android:layout_height="wrap_content"
-	android:layout_width="fill_parent"
+	android:layout_width="wrap_content"
 	android:text="@string/remember_password"
 	android:checked="true"
-	android:padding="3sp"
-	                    android:textAppearance="?android:attr/textAppearanceSmall"
+	android:paddingTop="3sp"
+	android:paddingBottom="3sp"
+	
+	android:textAppearance="?android:attr/textAppearanceSmall"
 	
 	 />
 	
 	  <CheckBox android:id="@+id/useTor"
-	        android:layout_width="fill_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/use_tor"
-	android:padding="3sp"
+	
+	android:paddingTop="3sp"
+	android:paddingBottom="3sp"
+	
 	   android:textAppearance="?android:attr/textAppearanceSmall"
 	
 	         />
