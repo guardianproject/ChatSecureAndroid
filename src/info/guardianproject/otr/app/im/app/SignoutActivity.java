@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -58,7 +59,7 @@ public class SignoutActivity extends ThemeableActivity {
 
         try {
             if (!c.moveToFirst()) {
-                Log.w(ImApp.LOG_TAG, "[SignoutActivity] No data for " + data);
+                LogCleaner.warn(ImApp.LOG_TAG, "[SignoutActivity] No data for " + data);
                 finish();
                 return;
             }

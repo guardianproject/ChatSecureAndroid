@@ -29,6 +29,7 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
 import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -184,7 +185,7 @@ public class AccountActivity extends ThemeableActivity {
             
         } else if (Intent.ACTION_EDIT.equals(action)) {
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
-                Log.w(ImApp.LOG_TAG, "<AccountActivity>Bad data");
+                LogCleaner.warn(ImApp.LOG_TAG, "<AccountActivity>Bad data");
                 return;
             }
 
@@ -222,11 +223,9 @@ public class AccountActivity extends ThemeableActivity {
 
             mUseTor.setChecked(settings.getUseTor());
 
-            
-          //  getOTRKeyInfo();
 
         } else {
-            Log.w(ImApp.LOG_TAG, "<AccountActivity> unknown intent action " + action);
+            LogCleaner.warn(ImApp.LOG_TAG, "<AccountActivity> unknown intent action " + action);
             finish();
             return;
         }

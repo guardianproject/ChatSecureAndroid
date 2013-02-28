@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.util.LogCleaner;
 import android.util.Log;
 
 public class OtrDebugLogger {
@@ -10,11 +11,11 @@ public class OtrDebugLogger {
 
     public static void log(String msg) {
         if (debugLog && Log.isLoggable(TAG, Log.DEBUG))
-            Log.d(TAG, msg);
+            Log.d(TAG, LogCleaner.clean(msg));
     }
 
     public static void log(String msg, Exception e) {
         if (errorLog)
-            Log.e(TAG, msg, e);
+            Log.e(TAG, LogCleaner.clean(msg), e);
     }
 }

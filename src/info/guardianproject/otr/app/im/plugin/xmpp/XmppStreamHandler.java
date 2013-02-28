@@ -1,7 +1,9 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection;
+import info.guardianproject.util.LogCleaner;
 
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -274,13 +276,13 @@ public class XmppStreamHandler {
 
     private void debug(String message) {
         if (Log.isLoggable(XmppConnection.TAG, Log.DEBUG)) {
-            Log.d(XmppConnection.TAG, message);
+            Log.d(XmppConnection.TAG, LogCleaner.clean(message));
         }
     }
 
     private void trace(String message) {
         if (Log.isLoggable(XmppConnection.TAG, Log.VERBOSE)) {
-            Log.v(XmppConnection.TAG, message);
+            Log.v(XmppConnection.TAG, LogCleaner.clean(message));
         }
     }
 

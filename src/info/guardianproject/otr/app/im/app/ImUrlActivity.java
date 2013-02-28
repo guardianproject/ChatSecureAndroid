@@ -26,6 +26,7 @@ import java.util.Set;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.util.LogCleaner;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -61,7 +62,7 @@ public class ImUrlActivity extends ThemeableActivity {
             }
 
             if (TextUtils.isEmpty(mToAddress)) {
-                Log.w(ImApp.LOG_TAG, "<ImUrlActivity>Invalid to address:" + mToAddress);
+                LogCleaner.warn(ImApp.LOG_TAG, "<ImUrlActivity>Invalid to address");
                 finish();
                 return;
             }

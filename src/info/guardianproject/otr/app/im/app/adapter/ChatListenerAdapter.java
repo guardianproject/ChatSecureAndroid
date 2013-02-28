@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.engine.Message;
 
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.util.LogCleaner;
 
 import android.os.RemoteException;
 import android.util.Log;
@@ -34,51 +35,51 @@ public class ChatListenerAdapter extends IChatListener.Stub {
 
     public void onContactJoined(IChatSession ses, Contact contact) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onContactJoined(" + ses + ", " + contact + ")");
+            LogCleaner.debug(TAG, "onContactJoined(" + ses + ", " + contact + ")");
         }
     }
 
     public void onContactLeft(IChatSession ses, Contact contact) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onContactLeft(" + ses + ", " + contact + ")");
+            LogCleaner.debug(TAG, "onContactLeft(" + ses + ", " + contact + ")");
         }
     }
 
     public void onIncomingMessage(IChatSession ses, Message msg) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onIncomingMessage(" + ses + ", " + msg + ")");
+            LogCleaner.debug(TAG, "onIncomingMessage(" + ses + ", " + msg + ")");
         }
     }
 
     public void onSendMessageError(IChatSession ses, Message msg, ImErrorInfo error) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onSendMessageError(" + ses + ", " + msg + ", " + error + ")");
+            LogCleaner.debug(TAG, "onSendMessageError(" + ses + ", " + msg + ", " + error + ")");
         }
     }
 
     public void onInviteError(IChatSession ses, ImErrorInfo error) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onInviteError(" + ses + ", " + error + ")");
+            LogCleaner.debug(TAG, "onInviteError(" + ses + ", " + error + ")");
         }
     }
 
     public void onConvertedToGroupChat(IChatSession ses) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onConvertedToGroupChat(" + ses + ")");
+            LogCleaner.debug(TAG, "onConvertedToGroupChat(" + ses + ")");
         }
     }
 
     @Override
     public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onIncomingReceipt(" + ses + "," + packetId + ")");
+            LogCleaner.debug(TAG, "onIncomingReceipt(" + ses + "," + packetId + ")");
         }
     }
 
     @Override
     public void onStatusChanged(IChatSession ses) throws RemoteException {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onStatusChanged(" + ses + ")");
+            LogCleaner.debug(TAG, "onStatusChanged(" + ses + ")");
         }
     }
 }

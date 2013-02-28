@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
+import info.guardianproject.util.LogCleaner;
 
 import android.util.Log;
 
@@ -31,13 +32,13 @@ public class ChatSessionListenerAdapter extends IChatSessionListener.Stub {
 
     public void onChatSessionCreated(IChatSession session) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "notifyChatSessionCreated(" + session + ")");
+            LogCleaner.debug(TAG, "notifyChatSessionCreated(" + session + ")");
         }
     }
 
     public void onChatSessionCreateError(String name, ImErrorInfo error) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "notifyChatSessionCreateError(" + name + ", " + error + ")");
+            LogCleaner.debug(TAG, "notifyChatSessionCreateError(" + name + ", " + error + ")");
         }
     }
 

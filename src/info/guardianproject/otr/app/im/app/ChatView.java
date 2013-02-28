@@ -712,11 +712,14 @@ public class ChatView extends LinearLayout {
     void declineSubscription() {
         IImConnection conn = mApp.getConnection(mProviderId);
 
-        try {
-            IContactListManager manager = conn.getContactListManager();
-            manager.declineSubscription(mUserName);
-        } catch (RemoteException ex) {
-            mHandler.showServiceErrorAlert();
+        if (conn != null)
+        {
+            try {
+                IContactListManager manager = conn.getContactListManager();
+                manager.declineSubscription(mUserName);
+            } catch (RemoteException ex) {
+                mHandler.showServiceErrorAlert();
+            }
         }
         mActivity.finish();
     }

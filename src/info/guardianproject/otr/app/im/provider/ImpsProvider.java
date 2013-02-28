@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.util.LogCleaner;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -328,7 +329,7 @@ public class ImpsProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.d(LOG_TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
+            LogCleaner.debug(LOG_TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
 
             switch (oldVersion) {
             case 43: // this is the db version shipped in Dream 1.0
@@ -351,7 +352,7 @@ public class ImpsProvider extends ContentProvider {
 
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -368,7 +369,7 @@ public class ImpsProvider extends ContentProvider {
                     db.execSQL("ALTER TABLE " + TABLE_CONTACTS_ETAG + " ADD COLUMN otr_etag TEXT;");
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -387,7 +388,7 @@ public class ImpsProvider extends ContentProvider {
                                + "app_res_id INTEGER," + "plugin_res_id INTEGER" + ");");
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -407,7 +408,7 @@ public class ImpsProvider extends ContentProvider {
                     createMessageChatTables(db, false /* don't create show_ts column */);
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -429,7 +430,7 @@ public class ImpsProvider extends ContentProvider {
                                + "_id INTEGER PRIMARY KEY," + "rmq_id INTEGER" + ");");
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -445,7 +446,7 @@ public class ImpsProvider extends ContentProvider {
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES + " ADD COLUMN show_ts INTEGER;");
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                     break; // force to destroy all old data;
                 } finally {
                     db.endTransaction();
@@ -463,7 +464,7 @@ public class ImpsProvider extends ContentProvider {
                                + " ADD COLUMN is_delivered INTEGER;");
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
-                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                 } finally {
                     db.endTransaction();
                 }
@@ -471,7 +472,7 @@ public class ImpsProvider extends ContentProvider {
                 return;
             }
 
-            Log.w(LOG_TAG, "Couldn't upgrade db to " + newVersion + ". Destroying old data.");
+            LogCleaner.warn(LOG_TAG, "Couldn't upgrade db to " + newVersion + ". Destroying old data.");
             destroyOldTables(db);
             onCreate(db);
         }
@@ -662,8 +663,8 @@ public class ImpsProvider extends ContentProvider {
         @Override
         public void onOpen(SQLiteDatabase db) {
             if (db.isReadOnly()) {
-                Log.w(LOG_TAG, "ImProvider database opened in read only mode.");
-                Log.w(LOG_TAG, "Transient tables not created.");
+                LogCleaner.warn(LOG_TAG, "ImProvider database opened in read only mode.");
+                LogCleaner.warn(LOG_TAG, "Transient tables not created.");
                 return;
             }
 
@@ -1108,7 +1109,7 @@ public class ImpsProvider extends ContentProvider {
         try {
             initDBHelper();
         } catch (Exception e) {
-            Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+            LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
         }
 
         /*
@@ -1483,7 +1484,7 @@ public class ImpsProvider extends ContentProvider {
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
         } catch (Exception ex) {
-            Log.e(LOG_TAG, "query db caught ", ex);
+            LogCleaner.error(LOG_TAG, "query db caught ", ex);
         }
 
         return c;
@@ -1610,7 +1611,7 @@ public class ImpsProvider extends ContentProvider {
         int nicknameCount = nicknames.size();
 
         if (usernameCount != nicknameCount) {
-            Log.e(LOG_TAG, "[ImProvider] insertBulkContacts: input bundle "
+            LogCleaner.warn(LOG_TAG, "[ImProvider] insertBulkContacts: input bundle "
                            + "username & nickname lists have diff. length!");
             return false;
         }
@@ -1664,7 +1665,7 @@ public class ImpsProvider extends ContentProvider {
                         rejected = Integer.parseInt(rejectedArray.get(i));
                     }
                 } catch (NumberFormatException ex) {
-                    Log.e(LOG_TAG, "insertBulkContacts: caught " + ex);
+                    LogCleaner.error(LOG_TAG, "insertBulkContacts: caught ", ex);
                 }
 
                 /*
@@ -1726,7 +1727,7 @@ public class ImpsProvider extends ContentProvider {
                     try {
                         db.insert(TABLE_PRESENCE, null, presenceValues);
                     } catch (android.database.sqlite.SQLiteConstraintException ex) {
-                        Log.w(LOG_TAG, "insertBulkContacts: seeding presence caught " + ex);
+                        LogCleaner.warn(LOG_TAG, "insertBulkContacts: seeding presence caught " + ex);
                     }
                 }
 
@@ -1774,7 +1775,7 @@ public class ImpsProvider extends ContentProvider {
         int nicknameCount = nicknames.size();
 
         if (usernameCount != nicknameCount) {
-            Log.e(LOG_TAG, "[ImProvider] updateBulkContacts: input bundle "
+            LogCleaner.warn(LOG_TAG, "[ImProvider] updateBulkContacts: input bundle "
                            + "username & nickname lists have diff. length!");
             return 0;
         }
@@ -1819,7 +1820,7 @@ public class ImpsProvider extends ContentProvider {
                     quickContact = Integer.parseInt(quickContactArray.get(i));
                     rejected = Integer.parseInt(rejectedArray.get(i));
                 } catch (NumberFormatException ex) {
-                    Log.e(LOG_TAG, "insertBulkContacts: caught " + ex);
+                    LogCleaner.error(LOG_TAG, "insertBulkContacts: caught ",ex);
                 }
 
                 if (DBG)
@@ -1848,7 +1849,7 @@ public class ImpsProvider extends ContentProvider {
                 int numUpdated = db.update(TABLE_CONTACTS, contactValues,
                         updateSelection.toString(), updateSelectionArgs);
                 if (numUpdated == 0) {
-                    Log.e(LOG_TAG, "[ImProvider] updateBulkContacts: "
+                    LogCleaner.warn(LOG_TAG, "[ImProvider] updateBulkContacts: "
                                    + " update failed for selection = " + updateSelection);
                 } else {
                     sum += numUpdated;
@@ -2057,7 +2058,7 @@ public class ImpsProvider extends ContentProvider {
                         clientType = Integer.parseInt(clientTypeArray.get(i));
                     }
                 } catch (NumberFormatException ex) {
-                    Log.e(LOG_TAG, "[ImProvider] updateBulkPresence: caught " + ex);
+                    LogCleaner.error(LOG_TAG, "[ImProvider] updateBulkPresence: caught",ex);
                 }
 
                 if (DBG) {
@@ -2092,7 +2093,7 @@ public class ImpsProvider extends ContentProvider {
                         .update(TABLE_PRESENCE, presenceValues, selection, selectionArgs);
                 if (numUpdated == 0) {
                     // this is really generating a lot of log output that doesn't seem necessary
-                   // Log.w(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
+                   // LogCleaner.warn(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
                 } else {
                     sum += numUpdated;
                 }
@@ -3474,6 +3475,6 @@ public class ImpsProvider extends ContentProvider {
     }
 
     static void log(String message) {
-        //    Log.d(LOG_TAG, message);
+        //    LogCleaner.debug(LOG_TAG, message);
     }
 }

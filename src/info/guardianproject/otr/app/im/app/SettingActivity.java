@@ -146,12 +146,16 @@ public class SettingActivity extends SherlockPreferenceActivity implements
             if (_uri != null) {
                 //User had pick an image.
                 Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
-                cursor.moveToFirst();
-
-                //Link to the image
-                final String imageFilePath = cursor.getString(0);
-                mThemeBackground.setText(imageFilePath);                
-                mThemeBackground.getDialog().cancel();
+              
+                if (cursor != null)
+                {
+                    cursor.moveToFirst();
+    
+                    //Link to the image
+                    final String imageFilePath = cursor.getString(0);
+                    mThemeBackground.setText(imageFilePath);                
+                    mThemeBackground.getDialog().cancel();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
