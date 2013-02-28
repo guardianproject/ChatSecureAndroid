@@ -122,7 +122,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private long mProviderId = -1;
     private String mPasswordTemp;
 
-    private boolean mLastLoginFailed = false;
     private boolean mIsGoogleAuth = false;
     
     private final static String TRUSTSTORE_TYPE = "BKS";
@@ -438,12 +437,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
             initConnection(userName, password, providerSettings);
-            mLastLoginFailed = false;
         } catch (Exception e) {
            debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
-            mLastLoginFailed = true;
             
             if (e == null || e.getMessage() == null) {
                 debug(TAG, "NPE: " + e.getMessage());
@@ -457,7 +454,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mIsGoogleAuth)
                 {
                     debug (TAG, "google failed; may need to refresh");
-                    mLastLoginFailed = true;
                     mRetryLogin = true;
                     setState(LOGGING_IN, info);
 
@@ -524,6 +520,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
+        
+        //if (DEBUG_ENABLED)
+        //    android.os.Debug.waitForDebugger();
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -663,7 +662,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         // Don't use smack reconnection - not reliable
         mConfig.setReconnectionAllowed(false);
-        mConfig.setSendPresence(false);
+        mConfig.setSendPresence(true);
         mConfig.setRosterLoadedAtLogin(true);
 
         mConnection = new MyXMPPConnection(mConfig);
@@ -1137,9 +1136,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         // For testing
+        /*
         public void loadContactLists() {
             do_loadContactLists();
-        }
+        }*/
 
         /**
          * Create new list of contacts from roster entries.
@@ -1317,19 +1317,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
-
+                loadContactListsAsync();
+                
                
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-
+                loadContactListsAsync();
+                
                
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
-
+                loadContactListsAsync();
+                
             }
         };
 
