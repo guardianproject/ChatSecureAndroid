@@ -96,39 +96,48 @@ public class BlockedContactsActivity extends ListActivity {
             return false;
         }
 
-        long accountId = ContentUris.parseId(uri);
-        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-        Cursor accountCursor = getContentResolver().query(accountUri, null, null, null, null);
-        if (accountCursor == null) {
-            warning("Bad account");
-            return false;
-        }
-        if (!accountCursor.moveToFirst()) {
-            warning("Bad account");
+        try
+        {
+            long accountId = ContentUris.parseId(uri);
+            Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            Cursor accountCursor = getContentResolver().query(accountUri, null, null, null, null);
+            if (accountCursor == null) {
+                warning("Bad account");
+                return false;
+            }
+            if (!accountCursor.moveToFirst()) {
+                warning("Bad account");
+                accountCursor.close();
+                return false;
+            }
+    
+            long providerId = accountCursor.getLong(accountCursor
+                    .getColumnIndexOrThrow(Imps.Account.PROVIDER));
+            String username = accountCursor.getString(accountCursor
+                    .getColumnIndexOrThrow(Imps.Account.USERNAME));
+    
+            BrandingResources brandingRes = mApp.getBrandingResource(providerId);
+            getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
+                    brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+    
+            setTitle(getResources().getString(R.string.blocked_list_title, username));
             accountCursor.close();
-            return false;
+    
+            Cursor c = managedQuery(uri, PROJECTION, null, null, Imps.BlockedList.DEFAULT_SORT_ORDER);
+            if (c == null) {
+                warning("Database error when query " + uri);
+                return false;
+            }
+        
+            ListAdapter adapter = new BlockedContactsAdapter(c, this);
+            setListAdapter(adapter);
         }
-
-        long providerId = accountCursor.getLong(accountCursor
-                .getColumnIndexOrThrow(Imps.Account.PROVIDER));
-        String username = accountCursor.getString(accountCursor
-                .getColumnIndexOrThrow(Imps.Account.USERNAME));
-
-        BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-        getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
-                brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-
-        setTitle(getResources().getString(R.string.blocked_list_title, username));
-        accountCursor.close();
-
-        Cursor c = managedQuery(uri, PROJECTION, null, null, Imps.BlockedList.DEFAULT_SORT_ORDER);
-        if (c == null) {
-            warning("Database error when query " + uri);
-            return false;
+        catch (Exception e)
+        {
+            //error parsing input
+            Log.e(ImApp.LOG_TAG,"error parsing intent input",e);
         }
-
-        ListAdapter adapter = new BlockedContactsAdapter(c, this);
-        setListAdapter(adapter);
+        
         return true;
     }
 

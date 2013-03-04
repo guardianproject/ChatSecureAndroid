@@ -280,22 +280,25 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
         int toastMsgId;
         
-        try {
-            SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
-            if (sessionStatus == SessionStatus.PLAINTEXT) {
-                otrChatSession.startChatEncryption();
-                toastMsgId = R.string.starting_otr_chat;
-
-            } else {
-                otrChatSession.stopChatEncryption();
-                toastMsgId = R.string.stopping_otr_chat;
-                mChatView.updateWarningView();
+        if (SessionStatus.values() != null && otrChatSession != null)
+        {
+            try {
+                SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
+                if (sessionStatus == SessionStatus.PLAINTEXT) {
+                    otrChatSession.startChatEncryption();
+                    toastMsgId = R.string.starting_otr_chat;
+    
+                } else {
+                    otrChatSession.stopChatEncryption();
+                    toastMsgId = R.string.stopping_otr_chat;
+                    mChatView.updateWarningView();
+                }
+                updateOtrMenuState();
+                
+                Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
+            } catch (RemoteException e) {
+                Log.d("Gibber", "error getting remote activity", e);
             }
-            updateOtrMenuState();
-            
-            Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
-        } catch (RemoteException e) {
-            Log.d("Gibber", "error getting remote activity", e);
         }
     }
 

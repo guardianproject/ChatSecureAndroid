@@ -1304,7 +1304,9 @@ public class ImpsProvider extends ContentProvider {
             final SQLiteDatabase db = getDBHelper().getWritableDatabase();
             String[] doubleArgs = null;
             if (selectionArgs != null) {
-                doubleArgs = Arrays.copyOf(selectionArgs, selectionArgs.length * 2);
+                
+                doubleArgs = new String[ selectionArgs.length * 2];//Arrays.copyOf(selectionArgs, selectionArgs.length * 2);
+                System.arraycopy(selectionArgs, 0, doubleArgs, 0, selectionArgs.length);
                 System.arraycopy(selectionArgs, 0, doubleArgs, selectionArgs.length, selectionArgs.length);
             }
             

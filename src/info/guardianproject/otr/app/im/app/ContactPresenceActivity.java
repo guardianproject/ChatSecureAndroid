@@ -306,21 +306,24 @@ public class ContactPresenceActivity extends ThemeableActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
 
-        new AlertDialog.Builder(this).setTitle("OTR Q&A Verification").setView(viewSmp)
-                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
-                        EditText eiAnswer = (EditText) viewSmp.findViewById(R.id.editSmpAnswer);
-                        String question = eiQuestion.getText().toString();
-                        String answer = eiAnswer.getText().toString();
-                        initSmp(question, answer);
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
+        if (viewSmp != null)
+        {
+            new AlertDialog.Builder(this).setTitle("OTR Q&A Verification").setView(viewSmp)
+                    .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+    
+                            EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
+                            EditText eiAnswer = (EditText) viewSmp.findViewById(R.id.editSmpAnswer);
+                            String question = eiQuestion.getText().toString();
+                            String answer = eiAnswer.getText().toString();
+                            initSmp(question, answer);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Do nothing.
+                        }
+                    }).show();
+        }
     }
 
     private void initSmp(String question, String answer) {
