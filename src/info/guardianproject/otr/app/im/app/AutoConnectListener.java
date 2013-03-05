@@ -29,7 +29,7 @@ public class AutoConnectListener extends BroadcastReceiver {
                 ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         
         boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
-        boolean hasBgData = ImApp.getApplication().isBackgroundDataEnabled();
+        boolean isNetworkAvailable = ImApp.getApplication().isNetworkAvailableAndConnected();
         
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
@@ -45,7 +45,7 @@ public class AutoConnectListener extends BroadcastReceiver {
             
             if (hasConnectivity) {
                 
-                if (ImApp.getApplication().hasActiveConnections() && hasBgData)
+                if (ImApp.getApplication().hasActiveConnections() && isNetworkAvailable)
                 {
                     ImApp.getApplication().startImServiceIfNeed(true);
                 

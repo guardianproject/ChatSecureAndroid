@@ -442,10 +442,14 @@ public class ImApp extends Application {
         return mImService != null;
     }
 
-    public boolean isBackgroundDataEnabled() {
+ //   public boolean isBackgroundDataEnabled() { //"background data" is a deprectaed concept
+    public boolean isNetworkAvailableAndConnected () {
         ConnectivityManager manager = (ConnectivityManager) mApplicationContext
                 .getSystemService(CONNECTIVITY_SERVICE);
         
+//      ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        //   setBackgroundData(manager.getActiveNetworkInfo().isAvailable() && manager.getActiveNetworkInfo().isConnectedOrConnecting());
+      
         NetworkInfo nInfo = manager.getActiveNetworkInfo();
 
         if (nInfo != null)

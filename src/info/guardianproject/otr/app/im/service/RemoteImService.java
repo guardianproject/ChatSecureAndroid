@@ -90,9 +90,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private int mNetworkType;
     private boolean mNeedCheckAutoLogin;
 
-    private boolean mBackgroundDataEnabled;
+  //  private boolean mBackgroundDataEnabled;
 
-    private SettingsMonitor mSettingsMonitor;
+    //private SettingsMonitor mSettingsMonitor;
     private OtrChatManager mOtrChatManager;
 
     private ImPluginHelper mPluginHelper;
@@ -178,16 +178,16 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mNetworkConnectivityListener.registerHandler(mServiceHandler, EVENT_NETWORK_STATE_CHANGED);
         mNetworkConnectivityListener.startListening(this);
 
-        mSettingsMonitor = new SettingsMonitor();
+        //mSettingsMonitor = new SettingsMonitor();
 
+        /*
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED);
         registerReceiver(mSettingsMonitor, intentFilter);
-
-   //     ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-     //   setBackgroundData(manager.getActiveNetworkInfo().isAvailable() && manager.getActiveNetworkInfo().isConnectedOrConnecting());
-        setBackgroundData(ImApp.getApplication().isBackgroundDataEnabled());
+        */
         
+      //  setBackgroundData(ImApp.getApplication().isNetworkAvailableAndConnected());
+       
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
         AndroidSystemService.getInstance().initialize(this);
@@ -299,7 +299,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         ContentResolver cr = getContentResolver();
         Map<String, String> settings = Imps.ProviderSettings.queryProviderSettings(cr, providerId);
 
-        NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
+//        NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
         // Insert a fake msisdn on emulator. We don't need this on device
         // because the mobile network will take care of it.
         //        if ("1".equals(SystemProperties.get("ro.kernel.qemu"))) {
@@ -347,7 +347,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mNetworkConnectivityListener.stopListening();
         mNetworkConnectivityListener = null;
 
-        unregisterReceiver(mSettingsMonitor);
+       // unregisterReceiver(mSettingsMonitor);
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
@@ -436,6 +436,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         return mNetworkConnectivityListener.getState() == State.CONNECTED;
     }
 
+    /*
     private boolean isBackgroundDataEnabled() {
         return mBackgroundDataEnabled;
     }
@@ -451,7 +452,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
     }
-
+*/
+    
     void networkStateChanged() {
         if (mNetworkConnectivityListener == null) {
             return;
@@ -573,6 +575,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     
     private boolean mKillProcessOnStop = false;
 
+    /*
+     //the concept of "background data is deprecated from Android
+     // the only thing that matters is checking if Network is available and connected
     private final class SettingsMonitor extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -585,7 +590,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
     }
-
+    */
     private final class ServiceHandler extends Handler {
         public ServiceHandler() {
         }
