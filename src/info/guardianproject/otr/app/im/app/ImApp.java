@@ -446,16 +446,16 @@ public class ImApp extends Application {
     public boolean isNetworkAvailableAndConnected () {
         ConnectivityManager manager = (ConnectivityManager) mApplicationContext
                 .getSystemService(CONNECTIVITY_SERVICE);
-        
-//      ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        //   setBackgroundData(manager.getActiveNetworkInfo().isAvailable() && manager.getActiveNetworkInfo().isConnectedOrConnecting());
       
         NetworkInfo nInfo = manager.getActiveNetworkInfo();
 
         if (nInfo != null)
-            return nInfo.isAvailable() && nInfo.isConnected();
+        {
+            Log.d(LOG_TAG,"network state: available=" + nInfo.isAvailable() + " connected/connecting=" + nInfo.isConnectedOrConnecting());
+            return nInfo.isAvailable() && nInfo.isConnectedOrConnecting();
+        }
         else
-            return false;
+            return false; //no network info is a bad idea
     }
 
     public static long insertOrUpdateAccount(ContentResolver cr, long providerId, String userName,

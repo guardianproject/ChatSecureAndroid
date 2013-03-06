@@ -90,8 +90,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private int mNetworkType;
     private boolean mNeedCheckAutoLogin;
 
-  //  private boolean mBackgroundDataEnabled;
-
     //private SettingsMonitor mSettingsMonitor;
     private OtrChatManager mOtrChatManager;
 
@@ -436,24 +434,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         return mNetworkConnectivityListener.getState() == State.CONNECTED;
     }
 
-    /*
-    private boolean isBackgroundDataEnabled() {
-        return mBackgroundDataEnabled;
-    }
-
-    private void setBackgroundData(boolean flag) {
-        mBackgroundDataEnabled = flag;
-    }
-
-    void handleBackgroundDataSettingChange() {
-        if (!isBackgroundDataEnabled()) {
-            for (ImConnectionAdapter conn : mConnections) {
-                conn.logout();
-            }
-        }
-    }
-*/
-    
     void networkStateChanged() {
         if (mNetworkConnectivityListener == null) {
             return;
@@ -506,8 +486,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
 
-        // showToast(getString(R.string.error_reestablish_connection), Toast.LENGTH_LONG);
-
     }
 
     private void suspendConnections() {
@@ -519,7 +497,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         }
 
-        //  showToast(getString(R.string.error_suspended_connection), Toast.LENGTH_LONG);
     }
 
     private final IRemoteImService.Stub mBinder = new IRemoteImService.Stub() {

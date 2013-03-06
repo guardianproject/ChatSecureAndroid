@@ -393,8 +393,17 @@ android:anyDensity="true"
               >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+          <receiver android:name=".app.BootCompletedListener" 
+              android:exported="true"
+              android:enabled="true"
+              >
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
+        
+        
     </application>
 </manifest>

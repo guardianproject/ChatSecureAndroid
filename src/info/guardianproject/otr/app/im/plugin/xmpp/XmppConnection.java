@@ -604,6 +604,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         mConfig.setDebuggerEnabled(DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
+        
+
+        // Android has no support for Kerberos or GSSAPI, so disable completely
+        SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
+        SASLAuthentication.unregisterSASLMechanism("GSSAPI");
+
+        //add gtalk auth in
+        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+        
+        SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);        
+        SASLAuthentication.supportSASLMechanism("PLAIN", 1);
+        SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
 
         if (requireTls) {
 
@@ -620,32 +632,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
 
-        // Android has no support for Kerberos or GSSAPI, so disable completely
-        SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
-        SASLAuthentication.unregisterSASLMechanism("GSSAPI");
-
-        //add gtalk auth in
-        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-        
-        SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);        
-        SASLAuthentication.supportSASLMechanism("PLAIN", 1);
-        SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
         
         if (password.startsWith(GTalkOAuth2.NAME))
         {
             mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
-
-            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);
             password = password.split(":")[1];
-            
+         
         }
-        else
-        {
-
-            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);   
-        }
-        
+                
         mConfig.setVerifyChainEnabled(true);
         mConfig.setVerifyRootCAEnabled(true);
         mConfig.setExpiredCertificatesCheckEnabled(true);
@@ -1389,8 +1384,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 //unprocdPresence.put(user, presence);
 
             } else {
-                debug(TAG, "Got present update for EXISTING user: "
+                debug(TAG, "Got presence update for EXISTING user: "
                         + contact.getAddress().getFullName() + " presence:" + type);
+              
             }
 
             contact.setPresence(p);
