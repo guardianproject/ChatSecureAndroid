@@ -2,7 +2,6 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.WarningDialogActivity;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Contact;
@@ -10,7 +9,6 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
-import info.guardianproject.otr.app.im.service.RemoteImService;
 
 import java.io.File;
 import java.io.IOException;
@@ -162,6 +160,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         msg.setDateTime(new Date());
         msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
         chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+        
     }
 
     public void injectMessage(SessionID sessionID, String text) {
@@ -173,18 +172,17 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
-        showDialog("Encryption Error", sessionID.getUserID() + " : " + error);
+        showToast("ERROR: " + error);
     }
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
-        
-        if (!warning.contains(sessionID.getUserID()))
-            warning = "[" + sessionID.getUserID() + "] " + warning; 
+     
 
-        showToast(warning);
+        showToast("WARNING: " + warning);
     }
 
+    /*
     private void showDialog(String title, String msg) {
         Intent nIntent = new Intent(mContext.getApplicationContext(), WarningDialogActivity.class);
         nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -194,7 +192,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
         mContext.getApplicationContext().startActivity(nIntent);
     }
-    
+    */
     private void showToast(String msg) {
         mContext.showToast(msg, Toast.LENGTH_LONG);
     }
