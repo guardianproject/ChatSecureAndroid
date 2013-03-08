@@ -13,7 +13,7 @@ import android.util.Log;
  * Automatically initiate the service and connect when the network comes on,
  * including on boot.
  */
-public class AutoConnectListener extends BroadcastReceiver {
+public class BootCompletedListener extends BroadcastReceiver {
     private static final String TAG = "Gibberbot.AutoConnectListener";
   
     public final static String BOOTFLAG = "BOOTFLAG";
@@ -24,24 +24,22 @@ public class AutoConnectListener extends BroadcastReceiver {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         
         boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
-        boolean isNetworkAvailable = ImApp.getApplication().isNetworkAvailableAndConnected();
         
-        if (prefStartOnBoot) //aka auto start
+        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
-             
-            if (isNetworkAvailable) {
-                
-                 ImApp.getApplication().startImServiceIfNeed(true);
-                
+            if (prefStartOnBoot)
+            {
+                ImApp.getApplication().startImServiceIfNeed(true);
             }
-            
+            else
+            {
+                Log.d(ImApp.LOG_TAG,"killing auto-connect process");
+                android.os.Process.killProcess(android.os.Process.myPid()); 
+                System.exit(0);
+            }
         }
-        else
-        {
-            Log.d(ImApp.LOG_TAG,"killing auto-connect process");
-            android.os.Process.killProcess(android.os.Process.myPid()); 
-            System.exit(0);
-        }
+        
+       
         
     }
     

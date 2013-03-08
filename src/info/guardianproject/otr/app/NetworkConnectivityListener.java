@@ -16,6 +16,8 @@
 
 package info.guardianproject.otr.app;
 
+import info.guardianproject.otr.app.im.app.ImApp;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -38,7 +40,6 @@ import android.util.Log;
  */
 public class NetworkConnectivityListener {
     private static final String TAG = "NetworkConnectivityListener";
-    private static final boolean DBG = false;
 
     private Context mContext;
     private HashMap<Handler, Integer> mHandlers = new HashMap<Handler, Integer>();
@@ -72,12 +73,6 @@ public class NetworkConnectivityListener {
             boolean noConnectivity = intent.getBooleanExtra(
                     ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
-            if (noConnectivity) {
-                mState = State.NOT_CONNECTED;
-            } else {
-                mState = State.CONNECTED;
-            }
-
             mNetworkInfo = (NetworkInfo) intent
                     .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
             mOtherNetworkInfo = (NetworkInfo) intent
@@ -86,15 +81,20 @@ public class NetworkConnectivityListener {
             mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
             mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
 
-            if (DBG) {
-                Log.d(TAG, "onReceive(): mNetworkInfo="
-                           + mNetworkInfo
-                           + " mOtherNetworkInfo = "
-                           + (mOtherNetworkInfo == null ? "[none]" : mOtherNetworkInfo + " noConn="
-                                                                     + noConnectivity) + " mState="
-                           + mState.toString());
+            //let's just check the state of our active network to set this value
+            if (ImApp.getApplication().isNetworkAvailableAndConnected()) {
+                mState = State.CONNECTED;
+            } else {
+                mState = State.NOT_CONNECTED;
             }
 
+    
+            Log.d(TAG, "onReceive(): mNetworkInfo="
+                       + mNetworkInfo
+                       + " mOtherNetworkInfo = "
+                       + (mOtherNetworkInfo == null ? "[none]" : mOtherNetworkInfo + " noConn="
+                                                                 + noConnectivity) + " mState=" + mState);
+       
             // Notifiy any handlers.
             Iterator<Handler> it = mHandlers.keySet().iterator();
             while (it.hasNext()) {

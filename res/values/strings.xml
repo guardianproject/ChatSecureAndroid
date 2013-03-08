@@ -192,12 +192,12 @@
     <!-- Dialog title -->
     <!-- This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app -->
-    <string name="bg_data_prompt_title">Background data disabled</string>
+    <string name="bg_data_prompt_title">Network Data disabled</string>
     <!-- Dialog messages: -->
     <!-- This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled -->
     <string name="bg_data_prompt_message">
-         <xliff:g id="provider">%1$s</xliff:g> needs background data to be enabled.
+         Network data connectivity (including background data) is needed for the app to login.
     </string>
     <!-- Dialog buttons: -->
     <!-- OK button for the prompt dialog -->

@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-RC2"
-     android:versionCode="53"
+     android:versionName="0.0.11-RC3"
+     android:versionCode="55"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -286,7 +286,6 @@ android:anyDensity="true"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                android:exported="false"
-                
                 >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -329,7 +328,7 @@ android:anyDensity="true"
         <activity android:name=".app.ContactPresenceActivity" 
               android:uiOptions="splitActionBarWhenNarrow"
              android:configChanges="orientation|keyboardHidden|screenSize"
-                          android:exported="true"
+                          android:exported="false"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -375,11 +374,6 @@ android:anyDensity="true"
          	 android:exported="false"
             />
           
-          <activity android:name=".app.WarningDialogActivity"
-         	android:theme="@android:style/Theme.Dialog"
-         	             android:launchMode="singleTop"
-         	
-            />
           <activity
               android:name="de.duenndns.ssl.MemorizingActivity"
               android:configChanges="orientation|locale"
@@ -393,8 +387,17 @@ android:anyDensity="true"
               >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+          <receiver android:name=".app.BootCompletedListener" 
+              android:exported="true"
+              android:enabled="true"
+              >
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
+        
+        
     </application>
 </manifest>
