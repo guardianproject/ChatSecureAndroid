@@ -58,8 +58,7 @@ public class Contact extends ImEntity implements Parcelable {
         return mAddress.hashCode();
     }
 
-    /**
-     * Set the presence of the Contact. Note that this method is public but not
+    /* Set the presence of the Contact. Note that this method is public but not
      * provide to the user.
      * 
      * @param presence the new presence

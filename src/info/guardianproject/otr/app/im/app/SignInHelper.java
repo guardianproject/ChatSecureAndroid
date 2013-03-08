@@ -203,7 +203,7 @@ public class SignInHelper {
                 conn.registerConnectionListener(mListener);
             }
 
-            if (mApp.isBackgroundDataEnabled()) {
+            if (mApp.isNetworkAvailableAndConnected()) {
                
                 conn.login(password, autoLoadContacts, autoRetryLogin);
             } else {
