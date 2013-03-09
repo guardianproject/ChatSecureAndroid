@@ -10,6 +10,11 @@ http://www.bouncycastle.org/java.html
 and SQLCipher for Android:
 https://guardianproject.info/code/sqlcipher/
 
+## Get the source
+1. Clone this repository
+2. Initialize the submodules `git submodule init`
+3. Update the submodules `git submodule update`
+
 ## Build Instructions
 1. For these instructions, you'll need the Android SDK and Eclipse installed. Follow instructions here: http://developer.android.com/sdk/index.html and here: https://developer.android.com/sdk/installing.html
 2. Gibberbot is currently configured to run on the version 4+ of the Android SDK. This corresponds to Platform 1.6 - make sure to install it.
