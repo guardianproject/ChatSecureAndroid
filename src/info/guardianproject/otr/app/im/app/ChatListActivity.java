@@ -16,6 +16,8 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
@@ -45,23 +47,21 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 
 public class ChatListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
@@ -544,6 +544,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             mContextMenuHandler.mPosition = info.position;
             contactSelected = true;
             contactCursor = mFilterView.getContactAtPosition(info.position);
+            chatSelected = true;
         } else {
 
             if (menuInfo instanceof ExpandableListContextMenuInfo) {
@@ -557,6 +558,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
                 mContextMenuHandler.mPosition = info.position;
                 contactSelected = false;
                 contactCursor = null;
+                chatSelected = mActiveChatListView.isConversationAtPosition(info.position);
+
             } else
                 contactCursor = null;
         }
@@ -591,13 +594,15 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         if (chatSelected) {
             menu.add(0, MENU_END_CONVERSATION, 0, menu_end_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
+            /*
             menu.add(0, MENU_VIEW_PROFILE, 0, menu_view_profile)
                     .setIcon(R.drawable.ic_menu_my_profile)
                     .setOnMenuItemClickListener(mContextMenuHandler);
             if (allowBlock) {
                 menu.add(0, MENU_BLOCK_CONTACT, 0, menu_block_contact)
                         .setOnMenuItemClickListener(mContextMenuHandler);
-            }
+                        
+            }*/
         } else if (contactSelected) {
             menu.add(0, MENU_START_CONVERSATION, 0, menu_start_conversation)
                     .setOnMenuItemClickListener(mContextMenuHandler);
@@ -625,17 +630,25 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
+    final class ContextMenuHandler implements android.view.MenuItem.OnMenuItemClickListener {
         long mPosition;
-
-        public boolean onMenuItemClick(MenuItem item) {
-            return true;
-        }
 
         @Override
         public boolean onMenuItemClick(android.view.MenuItem item) {
-            return true;
+            
+            if (item.getItemId() == MENU_END_CONVERSATION)
+            {
+              //  ChatListActivity.this.mActiveChatListView.endChat(c);
+                //ChatListActivity.this.mActiveChatListView.getS
+                Cursor c = (Cursor)mActiveChatListView.getListView().getAdapter().getItem((int) mPosition);
+                mActiveChatListView.endChat(c);
+                
+            }
+            return false;
         }
+
+       
+
     }
 
     final class MyHandler extends SimpleAlertHandler {
