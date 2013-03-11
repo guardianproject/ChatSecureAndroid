@@ -89,13 +89,15 @@ public class ChatSessionManagerAdapter extends
         String userName = imConnection.getLoginUserName();
         ChatSession session = mChatSessionManager.createChatSession(contact);
 
+        /*
         if (mOtrChatManager == null) {
             RemoteImService.debug("mOtrChatManager == null");
         } else {
             RemoteImService.debug("mOtrChatManager.startSession(" + userName + ", "
                                   + contactAddress + ")");
             //mOtrChatManager.startSession(userName, contactAddress);
-        }
+        }*/
+        
         return getChatSessionAdapter(session);
     }
 
