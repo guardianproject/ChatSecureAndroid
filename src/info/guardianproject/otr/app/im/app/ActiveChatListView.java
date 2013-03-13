@@ -175,7 +175,7 @@ public class ActiveChatListView extends LinearLayout {
     }
 
 
-    void endChat(Cursor c) {
+    public void endChat(Cursor c) {
         if (c != null) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             try {
@@ -203,10 +203,12 @@ public class ActiveChatListView extends LinearLayout {
 
 
     public boolean isConversationAtPosition(long packedPosition) {
+        /*
         int type = ExpandableListView.getPackedPositionType(packedPosition);
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
         return (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
-               && mAdapter.isPosForOngoingConversation(groupPosition);
+               && mAdapter.isPosForOngoingConversation(groupPosition);*/
+               return true;
     }
 
     public boolean isConversationSelected() {

@@ -613,7 +613,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //add gtalk auth in
         SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
         
-        SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);        
+           
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
 
@@ -632,13 +632,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
 
-        
         if (password.startsWith(GTalkOAuth2.NAME))
         {
             mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
             password = password.split(":")[1];
-         
+            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
+        }
+        else
+        {
+            mIsGoogleAuth = false;
+            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         }
                 
         mConfig.setVerifyChainEnabled(true);
