@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -227,11 +228,15 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         IOtrKeyManager okm;
         try {
-            okm = mApp.getChatSession(providerId, remoteAddress).getOtrKeyManager();
-            okm.verifyKey(remoteAddress);
-            remoteFingerprintVerified = true;
-            updateUI();
-
+            IChatSession session = mApp.getChatSession(providerId, remoteAddress);
+            
+            if (session != null)
+            {
+                okm = session.getOtrKeyManager();
+                okm.verifyKey(remoteAddress);
+                remoteFingerprintVerified = true;
+                updateUI();
+            }
         } catch (RemoteException e) {
             Log.e(TAG, "error verifying remote fingerprint", e);
         }
