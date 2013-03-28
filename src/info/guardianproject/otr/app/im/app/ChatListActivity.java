@@ -122,7 +122,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         mApp = ImApp.getApplication(this);
 
         initAccount();
-        
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
 

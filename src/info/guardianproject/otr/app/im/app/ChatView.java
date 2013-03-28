@@ -177,7 +177,8 @@ public class ChatView extends LinearLayout {
                 log("onQueryComplete: cursor.count=" + cursor.getCount());
             }
 
-            mMessageAdapter.changeCursor(cursor);
+            if (mMessageAdapter != null && cursor != null)
+                mMessageAdapter.changeCursor(cursor);
         }
     }
 

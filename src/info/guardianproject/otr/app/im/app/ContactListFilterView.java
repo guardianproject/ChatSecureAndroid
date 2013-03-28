@@ -89,7 +89,10 @@ public class ContactListFilterView extends LinearLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
-                mActivity.mContactListView.startChat(c);
+                
+                if (mActivity != null 
+                        && mActivity.mContactListView != null)
+                    mActivity.mContactListView.startChat(c);
 
             }
         });

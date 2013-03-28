@@ -698,7 +698,7 @@ public class ImApp extends Application {
 
     public void callWhenServiceConnected(Handler target, Runnable callback) {
         Message msg = Message.obtain(target, callback);
-        if (serviceConnected()) {
+        if (serviceConnected() && msg != null) {
             msg.sendToTarget();
         } else {
             startImServiceIfNeed();
