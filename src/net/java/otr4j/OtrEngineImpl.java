@@ -63,6 +63,10 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformReceiving(msgText);
     }
 
+    public String transformReceiving(SessionID sessionID, String msgText, List<TLV> tlvs) throws OtrException {
+        return this.getSession(sessionID).transformReceiving(msgText, tlvs);
+    }
+
     public String transformSending(SessionID sessionID, String msgText) throws OtrException {
         return this.getSession(sessionID).transformSending(msgText, null);
     }
