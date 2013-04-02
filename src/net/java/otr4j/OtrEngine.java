@@ -14,6 +14,16 @@ public interface OtrEngine {
     /**
      * @param sessionID The session identifier.
      * @param content The message content to be transformed.
+     * @param tlvs The TLVs
+     * @return The transformed message content.
+     * @throws OtrException
+     */
+    public abstract String transformReceiving(SessionID sessionID, String content, List<TLV> tlvs)
+            throws OtrException;
+
+    /**
+     * @param sessionID The session identifier.
+     * @param content The message content to be transformed.
      * @return The transformed message content.
      * @throws OtrException
      */

@@ -587,6 +587,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             mHasUnreadMessages = true;
             return true;
         }
+        
+        @Override
+        public void onIncomingData(ChatSession session, byte[] value) {
+            // TODO Auto-generated method stub
+        }
 
         public void onSendMessageError(ChatSession ses, final Message msg, final ImErrorInfo error) {
             insertMessageInDb(null, null, System.currentTimeMillis(), Imps.MessageType.OUTGOING,
