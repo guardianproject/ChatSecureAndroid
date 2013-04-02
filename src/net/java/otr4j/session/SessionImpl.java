@@ -56,6 +56,7 @@ public class SessionImpl implements Session {
     private String lastSentMessage;
     private boolean doTransmitLastMessage = false;
     private boolean isLastMessageRetransmit = false;
+    private byte[] extraKey;
 
     public SessionImpl(SessionID sessionID, OtrEngineHost listener) {
 
@@ -280,13 +281,17 @@ public class SessionImpl implements Session {
         return oldMacKeys;
     }
 
+    public String transformReceiving(String msgText) throws OtrException {
+        return transformReceiving(msgText, null);
+    }
+    
     /*
      * (non-Javadoc)
      * 
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
-    public String transformReceiving(String msgText) throws OtrException {
+    public String transformReceiving(String msgText, List<TLV> tlvs) throws OtrException {
         OtrPolicy policy = getSessionPolicy();
         if (!policy.getAllowV1() && !policy.getAllowV2()) {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
@@ -305,7 +310,7 @@ public class SessionImpl implements Session {
 
         switch (m.messageType) {
         case AbstractEncodedMessage.MESSAGE_DATA:
-            return handleDataMessage((DataMessage) m);
+            return handleDataMessage((DataMessage) m, tlvs);
         case AbstractMessage.MESSAGE_ERROR:
             handleErrorMessage((ErrorMessage) m);
             return null;
@@ -374,7 +379,7 @@ public class SessionImpl implements Session {
         }
     }
 
-    private String handleDataMessage(DataMessage data) throws OtrException {
+    private String handleDataMessage(DataMessage data, List<TLV> tlvs) throws OtrException {
         logger.finest(getSessionID().getAccountID() + " received a data message from "
                       + getSessionID().getUserID() + ".");
 
@@ -428,6 +433,7 @@ public class SessionImpl implements Session {
             }
 
             logger.finest("Decrypted message: \"" + decryptedMsgContent + "\"");
+            extraKey = authContext.getExtraSymmetricKey();
 
             // Rotate keys if necessary.
             SessionKeys mostRecent = this.getMostRecentSessionKeys();
@@ -438,7 +444,10 @@ public class SessionImpl implements Session {
                 this.rotateRemoteSessionKeys(data.nextDH);
 
             // Handle TLVs
-            List<TLV> tlvs = null;
+            if (tlvs == null) {
+                tlvs = new ArrayList<TLV>();
+            }
+
             int tlvIndex = decryptedMsgContent.indexOf((char) 0x0);
             if (tlvIndex > -1) {
                 decryptedMsgContent = decryptedMsgContent.substring(0, tlvIndex);
@@ -446,7 +455,6 @@ public class SessionImpl implements Session {
                 byte[] tlvsb = new byte[dmc.length - tlvIndex];
                 System.arraycopy(dmc, tlvIndex, tlvsb, 0, tlvsb.length);
 
-                tlvs = new Vector<TLV>();
                 ByteArrayInputStream tin = new ByteArrayInputStream(tlvsb);
                 while (tin.available() > 0) {
                     int type;
@@ -463,7 +471,7 @@ public class SessionImpl implements Session {
                     tlvs.add(new TLV(type, tdata));
                 }
             }
-            if (tlvs != null && tlvs.size() > 0) {
+            if (tlvs.size() > 0) {
                 for (TLV tlv : tlvs) {
                     switch (tlv.getType()) {
                     case TLV.DISCONNECTED:
@@ -755,5 +763,9 @@ public class SessionImpl implements Session {
     
     public void showWarning(String warning) {
         getHost().showWarning(sessionID, warning);
+    }
+
+    public byte[] getExtraKey() {
+        return extraKey;
     }
 }
