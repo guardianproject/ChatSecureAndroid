@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.util.FontUtils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -236,6 +237,11 @@ public class ProviderListItem extends LinearLayout {
             }
 
             loginName.setText(secondRowText);
+            
+            FontUtils.setRobotoFont(mActivity.getApplicationContext(), loginName);
+            FontUtils.setRobotoFont(mActivity.getApplicationContext(), mChatView);
+            FontUtils.setRobotoFont(mActivity.getApplicationContext(), mProviderName);
+
 
         } else {
             // No active account, show add account

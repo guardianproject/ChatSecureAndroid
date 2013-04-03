@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                     android:fontFamily="sans-serif-light"
                      />
 
                 <TextView android:id="@+id/timestamp"
@@ -71,14 +72,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dip"                    
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     android:fontFamily="sans-serif-light"
+                    />
             </LinearLayout>
 
             <TextView android:id="@+id/line2"                
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:ellipsize="marquee"/>
+                android:ellipsize="marquee"
+                 android:fontFamily="sans-serif-light"
+                />
         </LinearLayout>
     </RelativeLayout>
 </view>

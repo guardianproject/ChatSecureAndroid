@@ -70,7 +70,7 @@ public class MessageView extends LinearLayout {
 
         mResources = getResources();
         
-        FontUtils.setRobotoFont(getContext(), mTextViewForMessages);
+        FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForMessages);
        
     }
 
@@ -181,7 +181,8 @@ public class MessageView extends LinearLayout {
         if (scrolling) {
             buf.append(body);
         } else {
-            buf.setSpan(ChatView.STYLE_BOLD, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            
+          //  buf.setSpan(ChatView.STYLE_NORMAL, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             buf.append(body);
 
            

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-  <ImageView android:src="@drawable/logo_gb" 
+  <ImageView android:src="@drawable/launch_chatsecure" 
   	android:layout_height="wrap_content"
   	android:gravity="center_vertical|center_horizontal" 
   	android:layout_marginLeft="20dip" 

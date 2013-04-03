@@ -113,6 +113,7 @@ public class ChatView extends LinearLayout {
     static final int INVITATION_SENDER_COLUMN = 2;
 
     static final StyleSpan STYLE_BOLD = new StyleSpan(Typeface.BOLD);
+    static final StyleSpan STYLE_NORMAL = new StyleSpan(Typeface.NORMAL);
 
     Markup mMarkup;
 

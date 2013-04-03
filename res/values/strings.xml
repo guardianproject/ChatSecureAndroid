@@ -30,7 +30,7 @@
 
     <!-- The application label. This appears in the application launcher on the
     Home screen. This is a noun. -->
-    <string name="im_label">Gibberbot</string>
+    <string name="im_label">ChatSecure</string>
 
     <!-- These strings displayed on the landing page. -->
     <!-- The title of the landing page.-->
@@ -186,7 +186,7 @@
 
     <!-- These strings are displayed the sign in progress screen.-->
     <!-- The title of the sign-in progress screen.  -->
-    <string name="signing_in_to">getting the Gibberbot going...</string>
+    <string name="signing_in_to">getting the ChatSecure going...</string>
     <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
     <string name="signing_in_wait">Signing in\u2026</string>
     <!-- Dialog title -->
@@ -568,15 +568,15 @@
     <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
     
     	<!-- Welcome Splash Screen -->
-	<string name="app_name">Gibberbot</string>
-    <string name="welcome_first">First time using Gibberbot?</string>
+	<string name="app_name">ChatSecure</string>
+    <string name="welcome_first">First time using ChatSecure?</string>
 	<string name="welcome_skip">Can\'t wait to get started?</string>
     <string name="welcome_about">Get Started</string>
     <string name="welcome_account">Account Setup</string>
 
 	<!-- About: Welcome -->
-	<string name="about_welcome_title">About Gibberbot</string>
-	<string name="about_welcome">Gibberbot is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
+	<string name="about_welcome_title">About ChatSecure</string>
+	<string name="about_welcome">ChatSecure is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
  
 	<!-- About: OTR -->
 	<string name="about_otr_title">How is it secure?</string>
@@ -584,11 +584,11 @@
 	
 	<!-- About: Security -->
     <string name="about_security_title">Are My Chats Secure?</string>
-	<string name="about_security">Gibberbot\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using Gibberbot for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when Gibberbot attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
+	<string name="about_security">ChatSecure\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using ChatSecure for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when ChatSecure attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
 	
 	<!-- Setup: Passphrase-->
     <string name="setup_passphrase_title">Passphrase Setup</string>
-	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your Gibberbot data from unjust access.</string>
+	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your ChatSecure data from unjust access.</string>
     <string name="setup_passphrase_label1">Passphrase:</string>
     <string name="setup_passphrase_label2">Passphrase (again):</string>
 	
@@ -604,8 +604,8 @@
 	<string name="account_setup_pers_pw_on">Password cached</string>
 	<string name="account_setup_pers_pw_off">Password not cached</string>
 	<string name="account_setup_pers_auto_title">Automatically Sign In</string>
-	<string name="account_setup_pers_auto_on">Connect at Gibberbot start-up</string>
-	<string name="account_setup_pers_auto_off">Don\'t connect at Gibberbot start-up</string>
+	<string name="account_setup_pers_auto_on">Connect at ChatSecure start-up</string>
+	<string name="account_setup_pers_auto_off">Don\'t connect at ChatSecure start-up</string>
 	<string name="account_setup_pers_now_title">Sign In Now</string>
 	<string name="account_setup_pers_now_on">Connect following account setup</string>
 	<string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
@@ -630,10 +630,10 @@
 	<string name="account_setup_signin_c">Signing in...</string>
 
 	<!-- Account Setup: Sign In Errors -->
-	<string name="account_setup_error_validating">Gibberbot encountered an error while validating your username or password - please check them and try again.</string>
-	<string name="account_setup_error_keypair">Gibberbot encountered an error while generating a keypair.</string>
-	<string name="account_setup_error_server">Gibberbot encountered an error while connecting to the chat server - please check your configuration and try again.</string>
-	<string name="account_setup_error_connectivity">Gibberbot encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+	<string name="account_setup_error_validating">ChatSecure encountered an error while validating your username or password - please check them and try again.</string>
+	<string name="account_setup_error_keypair">ChatSecure encountered an error while generating a keypair.</string>
+	<string name="account_setup_error_server">ChatSecure encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+	<string name="account_setup_error_connectivity">ChatSecure encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
     
     
         <string name="label_fingerprint_remote">Their Fingerprint</string>
@@ -642,8 +642,8 @@
     <string name="menu_sign_in">Sign In</string>
     <string name="menu_gen_key">Regen Key</string>
     
-    <string name="error_suspended_connection">Gibberbot has lost a connection to the network</string>
-	<string name="error_reestablish_connection">Gibberbot is attempting to restablish a connection</string>
+    <string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
+	<string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
 	
 	<string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
 	<string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
@@ -656,10 +656,10 @@
 	<string name="account_wizard_ready_title">Are You Ready?</string>
 	
 	
-	<string name="account_wizard_setup_body">Enter your account ID to configure Gibberbot for your XMPP chat service. It looks like an email address:</string>
+	<string name="account_wizard_setup_body">Enter your account ID to configure ChatSecure for your XMPP chat service. It looks like an email address:</string>
 	<string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
 	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
-	<string name="account_wizard_ready_body">Gibberbot has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
+	<string name="account_wizard_ready_body">ChatSecure has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 			
 
 	<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
@@ -671,7 +671,7 @@
 	<string name="account_settings_title">Account Settings</string>
 	<string name="pref_default_locale">defLoc</string>
 	
-	<string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+	<string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
 
 	<!--  added 2011/09/01 -->
 	<string name="menu_view_groups">Groups</string>
@@ -731,7 +731,7 @@
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>
 	 -->
 	 
-	 <string name="start_on_boot">Start Gibberbot Automatically</string>
+	 <string name="start_on_boot">Start ChatSecure Automatically</string>
 	 <string name="start_on_boot_summary">Always start and automatically sign into previously logged in accounts</string>
 	 
 	 <string name="empty_account_message">You have no accounts configured.\n\nTap here to add one!</string>
