@@ -50,7 +50,7 @@ android:anyDensity="true"
 
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
-             android:icon="@drawable/ic_launcher_chatsecure"
+             android:icon="@drawable/ic_launcher_gibberbot"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
