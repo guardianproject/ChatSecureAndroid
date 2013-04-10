@@ -1,12 +1,12 @@
 [submodule "external/ActionBarSherlock"]
 	path = external/ActionBarSherlock
-	url = https://github.com/JakeWharton/ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock.git
 [submodule "external/asmack"]
 	path = external/asmack
-	url = https://github.com/guardianproject/asmack
+	url = https://github.com/guardianproject/asmack.git
 [submodule "external/MemorizingTrustManager"]
 	path = external/MemorizingTrustManager
-	url = https://github.com/devrandom/MemorizingTrustManager
+	url = https://github.com/devrandom/MemorizingTrustManager.git
 [submodule "external/OnionKit"]
 	path = external/OnionKit
-	url = https://github.com/guardianproject/OnionKit
+	url = https://github.com/guardianproject/OnionKit.git
