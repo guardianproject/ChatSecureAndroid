@@ -169,9 +169,12 @@ public class ContactView extends LinearLayout {
         }
 
         // line2
-        CharSequence status = null;
-        if (showChatMsg) {
-            status = lastMsg;
+        String status = null;
+        if (showChatMsg && lastMsg != null) {
+
+            //remove HTML tags since we can't display HTML
+            status = lastMsg.replaceAll("\\<.*?\\>", "");
+            
         }
 
         if (TextUtils.isEmpty(status)) {

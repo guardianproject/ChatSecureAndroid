@@ -69,8 +69,10 @@ public class MessageView extends LinearLayout {
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
 
         mResources = getResources();
+
+    //    FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForMessages);
+     //   FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForTimestamp);
         
-        FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForMessages);
        
     }
 
@@ -99,6 +101,8 @@ public class MessageView extends LinearLayout {
         {
             mTextViewForTimestamp.setText("");
         }
+        
+
     }
 
     public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
@@ -140,6 +144,7 @@ public class MessageView extends LinearLayout {
             mTextViewForTimestamp.setPadding(0,0,0,0);
 
         }
+        
 
     }
 

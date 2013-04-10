@@ -73,13 +73,14 @@ public final class FontUtils {
                     robotoFontType = FontType.ITALIC;
                     break;
 
-                case Typeface.NORMAL:
+                default:
                     robotoFontType = FontType.NORMAL;
                     break;
+                    
             }
         }
 
-        return (robotoFontType == null) ? originalTypeface : getRobotoTypeface(context, robotoFontType);
+        return getRobotoTypeface(context, robotoFontType);
     }
 
     /**
@@ -89,6 +90,7 @@ public final class FontUtils {
      * @param view    - root view to apply typeface to
      */
     public static void setRobotoFont(Context context, View view) {
+        
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 setRobotoFont(context, ((ViewGroup) view).getChildAt(i));
