@@ -241,7 +241,7 @@ public class WelcomeActivity extends ThemeableActivity {
     {
         //ask user if they want to overwrite existing entries or just add
         try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(null);
+            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(this);
             boolean overWriteExisting = true;
             oakm.importKeyStore(file, overWriteExisting);
         } catch (IOException e) {

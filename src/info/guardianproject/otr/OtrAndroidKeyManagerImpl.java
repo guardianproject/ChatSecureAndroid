@@ -32,6 +32,8 @@ import net.java.otr4j.session.SessionID;
 
 import org.jivesoftware.smack.util.Base64;
 
+import android.content.Context;
+
 public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private SimplePropertiesStore store;
@@ -43,10 +45,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private static OtrAndroidKeyManagerImpl _instance;
 
-    public static synchronized OtrAndroidKeyManagerImpl getInstance(File filepath)
+    public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
             throws IOException {
-        if (_instance == null && filepath != null) {
-            _instance = new OtrAndroidKeyManagerImpl(filepath);
+        if (_instance == null) {
+            File f = new File(context.getApplicationContext().getFilesDir(), "otr_keystore");
+            _instance = new OtrAndroidKeyManagerImpl(f);
         }
 
         return _instance;
