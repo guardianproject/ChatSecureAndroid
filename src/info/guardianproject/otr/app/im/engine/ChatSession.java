@@ -125,6 +125,21 @@ public class ChatSession {
     }
 
     /**
+     * Sends data to other participant(s) in this session asynchronously.
+     * 
+     * @param data the data to send.
+     */
+    public void sendDataAsync(byte[] data) {
+
+        Message message = new Message("");
+        message.setTo(mParticipant.getAddress());
+
+        mOtrChatManager.transformSending(message);
+
+        mManager.sendMessageAsync(this, message);
+    }
+
+    /**
      * Called by ChatSessionManager when received a message of the ChatSession.
      * All the listeners registered in this session will be notified.
      * 

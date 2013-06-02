@@ -51,6 +51,12 @@ public class ChatListenerAdapter extends IChatListener.Stub {
         }
     }
 
+    public void onIncomingData(IChatSession ses, byte[] data) {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            LogCleaner.debug(TAG, "onIncomingMessage(" + ses + ", len=" + data.length + ")");
+        }
+    }
+
     public void onSendMessageError(IChatSession ses, Message msg, ImErrorInfo error) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             LogCleaner.debug(TAG, "onSendMessageError(" + ses + ", " + msg + ", " + error + ")");

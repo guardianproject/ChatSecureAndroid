@@ -208,6 +208,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void transformSending(Message message) {
+        transformSending(message, null);
+    }
+    
+    public void transformSending(Message message, byte[] data) {
         String localUserId = message.getFrom().getAddress();
         String remoteUserId = message.getTo().getAddress();
         String body = message.getBody();
@@ -222,7 +226,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
                 if (sessionStatus != SessionStatus.PLAINTEXT || sessionPolicy.getRequireEncryption()) {
-                    body = mOtrEngine.transformSending(sessionId, body);
+                    body = mOtrEngine.transformSending(sessionId, body, data);
                     message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
                 } else if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getAllowV2()
                            && sessionPolicy.getSendWhitespaceTag()) {

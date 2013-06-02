@@ -29,6 +29,11 @@ oneway interface IChatListener {
     void onIncomingMessage(IChatSession ses, in Message msg);
 
     /**
+     * This method is called when a new message of the ChatSession has arrived.
+     */
+    void onIncomingData(IChatSession ses, in byte[] data);
+
+    /**
      * This method is called when an error is found to send a message in the ChatSession.
      */
     void onSendMessageError(IChatSession ses, in Message msg, in ImErrorInfo error);

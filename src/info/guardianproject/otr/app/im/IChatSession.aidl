@@ -85,6 +85,11 @@ interface IChatSession {
     void sendMessage(String text);
 
     /**
+     * Sends data to all participants in this ChatSession.
+     */
+    void sendData(in byte[] data);
+
+    /**
      * Mark this chat session as read.
      */
     void markAsRead();   

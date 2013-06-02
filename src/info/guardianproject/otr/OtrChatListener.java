@@ -13,7 +13,7 @@ import net.java.otr4j.session.TLV;
 
 public class OtrChatListener implements MessageListener {
 
-    private static final int TLV_APP_DATA = 0x100;
+    public static final int TLV_APP_DATA = 0x100;
     private OtrChatManager mOtrChatManager;
     private MessageListener mMessageListener;
 
