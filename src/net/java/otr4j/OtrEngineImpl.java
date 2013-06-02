@@ -6,7 +6,10 @@
 
 package net.java.otr4j;
 
+import info.guardianproject.otr.OtrChatListener;
+
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,16 @@ public class OtrEngineImpl implements OtrEngine {
 
     public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs)
             throws OtrException {
+        return this.getSession(sessionID).transformSending(msgText, tlvs);
+    }
+
+    public String transformSending(SessionID sessionID, String msgText, byte[] data)
+            throws OtrException {
+        List<TLV> tlvs = null;
+        if (data != null) {
+            tlvs = new ArrayList<TLV>(1);
+            tlvs.add(new TLV(OtrChatListener.TLV_APP_DATA, data));
+        }
         return this.getSession(sessionID).transformSending(msgText, tlvs);
     }
 

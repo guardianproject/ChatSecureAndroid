@@ -278,6 +278,15 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
     }
 
+    public void sendData(byte[] data) {
+        if (mConnection.getState() == ImConnection.SUSPENDED) {
+            // TODO send later
+            return;
+        }
+
+        mAdaptee.sendDataAsync(data);
+    }
+
     /**
      * Sends a message to other participant(s) in this session without adding it
      * to the history.
