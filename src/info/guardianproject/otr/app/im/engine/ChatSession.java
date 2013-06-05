@@ -125,16 +125,16 @@ public class ChatSession {
     }
 
     /**
-     * Sends data to other participant(s) in this session asynchronously.
+     * Sends message + data to other participant(s) in this session asynchronously.
      * 
+     * @param message the message to send.
      * @param data the data to send.
      */
-    public void sendDataAsync(byte[] data) {
+    public void sendDataAsync(Message message, byte[] data) {
+        if (message.getTo() == null)
+            message.setTo(mParticipant.getAddress());
 
-        Message message = new Message("");
-        message.setTo(mParticipant.getAddress());
-
-        mOtrChatManager.transformSending(message);
+        mOtrChatManager.transformSending(message, data);
 
         mManager.sendMessageAsync(this, message);
     }

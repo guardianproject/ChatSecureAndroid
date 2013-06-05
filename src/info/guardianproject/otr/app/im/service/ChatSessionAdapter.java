@@ -284,7 +284,9 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             return;
         }
 
-        mAdaptee.sendDataAsync(data);
+        Message msg = new Message("");
+        msg.setFrom(mConnection.getLoginUser().getAddress());
+        mAdaptee.sendDataAsync(msg, data);
     }
 
     /**
@@ -598,8 +600,24 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
         
         @Override
-        public void onIncomingData(ChatSession session, byte[] value) {
-            // TODO Auto-generated method stub
+        public void onIncomingData(ChatSession session, byte[] data) {
+            int N = mRemoteListeners.beginBroadcast();
+            for (int i = 0; i < N; i++) {
+                IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                try {
+                    listener.onIncomingData(ChatSessionAdapter.this, data);
+                } catch (RemoteException e) {
+                    // The RemoteCallbackList will take care of removing the
+                    // dead listeners.
+                }
+            }
+            mRemoteListeners.finishBroadcast();
+
+            if (N == 0)
+            {
+                // TODO nobody cared - notify user?
+            }
+            
         }
 
         public void onSendMessageError(ChatSession ses, final Message msg, final ImErrorInfo error) {
