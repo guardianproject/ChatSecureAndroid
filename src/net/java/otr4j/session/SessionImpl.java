@@ -434,7 +434,7 @@ public class SessionImpl implements Session {
             }
 
             logger.finest("Decrypted message: \"" + decryptedMsgContent + "\"");
-            extraKey = authContext.getExtraSymmetricKey();
+            // FIXME extraKey = authContext.getExtraSymmetricKey();
 
             // Rotate keys if necessary.
             SessionKeys mostRecent = this.getMostRecentSessionKeys();
