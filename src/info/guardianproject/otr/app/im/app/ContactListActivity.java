@@ -133,12 +133,12 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
         if (c == null) {
-            finish();
+            //finish();
             return;
         }
         if (!c.moveToFirst()) {
            // c.close();
-            finish();
+            //finish();
             return;
         }
 
@@ -168,7 +168,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                             mConn = mApp.createConnection(mProviderId, mAccountId);
                         } catch (RemoteException e) {
                             Log.e(ImApp.LOG_TAG, "The connection cannot be created");
-                            finish();
+                          //  finish();
                         }
                     }
                   //  mFilterView.mPresenceView.setConnection(mConn);
@@ -254,7 +254,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-            finish();
+           // finish();
             return true;
 
         case R.id.menu_settings:
@@ -632,7 +632,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
                     startActivity(getEditAccountIntent(false));
 
-                    finish();
+                   // finish();
                 }
                 return;
             }

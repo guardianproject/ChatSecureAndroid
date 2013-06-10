@@ -127,7 +127,7 @@ public class ContactsPickerActivity extends ListActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
         setResult(RESULT_OK, data);
-        finish();
+     //   finish();
     }
     
     Cursor runQuery(CharSequence constraint) {

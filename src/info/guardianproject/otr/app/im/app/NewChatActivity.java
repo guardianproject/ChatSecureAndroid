@@ -218,7 +218,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-            finish();
+          //  finish();
             return true;
             
         case R.id.menu_prev_chat:
@@ -251,7 +251,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
      //   Intent intent = new Intent (this, ChatListActivity.class);
       //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
        // startActivity(intent);
-        finish();
+      //  finish();
     }
 
     @Override

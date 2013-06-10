@@ -309,7 +309,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         try {
             if (mConn != null)
                 mConn.logout();
-            finish();
+          //  finish();
         } catch (RemoteException e) {
 
             Log.e("ChatList","error signing out",e);
@@ -345,7 +345,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-            finish();
+        //    finish();
             return true;
 
         case R.id.menu_settings:
@@ -399,13 +399,17 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         
+        
+        //this is bad code for weird locale switching stuff
+        /**
+        
         if (requestCode == 1 && resultCode == 2)
         {
             Intent intent = getIntent();
             finish();
             startActivity(intent);
             
-        }
+        }*/
         
     }
 
