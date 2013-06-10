@@ -2,6 +2,6 @@
 
 # make sure your Android SDK tools path is set in SDK_BASE
 android update project --path . --name Gibberbot --subprojects
-android update project --path external/ActionBarSherlock/library/ --name ActionBarSherlock
-android update project --path external/MemorizingTrustManager --name MemorizingTrustManager --subprojects
-android update project --path external/OnionKit/library --name OnionKit
+android update project --path external/ActionBarSherlock/actionbarsherlock -t android-17
+android update project --path external/MemorizingTrustManager --name MemorizingTrustManager -t android-17 --subprojects
+android update project --path external/OnionKit/libonionkit --name OnionKit -t android-17
