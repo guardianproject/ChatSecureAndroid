@@ -16,19 +16,19 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.io.File;
-import java.io.IOException;
-
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
+
+import java.io.File;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,16 +36,15 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -186,7 +185,17 @@ public class WelcomeActivity extends ThemeableActivity {
         int countConfigured = accountsConfigured();
         
         boolean doKeyStoreImport = false;
+
+        // if otr_keystore.ofcaes is in the SDCard root, import it
+        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
+                "otr_keystore.ofcaes");
+        if (otrKeystoreAES.exists()) {
+            Log.i(TAG, "found " + otrKeystoreAES + "to import");
+            doKeyStoreImport = true;
+            importOtrKeyStore(otrKeystoreAES);
+        }
         
+        // get otr_keystore.ofcaes via an Intent
         if (getIntent().getData() != null)
         {
             Uri uriData = getIntent().getData();
@@ -241,7 +250,7 @@ public class WelcomeActivity extends ThemeableActivity {
     {
         //ask user if they want to overwrite existing entries or just add
         try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(null);
+            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(this);
             boolean overWriteExisting = true;
             oakm.importKeyStore(file, overWriteExisting);
         } catch (IOException e) {

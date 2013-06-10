@@ -3,6 +3,7 @@ package info.guardianproject.otr;
 import info.guardianproject.bouncycastle.util.encoders.Hex;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +33,8 @@ import net.java.otr4j.session.SessionID;
 
 import org.jivesoftware.smack.util.Base64;
 
+import android.content.Context;
+
 public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private SimplePropertiesStore store;
@@ -43,10 +46,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private static OtrAndroidKeyManagerImpl _instance;
 
-    public static synchronized OtrAndroidKeyManagerImpl getInstance(File filepath)
+    public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
             throws IOException {
-        if (_instance == null && filepath != null) {
-            _instance = new OtrAndroidKeyManagerImpl(filepath);
+        if (_instance == null) {
+            File f = new File(context.getApplicationContext().getFilesDir(), "otr_keystore");
+            _instance = new OtrAndroidKeyManagerImpl(f);
         }
 
         return _instance;
@@ -67,6 +71,24 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             mProperties.clear();
 
             load();
+        }
+
+        public SimplePropertiesStore(File storeFile, final String password) {
+            OtrDebugLogger.log("Loading store from encrypted file");
+            mStoreFile = storeFile;
+            mProperties.clear();
+
+            loadAES(password);
+        }
+
+        private void loadAES(final String password) {
+            String decoded;
+            try {
+                decoded = AES_256_CBC.decrypt(mStoreFile, password);
+                mProperties.load(new ByteArrayInputStream(decoded.getBytes()));
+            } catch (IOException ioe) {
+                OtrDebugLogger.log("Properties store error", ioe);
+            }
         }
 
         private void load() {
@@ -237,7 +259,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
     
     public void importKeyStore(File filePath, boolean overWriteExisting) throws IOException
     {
-        SimplePropertiesStore storeNew = new SimplePropertiesStore(filePath);
+        SimplePropertiesStore storeNew = null;
+        boolean deleteImportedFile = false;
+
+        if (filePath.getName().endsWith(".ofcaes")) {
+            //TODO implement GUI to get password via QR Code, and handle wrong password
+            storeNew = new SimplePropertiesStore(filePath, "myfakepassword");
+            deleteImportedFile = true; // once its imported, its no longer needed
+        } else
+            storeNew = new SimplePropertiesStore(filePath);
         
         Properties pNew = storeNew.getProperties();
         Enumeration<Object> enumKeys = pNew.keys();
@@ -256,6 +286,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             store.save();
         }
         
+        if (deleteImportedFile)
+            filePath.delete();
     }
 
     public String getLocalFingerprint(SessionID sessionID) {
