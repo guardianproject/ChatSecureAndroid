@@ -28,6 +28,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,6 +49,8 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class WelcomeActivity extends ThemeableActivity {
     
@@ -82,13 +85,17 @@ public class WelcomeActivity extends ThemeableActivity {
     static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
+    
+    private SharedPreferences mPrefs = null;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSignInHelper = new SignInHelper(this);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mDefaultLocale = prefs.getString(getString(R.string.pref_default_locale), null);
+       
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mDefaultLocale = mPrefs.getString(getString(R.string.pref_default_locale), null);
         setContentView(R.layout.welcome_activity);
         
         this.getSupportActionBar().hide();
@@ -156,17 +163,47 @@ public class WelcomeActivity extends ThemeableActivity {
         super.onDestroy();
     }
     
+    
+    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        IntentResult scanResult =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data); 
+        
+        if  (scanResult != null) 
+        { 
+            
+            String otrKeyPassword = scanResult.getContents();
+            
+            String otrKeyStorePath = mPrefs.getString("keystoreimport", null);
+            
+            if (otrKeyStorePath != null)
+            {
+                File otrKeystoreAES = new File(otrKeyStorePath);
+                if (otrKeystoreAES.exists()) {
+                    importOtrKeyStoreWithPassword(otrKeystoreAES, otrKeyPassword);
+                }
+            }
+            else
+            {
+                Log.d(TAG,"no key store path saved");
+            }
+            
+        } 
+    }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mDefaultLocale == null)
-            showLocaleDialog();
-        else {
-            cursorUnlocked();
-            doOnResume();
-        }
+        cursorUnlocked();
+        doOnResume();
+
     }
 
     private void doOnResume() {
@@ -246,13 +283,50 @@ public class WelcomeActivity extends ThemeableActivity {
     }
     
     
-    private void importOtrKeyStore (File file)
+    private void importOtrKeyStore (final File fileOtrKeyStore)
     {
-        //ask user if they want to overwrite existing entries or just add
+     
+        try
+        {
+            mPrefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
+        }
+        catch (IOException ioe)
+        {
+            Log.e("TAG","problem importing key store",ioe);
+            return;
+        }
+
+        Dialog.OnClickListener ocl = new Dialog.OnClickListener ()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                
+                
+                //launch QR code intent
+                IntentIntegrator.initiateScan(WelcomeActivity.this);
+                
+            }
+        };
+        
+
+        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+                  .setMessage("We have detected an OTR key store to import. Would you like to scan the QR password now?")
+                  .setPositiveButton(R.string.yes, ocl) // default button
+                  .setNegativeButton(R.string.no, null).setCancelable(true).show();
+      
+      
+    }
+    
+    private void importOtrKeyStoreWithPassword (final File fileOtrKeyStore, String password)
+    {
+
         try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(this);
+            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(WelcomeActivity.this);
             boolean overWriteExisting = true;
-            oakm.importKeyStore(file, overWriteExisting);
+            boolean deleteImportedFile = true;
+            oakm.importKeyStore(fileOtrKeyStore, password, overWriteExisting, deleteImportedFile);
+            
         } catch (IOException e) {
           Log.e(TAG,"error opening keystore",e);
         }

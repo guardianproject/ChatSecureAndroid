@@ -257,14 +257,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         }
     }
     
-    public void importKeyStore(File filePath, boolean overWriteExisting) throws IOException
+    public void importKeyStore(File filePath, String password, boolean overWriteExisting, boolean deleteImportedFile) throws IOException
     {
         SimplePropertiesStore storeNew = null;
-        boolean deleteImportedFile = false;
 
         if (filePath.getName().endsWith(".ofcaes")) {
             //TODO implement GUI to get password via QR Code, and handle wrong password
-            storeNew = new SimplePropertiesStore(filePath, "myfakepassword");
+            storeNew = new SimplePropertiesStore(filePath, password);
             deleteImportedFile = true; // once its imported, its no longer needed
         } else
             storeNew = new SimplePropertiesStore(filePath);
