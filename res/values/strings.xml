@@ -766,7 +766,7 @@
     <string name="pass_err_num">Your passphrase did not contain any numbers</string>
     
     <string name="lock_screen_open">Open</string>
-    <string name="title_activity_lock_screen">NoteCipher Locked</string>
+    <string name="title_activity_lock_screen">ChatSecure Locked</string>
     <string name="lock_screen_create_passphrase">Create passphrase</string>
 	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
 	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
