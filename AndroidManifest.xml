@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -51,7 +51,7 @@ android:anyDensity="true"
 
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
-             android:icon="@drawable/ic_launcher_gibberbot"
+             android:icon="@drawable/ic_launcher_chatsecure"
              android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
@@ -77,7 +77,7 @@ android:anyDensity="true"
                 <data
                     android:host="*"
                     android:mimeType="*/*"
-                    android:pathPattern="*.otr"
+                    android:pathPattern="*.ofcaes"
                     android:scheme="content" />
             </intent-filter>
             <intent-filter>
@@ -98,6 +98,7 @@ android:anyDensity="true"
         
         <activity android:name=".app.ChatListActivity"
                           android:exported="false"
+                            android:windowSoftInputMode="stateHidden|adjustResize"
             
             />
         <activity android:name=".app.ActiveChatListView"
