@@ -309,19 +309,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 byte[] bytes = vCard.getAvatar();
     
                 if (bytes != null) {
-                    try {
                         
                         OutputStream output = new FileOutputStream(file);
                         output.write(bytes);
                         output.close();
-                    } catch (Exception e) {
-                     //   Log.w(TAG,"unable to save avatar",e);
-                    }
+                   
                 }
             }
 
-        } catch (XMPPException ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            Log.w(TAG,"unable to save avatar",ex);
         }
         return vCard;
     }
