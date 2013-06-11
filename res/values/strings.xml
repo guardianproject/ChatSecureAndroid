@@ -756,5 +756,22 @@
 	 <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
     <string name="signout_kill_confirm_message">Do you want to sign out all services AND kill all processes (hard exit)?</string>
     
+     <string name="rekey_message">Enter a *new* passphrase. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="do_rekey">Encrypting your existing notes with the new passphrase (patience...)</string>
+    <string name="enter_pass">Enter your passphrase:</string>
+    <string name="new_pass">Welcome! Enter a strong passphrase to secure your notes. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="pass_err_length">Your passphrase was not long enough</string>
+    <string name="pass_err_upper">Your passphrase did not contain any uppercase letters</string>
+    <string name="pass_err_lower">Your passphrase did not contain any lowercase letters</string>
+    <string name="pass_err_num">Your passphrase did not contain any numbers</string>
+    
+    <string name="lock_screen_open">Open</string>
+    <string name="title_activity_lock_screen">NoteCipher Locked</string>
+    <string name="lock_screen_create_passphrase">Create passphrase</string>
+	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
+	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
+	<string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
+	<string name="lock_screen_passphrases_not_matching">Passphrases did not match, please try again</string>
+    
 </resources>
 

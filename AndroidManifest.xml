@@ -369,7 +369,12 @@ android:anyDensity="true"
          	 
             />
          
-          
+           <activity
+            android:name=".LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+         
            <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
             android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
@@ -400,6 +405,14 @@ android:anyDensity="true"
             </intent-filter>
         </receiver>
         
+           <activity
+            android:name=".app.LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+          
+        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false" />
+          
         
     </application>
 </manifest>

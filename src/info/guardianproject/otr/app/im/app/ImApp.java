@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -69,6 +70,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ImApp extends Application {
+    
     public static final String LOG_TAG = "GB.ImApp";
 
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
@@ -923,4 +925,6 @@ public class ImApp extends Application {
 
         return null;
     }
+
+   
 }

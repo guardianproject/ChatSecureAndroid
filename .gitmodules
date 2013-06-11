@@ -13,3 +13,6 @@
 [submodule "external/SlidingMenu"]
 	path = external/SlidingMenu
 	url = https://github.com/jfeinstein10/SlidingMenu.git
+[submodule "external/cacheword"]
+	path = external/cacheword
+	url = git@github.com:guardianproject/cacheword.git

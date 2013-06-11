@@ -16,6 +16,9 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -26,6 +29,7 @@ import info.guardianproject.otr.app.im.ui.AboutActivity;
 import java.io.File;
 import java.io.IOException;
 
+import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,7 +56,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class WelcomeActivity extends ThemeableActivity {
+public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
     
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
@@ -88,10 +92,14 @@ public class WelcomeActivity extends ThemeableActivity {
     
     private SharedPreferences mPrefs = null;
     
+    private CacheWordActivityHandler mCacheWord = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SQLiteDatabase.loadLibs(this);
+        
         mSignInHelper = new SignInHelper(this);
        
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -112,19 +120,24 @@ public class WelcomeActivity extends ThemeableActivity {
         });
 
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
-      
+     
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
     }
     
 
    
     @SuppressWarnings("deprecation")
-    private boolean cursorUnlocked() {
+    private boolean cursorUnlocked(String pKey) {
         try {
             mApp = ImApp.getApplication(this);
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-            mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+            
+            uri = uri.buildUpon().appendQueryParameter("pkey", pKey).build();
+            
+            mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                     Imps.Provider.DEFAULT_SORT_ORDER);
@@ -154,6 +167,7 @@ public class WelcomeActivity extends ThemeableActivity {
             mHandler.unregisterForBroadcastEvents();
 
         super.onPause();
+        mCacheWord.onPause();
     }
 
     @Override
@@ -201,9 +215,19 @@ public class WelcomeActivity extends ThemeableActivity {
     protected void onResume() {
         super.onResume();
 
-        cursorUnlocked();
-        doOnResume();
-
+        mCacheWord.onResume();
+     
+        if (!mCacheWord.isLocked())
+        {
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+            
+            cursorUnlocked(pkey);
+            doOnResume();
+        }
+        else
+        {
+            showLockScreen();
+        }
     }
 
     private void doOnResume() {
@@ -628,4 +652,39 @@ public class WelcomeActivity extends ThemeableActivity {
         ad.show();
     }
 
+    @Override
+    public void onCacheWordUninitialized() {
+        Log.d(ImApp.LOG_TAG,"cache word uninit");
+        
+        showLockScreen();
+    }
+
+    void showLockScreen() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("originalIntent", getIntent());
+        startActivity(intent);
+       
+    }
+    
+    @Override
+    public void onCacheWordLocked() {
+        Log.d(ImApp.LOG_TAG,"cache word locked");
+
+        ImApp.getApplication().forceStopImService(); 
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+       Log.d(ImApp.LOG_TAG,"cache word opened");
+       
+
+       String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+       
+       cursorUnlocked(pkey);
+       
+       doOnResume();
+       
+        
+    }
 }

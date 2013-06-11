@@ -19,6 +19,8 @@ package info.guardianproject.otr.app.im.app;
 import java.io.IOException;
 import java.util.List;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -66,7 +68,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -85,6 +87,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private SignInHelper mSignInHelper;
 
+    private CacheWordActivityHandler mCacheWord;
+    
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -165,6 +169,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             }
             
         });
+        
+
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
     }
     
     
@@ -183,7 +190,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
-
+        
+        mCacheWord.onPause();
         super.onPause();
     }
 
@@ -198,6 +206,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         ((ImApp)getApplication()).setAppTheme (this);
         mHandler.registerForBroadcastEvents();
+        mCacheWord.onResume();
         super.onResume();
     }
 
@@ -323,6 +332,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             catch (Exception e){} //wait a second for account to log out
         }
         
+
+        mCacheWord.manuallyLock();
         
         ImApp.getApplication().forceStopImService();
 
@@ -749,6 +760,30 @@ private Handler mHandlerGoogleAuth = new Handler ()
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordUninitialized() {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordLocked() {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordOpened() {
+        // TODO Auto-generated method stub
         
     }
 }
