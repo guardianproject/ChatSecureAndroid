@@ -166,7 +166,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
 
 //        mFilterView.setActivity(this);
 
-        mFilterView.getListView().setOnCreateContextMenuListener(this);
+     //   mFilterView.getListView().setOnCreateContextMenuListener(this);
         mFilterView.setListener(this);
         
         menu.setMenu(mFilterView);

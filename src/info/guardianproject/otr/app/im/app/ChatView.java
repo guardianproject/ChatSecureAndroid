@@ -38,6 +38,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -56,8 +58,11 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
@@ -69,6 +74,7 @@ import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -558,6 +564,32 @@ public class ChatView extends LinearLayout {
             buf.append(")");
             mActivity.setTitle(buf.toString());
        
+            Drawable avatar = loadAvatar(mUserName);
+            
+            if (avatar != null)
+            mActivity.setHomeIcon(avatar);
+            
+        }
+    }
+    
+    private Drawable loadAvatar (String jid)
+    {
+        try
+        {
+            //String filename = Base64.encodeBase64String(jid.getBytes()) + ".jpg";
+            String fileName = Base64.encodeToString(jid.getBytes(), Base64.NO_WRAP) + ".jpg";
+            File sdCard = new File(mActivity.getCacheDir(),"avatars");
+            File fileAvatar = new File(sdCard, fileName);
+            
+            if (fileAvatar.exists())
+                return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
+            else
+                return null;
+        }
+        catch (IOException ioe)
+        {
+            Log.e("Contacts","error loading avatar",ioe);
+            return null;
         }
     }
 
