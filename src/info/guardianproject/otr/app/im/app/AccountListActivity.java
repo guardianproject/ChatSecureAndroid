@@ -337,6 +337,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         ImApp.getApplication().forceStopImService();
 
+        finish();
     }
  
     private void signOutAll() {
