@@ -298,7 +298,7 @@ public class ContactListManagerAdapter extends
     public long queryOrInsertContact(Contact c) {
         long result;
 
-        String username = c.getAddress().getFullName();
+        String username = c.getAddress().getAddress();
         String selection = Imps.Contacts.USERNAME + "=?";
         String[] selectionArgs = { username };
         String[] projection = { Imps.Contacts._ID };
@@ -319,7 +319,7 @@ public class ContactListManagerAdapter extends
 
     private long insertTemporary(Contact c) {
         synchronized (mTemporaryContacts) {
-            mTemporaryContacts.put(c.getAddress().getFullName(), c);
+            mTemporaryContacts.put(c.getAddress().getAddress(), c);
         }
         Uri uri = insertContactContent(c, FAKE_TEMPORARY_LIST_ID);
         return ContentUris.parseId(uri);
@@ -480,7 +480,7 @@ public class ContactListManagerAdapter extends
 
             case LIST_CONTACT_ADDED:
                 long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-                String contactAddress = contact.getAddress().getFullName();
+                String contactAddress = contact.getAddress().getAddress();
                 if (isTemporary(contactAddress)) {
                     moveTemporaryContactToList(contactAddress, listId);
                 } else {
@@ -512,7 +512,7 @@ public class ContactListManagerAdapter extends
                 }
 
                 // Clear ChatSession if any.
-                String address = contact.getAddress().getFullName();
+                String address = contact.getAddress().getAddress();
                 closeChatSession(address);
 
                 notificationText = mContext.getResources().getString(
@@ -534,7 +534,7 @@ public class ContactListManagerAdapter extends
 
             case CONTACT_BLOCKED:
                 insertBlockedContactToDataBase(contact);
-                address = contact.getAddress().getFullName();
+                address = contact.getAddress().getAddress();
                 updateContactType(address, Imps.Contacts.TYPE_BLOCKED);
                 closeChatSession(address);
                 notificationText = mContext.getResources().getString(
@@ -627,7 +627,7 @@ public class ContactListManagerAdapter extends
     final class SubscriptionRequestListenerAdapter implements SubscriptionRequestListener {
 
         public void onSubScriptionRequest(final Contact from) {
-            String username = from.getAddress().getFullName();
+            String username = from.getAddress().getAddress();
             String nickname = from.getName();
             queryOrInsertContact(from); // FIXME Miron
             Uri uri = insertOrUpdateSubscription(username, nickname,
@@ -714,7 +714,7 @@ public class ContactListManagerAdapter extends
         ContentUris.appendId(builder, mAccountId);
         Uri uri = builder.build();
 
-        String username = contact.getAddress().getFullName();
+        String username = contact.getAddress().getAddress();
         ContentValues values = new ContentValues(2);
         values.put(Imps.BlockedList.USERNAME, username);
         values.put(Imps.BlockedList.NICKNAME, contact.getName());
@@ -725,7 +725,7 @@ public class ContactListManagerAdapter extends
     }
 
     void removeBlockedContactFromDataBase(Contact contact) {
-        String address = contact.getAddress().getFullName();
+        String address = contact.getAddress().getAddress();
 
         Uri.Builder builder = Imps.BlockedList.CONTENT_URI.buildUpon();
         ContentUris.appendId(builder, mProviderId);
@@ -813,7 +813,7 @@ public class ContactListManagerAdapter extends
         ArrayList<String> clientTypeArray = new ArrayList<String>();
 
         for (Contact c : contacts) {
-            String username = c.getAddress().getFullName();
+            String username = c.getAddress().getAddress();
             Presence p = c.getPresence();
             int status = convertPresenceStatus(p);
             String customStatus = p.getStatusText();
@@ -845,7 +845,7 @@ public class ContactListManagerAdapter extends
                 continue;
             }
 
-            String username = contact.getAddress().getFullName();
+            String username = contact.getAddress().getAddress();
 
             ContentValues values = new ContentValues(2);
             values.put(Imps.Avatars.CONTACT, username);
@@ -933,7 +933,7 @@ public class ContactListManagerAdapter extends
         Iterator<Contact> iter = contacts.iterator();
         while (iter.hasNext()) {
             Contact c = iter.next();
-            String address = c.getAddress().getFullName();
+            String address = c.getAddress().getAddress();
             if (isTemporary(address)) {
                 if (!existingUsernames.contains(address)) {
                     moveTemporaryContactToList(address, listId);
@@ -947,7 +947,7 @@ public class ContactListManagerAdapter extends
         ArrayList<String> nicknames = new ArrayList<String>();
         ArrayList<String> contactTypeArray = new ArrayList<String>();
         for (Contact c : contacts) {
-            String username = c.getAddress().getFullName();
+            String username = c.getAddress().getAddress();
             String nickname = c.getName();
             
             if (existingUsernames.contains(username))
@@ -1003,7 +1003,7 @@ public class ContactListManagerAdapter extends
     void deleteContactFromDataBase(Contact contact, ContactList list) {
         String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
         long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-        String username = contact.getAddress().getFullName();
+        String username = contact.getAddress().getAddress();
         String[] selectionArgs = { username, Long.toString(listId) };
 
         mResolver.delete(mContactUrl, selection, selectionArgs);
@@ -1029,7 +1029,7 @@ public class ContactListManagerAdapter extends
     }
 
     private ContentValues getContactContentValues(Contact contact, long listId) {
-        final String username = contact.getAddress().getFullName();
+        final String username = contact.getAddress().getAddress();
         final String nickname = contact.getName();
         int type = Imps.Contacts.TYPE_NORMAL;
         if (isTemporary(username)) {

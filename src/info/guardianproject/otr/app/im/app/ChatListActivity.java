@@ -20,6 +20,7 @@ import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
@@ -61,9 +62,11 @@ import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+//  mScreen.finish();
+//mContactListView.setAutoRefreshContacts(false);
 
-public class ChatListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
+public class ChatListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -81,7 +84,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     ActiveChatListView mActiveChatListView;
     ContactListFilterView mFilterView;
     SimpleAlertHandler mHandler;
-
+    SlidingMenu menu;
+    
     ContextMenuHandler mContextMenuHandler;
 
     boolean mIsFiltering;
@@ -148,6 +152,38 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         
         setupActionBarList(mAccountId);
         
+        menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+     
+        mFilterView = (ContactListFilterView) getLayoutInflater().inflate(
+                R.layout.contact_list_filter_view, null);
+
+//        mFilterView.setActivity(this);
+
+        mFilterView.getListView().setOnCreateContextMenuListener(this);
+        mFilterView.setListener(this);
+        
+        menu.setMenu(mFilterView);
+        
+
+        initAccount ();
+        
+        mApp.registerForConnEvents(mHandler);
+        
+        // Get the intent, verify the action and get the query
+
+
+        Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                            : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+        uri = ContentUris.withAppendedId(uri, mProviderId);
+        uri = ContentUris.withAppendedId(uri, mAccountId);
+        mFilterView.doFilter(uri, null);
     }
     
     private void initAccount ()
@@ -197,6 +233,13 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
                 mHandler.showServiceErrorAlert();
             }
             
+
+
+            Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                                : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+            uri = ContentUris.withAppendedId(uri, mProviderId);
+            uri = ContentUris.withAppendedId(uri, mAccountId);
+            mFilterView.doFilter(uri, null);
            
             
         }
@@ -318,9 +361,10 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     
     private void showContactsList ()
     {
-        Intent intent = new Intent (this, ContactListActivity.class);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-        startActivity(intent);
+      //  Intent intent = new Intent (this, ContactListActivity.class);
+       // intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+       // startActivity(intent);
+        menu.showMenu(true);
     }
     
     @Override
@@ -515,7 +559,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     protected void onResume() {
         super.onResume();
            
-        ((ImApp)getApplication()).checkLocale();
+       // ((ImApp)getApplication()).checkLocale();
         
         mApp.registerForConnEvents(mHandler);
         mActiveChatListView.setAutoRefreshContacts(true);
@@ -697,5 +741,39 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
                 list.setEmptyView(empty);
             }
         }
+    }
+    
+
+    @Override
+    public void startChat(Cursor c) {
+
+        if (c != null) {
+            long id = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
+            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            try {
+                IChatSessionManager manager = mConn.getChatSessionManager();
+                IChatSession session = manager.getChatSession(username);
+                if (session == null) {
+                    manager.createChatSession(username);
+                }
+
+                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
+                Intent i = new Intent(Intent.ACTION_VIEW, data);
+                i.addCategory(ImApp.IMPS_CATEGORY);
+                
+                if (menu.isShown())
+                    menu.toggle();
+                
+                startActivity(i);
+              //  mScreen.finish();
+                
+                //mContactListView.setAutoRefreshContacts(false);
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+            }
+           
+        }
+        
+        
     }
 }

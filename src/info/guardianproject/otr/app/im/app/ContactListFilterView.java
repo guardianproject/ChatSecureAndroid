@@ -50,7 +50,7 @@ public class ContactListFilterView extends LinearLayout {
     private final ConnectionListenerAdapter mConnectionListener;
 
     //UserPresenceView mPresenceView;
-    private ContactListActivity mActivity;
+  //  private ContactListActivity mActivity;
     private IImConnection mConn;
 
     public ContactListFilterView(Context context, AttributeSet attrs) {
@@ -90,9 +90,8 @@ public class ContactListFilterView extends LinearLayout {
 
                 Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
                 
-                if (mActivity != null 
-                        && mActivity.mContactListView != null)
-                    mActivity.mContactListView.startChat(c);
+                if (mListener != null)
+                    mListener.startChat(c);
 
             }
         });
@@ -211,8 +210,16 @@ public class ContactListFilterView extends LinearLayout {
         }
     }
 
-    public void setActivity(ContactListActivity mActivity) {
-        this.mActivity = mActivity;
+    public interface ContactListListener {
+     
+        public void startChat (Cursor c);
     }
-
+    
+    
+    private ContactListListener mListener = null;
+    
+    public void setListener (ContactListListener listener)
+    {
+        mListener = listener;
+    }
 }

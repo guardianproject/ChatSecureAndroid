@@ -248,6 +248,7 @@ public class ImApp extends Application {
 
         String lang = settings.getString(getString(R.string.pref_default_locale), "");
         
+        
         if ("".equals(lang)) {
             Properties props = AssetUtil.getProperties("gibberbot.properties", this);
             if (props != null) {
@@ -609,9 +610,10 @@ public class ImApp extends Application {
                 Resources packageRes = pm.getResourcesForApplication(pluginInfo.mPackageName);
 
                 Map<Integer, Integer> resMap = plugin.getResourceMap();
-                int[] smileyIcons = plugin.getSmileyIconIds();
+                //int[] smileyIcons = plugin.getSmileyIconIds();
 
-                BrandingResources res = new BrandingResources(packageRes, resMap, smileyIcons,
+                
+                BrandingResources res = new BrandingResources(packageRes, resMap,
                         mDefaultBrandingResources);
                 mBrandingResources.put(pluginInfo.mProviderName, res);
             } catch (NameNotFoundException e) {

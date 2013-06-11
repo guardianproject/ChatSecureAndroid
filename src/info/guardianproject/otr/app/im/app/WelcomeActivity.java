@@ -269,6 +269,7 @@ public class WelcomeActivity extends ThemeableActivity {
             }
             
             
+            /*
             if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
                 mDidAutoLaunch = true;
                 signInAll();
@@ -278,7 +279,10 @@ public class WelcomeActivity extends ThemeableActivity {
             } else if (countConfigured > 0) {
                 showAccounts();
             }
-            // Otherwise, stay on Getting Started view
+            */
+            
+            if (countConfigured > 0)
+                showAccounts();
         }
     }
     

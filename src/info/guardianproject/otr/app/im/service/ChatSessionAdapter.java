@@ -102,8 +102,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mStatusBarNotifier = service.getStatusBarNotifier();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
-        String localUserId = mConnection.getLoginUser().getAddress().getFullName();
-        String remoteUserId = mAdaptee.getParticipant().getAddress().getFullName();
+        String localUserId = mConnection.getLoginUser().getAddress().getAddress();
+        String remoteUserId = mAdaptee.getParticipant().getAddress().getAddress();
 
         mOtrChatManager = service.getOtrChatManager();
         mOtrChatSession = new OtrChatSessionAdapter(localUserId, remoteUserId, mOtrChatManager);
@@ -188,12 +188,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             int index = 0;
             for (Contact c : members) {
                 if (!c.equals(self)) {
-                    result[index++] = c.getAddress().getFullName();
+                    result[index++] = c.getAddress().getAddress();
                 }
             }
             return result;
         } else {
-            return new String[] { mAdaptee.getParticipant().getAddress().getFullName() };
+            return new String[] { mAdaptee.getParticipant().getAddress().getAddress() };
         }
     }
 
@@ -223,7 +223,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     public String getAddress() {
-        return mAdaptee.getParticipant().getAddress().getFullName();
+        return mAdaptee.getParticipant().getAddress().getAddress();
     }
 
     public long getId() {
@@ -350,7 +350,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             ChatGroup group = (ChatGroup) participant;
             List<Contact> members = group.getMembers();
             for (Contact c : members) {
-                if (username.equals(c.getAddress().getFullName())) {
+                if (username.equals(c.getAddress().getAddress())) {
                     return c.getName();
                 }
             }
@@ -405,7 +405,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private long insertGroupContactInDb(ChatGroup group) {
         // Insert a record in contacts table
         ContentValues values = new ContentValues(4);
-        values.put(Imps.Contacts.USERNAME, group.getAddress().getFullName());
+        values.put(Imps.Contacts.USERNAME, group.getAddress().getAddress());
         values.put(Imps.Contacts.NICKNAME, group.getName());
         values.put(Imps.Contacts.CONTACTLIST, ContactListManagerAdapter.FAKE_TEMPORARY_LIST_ID);
         values.put(Imps.Contacts.TYPE, Imps.Contacts.TYPE_GROUP);
@@ -420,7 +420,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         for (Contact member : group.getMembers()) {
             if (!member.equals(self)) { // avoid to insert the user himself
                 ContentValues memberValue = new ContentValues(2);
-                memberValue.put(Imps.GroupMembers.USERNAME, member.getAddress().getFullName());
+                memberValue.put(Imps.GroupMembers.USERNAME, member.getAddress().getAddress());
                 memberValue.put(Imps.GroupMembers.NICKNAME, member.getName());
                 memberValues.add(memberValue);
             }
@@ -436,7 +436,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     void insertGroupMemberInDb(Contact member) {
         ContentValues values1 = new ContentValues(2);
-        values1.put(Imps.GroupMembers.USERNAME, member.getAddress().getFullName());
+        values1.put(Imps.GroupMembers.USERNAME, member.getAddress().getAddress());
         values1.put(Imps.GroupMembers.NICKNAME, member.getName());
         ContentValues values = values1;
 
@@ -450,7 +450,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     void deleteGroupMemberInDb(Contact member) {
         String where = Imps.GroupMembers.USERNAME + "=?";
-        String[] selectionArgs = { member.getAddress().getFullName() };
+        String[] selectionArgs = { member.getAddress().getAddress() };
         long groupId = ContentUris.parseId(mChatURI);
         Uri uri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, groupId);
         mContentResolver.delete(uri, where, selectionArgs);
@@ -555,7 +555,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         public boolean  onIncomingMessage(ChatSession ses, final Message msg) {
             String body = msg.getBody();
-            String username = msg.getFrom().getContactName();
+            String username = msg.getFrom().getAddress();
             String nickname = getNickName(username);
             long time = msg.getDateTime().getTime();
             if (mIsGroupChat) {

@@ -96,5 +96,7 @@
 	    android:layout_height="fill_parent"
 	    android:gravity="center"
 	    android:textSize="24dp"
+	    		            android:fontFamily="sans-serif-light"
+
 	    />
 </info.guardianproject.otr.app.im.app.ActiveChatListView>

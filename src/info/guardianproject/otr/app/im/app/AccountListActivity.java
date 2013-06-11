@@ -202,34 +202,35 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
 
     private void signInAccountAtPosition(int position) {
-        Intent intent = null;
+      //  Intent intent = null;
         mProviderCursor.moveToPosition(position);
 
         if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
             showNewAccountListDialog();
             
         } else {
+
             int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
+            gotoAccount ();
+
             if (state == Imps.ConnectionStatus.OFFLINE) {
                 boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-                boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+               // boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+                
                 if (isKeepSignedIn) {
-                    signIn(accountId);
-                } else if (isAccountEditible) {
-                    intent = getEditAccountIntent();
-                }
-            } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                gotoAccount();
-            } else {
-                intent = getViewChatsIntent();
+                  signIn(accountId);
+                } 
+                //else if (isAccountEditible) {
+                  //  intent = getEditAccountIntent();
+                //}
             }
+            
+            gotoAccount();
+            
         }
 
-        if (intent != null) {
-            startActivity(intent);
-        }
     }
 
     private void signIn(long accountId) {
@@ -266,7 +267,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
-        finish();
+      //  finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -555,8 +556,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         boolean isLoggedIn = isSignedIn(providerCursor);
 
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-        menu.add(0, ID_VIEW_CONTACT_LIST, 0,
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
+        //menu.add(0, ID_VIEW_CONTACT_LIST, 0,
+          //      brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
+        
         if (isLoggedIn) {
             menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
                     android.R.drawable.ic_menu_close_clear_cancel);
@@ -667,12 +669,13 @@ private Handler mHandlerGoogleAuth = new Handler ()
         return intent;
     }
     
+    /*
     Intent getViewChatsIntent() {
         Intent intent = new Intent(this, ChatListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;
-    }
+    }*/
 
     /*
     private String getProviderCategory(Cursor cursor) {

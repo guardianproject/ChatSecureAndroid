@@ -159,7 +159,7 @@ public class ChatSessionManagerAdapter extends
     ChatSessionAdapter getChatSessionAdapter(ChatSession session) {
         synchronized (mActiveChatSessionAdapters) {
             Address participantAddress = session.getParticipant().getAddress();
-            String key = participantAddress.getFullName();
+            String key = participantAddress.getAddress();
             ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
             if (adapter == null) {
                 adapter = new ChatSessionAdapter(session, mConnection);
@@ -224,7 +224,7 @@ public class ChatSessionManagerAdapter extends
         }
 
         private void closeSession(ChatGroup group) {
-            String address = group.getAddress().getFullName();
+            String address = group.getAddress().getAddress();
             IChatSession session = getChatSession(address);
             if (session != null) {
                 closeChatSession((ChatSessionAdapter) session);

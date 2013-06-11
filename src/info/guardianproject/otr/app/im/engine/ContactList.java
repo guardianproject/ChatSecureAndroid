@@ -39,7 +39,7 @@ public class ContactList extends ImEntity {
         mContactsCache = new HashMap<String, Contact>();
         if (contacts != null) {
             for (Contact c : contacts) {
-                mContactsCache.put(manager.normalizeAddress(c.getAddress().getFullName()), c);
+                mContactsCache.put(manager.normalizeAddress(c.getAddress().getAddress()), c);
             }
         }
     }
@@ -137,7 +137,7 @@ public class ContactList extends ImEntity {
     }
 
     public synchronized Contact getContact(Address address) {
-        return mContactsCache.get(mManager.normalizeAddress(address.getFullName()));
+        return mContactsCache.get(mManager.normalizeAddress(address.getAddress()));
     }
 
     public synchronized Contact getContact(String address) {
@@ -158,20 +158,20 @@ public class ContactList extends ImEntity {
 
     public synchronized boolean containsContact(Address address) {
         return address == null ? false : mContactsCache.containsKey(mManager
-                .normalizeAddress(address.getFullName()));
+                .normalizeAddress(address.getAddress()));
     }
 
     public synchronized boolean containsContact(Contact c) {
         return c == null ? false : mContactsCache.containsKey(mManager.normalizeAddress(c
-                .getAddress().getFullName()));
+                .getAddress().getAddress()));
     }
 
     protected void insertToCache(Contact contact) {
-        mContactsCache.put(mManager.normalizeAddress(contact.getAddress().getFullName()), contact);
+        mContactsCache.put(mManager.normalizeAddress(contact.getAddress().getAddress()), contact);
     }
 
     protected void removeFromCache(Contact contact) {
-        mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getFullName()));
+        mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getAddress()));
     }
 
 }

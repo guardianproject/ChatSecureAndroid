@@ -1,7 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.trust.StrongTrustManager;
-import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -38,7 +37,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -71,24 +69,41 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
+import org.jivesoftware.smack.provider.PrivacyProvider;
+import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smackx.GroupChatInvitation;
+import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
+import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
+import org.jivesoftware.smackx.packet.ChatStateExtension;
+import org.jivesoftware.smackx.packet.LastActivity;
+import org.jivesoftware.smackx.packet.OfflineMessageInfo;
+import org.jivesoftware.smackx.packet.OfflineMessageRequest;
+import org.jivesoftware.smackx.packet.SharedGroupsInfo;
 import org.jivesoftware.smackx.packet.VCard;
+import org.jivesoftware.smackx.provider.AdHocCommandDataProvider;
+import org.jivesoftware.smackx.provider.DataFormProvider;
+import org.jivesoftware.smackx.provider.DelayInformationProvider;
+import org.jivesoftware.smackx.provider.DiscoverInfoProvider;
+import org.jivesoftware.smackx.provider.DiscoverItemsProvider;
+import org.jivesoftware.smackx.provider.MUCAdminProvider;
+import org.jivesoftware.smackx.provider.MUCOwnerProvider;
+import org.jivesoftware.smackx.provider.MUCUserProvider;
+import org.jivesoftware.smackx.provider.MessageEventProvider;
+import org.jivesoftware.smackx.provider.MultipleAddressesProvider;
+import org.jivesoftware.smackx.provider.RosterExchangeProvider;
+import org.jivesoftware.smackx.provider.StreamInitiationProvider;
+import org.jivesoftware.smackx.provider.VCardProvider;
+import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
+import org.jivesoftware.smackx.search.UserSearch;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -175,6 +190,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // Create a single threaded executor.  This will serialize actions on the underlying connection.
         createExecutor();
 
+        addProviderManagerExtensions();
+        
         XmppStreamHandler.addExtensionProviders();
         DeliveryReceipts.addExtensionProviders();
 
@@ -272,27 +289,34 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
-    public VCard getVCard(String myJID) {
+    public VCard getVCard(String jid) {
 
         VCard vCard = new VCard();
 
         try {
-            // FIXME synchronize this to executor thread
-            vCard.load(mConnection, myJID);
+                      
+            String fileName = android.util.Base64.encodeToString(jid.getBytes(), android.util.Base64.NO_WRAP) + ".jpg";
+            File fileDirAvatars = new File(aContext.getCacheDir(),"avatars");
+            fileDirAvatars.mkdirs();                    
+            File file = new File(fileDirAvatars, fileName);
+            
+            if (!file.exists())
+            {
+                // FIXME synchronize this to executor thread
+                vCard.load(mConnection, jid);
 
-            // If VCard is loaded, then save the avatar to the personal folder.
-            byte[] bytes = vCard.getAvatar();
-
-            if (bytes != null) {
-                try {
-                    String filename = vCard.getAvatarHash() + ".jpg";
-                    File sdCard = Environment.getExternalStorageDirectory();
-                    File file = new File(sdCard, filename);
-                    OutputStream output = new FileOutputStream(file);
-                    output.write(bytes);
-                    output.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // If VCard is loaded, then save the avatar to the personal folder.
+                byte[] bytes = vCard.getAvatar();
+    
+                if (bytes != null) {
+                    try {
+                        
+                        OutputStream output = new FileOutputStream(file);
+                        output.write(bytes);
+                        output.close();
+                    } catch (Exception e) {
+                     //   Log.w(TAG,"unable to save avatar",e);
+                    }
                 }
             }
 
@@ -1070,7 +1094,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
             org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
-                    message.getTo().getFullName(), org.jivesoftware.smack.packet.Message.Type.chat);
+                    message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
             msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
             msg.setBody(message.getBody());
             debug(TAG, "sending packet ID " + msg.getPacketID());
@@ -1081,7 +1105,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ChatSession findSession(String address) {
             for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
                 ChatSession session = iter.next();
-                if (session.getParticipant().getAddress().getFullName().equals(address))
+                if (session.getParticipant().getAddress().getAddress().equals(address))
                     return session;
             }
             return null;
@@ -1189,7 +1213,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     xaddress.appendResource(resource);
                 }
             
-                Contact contact = mContactListManager.getContact(xaddress.getFullName());
+                Contact contact = mContactListManager.getContact(xaddress.getAddress());
 
                 if (contact == null)
                     contact = new Contact(xaddress, xaddress.getScreenName());
@@ -1198,7 +1222,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 contacts.add(contact);
 
-                // getVCard(xaddress.getFullName());  // commented out to fix slow contact loading
+                getVCard(xaddress.getAddress());  // commented out to fix slow contact loading
 
             }
             return contacts;
@@ -1206,7 +1230,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         // Runs in executor thread
         private void do_loadContactLists() {
-
+   
             debug(TAG, "load contact lists");
 
             if (mConnection == null)
@@ -1233,7 +1257,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     contacts.addAll(unfiled);
                 }
 
-                XmppAddress groupAddress = new XmppAddress(group.getName());
+                XmppAddress groupAddress = new XmppAddress(group.getName()); 
                 ContactList cl = new ContactList(groupAddress, group.getName(), group
                         .getName().equals(generalGroupName), contacts, this);
 
@@ -1371,7 +1395,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             int type = parsePresence(presence);
             
-            Contact contact = getContact(xaddress.getFullName());
+            Contact contact = getContact(xaddress.getAddress());
 
             Presence p = new Presence(type, status, null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
@@ -1383,13 +1407,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 contact = new Contact(xaddress, xaddress.getScreenName());      
                 
                 debug(TAG, "got presence updated for NEW user: "
-                           + contact.getAddress().getFullName() + " presence:" + type);
+                           + contact.getAddress().getAddress() + " presence:" + type);
                 //store the latest presence notification for this user in this queue
                 //unprocdPresence.put(user, presence);
 
             } else {
                 debug(TAG, "Got presence update for EXISTING user: "
-                        + contact.getAddress().getFullName() + " presence:" + type);
+                        + contact.getAddress().getAddress() + " presence:" + type);
               
             }
 
@@ -1411,7 +1435,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (mConnection == null)
                 return;
             Roster roster = mConnection.getRoster();
-            String address = contact.getAddress().getFullName();
+            String address = contact.getAddress().getAddress();
             try {
                 RosterGroup group = roster.getGroup(list.getName());
                 if (group == null) {
@@ -1879,6 +1903,104 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
     
   
-   
+    private void addProviderManagerExtensions ()
+    {
+
+        ProviderManager pm = ProviderManager.getInstance();
+        
+    //  Private Data Storage
+        pm.addIQProvider("query","jabber:iq:private", new PrivateDataManager.PrivateDataIQProvider());
+
+        //  Time
+        try {
+            pm.addIQProvider("query","jabber:iq:time", Class.forName("org.jivesoftware.smackx.packet.Time"));
+        } catch (ClassNotFoundException e) {
+            Log.w("TestClient", "Can't load class for org.jivesoftware.smackx.packet.Time");
+        }
+
+        //  Roster Exchange
+        pm.addExtensionProvider("x","jabber:x:roster", new RosterExchangeProvider());
+
+        //  Message Events
+        pm.addExtensionProvider("x","jabber:x:event", new MessageEventProvider());
+
+        //  Chat State
+        pm.addExtensionProvider("active","http://jabber.org/protocol/chatstates", new ChatStateExtension.Provider());
+        pm.addExtensionProvider("composing","http://jabber.org/protocol/chatstates", new ChatStateExtension.Provider()); 
+        pm.addExtensionProvider("paused","http://jabber.org/protocol/chatstates", new ChatStateExtension.Provider());
+        pm.addExtensionProvider("inactive","http://jabber.org/protocol/chatstates", new ChatStateExtension.Provider());
+        pm.addExtensionProvider("gone","http://jabber.org/protocol/chatstates", new ChatStateExtension.Provider());
+
+        //  XHTML
+        pm.addExtensionProvider("html","http://jabber.org/protocol/xhtml-im", new XHTMLExtensionProvider());
+
+        //  Group Chat Invitations
+        pm.addExtensionProvider("x","jabber:x:conference", new GroupChatInvitation.Provider());
+
+        //  Service Discovery # Items    
+        pm.addIQProvider("query","http://jabber.org/protocol/disco#items", new DiscoverItemsProvider());
+
+        //  Service Discovery # Info
+        pm.addIQProvider("query","http://jabber.org/protocol/disco#info", new DiscoverInfoProvider());
+
+        //  Data Forms
+        pm.addExtensionProvider("x","jabber:x:data", new DataFormProvider());
+
+        //  MUC User
+        pm.addExtensionProvider("x","http://jabber.org/protocol/muc#user", new MUCUserProvider());
+
+        //  MUC Admin    
+        pm.addIQProvider("query","http://jabber.org/protocol/muc#admin", new MUCAdminProvider());
+
+        //  MUC Owner    
+        pm.addIQProvider("query","http://jabber.org/protocol/muc#owner", new MUCOwnerProvider());
+
+        
+        //  Delayed Delivery
+        pm.addExtensionProvider("x","jabber:x:delay", new DelayInformationProvider());
+    
+        //  Version
+        try {
+            pm.addIQProvider("query","jabber:iq:version", Class.forName("org.jivesoftware.smackx.packet.Version"));
+        } catch (ClassNotFoundException e) {
+            //  Not sure what's happening here.
+        }
+    
+        //  VCard
+        pm.addIQProvider("vCard","vcard-temp", new VCardProvider());
+    
+        //  Offline Message Requests
+        pm.addIQProvider("offline","http://jabber.org/protocol/offline", new OfflineMessageRequest.Provider());
+    
+        //  Offline Message Indicator
+        pm.addExtensionProvider("offline","http://jabber.org/protocol/offline", new OfflineMessageInfo.Provider());
+    
+        //  Last Activity
+        pm.addIQProvider("query","jabber:iq:last", new LastActivity.Provider());
+    
+        //  User Search
+        pm.addIQProvider("query","jabber:iq:search", new UserSearch.Provider());
+    
+        //  SharedGroupsInfo
+        pm.addIQProvider("sharedgroup","http://www.jivesoftware.org/protocol/sharedgroup", new SharedGroupsInfo.Provider());
+    
+        //  JEP-33: Extended Stanza Addressing
+        pm.addExtensionProvider("addresses","http://jabber.org/protocol/address", new MultipleAddressesProvider());
+    
+        //   FileTransfer
+        pm.addIQProvider("si","http://jabber.org/protocol/si", new StreamInitiationProvider());
+    
+        pm.addIQProvider("query","http://jabber.org/protocol/bytestreams", new BytestreamsProvider());
+    
+        //  Privacy
+        pm.addIQProvider("query","jabber:iq:privacy", new PrivacyProvider());
+        pm.addIQProvider("command", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider());
+        pm.addExtensionProvider("malformed-action", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.MalformedActionError());
+        pm.addExtensionProvider("bad-locale", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.BadLocaleError());
+        pm.addExtensionProvider("bad-payload", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.BadPayloadError());
+        pm.addExtensionProvider("bad-sessionid", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.BadSessionIDError());
+        pm.addExtensionProvider("session-expired", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.SessionExpiredError());
+        
+    }
 
 }

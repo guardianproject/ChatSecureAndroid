@@ -92,7 +92,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         for (ImConnectionAdapter connection : mConnections) {
             Contact user = connection.getLoginUser();
             if (user != null) {
-                if (user.getAddress().getFullName().equals(localAddress))
+                if (user.getAddress().getAddress().equals(localAddress))
                     return connection;
             }
         }

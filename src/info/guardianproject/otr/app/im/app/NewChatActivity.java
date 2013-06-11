@@ -251,7 +251,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
      //   Intent intent = new Intent (this, ChatListActivity.class);
       //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
        // startActivity(intent);
-      //  finish();
+         finish();
     }
 
     @Override

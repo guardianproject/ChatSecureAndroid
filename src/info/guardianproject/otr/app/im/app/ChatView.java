@@ -298,7 +298,7 @@ public class ChatView extends LinearLayout {
                 log("onContactsPresenceUpdate()");
             }
             for (Contact c : contacts) {
-                if (c.getAddress().getFullName().equals(mUserName)) {
+                if (c.getAddress().getAddress().equals(mUserName)) {
                     mHandler.post(mUpdateChatCallback);
                     scheduleRequery(0);
                     break;
@@ -820,9 +820,10 @@ public class ChatView extends LinearLayout {
         return mMessageAdapter == null ? null : mMessageAdapter.getCursor();
     }
 
+    /*
     public void insertSmiley(String smiley) {
         mComposeMessage.append(mMarkup.applyEmoticons(smiley));
-    }
+    }*/
 
     public void closeChatSession() {
         if (mChatSession != null) {

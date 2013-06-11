@@ -29,7 +29,8 @@
       		android:layout_alignParentTop="true" 
       		android:layout_height="wrap_content" 
       		android:textSize="20dp" 
-      		android:typeface="sans" android:layout_marginBottom="25dip" android:layout_marginTop="25dip"></Button>
+      		 android:fontFamily="sans-serif-light"
+      		 android:layout_marginBottom="25dip" android:layout_marginTop="25dip"></Button>
       <ImageView android:id="@+id/poweredby" 
       		android:src="@drawable/logo_poweredby" 
       		android:layout_width="fill_parent" 
