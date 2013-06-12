@@ -79,12 +79,12 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformSending(msgText, tlvs);
     }
 
-    public String transformSending(SessionID sessionID, String msgText, byte[] data)
+    public String transformSending(SessionID sessionID, String msgText, boolean isResponse, byte[] data)
             throws OtrException {
         List<TLV> tlvs = null;
         if (data != null) {
             tlvs = new ArrayList<TLV>(1);
-            tlvs.add(new TLV(OtrChatListener.TLV_APP_DATA, data));
+            tlvs.add(new TLV(isResponse ? OtrChatListener.TLV_DATA_RESPONSE : OtrChatListener.TLV_DATA_REQUEST, data));
         }
         return this.getSession(sessionID).transformSending(msgText, tlvs);
     }

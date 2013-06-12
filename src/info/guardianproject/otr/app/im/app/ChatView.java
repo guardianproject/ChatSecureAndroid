@@ -1043,7 +1043,7 @@ public class ChatView extends LinearLayout {
         if (mChatSession != null) {
             try {
                 mChatSession.sendMessage(msg);
-                mChatSession.sendData(("this was sent using TLV 0x100" + msg).getBytes());
+                mChatSession.offerData("otr-in-band:/stuff.txt");
                 mComposeMessage.setText("");
                 mComposeMessage.requestFocus();
                 requeryCursor();

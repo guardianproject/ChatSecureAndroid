@@ -278,15 +278,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
     }
 
-    public void sendData(byte[] data) {
+    public void offerData(String url) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // TODO send later
             return;
         }
 
-        Message msg = new Message("");
-        msg.setFrom(mConnection.getLoginUser().getAddress());
-        mAdaptee.sendDataAsync(msg, data);
+        mAdaptee.offerData(mConnection.getLoginUser().getAddress(), url, null);
     }
 
     /**
