@@ -1,19 +1,21 @@
 package info.guardianproject.otr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
 
 public class OtrChatListener implements MessageListener {
 
-    public static final int TLV_APP_DATA = 0x100;
+    public static final int TLV_DATA_REQUEST = 0x100;
+    public static final int TLV_DATA_RESPONSE = 0x101;
     private OtrChatManager mOtrChatManager;
     private MessageListener mMessageListener;
 
@@ -50,8 +52,10 @@ public class OtrChatListener implements MessageListener {
         }
         
         for (TLV tlv : tlvs) {
-            if (tlv.getType() == TLV_APP_DATA) {
-                mMessageListener.onIncomingData(session, tlv.getValue());
+            if (tlv.getType() == TLV_DATA_REQUEST) {
+                session.handleIncomingRequest(msg.getTo(), tlv.getValue());
+            } else if (tlv.getType() == TLV_DATA_RESPONSE) {
+                session.handleIncomingResponse(msg.getTo(), tlv.getValue());
             }
         }
 
@@ -64,7 +68,7 @@ public class OtrChatListener implements MessageListener {
     
     @Override
     public void onIncomingData(ChatSession session, byte[] value) {
-        mMessageListener.onIncomingData(session, value);
+        throw new UnsupportedOperationException();
     }
 
     @Override
