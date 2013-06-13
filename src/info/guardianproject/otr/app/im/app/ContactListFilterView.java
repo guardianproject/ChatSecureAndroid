@@ -154,7 +154,8 @@ public class ContactListFilterView extends LinearLayout {
             mUri = uri;
 
             Cursor contactCursor = runQuery(filterString);
-
+            
+            
             if (mContactAdapter == null) {
                 mContactAdapter = new ContactAdapter(mContext, contactCursor);
                 mFilter = mContactAdapter.getFilter();
@@ -162,6 +163,9 @@ public class ContactListFilterView extends LinearLayout {
             } else {
                 mContactAdapter.changeCursor(contactCursor);
             }
+            
+            //contactCursor.close();
+            
         } else {
             mFilter.filter(filterString);
         }

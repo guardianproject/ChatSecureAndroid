@@ -1495,11 +1495,14 @@ public class ImpsProvider extends ContentProvider {
                 }
                 if (DBG)
                     log("set notify url " + url);
+                
+                
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
         } catch (Exception ex) {
             LogCleaner.error(LOG_TAG, "query db caught ", ex);
         }
+        
 
         return c;
     }
