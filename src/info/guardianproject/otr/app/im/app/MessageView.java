@@ -88,6 +88,7 @@ public class MessageView extends LinearLayout {
         setPadding(100, 0, 3, 3);
               
         mTextViewForMessages.setText(message);
+        
        mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)

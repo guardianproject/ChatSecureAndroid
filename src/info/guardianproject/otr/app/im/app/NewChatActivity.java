@@ -16,9 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import java.io.File;
-import java.io.IOException;
-
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
@@ -29,36 +26,27 @@ import net.java.otr4j.session.SessionStatus;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.util.Base64;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -71,13 +59,14 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     ImApp mApp;
     ChatView mChatView;
     SimpleAlertHandler mHandler;
-    MenuItem menuOtr;
+    MenuItem menuOtr, menuCall;
 
     private AlertDialog mSmileyDialog;
     private ChatSwitcher mChatSwitcher;
     private LayoutInflater mInflater;
 
     private long mAccountId = -1;
+    private String mSipAccount = null;
     
     ContextMenuHandler mContextMenuHandler;
 
@@ -94,6 +83,10 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         mChatView = (ChatView) findViewById(R.id.chatView);
         mHandler = mChatView.getHandler();
         mInflater = LayoutInflater.from(this);
+        
+        getSipAccount();
+        
+        
         
         EditText mCompose = (EditText)findViewById(R.id.composeMessage);
         mCompose.setOnLongClickListener(new OnLongClickListener ()
@@ -134,11 +127,24 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         getSherlock().getActionBar().setIcon(d);
     }
     
+    private void getSipAccount ()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mSipAccount = prefs.getString("pref_sip_account", null);
+
+        if (mSipAccount != null && mSipAccount.length() > 0)
+            menuCall.setVisible(true);
+        else
+            menuCall.setVisible(false);
+        
+    }
+    
 
     @Override
     protected void onResume() {
         super.onResume();
         mChatView.onResume();
+        getSipAccount();
     }
 
     @Override
@@ -192,6 +198,13 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
+        menuCall = menu.findItem(R.id.menu_secure_call);
+        
+        if (mSipAccount != null)
+            menuCall.setVisible(true);
+        else
+            menuCall.setVisible(false);
+        
         return true;
     }
 
@@ -208,6 +221,10 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
         case R.id.menu_view_otr:
             switchOtrState();
+            return true;
+            
+        case R.id.menu_secure_call:
+            sendCallInvite ();
             return true;
 
         case R.id.menu_view_profile:
@@ -289,6 +306,13 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
 
+    private void sendCallInvite ()
+    {
+        
+        mChatView.sendMessage("&#9742; Click to start call <a href=\"https://foo.com\">sip:" + this.mSipAccount + "</a>");
+        
+    }
+    
     private void switchOtrState() {
 
         IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
