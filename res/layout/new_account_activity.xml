@@ -33,33 +33,41 @@
 	        android:selectAllOnFocus="true"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
- 	        android:hint="@string/account_setup_example_email_address"
+ 	        android:hint="@string/account_setup_new_username"
 	        android:autoLink="none"
 	        android:autoText="false"
 	        android:capitalize="none"
 	        android:cursorVisible="true"
 	        android:inputType="textEmailAddress"/>
 	
+	     <EditText android:id="@+id/edtService"
+	        android:selectAllOnFocus="true"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+ 	        android:hint="@string/account_setup_service_provider"
+ 	        android:text="@string/default_service_provider"
+	        android:autoLink="none"
+	        android:autoText="false"
+	        android:capitalize="none"
+	        android:cursorVisible="true"
+	        android:inputType="textEmailAddress"/>
+	     
 	    <EditText android:id="@+id/edtPass"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:hint="@string/account_setup_password"
 	        android:autoText="false"
 	        android:selectAllOnFocus="true" android:inputType="textPassword"/>
-	    <LinearLayout 	    android:orientation="vertical"
+	    
+	      <EditText android:id="@+id/edtPassConfirm"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/account_setup_password_confirm"
+	        android:autoText="false"
+	        android:selectAllOnFocus="true" android:inputType="textPassword"/>
+	        
+	  <LinearLayout 	    android:orientation="vertical"
 	       android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="20dip"></LinearLayout>
-	      
-	    <CheckBox android:id="@+id/rememberPassword"
-	android:layout_height="wrap_content"
-	android:layout_width="fill_parent"
-	android:text="@string/remember_password"
-	android:checked="true"
-	android:paddingTop="3sp"
-	android:paddingBottom="3sp"
-	
-	android:textAppearance="?android:attr/textAppearanceSmall"
-	
-	 />
 	
 	  <CheckBox android:id="@+id/useTor"
 	        android:layout_width="fill_parent"
@@ -95,7 +103,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		<Button android:id="@+id/btnSignIn"
-			android:text="@string/sign_in"
+			android:text="@string/btn_create_new_account"
 			android:background="@drawable/btn_green"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="3dip"

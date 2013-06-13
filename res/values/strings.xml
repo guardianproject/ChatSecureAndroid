@@ -594,9 +594,17 @@
 	
 	<!-- Account Setup: Account -->
     <string name="account_setup_example_email_address">user@domain.com</string>
+    <string name="account_setup_new_username">new username</string>
+    <string name="account_setup_service_provider">service provider (dukgo.com, jabber.ccc.de)</string>
+    
     <string name="account_setup_password">password</string>
+    
+    <string name="account_setup_password_confirm">confirm password</string>
+    
     <string name="account_setup_advanced_button">Advanced Account Settings</string>
     <string name="account_select_type">Account Type</string>
+    
+    <string name="btn_create_new_account">Register Account</string>
     	
 	<!-- Account Setup: Persistence -->
 	<string name="account_setup_pers_sub">Persistence</string>
@@ -776,6 +784,7 @@
 	<string name="pref_sip_account_title">Secure Voice</string>
 	<string name="pref_sip_account_summary">Enter your OStel.co or other secure SIP service account here for call integration</string>
 	
+	<string name="default_service_provider">dukgo.com</string>
     
 </resources>
 
