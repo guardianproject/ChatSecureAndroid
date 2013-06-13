@@ -649,6 +649,21 @@ public class AccountActivity extends ThemeableActivity {
             mBtnSignIn.setBackgroundResource(R.drawable.btn_green);
         }
     }
+    
+    void createNewaccount (long accountId) 
+    {
+       
+            ContentValues values = new ContentValues(2);
+
+            values.put(AccountStatusColumns.PRESENCE_STATUS, CommonPresenceColumns.NEW_ACCOUNT);
+            values.put(AccountStatusColumns.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
+            String where = AccountStatusColumns.ACCOUNT + "=?";
+            getContentResolver().update(Imps.AccountStatus.CONTENT_URI, values, where,
+                    new String[] { Long.toString(accountId) });
+            
+        
+       
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
