@@ -772,6 +772,10 @@
 	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
 	<string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
 	<string name="lock_screen_passphrases_not_matching">Passphrases did not match, please try again</string>
+	
+	<string name="pref_sip_account_title">Secure Voice</string>
+	<string name="pref_sip_account_summary">Enter your OStel.co or other secure SIP service account here for call integration</string>
+	
     
 </resources>
 
