@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.cacheword.CacheWordHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
@@ -27,9 +29,8 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ImApp;
-import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.AccountListActivity;
+import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -50,13 +51,9 @@ import net.java.otr4j.session.SessionStatus;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
@@ -102,6 +99,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     private ForegroundStarter mForegroundStarter;
     public long mHeartbeatInterval;
+    
+    private CacheWordHandler mCacheWord;
+    
 
     private static final String TAG = "Gibberbot.ImService";
 
@@ -169,6 +169,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onCreate() {
 
+       // android.os.Debug.waitForDebugger();
+        
         debug("ImService started");
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
@@ -197,6 +199,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (getGlobalSettings().getUseForegroundPriority())
             startForegroundCompat();
+        
+        
     }
 
     private void startForegroundCompat() {
@@ -247,7 +251,36 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 false);
         else
             mNeedCheckAutoLogin = true;
+        
+         mCacheWord = new CacheWordHandler (this, new ICacheWordSubscriber () {
 
+            @Override
+            public void onCacheWordUninitialized() {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onCacheWordLocked() {
+               
+                
+            }
+
+            @Override
+            public void onCacheWordOpened() {
+             //   if (mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+                    mNeedCheckAutoLogin = false;
+                    autoLogin();
+              //  }
+                
+            }
+            
+        });
+         
+         mCacheWord.connectToService();
+
+        mNeedCheckAutoLogin = !mCacheWord.isLocked(); // if cacheword is locked, don't login
+        
         debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
               + " startId =" + startId);
 
@@ -262,6 +295,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     
 
     private void autoLogin() {
+        
+        
         if (!mConnections.isEmpty()) {
             // This can happen because the UI process may be restarted and may think that we need
             // to autologin, while we (the Service process) are already up.
@@ -338,6 +373,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         for (ImConnectionAdapter conn : mConnections) {
             conn.logout();
         }
+        
+        if (mCacheWord != null)
+            mCacheWord.disconnect();
 
         AndroidSystemService.getInstance().shutdown();
 
@@ -350,13 +388,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         if (mGlobalSettings != null)
             mGlobalSettings.close();
         
+        /*
         if (mKillProcessOnStop)
         {
             int pid = android.os.Process.myPid();
             Log.w(TAG, "ImService: killing process: " + pid);
-
             android.os.Process.killProcess(pid); 
-        }
+        }*/
 
     }
 

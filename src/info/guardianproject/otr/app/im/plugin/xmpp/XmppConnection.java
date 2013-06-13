@@ -1,6 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
-import info.guardianproject.onionkit.trust.StrongTrustManager;
+
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -25,9 +25,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,6 +103,8 @@ import org.jivesoftware.smackx.provider.StreamInitiationProvider;
 import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
+import org.thoughtcrime.ssl.pinning.PinningTrustManager;
+import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
@@ -140,13 +145,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private boolean mIsGoogleAuth = false;
     
     private final static String TRUSTSTORE_TYPE = "BKS";
-    private final static String TRUSTSTORE_PATH = "cacerts.bks";
+    private final static String TRUSTSTORE_PATH = "debiancacerts.bks";
     private final static String TRUSTSTORE_PASS = "changeit";
     private final static String KEYMANAGER_TYPE = "X509";
     private final static String SSLCONTEXT_TYPE = "TLS";
 
     private X509TrustManager mTrustManager;
-    private StrongTrustManager mStrongTrustManager;
+    //private StrongTrustManager mStrongTrustManager;
+    
     private SSLContext sslContext;
     
     private KeyStore ks = null;
@@ -180,9 +186,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         aContext = context;
 
-        mStrongTrustManager = new StrongTrustManager(aContext);
-        mStrongTrustManager.setNotifyVerificationSuccess(false);
-        mStrongTrustManager.setNotifyVerificationFail(false);
+        //mStrongTrustManager = new StrongTrustManager(aContext);
+        //mStrongTrustManager.setNotifyVerificationSuccess(false);
+        //mStrongTrustManager.setNotifyVerificationFail(false);
         
         //setup SSL managers
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
@@ -289,39 +295,67 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
-    public VCard getVCard(String jid) {
-
-        VCard vCard = new VCard();
-
-        try {
-                      
-            String fileName = android.util.Base64.encodeToString(jid.getBytes(), android.util.Base64.NO_WRAP) + ".jpg";
-            File fileDirAvatars = new File(aContext.getCacheDir(),"avatars");
-            fileDirAvatars.mkdirs();                    
-            File file = new File(fileDirAvatars, fileName);
-            
-            if (!file.exists())
-            {
-                // FIXME synchronize this to executor thread
-                vCard.load(mConnection, jid);
-
-                // If VCard is loaded, then save the avatar to the personal folder.
-                byte[] bytes = vCard.getAvatar();
+    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
     
-                if (bytes != null) {
+    public void getVCard(String jid) {
+
+        qAvatar.add(jid);
+        
+        if (!threadAvatarQ.isAlive())
+            threadAvatarQ.start();
+        
+    }
+    
+    private Thread threadAvatarQ = new Thread ()
+    {
+        
+        public void run ()
+        {
+            String jid = null;
+            
+            try
+            {
+                while ((jid = qAvatar.take()) != null)
+                {
+            
+                    try {
+                                  
+                        String fileName = android.util.Base64.encodeToString(jid.getBytes(), android.util.Base64.NO_WRAP) + ".jpg";
+                        File fileDirAvatars = new File(aContext.getCacheDir(),"avatars");
+                        fileDirAvatars.mkdirs();                    
+                        File file = new File(fileDirAvatars, fileName);
                         
-                        OutputStream output = new FileOutputStream(file);
-                        output.write(bytes);
-                        output.close();
-                   
+                        if (!file.exists())
+                        {
+                            VCard vCard = new VCard();
+                            
+                            // FIXME synchronize this to executor thread
+                            vCard.load(mConnection, jid);
+            
+                            // If VCard is loaded, then save the avatar to the personal folder.
+                            byte[] bytes = vCard.getAvatar();
+                
+                            if (bytes != null) {
+                                    
+                                    OutputStream output = new FileOutputStream(file);
+                                    output.write(bytes);
+                                    output.close();
+                               
+                            }
+                        }
+            
+                    } catch (Exception ex) {
+                       // Log.w(TAG,"unable to save avatar",ex);
+                    }
                 }
             }
-
-        } catch (Exception ex) {
-            Log.w(TAG,"unable to save avatar",ex);
+            catch (InterruptedException e)
+            {
+                Log.w(TAG,"qavatar interrupted");
+            }
         }
-        return vCard;
-    }
+        
+    };
 
     @Override
     protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -430,6 +464,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void do_login() {
         
+     //   android.os.Debug.waitForDebugger();
+        
         if (mConnection != null) {
             setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
                     "still trying..."));
@@ -472,9 +508,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             } else if (e.getMessage().contains("not-authorized")
                        || e.getMessage().contains("authentication failed")) {
                 
-                if (mIsGoogleAuth)
+                if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
                     debug (TAG, "google failed; may need to refresh");
+                    
+                    //invalidate our old one, that is locally cached
+                    AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password.split(":")[1]);
+                
+                    String googleAcct = userName + '@' + providerSettings.getDomain();
+                    
+                    //request a new one
+                    password = GTalkOAuth2.getGoogleAuthToken(googleAcct, mContext.getApplicationContext());
+        
+                    //now store the new one, for future use until it expires
+                    final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                            GTalkOAuth2.NAME + ':' + password);
+                
+                    
                     mRetryLogin = true;
                     setState(LOGGING_IN, info);
 
@@ -540,10 +590,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     // Runs in executor thread
     private void initConnection(String userName, String password,
-            Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
-        
-        //if (DEBUG_ENABLED)
-        //    android.os.Debug.waitForDebugger();
+            Imps.ProviderSettings.QueryMap providerSettings) throws UnrecoverableKeyException, KeyManagementException, KeyStoreException, NoSuchAlgorithmException, XMPPException {
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -625,7 +672,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         mConfig.setDebuggerEnabled(DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
-        
 
         // Android has no support for Kerberos or GSSAPI, so disable completely
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
@@ -634,14 +680,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //add gtalk auth in
         SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
         
-           
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
 
-        if (requireTls) {
-
+        if (requireTls) { 
+            
             mConfig.setSecurityMode(SecurityMode.required);
-
 
         } else {
             // if it finds a cert, still use it, but don't check anything since 
@@ -871,36 +915,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setCompressionEnabled(false);
         
         mStreamHandler = new XmppStreamHandler(mConnection);
-        
-        try
-        {
-            mConnection.login(mUsername, mPassword, mResource);
-        }
-        catch (Exception e)
-        {
-            //if err on login and Google try again
-            if (mIsGoogleAuth)
-            {
-                //invalidate our old one, that is locally cached
-                AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password);
-            
-                //request a new one
-                password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+        mConnection.login(mUsername, mPassword, mResource);
     
-                //now store the new one, for future use until it expires
-                final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                        GTalkOAuth2.NAME + ':' + password);
-            
-                mConnection.login(mUsername, mPassword, mResource);
-                mIsGoogleAuth = false;
-            }            
-            else
-            {
-                throw (e);
-            }
-            
-
-        }
         mStreamHandler.notifyInitialLogin();
 
         sendPresencePacket();
@@ -925,9 +941,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private void initSSLContext(String domain, String requestedServer,
-            ConnectionConfiguration config) throws Exception {
+            ConnectionConfiguration config) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException  {
 
+        /*
         ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
+        
         try {
             ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
         } catch (Exception e) {
@@ -941,16 +959,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         } catch (NullPointerException npe) {
             kms = null;
         }
-
+*/
+        
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
         
-        mStrongTrustManager.setDomain(domain);
-        mStrongTrustManager.setServer(requestedServer);
+        //mStrongTrustManager.setDomain(domain);
+        //mStrongTrustManager.setServer(requestedServer);
         
-        mTrustManager = new MemorizingTrustManager(aContext, mStrongTrustManager, null);
+        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),
+                                                          new String[] {"f30012bbc18c231ac1a44b788e410ce754182513"},
+                                                        0);
+        
+        mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
 
-        sslContext.init(kms, new javax.net.ssl.TrustManager[] { mTrustManager },
-                new java.security.SecureRandom());
+        SecureRandom mSecureRandom = new java.security.SecureRandom();
+        
+        sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
+                mSecureRandom);
 
         config.setCustomSSLContext(sslContext);
         config.setCallbackHandler(this);
@@ -1746,6 +1771,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     mConnection.connect(false);
                     //initServiceDiscovery();
                 } else {
+                    
+                    mConnection.disconnect();
+                    mConnection = null;
+                    
+                    do_login();
+                    /*
                     debug(TAG, "no resume");
                     mConnection.connect();
                     //initServiceDiscovery();
@@ -1754,9 +1785,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         // It can also happen if auth exception was swallowed by smack.
                         // Try to login manually.
 
-                        Log.e(TAG, "authentication did not happen in connect() - login manually");
-                        mConnection.login(mUsername, mPassword, mResource);
-
+      //                  Log.e(TAG, "authentication did not happen in connect() - login manually");
+    //                    mConnection.login(mUsername, mPassword, mResource);
+                        
                         // Make sure
                         if (!mConnection.isAuthenticated())
                             throw new XMPPException("manual auth failed");
@@ -1766,6 +1797,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         setState(LOGGED_IN, null);
                     }
                     sendPresencePacket();
+                    */
                 }
             } catch (Exception e) {
                 mStreamHandler.quickShutdown();

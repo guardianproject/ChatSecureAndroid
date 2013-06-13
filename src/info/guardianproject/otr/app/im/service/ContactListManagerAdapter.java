@@ -56,7 +56,7 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 public class ContactListManagerAdapter extends
-        info.guardianproject.otr.app.im.IContactListManager.Stub {
+        info.guardianproject.otr.app.im.IContactListManager.Stub implements Runnable {
 
     ImConnectionAdapter mConn;
     ContentResolver mResolver;
@@ -97,6 +97,11 @@ public class ContactListManagerAdapter extends
         mContext = conn.getContext();
         mResolver = mContext.getContentResolver();
 
+        new Thread(this).start();
+    }
+    
+    public void run ()
+    {
         mContactListListenerAdapter = new ContactListListenerAdapter();
         mSubscriptionListenerAdapter = new SubscriptionRequestListenerAdapter();
         mContactLists = new HashMap<Address, ContactListAdapter>();
@@ -131,13 +136,15 @@ public class ContactListManagerAdapter extends
     private void loadOfflineContacts() {
         Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
                 null, null, null);
-        if (contactCursor != null && contactCursor.moveToFirst()) {
-            do {
-                String address = contactCursor.getString(0);
-                mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
-            } while (contactCursor.moveToNext());
-         //   contactCursor.close();
+       
+        while (contactCursor.moveToNext())
+        {
+            String address = contactCursor.getString(0);
+            mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
         }
+       
+    
+        contactCursor.close();
     }
 
     public int createContactList(String name, List<Contact> contacts) {
@@ -312,7 +319,7 @@ public class ContactListManagerAdapter extends
         }
 
         if (cursor != null) {
-          //  cursor.close();
+            cursor.close();
         }
         return result;
     }
@@ -796,7 +803,7 @@ public class ContactListManagerAdapter extends
 
             uri = mResolver.insert(mContactUrl, values);
         }
-       // cursor.close();
+        cursor.close();
         return uri;
     }
 
@@ -898,7 +905,7 @@ public class ContactListManagerAdapter extends
                 uri = ContentUris.withAppendedId(Imps.ContactList.CONTENT_URI, listId);
             }
         } finally {
-          //  cursor.close();
+            cursor.close();
         }
         if (uri == null) {
             ContentValues contactListValues = new ContentValues(3);
@@ -919,11 +926,13 @@ public class ContactListManagerAdapter extends
         Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
                 Imps.Contacts.CONTACTLIST + "=?", new String[] { "" + listId }, null);
         Set<String> existingUsernames = new HashSet<String>();
-        if (contactCursor != null && contactCursor.moveToFirst()) {
-            do {
+        
+        
+        while (contactCursor.moveToNext())
                 existingUsernames.add(contactCursor.getString(0));
-            } while (contactCursor.moveToNext());
-        }
+       
+        
+        contactCursor.close();
 
         Collection<Contact> contacts = list.getContacts();
         if (contacts == null || contacts.size() == 0) {
