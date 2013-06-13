@@ -408,6 +408,10 @@ public class AccountActivity extends ThemeableActivity {
                 }
         
             }
+            else
+            {
+                
+            }
             
             settings.setServer(server);
             settings.setUseTor(useTor);

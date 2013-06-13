@@ -173,8 +173,18 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     protected void onDestroy() {
         mSignInHelper.stop();
-
+        
+        try
+        {
+            mCacheWord.disconnect();
+        }
+        catch (Exception e)
+        {
+            Log.w("CacheWord","cacheword on destroy didn't work");
+        }
+        
         super.onDestroy();
+        
     }
     
     
@@ -215,8 +225,15 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onResume() {
         super.onResume();
 
-        mCacheWord.onResume();
-     
+        try
+        {
+            mCacheWord.onResume();
+        }
+        catch (Exception e)
+        {
+            Log.e("CacheWord","unable to bind to cacheword");
+        }
+        
         if (!mCacheWord.isLocked())
         {
             String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
@@ -232,12 +249,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private void doOnResume() {
 
+        
         if (mApp == null) {
             mApp = ImApp.getApplication(this);
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
         }
 
+       
         mApp.setAppTheme(this);
         mHandler.registerForBroadcastEvents();
 
@@ -671,7 +690,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordLocked() {
         Log.d(ImApp.LOG_TAG,"cache word locked");
 
-        ImApp.getApplication().forceStopImService(); 
+     //   ImApp.getApplication().forceStopImService(); 
     }
 
     @Override

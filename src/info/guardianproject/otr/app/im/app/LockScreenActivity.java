@@ -50,8 +50,9 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
+        
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-
+        
         mViewCreatePassphrase = findViewById(R.id.llCreatePassphrase);
         mViewEnterPassphrase = findViewById(R.id.llEnterPassphrase);
 
@@ -69,15 +70,26 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
     @Override
     protected void onPause() {
         super.onPause();
-        mCacheWord.onPause();
+        try { mCacheWord.onPause();}
+        catch (Exception e){}
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mCacheWord.onResume();
+      
+        try
+        {
+            mCacheWord.onResume();
+        }
+        catch (Exception e){}
     }
 
+    @Override
+    public void onBackPressed() {
+      
+        //do nothing!
+    }
 
     private boolean newEqualsConfirmation() {
         return mNewPassphrase.getText().toString()

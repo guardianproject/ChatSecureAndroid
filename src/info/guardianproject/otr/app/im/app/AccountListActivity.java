@@ -198,6 +198,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onDestroy() {
         mSignInHelper.stop();
+        
+        try 
+        {
+            mCacheWord.disconnect();
+        }
+        catch (Exception e){}
+        
         super.onDestroy();
     }
     
@@ -304,18 +311,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private void signOutAndKillPrompt ()
     {
-        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
-
-               
-            }
-        };
-
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                .setMessage(R.string.signout_kill_confirm_message)
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null).setCancelable(true).show();
+        mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
+        
     }
     private void signOutAndKillProcess() {
         
@@ -341,22 +338,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
  
     private void signOutAll() {
-        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                if (!mProviderCursor.moveToFirst())
-                    return;
-                do {
-                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                    signOut(accountId);
-                } while (mProviderCursor.moveToNext());
-            }
-        };
-
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                .setMessage(R.string.signout_all_confirm_message)
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null).setCancelable(true).show();
+      
+        if (!mProviderCursor.moveToFirst())
+            return;
+        do {
+            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+            signOut(accountId);
+        } while (mProviderCursor.moveToNext());
     }
 
     private void signOut(final long accountId) {
