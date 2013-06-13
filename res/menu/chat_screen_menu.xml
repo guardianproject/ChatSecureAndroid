@@ -31,6 +31,13 @@
         android:icon="@drawable/ic_menu_info"
          android:showAsAction="never"
          />
+    
+     <item android:id="@+id/menu_view_otr"
+        android:title="@string/menu_otr_start"
+        android:icon="@drawable/ic_menu_unencrypt" 
+         android:showAsAction="always"
+        />
+     
     <item android:id="@+id/menu_switch_chats"
         android:title="@string/menu_switch_chats"
         android:icon="@drawable/ic_menu_switch"

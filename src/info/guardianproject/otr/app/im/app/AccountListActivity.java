@@ -19,6 +19,8 @@ package info.guardianproject.otr.app.im.app;
 import java.io.IOException;
 import java.util.List;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -66,7 +68,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -85,6 +87,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private SignInHelper mSignInHelper;
 
+    private CacheWordActivityHandler mCacheWord;
+    
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -165,6 +169,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             }
             
         });
+        
+
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
     }
     
     
@@ -183,13 +190,21 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
-
+        
+        mCacheWord.onPause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mSignInHelper.stop();
+        
+        try 
+        {
+            mCacheWord.disconnect();
+        }
+        catch (Exception e){}
+        
         super.onDestroy();
     }
     
@@ -198,38 +213,40 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         ((ImApp)getApplication()).setAppTheme (this);
         mHandler.registerForBroadcastEvents();
+        mCacheWord.onResume();
         super.onResume();
     }
 
     private void signInAccountAtPosition(int position) {
-        Intent intent = null;
+      //  Intent intent = null;
         mProviderCursor.moveToPosition(position);
 
         if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
             showNewAccountListDialog();
             
         } else {
+
             int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
+            gotoAccount ();
+
             if (state == Imps.ConnectionStatus.OFFLINE) {
                 boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-                boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+               // boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
+                
                 if (isKeepSignedIn) {
-                    signIn(accountId);
-                } else if (isAccountEditible) {
-                    intent = getEditAccountIntent();
-                }
-            } else if (state == Imps.ConnectionStatus.CONNECTING) {
-                gotoAccount();
-            } else {
-                intent = getViewChatsIntent();
+                  signIn(accountId);
+                } 
+                //else if (isAccountEditible) {
+                  //  intent = getEditAccountIntent();
+                //}
             }
+            
+            gotoAccount();
+            
         }
 
-        if (intent != null) {
-            startActivity(intent);
-        }
     }
 
     private void signIn(long accountId) {
@@ -266,7 +283,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
-        finish();
+      //  finish();
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -294,18 +311,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private void signOutAndKillPrompt ()
     {
-        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
-
-               
-            }
-        };
-
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                .setMessage(R.string.signout_kill_confirm_message)
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null).setCancelable(true).show();
+        mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
+        
     }
     private void signOutAndKillProcess() {
         
@@ -322,28 +329,22 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             catch (Exception e){} //wait a second for account to log out
         }
         
+
+        mCacheWord.manuallyLock();
         
         ImApp.getApplication().forceStopImService();
 
+        finish();
     }
  
     private void signOutAll() {
-        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                if (!mProviderCursor.moveToFirst())
-                    return;
-                do {
-                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                    signOut(accountId);
-                } while (mProviderCursor.moveToNext());
-            }
-        };
-
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                .setMessage(R.string.signout_all_confirm_message)
-                .setPositiveButton(R.string.yes, confirmListener) // default button
-                .setNegativeButton(R.string.no, null).setCancelable(true).show();
+      
+        if (!mProviderCursor.moveToFirst())
+            return;
+        do {
+            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+            signOut(accountId);
+        } while (mProviderCursor.moveToNext());
     }
 
     private void signOut(final long accountId) {
@@ -555,8 +556,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         boolean isLoggedIn = isSignedIn(providerCursor);
 
         BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-        menu.add(0, ID_VIEW_CONTACT_LIST, 0,
-                brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
+        //menu.add(0, ID_VIEW_CONTACT_LIST, 0,
+          //      brandingRes.getString(BrandingResourceIDs.STRING_MENU_CONTACT_LIST));
+        
         if (isLoggedIn) {
             menu.add(0, ID_SIGN_OUT, 0, R.string.menu_sign_out).setIcon(
                     android.R.drawable.ic_menu_close_clear_cancel);
@@ -667,12 +669,13 @@ private Handler mHandlerGoogleAuth = new Handler ()
         return intent;
     }
     
+    /*
     Intent getViewChatsIntent() {
         Intent intent = new Intent(this, ChatListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
         return intent;
-    }
+    }*/
 
     /*
     private String getProviderCategory(Cursor cursor) {
@@ -746,6 +749,30 @@ private Handler mHandlerGoogleAuth = new Handler ()
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordUninitialized() {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordLocked() {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+
+    @Override
+    public void onCacheWordOpened() {
+        // TODO Auto-generated method stub
         
     }
 }

@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -69,6 +70,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ImApp extends Application {
+    
     public static final String LOG_TAG = "GB.ImApp";
 
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
@@ -248,6 +250,7 @@ public class ImApp extends Application {
 
         String lang = settings.getString(getString(R.string.pref_default_locale), "");
         
+        
         if ("".equals(lang)) {
             Properties props = AssetUtil.getProperties("gibberbot.properties", this);
             if (props != null) {
@@ -330,7 +333,8 @@ public class ImApp extends Application {
             Intent serviceIntent = new Intent();
             serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
-            mApplicationContext.startService(serviceIntent);
+            
+            //mApplicationContext.startService(serviceIntent);
             mApplicationContext
                     .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
             mServiceStarted = true;
@@ -366,42 +370,23 @@ public class ImApp extends Application {
         }
     }
     
-    private boolean mKillServerOnStart = false;
+    
+    //private boolean mKillServerOnStart = false;
     
     public synchronized void forceStopImService() 
     {
         if (mServiceStarted && mImService != null) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                log("force stop ImService");
+                log("stop ImService");
 
-            try
-            {
-                mImService.setKillProcessOnStop(true);
-            }
-            catch (RemoteException re)
-            {
-                if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                    log("unable to set kill process");
-
-            }
-            
             mApplicationContext.unbindService(mImServiceConn);
             mImService = null;
-            
 
             Intent intent = new Intent();
             intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             mApplicationContext.stopService(intent);
             mServiceStarted = false;
         }
-        else
-        {
-            
-            mKillServerOnStart = true;
-            startImServiceIfNeed(true);
-            
-        }
-         
     }
     
   
@@ -423,10 +408,11 @@ public class ImApp extends Application {
             Message msg = Message.obtain(null, EVENT_SERVICE_CONNECTED);
             mBroadcaster.broadcast(msg);
             
+            /*
             if (mKillServerOnStart)
             {
                 forceStopImService();
-            }
+            }*/
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -609,9 +595,10 @@ public class ImApp extends Application {
                 Resources packageRes = pm.getResourcesForApplication(pluginInfo.mPackageName);
 
                 Map<Integer, Integer> resMap = plugin.getResourceMap();
-                int[] smileyIcons = plugin.getSmileyIconIds();
+                //int[] smileyIcons = plugin.getSmileyIconIds();
 
-                BrandingResources res = new BrandingResources(packageRes, resMap, smileyIcons,
+                
+                BrandingResources res = new BrandingResources(packageRes, resMap,
                         mDefaultBrandingResources);
                 mBrandingResources.put(pluginInfo.mProviderName, res);
             } catch (NameNotFoundException e) {
@@ -921,4 +908,6 @@ public class ImApp extends Application {
 
         return null;
     }
+
+   
 }

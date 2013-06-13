@@ -13,12 +13,18 @@ Follow the steps from the prep section, then:
 
 == Eclipse
 
-Add the following as Android projects, after following the steps in the prep section:
+First, follow the above instructions in the Preparation section.  Then, import
+the following as existing Android projects
 
-    * external/ActionBarSherlock/library (use ActionBarSherlock as project name)
-    * external/OnionKit
+1. File --> Import... --> Android --> Existing Android Code Into Workspace
+    * external/OnionKit/library
     * external/MemorizingTrustManager
-    * Gibberbot itself
+    * external/ActionBarSherlock/library
+
+2. Right-click on the project called 'library' --> Refactor --> Rename... and
+   rename it to 'ActionBarSherlock'
+
+3. Import Gibberbot itself like #1 above
     
 
 == Old Stuff

@@ -10,7 +10,6 @@ import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -23,8 +22,6 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 /*
@@ -38,8 +35,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     private OtrAndroidKeyManagerImpl mOtrKeyManager;
 
-    private final static String OTR_KEYSTORE_PATH = "otr_keystore";
-
     private ImService mContext;
 
     private Hashtable<SessionID, String> mSessionResources;
@@ -50,8 +45,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
         mSessionResources = new Hashtable<SessionID, String>();
 
-        File storeFile = new File(context.getApplicationContext().getFilesDir(), OTR_KEYSTORE_PATH);
-        mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(storeFile);
+        mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(context.getApplicationContext());
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
             public void verificationStatusChanged(SessionID session) {
@@ -98,7 +92,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         for (ImConnectionAdapter connection : mConnections) {
             Contact user = connection.getLoginUser();
             if (user != null) {
-                if (user.getAddress().getFullName().equals(localAddress))
+                if (user.getAddress().getAddress().equals(localAddress))
                     return connection;
             }
         }

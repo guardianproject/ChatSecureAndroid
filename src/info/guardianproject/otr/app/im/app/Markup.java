@@ -27,12 +27,12 @@ import android.text.util.Linkify;
 
 public class Markup {
     private BrandingResources mRes;
-    private IntTrie mSmileys;
+ //  private IntTrie mSmileys;
 
     public Markup(BrandingResources res) {
         mRes = res;
-        mSmileys = new IntTrie(res.getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS),
-                res.getSmileyIcons());
+//        mSmileys = new IntTrie(res.getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS),
+  //              res.getSmileyIcons());
     }
 
     public final CharSequence markup(CharSequence text) {
@@ -45,11 +45,12 @@ public class Markup {
         }
 
         Linkify.addLinks(result, Linkify.ALL);
-        applyEmoticons(result);
+  //      applyEmoticons(result);
 
         return result;
     }
 
+    /*
     public final CharSequence applyEmoticons(CharSequence text) {
         int offset = 0;
         final int len = text.length();
@@ -113,4 +114,5 @@ public class Markup {
 
         return result;
     }
+    */
 }

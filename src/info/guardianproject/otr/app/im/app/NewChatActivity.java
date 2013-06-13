@@ -16,6 +16,9 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import java.io.File;
+import java.io.IOException;
+
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
@@ -27,10 +30,14 @@ import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -83,6 +90,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        
         mChatView = (ChatView) findViewById(R.id.chatView);
         mHandler = mChatView.getHandler();
         mInflater = LayoutInflater.from(this);
@@ -120,6 +128,12 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             }
         });
     }
+    
+    protected void setHomeIcon (Drawable d)
+    {
+        getSherlock().getActionBar().setIcon(d);
+    }
+    
 
     @Override
     protected void onResume() {
@@ -218,7 +232,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-            finish();
+          //  finish();
             return true;
             
         case R.id.menu_prev_chat:
@@ -251,7 +265,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
      //   Intent intent = new Intent (this, ChatListActivity.class);
       //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
        // startActivity(intent);
-        finish();
+         finish();
     }
 
     @Override

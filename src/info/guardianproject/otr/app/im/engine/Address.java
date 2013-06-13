@@ -29,14 +29,15 @@ public abstract class Address {
      * 
      * @return a string representation of this address.
      */
-    public abstract String getFullName();
+    public abstract String getAddress();
     
+    /*
     public String getContactName() {
         String name = getFullName();
         String[] split = name.split("/", 2);
         return split[0];
     }
-
+*/
     /**
      * Gets a user friendly screen name of this address object.
      * 
@@ -52,13 +53,6 @@ public abstract class Address {
     public abstract void writeToParcel(Parcel dest);
 
     public abstract void readFromParcel(Parcel source);
+    
 
-    public boolean equals(Object other) {
-        return other instanceof Address
-               && this.getFullName().equals(((Address) other).getFullName());
-    }
-
-    public int hashCode() {
-        return getFullName().hashCode();
-    }
 }

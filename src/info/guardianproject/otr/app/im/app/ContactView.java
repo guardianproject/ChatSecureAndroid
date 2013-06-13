@@ -17,14 +17,15 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
-
-import info.guardianproject.otr.app.im.R;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -32,17 +33,23 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.util.Log;
 
 public class ContactView extends LinearLayout {
     static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
@@ -73,7 +80,8 @@ public class ContactView extends LinearLayout {
     private TextView mLine2;
     private TextView mTimeStamp;
     private Context mContext; // TODO
-
+    private ImageView mAvatar;
+    
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -87,6 +95,7 @@ public class ContactView extends LinearLayout {
         mLine2 = (TextView) findViewById(R.id.line2);
         mLine2.setCompoundDrawablePadding(5);
         mTimeStamp = (TextView) findViewById(R.id.timestamp);
+        mAvatar = (ImageView)findViewById(R.id.avatar);
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
@@ -97,7 +106,7 @@ public class ContactView extends LinearLayout {
         Resources r = getResources();
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         
-        String username = cursor.getString(COLUMN_CONTACT_USERNAME);
+        String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
         String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
@@ -109,6 +118,8 @@ public class ContactView extends LinearLayout {
         BrandingResources brandingRes = app.getBrandingResource(providerId);
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
+        
+        /*
         int iconId = 0;
 
         // status icon
@@ -120,13 +131,28 @@ public class ContactView extends LinearLayout {
                                     : BrandingResourceIDs.DRAWABLE_UNREAD_CHAT;
         } else {
             iconId = PresenceUtils.getStatusIconId(presence);
+        }*/
+        
+        
+        if (presence == Imps.Presence.AVAILABLE || presence == Imps.Presence.IDLE)
+        {
+            mAvatar.setBackgroundColor(Color.GREEN);
+        }
+        else if (presence == Imps.Presence.AWAY)
+        {
+            mAvatar.setBackgroundColor(Color.YELLOW);
+        }
+        else
+        {
+            mAvatar.setBackgroundColor(Color.GRAY);
         }
 
         //mPresence.setImageDrawable(brandingRes.getDrawable(iconId));
-        Drawable presenceIcon = brandingRes.getDrawable(iconId);
+       // Drawable presenceIcon = brandingRes.getDrawable(iconId);
 
         // line1
         CharSequence contact;
+        
         if (Imps.Contacts.TYPE_GROUP == type) {
             ContentResolver resolver = getContext().getContentResolver();
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
@@ -134,7 +160,7 @@ public class ContactView extends LinearLayout {
         } else {
 
             //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
-             String address = ImpsAddressUtils.getDisplayableAddress(username);
+            // String address = ImpsAddressUtils.getDisplayableAddress(username);
              contact = nickname;
              
              if (address.indexOf('/')!=-1)
@@ -153,6 +179,12 @@ public class ContactView extends LinearLayout {
                     contact = str;
                 }
             }
+            
+            mAvatar.setImageResource(R.drawable.ic_launcher_gibberbot);
+            
+            Drawable d = loadAvatar (address);
+            if (d != null)
+                mAvatar.setImageDrawable(d);
 
         }
         mLine1.setText(contact);
@@ -169,9 +201,12 @@ public class ContactView extends LinearLayout {
         }
 
         // line2
-        CharSequence status = null;
-        if (showChatMsg) {
-            status = lastMsg;
+        String status = null;
+        if (showChatMsg && lastMsg != null) {
+
+            //remove HTML tags since we can't display HTML
+            status = lastMsg.replaceAll("\\<.*?\\>", "");
+            
         }
 
         if (TextUtils.isEmpty(status)) {
@@ -192,7 +227,7 @@ public class ContactView extends LinearLayout {
         }
 
         mLine2.setText(status);
-        mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
+       // mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
         View contactInfoPanel = findViewById(R.id.contactInfo);
         if (hasChat && showChatMsg) { // HERE the bubble is set
@@ -202,6 +237,27 @@ public class ContactView extends LinearLayout {
             contactInfoPanel.setBackgroundDrawable(null);
             contactInfoPanel.setPadding(4, 0, 0, 0);
          //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
+        }
+    }
+    
+    private Drawable loadAvatar (String jid)
+    {
+        try
+        {
+            //String filename = Base64.encodeBase64String(jid.getBytes()) + ".jpg";
+            String fileName = Base64.encodeToString(jid.getBytes(), Base64.NO_WRAP) + ".jpg";
+            File sdCard = new File(getContext().getCacheDir(),"avatars");
+            File fileAvatar = new File(sdCard, fileName);
+            
+            if (fileAvatar.exists())
+                return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
+            else
+                return null;
+        }
+        catch (IOException ioe)
+        {
+            Log.e("Contacts","error loading avatar",ioe);
+            return null;
         }
     }
 

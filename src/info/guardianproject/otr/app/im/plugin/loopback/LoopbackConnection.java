@@ -244,7 +244,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public String getFullName() {
+        public String getAddress() {
             return name;
         }
 

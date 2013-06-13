@@ -1110,6 +1110,9 @@ public class Imps {
         int IDLE = 3;
         int DO_NOT_DISTURB = 4;
         int AVAILABLE = 5;
+        
+        int NEW_ACCOUNT = -99;
+        
 
         /** The user defined status line. <P>Type: TEXT</P> */
         String PRESENCE_CUSTOM_STATUS = "status";

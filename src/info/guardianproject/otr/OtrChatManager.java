@@ -207,8 +207,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void transformSending(Message message) {
-        String localUserId = message.getFrom().getFullName();
-        String remoteUserId = message.getTo().getFullName();
+        String localUserId = message.getFrom().getAddress();
+        String remoteUserId = message.getTo().getAddress();
         String body = message.getBody();
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);

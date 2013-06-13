@@ -17,18 +17,17 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.util.FontUtils;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -39,7 +38,6 @@ import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -69,8 +67,10 @@ public class MessageView extends LinearLayout {
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
 
         mResources = getResources();
+
+    //    FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForMessages);
+     //   FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForTimestamp);
         
-        FontUtils.setRobotoFont(getContext(), mTextViewForMessages);
        
     }
 
@@ -99,6 +99,8 @@ public class MessageView extends LinearLayout {
         {
             mTextViewForTimestamp.setText("");
         }
+        
+
     }
 
     public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
@@ -140,6 +142,7 @@ public class MessageView extends LinearLayout {
             mTextViewForTimestamp.setPadding(0,0,0,0);
 
         }
+        
 
     }
 
@@ -167,7 +170,8 @@ public class MessageView extends LinearLayout {
         }
 
         //remove HTML tags since we can't display HTML
-        body = body.replaceAll("\\<.*?\\>", "");
+       // body = body.replaceAll("\\<.*?\\>", "");
+        
 
         SpannableStringBuilder buf = new SpannableStringBuilder();
 
@@ -177,15 +181,20 @@ public class MessageView extends LinearLayout {
             buf.append(": ");
         }
         */
+        /*
 
         if (scrolling) {
             buf.append(body);
         } else {
-            buf.setSpan(ChatView.STYLE_BOLD, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            
+          //  buf.setSpan(ChatView.STYLE_NORMAL, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             buf.append(body);
 
            
         }
+        */
+        
+        buf.append(Html.fromHtml(body));
         
         /*
         if (date != null) {

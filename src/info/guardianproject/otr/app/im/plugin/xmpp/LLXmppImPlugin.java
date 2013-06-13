@@ -60,23 +60,4 @@ public class LLXmppImPlugin extends Service implements ImPlugin {
         return resMapping;
     }
 
-    public int[] getSmileyIconIds() {
-        return SMILEY_RES_IDS;
-    }
-
-    /**
-     * An array of the smiley icon IDs. Note that the sequence of the array MUST
-     * match the smiley texts and smiley names defined in strings.xml.
-     */
-    static final int[] SMILEY_RES_IDS = { R.drawable.emo_im_happy, R.drawable.emo_im_sad,
-                                         R.drawable.emo_im_winking,
-                                         R.drawable.emo_im_tongue_sticking_out,
-                                         R.drawable.emo_im_surprised, R.drawable.emo_im_kissing,
-                                         R.drawable.emo_im_yelling, R.drawable.emo_im_cool,
-                                         R.drawable.emo_im_money_mouth,
-                                         R.drawable.emo_im_foot_in_mouth,
-                                         R.drawable.emo_im_embarrassed, R.drawable.emo_im_angel,
-                                         R.drawable.emo_im_undecided, R.drawable.emo_im_crying,
-                                         R.drawable.emo_im_lips_are_sealed,
-                                         R.drawable.emo_im_laughing, R.drawable.emo_im_wtf };
 }

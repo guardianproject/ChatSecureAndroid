@@ -1,0 +1,130 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/frameRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="162dp"
+            android:layout_height="162dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_chatsecure" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffff" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/llCreatePassphrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                
+                <ViewFlipper
+                    android:id="@+id/viewFlipper1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inAnimation="@anim/push_right_in" >
+
+                    <LinearLayout
+                        android:id="@+id/flipView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp" >
+
+                        <EditText
+                            android:id="@+id/editNewPassphrase"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/lock_screen_passphrase_not_set_enter"
+                            android:inputType="textPassword" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/flipView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp" >
+
+                        <EditText
+                            android:id="@+id/editConfirmNewPassphrase"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/lock_screen_passphrase_not_set_confirm"
+                            android:inputType="textPassword" />
+                    </LinearLayout>
+                </ViewFlipper>
+
+                <Button
+                    android:id="@+id/btnCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/lock_screen_create_passphrase" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llEnterPassphrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="invisible" >
+
+                <LinearLayout
+                    android:id="@+id/llManualAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp" >
+
+                    <EditText
+                        android:id="@+id/editEnterPassphrase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/lock_screen_passphrase_hint"
+                        android:imeOptions="actionGo"
+                        android:inputType="textPassword" >
+
+                        <requestFocus />
+                    </EditText>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnOpen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/lock_screen_open" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

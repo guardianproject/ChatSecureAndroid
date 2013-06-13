@@ -187,7 +187,7 @@ public class ContactListView extends LinearLayout {
                 i.addCategory(ImApp.IMPS_CATEGORY);
                 
                 mScreen.startActivity(i);
-                mScreen.finish();
+              //  mScreen.finish();
                 
                 setAutoRefreshContacts(false);
             } catch (RemoteException e) {
