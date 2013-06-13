@@ -16,3 +16,6 @@
 [submodule "external/cacheword"]
 	path = external/cacheword
 	url = git@github.com:guardianproject/cacheword.git
+[submodule "external/AndroidPinning"]
+	path = external/AndroidPinning
+	url = https://github.com/moxie0/AndroidPinning.git
