@@ -23,62 +23,85 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:paddingTop="2dip"
-    android:paddingBottom="2dip"
-    android:paddingLeft="9dip"
-    android:paddingRight="9dip">
+    android:paddingTop="0dip"
+    android:paddingBottom="0dip"
+    android:paddingLeft="0dip"
+    android:paddingRight="0dip">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/contactInfo"
         android:layout_width="0dip"
-        android:layout_height="fill_parent"
+    	android:layout_height="match_parent"
+        android:layout_marginRight="2dip"
         android:layout_weight="1"
-        android:layout_marginRight="5dip"
-        android:paddingLeft="6dip">
+        android:orientation="horizontal"
+        android:paddingLeft="0dip"
+        android:paddingTop="0dip" >
 
         <ImageView
-            android:id="@+id/presence"
-            android:scaleType="fitXY"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="6dip">
-        </ImageView>
+            android:id="@+id/avatar"
+            android:layout_width="64sp"
+            android:layout_height="64sp"
+            android:layout_weight="0"
+            android:scaleType="centerCrop" 
+            android:padding="2sp"
+            android:background="#000000"
+            />
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:id="@+id/contactrow"	
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/presence"
-            android:layout_centerVertical="true">
+            android:orientation="vertical"
+            android:paddingLeft="3dip"
+            android:paddingTop="3dip" >
 
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-                <TextView android:id="@+id/line1"
-                    android:maxLines="1"
+                <TextView
+                    android:id="@+id/line1"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                     />
-
-                <TextView android:id="@+id/timestamp"
+                    android:fontFamily="sans-serif-light"
                     android:maxLines="1"
+                    android:text="this is the first"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/timestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dip"                    
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="1"
+                    android:paddingRight="8dip"
+                    android:text="this is the second part"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
 
-            <TextView android:id="@+id/line2"                
+            <TextView
+                android:id="@+id/line2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:ellipsize="marquee"/>
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-light"
+                android:text="this is the subline"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <!-- 
+        <ImageView
+            android:id="@+id/presence"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="6dip"
+            android:scaleType="fitXY" />
+             -->
+    </LinearLayout>
+
 </view>

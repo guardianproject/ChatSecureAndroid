@@ -16,19 +16,24 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.io.File;
-import java.io.IOException;
-
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
+
+import java.io.File;
+import java.io.IOException;
+
+import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,21 +41,22 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
-public class WelcomeActivity extends ThemeableActivity {
+public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
     
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
@@ -83,13 +89,21 @@ public class WelcomeActivity extends ThemeableActivity {
     static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
+    
+    private SharedPreferences mPrefs = null;
+    
+    private CacheWordActivityHandler mCacheWord = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SQLiteDatabase.loadLibs(this);
+        
         mSignInHelper = new SignInHelper(this);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mDefaultLocale = prefs.getString(getString(R.string.pref_default_locale), null);
+       
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mDefaultLocale = mPrefs.getString(getString(R.string.pref_default_locale), null);
         setContentView(R.layout.welcome_activity);
         
         this.getSupportActionBar().hide();
@@ -106,19 +120,24 @@ public class WelcomeActivity extends ThemeableActivity {
         });
 
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
-      
+     
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
     }
     
 
    
     @SuppressWarnings("deprecation")
-    private boolean cursorUnlocked() {
+    private boolean cursorUnlocked(String pKey) {
         try {
             mApp = ImApp.getApplication(this);
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-            mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+            
+            uri = uri.buildUpon().appendQueryParameter("pkey", pKey).build();
+            
+            mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                     Imps.Provider.DEFAULT_SORT_ORDER);
@@ -148,36 +167,96 @@ public class WelcomeActivity extends ThemeableActivity {
             mHandler.unregisterForBroadcastEvents();
 
         super.onPause();
+        mCacheWord.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mSignInHelper.stop();
-
+        
+        try
+        {
+            mCacheWord.disconnect();
+        }
+        catch (Exception e)
+        {
+            Log.w("CacheWord","cacheword on destroy didn't work");
+        }
+        
         super.onDestroy();
+        
     }
     
+    
+    
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        IntentResult scanResult =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data); 
+        
+        if  (scanResult != null) 
+        { 
+            
+            String otrKeyPassword = scanResult.getContents();
+            
+            String otrKeyStorePath = mPrefs.getString("keystoreimport", null);
+            
+            if (otrKeyStorePath != null)
+            {
+                File otrKeystoreAES = new File(otrKeyStorePath);
+                if (otrKeystoreAES.exists()) {
+                    importOtrKeyStoreWithPassword(otrKeystoreAES, otrKeyPassword);
+                }
+            }
+            else
+            {
+                Log.d(TAG,"no key store path saved");
+            }
+            
+        } 
+    }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mDefaultLocale == null)
-            showLocaleDialog();
-        else {
-            cursorUnlocked();
+        try
+        {
+            mCacheWord.onResume();
+        }
+        catch (Exception e)
+        {
+            Log.e("CacheWord","unable to bind to cacheword");
+        }
+        
+        if (!mCacheWord.isLocked())
+        {
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+            
+            cursorUnlocked(pkey);
             doOnResume();
+        }
+        else
+        {
+            showLockScreen();
         }
     }
 
     private void doOnResume() {
 
+        
         if (mApp == null) {
             mApp = ImApp.getApplication(this);
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
         }
 
+       
         mApp.setAppTheme(this);
         mHandler.registerForBroadcastEvents();
 
@@ -186,7 +265,17 @@ public class WelcomeActivity extends ThemeableActivity {
         int countConfigured = accountsConfigured();
         
         boolean doKeyStoreImport = false;
+
+        // if otr_keystore.ofcaes is in the SDCard root, import it
+        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
+                "otr_keystore.ofcaes");
+        if (otrKeystoreAES.exists()) {
+            Log.i(TAG, "found " + otrKeystoreAES + "to import");
+            doKeyStoreImport = true;
+            importOtrKeyStore(otrKeystoreAES);
+        }
         
+        // get otr_keystore.ofcaes via an Intent
         if (getIntent().getData() != null)
         {
             Uri uriData = getIntent().getData();
@@ -223,6 +312,7 @@ public class WelcomeActivity extends ThemeableActivity {
             }
             
             
+            /*
             if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
                 mDidAutoLaunch = true;
                 signInAll();
@@ -232,18 +322,58 @@ public class WelcomeActivity extends ThemeableActivity {
             } else if (countConfigured > 0) {
                 showAccounts();
             }
-            // Otherwise, stay on Getting Started view
+            */
+            
+            if (countConfigured > 0)
+                showAccounts();
         }
     }
     
     
-    private void importOtrKeyStore (File file)
+    private void importOtrKeyStore (final File fileOtrKeyStore)
     {
-        //ask user if they want to overwrite existing entries or just add
+     
+        try
+        {
+            mPrefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
+        }
+        catch (IOException ioe)
+        {
+            Log.e("TAG","problem importing key store",ioe);
+            return;
+        }
+
+        Dialog.OnClickListener ocl = new Dialog.OnClickListener ()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                
+                
+                //launch QR code intent
+                IntentIntegrator.initiateScan(WelcomeActivity.this);
+                
+            }
+        };
+        
+
+        new AlertDialog.Builder(this).setTitle(R.string.confirm)
+                  .setMessage("We have detected an OTR key store to import. Would you like to scan the QR password now?")
+                  .setPositiveButton(R.string.yes, ocl) // default button
+                  .setNegativeButton(R.string.no, null).setCancelable(true).show();
+      
+      
+    }
+    
+    private void importOtrKeyStoreWithPassword (final File fileOtrKeyStore, String password)
+    {
+
         try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(null);
+            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(WelcomeActivity.this);
             boolean overWriteExisting = true;
-            oakm.importKeyStore(file, overWriteExisting);
+            boolean deleteImportedFile = true;
+            oakm.importKeyStore(fileOtrKeyStore, password, overWriteExisting, deleteImportedFile);
+            
         } catch (IOException e) {
           Log.e(TAG,"error opening keystore",e);
         }
@@ -541,4 +671,39 @@ public class WelcomeActivity extends ThemeableActivity {
         ad.show();
     }
 
+    @Override
+    public void onCacheWordUninitialized() {
+        Log.d(ImApp.LOG_TAG,"cache word uninit");
+        
+        showLockScreen();
+    }
+
+    void showLockScreen() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("originalIntent", getIntent());
+        startActivity(intent);
+       
+    }
+    
+    @Override
+    public void onCacheWordLocked() {
+        Log.d(ImApp.LOG_TAG,"cache word locked");
+
+     //   ImApp.getApplication().forceStopImService(); 
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+       Log.d(ImApp.LOG_TAG,"cache word opened");
+       
+
+       String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+       
+       cursorUnlocked(pkey);
+       
+       doOnResume();
+       
+        
+    }
 }

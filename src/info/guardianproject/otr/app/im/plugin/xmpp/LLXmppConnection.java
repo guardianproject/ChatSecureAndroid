@@ -532,7 +532,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
             org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
-                    message.getTo().getFullName(), org.jivesoftware.smack.packet.Message.Type.chat);
+                    message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
             msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
             msg.setBody(message.getBody());
             debug(TAG, "sending packet ID " + msg.getPacketID());
@@ -543,7 +543,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         ChatSession findSession(String address) {
             for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
                 ChatSession session = iter.next();
-                if (session.getParticipant().getAddress().getFullName().equals(address))
+                if (session.getParticipant().getAddress().getAddress().equals(address))
                     return session;
             }
             return null;
@@ -609,7 +609,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             XmppAddress xaddress = new XmppAddress(name, address);
 
-            Contact contact = getContact(xaddress.getFullName());
+            Contact contact = getContact(xaddress.getAddress());
 
             int type = parsePresence(presence, offline);
 
@@ -617,10 +617,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 contact = new Contact(xaddress, name);
 
                 debug(TAG, "got presence updated for NEW user: "
-                           + contact.getAddress().getFullName() + " presence:" + type);
+                           + contact.getAddress().getAddress() + " presence:" + type);
             } else {
                 debug(TAG, "Got present update for EXISTING user: "
-                           + contact.getAddress().getFullName() + " presence:" + type);
+                           + contact.getAddress().getAddress() + " presence:" + type);
 
                 Presence p = new Presence(type, presence.getMsg(), null, null,
                         Presence.CLIENT_TYPE_DEFAULT);

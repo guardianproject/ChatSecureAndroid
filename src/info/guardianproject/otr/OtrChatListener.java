@@ -23,8 +23,8 @@ public class OtrChatListener implements MessageListener {
         OtrDebugLogger.log("processing incoming message: " + msg.getID());
 
         String body = msg.getBody();
-        String from = msg.getFrom().getFullName();
-        String to = msg.getTo().getFullName();
+        String from = msg.getFrom().getAddress();
+        String to = msg.getTo().getAddress();
 
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
 

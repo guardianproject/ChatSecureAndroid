@@ -130,6 +130,8 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     if (account != null) {
       try {
           
+          //aMgr.updateCredentials(account, authTokenType, options, activity, callback, handler);
+          
         return aMgr.blockingGetAuthToken(account, authTokenType, true);
       } catch (OperationCanceledException e) {
         Log.e(NAME, "auth canceled", e);
@@ -141,6 +143,8 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     }
     return null;
   }
+
+
 
 //help method for getting proper account
 public static Account getAccount(String type, String name, AccountManager aMgr) {

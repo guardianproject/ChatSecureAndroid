@@ -28,15 +28,16 @@
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:padding="6dip"
-    android:background="#66AAAAAA"
+    android:background="#66CCCCCC"
 		>
 
 	    <TextView android:id="@+id/message"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dip"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	         android:autoLink="web"
+	         android:autoLink="web|email|phone|map"
+	          android:fontFamily="sans-serif-light"
 	         />
 	    
 		<ImageView
@@ -55,6 +56,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
+	         android:fontFamily="sans-serif-light"
 	         />
 
 </view>

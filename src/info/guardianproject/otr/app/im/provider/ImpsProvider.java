@@ -16,6 +16,7 @@
 
 package info.guardianproject.otr.app.im.provider;
 
+import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
 
@@ -27,27 +28,23 @@ import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
+import net.sqlcipher.database.SQLiteConstraintException;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+import net.sqlcipher.database.SQLiteQueryBuilder;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 /** A content provider for IM */
 public class ImpsProvider extends ContentProvider {
@@ -206,6 +203,7 @@ public class ImpsProvider extends ContentProvider {
     protected static DatabaseHelper mDbHelper;
     private final String mDatabaseName;
     private final int mDatabaseVersion;
+    
 
     private final String[] BACKFILL_PROJECTION = { Imps.Chats._ID, Imps.Chats.SHORTCUT,
                                                   Imps.Chats.LAST_MESSAGE_DATE };
@@ -246,23 +244,25 @@ public class ImpsProvider extends ContentProvider {
         private SQLiteDatabase dbWrite;
 
         boolean mInMemoryDB = false;
+        String mKey = null;
         
-        DatabaseHelper(Context context, boolean inMemoryDb) throws Exception {
+        DatabaseHelper(Context context, String key, boolean inMemoryDb) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
             
             mInMemoryDB = inMemoryDb;
+            mKey = key;
         }
 
         public SQLiteDatabase getReadableDatabase() {
             if (dbRead == null)
-                dbRead = super.getReadableDatabase();
+                dbRead = super.getReadableDatabase(mKey);
 
             return dbRead;
         }
 
         public SQLiteDatabase getWritableDatabase() {
             if (dbWrite == null)
-                dbWrite = super.getWritableDatabase();
+                dbWrite = super.getWritableDatabase(mKey);
 
             return dbWrite;
         }
@@ -1009,16 +1009,16 @@ public class ImpsProvider extends ContentProvider {
         return true;
     }
 
-    private synchronized DatabaseHelper initDBHelper() throws Exception {
+    private synchronized DatabaseHelper initDBHelper(String pkey) throws Exception {
 
         if (mDbHelper == null) {
             Context ctx = getContext();
 
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
+           // SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
             //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
-            boolean inMemoryDb = settings.getBoolean("pref_in_memory_db", true);
+            boolean inMemoryDb = false;// settings.getBoolean("pref_in_memory_db", true);
             
-            mDbHelper = new DatabaseHelper(ctx,inMemoryDb);
+            mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
         }
 
         return mDbHelper;
@@ -1096,8 +1096,17 @@ public class ImpsProvider extends ContentProvider {
         return queryInternal(url, projection, selection, selectionArgs, sortOrder);
     }
 
+    boolean mLoadedLibs = false;
+    
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
+        
+        if (!mLoadedLibs)
+        {
+            SQLiteDatabase.loadLibs(this.getContext().getApplicationContext());
+            mLoadedLibs = true;
+        }
+        
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         StringBuilder whereClause = new StringBuilder();
         if (selection != null) {
@@ -1106,10 +1115,13 @@ public class ImpsProvider extends ContentProvider {
         String groupBy = null;
         String limit = null;
 
+        String pkey = url.getQueryParameter("pKey");
+        
         try {
-            initDBHelper();
+            initDBHelper(pkey);
         } catch (Exception e) {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
+            return null;
         }
 
         /*
@@ -1483,11 +1495,14 @@ public class ImpsProvider extends ContentProvider {
                 }
                 if (DBG)
                     log("set notify url " + url);
+                
+                
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
         } catch (Exception ex) {
             LogCleaner.error(LOG_TAG, "query db caught ", ex);
         }
+        
 
         return c;
     }

@@ -158,7 +158,7 @@ public abstract class ContactListManager {
      * @return the Contact or null if the Contact doesn't exist in any list.
      */
     public Contact getContact(Address address) {
-        return getContact(address.getFullName());
+        return getContact(address.getAddress());
     }
 
     public Contact getContact(String address) {
@@ -327,7 +327,7 @@ public abstract class ContactListManager {
     }
 
     public void blockContactAsync(Contact contact) throws ImException {
-        blockContactAsync(contact.getAddress().getFullName());
+        blockContactAsync(contact.getAddress().getAddress());
     }
 
     /**
@@ -352,7 +352,7 @@ public abstract class ContactListManager {
     }
 
     public void unblockContactAsync(Contact contact) throws ImException {
-        unblockContactAsync(contact.getAddress().getFullName());
+        unblockContactAsync(contact.getAddress().getAddress());
     }
 
     /**
@@ -412,7 +412,7 @@ public abstract class ContactListManager {
      * @throws ImException if contacts has not been loaded.
      */
     public boolean isBlocked(Contact contact) throws ImException {
-        return isBlocked(contact.getAddress().getFullName());
+        return isBlocked(contact.getAddress().getAddress());
     }
 
     /**
@@ -428,7 +428,7 @@ public abstract class ContactListManager {
             //   "Blocked list hasn't been loaded");
 
             for (Contact c : mBlockedList) {
-                if (c.getAddress().getFullName().equals(address)) {
+                if (c.getAddress().getAddress().equals(address)) {
                     return true;
                 }
             }
@@ -503,7 +503,7 @@ public abstract class ContactListManager {
         if (type == ContactListListener.ERROR_REMOVING_CONTACT) {
             mDeletePending.remove(contact);
         } else if (type == ContactListListener.ERROR_BLOCKING_CONTACT) {
-            mBlockPending.remove(contact.getAddress().getFullName());
+            mBlockPending.remove(contact.getAddress().getAddress());
         }
         for (ContactListListener listener : mContactListListeners) {
             listener.onContactError(type, error, listName, contact);
@@ -614,7 +614,7 @@ public abstract class ContactListManager {
         synchronized (this) {
             if (blocked) {
                 mBlockedList.add(contact);
-                String addr = contact.getAddress().getFullName();
+                String addr = contact.getAddress().getAddress();
                 mBlockPending.remove(addr);
             } else {
                 mBlockedList.remove(contact);

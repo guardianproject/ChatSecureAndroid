@@ -7,6 +7,7 @@ public class XmppAddress extends Address {
 
     private String address;
     private String name;
+    private String resource;
     
     public XmppAddress() {
     }
@@ -17,12 +18,13 @@ public class XmppAddress extends Address {
     }
 
     public XmppAddress(String address) {
-        this.name = address.replaceFirst("@.*", "");
-        this.address = address;
+        
+        this (address.replaceFirst("@.*", ""), address);
+        
     }
 
     @Override
-    public String getFullName() {
+    public String getAddress() {
         return address;
     }
 
@@ -31,11 +33,6 @@ public class XmppAddress extends Address {
         return name;
     }
     
-    @Override
-    public String getContactName() {
-        return super.getContactName();
-    }
-
     @Override
     public void readFromParcel(Parcel source) {
         name = source.readString();

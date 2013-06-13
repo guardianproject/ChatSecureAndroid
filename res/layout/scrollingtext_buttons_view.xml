@@ -14,7 +14,10 @@
 		android:layout_height="wrap_content" 
 		android:layout_gravity="center_horizontal" 
 		android:singleLine="true" 
-		android:fadingEdge="vertical">
+		android:fadingEdge="vertical"
+		            android:fontFamily="sans-serif"
+		
+		>
 	</TextView>
     
 	<TableLayout android:id="@+id/TableLayout01" 
@@ -38,7 +41,10 @@
 					android:id="@+id/WizardTextBody" 
 					android:textSize="11pt" 
 					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content">
+					android:layout_height="wrap_content"
+					            android:fontFamily="sans-serif-light"
+					
+					>
 				</TextView>
 			</ScrollView>
 		</TableRow>

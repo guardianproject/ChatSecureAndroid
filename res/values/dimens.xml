@@ -17,4 +17,12 @@
 <resources>
     <dimen name="frag_rounding_radius">20dp</dimen>
     <dimen name="progress_action_padding">8dp</dimen>
+    
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_xlarge">32dp</dimen>
+    <dimen name="slidingmenu_offset">20dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>    
+
 </resources>

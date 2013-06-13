@@ -148,7 +148,7 @@ public class SignInHelper {
 
         mContext.startActivity(intent);
         // sign in successfully, finish and switch to contact list
-        mContext.finish();
+      //  mContext.finish();
     }
 
     public void signIn(final String password, final long providerId, final long accountId,

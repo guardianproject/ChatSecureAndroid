@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-RC5"
-     android:versionCode="57"
+     android:versionName="0.0.12-dev-debug-1"
+     android:versionCode="60"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -21,7 +21,8 @@ android:anyDensity="true"
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />  
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-     
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
     
@@ -50,14 +51,17 @@ android:anyDensity="true"
 
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
-             android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" 
+             android:icon="@drawable/ic_launcher_chatsecure"
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
              android:largeHeap="true"
-             android:hardwareAccelerated="true"
 			>
-     		 
+		
+        <!-- 	
+                     android:taskAffinity="info.guardianproject.otr.app.task.im" 
+        
+     		  -->
+     		  
          <activity android:name=".app.WelcomeActivity"
          	>
             
@@ -76,7 +80,7 @@ android:anyDensity="true"
                 <data
                     android:host="*"
                     android:mimeType="*/*"
-                    android:pathPattern="*.otr"
+                    android:pathPattern="*.ofcaes"
                     android:scheme="content" />
             </intent-filter>
             <intent-filter>
@@ -97,6 +101,7 @@ android:anyDensity="true"
         
         <activity android:name=".app.ChatListActivity"
                           android:exported="false"
+                            android:windowSoftInputMode="stateHidden|adjustResize"
             
             />
         <activity android:name=".app.ActiveChatListView"
@@ -127,7 +132,6 @@ android:anyDensity="true"
         
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
-               android:process=":remote"
                android:exported="false"
         	>
             <intent-filter>
@@ -142,7 +146,7 @@ android:anyDensity="true"
         </service>
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
-               android:process=":remote"
+               
                 android:exported="false"
         	>
             <intent-filter>
@@ -173,7 +177,7 @@ android:anyDensity="true"
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
             android:exported="false"
-            android:process=":remote"            
+                        
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
@@ -182,8 +186,7 @@ android:anyDensity="true"
         </service>
 
         <provider android:name=".provider.ImpsProvider"
-        	android:process=":remote"
-        	android:multiprocess="false"
+        	
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
@@ -367,7 +370,12 @@ android:anyDensity="true"
          	 
             />
          
-          
+           <activity
+            android:name=".LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+         
            <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
             android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
@@ -398,6 +406,14 @@ android:anyDensity="true"
             </intent-filter>
         </receiver>
         
+           <activity
+            android:name=".app.LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+          
+        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false" />
+          
         
     </application>
 </manifest>

@@ -3,10 +3,19 @@
 	url = https://github.com/JakeWharton/ActionBarSherlock.git
 [submodule "external/asmack"]
 	path = external/asmack
-	url = https://github.com/guardianproject/asmack
+	url = https://github.com/guardianproject/asmack.git
 [submodule "external/MemorizingTrustManager"]
 	path = external/MemorizingTrustManager
 	url = https://github.com/devrandom/MemorizingTrustManager.git
 [submodule "external/OnionKit"]
 	path = external/OnionKit
 	url = https://github.com/guardianproject/OnionKit.git
+[submodule "external/SlidingMenu"]
+	path = external/SlidingMenu
+	url = https://github.com/jfeinstein10/SlidingMenu.git
+[submodule "external/cacheword"]
+	path = external/cacheword
+	url = git@github.com:guardianproject/cacheword.git
+[submodule "external/AndroidPinning"]
+	path = external/AndroidPinning
+	url = https://github.com/moxie0/AndroidPinning.git

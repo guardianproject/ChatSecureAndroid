@@ -20,6 +20,35 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+  
+   <PreferenceCategory android:title="@string/pref_group_security_title">
+  
+  <ListPreference android:title="Chat Encryption"
+    android:key="pref_security_otr_mode"
+    android:entryValues="@array/otr_options_values"
+    android:entries="@array/otr_options"
+    android:summary="@string/how_encrypted_chats_are_started"
+    android:defaultValue="auto">
+  </ListPreference>
+  
+  
+   <EditTextPreference 
+          android:key="pref_sip_account"
+          android:title="@string/pref_sip_account_title"
+          android:summary="@string/pref_sip_account_summary"
+           />
+
+  <!-- 
+  <CheckBoxPreference
+          android:key="pref_in_memory_db"
+          android:title="@string/pref_in_memory_db_title"
+          android:summary="@string/pref_in_memory_db_summary"
+          android:defaultValue="true" />
+          -->
+
+  </PreferenceCategory>
+  
+   
     
    <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
  <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
@@ -42,27 +71,7 @@
            />
  </PreferenceCategory>
   
-  
-   <PreferenceCategory android:title="@string/pref_group_security_title">
-  
-  <ListPreference android:title="Chat Encryption"
-    android:key="pref_security_otr_mode"
-    android:entryValues="@array/otr_options_values"
-    android:entries="@array/otr_options"
-    android:summary="@string/how_encrypted_chats_are_started"
-    android:defaultValue="auto">
-  </ListPreference>
-  
-  
-  <CheckBoxPreference
-          android:key="pref_in_memory_db"
-          android:title="@string/pref_in_memory_db_title"
-          android:summary="@string/pref_in_memory_db_summary"
-          android:defaultValue="true" />
-  
-
-  </PreferenceCategory>
-  
+   
       <PreferenceCategory android:title="@string/pref_group_tuning_title">
    
   <CheckBoxPreference
