@@ -343,7 +343,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                                
                             }
                         }
-            
+                        
                     } catch (Exception ex) {
                        // Log.w(TAG,"unable to save avatar",ex);
                     }
@@ -479,7 +479,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // providerSettings is closed in initConnection();
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String password = Imps.Account.getPassword(contentResolver, mAccountId);
+        
+        boolean createAccount = false;
 
+        
         String defaultStatus = null;
         
         if (mPasswordTemp != null)
@@ -493,7 +496,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         try {
             if (userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
-            initConnection(userName, password, providerSettings);
+            initConnection(userName, password, createAccount, providerSettings);
         } catch (Exception e) {
            debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
@@ -589,7 +592,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(String userName, String password,
+    private void initConnection(String userName, String password, boolean createAccount,
             Imps.ProviderSettings.QueryMap providerSettings) throws UnrecoverableKeyException, KeyManagementException, KeyStoreException, NoSuchAlgorithmException, XMPPException {
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
@@ -612,7 +615,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         providerSettings.close(); // close this, which was opened in do_login()
 
         debug(TAG, "TLS required? " + requireTls);
-        debug(TAG, "Do SRV check? " + doDnsSrv);
         debug(TAG, "cert verification? " + tlsCertVerify);
 
         if (providerSettings.getUseTor()) {
@@ -727,7 +729,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // Don't use smack reconnection - not reliable
         mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
+        
         mConfig.setRosterLoadedAtLogin(true);
+        
 
         mConnection = new MyXMPPConnection(mConfig);
 
@@ -915,8 +919,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setCompressionEnabled(false);
         
         mStreamHandler = new XmppStreamHandler(mConnection);
+        
+
+        try
+        {
+            if (createAccount && mConnection.getAccountManager().supportsAccountCreation())
+            {
+                mConnection.getAccountManager().createAccount(mUsername, mPassword);
+            
+            }
+        }
+        catch (XMPPException e)
+        {
+            Log.w(TAG,"error creating account",e);
+        }
+            
         mConnection.login(mUsername, mPassword, mResource);
-    
+        
         mStreamHandler.notifyInitialLogin();
 
         sendPresencePacket();
@@ -924,6 +943,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Roster roster = mConnection.getRoster();
         roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
         getContactListManager().listenToRoster(roster);
+        
 
     }
 
@@ -990,26 +1010,26 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 "SSL Certificate Error"));
     }*/
 
-    // We must release resources here, because we will not be reused
-    void disconnected(ImErrorInfo info) {
-        debug(TAG, "disconnected");
-        join();
-        setState(DISCONNECTED, info);
-    }
-
     protected static int parsePresence(org.jivesoftware.smack.packet.Presence presence) {
         int type = Presence.AVAILABLE;
         Mode rmode = presence.getMode();
         Type rtype = presence.getType();
-
+    
         if (rmode == Mode.away || rmode == Mode.xa)
             type = Presence.AWAY;
         else if (rmode == Mode.dnd)
             type = Presence.DO_NOT_DISTURB;
         else if (rtype == Type.unavailable || rtype == Type.error)
             type = Presence.OFFLINE;
-
+    
         return type;
+    }
+
+    // We must release resources here, because we will not be reused
+    void disconnected(ImErrorInfo info) {
+        debug(TAG, "disconnected");
+        join();
+        setState(DISCONNECTED, info);
     }
 
     protected static String parseAddressBase(String from) {
@@ -1175,6 +1195,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 @Override
                 public void run() {
                     do_loadContactLists();
+                    
                 }
             });
 
@@ -1244,7 +1265,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 contacts.add(contact);
 
-                getVCard(xaddress.getAddress());  // commented out to fix slow contact loading
 
             }
             return contacts;
@@ -1304,7 +1324,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
             }
-
+            
+            
             notifyContactListsLoaded();
 
         }
@@ -1362,22 +1383,31 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
-                loadContactListsAsync();
+              //  loadContactListsAsync();
+
+                for (String address : addresses)
+                {
+                    getVCard(address);
                 
-               
+                //    Contact contact = mContactListManager.getContact(address);
+                    
+                    
+                }
+                
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-                loadContactListsAsync();
-                
                
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
-                loadContactListsAsync();
                 
+                for (String address : addresses)
+                    getVCard(address);
+                
+               
             }
         };
 
