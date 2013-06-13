@@ -52,13 +52,16 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_chatsecure"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" 
              android:theme="@style/Theme.Gibberbot.Light"
              android:allowBackup="false"
              android:largeHeap="true"
-             android:hardwareAccelerated="true"
 			>
-     		 
+		
+        <!-- 	
+                     android:taskAffinity="info.guardianproject.otr.app.task.im" 
+        
+     		  -->
+     		  
          <activity android:name=".app.WelcomeActivity"
          	>
             
@@ -129,7 +132,6 @@ android:anyDensity="true"
         
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
-               android:process=":remote"
                android:exported="false"
         	>
             <intent-filter>
@@ -144,7 +146,7 @@ android:anyDensity="true"
         </service>
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
-               android:process=":remote"
+               
                 android:exported="false"
         	>
             <intent-filter>
@@ -175,7 +177,7 @@ android:anyDensity="true"
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
             android:exported="false"
-            android:process=":remote"            
+                        
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
@@ -184,8 +186,7 @@ android:anyDensity="true"
         </service>
 
         <provider android:name=".provider.ImpsProvider"
-        	android:process=":remote"
-        	android:multiprocess="false"
+        	
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
