@@ -84,6 +84,8 @@ public class ImApp extends Application {
     public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
 
+    public static final String HOCKEY_APP_ID = "2fa3b9252319e47367f1f125bb3adcd1";
+    
     private Locale locale = null;
 
     private static ImApp sImApp;

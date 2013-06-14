@@ -16,38 +16,31 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.io.IOException;
-import java.util.List;
-
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.Provider;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.FontUtils;
+
+import java.util.List;
+
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.WallpaperManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -174,6 +167,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
 
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        
+        checkForUpdates();
     }
     
     
@@ -219,6 +214,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mHandler.registerForBroadcastEvents();
         mCacheWord.onResume();
         super.onResume();
+        
+        this.checkForCrashes();
     }
 
     private void signInAccountAtPosition(int position) {
@@ -794,4 +791,13 @@ private Handler mHandlerGoogleAuth = new Handler ()
        
         
     }
+    
+    private void checkForCrashes() {
+        CrashManager.register(this, ImApp.HOCKEY_APP_ID);
+      }
+
+      private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
+      }
 }
