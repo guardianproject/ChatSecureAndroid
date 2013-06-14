@@ -21,6 +21,7 @@ import java.util.List;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -62,6 +63,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
@@ -207,6 +209,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         super.onDestroy();
     }
+    
+
     
     @Override
     protected void onResume() {
@@ -406,6 +410,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             Intent sintent = new Intent(this, SettingActivity.class);
             startActivityForResult(sintent,1);
             return true;
+        case R.id.menu_import_keys:
+            importKeyStore();
+            return true;
         case R.id.menu_exit:
            
             signOutAndKillPrompt();
@@ -420,6 +427,11 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
     private ImPluginHelper helper = ImPluginHelper.getInstance(this);
 
+    private void importKeyStore ()
+    {
+        boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
+
+    }
     private void showNewAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -743,36 +755,43 @@ private Handler mHandlerGoogleAuth = new Handler ()
         }
     }
 
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        boolean success = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
         
-    }
+        if (success)
+        {
+            Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
 
+        }
+    }
 
 
     @Override
     public void onCacheWordUninitialized() {
-        // TODO Auto-generated method stub
-        
+       
     }
 
 
 
     @Override
     public void onCacheWordLocked() {
-        // TODO Auto-generated method stub
-        
+       signOutAndKillProcess();
+       
     }
 
 
 
     @Override
     public void onCacheWordOpened() {
-        // TODO Auto-generated method stub
+       
         
     }
 }

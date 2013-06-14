@@ -786,6 +786,13 @@
 	<string name="pref_sip_account_summary">Enter your OStel.co or other secure SIP service account here for call integration</string>
 	
 	<string name="default_service_provider">dukgo.com</string>
+	
+	<string name="detected_Otr_keystore_import">We have detected an OTR key store to import. Would you like to scan the QR password now?</string>
     
+	<string name="menu_import_keys">Import OTR Keystore</string>
+    
+	<string name="successfully_imported_otr_keyring">Successfully imported OTR keyring</string>
+    
+	<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
 </resources>
 

@@ -34,6 +34,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -193,30 +194,20 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        boolean success = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
         
-        IntentResult scanResult =
-                IntentIntegrator.parseActivityResult(requestCode, resultCode, data); 
+        if (success)
+        {
+            Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
+
+        }
         
-        if  (scanResult != null) 
-        { 
-            
-            String otrKeyPassword = scanResult.getContents();
-            
-            String otrKeyStorePath = mPrefs.getString("keystoreimport", null);
-            
-            if (otrKeyStorePath != null)
-            {
-                File otrKeystoreAES = new File(otrKeyStorePath);
-                if (otrKeystoreAES.exists()) {
-                    importOtrKeyStoreWithPassword(otrKeystoreAES, otrKeyPassword);
-                }
-            }
-            else
-            {
-                Log.d(TAG,"no key store path saved");
-            }
-            
-        } 
+        
     }
 
 
@@ -239,7 +230,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
             
             cursorUnlocked(pkey);
-            doOnResume();
+            
+            boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
+            
+            if (!doKeyStoreImport)
+                doOnResume();
+            
+
+            
         }
         else
         {
@@ -264,121 +262,37 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         int countAvailable = accountsAvailable();
         int countConfigured = accountsConfigured();
         
-        boolean doKeyStoreImport = false;
 
-        // if otr_keystore.ofcaes is in the SDCard root, import it
-        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
-                "otr_keystore.ofcaes");
-        if (otrKeystoreAES.exists()) {
-            Log.i(TAG, "found " + otrKeystoreAES + "to import");
-            doKeyStoreImport = true;
-            importOtrKeyStore(otrKeystoreAES);
-        }
-        
-        // get otr_keystore.ofcaes via an Intent
-        if (getIntent().getData() != null)
-        {
-            Uri uriData = getIntent().getData();
-            String path = null;
-            
-            if(uriData.getScheme() != null && uriData.getScheme().equals("file"))
-            {
-                path = uriData.toString().replace("file://", "");
-            
-                File file = new File(path);
-                
-                doKeyStoreImport = true;
-                
-                importOtrKeyStore(file);
-            }
-        }
-        
-        if (!doKeyStoreImport)
-        {
-            if (countAvailable == 1) {
-                // If just one account is available for auto-signin, go there immediately after service starts trying
-                // to connect.
-                mSignInHelper.setSignInListener(new SignInHelper.Listener() {
-                    public void connectedToService() {
+        if (countAvailable == 1) {
+            // If just one account is available for auto-signin, go there immediately after service starts trying
+            // to connect.
+            mSignInHelper.setSignInListener(new SignInHelper.Listener() {
+                public void connectedToService() {
+                }
+                public void stateChanged(int state, long accountId) {
+                    if (state == ImConnection.LOGGING_IN) {
+                        mSignInHelper.goToAccount(accountId);
                     }
-                    public void stateChanged(int state, long accountId) {
-                        if (state == ImConnection.LOGGING_IN) {
-                            mSignInHelper.goToAccount(accountId);
-                        }
-                    }
-                });
-            } else {
-                mSignInHelper.setSignInListener(null);
-            }
-            
-            
-            /*
-            if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
-                mDidAutoLaunch = true;
-                signInAll();
-                showAccounts();
-            } else if (countSignedIn == 1) {
-                showActiveAccount();
-            } else if (countConfigured > 0) {
-                showAccounts();
-            }
-            */
-            
-            if (countConfigured > 0)
-                showAccounts();
+                }
+            });
+        } else {
+            mSignInHelper.setSignInListener(null);
         }
-    }
-    
-    
-    private void importOtrKeyStore (final File fileOtrKeyStore)
-    {
-     
-        try
-        {
-            mPrefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
-        }
-        catch (IOException ioe)
-        {
-            Log.e("TAG","problem importing key store",ioe);
-            return;
-        }
-
-        Dialog.OnClickListener ocl = new Dialog.OnClickListener ()
-        {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                
-                
-                //launch QR code intent
-                IntentIntegrator.initiateScan(WelcomeActivity.this);
-                
-            }
-        };
+            
         
-
-        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-                  .setMessage("We have detected an OTR key store to import. Would you like to scan the QR password now?")
-                  .setPositiveButton(R.string.yes, ocl) // default button
-                  .setNegativeButton(R.string.no, null).setCancelable(true).show();
-      
-      
+        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
+            mDidAutoLaunch = true;
+            signInAll();
+            showAccounts();
+        } else if (countSignedIn == 1) {
+            showActiveAccount();
+        } else if (countConfigured > 0) {
+            showAccounts();
+        }
+    
     }
     
-    private void importOtrKeyStoreWithPassword (final File fileOtrKeyStore, String password)
-    {
-
-        try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(WelcomeActivity.this);
-            boolean overWriteExisting = true;
-            boolean deleteImportedFile = true;
-            oakm.importKeyStore(fileOtrKeyStore, password, overWriteExisting, deleteImportedFile);
-            
-        } catch (IOException e) {
-          Log.e(TAG,"error opening keystore",e);
-        }
-    }
-
+   
     // Show signed in account
     protected boolean showActiveAccount() {
         if (!mProviderCursor.moveToFirst())
@@ -691,6 +605,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         Log.d(ImApp.LOG_TAG,"cache word locked");
 
      //   ImApp.getApplication().forceStopImService(); 
+        
     }
 
     @Override
@@ -702,7 +617,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        
        cursorUnlocked(pkey);
        
-       doOnResume();
        
         
     }

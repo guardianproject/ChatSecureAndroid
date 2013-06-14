@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.bouncycastle.util.encoders.Hex;
+import info.guardianproject.otr.app.im.R;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -33,7 +34,21 @@ import net.java.otr4j.session.SessionID;
 
 import org.jivesoftware.smack.util.Base64;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
@@ -142,6 +157,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             fos.close();
         }
 
+        private void saveAES (String password)
+        {
+            
+        }
+        
         public void setProperty(String id, byte[] value) {
             mProperties.setProperty(id, new String(Base64.encodeBytes(value)));
 
@@ -279,12 +299,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             
             boolean hasKey = store.getProperties().containsKey(key);
             
+        //    Log.d("OTR","importing key: " + key.toString());
+            
             if (!hasKey || overWriteExisting)
                 store.getProperties().put(key, pNew.get(key));
             
-            store.save();
         }
-        
+
+        store.save();
+
         if (deleteImportedFile)
             filePath.delete();
     }
@@ -351,7 +374,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
     public boolean isVerifiedUser(String userId) {
         if (userId == null)
             return false;
-
+ 
         String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId));
 
         return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
@@ -522,6 +545,132 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         //for (OtrKeyManagerListener l : listeners)
         //l.verificationStatusChanged(userId);
 
+    }
+
+    public static boolean checkForKeyImport (Intent intent, Activity activity)
+    {
+        boolean doKeyStoreImport = false;
+        
+        // if otr_keystore.ofcaes is in the SDCard root, import it
+        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
+                "otr_keystore.ofcaes");
+        if (otrKeystoreAES.exists()) {
+            //Log.i(TAG, "found " + otrKeystoreAES + "to import");
+            doKeyStoreImport = true;
+            importOtrKeyStore(otrKeystoreAES, activity);
+        }
+        else if (intent.getData() != null)
+        {
+            Uri uriData = intent.getData();
+            String path = null;
+            
+            if(uriData.getScheme() != null && uriData.getScheme().equals("file"))
+            {
+                path = uriData.toString().replace("file://", "");
+            
+                File file = new File(path);
+                
+                doKeyStoreImport = true;
+                
+                importOtrKeyStore(file, activity);
+            }
+        }
+        
+        return doKeyStoreImport;
+    }
+    
+    
+    public static void importOtrKeyStore (final File fileOtrKeyStore, final Activity activity)
+    {
+     
+        try
+        {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+
+            prefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
+        }
+        catch (IOException ioe)
+        {
+            Log.e("TAG","problem importing key store",ioe);
+            return;
+        }
+
+        Dialog.OnClickListener ocl = new Dialog.OnClickListener ()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                
+                //launch QR code intent
+                IntentIntegrator.initiateScan(activity);
+                
+            }
+        };
+        
+
+        new AlertDialog.Builder(activity).setTitle(R.string.confirm)
+                  .setMessage(R.string.detected_Otr_keystore_import)
+                  .setPositiveButton(R.string.yes, ocl) // default button
+                  .setNegativeButton(R.string.no, null).setCancelable(true).show();
+      
+      
+    }
+    
+    public static void importOtrKeyStoreWithPassword (final File fileOtrKeyStore, String password, Activity activity) throws IOException
+    {
+
+        OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(activity);
+        boolean overWriteExisting = true;
+        boolean deleteImportedFile = true;
+        oakm.importKeyStore(fileOtrKeyStore, password, overWriteExisting, deleteImportedFile);
+        
+    
+    }
+    
+    public static boolean handleKeyScanResult (int requestCode, int resultCode, Intent data, Activity activity)
+    {
+        IntentResult scanResult =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data); 
+        
+        if  (scanResult != null) 
+        { 
+            
+            String otrKeyPassword = scanResult.getContents();
+            
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+
+            String otrKeyStorePath = prefs.getString("keystoreimport", null);
+            
+            Log.d("OTR","got password: " + otrKeyPassword + " for path: " + otrKeyStorePath);
+            
+            if (otrKeyPassword != null && otrKeyStorePath != null)
+            {
+                
+                otrKeyPassword = otrKeyPassword.replace("\n","").replace("\r", ""); //remove any padding, newlines, etc
+                
+                try
+                {
+                    File otrKeystoreAES = new File(otrKeyStorePath);
+                    if (otrKeystoreAES.exists()) {
+                        OtrAndroidKeyManagerImpl.importOtrKeyStoreWithPassword(otrKeystoreAES, otrKeyPassword, activity);
+                        return true;
+                    }
+                }
+                catch (IOException e)
+                {
+                    Toast.makeText(activity, "unable to open keystore for import", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+            else
+            {
+                Log.d("OTR","no key store path saved");
+                return false;
+            }
+            
+        } 
+        
+        return false;
     }
 
 }
