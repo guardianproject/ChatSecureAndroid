@@ -7,4 +7,11 @@ android update project --path external/MemorizingTrustManager --name MemorizingT
 android update project --path external/OnionKit/libonionkit --name OnionKit -t android-17
 android update project --path external/AndroidPinning --name libpinning -t android-17
 android update project --path external/cacheword/cachewordlib --name cacheword -t android-17
-android update project --path external/SlidingMenu --name sliding -t android-17
+android update project --path external/SlidingMenu/library --name sliding -t android-17
+
+cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-support-v4.jar
+cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar
+cp libs/android-support-v4.jar external/SlidingMenu/library/libs/android-support-v4.jar
+cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-support-v4.jar
+
+
