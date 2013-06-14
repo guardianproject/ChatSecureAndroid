@@ -21,7 +21,6 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,7 +46,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
@@ -71,6 +69,7 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
@@ -81,6 +80,8 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
+import org.jivesoftware.smackx.XHTMLManager;
+import org.jivesoftware.smackx.XHTMLText;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
 import org.jivesoftware.smackx.packet.ChatStateExtension;
 import org.jivesoftware.smackx.packet.LastActivity;
@@ -755,14 +756,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 String body = smackMessage.getBody();
                 
-                if (smackMessage.getError() != null) {
-                    if (body == null)
-                        body = "";
-                    body = body + " - " + smackMessage.getError().toString();
+                /*
+                //if it has an XHTML body, use it
+                Iterator it = XHTMLManager.getBodies(smackMessage);
+                if (it.hasNext())
+                {
+                    String htmlBody = (String) it.next();
+                    
+                    if (htmlBody != null && htmlBody.length() > 0)
+                        body = htmlBody;
                 }
-                
+                *
                 if (body == null)
                     return;
+                */
                 
                 Message rec = new Message(body);
                 rec.setTo(mUser.getAddress());
@@ -1138,7 +1145,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
                     message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
             msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
-            msg.setBody(message.getBody());
+            
+
+            String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
+            msg.setBody(bodyPlain);
+            
+            // Create an XHTMLText to send with the message
+            XHTMLText xhtmlText = new XHTMLText(null, null);
+            xhtmlText.appendOpenParagraphTag("font-size:large");
+            xhtmlText.append(message.getBody());     
+            xhtmlText.appendCloseParagraphTag();
+       
+            // Add the XHTML text to the message
+            XHTMLManager.addBody(msg, xhtmlText.toString());
+            
             debug(TAG, "sending packet ID " + msg.getPacketID());
             message.setID(msg.getPacketID());
             sendPacket(msg);

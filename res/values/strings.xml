@@ -108,6 +108,7 @@
     
     <string name="menu_end_conversation">End chat</string>
 
+    <string name="menu_voip_title">Secure Call</string>
     <!-- Chat screen menu and context menu items.-->
     <!-- Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->

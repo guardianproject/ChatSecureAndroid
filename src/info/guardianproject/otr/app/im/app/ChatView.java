@@ -1036,6 +1036,24 @@ public class ChatView extends LinearLayout {
             }
         }
     }
+    
+    void sendMessage(String msg) {
+
+        if (TextUtils.isEmpty(msg.trim())) {
+            return;
+        }
+
+        if (mChatSession != null) {
+            try {
+                mChatSession.sendMessage(msg);
+                requeryCursor();
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+            } catch (Exception e) {
+                mHandler.showServiceErrorAlert();
+            }
+        }
+    }
 
     void registerChatListener() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
