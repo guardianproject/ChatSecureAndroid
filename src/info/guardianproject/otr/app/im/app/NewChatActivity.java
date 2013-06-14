@@ -132,11 +132,13 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mSipAccount = prefs.getString("pref_sip_account", null);
 
+        if (menuCall != null)
+        {
         if (mSipAccount != null && mSipAccount.length() > 0)
             menuCall.setVisible(true);
         else
             menuCall.setVisible(false);
-        
+        }
     }
     
 
@@ -200,10 +202,8 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         menuOtr = menu.findItem(R.id.menu_view_otr);
         menuCall = menu.findItem(R.id.menu_secure_call);
         
-        if (mSipAccount != null)
-            menuCall.setVisible(true);
-        else
-            menuCall.setVisible(false);
+        getSipAccount ();
+        
         
         return true;
     }

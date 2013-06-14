@@ -69,6 +69,7 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
@@ -755,14 +756,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 String body = smackMessage.getBody();
                 
-                if (smackMessage.getError() != null) {
-                    if (body == null)
-                        body = "";
-                    body = body + " - " + smackMessage.getError().toString();
+                /*
+                //if it has an XHTML body, use it
+                Iterator it = XHTMLManager.getBodies(smackMessage);
+                if (it.hasNext())
+                {
+                    String htmlBody = (String) it.next();
+                    
+                    if (htmlBody != null && htmlBody.length() > 0)
+                        body = htmlBody;
                 }
-                
+                *
                 if (body == null)
                     return;
+                */
                 
                 Message rec = new Message(body);
                 rec.setTo(mUser.getAddress());
