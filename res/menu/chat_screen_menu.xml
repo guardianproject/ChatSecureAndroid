@@ -32,10 +32,11 @@
          android:showAsAction="never"
          />
     
-     <item android:id="@+id/menu_view_otr"
-        android:title="@string/menu_otr_start"
-        android:icon="@drawable/ic_menu_unencrypt" 
+     <item android:id="@+id/menu_secure_call"
+        android:title="@string/menu_voip_title"
+        android:icon="@drawable/ic_menu_call" 
          android:showAsAction="always"
+         android:visible="false"
         />
      
     <item android:id="@+id/menu_switch_chats"

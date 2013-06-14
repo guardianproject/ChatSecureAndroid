@@ -68,9 +68,6 @@ public class MessageView extends LinearLayout {
 
         mResources = getResources();
 
-    //    FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForMessages);
-     //   FontUtils.setRobotoFont(getContext().getApplicationContext(), mTextViewForTimestamp);
-        
        
     }
 
@@ -88,6 +85,7 @@ public class MessageView extends LinearLayout {
         setPadding(100, 0, 3, 3);
               
         mTextViewForMessages.setText(message);
+        
        mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)
@@ -171,7 +169,6 @@ public class MessageView extends LinearLayout {
 
         //remove HTML tags since we can't display HTML
        // body = body.replaceAll("\\<.*?\\>", "");
-        
 
         SpannableStringBuilder buf = new SpannableStringBuilder();
 
