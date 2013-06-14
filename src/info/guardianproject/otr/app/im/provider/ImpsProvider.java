@@ -78,8 +78,8 @@ public class ImpsProvider extends ContentProvider {
     private static final String TABLE_LAST_RMQ_ID = "lastrmqid";
     private static final String TABLE_S2D_RMQ_IDS = "s2dRmqIds";
 
-    private static final String DATABASE_NAME = "imps.db";
-    private static final int DATABASE_VERSION = 101;
+    private static final String DATABASE_NAME = "impsenc.db";
+    private static final int DATABASE_VERSION = 102;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
