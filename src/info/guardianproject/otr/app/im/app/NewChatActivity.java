@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import net.java.otr4j.session.SessionStatus;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,6 +35,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,6 +57,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
+    private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
 
     ImApp mApp;
     ChatView mChatView;
@@ -219,6 +222,10 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+        case R.id.menu_send_image:
+            startImagePicker();
+            return true;
 
         case R.id.menu_view_otr:
             switchOtrState();
@@ -470,9 +477,41 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             mHandler.showServiceErrorAlert();
         }
     }
-
+    
+    private void startImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_SEND_IMAGE);
+    }
+    
+    public String getRealPathFromURI(Context aContext, Uri aUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = aContext.getContentResolver().query(aUri, null, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_SEND_IMAGE) {
+                Uri uri = data.getData() ;
+                if( uri == null ) {
+                    return ;
+                }
+                // $SD$/Gibberbot/offres/photo.png
+                // content://media/external/images/media/1978
+                try {
+                    String localUri = getRealPathFromURI(this, uri);
+                    mChatView.getCurrentChatSession().offerData( localUri );
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);

@@ -25,7 +25,11 @@
         android:icon="@drawable/ic_menu_unencrypt" 
          android:showAsAction="always"
         />
-
+    <item android:id="@+id/menu_send_image"
+        android:title="@string/menu_send_image"
+         android:showAsAction="never"
+        />
+    
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_menu_info"
