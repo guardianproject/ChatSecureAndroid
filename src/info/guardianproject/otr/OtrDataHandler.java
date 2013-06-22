@@ -7,8 +7,11 @@ import info.guardianproject.otr.app.im.engine.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import org.apache.http.HttpException;
@@ -54,6 +57,8 @@ public class OtrDataHandler implements DataHandler {
     private LineParser lineParser = new BasicLineParser(PROTOCOL_VERSION);
     private LineFormatter lineFormatter = new BasicLineFormatter();
     private ChatSession mChatSession;
+
+    private static String sStashUri;
 
     public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
@@ -130,16 +135,43 @@ public class OtrDataHandler implements DataHandler {
             getData(us, url, null);
         } else if (requestMethod.equals("GET")) {
             Log.i(TAG, "incoming GET");
-            byte[] body;
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             try {
-                body = "this is content".getBytes("UTF-8");
+                FileInputStream is = new FileInputStream(sStashUri);
+
+                readIntoByteBuffer(byteBuffer, is);
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            sendResponse(us, 200, "OK", body);
+            Log.i(TAG, "Sent sha1 is " + sha1sum(byteBuffer.toByteArray()));
+            sendResponse(us, 200, "OK", byteBuffer.toByteArray());
         } else {
             Log.w(TAG, "Unknown method " + requestMethod);
             sendResponse(us, 400, "OK", EMPTY_BODY);
+        }
+    }
+
+    private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is)
+            throws IOException {
+        int buffersize = 1024;
+        byte[] buffer = new byte[buffersize];
+
+        int len = 0;
+        while((len = is.read(buffer)) != -1){
+            byteBuffer.write(buffer, 0, len);
+        }
+    }
+
+    private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, SessionInputBuffer sib)
+            throws IOException {
+        int buffersize = 1024;
+        byte[] buffer = new byte[buffersize];
+
+        int len = 0;
+        while((len = sib.read(buffer)) != -1){
+            byteBuffer.write(buffer, 0, len);
         }
     }
 
@@ -185,14 +217,19 @@ public class OtrDataHandler implements DataHandler {
 
         // TODO handle success
         try {
-            Log.i(TAG, "Response is " + buffer.readLine());
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            readIntoByteBuffer(byteBuffer, buffer);
+            Log.i(TAG, "Received sha1 is " + sha1sum(byteBuffer.toByteArray()));
         } catch (IOException e) {
             Log.w(TAG, "Could not read line from response");
         }
     }
 
     @Override
-    public void offerData(Address us, String url, Map<String, String> headers) {
+    public void offerData(Address us, String localUri, Map<String, String> headers) {
+        // TODO stash localUri and intended recipient
+        sStashUri = localUri;
+        String url = "otr-in-band:/stuff.png";
         sendRequest(us, "OFFER", url, EMPTY_BODY);
     }
 
@@ -220,4 +257,28 @@ public class OtrDataHandler implements DataHandler {
         Log.i(TAG, "send request " + method + " " + url);
         mChatSession.sendDataAsync(message, false, data);
     }
+    
+    private static String hexChr(int b) {
+        return Integer.toHexString(b & 0xF);
+    }
+
+    private static String toHex(int b) {
+        return hexChr((b & 0xF0) >> 4) + hexChr(b & 0x0F);
+    }
+
+    private String sha1sum(byte[] bytes) {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        digest.update(bytes, 0, bytes.length);
+        byte[] sha1sum = digest.digest();
+        String display = "";
+        for(byte b : sha1sum)
+            display += toHex(b);
+        return display;
+    }
+
 }
