@@ -13,10 +13,11 @@ Follow the steps from the prep section, then:
 
 == Eclipse
 
-Add the following as Android projects, after following the steps in the prep section:
+Add the following as Android projects (File->New->Project..., Android project from existing code), 
+after following the steps in the prep section:
 
     * external/ActionBarSherlock/library (use ActionBarSherlock as project name)
-    * external/OnionKit
+    * external/OnionKit/library
     * external/MemorizingTrustManager
     * Gibberbot itself
     
