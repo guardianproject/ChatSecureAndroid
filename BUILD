@@ -16,9 +16,9 @@ Follow the steps from the prep section, then:
 Add the following as Android projects (File->New->Project..., Android project from existing code), 
 after following the steps in the prep section:
 
-    * external/ActionBarSherlock/library (use ActionBarSherlock as project name)
-    * external/OnionKit/library
-    * external/MemorizingTrustManager
+    * external/ActionBarSherlock/library (rename project to ActionBarSherlock)
+    * external/OnionKit/library (rename project to OnionKit)
+    * external/MemorizingTrustManager (uncheck the example project and rename the remaining project to MemorizingTrustManager)
     * Gibberbot itself
     
 
