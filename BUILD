@@ -17,9 +17,10 @@ First, follow the above instructions in the Preparation section.  Then, import
 the following as existing Android projects
 
 1. File --> Import... --> Android --> Existing Android Code Into Workspace
+
+    * external/ActionBarSherlock/library (use ActionBarSherlock as project name)
     * external/OnionKit/library
     * external/MemorizingTrustManager
-    * external/ActionBarSherlock/library
 
 2. Right-click on the project called 'library' --> Refactor --> Rename... and
    rename it to 'ActionBarSherlock'
