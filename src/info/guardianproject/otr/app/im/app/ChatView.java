@@ -1006,7 +1006,6 @@ public class ChatView extends LinearLayout {
         if (mChatSession != null) {
             try {
                 mChatSession.sendMessage(msg);
-                mChatSession.offerData("otr-in-band:/stuff.txt");
                 mComposeMessage.setText("");
                 mComposeMessage.requestFocus();
                 requeryCursor();

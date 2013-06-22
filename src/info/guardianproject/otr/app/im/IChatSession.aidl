@@ -87,7 +87,7 @@ interface IChatSession {
     /**
      * Sends data to all participants in this ChatSession.
      */
-    void offerData(String url);
+    void offerData(String localUri);
 
     /**
      * Mark this chat session as read.
