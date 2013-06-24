@@ -53,9 +53,9 @@ public class OtrChatListener implements MessageListener {
         
         for (TLV tlv : tlvs) {
             if (tlv.getType() == TLV_DATA_REQUEST) {
-                session.handleIncomingRequest(msg.getTo(), tlv.getValue());
+                mMessageListener.onIncomingDataRequest(session, msg, tlv.getValue());
             } else if (tlv.getType() == TLV_DATA_RESPONSE) {
-                session.handleIncomingResponse(msg.getTo(), tlv.getValue());
+                mMessageListener.onIncomingDataResponse(session, msg, tlv.getValue());
             }
         }
 
@@ -67,7 +67,12 @@ public class OtrChatListener implements MessageListener {
     }
     
     @Override
-    public void onIncomingData(ChatSession session, byte[] value) {
+    public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value) {
         throw new UnsupportedOperationException();
     }
 

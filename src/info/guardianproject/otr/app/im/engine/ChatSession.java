@@ -18,11 +18,9 @@
 package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.OtrChatManager;
-import info.guardianproject.otr.OtrDataHandler;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -41,7 +39,6 @@ public class ChatSession {
 
     private CopyOnWriteArrayList<MessageListener> mListeners;
     private Vector<Message> mHistoryMessages;
-    private DataHandler mDataHandler;
 
     /**
      * Creates a new ChatSession with a particular participant.
@@ -54,7 +51,6 @@ public class ChatSession {
         mManager = manager;
         mListeners = new CopyOnWriteArrayList<MessageListener>();
         mHistoryMessages = new Vector<Message>();
-        mDataHandler = new OtrDataHandler(this);
     }
 
     public ImEntity getParticipant() {
@@ -211,21 +207,5 @@ public class ChatSession {
      */
     public List<Message> getHistoryMessages() {
         return Collections.unmodifiableList(mHistoryMessages);
-    }
-
-    public void handleIncomingRequest(Address us, byte[] value) {
-        mDataHandler.onIncomingRequest(us, value);
-    }
-
-    public void handleIncomingResponse(Address us, byte[] value) {
-        mDataHandler.onIncomingResponse(us, value);
-    }
-
-    public void offerData(Address us, String url, Map<String, String> headers) {
-        mDataHandler.offerData(us, url, headers);
-    }
-
-    public void getData(Address us, String url, Map<String, String> headers) {
-        mDataHandler.getData(us, url, headers);
     }
 }
