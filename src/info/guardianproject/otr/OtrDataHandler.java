@@ -3,6 +3,7 @@ package info.guardianproject.otr;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
+import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.Message;
 
 import java.io.ByteArrayInputStream;
@@ -13,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
@@ -44,6 +46,9 @@ import org.apache.http.params.HttpParams;
 
 import android.util.Log;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 public class OtrDataHandler implements DataHandler {
     private static final byte[] EMPTY_BODY = new byte[0];
 
@@ -58,10 +63,13 @@ public class OtrDataHandler implements DataHandler {
     private LineFormatter lineFormatter = new BasicLineFormatter();
     private ChatSession mChatSession;
 
+    private DataListener mDataListener;
+
     private static String sStashUri;
 
-    public OtrDataHandler(ChatSession chatSession) {
+    public OtrDataHandler(ChatSession chatSession, DataListener dataListener) {
         this.mChatSession = chatSession;
+        this.mDataListener = dataListener;
     }
 
     public static class MyHttpRequestFactory implements HttpRequestFactory {
@@ -121,15 +129,17 @@ public class OtrDataHandler implements DataHandler {
         }
         
         String requestMethod = req.getRequestLine().getMethod();
+        String uid = req.getFirstHeader("Request-Id").getValue();
+
         if (requestMethod.equals("OFFER")) {
             Log.i(TAG, "incoming OFFER");
             String url = req.getRequestLine().getUri();
             if (!url.startsWith("otr-in-band:")) {
                 Log.w(TAG, "Unknown url scheme " + url);
-                sendResponse(us, 400, "Unknown scheme", EMPTY_BODY);
+                sendResponse(us, 400, "Unknown scheme", uid, EMPTY_BODY);
                 return;
             }
-            sendResponse(us, 200, "OK", EMPTY_BODY);
+            sendResponse(us, 200, "OK", uid, EMPTY_BODY);
             // Handle offer
             // TODO ask user to confirm we want this
             getData(us, url, null);
@@ -146,10 +156,10 @@ public class OtrDataHandler implements DataHandler {
                 throw new RuntimeException(e);
             }
             Log.i(TAG, "Sent sha1 is " + sha1sum(byteBuffer.toByteArray()));
-            sendResponse(us, 200, "OK", byteBuffer.toByteArray());
+            sendResponse(us, 200, "OK", uid, byteBuffer.toByteArray());
         } else {
             Log.w(TAG, "Unknown method " + requestMethod);
-            sendResponse(us, 400, "OK", EMPTY_BODY);
+            sendResponse(us, 400, "OK", uid, EMPTY_BODY);
         }
     }
 
@@ -175,10 +185,11 @@ public class OtrDataHandler implements DataHandler {
         }
     }
 
-    private void sendResponse(Address us, int code, String statusString, byte[] body) {
+    private void sendResponse(Address us, int code, String statusString, String uid, byte[] body) {
         MemorySessionOutputBuffer outBuf = new MemorySessionOutputBuffer();
         HttpMessageWriter writer = new HttpResponseWriter(outBuf, lineFormatter, params);
         HttpMessage response = new BasicHttpResponse(new BasicStatusLine(PROTOCOL_VERSION, code, statusString));
+        response.addHeader("Request-Id", uid);
         try {
             writer.write(response);
             outBuf.write(body);
@@ -207,7 +218,13 @@ public class OtrDataHandler implements DataHandler {
             e.printStackTrace();
             return;
         }
-        
+
+        String uid = res.getFirstHeader("Request-Id").getValue();
+        Request request = requestCache.getIfPresent(uid);
+        if (request == null) {
+            Log.w(TAG, "Unknown request ID " + uid);
+            return;
+        }
         int statusCode = res.getStatusLine().getStatusCode();
         if (statusCode != 200) {
             Log.w(TAG, "got status " + statusCode + ": " + res.getStatusLine().getReasonPhrase());
@@ -220,6 +237,11 @@ public class OtrDataHandler implements DataHandler {
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             readIntoByteBuffer(byteBuffer, buffer);
             Log.i(TAG, "Received sha1 is " + sha1sum(byteBuffer.toByteArray()));
+            if (request.method.equals("GET")) {
+                mDataListener.onTransferComplete(
+                        mChatSession.getParticipant().getAddress().getScreenName(),
+                        byteBuffer.toByteArray());
+            }
         } catch (IOException e) {
             Log.w(TAG, "Could not read line from response");
         }
@@ -238,10 +260,25 @@ public class OtrDataHandler implements DataHandler {
         sendRequest(us, "GET", url, EMPTY_BODY);
     }
 
+    static class Request {
+        public Request(String method, String url) {
+            this.method = method;
+            this.url = url;
+        }
+        
+        public String method;
+        public String url;
+    }
+    
+    Cache<String, Request> requestCache = CacheBuilder.newBuilder().maximumSize(100).build();
+    
     private void sendRequest(Address us, String method, String url, byte[] body) {
         MemorySessionOutputBuffer outBuf = new MemorySessionOutputBuffer();
         HttpMessageWriter writer = new HttpRequestWriter(outBuf, lineFormatter, params);
         HttpMessage request = new BasicHttpRequest(method, url, PROTOCOL_VERSION);
+        String uid = UUID.randomUUID().toString();
+        request.addHeader("Request-Id", uid);
+        
         try {
             writer.write(request);
             outBuf.write(body);
@@ -255,6 +292,7 @@ public class OtrDataHandler implements DataHandler {
         Message message = new Message("");
         message.setFrom(us);
         Log.i(TAG, "send request " + method + " " + url);
+        requestCache.put(uid, new Request(method, url));
         mChatSession.sendDataAsync(message, false, data);
     }
     

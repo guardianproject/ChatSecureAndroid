@@ -22,12 +22,15 @@ import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatListener;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrChatSessionAdapter;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.DataHandler;
+import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.GroupListener;
 import info.guardianproject.otr.app.im.engine.GroupMemberListener;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -42,9 +45,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.java.otr4j.session.SessionID;
+
 import org.jivesoftware.smack.packet.Packet;
 
-import net.java.otr4j.session.SessionID;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -92,9 +96,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private boolean mHasUnreadMessages;
 
     private RemoteImService service = null;
+    private DataHandler mDataHandler;
+
+    private DataAdapter mDataListener;
 
     public ChatSessionAdapter(ChatSession adaptee, ImConnectionAdapter connection) {
         mAdaptee = adaptee;
+        mDataListener = new DataAdapter();
+        mDataHandler = new OtrDataHandler(mAdaptee, mDataListener);
         mConnection = connection;
 
         service = connection.getContext();
@@ -284,7 +293,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             return;
         }
 
-        mAdaptee.offerData(mConnection.getLoginUser().getAddress(), url, null);
+        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, null);
     }
 
     /**
@@ -560,6 +569,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         return mContentResolver.update(builder.build(), values, null, null);
     }
 
+    class DataAdapter implements DataListener {
+        @Override
+        public void onTransferComplete(String username, byte[] data) {
+            // TODO have a specific notifier for files / data
+            String nickname = getNickName(username);
+            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                    getId(), username, nickname, "File received", false);
+        }
+    }
+    
     class ListenerAdapter implements MessageListener, GroupMemberListener {
 
         public boolean  onIncomingMessage(ChatSession ses, final Message msg) {
@@ -595,27 +614,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             mHasUnreadMessages = true;
             return true;
-        }
-        
-        @Override
-        public void onIncomingData(ChatSession session, byte[] data) {
-            int N = mRemoteListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IChatListener listener = mRemoteListeners.getBroadcastItem(i);
-                try {
-                    listener.onIncomingData(ChatSessionAdapter.this, data);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
-                }
-            }
-            mRemoteListeners.finishBroadcast();
-
-            if (N == 0)
-            {
-                // TODO nobody cared - notify user?
-            }
-            
         }
 
         public void onSendMessageError(ChatSession ses, final Message msg, final ImErrorInfo error) {
@@ -737,6 +735,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 }
             }
             mRemoteListeners.finishBroadcast();
+        }
+
+        @Override
+        public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value) {
+            mDataHandler.onIncomingRequest(msg.getTo(), value);
+        }
+
+        @Override
+        public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value) {
+            mDataHandler.onIncomingResponse(msg.getTo(), value);
         }
     }
 
