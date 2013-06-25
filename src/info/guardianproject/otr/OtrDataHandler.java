@@ -153,6 +153,14 @@ public class OtrDataHandler implements DataHandler {
                 return;
             }
             int length = Integer.parseInt(req.getFirstHeader("File-Length").getValue());
+            if (!req.containsHeader("File-Hash-SHA1"))
+            {
+                sendResponse(us, 400, "File-Hash-SHA1 must be supplied", uid, EMPTY_BODY);
+                return;
+            }
+            Log.i(TAG, "Incoming sha1sum " + req.getFirstHeader("File-Hash-SHA1").getValue());
+            Transfer transfer = new Transfer(url, length);
+            transferCache.put(url, transfer);
             // Handle offer
             // TODO ask user to confirm we want this
             // TODO throttle
@@ -183,7 +191,7 @@ public class OtrDataHandler implements DataHandler {
                     sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
                     return;
                 }
-                String[] startEnd = rangeHeader.split("-");
+                String[] startEnd = spec[1].split("-");
                 if (startEnd.length != 2)
                 {
                     sendResponse(us, 400, "Range must be START-END", uid, EMPTY_BODY);
@@ -201,6 +209,9 @@ public class OtrDataHandler implements DataHandler {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NumberFormatException e) {
+                sendResponse(us, 400, "Range is not numeric", uid, EMPTY_BODY);
+                return;
             }
             byte[] body = byteBuffer.toByteArray();
             Log.i(TAG, "Sent sha1 is " + sha1sum(body));
@@ -299,7 +310,7 @@ public class OtrDataHandler implements DataHandler {
         try {
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             readIntoByteBuffer(byteBuffer, buffer);
-            Log.i(TAG, "Received sha1 is " + sha1sum(byteBuffer.toByteArray()));
+            Log.i(TAG, "Received sha1 @" + request.start + " is " + sha1sum(byteBuffer.toByteArray()));
             if (request.method.equals("GET")) {
                 Transfer transfer = transferCache.getIfPresent(request.url);
                 if (transfer == null) {
@@ -308,9 +319,14 @@ public class OtrDataHandler implements DataHandler {
                 }
                 transfer.chunkReceived(request.start, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
+                    byte[] data = transfer.getData();
+                    Log.i(TAG, "Received file len= " + data.length + " sha1=" + sha1sum(data));
+
                     mDataListener.onTransferComplete(
                             mChatSession.getParticipant().getAddress().getScreenName(),
-                            transfer.getData());
+                            data);
+                } else {
+                    Log.i(TAG, "Progress " + transfer.chunksReceived + " / " + transfer.chunks);
                 }
             }
         } catch (IOException e) {
@@ -332,6 +348,14 @@ public class OtrDataHandler implements DataHandler {
         if (headers == null)
             headers = Maps.newHashMap();
         headers.put("File-Length", String.valueOf(length));
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        try {
+            FileInputStream is = new FileInputStream(localUri);
+            readIntoByteBuffer(byteBuffer, is, 0, (int)(length - 1));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        headers.put("File-Hash-SHA1", sha1sum(byteBuffer.toByteArray()));
         String url = "otr-in-band:/stuff.png";
         sendRequest(us, "OFFER", url, headers, EMPTY_BODY, new Request("OFFER", url));
     }
@@ -381,23 +405,20 @@ public class OtrDataHandler implements DataHandler {
         
         public Transfer(String url, int size) {
             this.url = url;
-            if (size > MAX_TRANSFER_LENGTH || size < 0) {
+            if (size > MAX_TRANSFER_LENGTH || size <= 0) {
                 throw new RuntimeException("Invalid transfer size " + size);
             }
+            chunks = ((size - 1) / MAX_CHUNK_LENGTH) + 1;
             buffer = new byte[size];
         }
         
         public byte[] getData() {
             // TODO Auto-generated method stub
-            return null;
+            return buffer;
         }
 
         public boolean isDone() {
             return chunksReceived == chunks;
-        }
-        
-        public void chunkRequested() {
-            chunks++;
         }
         
         public void chunkReceived(int start, byte[] bs) {
