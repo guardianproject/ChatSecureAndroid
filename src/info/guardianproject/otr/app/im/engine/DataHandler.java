@@ -18,6 +18,4 @@ public interface DataHandler {
     void onIncomingResponse(Address us, byte[] value);
 
     void offerData(Address us, String localUri, Map<String, String> headers);
-
-    void getData(Address us, String url, Map<String, String> headers);
 }
