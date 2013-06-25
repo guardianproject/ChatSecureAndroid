@@ -79,11 +79,15 @@ public class ContactView extends LinearLayout {
     private TextView mLine1;
     private TextView mLine2;
     private TextView mTimeStamp;
-    private Context mContext; // TODO
+    private Context mContext; 
     private ImageView mAvatar;
+    
+    
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        
+        mContext = context;
     }
 
     @Override
@@ -114,7 +118,8 @@ public class ContactView extends LinearLayout {
 
         boolean hasChat = !cursor.isNull(COLUMN_LAST_MESSAGE);
 
-        ImApp app = ImApp.getApplication((Activity) mContext);
+        ImApp app = (ImApp)((Activity)mContext).getApplication();
+                
         BrandingResources brandingRes = app.getBrandingResource(providerId);
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);

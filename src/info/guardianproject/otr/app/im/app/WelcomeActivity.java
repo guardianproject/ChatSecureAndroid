@@ -105,24 +105,21 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDefaultLocale = mPrefs.getString(getString(R.string.pref_default_locale), null);
-        setContentView(R.layout.welcome_activity);
         
         this.getSupportActionBar().hide();
         
-        Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
-
-        getStarted.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Intent intent = new Intent(getBaseContext(), AboutActivity.class);
-                startActivity(intent);
-            }
-        });
-
+      
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
      
+    }
+    
+    private void connectToCacheWord ()
+    {
+        
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        
+        mCacheWord.connectToService();
+        
     }
     
 
@@ -130,7 +127,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @SuppressWarnings("deprecation")
     private boolean cursorUnlocked(String pKey) {
         try {
-            mApp = ImApp.getApplication(this);
+            mApp = (ImApp)getApplication();
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
@@ -171,25 +168,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mCacheWord.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        mSignInHelper.stop();
-        
-        try
-        {
-            mCacheWord.disconnect();
-        }
-        catch (Exception e)
-        {
-            Log.w("CacheWord","cacheword on destroy didn't work");
-        }
-        
-        super.onDestroy();
-        
-    }
-    
-    
-    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -216,6 +194,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onResume() {
         super.onResume();
 
+        if (mCacheWord == null)
+            connectToCacheWord ();
+       
         try
         {
             mCacheWord.onResume();
@@ -236,8 +217,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             if (!doKeyStoreImport)
                 doOnResume();
             
-
-            
         }
         else
         {
@@ -249,7 +228,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
         
         if (mApp == null) {
-            mApp = ImApp.getApplication(this);
+
+            mApp = (ImApp)getApplication();
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
         }
@@ -288,6 +268,23 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             showActiveAccount();
         } else if (countConfigured > 0) {
             showAccounts();
+        }
+        else
+        {
+            setContentView(R.layout.welcome_activity);
+            
+            Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
+
+            getStarted.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            
         }
     
     }
@@ -475,55 +472,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 Toast.LENGTH_LONG).show();
     }
 
-    //    private void signOutAll() {
-    //        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-    //            public void onClick(DialogInterface dialog, int whichButton) {
-    //                do {
-    //                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-    //                    signOut(accountId);
-    //                } while (mProviderCursor.moveToNext());
-    //            }
-    //        };
-    //
-    //        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-    //                .setMessage(R.string.signout_all_confirm_message)
-    //                .setPositiveButton(R.string.yes, confirmListener) // default button
-    //                .setNegativeButton(R.string.no, null).setCancelable(true).show();
-    //    }
-
-    //    private void signOut(long accountId) {
-    //        if (accountId == 0) {
-    //            Log.w(TAG, "signOut: account id is 0, bail");
-    //            return;
-    //        }
-    //
-    //        try {
-    //            IImConnection conn = mApp.getConnectionByAccount(accountId);
-    //            if (conn != null) {
-    //                conn.logout();
-    //            }
-    //        } catch (RemoteException ex) {
-    //            Log.e(TAG, "signOut failed", ex);
-    //        }
-    //    }
+   
 
     void showAccounts() {
         startActivity(new Intent(getBaseContext(), AccountListActivity.class));
         finish();
     }
-    
-    /*
-    Intent getCreateAccountIntent() {
-        Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-
-        // TODO fix for multiple account support
-        long providerId = 1; // XMPP
-        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-        //TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
-        return intent;
-    }
-    */
     
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
@@ -602,9 +556,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     
     @Override
     public void onCacheWordLocked() {
-        Log.d(ImApp.LOG_TAG,"cache word locked");
-
-     //   ImApp.getApplication().forceStopImService(); 
+     
         
     }
 
@@ -616,6 +568,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
        
        cursorUnlocked(pkey);
+       
+       int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
+       mCacheWord.setTimeoutMinutes(defaultTimeout);
        
        
         

@@ -2,7 +2,7 @@
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
      android:versionName="0.0.12-alpha-1"
-     android:versionCode="61"
+     android:versionCode="62"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -391,7 +391,9 @@ android:anyDensity="true"
            <activity
             android:name=".app.LockScreenActivity"
             android:label="@string/title_activity_lock_screen"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            
+             >
         </activity>
           
         <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false" />

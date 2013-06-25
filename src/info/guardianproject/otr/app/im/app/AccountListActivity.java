@@ -39,12 +39,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -116,10 +118,12 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         ((ImApp)getApplication()).setAppTheme(this);
       
         super.onCreate(icicle);
+        
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
       
         ThemeableActivity.setBackgroundImage(this);
         
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
@@ -166,7 +170,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         });
         
 
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
         
         checkForUpdates();
     }
@@ -180,6 +183,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
+        
         mAdapter = new ProviderAdapter(this, mProviderCursor);
         setListAdapter(mAdapter);
     }
@@ -196,12 +200,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onDestroy() {
         mSignInHelper.stop();
         
-        try 
-        {
-            mCacheWord.disconnect();
-        }
-        catch (Exception e){}
-        
+       
         super.onDestroy();
     }
     
@@ -209,14 +208,20 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
     @Override
     protected void onResume() {
-        
-        ((ImApp)getApplication()).setAppTheme (this);
-        mHandler.registerForBroadcastEvents();
-        mCacheWord.onResume();
+
         super.onResume();
         
-        this.checkForCrashes();
+        mApp = (ImApp)getApplication();
+        mApp.startImServiceIfNeed();
+        mApp.setAppTheme(this);
+        
+        mHandler.registerForBroadcastEvents();
+        mCacheWord.onResume();
+        
+        checkForCrashes();
+        
     }
+    
 
     private void signInAccountAtPosition(int position) {
       //  Intent intent = null;
@@ -310,14 +315,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         return true;
     }
 
-    private void signOutAndKillPrompt ()
-    {
-        mHandler.sendEmptyMessage(HANDLE_COMPLETE_EXIT);
-        
-    }
     private void signOutAndKillProcess() {
         
-        if (ImApp.getApplication().hasActiveConnections())
+        if (mApp.hasActiveConnections())
         {
             if (!mProviderCursor.moveToFirst())
                 return;
@@ -330,10 +330,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             catch (Exception e){} //wait a second for account to log out
         }
         
-
         mCacheWord.manuallyLock();
-        
-        ImApp.getApplication().forceStopImService();
 
         finish();
     }
@@ -411,8 +408,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             importKeyStore();
             return true;
         case R.id.menu_exit:
-           
-            signOutAndKillPrompt();
+            signOutAndKillProcess();
             
             return true;
         }
@@ -731,7 +727,6 @@ private Handler mHandlerGoogleAuth = new Handler ()
         }
     }
 
-    private final static int HANDLE_COMPLETE_EXIT = -999;
     
     private final class MyHandler extends SimpleAlertHandler {
 
@@ -743,10 +738,6 @@ private Handler mHandlerGoogleAuth = new Handler ()
         public void handleMessage(Message msg) {
             if (msg.what == ImApp.EVENT_CONNECTION_DISCONNECTED) {
                 promptDisconnectedEvent(msg);
-            }
-            else if (msg.what == HANDLE_COMPLETE_EXIT)
-            {
-                signOutAndKillProcess ();
             }
             super.handleMessage(msg);
         }
@@ -777,11 +768,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
     }
 
 
-
     @Override
     public void onCacheWordLocked() {
-       signOutAndKillProcess();
-       
+     
     }
 
 
@@ -789,7 +778,12 @@ private Handler mHandlerGoogleAuth = new Handler ()
     @Override
     public void onCacheWordOpened() {
        
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
         
+        mCacheWord.setTimeoutMinutes(defaultTimeout);   
     }
     
     private void checkForCrashes() {

@@ -150,7 +150,7 @@ public class AccountActivity extends ThemeableActivity {
         });
 
         
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
 
         String action = i.getAction();
 
@@ -605,8 +605,8 @@ public class AccountActivity extends ThemeableActivity {
         values.put(AccountColumns.KEEP_SIGNED_IN, 0);
         getContentResolver().update(mAccountUri, values, null, null);
 
-        mApp = ImApp.getApplication(AccountActivity.this);
-
+        mApp = (ImApp)getApplication();
+        
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             @Override
             public void run() {

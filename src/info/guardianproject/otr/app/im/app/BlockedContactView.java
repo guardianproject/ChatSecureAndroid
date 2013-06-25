@@ -64,9 +64,13 @@ public class BlockedContactView extends LinearLayout {
         } else {
             mAvatar.setImageResource(R.drawable.avatar_unknown);
         }
+        
+        /*
         ImApp app = ImApp.getApplication((Activity) mContext);
+        
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         mBlockedIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_BLOCK));
+        */
         mLine1.setText(nickname);
         mLine2.setText(ImpsAddressUtils.getDisplayableAddress(username));
     }

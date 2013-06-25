@@ -82,7 +82,7 @@ public class NetworkConnectivityListener {
             mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
 
             //let's just check the state of our active network to set this value
-            if (ImApp.getApplication().isNetworkAvailableAndConnected()) {
+            if (isNetworkAvailableAndConnected(context.getApplicationContext())) {
                 mState = State.CONNECTED;
             } else {
                 mState = State.NOT_CONNECTED;
@@ -225,5 +225,20 @@ public class NetworkConnectivityListener {
      */
     public String getReason() {
         return mReason;
+    }
+    
+    public boolean isNetworkAvailableAndConnected (Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+      
+        NetworkInfo nInfo = manager.getActiveNetworkInfo();
+
+        if (nInfo != null)
+        {
+            Log.d(ImApp.LOG_TAG,"network state: available=" + nInfo.isAvailable() + " connected/connecting=" + nInfo.isConnectedOrConnecting());
+            return nInfo.isAvailable() && nInfo.isConnectedOrConnecting();
+        }
+        else
+            return false; //no network info is a bad idea
     }
 }

@@ -300,11 +300,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
     public void getVCard(String jid) {
 
-        qAvatar.add(jid);
+        Contact contact = getContactListManager().getContact(jid);
         
-        if (!threadAvatarQ.isAlive())
-            threadAvatarQ.start();
-        
+        if (contact != null && contact.getPresence().isOnline())
+        {
+            qAvatar.add(jid);
+            
+            if (!threadAvatarQ.isAlive())
+                threadAvatarQ.start();
+        } 
     }
     
     private Thread threadAvatarQ = new Thread ()
@@ -328,6 +332,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         
                         if (!file.exists())
                         {
+                            
                             VCard vCard = new VCard();
                             
                             // FIXME synchronize this to executor thread

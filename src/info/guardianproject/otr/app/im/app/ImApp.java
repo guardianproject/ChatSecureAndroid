@@ -85,6 +85,8 @@ public class ImApp extends Application {
 
 
     public static final String HOCKEY_APP_ID = "2fa3b9252319e47367f1f125bb3adcd1";
+
+    public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
     
     private Locale locale = null;
 
@@ -134,6 +136,7 @@ public class ImApp extends Application {
         Log.d(LOG_TAG, log);
     }
 
+    /*
     public static ImApp getApplication(Activity activity) {
         // TODO should this be synchronized?
         if (sImApp == null) {
@@ -150,7 +153,7 @@ public class ImApp extends Application {
         }
 
         return sImApp;
-    }
+    }*/
 
     /**
      * Initialize performs the manual ImApp instantiation and initialization.
@@ -161,14 +164,16 @@ public class ImApp extends Application {
      * object won't be instantiated, and we need to call initialize() manually
      * to instantiate and initialize it.
      */
-    private static void initialize(Activity activity) {
+    /*
+    public void initialize(Activity activity) {
         // construct the TalkApp manually and call onCreate().
         sImApp = new ImApp();
         sImApp.mApplicationContext = activity.getApplication();
         sImApp.mPrivateResources = activity.getResources();
         sImApp.onCreate();
     }
-
+*/
+    
     @Override
     public Resources getResources() {
         if (mApplicationContext == this) {
@@ -328,21 +333,24 @@ public class ImApp extends Application {
     }
 
     public synchronized void startImServiceIfNeed(boolean auto) {
-        if (!mServiceStarted) {
-            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                log("start ImService");
+        if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+            log("start ImService");
 
-            Intent serviceIntent = new Intent();
-            serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
-            serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        Intent serviceIntent = new Intent();
+        serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
+        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        
+        
+        mApplicationContext.startService(serviceIntent);
+        
+        mApplicationContext
+          .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
+
+        
+        mServiceStarted = true;
+
+        mConnectionListener = new MyConnListener(new Handler());
             
-            //mApplicationContext.startService(serviceIntent);
-            mApplicationContext
-                    .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
-            mServiceStarted = true;
-
-            mConnectionListener = new MyConnListener(new Handler());
-        }
     }
 
     public boolean hasActiveConnections ()
@@ -421,7 +429,7 @@ public class ImApp extends Application {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("service disconnected");
 
-            mConnections.clear();
+            //mConnections.clear();
             mImService = null;
         }
     };
@@ -658,6 +666,12 @@ public class ImApp extends Application {
 
     IImConnection getConnection(long providerId) {
         synchronized (mConnections) {
+            
+            
+            if (mConnections.size() == 0)
+                fetchActiveConnections();
+        
+            
             return mConnections.get(providerId);
         }
     }

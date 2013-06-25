@@ -43,7 +43,7 @@ public class SimpleAlertHandler extends Handler {
 
     protected void promptDisconnectedEvent(Message msg) {
         long providerId = ((long) msg.arg1 << 32) | msg.arg2;
-        ImApp app = ImApp.getApplication(mActivity);
+        ImApp app = (ImApp)mActivity.getApplication();
         ProviderDef provider = app.getProvider(providerId);
         ImErrorInfo error = (ImErrorInfo) msg.obj;
         String promptMsg;
@@ -57,12 +57,16 @@ public class SimpleAlertHandler extends Handler {
     }
 
     public void registerForBroadcastEvents() {
-        ImApp.getApplication(mActivity).registerForBroadcastEvent(
+        ImApp app = (ImApp)mActivity.getApplication();
+
+        app.registerForBroadcastEvent(
                 ImApp.EVENT_CONNECTION_DISCONNECTED, this);
     }
 
     public void unregisterForBroadcastEvents() {
-        ImApp.getApplication(mActivity).unregisterForBroadcastEvent(
+        ImApp app = (ImApp)mActivity.getApplication();
+
+        app.unregisterForBroadcastEvent(
                 ImApp.EVENT_CONNECTION_DISCONNECTED, this);
     }
 

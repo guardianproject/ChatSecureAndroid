@@ -16,7 +16,7 @@ import android.util.Log;
 public class AutoConnectListener extends BroadcastReceiver {
     private static final String TAG = "Gibberbot.AutoConnectListener";
   
-    public final static String BOOTFLAG = "BOOTFLAG";
+   // public final static String BOOTFLAG = "BOOTFLAG";
     
     @Override
     public synchronized void onReceive(Context context, Intent intent) {
@@ -24,14 +24,14 @@ public class AutoConnectListener extends BroadcastReceiver {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         
         boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
-        boolean isNetworkAvailable = ImApp.getApplication().isNetworkAvailableAndConnected();
+        boolean isNetworkAvailable = true;// ImApp.getApplication().isNetworkAvailableAndConnected();
         
         if (prefStartOnBoot) //aka auto start
         {
              
             if (isNetworkAvailable) {
                 
-                 ImApp.getApplication().startImServiceIfNeed(true);
+                // ImApp.getApplication().startImServiceIfNeed(true);
                 
             }
             

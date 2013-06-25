@@ -29,7 +29,7 @@ public class BootCompletedListener extends BroadcastReceiver {
         {
             if (prefStartOnBoot)
             {
-                ImApp.getApplication().startImServiceIfNeed(true);
+              //  ImApp.getApplication().startImServiceIfNeed(true);
             }
             else
             {

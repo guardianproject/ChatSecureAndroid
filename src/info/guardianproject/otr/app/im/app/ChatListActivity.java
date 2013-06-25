@@ -123,8 +123,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             finish();
             return;
         }
-        mApp = ImApp.getApplication(this);
-
+        mApp = (ImApp)getApplication();
         initAccount();
 
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
@@ -219,7 +218,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             clearConnectionStatus();
             mActiveChatListView.setConnection(null);
             
-          //  finish();
             
         } else {
             mActiveChatListView.setConnection(mConn);     

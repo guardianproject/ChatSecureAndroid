@@ -111,7 +111,9 @@ public class UserPresenceView extends LinearLayout {
                 if (s == Imps.Presence.OFFLINE) {
                     s = Imps.Presence.INVISIBLE;
                 }
-                ImApp app = ImApp.getApplication((Activity) mContext);
+                ImApp app = (ImApp)((Activity)mContext).getApplication();
+
+                
                 BrandingResources brandingRes = app.getBrandingResource(mProviderId);
                 Drawable icon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(s));
                 String text = brandingRes.getString(PresenceUtils.getStatusStringRes(s));
@@ -151,7 +153,8 @@ public class UserPresenceView extends LinearLayout {
     }
 
     private void updateView() {
-        ImApp app = ImApp.getApplication((Activity) mContext);
+        ImApp app = (ImApp)((Activity)mContext).getApplication();
+        
         BrandingResources brandingRes = app.getBrandingResource(mProviderId);
         int status = PresenceUtils.convertStatus(mPresence.getStatus());
         mStatusDialogButton.setImageDrawable(brandingRes.getDrawable(PresenceUtils

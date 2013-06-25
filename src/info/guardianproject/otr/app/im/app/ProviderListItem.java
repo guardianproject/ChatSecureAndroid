@@ -115,7 +115,8 @@ public class ProviderListItem extends LinearLayout {
         
         mAccountId = cursor.getLong(mActiveAccountIdColumn);
         
-       ImApp app = ImApp.getApplication(mActivity);
+
+        ImApp app = (ImApp)mActivity.getApplication();
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 

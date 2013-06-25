@@ -67,8 +67,9 @@ public class BlockedContactsActivity extends ListActivity {
         setContentView(R.layout.blocked_contacts_activity);
         mHandler = new SimpleAlertHandler(this);
 
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
         mApp.startImServiceIfNeed();
+        
         if (!resolveIntent()) {
             finish();
             return;

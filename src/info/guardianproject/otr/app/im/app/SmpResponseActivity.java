@@ -52,7 +52,10 @@ public class SmpResponseActivity extends Activity {
     }
 
     private void respondSmp(String sid, String answer) {
-        ImApp app = ImApp.getApplication(this);
+        
+        ImApp app = (ImApp)getApplication();
+
+        
 
         IOtrChatSession iOtrSession;
         try {

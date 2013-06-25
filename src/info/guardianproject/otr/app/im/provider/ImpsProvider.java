@@ -16,7 +16,6 @@
 
 package info.guardianproject.otr.app.im.provider;
 
-import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
 

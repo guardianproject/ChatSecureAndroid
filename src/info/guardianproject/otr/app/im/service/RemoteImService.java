@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.AccountListActivity;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
@@ -197,21 +198,21 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
 
-        if (getGlobalSettings().getUseForegroundPriority())
+      //  if (getGlobalSettings().getUseForegroundPriority())
             startForegroundCompat();
         
         
     }
 
     private void startForegroundCompat() {
-        Notification notification = new Notification(R.drawable.ic_stat_status, "Gibberbot",
+        Notification notification = new Notification(R.drawable.ic_stat_status, getString(R.string.app_name),
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
         Intent notificationIntent = new Intent(this, AccountListActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setLatestEventInfo(this, "Gibberbot", "Active.", notification.contentIntent);
+        notification.setLatestEventInfo(this, getString(R.string.app_name), "Active.", notification.contentIntent);
         mForegroundStarter = new ForegroundStarter(this);
         mForegroundStarter.startForegroundCompat(1000, notification);
     }
@@ -243,6 +244,20 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        
+        return super.onStartCommand(intent, flags, startId);
+    }
+    
+    
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
+
+
+    @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         
@@ -256,7 +271,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
             @Override
             public void onCacheWordUninitialized() {
-                // TODO Auto-generated method stub
                 
             }
 
@@ -268,10 +282,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
             @Override
             public void onCacheWordOpened() {
-             //   if (mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
                     mNeedCheckAutoLogin = false;
                     autoLogin();
-              //  }
                 
             }
             
@@ -319,10 +331,20 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             long accountId = cursor.getLong(ACCOUNT_ID_COLUMN);
             long providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             IImConnection conn = createConnection(providerId, accountId);
-            try {
-                conn.login(null, true, true);
-            } catch (RemoteException e) {
-                Log.w(TAG, "Logging error while automatically login!");
+            
+            try
+            {
+                if (conn.getState() != ImConnection.LOGGED_IN)
+                {
+                    try {
+                        conn.login(null, true, true);
+                    } catch (RemoteException e) {
+                        Log.w(TAG, "Logging error while automatically login!");
+                    }
+                }
+            }
+            catch (Exception e){
+                Log.d(ImApp.LOG_TAG,"error auto logging into ImConnection",e);
             }
         }
         cursor.close();
@@ -374,9 +396,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             conn.logout();
         }
         
-        if (mCacheWord != null)
-            mCacheWord.disconnect();
-
+        
         AndroidSystemService.getInstance().shutdown();
 
         mNetworkConnectivityListener.unregisterHandler(mServiceHandler);
@@ -387,6 +407,20 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
+        
+        try
+        {
+            if (mCacheWord != null)
+            {
+                mCacheWord.manuallyLock();
+                mCacheWord.disconnect();
+                
+            }
+        }
+        catch (Exception e)
+        {
+            Log.w(TAG,"error shuttind down cacheword",e);
+        }
         
         /*
         if (mKillProcessOnStop)

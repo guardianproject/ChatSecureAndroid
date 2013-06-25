@@ -68,7 +68,8 @@ public class ContactPresenceActivity extends ThemeableActivity {
     private final static String TAG = "Gibberbot";
 
     public ContactPresenceActivity() {
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
+
     }
 
     @Override

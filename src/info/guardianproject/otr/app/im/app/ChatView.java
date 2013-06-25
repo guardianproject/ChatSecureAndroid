@@ -320,7 +320,7 @@ public class ChatView extends LinearLayout {
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mActivity = (NewChatActivity) context;
-        mApp = ImApp.getApplication(mActivity);
+        mApp = (ImApp)mActivity.getApplication();
         mHandler = new ChatViewHandler(mActivity);
         mContext = context;
 
@@ -494,7 +494,9 @@ public class ChatView extends LinearLayout {
         if (conn == null) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
                 log("Connection has been signed out");
-            mActivity.finish();
+          
+            //  mActivity.finish();
+            
             return;
         }
 
@@ -674,7 +676,7 @@ public class ChatView extends LinearLayout {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query invitation: " + invitationId);
             }
-            mActivity.finish();
+          //  mActivity.finish();
         } else {
             setViewType(VIEW_TYPE_INVITATION);
 
@@ -725,7 +727,7 @@ public class ChatView extends LinearLayout {
             if (conn != null) {
                 conn.rejectInvitation(mInvitationId);
             }
-            mActivity.finish();
+          //  mActivity.finish();
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
@@ -740,7 +742,7 @@ public class ChatView extends LinearLayout {
         } catch (RemoteException ex) {
             mHandler.showServiceErrorAlert();
         }
-        mActivity.finish();
+     //   mActivity.finish();
     }
 
     void declineSubscription() {
@@ -755,7 +757,7 @@ public class ChatView extends LinearLayout {
                 mHandler.showServiceErrorAlert();
             }
         }
-        mActivity.finish();
+    //    mActivity.finish();
     }
 
     private void setViewType(int type) {
@@ -925,7 +927,7 @@ public class ChatView extends LinearLayout {
                     IImConnection conn = mApp.getConnection(mProviderId);
                     IContactListManager manager = conn.getContactListManager();
                     manager.blockContact(mUserName);
-                    mActivity.finish();
+                  //  mActivity.finish();
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert();
                 }

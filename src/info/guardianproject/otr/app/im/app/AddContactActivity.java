@@ -78,7 +78,7 @@ public class AddContactActivity extends ThemeableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
         mHandler = new SimpleAlertHandler(this);
         resolveIntent(getIntent());
 

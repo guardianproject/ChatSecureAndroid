@@ -353,7 +353,6 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
             TextView text2 = (TextView) v.findViewById(R.id.text2);
 
             Resources r = v.getResources();
-            ImApp app = ImApp.getApplication(mActivity);
             String text = r.getString(R.string.subscriptions);
             text1.setText(text);
             text2.setVisibility(View.GONE);

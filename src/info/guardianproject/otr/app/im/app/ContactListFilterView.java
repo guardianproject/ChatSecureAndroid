@@ -20,10 +20,10 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -153,8 +153,10 @@ public class ContactListFilterView extends LinearLayout {
         if (!uri.equals(mUri)) {
             mUri = uri;
 
-            Cursor contactCursor = runQuery(filterString);
+            if (mContactAdapter != null && mContactAdapter.getCursor() != null)
+                mContactAdapter.getCursor() .close();
             
+            Cursor contactCursor = runQuery(filterString);
             
             if (mContactAdapter == null) {
                 mContactAdapter = new ContactAdapter(mContext, contactCursor);
@@ -164,7 +166,6 @@ public class ContactListFilterView extends LinearLayout {
                 mContactAdapter.changeCursor(contactCursor);
             }
             
-            //contactCursor.close();
             
         } else {
             mFilter.filter(filterString);
@@ -186,8 +187,14 @@ public class ContactListFilterView extends LinearLayout {
             DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");
         }
 
-        return mContext.getContentResolver().query(mUri, ContactView.CONTACT_PROJECTION,
+        ContentResolver cr = mContext.getContentResolver();
+        
+        Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
                 buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        
+        
+        
+        return cursor;
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {

@@ -70,7 +70,8 @@ public class SignoutActivity extends ThemeableActivity {
             c.close();
         }
 
-        mApp = ImApp.getApplication(this);
+
+        mApp = (ImApp)getApplication();
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {
                 signOut(providerId, accountId);

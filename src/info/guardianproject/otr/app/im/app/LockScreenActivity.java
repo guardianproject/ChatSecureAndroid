@@ -7,7 +7,6 @@ import info.guardianproject.otr.app.im.R;
 
 import java.security.GeneralSecurityException;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +27,9 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class LockScreenActivity extends Activity implements ICacheWordSubscriber {
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class LockScreenActivity extends SherlockActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
     private final static int MIN_PASS_LENGTH = 6;
@@ -49,6 +50,9 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+        getSherlock().getActionBar().hide();
+        
         setContentView(R.layout.activity_lock_screen);
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
@@ -255,6 +259,8 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
             mPasswordError = getString(R.string.pass_err_length);
             return false;
         }
+        //only enforce password length
+        /*
         else if (!upper)
         {
             mPasswordError = getString(R.string.pass_err_upper);
@@ -269,7 +275,7 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
         {
             mPasswordError = getString(R.string.pass_err_num);
             return false;
-        }
+        }*/
         // if it got here, then must be okay
         // hopefully the user can remember it
         return true;

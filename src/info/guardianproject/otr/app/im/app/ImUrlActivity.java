@@ -66,7 +66,8 @@ public class ImUrlActivity extends ThemeableActivity {
                 finish();
                 return;
             }
-            mApp = ImApp.getApplication(this);
+            mApp = (ImApp)getApplication();
+            
             mApp.callWhenServiceConnected(new Handler(), new Runnable() {
                 public void run() {
                     handleIntent();

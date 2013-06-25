@@ -116,14 +116,15 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             return;
         }
         
-        mApp = ImApp.getApplication(this);
-        
+        mApp = (ImApp)getApplication();
         
     }
     
     private void initAccount ()
     {
 
+
+        
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
@@ -414,6 +415,11 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     @Override
     protected void onResume() {
         super.onResume();
+        
+        mApp = (ImApp)getApplication();
+        mApp.startImServiceIfNeed();
+        mApp.setAppTheme(this);
+        
         
         initAccount ();
         

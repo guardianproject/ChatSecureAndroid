@@ -56,7 +56,8 @@ public class SignInHelper {
         mListener = new MyConnectionListener(mHandler);
         mSignInListener = listener;
         if (mApp == null) {
-            mApp = ImApp.getApplication(context);
+
+            mApp = (ImApp)mContext.getApplication();
         }
         
         connections = new HashSet<IImConnection>();

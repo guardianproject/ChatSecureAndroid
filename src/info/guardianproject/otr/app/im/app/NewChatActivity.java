@@ -108,7 +108,8 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         });
        
         
-        mApp = ImApp.getApplication(this);
+
+        mApp = (ImApp)getApplication();
         mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
 
         mContextMenuHandler = new ContextMenuHandler();
