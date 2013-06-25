@@ -8,12 +8,14 @@ import info.guardianproject.otr.app.im.engine.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.http.HttpException;
@@ -48,8 +50,13 @@ import android.util.Log;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Maps;
 
 public class OtrDataHandler implements DataHandler {
+    private static final int MAX_CHUNK_LENGTH = 32768;
+
+    private static final int MAX_TRANSFER_LENGTH = 1024*1024*64;
+
     private static final byte[] EMPTY_BODY = new byte[0];
 
     private static final String TAG = "GB.OtrDataHandler";
@@ -140,37 +147,86 @@ public class OtrDataHandler implements DataHandler {
                 return;
             }
             sendResponse(us, 200, "OK", uid, EMPTY_BODY);
+            if (!req.containsHeader("File-Length"))
+            {
+                sendResponse(us, 400, "File-Length must be supplied", uid, EMPTY_BODY);
+                return;
+            }
+            int length = Integer.parseInt(req.getFirstHeader("File-Length").getValue());
             // Handle offer
             // TODO ask user to confirm we want this
-            getData(us, url, null);
+            // TODO throttle
+            Map<String, String> headers = Maps.newHashMap();
+            int current = 0;
+            while (current < length) {
+                int end = current + MAX_CHUNK_LENGTH - 1;
+                if (end >= length) {
+                    end = length - 1;
+                }
+                getData(us, url, headers, current, end);
+                current += MAX_CHUNK_LENGTH;
+            }
         } else if (requestMethod.equals("GET")) {
             Log.i(TAG, "incoming GET");
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             try {
                 FileInputStream is = new FileInputStream(sStashUri);
+                if (!req.containsHeader("Range"))
+                {
+                    sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
+                    return;
+                }
+                String rangeHeader = req.getFirstHeader("Range").getValue();
+                String[] spec = rangeHeader.split("=");
+                if (spec.length != 2 || !spec[0].equals("bytes"))
+                {
+                    sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
+                    return;
+                }
+                String[] startEnd = rangeHeader.split("-");
+                if (startEnd.length != 2)
+                {
+                    sendResponse(us, 400, "Range must be START-END", uid, EMPTY_BODY);
+                    return;
+                }
 
-                readIntoByteBuffer(byteBuffer, is);
+                int start = Integer.parseInt(startEnd[0]);
+                int end = Integer.parseInt(startEnd[1]);
+                if (end - start + 1 > MAX_CHUNK_LENGTH) {
+                    sendResponse(us, 400, "Range must be at most " + MAX_CHUNK_LENGTH, uid, EMPTY_BODY);
+                    return;
+                }
+                readIntoByteBuffer(byteBuffer, is, start, end);
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Log.i(TAG, "Sent sha1 is " + sha1sum(byteBuffer.toByteArray()));
-            sendResponse(us, 200, "OK", uid, byteBuffer.toByteArray());
+            byte[] body = byteBuffer.toByteArray();
+            Log.i(TAG, "Sent sha1 is " + sha1sum(body));
+            sendResponse(us, 200, "OK", uid, body);
         } else {
             Log.w(TAG, "Unknown method " + requestMethod);
             sendResponse(us, 400, "OK", uid, EMPTY_BODY);
         }
     }
 
-    private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is)
+    private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
+        if (start != is.skip(start)) {
+            return;
+        }
+        int size = end - start + 1;
         int buffersize = 1024;
         byte[] buffer = new byte[buffersize];
 
         int len = 0;
         while((len = is.read(buffer)) != -1){
+            if (len > size) {
+                len = size;
+            }
             byteBuffer.write(buffer, 0, len);
+            size -= len;
         }
     }
 
@@ -225,6 +281,13 @@ public class OtrDataHandler implements DataHandler {
             Log.w(TAG, "Unknown request ID " + uid);
             return;
         }
+
+        if (request.isSeen()) {
+            Log.w(TAG, "Already seen request ID " + uid);
+            return;
+        }
+        
+        request.seen();
         int statusCode = res.getStatusLine().getStatusCode();
         if (statusCode != 200) {
             Log.w(TAG, "got status " + statusCode + ": " + res.getStatusLine().getReasonPhrase());
@@ -238,49 +301,128 @@ public class OtrDataHandler implements DataHandler {
             readIntoByteBuffer(byteBuffer, buffer);
             Log.i(TAG, "Received sha1 is " + sha1sum(byteBuffer.toByteArray()));
             if (request.method.equals("GET")) {
-                mDataListener.onTransferComplete(
-                        mChatSession.getParticipant().getAddress().getScreenName(),
-                        byteBuffer.toByteArray());
+                Transfer transfer = transferCache.getIfPresent(request.url);
+                if (transfer == null) {
+                    Log.w(TAG, "Transfer expired for url " + request.url);
+                    return;
+                }
+                transfer.chunkReceived(request.start, byteBuffer.toByteArray());
+                if (transfer.isDone()) {
+                    mDataListener.onTransferComplete(
+                            mChatSession.getParticipant().getAddress().getScreenName(),
+                            transfer.getData());
+                }
             }
         } catch (IOException e) {
             Log.w(TAG, "Could not read line from response");
         }
     }
 
+    /**
+     * @param headers may be null 
+     */
     @Override
     public void offerData(Address us, String localUri, Map<String, String> headers) {
         // TODO stash localUri and intended recipient
         sStashUri = localUri;
+        long length = new File(localUri).length();
+        if (length > MAX_TRANSFER_LENGTH) {
+            throw new RuntimeException("Length too large " + length);
+        }
+        if (headers == null)
+            headers = Maps.newHashMap();
+        headers.put("File-Length", String.valueOf(length));
         String url = "otr-in-band:/stuff.png";
-        sendRequest(us, "OFFER", url, EMPTY_BODY);
+        sendRequest(us, "OFFER", url, headers, EMPTY_BODY, new Request("OFFER", url));
     }
 
-    @Override
-    public void getData(Address us, String url, Map<String, String> headers) {
-        sendRequest(us, "GET", url, EMPTY_BODY);
+    public void getData(Address us, String url, Map<String, String> headers, int start, int end) {
+        String rangeSpec = "bytes=" + start + "-" + end;
+        Log.i(TAG, "Getting range " + rangeSpec);
+        headers.put("Range", rangeSpec);
+        Request requestMemo = new Request("GET", url, start, end);
+
+        sendRequest(us, "GET", url, headers, EMPTY_BODY, requestMemo);
     }
 
     static class Request {
-        public Request(String method, String url) {
+        public Request(String method, String url, int start, int end) {
             this.method = method;
             this.url = url;
+            this.start = start;
+            this.end = end;
+        }
+
+        public Request(String method, String url) {
+            this(method, url, -1, -1);
         }
         
         public String method;
         public String url;
+        public int start;
+        public int end;
+        public byte[] data;
+        public boolean seen = false;
+        
+        public boolean isSeen() {
+            return seen;
+        }
+        
+        public void seen() {
+            seen = true;
+        }
+    }
+    
+    static class Transfer {
+        public String url;
+        public int chunks = 0;
+        public int chunksReceived = 0;
+        byte[] buffer;
+        
+        public Transfer(String url, int size) {
+            this.url = url;
+            if (size > MAX_TRANSFER_LENGTH || size < 0) {
+                throw new RuntimeException("Invalid transfer size " + size);
+            }
+            buffer = new byte[size];
+        }
+        
+        public byte[] getData() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public boolean isDone() {
+            return chunksReceived == chunks;
+        }
+        
+        public void chunkRequested() {
+            chunks++;
+        }
+        
+        public void chunkReceived(int start, byte[] bs) {
+            chunksReceived++;
+            System.arraycopy(bs, 0, buffer, start, bs.length);
+        }
     }
     
     Cache<String, Request> requestCache = CacheBuilder.newBuilder().maximumSize(100).build();
+    Cache<String, Transfer> transferCache = CacheBuilder.newBuilder().maximumSize(100).build();
     
-    private void sendRequest(Address us, String method, String url, byte[] body) {
+    private void sendRequest(Address us, String method, String url, Map<String, String> headers, byte[] body, Request requestMemo) {
         MemorySessionOutputBuffer outBuf = new MemorySessionOutputBuffer();
         HttpMessageWriter writer = new HttpRequestWriter(outBuf, lineFormatter, params);
-        HttpMessage request = new BasicHttpRequest(method, url, PROTOCOL_VERSION);
+        HttpMessage req = new BasicHttpRequest(method, url, PROTOCOL_VERSION);
         String uid = UUID.randomUUID().toString();
-        request.addHeader("Request-Id", uid);
+        req.addHeader("Request-Id", uid);
+        if (headers != null) {
+            for (Entry<String, String> entry : headers.entrySet()) {
+                req.addHeader(entry.getKey(), entry.getValue());
+            }
+        }
         
         try {
-            writer.write(request);
+            writer.write(req);
             outBuf.write(body);
             outBuf.flush();
         } catch (IOException e) {
@@ -292,7 +434,7 @@ public class OtrDataHandler implements DataHandler {
         Message message = new Message("");
         message.setFrom(us);
         Log.i(TAG, "send request " + method + " " + url);
-        requestCache.put(uid, new Request(method, url));
+        requestCache.put(uid, requestMemo);
         mChatSession.sendDataAsync(message, false, data);
     }
     
