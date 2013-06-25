@@ -1499,7 +1499,10 @@ public class ImpsProvider extends ContentProvider {
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
         } catch (Exception ex) {
-            LogCleaner.error(LOG_TAG, "query db caught ", ex);
+            LogCleaner.error(LOG_TAG, "query exc db caught ", ex);
+        }
+        catch (Error ex) {
+            LogCleaner.error(LOG_TAG, "query error db caught ", ex);
         }
         
 

@@ -787,21 +787,24 @@ public class ImApp extends Application {
     }
 
     private void fetchActiveConnections() {
-        try {
-            // register the listener before fetch so that we won't miss any connection.
-            mImService.addConnectionCreatedListener(mConnCreationListener);
-            synchronized (mConnections) {
-                for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
-                    IImConnection conn = IImConnection.Stub.asInterface(binder);
-                    long providerId = conn.getProviderId();
-                    if (!mConnections.containsKey(providerId)) {
-                        mConnections.put(providerId, conn);
-                        conn.registerConnectionListener(mConnectionListener);
+        if (mImService != null)
+        {
+            try {
+                // register the listener before fetch so that we won't miss any connection.
+                mImService.addConnectionCreatedListener(mConnCreationListener);
+                synchronized (mConnections) {
+                    for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
+                        IImConnection conn = IImConnection.Stub.asInterface(binder);
+                        long providerId = conn.getProviderId();
+                        if (!mConnections.containsKey(providerId)) {
+                            mConnections.put(providerId, conn);
+                            conn.registerConnectionListener(mConnectionListener);
+                        }
                     }
                 }
+            } catch (RemoteException e) {
+                Log.e(LOG_TAG, "fetching active connections", e);
             }
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "fetching active connections", e);
         }
     }
 

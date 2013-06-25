@@ -57,7 +57,7 @@ public class ActiveChatListView extends LinearLayout {
     SimpleAlertHandler mHandler;
     Context mContext;
     private final IChatSessionListener mChatListListener;
-    UserPresenceView mPresenceView;
+    
     ListView mChatList;
     private ChatListAdapter mAdapter;
     private boolean mAutoRefresh = true;
@@ -74,7 +74,7 @@ public class ActiveChatListView extends LinearLayout {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
-                    mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+                    
             }  
         };
     }
@@ -100,7 +100,7 @@ public class ActiveChatListView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+        
         mChatList = (ListView) findViewById(R.id.chatsList);
         mChatList.setOnItemClickListener(mOnClickListener);
     }
@@ -117,18 +117,19 @@ public class ActiveChatListView extends LinearLayout {
             mConn = conn;
 
             if (conn != null) {
-                mPresenceView.setConnection(conn);
 
                 registerListeners();
 
                 if (mAdapter == null) {
-                    mAdapter = new ChatListAdapter(conn, mScreen);
+                    mAdapter = new ChatListAdapter(mScreen);
+                    mAdapter.changeConnection();
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
                 } 
-                else {
-                    mAdapter.changeConnection(conn);
-                }
+                
+           //     mAdapter.changeConnection();
+                
+                
 //                try {
 //                    IChatSessionManager listMgr = conn.getChatSessionManager();
                     mAdapter.startAutoRequery();

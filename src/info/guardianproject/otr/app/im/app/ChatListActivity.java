@@ -53,12 +53,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ListView;
+import android.widget.Spinner;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -105,15 +105,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         mActiveChatListView = (ActiveChatListView) inflate.inflate(R.layout.chat_list_view, null);
 
         setContentView(mActiveChatListView);
-         mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
-         mConnectionListener = new ConnectionListenerAdapter(mHandler) {
-             @Override
-             public void onConnectionStateChange(IImConnection connection, int state,
-                     ImErrorInfo error) {
-            //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
-             }  
-         };
-
+        
+        
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         
@@ -144,12 +137,18 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
 
         mGlobalSettingMap.addObserver(new Observer() {
             public void update(Observable observed, Object updateData) {
-                if (!mDestroyed) {
+                if (!mDestroyed) { mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+                mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+                    @Override
+                    public void onConnectionStateChange(IImConnection connection, int state,
+                            ImErrorInfo error) {
+                   //     mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+                    }  
+                };
+
                 }
             }
         });
-        
-        setupActionBarList(mAccountId);
         
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
@@ -168,9 +167,21 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
      //   mFilterView.getListView().setOnCreateContextMenuListener(this);
         mFilterView.setListener(this);
         
+        mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
+        mConnectionListener = new ConnectionListenerAdapter(mHandler) {
+            @Override
+            public void onConnectionStateChange(IImConnection connection, int state,
+                    ImErrorInfo error) {
+                    mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+                
+            }  
+        };
+
+        
         menu.setMenu(mFilterView);
         
-
+        setupActionBarList(mAccountId);
+        
         initAccount ();
         
         mApp.registerForConnEvents(mHandler);
@@ -221,7 +232,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             
         } else {
             mActiveChatListView.setConnection(mConn);     
-            
+
             mPresenceView.setConnection(mConn);
             try {
                 mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
@@ -248,7 +259,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
 
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlock().getActionBar().setTitle("");
         
         Cursor providerCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
@@ -279,7 +289,31 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         providerCursor.moveToFirst();
 
         ProviderAdapter pAdapter = new ProviderAdapter(this, providerCursor);
+      
+        Spinner spinnerAccounts = (Spinner)mFilterView.findViewById(R.id.spinnerAccounts);
+        spinnerAccounts.setAdapter(pAdapter);
+        spinnerAccounts.setOnItemSelectedListener(new OnItemSelectedListener ()
+        {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
+               
+                mAccountId = mAccountIds[itemPosition];
+                //update account list
+                initAccount();
+                initConnection();
+                
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
         
+        /*
         this.getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         this.getSherlock().getActionBar().setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
 
@@ -302,6 +336,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         });
         
         getSherlock().getActionBar().setSelectedNavigationItem(currentAccountIndex);
+        */
 
 
     }
@@ -533,8 +568,15 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         uri = ContentUris.withAppendedId(uri, mAccountId);
         mFilterView.doFilter(uri, null);
 
-        setContentView(mFilterView);
-        mFilterView.requestFocus();
+        try
+        {
+            setContentView(mFilterView);
+            mFilterView.requestFocus();
+        }
+        catch (Exception e) {
+           Log.d(ImApp.LOG_TAG,"error switching view",e);
+        }
+        
         mIsFiltering = true;
     }
 

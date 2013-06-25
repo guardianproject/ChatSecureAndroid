@@ -20,6 +20,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -57,8 +58,8 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
     Activity mActivity;
     SimpleAlertHandler mHandler;
     private LayoutInflater mInflate;
-    private long mProviderId;
-    long mAccountId;
+    private long mProviderId = -1;
+    long mAccountId = -1;
     Cursor mOngoingConversations;
     boolean mDataValid;
     ListTreeAdapter mAdapter;
@@ -132,7 +133,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
     private boolean mAutoRequery;
     private boolean mRequeryPending;
 
-    public ChatListAdapter(IImConnection conn, Activity activity) {
+    public ChatListAdapter(Activity activity) {
         mActivity = activity;
         mInflate = activity.getLayoutInflater();
         mHandler = new SimpleAlertHandler(activity);
@@ -143,7 +144,6 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         mDataSetObserver = new MyDataSetObserver();
         mQueryHandler = new QueryHandler(activity);
 
-        changeConnection(conn);
     }
 
     public void changeConnection(IImConnection conn) {
@@ -170,6 +170,28 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
             }
         }
     }
+    
+    public void changeConnection() {
+        mQueryHandler.cancelOperation(TOKEN_ONGOING_CONVERSATION);
+
+        synchronized (this) {
+            if (mOngoingConversations != null) {
+                mOngoingConversations.close();
+                mOngoingConversations = null;
+            }
+            if (mOnlineContactsCountMap != null) {
+                mOnlineContactsCountMap.close();
+            }
+        }
+
+        mAdapter.notifyDataSetChanged();
+        
+        mProviderId = -1;
+        mAccountId = -1;
+        startQueryOngoingConversations();
+   
+       
+    }
 
     public void startAutoRequery() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
@@ -188,12 +210,20 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         }
 
         Uri uri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-        uri = ContentUris.withAppendedId(uri, mProviderId);
-        uri = ContentUris.withAppendedId(uri, mAccountId);
-
+        
+        if (mProviderId != -1)
+            uri = ContentUris.withAppendedId(uri, mProviderId);
+        
+        if (mAccountId != -1)
+            uri = ContentUris.withAppendedId(uri, mAccountId);
+        
+        
         mQueryHandler.startQuery(TOKEN_ONGOING_CONVERSATION, null, uri,
                 ContactView.CONTACT_PROJECTION, null, null, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
+    
+ 
+
 
     void startQuerySubscriptions() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
