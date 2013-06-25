@@ -486,7 +486,6 @@
   <string name="menu_view_encrypt_chat">تشفير On/Off</string>
   <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
   <string name="welcome_first">هل هذه أول مرة تستخدم بها جيبربوت؟</string>
   <string name="welcome_skip">غير قادر على الانتظار؟</string>
   <string name="welcome_about">إبدأ</string>

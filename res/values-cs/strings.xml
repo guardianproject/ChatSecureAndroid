@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">\n        Umožňuje aplikacím psát data na IM poskytovatele obsahu.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chat - Vyberte účet</string>
@@ -478,13 +477,11 @@
   <string name="menu_view_encrypt_chat">Šifrování On / Off</string>
   <string name="use_tor">Připojit přes Tor (Vyžaduje aplikaci Orbot)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">Používáte poprvé Gibberbot? </string>
+  <string name="welcome_first">Používáte poprvé? </string>
   <string name="welcome_skip">Už se nemůžu dočkat, jak začít?</string>
   <string name="welcome_about">Jak začít</string>
   <string name="welcome_account">Nastavení účtu</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">O Gibberbotu</string>
   <string name="about_welcome">Gibberbot je mobilní instant messaging aplikace, která poskytuje zvláštní bezpečnostní prvky, které zabraňují ostatním špehování vašich rozhovorů a komunikace. \n\nAplikace podporuje všechny služby, které používají Jabber, nebo XMPP protokol, jako je Google GTalk, nebo Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Jak je to bezpečné?</string>

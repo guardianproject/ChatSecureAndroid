@@ -45,6 +45,14 @@
           android:summary="@string/pref_in_memory_db_summary"
           android:defaultValue="true" />
           -->
+         
+         
+         <EditTextPreference 
+          android:key="pref_cacheword_timeout"
+          android:title="@string/pref_cacheword_timeout_title"
+          android:summary="@string/pref_cacheword_timeout_summary"
+           /> 
+    
 
   </PreferenceCategory>
   
@@ -80,11 +88,12 @@
           android:summary="@string/start_on_boot_summary"
           android:defaultValue="true" />
   
-  <CheckBoxPreference
+  <!--  <CheckBoxPreference
           android:key="pref_foreground_service"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
           android:defaultValue="true" />
+  -->
 
   <EditTextPreference 
           android:key="pref_heartbeat_interval"
@@ -92,7 +101,7 @@
           android:summary="@string/heartbeat_interval_summary"
           android:numeric="integer"
           android:maxLength="2"
-          android:defaultValue="15" />
+          android:defaultValue="60" />
   
    
    <CheckBoxPreference android:key="pref_hide_offline_contacts"

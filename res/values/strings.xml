@@ -794,5 +794,9 @@
 	<string name="successfully_imported_otr_keyring">Successfully imported OTR keyring</string>
     
 	<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
+
+	<string name="pref_cacheword_timeout_title">Password Timeout</string>
+	<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
+
 </resources>
 
