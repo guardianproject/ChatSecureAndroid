@@ -16,6 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.http.HttpException;
@@ -51,8 +52,10 @@ import android.util.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class OtrDataHandler implements DataHandler {
+    private static final int MAX_OUTSTANDING = 3;
     private static final int MAX_CHUNK_LENGTH = 32768;
 
     private static final int MAX_TRANSFER_LENGTH = 1024*1024*64;
@@ -158,22 +161,13 @@ public class OtrDataHandler implements DataHandler {
                 sendResponse(us, 400, "File-Hash-SHA1 must be supplied", uid, EMPTY_BODY);
                 return;
             }
-            Log.i(TAG, "Incoming sha1sum " + req.getFirstHeader("File-Hash-SHA1").getValue());
-            Transfer transfer = new Transfer(url, length);
+            String sum = req.getFirstHeader("File-Hash-SHA1").getValue();
+            Log.i(TAG, "Incoming sha1sum " + sum);
+            Transfer transfer = new Transfer(url, length, us, sum);
             transferCache.put(url, transfer);
             // Handle offer
             // TODO ask user to confirm we want this
-            // TODO throttle
-            Map<String, String> headers = Maps.newHashMap();
-            int current = 0;
-            while (current < length) {
-                int end = current + MAX_CHUNK_LENGTH - 1;
-                if (end >= length) {
-                    end = length - 1;
-                }
-                getData(us, url, headers, current, end);
-                current += MAX_CHUNK_LENGTH;
-            }
+            transfer.perform();
         } else if (requestMethod.equals("GET")) {
             Log.i(TAG, "incoming GET");
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
@@ -317,15 +311,21 @@ public class OtrDataHandler implements DataHandler {
                     Log.w(TAG, "Transfer expired for url " + request.url);
                     return;
                 }
-                transfer.chunkReceived(request.start, byteBuffer.toByteArray());
+                transfer.chunkReceived(request, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
                     byte[] data = transfer.getData();
-                    Log.i(TAG, "Received file len= " + data.length + " sha1=" + sha1sum(data));
+                    Log.i(TAG, "Transfer complete for " + request.url);
+                    if (transfer.checkSum()) {
+                        Log.i(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
 
-                    mDataListener.onTransferComplete(
-                            mChatSession.getParticipant().getAddress().getScreenName(),
-                            data);
+                        mDataListener.onTransferComplete(
+                                mChatSession.getParticipant().getAddress().getScreenName(),
+                                data);
+                    } else {
+                        Log.e(TAG, "Wrong checksum for file len= " + data.length + " sha1=" + sha1sum(data));
+                    }
                 } else {
+                    transfer.perform();
                     Log.i(TAG, "Progress " + transfer.chunksReceived + " / " + transfer.chunks);
                 }
             }
@@ -360,13 +360,14 @@ public class OtrDataHandler implements DataHandler {
         sendRequest(us, "OFFER", url, headers, EMPTY_BODY, new Request("OFFER", url));
     }
 
-    public void getData(Address us, String url, Map<String, String> headers, int start, int end) {
+    public Request performGetData(Address us, String url, Map<String, String> headers, int start, int end) {
         String rangeSpec = "bytes=" + start + "-" + end;
         Log.i(TAG, "Getting range " + rangeSpec);
         headers.put("Range", rangeSpec);
         Request requestMemo = new Request("GET", url, start, end);
 
         sendRequest(us, "GET", url, headers, EMPTY_BODY, requestMemo);
+        return requestMemo;
     }
 
     static class Request {
@@ -397,19 +398,50 @@ public class OtrDataHandler implements DataHandler {
         }
     }
     
-    static class Transfer {
+    class Transfer {
         public String url;
         public int chunks = 0;
         public int chunksReceived = 0;
-        byte[] buffer;
+        private int length = 0;
+        private int current = 0;
+        private Address us;
+        private Set<Request> outstanding; 
+        private byte[] buffer;
+        private String sum;
         
-        public Transfer(String url, int size) {
+        public Transfer(String url, int length, Address us, String sum) {
             this.url = url;
-            if (size > MAX_TRANSFER_LENGTH || size <= 0) {
-                throw new RuntimeException("Invalid transfer size " + size);
+            this.length = length;
+            this.us = us;
+            this.sum = sum;
+            
+            if (length > MAX_TRANSFER_LENGTH || length <= 0) {
+                throw new RuntimeException("Invalid transfer size " + length);
             }
-            chunks = ((size - 1) / MAX_CHUNK_LENGTH) + 1;
-            buffer = new byte[size];
+            chunks = ((length - 1) / MAX_CHUNK_LENGTH) + 1;
+            buffer = new byte[length];
+            outstanding = Sets.newHashSet();
+        }
+        
+        public boolean checkSum() {
+            return sum.equals(sha1sum(buffer));
+        }
+
+        public boolean perform() {
+            // TODO global throttle rather than this local hack
+            while (outstanding.size() < MAX_OUTSTANDING) {
+                if (current >= length)
+                    return false;
+                int end = current + MAX_CHUNK_LENGTH - 1;
+                if (end >= length) {
+                    end = length - 1;
+                }
+                Map<String, String> headers = Maps.newHashMap();
+                Request request= performGetData(us, url, headers, current, end);
+                outstanding.add(request);
+                current = end + 1;
+            }
+            return true;
         }
         
         public byte[] getData() {
@@ -421,9 +453,14 @@ public class OtrDataHandler implements DataHandler {
             return chunksReceived == chunks;
         }
         
-        public void chunkReceived(int start, byte[] bs) {
+        public void chunkReceived(Request request, byte[] bs) {
             chunksReceived++;
-            System.arraycopy(bs, 0, buffer, start, bs.length);
+            System.arraycopy(bs, 0, buffer, request.start, bs.length);
+            outstanding.remove(request);
+        }
+
+        public String getSum() {
+            return sum;
         }
     }
     
