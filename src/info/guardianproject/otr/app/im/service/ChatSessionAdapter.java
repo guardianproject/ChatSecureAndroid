@@ -40,7 +40,13 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.SystemServices;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +60,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
@@ -571,11 +578,38 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     class DataAdapter implements DataListener {
         @Override
-        public void onTransferComplete(String username, byte[] data) {
+        public void onTransferComplete(String username, String url, byte[] data) {
             // TODO have a specific notifier for files / data
             String nickname = getNickName(username);
             mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
                     getId(), username, nickname, "File received", false);
+            File sdCard = Environment.getExternalStorageDirectory();
+            String sanitizedPeer = "peer";
+            String sanitizedPath = "path.jpg";
+            File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
+            dir.mkdirs();
+            File file = new File(dir, sanitizedPath);
+            try {
+                OutputStream output = new FileOutputStream(file);
+                output.write(data);
+                output.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Uri uri = SystemServices.Scanner.scan(service, file.getPath());
+            SystemServices.Viewer.viewImage(service, uri);
+        }
+
+        @Override
+        public void onTransferFailed(String screenName, String url, String reason) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void onTransferProgress(String screenName, String url, float f) {
+            // TODO Auto-generated method stub
+            
         }
     }
     

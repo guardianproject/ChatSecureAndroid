@@ -272,8 +272,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
+    /*
     public VCard getVCard(String myJID) {
-
+        // FIXME this writes to insecure storage
         VCard vCard = new VCard();
 
         try {
@@ -301,6 +302,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         return vCard;
     }
+    */
 
     @Override
     protected void doUpdateUserPresenceAsync(Presence presence) {

@@ -320,11 +320,18 @@ public class OtrDataHandler implements DataHandler {
 
                         mDataListener.onTransferComplete(
                                 mChatSession.getParticipant().getAddress().getScreenName(),
+                                transfer.url,
                                 data);
                     } else {
+                        mDataListener.onTransferFailed(
+                                mChatSession.getParticipant().getAddress().getScreenName(),
+                                transfer.url,
+                                "checksum");
                         Log.e(TAG, "Wrong checksum for file len= " + data.length + " sha1=" + sha1sum(data));
                     }
                 } else {
+                    mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getScreenName(), transfer.url, 
+                            ((float)transfer.chunksReceived) / transfer.chunks);
                     transfer.perform();
                     Log.i(TAG, "Progress " + transfer.chunksReceived + " / " + transfer.chunks);
                 }
