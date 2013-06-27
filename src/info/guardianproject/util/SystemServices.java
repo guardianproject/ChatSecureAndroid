@@ -52,7 +52,7 @@ public class SystemServices {
         }
     }
 
-    static class Scanner {
+    public static class Scanner {
         // after writing the file to sd, invoke this to scan a single file without callback
         public static Uri scan(Context aContext, String aPath) {
             File file = new File(aPath);
@@ -63,7 +63,7 @@ public class SystemServices {
         }
     }
 
-    static class Viewer {
+    public static class Viewer {
         public static void viewImage(Context aContext, Uri aUri) {
             view(aContext, aUri, "image/*");
         }
