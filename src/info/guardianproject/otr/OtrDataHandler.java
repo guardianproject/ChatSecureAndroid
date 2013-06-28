@@ -5,6 +5,7 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
 import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.Message;
+import info.guardianproject.util.SystemServices;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -363,7 +364,8 @@ public class OtrDataHandler implements DataHandler {
             throw new RuntimeException(e);
         }
         headers.put("File-Hash-SHA1", sha1sum(byteBuffer.toByteArray()));
-        String url = "otr-in-band:/stuff.png";
+        String[] paths = localUri.split("/");
+        String url = "otr-in-band:/storage/" + SystemServices.sanitize(paths[paths.length - 1]);
         sendRequest(us, "OFFER", url, headers, EMPTY_BODY, new Request("OFFER", url));
     }
 

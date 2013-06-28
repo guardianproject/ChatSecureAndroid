@@ -30,6 +30,11 @@
          android:showAsAction="never"
         />
     
+    <item android:id="@+id/menu_send_file"
+        android:title="@string/menu_send_file"
+         android:showAsAction="never"
+        />
+    
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_menu_info"
