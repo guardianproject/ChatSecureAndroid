@@ -4,9 +4,10 @@
 package info.guardianproject.util;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.NewChatActivity;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -76,4 +77,11 @@ public class SystemServices {
         }
     }
 
+    public static String sanitize(String path) {
+        try {
+            return URLEncoder.encode(path, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

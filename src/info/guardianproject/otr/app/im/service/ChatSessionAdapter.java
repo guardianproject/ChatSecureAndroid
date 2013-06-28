@@ -25,6 +25,7 @@ import info.guardianproject.otr.OtrChatSessionAdapter;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -43,7 +44,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.SystemServices;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -578,14 +578,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     class DataAdapter implements DataListener {
         @Override
-        public void onTransferComplete(String username, String url, byte[] data) {
+        public void onTransferComplete(Address from, String url, byte[] data) {
             // TODO have a specific notifier for files / data
+            String username = from.getContactName();
             String nickname = getNickName(username);
             mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
                     getId(), username, nickname, "File received", false);
             File sdCard = Environment.getExternalStorageDirectory();
-            String sanitizedPeer = "peer";
-            String sanitizedPath = "path.jpg";
+            String[] path = url.split("/"); 
+            String sanitizedPeer = SystemServices.sanitize(username);
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
             dir.mkdirs();
             File file = new File(dir, sanitizedPath);
@@ -601,13 +603,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         @Override
-        public void onTransferFailed(String screenName, String url, String reason) {
+        public void onTransferFailed(Address from, String url, String reason) {
             // TODO Auto-generated method stub
             
         }
 
         @Override
-        public void onTransferProgress(String screenName, String url, float f) {
+        public void onTransferProgress(Address from, String url, float f) {
             // TODO Auto-generated method stub
             
         }
