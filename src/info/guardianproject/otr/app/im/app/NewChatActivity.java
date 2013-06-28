@@ -58,6 +58,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
+    private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
 
     ImApp mApp;
     ChatView mChatView;
@@ -225,6 +226,10 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
         case R.id.menu_send_image:
             startImagePicker();
+            return true;
+
+        case R.id.menu_send_file:
+            startFilePicker();
             return true;
 
         case R.id.menu_view_otr:
@@ -484,9 +489,23 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         startActivityForResult(intent, REQUEST_SEND_IMAGE);
     }
     
-    public String getRealPathFromURI(Context aContext, Uri aUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = aContext.getContentResolver().query(aUri, null, null, null, null);
+    private void startFilePicker() {
+        Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
+        selectFile.setType("file/*");
+        startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
+    }
+    
+    public String getRealPathFromURI(Context aContext, Uri uri) {
+        if (uri.getScheme().equals("file")) {
+            return uri.getPath();
+        }
+        
+        if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
+            // Work around URI escaping brokenness
+            return uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+        }
+        
+        Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
@@ -495,13 +514,11 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_SEND_IMAGE) {
+            if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE) {
                 Uri uri = data.getData() ;
                 if( uri == null ) {
                     return ;
                 }
-                // $SD$/Gibberbot/offres/photo.png
-                // content://media/external/images/media/1978
                 try {
                     String localUri = getRealPathFromURI(this, uri);
                     mChatView.getCurrentChatSession().offerData( localUri );
@@ -510,9 +527,6 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
                     e.printStackTrace();
                 }
             }
-        }
-        
-        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {

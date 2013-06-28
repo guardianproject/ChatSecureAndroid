@@ -96,6 +96,7 @@
     <string name="menu_view_profile">Verify</string>
     <!-- Context/drop-down menu item for picking an image to send. -->
     <string name="menu_send_image">Send Image</string>
+    <string name="menu_send_file">Send File</string>
     
     
     
