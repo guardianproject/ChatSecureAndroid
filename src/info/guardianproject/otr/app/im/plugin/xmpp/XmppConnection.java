@@ -755,8 +755,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
 
-        mConnection.connect();
-
         initServiceDiscovery();
 
         mConnection.addConnectionListener(new ConnectionListener() {
@@ -837,6 +835,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
+        mStreamHandler = new XmppStreamHandler(mConnection);
+        
+        mConnection.connect();
+
         if (server != null && server.contains(IS_GOOGLE)) {
             this.mUsername = userName + '@' + domain;
         } else {
@@ -848,8 +850,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
-        
-        mStreamHandler = new XmppStreamHandler(mConnection);
         
         try
         {
