@@ -81,9 +81,6 @@ public class XmppStreamHandler {
     }
 
     public void notifyInitialLogin() {
-        if (isSmAvailable) {
-            sendEnablePacket();
-        }
     }
 
     private void sendEnablePacket() {
@@ -191,8 +188,7 @@ public class XmppStreamHandler {
                     if ("sm".equals(name)) {
                         debug("sm avail");
                         isSmAvailable = true;
-                        if (sessionId != null)
-                            sendEnablePacket();
+                        sendEnablePacket();
                     } else if ("r".equals(name)) {
                         StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
                         ackPacket.addAttribute("h", String.valueOf(incomingStanzaCount));
