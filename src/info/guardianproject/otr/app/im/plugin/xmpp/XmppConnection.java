@@ -1,7 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.trust.StrongTrustManager;
-import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -38,7 +37,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -71,7 +69,6 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -79,15 +76,9 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -521,8 +512,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
         
-        //if (DEBUG_ENABLED)
-        //    android.os.Debug.waitForDebugger();
+        if (DEBUG_ENABLED) {
+            // android.os.Debug.waitForDebugger();
+        }
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -757,7 +749,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         initServiceDiscovery();
 
-        mConnection.addConnectionListener(new ConnectionListener() {
+        ConnectionListener connectionListener = new ConnectionListener() {
             /**
              * Called from smack when connect() is fully successful
              * 
@@ -765,9 +757,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
              */
             @Override
             public void reconnectionSuccessful() {
-                debug(TAG, "reconnection success");
-                mNeedReconnect = false;
-                setState(LOGGED_IN, null);
+                if (mStreamHandler == null || !mStreamHandler.isResumePending()) {
+                    debug(TAG, "Reconnection success");
+                    onReconnectionSuccessful();
+                } else {
+                    debug(TAG, "Ignoring reconnection callback due to pending resume");
+                }
             }
 
             @Override
@@ -833,9 +828,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                  *   - due to login failing
                  */
             }
-        });
+        };
+        
+        mConnection.addConnectionListener(connectionListener);
 
-        mStreamHandler = new XmppStreamHandler(mConnection);
+        mStreamHandler = new XmppStreamHandler(mConnection, connectionListener);
         
         mConnection.connect();
 
@@ -1876,6 +1873,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sdm.addFeature("http://jabber.org/protocol/disco#info");
         sdm.addFeature(DeliveryReceipts.NAMESPACE);
+    }
+
+    private void onReconnectionSuccessful() {
+        mNeedReconnect = false;
+        setState(LOGGED_IN, null);
     }
     
   
