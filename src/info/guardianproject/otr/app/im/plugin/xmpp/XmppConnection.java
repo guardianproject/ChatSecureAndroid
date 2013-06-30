@@ -85,8 +85,9 @@ import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
+    private static final String DISCO_FEATURE = "http://jabber.org/protocol/disco#info";
     final static String TAG = "GB.XmppConnection";
-    private final static boolean DEBUG_ENABLED = false;
+    final static boolean DEBUG_ENABLED = false;
     private final static boolean PING_ENABLED = true;
 
     private XmppContactList mContactListManager;
@@ -747,8 +748,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
 
-        initServiceDiscovery();
-
         ConnectionListener connectionListener = new ConnectionListener() {
             /**
              * Called from smack when connect() is fully successful
@@ -878,6 +877,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
         mStreamHandler.notifyInitialLogin();
+        initServiceDiscovery();
 
         sendPresencePacket();
 
@@ -1724,7 +1724,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 } else {
                     debug(TAG, "no resume");
                     mConnection.connect();
-                    //initServiceDiscovery();
+
                     if (!mConnection.isAuthenticated()) {
                         // This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
                         // It can also happen if auth exception was swallowed by smack.
@@ -1741,6 +1741,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         mNeedReconnect = false;
                         setState(LOGGED_IN, null);
                     }
+                    mStreamHandler.notifyInitialLogin();
+                    initServiceDiscovery();
                     sendPresencePacket();
                 }
             } catch (Exception e) {
@@ -1871,8 +1873,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (sdm == null)
             sdm = new ServiceDiscoveryManager(mConnection);
 
-        sdm.addFeature("http://jabber.org/protocol/disco#info");
-        sdm.addFeature(DeliveryReceipts.NAMESPACE);
+        if (!sdm.includesFeature(DISCO_FEATURE))
+            sdm.addFeature(DISCO_FEATURE);
+        if (!sdm.includesFeature(DeliveryReceipts.NAMESPACE))
+            sdm.addFeature(DeliveryReceipts.NAMESPACE);
     }
 
     private void onReconnectionSuccessful() {

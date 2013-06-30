@@ -81,6 +81,8 @@ public class XmppStreamHandler {
     }
 
     public void notifyInitialLogin() {
+        if (sessionId == null && isSmAvailable)
+            sendEnablePacket();
     }
 
     private void sendEnablePacket() {
@@ -163,6 +165,9 @@ public class XmppStreamHandler {
                         Log.e(XmppConnection.TAG, "not receiving acks?  outgoing queue full");
                         outgoingQueue.remove();
                     }
+                } else if (isOutgoingSmEnabled && outgoingQueue.contains(packet)) {
+                    outgoingStanzaCount++;
+                    trace("send DUPLICATE " + outgoingStanzaCount + " : " + packet.toXML());
                 } else {
                     trace("send " + packet.toXML());
                 }
@@ -188,7 +193,8 @@ public class XmppStreamHandler {
                     if ("sm".equals(name)) {
                         debug("sm avail");
                         isSmAvailable = true;
-                        sendEnablePacket();
+                        if (sessionId != null)
+                            sendEnablePacket();
                     } else if ("r".equals(name)) {
                         StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
                         ackPacket.addAttribute("h", String.valueOf(incomingStanzaCount));
@@ -198,7 +204,6 @@ public class XmppStreamHandler {
                         removeOutgoingAcked(ackCount);
                         trace(outgoingQueue.size() + " in outgoing queue after ack");
                     } else if ("enabled".equals(name)) {
-                        debug("sm enabled " + sessionId);
                         incomingStanzaCount = 0;
                         isSmEnabled = true;
                         mConnection.getRoster().setOfflineOnError(false);
@@ -206,6 +211,7 @@ public class XmppStreamHandler {
                         if ("true".equals(resume) || "1".equals(resume)) {
                             sessionId = shPacket.getAttribute("id");
                         }
+                        debug("sm enabled " + sessionId);
                     } else if ("resumed".equals(name)) {
                         debug("sm resumed");
                         incomingStanzaCount = previousIncomingStanzaCount;
