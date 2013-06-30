@@ -1545,7 +1545,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (mNeedReconnect) {
             reconnect();
-        } else if (mConnection.isConnected() && getState() == LOGGED_IN) {
+        } else if (!mConnection.isConnected() && getState() == LOGGED_IN) {
+            // Smack failed to tell us about a disconnect
+            Log.w(TAG, "reconnect on unreported state change");
+            setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network disconnected"));
+            force_reconnect();
+        } else if (getState() == LOGGED_IN) {
             if (PING_ENABLED) {
                 // Check ping on every heartbeat.  checkPing() will return true immediately if we already checked.
                 if (!checkPing()) {
@@ -1707,6 +1712,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // so there are no cases where mConnection can be confused about being connected here.
             // The only left over cases are reconnect() being called too many times due to errors
             // reported multiple times or errors reported during a forced reconnect.
+            
+            // The analysis above is incorrect in the case where Smack loses connectivity
+            // while trying to log in.  This case is handled in a future heartbeat
+            // by checking ping responses.
             if (mConnection.isConnected()) {
                 Log.w(TAG, "reconnect while already connected, assuming good");
                 mNeedReconnect = false;
