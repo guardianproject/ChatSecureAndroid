@@ -353,7 +353,8 @@ public class SessionImpl implements Session {
                       + ".");
 
         OtrPolicy policy = getSessionPolicy();
-        if (policy.getErrorStartAKE()) {
+        // Re-negotiate if we got an error and we are encrypted
+        if (policy.getErrorStartAKE() && getSessionStatus() == SessionStatus.ENCRYPTED) {
             showWarning(errorMessage.error + " Initiating encryption.");
 
             logger.finest("Error message starts AKE.");
