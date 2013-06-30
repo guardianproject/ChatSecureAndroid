@@ -10,6 +10,3 @@
 [submodule "external/OnionKit"]
 	path = external/OnionKit
 	url = https://github.com/guardianproject/OnionKit.git
-[submodule "external/OnionKit"]
-	path = external/OnionKit
-	url = https://github.com/guardianproject/OnionKit

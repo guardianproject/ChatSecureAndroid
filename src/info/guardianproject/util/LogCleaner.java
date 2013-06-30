@@ -5,10 +5,14 @@ import java.net.URLEncoder;
 import android.util.Log;
 
 public class LogCleaner {
+    private static final boolean DEBUG = false;
 
     public static String clean (String msg)
     {
-        return URLEncoder.encode(msg);
+        if (DEBUG)
+            return msg;
+        else
+            return URLEncoder.encode(msg);
     }
     
     public static void warn (String tag, String msg)

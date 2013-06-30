@@ -1,7 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.trust.StrongTrustManager;
-import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -38,7 +37,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -71,7 +69,6 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -79,23 +76,18 @@ import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.packet.VCard;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
+    private static final String DISCO_FEATURE = "http://jabber.org/protocol/disco#info";
     final static String TAG = "GB.XmppConnection";
-    private final static boolean DEBUG_ENABLED = false;
+    final static boolean DEBUG_ENABLED = false;
     private final static boolean PING_ENABLED = true;
 
     private XmppContactList mContactListManager;
@@ -521,8 +513,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
         
-        //if (DEBUG_ENABLED)
-        //    android.os.Debug.waitForDebugger();
+        if (DEBUG_ENABLED) {
+            // android.os.Debug.waitForDebugger();
+        }
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
@@ -755,11 +748,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
 
-        mConnection.connect();
-
-        initServiceDiscovery();
-
-        mConnection.addConnectionListener(new ConnectionListener() {
+        ConnectionListener connectionListener = new ConnectionListener() {
             /**
              * Called from smack when connect() is fully successful
              * 
@@ -767,9 +756,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
              */
             @Override
             public void reconnectionSuccessful() {
-                debug(TAG, "reconnection success");
-                mNeedReconnect = false;
-                setState(LOGGED_IN, null);
+                if (mStreamHandler == null || !mStreamHandler.isResumePending()) {
+                    debug(TAG, "Reconnection success");
+                    onReconnectionSuccessful();
+                } else {
+                    debug(TAG, "Ignoring reconnection callback due to pending resume");
+                }
             }
 
             @Override
@@ -835,7 +827,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                  *   - due to login failing
                  */
             }
-        });
+        };
+        
+        mConnection.addConnectionListener(connectionListener);
+
+        mStreamHandler = new XmppStreamHandler(mConnection, connectionListener);
+        
+        mConnection.connect();
 
         if (server != null && server.contains(IS_GOOGLE)) {
             this.mUsername = userName + '@' + domain;
@@ -848,8 +846,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
-        
-        mStreamHandler = new XmppStreamHandler(mConnection);
         
         try
         {
@@ -881,6 +877,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
         mStreamHandler.notifyInitialLogin();
+        initServiceDiscovery();
 
         sendPresencePacket();
 
@@ -1548,7 +1545,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (mNeedReconnect) {
             reconnect();
-        } else if (mConnection.isConnected() && getState() == LOGGED_IN) {
+        } else if (!mConnection.isConnected() && getState() == LOGGED_IN) {
+            // Smack failed to tell us about a disconnect
+            Log.w(TAG, "reconnect on unreported state change");
+            setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network disconnected"));
+            force_reconnect();
+        } else if (getState() == LOGGED_IN) {
             if (PING_ENABLED) {
                 // Check ping on every heartbeat.  checkPing() will return true immediately if we already checked.
                 if (!checkPing()) {
@@ -1710,6 +1712,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // so there are no cases where mConnection can be confused about being connected here.
             // The only left over cases are reconnect() being called too many times due to errors
             // reported multiple times or errors reported during a forced reconnect.
+            
+            // The analysis above is incorrect in the case where Smack loses connectivity
+            // while trying to log in.  This case is handled in a future heartbeat
+            // by checking ping responses.
             if (mConnection.isConnected()) {
                 Log.w(TAG, "reconnect while already connected, assuming good");
                 mNeedReconnect = false;
@@ -1727,7 +1733,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 } else {
                     debug(TAG, "no resume");
                     mConnection.connect();
-                    //initServiceDiscovery();
+
                     if (!mConnection.isAuthenticated()) {
                         // This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
                         // It can also happen if auth exception was swallowed by smack.
@@ -1744,6 +1750,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         mNeedReconnect = false;
                         setState(LOGGED_IN, null);
                     }
+                    mStreamHandler.notifyInitialLogin();
+                    initServiceDiscovery();
                     sendPresencePacket();
                 }
             } catch (Exception e) {
@@ -1874,8 +1882,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (sdm == null)
             sdm = new ServiceDiscoveryManager(mConnection);
 
-        sdm.addFeature("http://jabber.org/protocol/disco#info");
-        sdm.addFeature(DeliveryReceipts.NAMESPACE);
+        if (!sdm.includesFeature(DISCO_FEATURE))
+            sdm.addFeature(DISCO_FEATURE);
+        if (!sdm.includesFeature(DeliveryReceipts.NAMESPACE))
+            sdm.addFeature(DeliveryReceipts.NAMESPACE);
+    }
+
+    private void onReconnectionSuccessful() {
+        mNeedReconnect = false;
+        setState(LOGGED_IN, null);
     }
     
   
