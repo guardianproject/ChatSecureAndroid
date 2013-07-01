@@ -35,6 +35,8 @@ public interface Session {
 
     public abstract PublicKey getRemotePublicKey();
 
+    public abstract String getRemoteFingerprint();
+
     public abstract void addOtrEngineListener(OtrEngineListener l);
 
     public abstract void removeOtrEngineListener(OtrEngineListener l);
