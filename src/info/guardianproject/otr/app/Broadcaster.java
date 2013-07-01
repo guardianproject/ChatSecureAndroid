@@ -186,7 +186,8 @@ public class Broadcaster {
                     Message m = Message.obtain();
                     m.copyFrom(msg);
                     m.what = whats[i];
-                    target.sendMessage(m);
+                    if (target != null)
+                        target.sendMessage(m);
                 }
             }
         }

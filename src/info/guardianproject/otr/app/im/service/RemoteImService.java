@@ -17,13 +17,9 @@
 
 package info.guardianproject.otr.app.im.service;
 
-import info.guardianproject.cacheword.CacheWordHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
-import info.guardianproject.otr.app.NetworkConnectivityListener;
-import info.guardianproject.otr.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
@@ -32,6 +28,8 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
+import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
+import info.guardianproject.otr.app.im.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -100,9 +98,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     private ForegroundStarter mForegroundStarter;
     public long mHeartbeatInterval;
-    
-    private CacheWordHandler mCacheWord;
-    
 
     private static final String TAG = "Gibberbot.ImService";
 
@@ -170,11 +165,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onCreate() {
 
-       // android.os.Debug.waitForDebugger();
-        
         debug("ImService started");
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
+
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         mNetworkConnectivityListener.registerHandler(mServiceHandler, EVENT_NETWORK_STATE_CHANGED);
         mNetworkConnectivityListener.startListening(this);
@@ -266,32 +260,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 false);
         else
             mNeedCheckAutoLogin = true;
-        
-         mCacheWord = new CacheWordHandler (this, new ICacheWordSubscriber () {
-
-            @Override
-            public void onCacheWordUninitialized() {
-                
-            }
-
-            @Override
-            public void onCacheWordLocked() {
-               
-                
-            }
-
-            @Override
-            public void onCacheWordOpened() {
-                    mNeedCheckAutoLogin = false;
-                    autoLogin();
-                
-            }
-            
-        });
-         
-         mCacheWord.connectToService();
-
-        mNeedCheckAutoLogin = !mCacheWord.isLocked(); // if cacheword is locked, don't login
         
         debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
               + " startId =" + startId);
@@ -388,6 +356,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public void onDestroy() {
+        
         if (mForegroundStarter != null)
             mForegroundStarter.stopForegroundCompat();
 
@@ -407,21 +376,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
-        
-        try
-        {
-            if (mCacheWord != null)
-            {
-                mCacheWord.manuallyLock();
-                mCacheWord.disconnect();
-                
-            }
-        }
-        catch (Exception e)
-        {
-            Log.w(TAG,"error shuttind down cacheword",e);
-        }
-        
+     
         /*
         if (mKillProcessOnStop)
         {
