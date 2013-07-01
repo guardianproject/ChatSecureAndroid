@@ -503,7 +503,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         try {
             if (userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
-            initConnection(userName, password, createAccount, providerSettings);
+            initConnection(userName, password, providerSettings);
         } catch (Exception e) {
            debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
@@ -939,7 +939,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
-        
+       
+	/* 
         try
         {
             if (createAccount && mConnection.getAccountManager().supportsAccountCreation())
@@ -952,6 +953,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             Log.w(TAG,"error creating account",e);
         }
+	*/
             
         mConnection.login(mUsername, mPassword, mResource);
         
