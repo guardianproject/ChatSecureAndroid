@@ -45,9 +45,9 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
      * @see info.guardianproject.otr.IOtrKeyManager#verifyKey(java.lang.String)
      */
     @Override
-    public void verifyKey(String address) throws RemoteException {
+    public void verifyKey(String address, String fingerprint) throws RemoteException {
 
-        _keyManager.verifyUser(address);
+        _keyManager.verifyUser(address, fingerprint);
 
     }
 
@@ -55,9 +55,9 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
      * @see info.guardianproject.otr.IOtrKeyManager#unverifyKey(java.lang.String)
      */
     @Override
-    public void unverifyKey(String address) throws RemoteException {
+    public void unverifyKey(String address, String fingerprint) throws RemoteException {
 
-        _keyManager.unverifyUser(address);
+        _keyManager.unverifyUser(address, fingerprint);
 
     }
 
@@ -65,8 +65,8 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
      * @see info.guardianproject.otr.IOtrKeyManager#isKeyVerified(java.lang.String)
      */
     @Override
-    public boolean isKeyVerified(String address) throws RemoteException {
-        return _keyManager.isVerifiedUser(address);
+    public boolean isKeyVerified(String address, String fingerprint) throws RemoteException {
+        return _keyManager.isVerifiedUser(address, fingerprint);
     }
 
     /* (non-Javadoc)
@@ -81,15 +81,6 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
             return _keyManager.getLocalFingerprint(_accountId);
         else
             return null;
-    }
-
-    /* (non-Javadoc)
-     * @see info.guardianproject.otr.IOtrKeyManager#getRemoteFingerprint(java.lang.String)
-     */
-    @Override
-    public String getRemoteFingerprint() throws RemoteException {
-
-        return _keyManager.getRemoteFingerprint(_sessionId);
     }
 
     /* (non-Javadoc)

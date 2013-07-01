@@ -28,6 +28,7 @@ import net.java.otr4j.OtrException;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.crypto.OtrCryptoEngine;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
+import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.crypto.OtrTlvHandler;
 import net.java.otr4j.io.OtrInputStream;
 import net.java.otr4j.io.OtrOutputStream;
@@ -718,11 +719,21 @@ public class SessionImpl implements Session {
     }
 
     private PublicKey remotePublicKey;
+    private String fingerprint;
 
     private void setRemotePublicKey(PublicKey pubKey) {
         this.remotePublicKey = pubKey;
+        try {
+            this.fingerprint = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
+        } catch (OtrCryptoException e) {
+            throw new RuntimeException(e);
+        }
     }
-
+    
+    public String getRemoteFingerprint() {
+        return fingerprint;
+    }
+    
     public PublicKey getRemotePublicKey() {
         return remotePublicKey;
     }

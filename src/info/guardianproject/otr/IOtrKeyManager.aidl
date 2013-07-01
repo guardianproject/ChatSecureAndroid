@@ -9,27 +9,22 @@ interface IOtrKeyManager {
     /**
      * Verify the key for a given address.
      */
-    void verifyKey(String address);
+    void verifyKey(String address, String fingerprint);
 
     /**
      * Revoke the verification for the key for a given address.
      */
-    void unverifyKey(String address);
+    void unverifyKey(String address, String fingerprint);
 
     /**
      * Tells if the fingerprint of the remote user address has been verified.
      */
-    boolean isKeyVerified(String address);
+    boolean isKeyVerified(String address, String fingerprint);
 
     /**
      * Returns the fingerprint for the local user's key for a given account address.
      */
     String getLocalFingerprint();
-
-    /**
-     * Returns the fingerprint for a remote user's key for a given account address.
-     */
-    String getRemoteFingerprint();
 
     /**
      * generate a new local private/public key pair.
