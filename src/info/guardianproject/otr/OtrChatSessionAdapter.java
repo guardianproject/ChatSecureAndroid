@@ -69,4 +69,9 @@ public class OtrChatSessionAdapter extends Stub {
             throw new RemoteException();
         }
     }
+
+    @Override
+    public String getRemoteFingerprint() throws RemoteException {
+        return _chatManager.getRemoteKeyFingerprint(_localUser, _remoteUser);
+    }
 }

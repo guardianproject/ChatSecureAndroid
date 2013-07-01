@@ -48,9 +48,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(context.getApplicationContext());
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
-            public void verificationStatusChanged(SessionID session) {
-                String msg = session + ": verification status="
-                             + mOtrKeyManager.isVerified(session);
+            public void verificationStatusChanged(SessionID session, boolean isVerified) {
+                String msg = session + ": verification status=" + isVerified;
 
                 OtrDebugLogger.log(msg);
             }
@@ -59,8 +58,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 String msg = session + ": remote verified us";
 
                 OtrDebugLogger.log(msg);
-                if (!isRemoteKeyVerified(session))
-                    showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
+                showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
             }
         });
 
@@ -103,20 +101,16 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         return mOtrKeyManager;
     }
 
-    public void storeRemoteKey(SessionID sessionID, PublicKey remoteKey) {
-        mOtrKeyManager.savePublicKey(sessionID, remoteKey);
+    public String storeRemoteKey(SessionID sessionID, PublicKey remoteKey) {
+        return mOtrKeyManager.savePublicKey(sessionID, remoteKey);
     }
 
-    public boolean isRemoteKeyVerified(SessionID sessionID) {
-        return mOtrKeyManager.isVerified(sessionID);
+    public boolean isRemoteKeyVerified(SessionID sessionID, String remoteFingerprint) {
+        return mOtrKeyManager.isVerified(sessionID, remoteFingerprint);
     }
 
     public String getLocalKeyFingerprint(SessionID sessionID) {
         return mOtrKeyManager.getLocalFingerprint(sessionID);
-    }
-
-    public String getRemoteKeyFingerprint(SessionID sessionID) {
-        return mOtrKeyManager.getRemoteFingerprint(sessionID);
     }
 
     public KeyPair getKeyPair(SessionID sessionID) {

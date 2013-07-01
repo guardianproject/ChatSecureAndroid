@@ -12,20 +12,18 @@ public abstract interface OtrKeyManager {
     public abstract void removeListener(OtrKeyManagerListener l);
 
     /** The local and remote verified each other with an SMP shared secret */
-    public abstract void verify(SessionID sessionID);
+    public abstract void verify(SessionID sessionID, String fingerprint);
 
-    public abstract void unverify(SessionID sessionID);
+    public abstract void unverify(SessionID sessionID, String fingerprint);
 
     /** The remote verified us with an SMP Q&A */
     public abstract void remoteVerifiedUs(SessionID sessionID);
     
-    public abstract boolean isVerified(SessionID sessionID);
-
-    public abstract String getRemoteFingerprint(SessionID sessionID);
+    public abstract boolean isVerified(SessionID sessionID, String fingerprint);
 
     public abstract String getLocalFingerprint(SessionID sessionID);
 
-    public abstract void savePublicKey(SessionID sessionID, PublicKey pubKey);
+    public abstract String savePublicKey(SessionID sessionID, PublicKey pubKey);
 
     public abstract PublicKey loadRemotePublicKey(SessionID sessionID);
 
