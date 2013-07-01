@@ -35,6 +35,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -211,9 +212,13 @@ public class ContactView extends LinearLayout {
 
             //remove HTML tags since we can't display HTML
             status = lastMsg.replaceAll("\\<.*?\\>", "");
-            
+            mLine2.setTextAppearance(mContext, Typeface.BOLD);
         }
-
+        else
+        {
+            mLine2.setTextAppearance(mContext, Typeface.NORMAL);
+        }
+        
         if (TextUtils.isEmpty(status)) {
             if (Imps.Contacts.TYPE_GROUP == type) {
                 // Show nothing in line2 if it's a group and don't

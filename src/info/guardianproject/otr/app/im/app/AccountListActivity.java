@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -224,7 +225,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
 
     private void signInAccountAtPosition(int position) {
-      //  Intent intent = null;
+        
         mProviderCursor.moveToPosition(position);
 
         if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
@@ -256,7 +257,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
 
     private void signIn(long accountId) {
-        if (accountId == 0) {
+        if (accountId <= 0) {
             Log.w(TAG, "signIn: account id is 0, bail");
             return;
         }
@@ -282,12 +283,12 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
 
     protected void gotoAccount() {
-        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+       // long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
         Intent intent = new Intent(this, ChatListActivity.class);
         // clear the back stack of the account setup
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+      //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+     //   intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
       //  finish();
     }
@@ -303,6 +304,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
 
     private boolean allAccountsSignedOut() {
+        
+        if (mProviderCursor == null)
+            return false;
+        
         if (!mProviderCursor.moveToFirst()) {
             return false;
         }
@@ -317,22 +322,15 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private void signOutAndKillProcess() {
         
-        if (mApp.hasActiveConnections())
-        {
-            if (!mProviderCursor.moveToFirst())
-                return;
-            do {
-                long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                signOut(accountId);
-            } while (mProviderCursor.moveToNext());
-          
-            try {Thread.sleep(3000);}
-            catch (Exception e){} //wait a second for account to log out
-        }
+        signOutAll ();
         
         mCacheWord.manuallyLock();
 
-        finish();
+        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
+        
     }
  
     private void signOutAll() {
@@ -343,6 +341,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
             signOut(accountId);
         } while (mProviderCursor.moveToNext());
+        
+        ((ImApp)getApplication()).stopImServiceIfInactive();
+        
     }
 
     private void signOut(final long accountId) {
@@ -600,6 +601,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
         Cursor providerCursor = (Cursor) getListAdapter().getItem(info.position);
         long accountId = providerCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
+        mProviderCursor.moveToPosition(info.position);
+        
         switch (item.getItemId()) {
         case ID_EDIT_ACCOUNT: {
             startActivity(getEditAccountIntent());
@@ -784,6 +787,22 @@ private Handler mHandlerGoogleAuth = new Handler ()
         int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
         
         mCacheWord.setTimeoutMinutes(defaultTimeout);   
+        
+        initProviderCursor ();
+        
+    }
+    
+    private void initProviderCursor ()
+    {
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+        Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+        
+        uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
+      
+        mProviderCursor = managedQuery(uri, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
     }
     
     private void checkForCrashes() {

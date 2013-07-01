@@ -134,46 +134,43 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-        <!-- 
-        //NF removed 13/06/2012
-        <ImageView android:id="@+id/composeSecureIcon"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:src="@drawable/ic_menu_unencrypt"
-            android:padding="0dip"
-             />
-              -->
-        
-
-        <EditText android:id="@+id/composeMessage"
+  <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	     android:layout_gravity="fill_vertical"
+	             android:gravity="bottom"
+	     
+	     >
+	
+      
+      <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
+           
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine|textImeMultiLine"
             android:imeOptions="actionSend|flagNoEnterAction"
             android:maxLines="4"
-            android:maxLength="2000"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
+             
+         android:layout_alignParentLeft="true"
             />
-        
-         <ImageButton android:id="@+id/btnSend"
-        android:paddingLeft="20sp"
-	    android:paddingRight="20sp"
-        android:paddingTop="3sp"
-        android:paddingBottom="3sp"
-   		android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-        android:src="@drawable/ic_send_holo_light"
+           
+    <ImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/composeMessage"
         android:background="@drawable/ad_selectable_background"
-         android:fontFamily="sans-serif-light"
-        />
+        android:fontFamily="sans-serif-light"
+        android:paddingBottom="3sp"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"
+        android:paddingTop="3sp"
+        android:src="@drawable/ic_send_holo_light" />
 
-      
-    </LinearLayout>
+      </LinearLayout>
 </info.guardianproject.otr.app.im.app.ChatView>

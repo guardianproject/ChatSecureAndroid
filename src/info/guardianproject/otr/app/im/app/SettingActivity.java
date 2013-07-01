@@ -45,7 +45,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     CheckBoxPreference mEnableNotification;
     CheckBoxPreference mNotificationVibrate;
     CheckBoxPreference mNotificationSound;
-    CheckBoxPreference mForegroundService;
+   // CheckBoxPreference mForegroundService;
     EditTextPreference mHeartbeatInterval;
     
     EditTextPreference mThemeBackground;
@@ -59,7 +59,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mEnableNotification.setChecked(settings.getEnableNotification());
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
-        mForegroundService.setChecked(settings.getUseForegroundPriority());
+        
+        //mForegroundService.setChecked(settings.getUseForegroundPriority());
+        
         long heartbeatInterval = settings.getHeartbeatInterval();
         if (heartbeatInterval == 0) heartbeatInterval = DEFAULT_HEARTBEAT_INTERVAL;
         mHeartbeatInterval.setText(String.valueOf(heartbeatInterval));
@@ -120,7 +122,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         // TODO re-enable Ringtone preference
         //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
-        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
+      //  mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
         
         mThemeBackground = (EditTextPreference) findPreference("pref_background");
