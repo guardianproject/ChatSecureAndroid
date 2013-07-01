@@ -133,17 +133,24 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            uri = uri.buildUpon().appendQueryParameter("pkey", pKey).build();
+            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).build();
             
             mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                     Imps.Provider.DEFAULT_SORT_ORDER);
-
-            mProviderCursor.moveToFirst();
-
-            return true;
-
+ 
+            if (mProviderCursor != null)
+            {
+                mProviderCursor.moveToFirst();
+            
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         } catch (Exception e) {
             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
             // needs to be unlocked
@@ -210,13 +217,15 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         {
             String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
             
-            cursorUnlocked(pkey);
-            
-            boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
-            
-            if (!doKeyStoreImport)
-                doOnResume();
-            
+            if (pkey != null)
+            {
+                cursorUnlocked(pkey);
+                
+                boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
+                
+                if (!doKeyStoreImport)
+                    doOnResume();
+            }
         }
         else
         {
@@ -264,7 +273,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             mDidAutoLaunch = true;
             signInAll();
             showAccounts();
-        } else if (countSignedIn == 1) {
+        } else if (countSignedIn >= 1) {
             showActiveAccount();
         } else if (countConfigured > 0) {
             showAccounts();
@@ -567,11 +576,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
        
-       cursorUnlocked(pkey);
+       if (pkey != null)
+       {
+           cursorUnlocked(pkey);
        
-       int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
-       mCacheWord.setTimeoutMinutes(defaultTimeout);
-       
+           int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
+           mCacheWord.setTimeoutMinutes(defaultTimeout);
+       }
        
         
     }

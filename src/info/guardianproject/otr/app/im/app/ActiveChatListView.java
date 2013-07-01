@@ -25,7 +25,6 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ContactListManager;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -42,22 +41,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class ActiveChatListView extends LinearLayout {
 
     Activity mScreen;
-    IImConnection mConn;
+  //  IImConnection mConn;
     SimpleAlertHandler mHandler;
     Context mContext;
     private final IChatSessionListener mChatListListener;
-    UserPresenceView mPresenceView;
+    
     ListView mChatList;
     private ChatListAdapter mAdapter;
     private boolean mAutoRefresh = true;
@@ -74,7 +71,7 @@ public class ActiveChatListView extends LinearLayout {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
-                    mPresenceView.loggingIn(state == ImConnection.LOGGING_IN);
+                    
             }  
         };
     }
@@ -100,7 +97,7 @@ public class ActiveChatListView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
+        
         mChatList = (ListView) findViewById(R.id.chatsList);
         mChatList.setOnItemClickListener(mOnClickListener);
     }
@@ -110,25 +107,25 @@ public class ActiveChatListView extends LinearLayout {
     }
 
     public void setConnection(IImConnection conn) {
-        if (mConn != conn) {
-            if (mConn != null) {
-                unregisterListeners();
+        
+            if (conn != null) {
+                unregisterListeners(conn);
             }
-            mConn = conn;
 
             if (conn != null) {
-                mPresenceView.setConnection(conn);
 
-                registerListeners();
+                registerListeners(conn);
 
                 if (mAdapter == null) {
-                    mAdapter = new ChatListAdapter(conn, mScreen);
+                    mAdapter = new ChatListAdapter(mScreen);
+                    mAdapter.changeConnection();
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
                 } 
-                else {
-                    mAdapter.changeConnection(conn);
-                }
+                
+           //     mAdapter.changeConnection();
+                
+                
 //                try {
 //                    IChatSessionManager listMgr = conn.getChatSessionManager();
                     mAdapter.startAutoRequery();
@@ -137,31 +134,40 @@ public class ActiveChatListView extends LinearLayout {
 //                    Log.e(ImApp.LOG_TAG, "Service died!");
 //                }
             }
-        } else {
-            mChatList.invalidateViews();
-        }
+       
     }
 
 
+    
     void startChat(Cursor c) {
         if (c != null) {
             long id = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            try {
-                IChatSessionManager manager = mConn.getChatSessionManager();
-                IChatSession session = manager.getChatSession(username);
-                if (session == null) {
-                    manager.createChatSession(username);
+            
+            long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+            IImConnection conn = ((ImApp)mScreen.getApplication()).getConnection(providerId);
+            
+            
+                try {
+                    
+                    if (conn != null)
+                    {
+                        IChatSessionManager manager = conn.getChatSessionManager();
+                        IChatSession session = manager.getChatSession(username);
+                        if (session == null) {
+                            manager.createChatSession(username);
+                        }
+                    }
+    
+                    Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, data);
+                    intent.addCategory(ImApp.IMPS_CATEGORY);
+                    mScreen.startActivity(intent);
+                    setAutoRefreshContacts(false);
+                } catch (RemoteException e) {
+                    mHandler.showServiceErrorAlert();
                 }
-
-                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
-                Intent intent = new Intent(Intent.ACTION_VIEW, data);
-                intent.addCategory(ImApp.IMPS_CATEGORY);
-                mScreen.startActivity(intent);
-                setAutoRefreshContacts(false);
-            } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
-            }
+            
             clearFocusIfEmpty(c);
         }
     }
@@ -175,11 +181,12 @@ public class ActiveChatListView extends LinearLayout {
     }
 
 
-    public void endChat(Cursor c) {
+    public void endChat(Cursor c, IImConnection conn) {
         if (c != null) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            
             try {
-                IChatSessionManager manager = mConn.getChatSessionManager();
+                IChatSessionManager manager = conn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
                 if (session != null) {
                     session.leave();
@@ -187,6 +194,7 @@ public class ActiveChatListView extends LinearLayout {
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
+            
             clearFocusIfEmpty(c);
         }
     }
@@ -216,16 +224,23 @@ public class ActiveChatListView extends LinearLayout {
         return isConversationAtPosition(pos);
     }
 
+    /*
     public boolean isContactsLoaded() {
-        try {
-            IContactListManager manager = mConn.getContactListManager();
-            return (manager.getState() == ContactListManager.LISTS_LOADED);
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-            return false;
+        
+        if (mConn != null)
+        {
+            try {
+                IContactListManager manager = mConn.getContactListManager();
+                return (manager.getState() == ContactListManager.LISTS_LOADED);
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+                return false;
+            }
         }
-    }
+        return false;
+    }*/
 
+    /*
     void removeContact(Cursor c) {
         if (c == null) {
             mHandler.showAlert(R.string.error, R.string.select_contact);
@@ -255,9 +270,10 @@ public class ActiveChatListView extends LinearLayout {
 
             clearFocusIfEmpty(c);
         }
-    }
+    }*/
 
 
+    /*
     void blockContact(Cursor c) {
         if (c == null) {
             mHandler.showAlert(R.string.error, R.string.select_contact);
@@ -287,35 +303,40 @@ public class ActiveChatListView extends LinearLayout {
                     .setNegativeButton(R.string.no, null).setCancelable(false).show();
             clearFocusIfEmpty(c);
         }
-    }
+    }*/
 
 
-    private void registerListeners() {
-        try {
-            IChatSessionManager chatManager = mConn.getChatSessionManager();
-            chatManager.registerChatSessionListener(mChatListListener);
-            
-
-        } 
-        catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
+    private void registerListeners(IImConnection conn) {
         
-        try {
-            mConn.registerConnectionListener(mConnectionListener);
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
+       
+            try {
+                IChatSessionManager chatManager = conn.getChatSessionManager();
+                chatManager.registerChatSessionListener(mChatListListener);
+                
+    
+            } 
+            catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+            }
+            
+            try {
+                conn.registerConnectionListener(mConnectionListener);
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert();
+           }
+        
     }
 
-    private void unregisterListeners() {
+    private void unregisterListeners(IImConnection conn) {
+       
         try {
-            IChatSessionManager chatManager = mConn.getChatSessionManager();
+            IChatSessionManager chatManager = conn.getChatSessionManager();
             chatManager.unregisterChatSessionListener(mChatListListener);
         } 
         catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
+        
     }
 
     private final OnItemClickListener mOnClickListener = new OnItemClickListener() {

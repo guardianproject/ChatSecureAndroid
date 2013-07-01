@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.12-alpha-1"
-     android:versionCode="62"
+     android:versionName="0.0.12-alpha-2"
+     android:versionCode="63"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -115,6 +115,7 @@ android:anyDensity="true"
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
                android:exported="false"
+               android:process=":remote"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -128,7 +129,7 @@ android:anyDensity="true"
         </service>
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
-               
+                 android:process=":remote"
                 android:exported="false"
         	>
             <intent-filter>
@@ -159,7 +160,7 @@ android:anyDensity="true"
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
             android:exported="false"
-                        
+              android:process=":remote"            
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
@@ -371,9 +372,10 @@ android:anyDensity="true"
               android:exported="false"
                />
           
-          <receiver android:name=".app.AutoConnectListener" 
+          <receiver android:name=".app.NetworkConnectivityListener" 
               android:exported="true"
               android:enabled="true"
+                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -382,6 +384,7 @@ android:anyDensity="true"
           <receiver android:name=".app.BootCompletedListener" 
               android:exported="true"
               android:enabled="true"
+                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
@@ -396,7 +399,9 @@ android:anyDensity="true"
              >
         </activity>
           
-        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false" />
+        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false"
+             
+             />
           
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
         

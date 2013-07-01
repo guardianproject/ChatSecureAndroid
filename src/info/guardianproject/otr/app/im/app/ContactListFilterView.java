@@ -233,4 +233,23 @@ public class ContactListFilterView extends LinearLayout {
     {
         mListener = listener;
     }
+    
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+       
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        
+       
+        if (mContactAdapter != null && mContactAdapter.getCursor() != null)
+        {
+            mContactAdapter.getCursor().close();
+            mContactAdapter = null;
+        }
+        
+    }
 }

@@ -88,6 +88,8 @@ public class ImApp extends Application {
 
     public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
     
+    public static final String CACHEWORD_PASSWORD_KEY = "pkey";
+    
     private Locale locale = null;
 
     private static ImApp sImApp;
@@ -340,17 +342,17 @@ public class ImApp extends Application {
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
         serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
         
-        
-        mApplicationContext.startService(serviceIntent);
+        if (!mServiceStarted)
+        {
+            mApplicationContext.startService(serviceIntent);
+            mServiceStarted = true;
+            mConnectionListener = new MyConnListener(new Handler());
+        }
         
         mApplicationContext
           .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
 
-        
-        mServiceStarted = true;
-
-        mConnectionListener = new MyConnListener(new Handler());
-            
+                   
     }
 
     public boolean hasActiveConnections ()
@@ -787,21 +789,25 @@ public class ImApp extends Application {
     }
 
     private void fetchActiveConnections() {
-        try {
-            // register the listener before fetch so that we won't miss any connection.
-            mImService.addConnectionCreatedListener(mConnCreationListener);
-            synchronized (mConnections) {
-                for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
-                    IImConnection conn = IImConnection.Stub.asInterface(binder);
-                    long providerId = conn.getProviderId();
-                    if (!mConnections.containsKey(providerId)) {
-                        mConnections.put(providerId, conn);
-                        conn.registerConnectionListener(mConnectionListener);
+        if (mImService != null)
+        {
+            try {
+                // register the listener before fetch so that we won't miss any connection.
+                mImService.addConnectionCreatedListener(mConnCreationListener);
+                synchronized (mConnections) {
+                    
+                    for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
+                        IImConnection conn = IImConnection.Stub.asInterface(binder);
+                        long providerId = conn.getProviderId();
+                        if (!mConnections.containsKey(providerId)) {
+                            mConnections.put(providerId, conn);
+                            conn.registerConnectionListener(mConnectionListener);
+                        }
                     }
                 }
+            } catch (RemoteException e) {
+                Log.e(LOG_TAG, "fetching active connections", e);
             }
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "fetching active connections", e);
         }
     }
 

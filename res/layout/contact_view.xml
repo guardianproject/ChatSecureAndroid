@@ -56,8 +56,8 @@
             android:paddingLeft="3dip"
             android:paddingTop="3dip" >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
@@ -69,7 +69,7 @@
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
                     android:text="this is the first"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
 
                 <TextView
@@ -79,9 +79,12 @@
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
                     android:paddingRight="8dip"
-                    android:text="this is the second part"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-            </LinearLayout>
+                    android:text="5:55pm"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_alignParentRight="true"
+                    
+                     />
+          	</RelativeLayout>
 
             <TextView
                 android:id="@+id/line2"

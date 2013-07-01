@@ -1010,12 +1010,12 @@ public class ImpsProvider extends ContentProvider {
 
     private synchronized DatabaseHelper initDBHelper(String pkey) throws Exception {
 
-        if (mDbHelper == null) {
+
+        
+        if (mDbHelper == null && pkey != null) {
             Context ctx = getContext();
 
-           // SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(ctx);
-            //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
-            boolean inMemoryDb = false;// settings.getBoolean("pref_in_memory_db", true);
+            boolean inMemoryDb = false;
             
             mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
         }
@@ -1100,6 +1100,8 @@ public class ImpsProvider extends ContentProvider {
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
         
+      
+        
         if (!mLoadedLibs)
         {
             SQLiteDatabase.loadLibs(this.getContext().getApplicationContext());
@@ -1114,7 +1116,7 @@ public class ImpsProvider extends ContentProvider {
         String groupBy = null;
         String limit = null;
 
-        String pkey = url.getQueryParameter("pKey");
+        String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
         
         try {
             initDBHelper(pkey);
@@ -1122,6 +1124,7 @@ public class ImpsProvider extends ContentProvider {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
             return null;
         }
+    
 
         /*
          * String dbKey = null;
@@ -1499,7 +1502,10 @@ public class ImpsProvider extends ContentProvider {
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
         } catch (Exception ex) {
-            LogCleaner.error(LOG_TAG, "query db caught ", ex);
+            LogCleaner.error(LOG_TAG, "query exc db caught ", ex);
+        }
+        catch (Error ex) {
+            LogCleaner.error(LOG_TAG, "query error db caught ", ex);
         }
         
 

@@ -302,13 +302,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         Contact contact = getContactListManager().getContact(jid);
         
-        if (contact != null && contact.getPresence().isOnline())
-        {
+       // if (contact != null && contact.getPresence().isOnline())
+        //{
             qAvatar.add(jid);
             
             if (!threadAvatarQ.isAlive())
                 threadAvatarQ.start();
-        } 
+        //} 
     }
     
     private Thread threadAvatarQ = new Thread ()
@@ -470,7 +470,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void do_login() {
         
-     //   android.os.Debug.waitForDebugger();
         
         if (mConnection != null) {
             setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,

@@ -14,9 +14,8 @@
  * the License.
  */
 
-package info.guardianproject.otr.app;
+package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.app.ImApp;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,11 +37,11 @@ import android.util.Log;
  * 
  * }
  */
-public class NetworkConnectivityListener {
+public class NetworkConnectivityListener extends BroadcastReceiver {
     private static final String TAG = "NetworkConnectivityListener";
 
     private Context mContext;
-    private HashMap<Handler, Integer> mHandlers = new HashMap<Handler, Integer>();
+    private static HashMap<Handler, Integer> mHandlers = new HashMap<Handler, Integer>();
     private State mState;
     private boolean mListening;
     private String mReason;
@@ -58,44 +57,44 @@ public class NetworkConnectivityListener {
      */
     private NetworkInfo mOtherNetworkInfo;
 
-    private ConnectivityBroadcastReceiver mReceiver;
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        
+        /*
+        if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION) || mListening == false) {
+            Log.w(TAG, "onReceived() called with " + mState.toString() + " and " + intent);
+            return;
+        }*/
+  
+        boolean noConnectivity = intent.getBooleanExtra(
+                ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
-    private class ConnectivityBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+        mNetworkInfo = (NetworkInfo) intent
+                .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+        mOtherNetworkInfo = (NetworkInfo) intent
+                .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
 
-            if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION) || mListening == false) {
-                Log.w(TAG, "onReceived() called with " + mState.toString() + " and " + intent);
-                return;
-            }
+        mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
+        mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
 
-            boolean noConnectivity = intent.getBooleanExtra(
-                    ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+        //let's just check the state of our active network to set this value
+        if (isNetworkAvailableAndConnected(context.getApplicationContext())) {
+            mState = State.CONNECTED;
+        } else {
+            mState = State.NOT_CONNECTED;
+        }
 
-            mNetworkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-            mOtherNetworkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
-
-            mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
-            //let's just check the state of our active network to set this value
-            if (isNetworkAvailableAndConnected(context.getApplicationContext())) {
-                mState = State.CONNECTED;
-            } else {
-                mState = State.NOT_CONNECTED;
-            }
-
-    
-            Log.d(TAG, "onReceive(): mNetworkInfo="
-                       + mNetworkInfo
-                       + " mOtherNetworkInfo = "
-                       + (mOtherNetworkInfo == null ? "[none]" : mOtherNetworkInfo + " noConn="
-                                                                 + noConnectivity) + " mState=" + mState);
-       
-            // Notifiy any handlers.
+        /*
+        Log.d(TAG, "onReceive(): mNetworkInfo="
+     utoConnect              + mNetworkInfo
+                   + " mOtherNetworkInfo = "
+                   + (mOtherNetworkInfo == null ? "[none]" : mOtherNetworkInfo + " noConn="
+                                                             + noConnectivity) + " mState=" + mState);*/
+   
+        if (mHandlers != null)
+        {
+                // Notifiy any handlers.
             Iterator<Handler> it = mHandlers.keySet().iterator();
             while (it.hasNext()) {
                 Handler target = it.next();
@@ -103,7 +102,8 @@ public class NetworkConnectivityListener {
                 target.sendMessage(message);
             }
         }
-    };
+    }
+    
 
     public enum State {
         UNKNOWN,
@@ -124,7 +124,6 @@ public class NetworkConnectivityListener {
     /** Create a new NetworkConnectivityListener. */
     public NetworkConnectivityListener() {
         mState = State.UNKNOWN;
-        mReceiver = new ConnectivityBroadcastReceiver();
     }
 
     /**
@@ -138,7 +137,7 @@ public class NetworkConnectivityListener {
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            context.registerReceiver(mReceiver, filter);
+            context.registerReceiver(this, filter);
             mListening = true;
         }
     }
@@ -146,7 +145,7 @@ public class NetworkConnectivityListener {
     /** This method stops this class from listening for network changes. */
     public synchronized void stopListening() {
         if (mListening) {
-            mContext.unregisterReceiver(mReceiver);
+            mContext.unregisterReceiver(this);
             mContext = null;
             mNetworkInfo = null;
             mOtherNetworkInfo = null;
@@ -164,7 +163,7 @@ public class NetworkConnectivityListener {
      * @param what The what code to be used when posting a message to the
      *            handler.
      */
-    public void registerHandler(Handler target, int what) {
+    public static void registerHandler(Handler target, int what) {
         mHandlers.put(target, what);
     }
 
@@ -173,7 +172,7 @@ public class NetworkConnectivityListener {
      * 
      * @param target
      */
-    public void unregisterHandler(Handler target) {
+    public static void unregisterHandler(Handler target) {
         mHandlers.remove(target);
     }
 

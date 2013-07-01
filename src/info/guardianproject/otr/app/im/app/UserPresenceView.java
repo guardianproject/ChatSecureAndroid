@@ -16,6 +16,8 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -23,11 +25,9 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -258,6 +258,11 @@ public class UserPresenceView extends LinearLayout {
             } else {
                 mPresence = newPresence;
                 updateView();
+                
+                ContentResolver cr =  mContext.getContentResolver();
+                Imps.ProviderSettings.setPresence(cr, mProviderId, status, statusText);
+             
+                
             }
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();

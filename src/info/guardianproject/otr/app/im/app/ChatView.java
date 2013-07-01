@@ -584,7 +584,9 @@ public class ChatView extends LinearLayout {
             File fileAvatar = new File(sdCard, fileName);
             
             if (fileAvatar.exists())
+            {
                 return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
+            }
             else
                 return null;
         }
