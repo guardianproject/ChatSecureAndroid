@@ -3,7 +3,6 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection.MyXMPPConnection;
 import info.guardianproject.util.LogCleaner;
 
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +40,11 @@ public class XmppStreamHandler {
     private long outgoingStanzaCount = 0;
     private Queue<Packet> outgoingQueue;
     private int maxOutgoingQueueSize = MAX_OUTGOING_QUEUE_SIZE;
+    private ConnectionListener mConnectionListener;
 
-    public XmppStreamHandler(MyXMPPConnection connection) {
+    public XmppStreamHandler(MyXMPPConnection connection, ConnectionListener connectionListener) {
         mConnection = connection;
+        mConnectionListener = connectionListener;
         startListening();
     }
 
@@ -65,6 +66,10 @@ public class XmppStreamHandler {
     public boolean isResumePossible() {
         return sessionId != null;
     }
+    
+    public boolean isResumePending() {
+        return isResumePossible() && !isSmEnabled;
+    }
 
     public static void addExtensionProviders() {
         addSimplePacketExtension("sm", URN_SM_2);
@@ -76,9 +81,8 @@ public class XmppStreamHandler {
     }
 
     public void notifyInitialLogin() {
-        if (isSmAvailable) {
+        if (sessionId == null && isSmAvailable)
             sendEnablePacket();
-        }
     }
 
     private void sendEnablePacket() {
@@ -113,11 +117,6 @@ public class XmppStreamHandler {
     private void startListening() {
         mConnection.addConnectionListener(new ConnectionListener() {
             public void reconnectionSuccessful() {
-                if (isSmAvailable) {
-                    sendEnablePacket();
-                } else {
-                    close();
-                }
             }
 
             public void reconnectionFailed(Exception e) {
@@ -166,6 +165,9 @@ public class XmppStreamHandler {
                         Log.e(XmppConnection.TAG, "not receiving acks?  outgoing queue full");
                         outgoingQueue.remove();
                     }
+                } else if (isOutgoingSmEnabled && outgoingQueue.contains(packet)) {
+                    outgoingStanzaCount++;
+                    trace("send DUPLICATE " + outgoingStanzaCount + " : " + packet.toXML());
                 } else {
                     trace("send " + packet.toXML());
                 }
@@ -191,6 +193,8 @@ public class XmppStreamHandler {
                     if ("sm".equals(name)) {
                         debug("sm avail");
                         isSmAvailable = true;
+                        if (sessionId != null)
+                            sendEnablePacket();
                     } else if ("r".equals(name)) {
                         StreamHandlingPacket ackPacket = new StreamHandlingPacket("a", URN_SM_2);
                         ackPacket.addAttribute("h", String.valueOf(incomingStanzaCount));
@@ -200,7 +204,6 @@ public class XmppStreamHandler {
                         removeOutgoingAcked(ackCount);
                         trace(outgoingQueue.size() + " in outgoing queue after ack");
                     } else if ("enabled".equals(name)) {
-                        debug("sm enabled " + sessionId);
                         incomingStanzaCount = 0;
                         isSmEnabled = true;
                         mConnection.getRoster().setOfflineOnError(false);
@@ -208,6 +211,7 @@ public class XmppStreamHandler {
                         if ("true".equals(resume) || "1".equals(resume)) {
                             sessionId = shPacket.getAttribute("id");
                         }
+                        debug("sm enabled " + sessionId);
                     } else if ("resumed".equals(name)) {
                         debug("sm resumed");
                         incomingStanzaCount = previousIncomingStanzaCount;
@@ -224,6 +228,11 @@ public class XmppStreamHandler {
                         // Enable only after resend, so that the interceptor does not
                         // queue these again or increment outgoingStanzaCount.
                         isSmEnabled = true;
+                        
+                        // Re-notify the listener - we are really ready for packets now
+                        // Before this point, isSuspendPending() was true, and the listener should have
+                        // ignored reconnectionSuccessful() from XMPPConnection.
+                        mConnectionListener.reconnectionSuccessful();
                     } else if ("failed".equals(name)) {
                         // Failed, shutdown and the parent will retry
                         debug("sm failed");
