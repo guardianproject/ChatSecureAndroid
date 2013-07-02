@@ -337,21 +337,45 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         }
     }
 
-    public boolean isVerified(SessionID sessionID, String fingerprint) {
+    public String getRemoteFingerprint(SessionID sessionID) {
+        return getRemoteFingerprint(sessionID.getUserID());
+    }
+
+    public String getRemoteFingerprint(String userId) {
+        byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
+        if (fingerprint != null) {
+            // If we have a fingerprint stashed, assume it is correct.
+            return new String(Hex.encode(fingerprint, 0, fingerprint.length));
+        }
+        PublicKey remotePublicKey = loadRemotePublicKeyFromStore(userId);
+        if (remotePublicKey == null)
+            return null;
+        try {
+            // Store the fingerprint, for posterity.
+            String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
+            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+            return fingerprintString;
+        } catch (OtrCryptoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean isVerified(SessionID sessionID) {
         if (sessionID == null)
             return false;
 
         String userId = sessionID.getUserID();
-        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, fingerprint);
+        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId));
 
         return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
     }
 
-    public boolean isVerifiedUser(String userId, String fingerprint) {
+    public boolean isVerifiedUser(String userId) {
         if (userId == null)
             return false;
 
-        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, fingerprint);
+        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId));
 
         return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
     }
@@ -431,76 +455,69 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         }
     }
 
-    public String savePublicKey(SessionID sessionID, PublicKey pubKey) {
+    public void savePublicKey(SessionID sessionID, PublicKey pubKey) {
         if (sessionID == null)
-            return null;
+            return;
+
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String userId = sessionID.getUserID();
         
-        String fingerprintString;
-        
-        try {
-            fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-        } catch (OtrCryptoException e) {
-            throw new RuntimeException(e);
-        }
-
-        byte[] fingerprintBytes = Hex.decode(fingerprintString);
-        byte[] storedFingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
-        if (storedFingerprint == null || !storedFingerprint.equals(fingerprintBytes)) {
-            this.store.setPropertyHex(userId + ".fingerprint", fingerprintBytes);
-            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
-
-            this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
-        }
+        this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
         // and is useful for transferring rosters to other apps.
-        return fingerprintString;
+        try {
+            String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
+            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+        } catch (OtrCryptoException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void unverify(SessionID sessionID, String fingerprint) {
+    public void unverify(SessionID sessionID) {
         if (sessionID == null)
             return;
 
-        if (!isVerified(sessionID, fingerprint))
+        if (!isVerified(sessionID))
             return;
 
         String userId = sessionID.getUserID();
 
-        this.store.removeProperty(buildPublicKeyVerifiedId(userId, fingerprint));
+        this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 
         for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID, false);
+            l.verificationStatusChanged(sessionID);
 
     }
 
-    public void unverifyUser(String userId, String remoteFingerprint) {
+    public void unverifyUser(String userId) {
         if (userId == null)
             return;
 
-        if (!isVerifiedUser(userId, remoteFingerprint))
+        if (!isVerifiedUser(userId))
             return;
 
-        this.store.removeProperty(buildPublicKeyVerifiedId(userId, remoteFingerprint));
+        this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
 
         //	for (OtrKeyManagerListener l : listeners)
         //	l.verificationStatusChanged(sessionID);
 
     }
 
-    public void verify(SessionID sessionID, String fingerprint) {
+    public void verify(SessionID sessionID) {
         if (sessionID == null)
             return;
 
-        if (this.isVerified(sessionID, fingerprint))
+        if (this.isVerified(sessionID))
             return;
 
         String userId = sessionID.getUserID();
 
-        this.store.setProperty(buildPublicKeyVerifiedId(userId, fingerprint), true);
+        this.store
+                .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), true);
 
         for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID, true);
+            l.verificationStatusChanged(sessionID);
     }
 
     public void remoteVerifiedUs(SessionID sessionID) {
@@ -515,15 +532,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         return userId + "." + fingerprint + ".publicKey.verified";
     }
 
-    public void verifyUser(String userId, String remoteFingerprint) {
+    public void verifyUser(String userId) {
         if (userId == null)
             return;
 
-        if (this.isVerifiedUser(userId, remoteFingerprint))
+        if (this.isVerifiedUser(userId))
             return;
 
         this.store
-                .setProperty(buildPublicKeyVerifiedId(userId, remoteFingerprint), true);
+                .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), true);
 
         //for (OtrKeyManagerListener l : listeners)
         //l.verificationStatusChanged(userId);

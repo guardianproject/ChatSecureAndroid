@@ -176,7 +176,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         }
     }
 
-    public boolean isVerified(SessionID sessionID, String remoteFingerprint) {
+    public boolean isVerified(SessionID sessionID) {
         if (sessionID == null)
             return false;
 
@@ -248,9 +248,9 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         }
     }
 
-    public String savePublicKey(SessionID sessionID, PublicKey pubKey) {
+    public void savePublicKey(SessionID sessionID, PublicKey pubKey) {
         if (sessionID == null)
-            return null;
+            return;
 
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
@@ -258,35 +258,33 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         this.store.setProperty(userID + ".publicKey", x509EncodedKeySpec.getEncoded());
 
         this.store.removeProperty(userID + ".publicKey.verified");
-        // FIXME but, this is unused on Android
-        return null;
     }
 
-    public void unverify(SessionID sessionID, String remoteFingerprint) {
+    public void unverify(SessionID sessionID) {
         if (sessionID == null)
             return;
 
-        if (!isVerified(sessionID, remoteFingerprint))
+        if (!isVerified(sessionID))
             return;
 
         this.store.removeProperty(sessionID.getUserID() + ".publicKey.verified");
 
         for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID, false);
+            l.verificationStatusChanged(sessionID);
 
     }
 
-    public void verify(SessionID sessionID, String remoteFingerprint) {
+    public void verify(SessionID sessionID) {
         if (sessionID == null)
             return;
 
-        if (this.isVerified(sessionID, remoteFingerprint))
+        if (this.isVerified(sessionID))
             return;
 
         this.store.setProperty(sessionID.getUserID() + ".publicKey.verified", true);
 
         for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID, true);
+            l.verificationStatusChanged(sessionID);
     }
 
     public void remoteVerifiedUs(SessionID sessionID) {

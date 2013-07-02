@@ -32,9 +32,5 @@ interface IOtrChatSession {
      * respond to the SMP verification process
      */
     void respondSmpVerification(String answer);
-
-    /**
-     * Actual remote fingerprint
-     */
-	String getRemoteFingerprint();    
+    
 }

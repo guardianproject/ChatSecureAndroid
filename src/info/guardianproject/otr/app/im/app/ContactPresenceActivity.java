@@ -234,7 +234,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             if (session != null)
             {
                 okm = session.getOtrKeyManager();
-                okm.verifyKey(remoteAddress, remoteFingerprint);
+                okm.verifyKey(remoteAddress);
                 remoteFingerprintVerified = true;
                 updateUI();
             }

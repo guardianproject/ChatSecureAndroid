@@ -280,8 +280,14 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
     public String getRemoteKeyFingerprint(String localUserId, String remoteUserId) {
         SessionID sessionID = getSessionId(localUserId, remoteUserId);
-        PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
-        String rkFingerprint = mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
+        String rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
+
+        if (rkFingerprint == null) {
+            PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
+            mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
+            rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
+            OtrDebugLogger.log("remote key fingerprint: " + rkFingerprint);
+        }
         return rkFingerprint;
     }
 
