@@ -13,5 +13,6 @@ cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-suppor
 cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/SlidingMenu/library/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-support-v4.jar
+cp libs/gp-bcclib.jar external/OnionKit/libonionkit/libs
 
 cp libs/sqlcipher.jar external/cacheword/cachewordlib/libs/sqlcipher.jar
