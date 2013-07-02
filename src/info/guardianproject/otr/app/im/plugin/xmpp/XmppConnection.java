@@ -1288,7 +1288,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         resource = resource.substring(0,resource.indexOf('.'));
 
                     p.setResource(resource);
-                    xaddress.appendResource(resource);
                 }
             
                 Contact contact = mContactListManager.getContact(xaddress.getAddress());
@@ -1465,8 +1464,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             
             XmppAddress xaddress = new XmppAddress(name, address);
-            if (resource != null)
-                xaddress.appendResource(resource);
             
             if (mConnection == null)
                 return;
@@ -1487,7 +1484,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Presence p = new Presence(type, status, null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
             p.setResource(resource);
-            xaddress.appendResource(resource);
 
             if (contact == null) {
                 

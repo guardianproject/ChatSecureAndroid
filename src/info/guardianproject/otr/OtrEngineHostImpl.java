@@ -22,8 +22,6 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 /*
