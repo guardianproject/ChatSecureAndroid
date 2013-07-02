@@ -1,6 +1,5 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
-import info.guardianproject.onionkit.trust.StrongTrustManager;
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -19,6 +18,7 @@ import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
+import info.guardianproject.util.Debug;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,7 +69,6 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
@@ -110,7 +109,6 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -118,7 +116,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private static final String DISCO_FEATURE = "http://jabber.org/protocol/disco#info";
     final static String TAG = "GB.XmppConnection";
-    final static boolean DEBUG_ENABLED = false;
     private final static boolean PING_ENABLED = true;
 
     private XmppContactList mContactListManager;
@@ -601,9 +598,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void initConnection(String userName, String password,
             Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
-        
-        if (DEBUG_ENABLED) {
-            // android.os.Debug.waitForDebugger();
+        if (Debug.DEBUG_ENABLED) {
+            Debug.onConnectionStart();
         }
         
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
@@ -683,7 +679,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         
-        mConfig.setDebuggerEnabled(DEBUG_ENABLED);
+        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
         // Android has no support for Kerberos or GSSAPI, so disable completely
@@ -1896,7 +1892,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     public void debug(String tag, String msg) {
       //  if (Log.isLoggable(TAG, Log.DEBUG)) {
-        if (DEBUG_ENABLED) {
+        if (Debug.DEBUG_ENABLED) {
             Log.d(tag, "" + mGlobalId + " : " + msg);
         }
     }
