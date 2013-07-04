@@ -166,9 +166,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public void onCreate() {
-
         debug("ImService started");
         Debug.onServiceStart();
+
+        // Clear all account statii to logged-out, since we just got started and we don't want
+        // leftovers from any previous crash.
+        clearConnectionStatii();
+        
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
 
@@ -258,10 +262,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        // Clear all account statii to logged-out, since we just got started and we don't want
-        // leftovers from any previous crash.
-        clearConnectionStatii();
-        
         if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
             mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
                 false);
@@ -583,8 +583,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         @Override
         public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
-
-            return new OtrKeyManagerAdapter(mOtrChatManager.getKeyManager(), null, accountId);
+            return new OtrKeyManagerAdapter(mOtrChatManager, null, accountId);
         }
         
         public void setKillProcessOnStop (boolean killProcessOnStop)
