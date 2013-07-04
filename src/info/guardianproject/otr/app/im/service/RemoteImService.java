@@ -36,6 +36,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.Debug;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,6 +52,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.NetworkInfo;
@@ -166,6 +168,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void onCreate() {
 
         debug("ImService started");
+        Debug.onServiceStart();
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
 
@@ -254,6 +257,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
+
+        // Clear all account statii to logged-out, since we just got started and we don't want
+        // leftovers from any previous crash.
+        clearConnectionStatii();
         
         if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
             mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
@@ -273,6 +280,16 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
     
     
+    private void clearConnectionStatii() {
+        ContentResolver cr = getContentResolver();
+        ContentValues values = new ContentValues(2);
+
+        values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
+        values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
+        // insert on the "account_status" uri actually replaces the existing value 
+        cr.update(Imps.AccountStatus.CONTENT_URI, values, null, null);
+    }
+
 
     private void autoLogin() {
         
