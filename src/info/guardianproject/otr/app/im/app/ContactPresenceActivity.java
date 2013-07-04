@@ -68,13 +68,13 @@ public class ContactPresenceActivity extends ThemeableActivity {
     private final static String TAG = "Gibberbot";
 
     public ContactPresenceActivity() {
-        mApp = (ImApp)getApplication();
-
     }
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        mApp = (ImApp)getApplication();
 
         setContentView(R.layout.contact_presence_activity);
 
