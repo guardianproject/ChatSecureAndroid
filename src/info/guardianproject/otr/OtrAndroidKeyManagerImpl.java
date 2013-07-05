@@ -3,6 +3,7 @@ package info.guardianproject.otr;
 import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.util.Version;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -28,6 +29,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 import net.java.otr4j.OtrKeyManager;
@@ -52,6 +54,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.common.collect.Sets;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -65,6 +68,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private final static String KEY_ALG = "DSA";
     private final static int KEY_SIZE = 1024;
+    private final static Version CURRENT_VERSION = new Version("1.0.0");
 
     private static OtrAndroidKeyManagerImpl _instance;
 
@@ -80,8 +84,32 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private OtrAndroidKeyManagerImpl(File filepath) throws IOException {
         this.store = new SimplePropertiesStore(filepath);
+        upgradeStore();
 
         cryptoEngine = new OtrCryptoEngineImpl();
+    }
+    
+    private void upgradeStore() {
+        String version = store.getPropertyString("version");
+
+        if (version == null || new Version(version).compareTo(new Version("1.0.0")) < 0) {
+            // Add verified=false entries for TOFU sync purposes
+            Set<Object> keys = Sets.newHashSet(store.getProperties().keySet()); 
+            for (Object keyObject : keys) {
+                String key = (String)keyObject;
+                if (key.endsWith(".fingerprint")) {
+                    String fullUserId = key.replaceAll(".fingerprint$", "");
+                    String fingerprint = store.getPropertyString(key);
+                    String verifiedKey = buildPublicKeyVerifiedId(fullUserId, fingerprint);
+                    if (!store.getProperties().contains(verifiedKey)) {
+                        // Avoid save
+                        store.getProperties().setProperty(verifiedKey, "false");
+                    }
+                }
+            }
+            // This will save
+            store.setProperty("version", CURRENT_VERSION.toString());
+        }
     }
 
     static class SimplePropertiesStore implements OtrKeyManagerStore {
@@ -144,8 +172,17 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             return mProperties;
         }
 
+        public void setProperty(String id, String value) {
+            mProperties.setProperty(id, value);
+            try {
+                this.save();
+            } catch (Exception e) {
+                OtrDebugLogger.log("Properties store error", e);
+            }
+        }
+
         public void setProperty(String id, boolean value) {
-            mProperties.setProperty(id, "true");
+            mProperties.setProperty(id, Boolean.toString(value));
             try {
                 this.save();
             } catch (Exception e) {
@@ -195,6 +232,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         }
 
+        public String getPropertyString(String id) {
+            return mProperties.getProperty(id);
+        }
+        
         public byte[] getPropertyBytes(String id) {
             String value = mProperties.getProperty(id);
 
@@ -509,6 +550,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         // and is useful for transferring rosters to other apps.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
+            this.store.setProperty(buildPublicKeyVerifiedId(userId, fingerprintString.toLowerCase()), false);
             this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
         } catch (OtrCryptoException e) {
             e.printStackTrace();
@@ -524,7 +566,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         String userId = sessionID.getUserID();
 
-        this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)));
+        this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)), false);
 
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
@@ -538,7 +580,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         if (!isVerifiedUser(userId))
             return;
 
-        this.store.removeProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)));
+        this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), false);
 
         //	for (OtrKeyManagerListener l : listeners)
         //	l.verificationStatusChanged(sessionID);
