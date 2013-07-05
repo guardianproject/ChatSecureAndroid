@@ -25,14 +25,27 @@ public class XmppAddress extends Address {
 
     @Override
     public String getAddress() {
-        return address;
+        if (resource != null)
+            return address + "/" + resource;
+        else
+            return address;
     }
 
     @Override
     public String getScreenName() {
-        return name;
+        if (resource != null)
+            return name + " (" + resource + ")";
+        else 
+            return name;
     }
     
+    @Override
+    public Address appendResource(String resource) {
+        XmppAddress result = new XmppAddress(name, address);
+        result.resource = resource;
+        return result;
+    }
+
     @Override
     public void readFromParcel(Parcel source) {
         name = source.readString();
@@ -44,5 +57,8 @@ public class XmppAddress extends Address {
         dest.writeString(name);
         dest.writeString(address);
     }
-
+    
+    public String getResource() {
+        return resource;
+    }
 }

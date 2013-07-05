@@ -5,12 +5,17 @@
  */
 package net.java.otr4j.session;
 
+import info.guardianproject.otr.app.im.engine.Address;
+
 /** @author George Politis */
 public final class SessionID {
 
-    public SessionID(String accountID, String userID, String protocolName) {
+    private String fullUserID;
+
+    public SessionID(String accountID, String fullUserID, String protocolName) {
         this.accountID = accountID;
-        this.userID = userID;
+        this.userID = fullUserID == null ? null : Address.stripResource(fullUserID);
+        this.fullUserID = fullUserID;
         this.protocolName = protocolName;
     }
 
@@ -29,6 +34,10 @@ public final class SessionID {
     public String getUserID() {
         return userID;
     }
+    
+    public String getFullUserID() {
+        return fullUserID;
+    }
 
     public String getProtocolName() {
         return protocolName;
@@ -36,7 +45,7 @@ public final class SessionID {
 
     public synchronized String toString() {
 
-        sessionId = getAccountID() + '_' + this.getProtocolName() + '_' + this.getUserID();
+        sessionId = getAccountID() + '_' + this.getProtocolName() + '_' + this.getFullUserID();
 
         return sessionId;
 
