@@ -102,13 +102,15 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         String sessionIdKey = processUserId(localUserId) + "+" + processUserId(remoteUserId);
 
         SessionID sessionId = mSessions.get(sessionIdKey);
-
-        if (sessionId == null) {
-            sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId),
-                    "XMPP");
+        if (sessionId == null ||
+                (!sessionId.getFullUserID().equals(remoteUserId) &&
+                        remoteUserId.contains("/"))) {
+            // Remote has changed (either different presence, or from generic JID to specific presence),
+            // or we didn't have a session yet.
+            // Create or replace sessionId with one that is specific to the new presence.
+            sessionId = new SessionID(processUserId(localUserId), remoteUserId, "XMPP");
             mSessions.put(sessionIdKey, sessionId);
         }
-
         return sessionId;
     }
 
@@ -122,6 +124,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      */
     public SessionStatus getSessionStatus(String localUserId, String remoteUserId) {
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
+        if (sessionId == null)
+            return null;
+        
 
         return mOtrEngine.getSessionStatus(sessionId);
 
@@ -276,13 +281,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
     public String getLocalKeyFingerprint(String localUserId, String remoteUserId) {
         return mOtrEngineHost.getLocalKeyFingerprint(getSessionId(localUserId, remoteUserId));
-    }
-
-    public String getRemoteKeyFingerprint(String localUserId, String remoteUserId) {
-        SessionID sessionID = getSessionId(localUserId, remoteUserId);
-        PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
-        String rkFingerprint = mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
-        return rkFingerprint;
     }
 
     @Override

@@ -99,7 +99,7 @@ public class OtrSm implements OtrTlvHandler {
          * responder fingerprint (20 bytes), secure session id, input secret
          */
         byte[] our_fp = Hex.decode(keyManager.getLocalFingerprint(sessionID));
-        byte[] their_fp = Hex.decode(session.getRemoteFingerprint());
+        byte[] their_fp = Hex.decode(keyManager.getRemoteFingerprint(sessionID));
 
         byte[] sessionId;
         try {
@@ -277,16 +277,14 @@ public class OtrSm implements OtrTlvHandler {
     }
 
     private void notifyKeyManager() {
-        String fingerprint = session.getRemoteFingerprint();
-
         if (smstate.smProgState == SM.PROG_SUCCEEDED) {
             if (smstate.isReceivedQuestion())
                 keyManager.remoteVerifiedUs(sessionID);
             else
-                keyManager.verify(sessionID, fingerprint);
+                keyManager.verify(sessionID);
         } else {
             engineHost.showError(sessionID, "verification failed - check answer");
-            keyManager.unverify(sessionID, fingerprint);
+            keyManager.unverify(sessionID);
         }
     }
 

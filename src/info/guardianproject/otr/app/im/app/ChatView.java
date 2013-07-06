@@ -900,13 +900,13 @@ public class ChatView extends LinearLayout {
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 
-        if (mOtrKeyManager != null && mOtrChatSession != null) {
+        if (mOtrKeyManager != null) {
             try {
-                if (mOtrChatSession.isChatEncrypted()) {
-                    remoteFingerprint = mOtrChatSession.getRemoteFingerprint();
-                    localFingerprint = mOtrKeyManager.getLocalFingerprint();
-                    isVerified = mOtrKeyManager.isKeyVerified(mUserName, remoteFingerprint);
-                }
+
+                remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
+                localFingerprint = mOtrKeyManager.getLocalFingerprint();
+                isVerified = mOtrKeyManager.isKeyVerified(mUserName);
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -1173,8 +1173,8 @@ public class ChatView extends LinearLayout {
                     if (mOtrKeyManager == null)
                         initOtr();
 
-                    String rFingerprint = mOtrChatSession.getRemoteFingerprint();
-                    boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName, rFingerprint);
+                    String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
+                    boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
 
                     if (rFingerprint != null) {
                         if (!rVerified) {
