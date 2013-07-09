@@ -178,7 +178,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         return mChatURI;
     }
 
-    public String[] getPariticipants() {
+    public String[] getParticipants() {
         if (mIsGroupChat) {
             Contact self = mConnection.getLoginUser();
             ChatGroup group = (ChatGroup) mAdaptee.getParticipant();

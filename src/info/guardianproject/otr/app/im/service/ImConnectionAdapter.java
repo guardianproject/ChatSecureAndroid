@@ -234,6 +234,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         }
     }
 
+    
+    
     public IChatSessionManager getChatSessionManager() {
         return mChatSessionManager;
     }
