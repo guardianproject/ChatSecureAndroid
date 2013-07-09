@@ -87,6 +87,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private CacheWordActivityHandler mCacheWord;
     
+    private final static int SCAN_REQUEST_CODE = 1234; //otr key import scanning
+    
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -403,7 +405,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
-            startActivityForResult(sintent,1);
+            startActivityForResult(sintent,SCAN_REQUEST_CODE);
             return true;
         case R.id.menu_import_keys:
             importKeyStore();
@@ -751,16 +753,19 @@ private Handler mHandlerGoogleAuth = new Handler ()
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
-        boolean success = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
-        
-        if (success)
+        if (requestCode == SCAN_REQUEST_CODE)
         {
-            Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
-
+            boolean success = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
+            
+            if (success)
+            {
+                Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
+    
+            }
         }
     }
 

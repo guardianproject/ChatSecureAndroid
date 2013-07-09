@@ -65,10 +65,13 @@ public abstract class ChatSessionManager {
      */
     public synchronized ChatSession createChatSession(ImEntity participant) {
         for (ChatSession session : mSessions) {
+            
             if (session.getParticipant().equals(participant)) {
                 return session;
             }
         }
+        
+        
 
         ChatSession session = new ChatSession(participant, this);
         for (ChatSessionListener listener : mListeners) {

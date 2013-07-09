@@ -184,26 +184,23 @@ android:anyDensity="true"
                 >
         </activity>
         
-<!-- 
+
         <activity android:name=".app.ImUrlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="info.guardianproject.otr.app.im.category.AIM" />
-                <category android:name="info.guardianproject.otr.app.im.category.MSN" />
-                <category android:name="info.guardianproject.otr.app.im.category.YAHOO" />
+                <category android:name="info.guardianproject.otr.app.im.category.XMPP" />
                 <data android:scheme="im" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="imto" android:host="aim"/>
-                <data android:scheme="imto" android:host="yahoo"/>
-                <data android:scheme="imto" android:host="msn"/>
+                <data android:scheme="imto" android:host="xmpp"/>
+                
             </intent-filter>
         </activity>
- -->
+
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
              android:launchMode="singleTop"

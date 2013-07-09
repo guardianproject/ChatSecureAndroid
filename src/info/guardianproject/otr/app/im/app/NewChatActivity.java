@@ -464,7 +464,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         try {
             Intent i = new Intent(Intent.ACTION_PICK, data);
             i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
-                    .getCurrentChatSession().getPariticipants());
+                    .getCurrentChatSession().getParticipants());
             startActivityForResult(i, REQUEST_PICK_CONTACTS);
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();

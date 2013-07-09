@@ -200,6 +200,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     //    mFilterView.doFilter(uri, null);
     }
     
+    private long lastProviderId = -1;
+    
     private void initAccount (long accountId)
     {
 
@@ -217,10 +219,10 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             return;
         }
 
-        long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+        lastProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mHandler = new MyHandler(this);
         
-        initConnection (accountId, providerId);
+        initConnection (accountId, lastProviderId);
         
         c.close();
     }
@@ -429,7 +431,11 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             showContactsList ();
             
             return true;
+        case R.id.menu_new_group_chat:
             
+            showGroupChatDialog();
+            
+            return true;
         case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
@@ -839,4 +845,40 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         
         
     }
+    
+    private void showGroupChatDialog ()
+    {
+        startGroupChat ("testfoo","conference.jabber.ccc.de",lastProviderId);
+    }
+    
+    public void startGroupChat (String room, String server, long providerId)
+    {
+        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
+        
+        String roomAddress = room + '@' + server;
+        
+        try {
+            IChatSessionManager manager = conn.getChatSessionManager();
+            IChatSession session = manager.getChatSession(roomAddress);
+            if (session == null) {
+                session = manager.createMultiUserChatSession(roomAddress);
+            }
+
+            long id = session.getId();
+            
+            Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
+            Intent i = new Intent(Intent.ACTION_VIEW, data);
+            i.addCategory(ImApp.IMPS_CATEGORY);
+            
+            if (menu.isShown())
+                menu.toggle();
+            
+            startActivity(i);
+            
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+       
+    }
+    
 }

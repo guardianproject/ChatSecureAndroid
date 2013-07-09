@@ -33,6 +33,14 @@ interface IChatSessionManager {
     IChatSession createChatSession(String contactAddress);
 
     /**
+     * Create a MultiUserChatSession with the specified room. 
+     *
+     * @param contactAddress the address of the contact.
+     */
+    IChatSession createMultiUserChatSession(String roomAddress);
+
+
+    /**
      * Get the ChatSession that is associated with the specified contact or group.
      *
      * @param the address of the contact or group.
