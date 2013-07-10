@@ -2,6 +2,8 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -12,6 +14,7 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
+import info.guardianproject.otr.app.im.engine.Invitation;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
@@ -35,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -76,12 +80,15 @@ import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smackx.Form;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.XHTMLManager;
 import org.jivesoftware.smackx.XHTMLText;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.packet.ChatStateExtension;
 import org.jivesoftware.smackx.packet.LastActivity;
 import org.jivesoftware.smackx.packet.OfflineMessageInfo;
@@ -404,16 +411,205 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public int getCapability() {
-        // TODO chat groups
-        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT;
+        
+        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT & ImConnection.CAPABILITY_GROUP_CHAT;
     }
 
+    private XmppChatGroupManager mChatGroupManager = null;
+    
     @Override
-    public ChatGroupManager getChatGroupManager() {
-        // TODO chat groups
-        return null;
+    public synchronized ChatGroupManager getChatGroupManager() {
+       
+        if (mChatGroupManager == null)
+            mChatGroupManager = new XmppChatGroupManager();
+        
+        return mChatGroupManager;
     }
 
+    public class XmppChatGroupManager extends ChatGroupManager
+    {
+
+        private Hashtable<String,MultiUserChat> mMUCs = new Hashtable<String,MultiUserChat>();
+        
+        public MultiUserChat getMultiUserChat (String chatRoomJid)
+        {
+            return mMUCs.get(chatRoomJid);
+        }
+        
+        @Override
+        public void createChatGroupAsync(String chatRoomJid) {
+           
+            RoomInfo roomInfo = null;
+
+            Address address = new XmppAddress (chatRoomJid);
+            
+            try
+            {
+                roomInfo = MultiUserChat.getRoomInfo(mConnection, chatRoomJid);
+            }
+            catch (Exception e)
+            {
+                //who knows?
+            }
+            
+            
+            if (roomInfo == null)
+            {
+                //should be room@server
+                
+                String[] parts = chatRoomJid.split("@");
+                String room = parts[0];
+                String server = parts[1];
+                String nickname = mUser.getName();
+                
+                try {
+                    
+                    // Create a MultiUserChat using a Connection for a room
+                    MultiUserChat muc = new MultiUserChat(mConnection, chatRoomJid);
+    
+                    // Create the room
+                    muc.create(nickname);
+    
+                    // Send an empty room configuration form which indicates that we want
+                    // an instant room
+                    muc.sendConfigurationForm(new Form(Form.TYPE_SUBMIT));
+                    
+                    ChatGroup chatGroup = new ChatGroup(address,room,this);
+                    mGroups.put(address.getAddress(), chatGroup);
+                    
+                    mMUCs.put(chatRoomJid, muc);
+                    
+                } catch (XMPPException e) {
+                  
+                    Log.e(ImApp.LOG_TAG,"error creating MUC",e);
+                }
+            }
+            else
+            {
+                joinChatGroupAsync(address);
+            }
+            
+        }
+
+        @Override
+        public void deleteChatGroupAsync(ChatGroup group) {
+            
+            String chatRoomJid = group.getAddress().getAddress();
+         
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);
+             
+                try {
+                    muc.destroy("", null);
+                    
+                    mMUCs.remove(chatRoomJid);
+                    
+                } catch (XMPPException e) {
+                    Log.e(ImApp.LOG_TAG,"error destroying MUC",e);
+                }
+                
+            }
+            
+        }
+
+        @Override
+        protected void addGroupMemberAsync(ChatGroup group, Contact contact) {
+            // TODO Auto-generated method stub
+            
+            
+            
+        }
+
+        @Override
+        protected void removeGroupMemberAsync(ChatGroup group, Contact contact) {
+            // TODO Auto-generated method stub
+            
+            
+        }
+
+        @Override
+        public void joinChatGroupAsync(Address address) {
+            
+           String chatRoomJid = address.getAddress();
+           String[] parts = chatRoomJid.split("@");
+           String room = parts[0];
+           String server = parts[1];
+           String nickname = mUser.getName();
+            
+           try {
+                              
+               // Create a MultiUserChat using a Connection for a room
+               MultiUserChat muc = new MultiUserChat(mConnection, chatRoomJid);
+
+               // Create the room
+               muc.join(nickname);
+               
+               ChatGroup chatGroup = new ChatGroup(address,room,this);
+               mGroups.put(address.getAddress(), chatGroup);               
+               mMUCs.put(chatRoomJid, muc);
+               
+               
+               
+            } catch (XMPPException e) {
+                Log.e(ImApp.LOG_TAG,"error joining MUC",e);
+            }
+                
+        }
+
+        @Override
+        public void leaveChatGroupAsync(ChatGroup group) {
+            String chatRoomJid = group.getAddress().getAddress();
+            
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);               
+                muc.leave();                
+                mMUCs.remove(chatRoomJid);
+                
+            }
+            
+        }
+
+        @Override
+        public void inviteUserAsync(ChatGroup group, Contact invitee) {
+            
+            String chatRoomJid = group.getAddress().getAddress();
+            
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);               
+            
+                String reason = ""; //no reason for now
+                muc.invite(invitee.getAddress().getAddress(),reason);
+                
+            }
+            
+        }
+
+        @Override
+        public void acceptInvitationAsync(Invitation invitation) {
+            
+            Address addressGroup = invitation.getGroupAddress();
+            
+            joinChatGroupAsync (addressGroup);
+           
+        }
+
+        @Override
+        public void rejectInvitationAsync(Invitation invitation) {
+         
+            Address addressGroup = invitation.getGroupAddress();
+            
+            String reason = ""; // no reason for now
+            
+            MultiUserChat.decline(mConnection, addressGroup.getAddress(),invitation.getSender().getAddress(),reason);            
+             
+            
+        }
+        
+    };
+    
     @Override
     public synchronized ChatSessionManager getChatSessionManager() {
 
@@ -1153,26 +1349,44 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final class XmppChatSessionManager extends ChatSessionManager {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
-            org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
-                    message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
-            msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
             
-
-            String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-            msg.setBody(bodyPlain);
             
-            // Create an XHTMLText to send with the message
-            XHTMLText xhtmlText = new XHTMLText(null, null);
-            xhtmlText.appendOpenParagraphTag("font-size:large");
-            xhtmlText.append(message.getBody());     
-            xhtmlText.appendCloseParagraphTag();
-       
-            // Add the XHTML text to the message
-            XHTMLManager.addBody(msg, xhtmlText.toString());
+            String chatRoomJid = message.getTo().getAddress();
+            MultiUserChat muc = ((XmppChatGroupManager)getChatGroupManager()).getMultiUserChat(chatRoomJid);
             
-            debug(TAG, "sending packet ID " + msg.getPacketID());
-            message.setID(msg.getPacketID());
-            sendPacket(msg);
+            if (muc != null)
+            {
+                org.jivesoftware.smack.packet.Message msg = muc.createMessage();
+               
+                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
+                msg.setBody(bodyPlain);
+                
+                message.setID(msg.getPacketID());
+                sendPacket(msg);
+            }
+            else
+            {
+                org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
+                        message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
+                msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
+                
+    
+                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
+                msg.setBody(bodyPlain);
+                
+                // Create an XHTMLText to send with the message
+                XHTMLText xhtmlText = new XHTMLText(null, null);
+                xhtmlText.appendOpenParagraphTag("font-size:large");
+                xhtmlText.append(message.getBody());     
+                xhtmlText.appendCloseParagraphTag();
+           
+                // Add the XHTML text to the message
+                XHTMLManager.addBody(msg, xhtmlText.toString());
+                
+             //   debug(TAG, "sending packet ID " + msg.getPacketID());
+                message.setID(msg.getPacketID());
+                sendPacket(msg);
+            }
         }
 
         ChatSession findSession(String address) {
@@ -1184,6 +1398,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             return null;
         }
     }
+    
 
     public ChatSession findSession(String address) {
         return mSessionManager.findSession(address);
@@ -2105,6 +2320,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         pm.addExtensionProvider("bad-sessionid", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.BadSessionIDError());
         pm.addExtensionProvider("session-expired", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.SessionExpiredError());
         
-    }
+    }        
 
+    
+    
 }

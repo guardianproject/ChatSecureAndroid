@@ -78,6 +78,7 @@
     <string name="menu_view_accounts">Accounts</string>
     <!-- Screen menu item on active chat list to start new chat -->
     <string name="menu_new_chat">New Chat</string>
+    
     <!-- Screen menu item on accounts list to create new account -->
     <string name="menu_new_account">New Account</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
@@ -798,5 +799,11 @@
 	<string name="pref_cacheword_timeout_title">Password Timeout</string>
 	<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
 
+	<!-- Screen menu item on active chat list to start new chat -->
+    <string name="menu_new_group_chat">Group Chat</string>
+    <string name="create_or_join_group_chat">Create or Join Group Chat</string>
+    <string name="connect">Connect</string>
+    
+    
 </resources>
 

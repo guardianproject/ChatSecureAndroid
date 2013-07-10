@@ -24,18 +24,17 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -58,6 +57,7 @@ import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -96,7 +96,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     private ConnectionListenerAdapter mConnectionListener;
 
     long[] mAccountIds;
-
+    private long mLastProviderId = -1;
+    
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -200,6 +201,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     //    mFilterView.doFilter(uri, null);
     }
     
+    
     private void initAccount (long accountId)
     {
 
@@ -217,10 +219,10 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             return;
         }
 
-        long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+        mLastProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
         mHandler = new MyHandler(this);
         
-        initConnection (accountId, providerId);
+        initConnection (accountId, mLastProviderId);
         
         c.close();
     }
@@ -429,7 +431,11 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             showContactsList ();
             
             return true;
+        case R.id.menu_new_group_chat:
             
+            showGroupChatDialog();
+            
+            return true;
         case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
@@ -839,4 +845,82 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         
         
     }
+    
+    private void showGroupChatDialog ()
+    {
+
+     // This example shows how to add a custom layout to an AlertDialog
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View textEntryView = factory.inflate(R.layout.alert_dialog_group_chat, null);
+        
+        new AlertDialog.Builder(this)            
+            .setTitle(R.string.create_or_join_group_chat)
+            .setView(textEntryView)
+            .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    /* User clicked OK so do some stuff */
+                    
+                    String chatRoom = null;
+                    String chatServer = null;
+                    
+                    TextView tv = (TextView)textEntryView.findViewById(R.id.chat_room);
+                    
+                    chatRoom = tv.getText().toString();
+                    
+                    tv = (TextView) textEntryView.findViewById(R.id.chat_server);
+                    
+                    chatServer = tv.getText().toString();
+                    
+                    startGroupChat (chatRoom, chatServer, mLastProviderId);
+                    
+                }
+            })
+            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    /* User clicked cancel so do some stuff */
+                }
+            })
+            .create().show();
+        
+    }
+    
+    public void startGroupChat (String room, String server, long providerId)
+    {
+        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
+        
+        String roomAddress = room + '@' + server;
+        
+        try {
+            IChatSessionManager manager = conn.getChatSessionManager();
+            IChatSession session = manager.getChatSession(roomAddress);
+            if (session == null) {
+                session = manager.createMultiUserChatSession(roomAddress);
+            }
+
+            if (session != null)
+            {
+                long id = session.getId();
+            
+                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
+                Intent i = new Intent(Intent.ACTION_VIEW, data);
+                i.addCategory(ImApp.IMPS_CATEGORY);
+            
+                if (menu.isShown())
+                    menu.toggle();
+            
+                startActivity(i);
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert();
+            }
+            
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+       
+    }
+    
 }
