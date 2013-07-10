@@ -801,6 +801,8 @@
 
 	<!-- Screen menu item on active chat list to start new chat -->
     <string name="menu_new_group_chat">Group Chat</string>
+    <string name="create_or_join_group_chat">Create or Join Group Chat</string>
+    <string name="connect">Connect</string>
     
     
 </resources>
