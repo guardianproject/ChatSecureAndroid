@@ -848,17 +848,15 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     
     private void showGroupChatDialog ()
     {
-<<<<<<< HEAD
-        //startGroupChat ("testfoo","conference.jabber.ccc.de",lastProviderId);
-        
+
      // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.alert_dialog_group_chat, null);
         
         new AlertDialog.Builder(this)            
-            .setTitle("Group Conversation")
+            .setTitle(R.string.create_or_join_group_chat)
             .setView(textEntryView)
-            .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+            .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     /* User clicked OK so do some stuff */
