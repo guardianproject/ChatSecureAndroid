@@ -81,6 +81,7 @@ import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
 import org.jivesoftware.smackx.Form;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
@@ -456,11 +457,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (roomInfo == null)
             {
                 //should be room@server
-                
                 String[] parts = chatRoomJid.split("@");
                 String room = parts[0];
                 String server = parts[1];
-                String nickname = mUser.getName();
+                String nickname = mUser.getName().split("@")[0];
                 
                 try {
                     
@@ -469,14 +469,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
                     // Create the room
                     muc.create(nickname);
-    
-                    // Send an empty room configuration form which indicates that we want
-                    // an instant room
-                    muc.sendConfigurationForm(new Form(Form.TYPE_SUBMIT));
+                    
+                    Form form = muc.getConfigurationForm();
+                    Form submitForm = form.createAnswerForm();
+                    for (Iterator fields = form.getFields();fields.hasNext();){
+                      FormField field = (FormField) fields.next();
+                        if(!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable()!= null){
+                            submitForm.setDefaultAnswer(field.getVariable());
+                        }
+                    }               
+                    submitForm.setAnswer("muc#roomconfig_publicroom", true);
+                    muc.sendConfigurationForm(submitForm);
+                    muc.join(nickname);
                     
                     ChatGroup chatGroup = new ChatGroup(address,room,this);
-                    mGroups.put(address.getAddress(), chatGroup);
-                    
+                    mGroups.put(address.getAddress(), chatGroup);                    
                     mMUCs.put(chatRoomJid, muc);
                     
                 } catch (XMPPException e) {
@@ -535,7 +542,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
            String[] parts = chatRoomJid.split("@");
            String room = parts[0];
            String server = parts[1];
-           String nickname = mUser.getName();
+           String nickname = mUser.getName().split("@")[0];
             
            try {
                               
@@ -950,17 +957,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String address = parseAddressBase(smackMessage.getFrom());
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
+                
+                ChatSession session = findOrCreateSession(address);
+                
                 if (dr != null) {
-                    ChatSession session = findOrCreateSession(address);
+                    
                     debug(TAG, "got delivery receipt for " + dr.getId());
                     session.onMessageReceipt(dr.getId());
                 }
                 
                 String body = smackMessage.getBody();
                 
-                /*
                 //if it has an XHTML body, use it
-                Iterator it = XHTMLManager.getBodies(smackMessage);
+                /*
+                Iterator<String> it = XHTMLManager.getBodies(smackMessage);
                 if (it.hasNext())
                 {
                     String htmlBody = (String) it.next();
@@ -968,30 +978,39 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     if (htmlBody != null && htmlBody.length() > 0)
                         body = htmlBody;
                 }
-                *
+                
                 if (body == null)
                     return;
                 */
                 
-                Message rec = new Message(body);
-                rec.setTo(mUser.getAddress());
-                rec.setFrom(new XmppAddress(smackMessage.getFrom()));
-                rec.setDateTime(new Date());
+               
+                if (session.getParticipant() instanceof ChatGroup && smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
+                {
 
-                ChatSession session = findOrCreateSession(address);
-                boolean good = session.onReceiveMessage(rec);
+                    debug(TAG,"received group chat message from ourselves. Ignoring.");
+                    
+                }
+                else
+                {
+                    Message rec = new Message(body);
+                    rec.setTo(mUser.getAddress());
+                    rec.setFrom(new XmppAddress(smackMessage.getFrom()));
+                    rec.setDateTime(new Date());
+
+                    boolean good = session.onReceiveMessage(rec);
                 
-                if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                    if (good) {
-                        debug(TAG, "sending delivery receipt");
+                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                        if (good) {
+                            debug(TAG, "sending delivery receipt");
                         // got XEP-0184 request, send receipt
-                        sendReceipt(smackMessage);
-                        session.onReceiptsExpected();
-                    } else {
+                            sendReceipt(smackMessage);
+                            session.onReceiptsExpected();
+                                                } else {
                         debug(TAG, "not sending delivery receipt due to processing error");
-                    }
-                } else if (!good) {
-                    debug(TAG, "packet processing error");
+                        }
+                     } else if (!good) {
+                             debug(TAG, "packet processing error");
+                     }
                 }
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
