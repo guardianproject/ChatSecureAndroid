@@ -439,7 +439,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void createChatGroupAsync(String chatRoomJid) {
            
-            
             RoomInfo roomInfo = null;
 
             Address address = new XmppAddress (chatRoomJid);
@@ -476,7 +475,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     muc.sendConfigurationForm(new Form(Form.TYPE_SUBMIT));
                     
                     ChatGroup chatGroup = new ChatGroup(address,room,this);
-                    mGroups.put(address, chatGroup);
+                    mGroups.put(address.getAddress(), chatGroup);
                     
                     mMUCs.put(chatRoomJid, muc);
                     
@@ -494,7 +493,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public void deleteChatGroupAsync(ChatGroup group) {
-            // TODO Auto-generated method stub
             
             String chatRoomJid = group.getAddress().getAddress();
          
@@ -548,9 +546,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                muc.join(nickname);
                
                ChatGroup chatGroup = new ChatGroup(address,room,this);
-               mGroups.put(address, chatGroup);
-               
+               mGroups.put(address.getAddress(), chatGroup);               
                mMUCs.put(chatRoomJid, muc);
+               
+               
+               
                
             } catch (XMPPException e) {
                 Log.e(ImApp.LOG_TAG,"error joining MUC",e);

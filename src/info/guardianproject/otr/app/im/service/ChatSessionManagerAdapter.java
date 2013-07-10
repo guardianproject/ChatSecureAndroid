@@ -101,10 +101,17 @@ public class ChatSessionManagerAdapter extends
         Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
         
         ChatGroup chatGroup = groupMan.getChatGroup(address);
-                
-        ChatSession session = mChatSessionManager.createChatSession(chatGroup);
+        
+        if (chatGroup != null)
+        {
+            ChatSession session = mChatSessionManager.createChatSession(chatGroup);
 
-        return getChatSessionAdapter(session);
+            return getChatSessionAdapter(session);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void closeChatSession(ChatSessionAdapter adapter) {

@@ -16,6 +16,9 @@
 
 package info.guardianproject.otr.app.im.provider;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
 
@@ -44,9 +47,10 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
+import android.util.Log;
 
 /** A content provider for IM */
-public class ImpsProvider extends ContentProvider {
+public class ImpsProvider extends ContentProvider implements ICacheWordSubscriber {
     private static final String LOG_TAG = "imProvider";
     private static final boolean DBG = true;
 
@@ -236,6 +240,9 @@ public class ImpsProvider extends ContentProvider {
 
     // contact id query selection args 2
     private String[] mQueryContactIdSelectionArgs2 = new String[2];
+    
+    private CacheWordActivityHandler mCacheWord;
+    
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -906,6 +913,7 @@ public class ImpsProvider extends ContentProvider {
     public ImpsProvider() {
         this(DATABASE_NAME, DATABASE_VERSION);
 
+    
         setupImUrlMatchers(AUTHORITY);
         setupMcsUrlMatchers(AUTHORITY);
     }
@@ -1004,6 +1012,10 @@ public class ImpsProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        
+        mCacheWord = new CacheWordActivityHandler(getContext(), (ICacheWordSubscriber)this);        
+        mCacheWord.connectToService();
+
 
         return true;
     }
@@ -1025,6 +1037,15 @@ public class ImpsProvider extends ContentProvider {
     }
 
     private DatabaseHelper getDBHelper() {
+        
+        if (mDbHelper == null)
+        {
+            //check if cacheword is open, and then init the mDbHelper
+            if (!mCacheWord.isLocked())
+            {
+                onCacheWordOpened();
+            }
+        }
         return mDbHelper;
     }
 
@@ -3498,5 +3519,36 @@ public class ImpsProvider extends ContentProvider {
 
     static void log(String message) {
         //    LogCleaner.debug(LOG_TAG, message);
+    }
+
+    @Override
+    public void onCacheWordUninitialized() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onCacheWordLocked() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+        
+        if (pkey != null)
+        {
+           
+            try {
+                this.initDBHelper(pkey);
+            } catch (Exception e) {
+               Log.e(ImApp.LOG_TAG,"unable to init cacheword in IMPSprovider",e);
+            }
+        
+           
+        }
+        
     }
 }

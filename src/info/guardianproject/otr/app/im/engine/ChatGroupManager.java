@@ -25,7 +25,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * ChatGroupManager manages the creating, removing and the member of ChatGroups.
  */
 public abstract class ChatGroupManager {
-    protected HashMap<Address, ChatGroup> mGroups;
+    
+    protected HashMap<String, ChatGroup> mGroups;
 
     protected HashMap<String, Invitation> mInvitations;
 
@@ -34,7 +35,7 @@ public abstract class ChatGroupManager {
     protected InvitationListener mInvitationListener;
 
     protected ChatGroupManager() {
-        mGroups = new HashMap<Address, ChatGroup>();
+        mGroups = new HashMap<String, ChatGroup>();
         mInvitations = new HashMap<String, Invitation>();
         mGroupListeners = new CopyOnWriteArrayList<GroupListener>();
     }
@@ -188,7 +189,7 @@ public abstract class ChatGroupManager {
      * @return a ChatGroup.
      */
     public ChatGroup getChatGroup(Address address) {
-        return mGroups.get(address);
+        return mGroups.get(address.getAddress());
     }
 
     /**
@@ -200,10 +201,10 @@ public abstract class ChatGroupManager {
      */
     protected void notifyGroupChanged(Address groupAddress, ArrayList<Contact> joined,
             ArrayList<Contact> left) {
-        ChatGroup group = mGroups.get(groupAddress);
+        ChatGroup group = mGroups.get(groupAddress.getAddress());
         if (group == null) {
             group = new ChatGroup(groupAddress, groupAddress.getScreenName(), this);
-            mGroups.put(groupAddress, group);
+            mGroups.put(groupAddress.getAddress(), group);
         }
         if (joined != null) {
             for (Contact contact : joined) {
@@ -218,21 +219,21 @@ public abstract class ChatGroupManager {
     }
 
     protected synchronized void notifyGroupCreated(ChatGroup group) {
-        mGroups.put(group.getAddress(), group);
+        mGroups.put(group.getAddress().getAddress(), group);
         for (GroupListener listener : mGroupListeners) {
             listener.onGroupCreated(group);
         }
     }
 
     protected synchronized void notifyGroupDeleted(ChatGroup group) {
-        mGroups.remove(group.getAddress());
+        mGroups.remove(group.getAddress().getAddress());
         for (GroupListener listener : mGroupListeners) {
             listener.onGroupDeleted(group);
         }
     }
 
     protected synchronized void notifyJoinedGroup(ChatGroup group) {
-        mGroups.put(group.getAddress(), group);
+        mGroups.put(group.getAddress().getAddress(), group);
         for (GroupListener listener : mGroupListeners) {
             listener.onJoinedGroup(group);
         }
@@ -244,7 +245,7 @@ public abstract class ChatGroupManager {
      * @param groupAddress the address of the group.
      */
     protected synchronized void notifyLeftGroup(ChatGroup group) {
-        mGroups.remove(group.getAddress());
+        mGroups.remove(group.getAddress().getAddress());
         for (GroupListener listener : mGroupListeners) {
             listener.onLeftGroup(group);
         }
