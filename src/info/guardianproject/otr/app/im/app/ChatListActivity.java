@@ -202,7 +202,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     }
     
     
-    
     private void initAccount (long accountId)
     {
 
@@ -849,6 +848,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     
     private void showGroupChatDialog ()
     {
+<<<<<<< HEAD
         //startGroupChat ("testfoo","conference.jabber.ccc.de",lastProviderId);
         
      // This example shows how to add a custom layout to an AlertDialog
