@@ -1012,7 +1012,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     @Override
     public boolean onCreate() {
-        
+
+        android.os.Debug.waitForDebugger();
+
         mCacheWord = new CacheWordActivityHandler(getContext(), (ICacheWordSubscriber)this);        
         mCacheWord.connectToService();
 
@@ -1037,6 +1039,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     private DatabaseHelper getDBHelper() {
+        
+        android.os.Debug.waitForDebugger();
         
         if (mDbHelper == null)
         {
