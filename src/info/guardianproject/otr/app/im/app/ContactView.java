@@ -18,9 +18,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +32,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Environment;
+import android.opengl.Visibility;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -142,15 +139,14 @@ public class ContactView extends LinearLayout {
         
         if (presence == Imps.Presence.AVAILABLE || presence == Imps.Presence.IDLE)
         {
-            mAvatar.setBackgroundColor(Color.GREEN);
+          
         }
         else if (presence == Imps.Presence.AWAY)
         {
-            mAvatar.setBackgroundColor(Color.YELLOW);
         }
         else
         {
-            mAvatar.setBackgroundColor(Color.GRAY);
+            mAvatar.setEnabled(false);
         }
 
         //mPresence.setImageDrawable(brandingRes.getDrawable(iconId));
@@ -158,12 +154,13 @@ public class ContactView extends LinearLayout {
 
         // line1
         CharSequence contact;
-        
+        /*
         if (Imps.Contacts.TYPE_GROUP == type) {
             ContentResolver resolver = getContext().getContentResolver();
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
             contact = queryGroupMembers(resolver, id);
         } else {
+        */
 
             //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
             // String address = ImpsAddressUtils.getDisplayableAddress(username);
@@ -186,13 +183,20 @@ public class ContactView extends LinearLayout {
                 }
             }
             
-            mAvatar.setImageResource(R.drawable.ic_launcher_gibberbot);
+            if (Imps.Contacts.TYPE_GROUP == type) {
+                mAvatar.setImageResource(R.drawable.avatar_unknown);
+
+            }
+            else
+            {
+                mAvatar.setImageResource(R.drawable.avatar_unknown);
+            }
             
             Drawable d = loadAvatar (address);
             if (d != null)
                 mAvatar.setImageDrawable(d);
 
-        }
+     //   }
         mLine1.setText(contact);
 
         // time stamp
@@ -211,12 +215,18 @@ public class ContactView extends LinearLayout {
         if (showChatMsg && lastMsg != null) {
 
             //remove HTML tags since we can't display HTML
-            status = lastMsg.replaceAll("\\<.*?\\>", "");
-            mLine2.setTextAppearance(mContext, Typeface.BOLD);
+            String msgText = lastMsg.replaceAll("\\<.*?\\>", "");            
+            mLine2.setText(msgText);                       
+            
+            setBackgroundResource(R.color.incoming_message);
+            
+            
         }
         else
         {
+            mLine2.setVisibility(View.VISIBLE);
             mLine2.setTextAppearance(mContext, Typeface.NORMAL);
+            setBackgroundResource(android.R.color.transparent);
         }
         
         if (TextUtils.isEmpty(status)) {
@@ -284,6 +294,8 @@ public class ContactView extends LinearLayout {
                 }
             }
         }
+        c.close();
+        
         return buf.toString();
     }
 

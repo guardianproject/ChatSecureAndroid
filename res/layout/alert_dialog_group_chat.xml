@@ -40,7 +40,6 @@
     <EditText
         android:id="@+id/chat_server"
         android:hint="jabber conference server"
-        android:text="conference.jabber.ccc.de"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dip"

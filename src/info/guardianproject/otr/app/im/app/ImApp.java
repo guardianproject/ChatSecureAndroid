@@ -233,20 +233,21 @@ public class ImApp extends Application {
         //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
         boolean themeDark = settings.getBoolean("themeDark", false);
         
+        
         if (themeDark)
         {            
-            setTheme(R.style.Theme_Gibberbot);
+            setTheme(R.style.Theme_Sherlock);
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot);
+                activity.setTheme(R.style.Theme_Sherlock);
         }
         else
         {
-            setTheme(R.style.Theme_Gibberbot_Light);
+            setTheme(R.style.Theme_Chatsecure);
             
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot_Light);
+                activity.setTheme(R.style.Theme_Chatsecure);
         }
         
     }

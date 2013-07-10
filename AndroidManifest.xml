@@ -52,7 +52,7 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_chatsecure"
-             android:theme="@style/Theme.Gibberbot.Light"
+             android:theme="@style/Theme.Chatsecure"
              android:allowBackup="false"
              android:largeHeap="true"
 			>
@@ -397,7 +397,6 @@ android:anyDensity="true"
         </activity>
           
         <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false"
-             
              />
           
         <activity android:name="net.hockeyapp.android.UpdateActivity" />

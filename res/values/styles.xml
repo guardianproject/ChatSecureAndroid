@@ -45,46 +45,7 @@
     	<item name="android:textStyle">bold</item>
     </style>
     
-     <!-- Variation on the Holo Light theme that styles the Action Bar -->
-    <style name="Theme.Gibberbot.Light" parent="Theme.Sherlock.Light">
-          <item name="android:windowAnimationStyle">@null</item>
-          
-           <item name="actionBarStyle">@style/MyActionBarStyleLight</item>
-    	<item name="android:actionBarStyle">@style/MyActionBarStyleLight</item>
-     
-        <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>
-        <item name="actionBarItemBackground">@drawable/ad_selectable_background</item>
-        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
-        <item name="popupMenuStyle">@style/MyPopupMenu</item>
-         <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
-        <item name="dropDownListViewStyle">@style/MyDropDownListView</item> 
-        <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>
-        <item name="actionBarTabStyle">@style/MyActionBarTabStyle</item>
-   <!--      <item name="android:actionDropDownStyle">@style/MyDropDownNav</item>
-        <item name="actionDropDownStyle">@style/MyDropDownNav</item>  -->
-        <item name="android:listChoiceIndicatorMultiple">@drawable/ad_btn_check_holo_light</item>
-        <item name="android:listChoiceIndicatorSingle">@drawable/ad_btn_radio_holo_light</item>
-    </style>
-    
-    <style name="Theme.Gibberbot" parent="Theme.Sherlock">
-          <item name="android:windowAnimationStyle">@null</item>
-         <item name="actionBarStyle">@style/MyActionBarStyle</item>
-    	<item name="android:actionBarStyle">@style/MyActionBarStyle</item>
-        <item name="android:actionBarItemBackground">@drawable/ad_selectable_background</item>
-        <item name="actionBarItemBackground">@drawable/ad_selectable_background</item>
-       <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
-        <item name="popupMenuStyle">@style/MyPopupMenu</item> --> 
-        <!-- <item name="android:dropDownListViewStyle">@style/MyDropDownListView</item>
-        <item name="dropDownListViewStyle">@style/MyDropDownListView</item> -->
-        <item name="android:actionBarTabStyle">@style/MyActionBarTabStyle</item>
-        <item name="actionBarTabStyle">@style/MyActionBarTabStyle</item>
-      <!--   <item name="android:actionDropDownStyle">@style/MyDropDownNav</item>
-        <item name="actionDropDownStyle">@style/MyDropDownNav</item> -->
-        <item name="android:listChoiceIndicatorMultiple">@drawable/ad_btn_check_holo_light</item>
-        <item name="android:listChoiceIndicatorSingle">@drawable/ad_btn_radio_holo_light</item>
-        
-    
-    </style>
+  
 
     
     <style name="MyActionBarStyleLight" parent="Widget.Sherlock.ActionBar">

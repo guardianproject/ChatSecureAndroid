@@ -26,6 +26,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.text.Spannable;
@@ -48,6 +49,11 @@ public class MessageView extends LinearLayout {
         NEUTRAL, DELIVERED, UNDELIVERED
     }
 
+    public enum EncryptionState {
+        NONE, ENCRYPTED, ENCRYPTED_AND_VERIFIED
+        
+    }
+    private View mMessageContainer;
     private TextView mTextViewForMessages;
     private TextView mTextViewForTimestamp;
     
@@ -62,6 +68,7 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
+        mMessageContainer = findViewById (R.id.message_container);
         mTextViewForMessages = (TextView) findViewById(R.id.message);
         mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
@@ -76,33 +83,38 @@ public class MessageView extends LinearLayout {
     }
 
     public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
-            boolean scrolling) {
-        CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
+            boolean scrolling, EncryptionState encryption) {
       
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.RIGHT);
         setLayoutParams(lp);     
         setPadding(100, 0, 3, 3);
               
+        
+        CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
         
        mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)
         {
-        mTextViewForTimestamp.setText(formatTimeStamp(date));
-        mTextViewForTimestamp.setGravity(Gravity.CENTER);
+         mTextViewForTimestamp.setText(formatTimeStamp(date));
+         mTextViewForTimestamp.setGravity(Gravity.CENTER);
+         mTextViewForTimestamp.setVisibility(View.VISIBLE);
+        
         }
         else
         {
             mTextViewForTimestamp.setText("");
         }
         
+        mMessageContainer.setBackgroundResource(R.color.incoming_message);
+       
 
     }
 
     public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
-            DeliveryState delivery) {
+            DeliveryState delivery, EncryptionState encryption) {
         String contact = mResources.getString(R.string.me);
         
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -114,6 +126,7 @@ public class MessageView extends LinearLayout {
         CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
         mTextViewForMessages.setText(message);
      //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
+        
         if (delivery == DeliveryState.DELIVERED) {
             mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
             mDeliveryIcon.setVisibility(VISIBLE);
@@ -141,7 +154,9 @@ public class MessageView extends LinearLayout {
 
         }
         
-
+        mMessageContainer.setBackgroundResource(R.color.outgoing_message);
+        
+        
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
@@ -159,13 +174,15 @@ public class MessageView extends LinearLayout {
 
     private CharSequence formatMessage(String contact, String body, Date date, Markup smileyRes,
             boolean scrolling) {
+        
+        /*
         if (body.indexOf('\r') != -1) {
             // first convert \r\n pair to \n, then single \r to \n.
             // here we can't use HideReturnsTransformationMethod because
             // it does only 1 to 1 transformation and is unable to handle
             // the "\r\n" case.
             body = body.replace("\r\n", "\n").replace('\r', '\n');
-        }
+        }*/
 
         //remove HTML tags since we can't display HTML
        // body = body.replaceAll("\\<.*?\\>", "");
@@ -191,7 +208,7 @@ public class MessageView extends LinearLayout {
         }
         */
         
-        buf.append(Html.fromHtml(body));
+        buf.append(body);
         
         /*
         if (date != null) {

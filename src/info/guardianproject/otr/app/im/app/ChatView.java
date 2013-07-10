@@ -29,6 +29,7 @@ import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
+import info.guardianproject.otr.app.im.app.MessageView.EncryptionState;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
@@ -1181,16 +1182,16 @@ public class ChatView extends LinearLayout {
                             message = mContext.getString(R.string.otr_session_status_encrypted);
 
                             mWarningText.setTextColor(Color.BLACK);
-                            mWarningText.setBackgroundColor(Color.YELLOW);
+                            mWarningText.setBackgroundResource(R.color.otr_yellow);
                         } else {
                             message = mContext.getString(R.string.otr_session_status_verified);
 
                             mWarningText.setTextColor(Color.BLACK);
-                            mWarningText.setBackgroundColor(Color.GREEN);
+                            mWarningText.setBackgroundResource(R.color.otr_green);
                         }
                     } else {
                         mWarningText.setTextColor(Color.WHITE);
-                        mWarningText.setBackgroundColor(Color.RED);
+                        mWarningText.setBackgroundResource(R.color.otr_red);
                         message = mContext.getString(R.string.otr_session_status_plaintext);
                     }
 
@@ -1217,7 +1218,7 @@ public class ChatView extends LinearLayout {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
                 
                 mWarningText.setTextColor(Color.WHITE);
-                mWarningText.setBackgroundColor(Color.RED);
+                mWarningText.setBackgroundResource(R.color.otr_red);
                 message = mContext.getString(R.string.otr_session_status_plaintext);
             }
 
@@ -1683,12 +1684,13 @@ public class ChatView extends LinearLayout {
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
             }
-
+            
+            MessageView.EncryptionState encState = EncryptionState.NONE;
             
             switch (type) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
-                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling());
+                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling(), encState);
 
                 break;
 
@@ -1699,7 +1701,7 @@ public class ChatView extends LinearLayout {
                     messageView.bindErrorMessage(errCode);
                 } else {
                     messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling(),
-                            deliveryState);
+                            deliveryState, encState);
                 }
                 break;
 
