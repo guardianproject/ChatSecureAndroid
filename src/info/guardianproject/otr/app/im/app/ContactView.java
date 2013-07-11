@@ -58,7 +58,10 @@ public class ContactView extends LinearLayout {
                                                 Imps.Presence.PRESENCE_STATUS,
                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
                                                 Imps.Chats.LAST_MESSAGE_DATE,
-                                                Imps.Chats.LAST_UNREAD_MESSAGE, };
+                                                Imps.Chats.LAST_UNREAD_MESSAGE,
+                                                Imps.Contacts.AVATAR_DATA
+                                                
+    };
 
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
@@ -72,6 +75,7 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_CONTACT_CUSTOM_STATUS = 9;
     static final int COLUMN_LAST_MESSAGE_DATE = 10;
     static final int COLUMN_LAST_MESSAGE = 11;
+    static final int COLUMN_AVATAR_DATA = 12;
 
     //private ImageView mPresence;
     private TextView mLine1;
@@ -80,12 +84,15 @@ public class ContactView extends LinearLayout {
     private Context mContext; 
     private ImageView mAvatar;
     
-    
+    private Drawable mAvatarUnknown;
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
         mContext = context;
+        
+        mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
+        
     }
 
     @Override
@@ -139,10 +146,11 @@ public class ContactView extends LinearLayout {
         
         if (presence == Imps.Presence.AVAILABLE || presence == Imps.Presence.IDLE)
         {
-          
+            mAvatar.setEnabled(true);
         }
         else if (presence == Imps.Presence.AWAY)
         {
+            mAvatar.setEnabled(true);
         }
         else
         {
@@ -184,17 +192,18 @@ public class ContactView extends LinearLayout {
             }
             
             if (Imps.Contacts.TYPE_GROUP == type) {
-                mAvatar.setImageResource(R.drawable.avatar_unknown);
+                mAvatar.setImageDrawable(mAvatarUnknown);
 
             }
             else
             {
-                mAvatar.setImageResource(R.drawable.avatar_unknown);
+                mAvatar.setImageDrawable(mAvatarUnknown);
             }
             
-            Drawable d = loadAvatar (address);
-            if (d != null)
-                mAvatar.setImageDrawable(d);
+            Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA);
+
+            if (avatar != null)
+                mAvatar.setImageDrawable(avatar);
 
      //   }
         mLine1.setText(contact);
@@ -215,9 +224,7 @@ public class ContactView extends LinearLayout {
         if (showChatMsg && lastMsg != null) {
 
             //remove HTML tags since we can't display HTML
-            String msgText = lastMsg.replaceAll("\\<.*?\\>", "");            
-            mLine2.setText(msgText);                       
-            
+            status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
             setBackgroundResource(R.color.incoming_message);
             
             
@@ -254,33 +261,12 @@ public class ContactView extends LinearLayout {
         //    contactInfoPanel.setBackgroundResource(R.drawable.bubble);
       //      mLine1.setTextColor(r.getColor(R.color.chat_contact));
         } else {
-            contactInfoPanel.setBackgroundDrawable(null);
-            contactInfoPanel.setPadding(4, 0, 0, 0);
+         //   contactInfoPanel.setBackgroundDrawable(null);
+          //  contactInfoPanel.setPadding(4, 0, 0, 0);
          //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
         }
     }
     
-    private Drawable loadAvatar (String jid)
-    {
-        try
-        {
-            //String filename = Base64.encodeBase64String(jid.getBytes()) + ".jpg";
-            String fileName = Base64.encodeToString(jid.getBytes(), Base64.NO_WRAP) + ".jpg";
-            File sdCard = new File(getContext().getCacheDir(),"avatars");
-            File fileAvatar = new File(sdCard, fileName);
-            
-            if (fileAvatar.exists())
-                return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
-            else
-                return null;
-        }
-        catch (IOException ioe)
-        {
-            Log.e("Contacts","error loading avatar",ioe);
-            return null;
-        }
-    }
-
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };
         Uri uri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, groupId);

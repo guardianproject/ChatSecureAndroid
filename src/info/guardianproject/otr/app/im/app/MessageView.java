@@ -20,14 +20,19 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,6 +42,8 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -83,7 +90,7 @@ public class MessageView extends LinearLayout {
     }
 
     public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
-            boolean scrolling, EncryptionState encryption) {
+            boolean scrolling, EncryptionState encryption, boolean showContact) {
       
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.RIGHT);
@@ -91,21 +98,34 @@ public class MessageView extends LinearLayout {
         setPadding(100, 0, 3, 3);
               
         
-        CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
+        CharSequence message = formatMessage(body);
         mTextViewForMessages.setText(message);
         
        mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)
         {
-         mTextViewForTimestamp.setText(formatTimeStamp(date));
+         CharSequence tsText = formatTimeStamp(date);
+         
+         if (showContact)
+             tsText = contact + " : " + tsText.toString();
+         
+         mTextViewForTimestamp.setText(tsText);
          mTextViewForTimestamp.setGravity(Gravity.CENTER);
          mTextViewForTimestamp.setVisibility(View.VISIBLE);
         
         }
         else
         {
+            if (showContact)
+            {
+                mTextViewForTimestamp.setText(contact);
+            }
+            else
+            {
             mTextViewForTimestamp.setText("");
+            mTextViewForTimestamp.setVisibility(View.GONE);
+            }
         }
         
         mMessageContainer.setBackgroundResource(R.color.incoming_message);
@@ -123,7 +143,7 @@ public class MessageView extends LinearLayout {
         setGravity(Gravity.LEFT);
         setPadding(3,0,100,3);
         
-        CharSequence message = formatMessage(contact, body, date, smileyRes, scrolling);
+        CharSequence message = formatMessage(body);
         mTextViewForMessages.setText(message);
      //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         
@@ -159,6 +179,7 @@ public class MessageView extends LinearLayout {
         
     }
 
+    
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mTextViewForMessages.setText(message);
@@ -172,8 +193,7 @@ public class MessageView extends LinearLayout {
         mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    private CharSequence formatMessage(String contact, String body, Date date, Markup smileyRes,
-            boolean scrolling) {
+    private CharSequence formatMessage(String body) {
         
         /*
         if (body.indexOf('\r') != -1) {
@@ -188,13 +208,7 @@ public class MessageView extends LinearLayout {
        // body = body.replaceAll("\\<.*?\\>", "");
 
         SpannableStringBuilder buf = new SpannableStringBuilder();
-
-        /*
-        if (contact != null) {
-            buf.append(contact);
-            buf.append(": ");
-        }
-        */
+        
         /*
 
         if (scrolling) {

@@ -103,7 +103,7 @@ public class DatabaseUtils {
         return decodeAvatar(rawData);
     }
 
-    private static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data,
+    public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data, 
             String username) {
         ContentValues values = new ContentValues(3);
         values.put(Imps.Avatars.DATA, data);
@@ -114,7 +114,36 @@ public class DatabaseUtils {
         String[] selectionArgs = new String[] { username };
 
         resolver.update(updateUri, values, buf.toString(), selectionArgs);
+        
     }
+    
+    public static boolean hasAvatarContact(ContentResolver resolver, Uri updateUri, 
+            String username) {
+        ContentValues values = new ContentValues(3);
+        values.put(Imps.Avatars.CONTACT, username);
+
+        StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
+        buf.append("=?");
+
+        String[] selectionArgs = new String[] { username };
+
+        return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
+        
+    }
+    
+    public static void insertAvatarBlob(ContentResolver resolver, Uri updateUri, long providerId, long accountId, byte[] data, String hash,
+            String contact) {
+        
+        ContentValues values = new ContentValues(3);
+        values.put(Imps.Avatars.DATA, data);
+        values.put(Imps.Avatars.CONTACT, contact);
+        values.put(Imps.Avatars.PROVIDER, providerId);
+        values.put(Imps.Avatars.ACCOUNT, accountId);
+        values.put(Imps.Avatars.HASH, hash);
+        resolver.insert(updateUri, values);
+        
+    }
+    
 
     private static Drawable decodeAvatar(byte[] data) {
         Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length);

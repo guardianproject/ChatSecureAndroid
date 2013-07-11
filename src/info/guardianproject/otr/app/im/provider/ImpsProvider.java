@@ -52,7 +52,7 @@ import android.util.Log;
 /** A content provider for IM */
 public class ImpsProvider extends ContentProvider implements ICacheWordSubscriber {
     private static final String LOG_TAG = "imProvider";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private static final String AUTHORITY = "info.guardianproject.otr.app.im.provider.Imps";
 
@@ -1013,8 +1013,6 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     @Override
     public boolean onCreate() {
 
-        android.os.Debug.waitForDebugger();
-
         mCacheWord = new CacheWordActivityHandler(getContext(), (ICacheWordSubscriber)this);        
         mCacheWord.connectToService();
 
@@ -1040,14 +1038,16 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     private DatabaseHelper getDBHelper() {
         
-        android.os.Debug.waitForDebugger();
-        
         if (mDbHelper == null)
         {
             //check if cacheword is open, and then init the mDbHelper
             if (!mCacheWord.isLocked())
             {
                 onCacheWordOpened();
+            }
+            else
+            {
+                //we need to exit somehow
             }
         }
         return mDbHelper;
@@ -1062,19 +1062,27 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     public final int update(final Uri url, final ContentValues values, final String selection,
             final String[] selectionArgs) {
 
+        DatabaseHelper dbHelper = getDBHelper();
+        
+        
         int result = 0;
-        SQLiteDatabase db = getDBHelper().getWritableDatabase();
-        db.beginTransaction();
-        try {
-            result = updateInternal(url, values, selection, selectionArgs);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+        
+        if (dbHelper != null)
+        {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            db.beginTransaction();
+            try {
+                result = updateInternal(url, values, selection, selectionArgs);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+            if (result > 0) {
+                getContext().getContentResolver()
+                        .notifyChange(url, null /* observer */, false /* sync */);
+            }
         }
-        if (result > 0) {
-            getContext().getContentResolver()
-                    .notifyChange(url, null /* observer */, false /* sync */);
-        }
+        
         return result;
     }
 
@@ -3522,7 +3530,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     static void log(String message) {
-        //    LogCleaner.debug(LOG_TAG, message);
+           LogCleaner.debug(LOG_TAG, message);
     }
 
     @Override

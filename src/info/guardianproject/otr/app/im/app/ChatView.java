@@ -103,7 +103,10 @@ public class ChatView extends LinearLayout {
                                              Imps.Contacts.PROVIDER, Imps.Contacts.USERNAME,
                                              Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
                                              Imps.Presence.PRESENCE_STATUS,
-                                             Imps.Chats.LAST_UNREAD_MESSAGE, };
+                                             Imps.Chats.LAST_UNREAD_MESSAGE, 
+                                             Imps.Chats._ID
+    };
+    
     static final int CONTACT_ID_COLUMN = 0;
     static final int ACCOUNT_COLUMN = 1;
     static final int PROVIDER_COLUMN = 2;
@@ -112,6 +115,7 @@ public class ChatView extends LinearLayout {
     static final int TYPE_COLUMN = 5;
     static final int PRESENCE_STATUS_COLUMN = 6;
     static final int LAST_UNREAD_MESSAGE_COLUMN = 7;
+    static final int CHAT_ID_COLUMN = 8;
 
     static final String[] INVITATION_PROJECT = { Imps.Invitation._ID, Imps.Invitation.PROVIDER,
                                                 Imps.Invitation.SENDER, };
@@ -355,6 +359,8 @@ public class ChatView extends LinearLayout {
         Button approveSubscription = (Button) findViewById(R.id.btnApproveSubscription);
         Button declineSubscription = (Button) findViewById(R.id.btnDeclineSubscription);
 
+        
+        
         mWarningText.setOnTouchListener(new OnTouchListener() {
 
             @Override
@@ -366,6 +372,7 @@ public class ChatView extends LinearLayout {
             }
 
         });
+        
 
         acceptInvitation.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -529,6 +536,7 @@ public class ChatView extends LinearLayout {
 
     private void setTitle() {
         
+        /*
         if (mType == Imps.Contacts.TYPE_GROUP) {
             final String[] projection = { Imps.GroupMembers.NICKNAME };
             Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, mChatId);
@@ -556,7 +564,8 @@ public class ChatView extends LinearLayout {
             mActivity.setTitle(buf.toString());
             
         } else {
-            
+            */
+        
             StringBuilder buf = new StringBuilder();
            
             BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
@@ -565,14 +574,15 @@ public class ChatView extends LinearLayout {
             buf.append(" (");
             buf.append(brandingRes.getString(PresenceUtils.getStatusStringRes(this.mPresenceStatus)));
             buf.append(")");
+            
             mActivity.setTitle(buf.toString());
        
             Drawable avatar = loadAvatar(mUserName);
             
-            if (avatar != null)
-            mActivity.setHomeIcon(avatar);
+           // if (avatar != null)
+           // mActivity.setHomeIcon(avatar);
             
-        }
+       // }
     }
     
     private Drawable loadAvatar (String jid)
@@ -629,7 +639,7 @@ public class ChatView extends LinearLayout {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + chatId);
             }
-            mActivity.finish();
+         //   mActivity.finish();
             return;
         } else {
             mChatSession = getChatSession(mCursor);
@@ -1690,7 +1700,10 @@ public class ChatView extends LinearLayout {
             switch (type) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
-                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling(), encState);
+                {
+                    
+                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                }
 
                 break;
 

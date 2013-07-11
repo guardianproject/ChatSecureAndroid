@@ -23,7 +23,6 @@ import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import net.java.otr4j.session.SessionStatus;
-import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,37 +31,48 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
-public class NewChatActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
 
     ImApp mApp;
-    ChatView mChatView;
+    ViewPager mChatPager;
+    ChatViewPagerAdapter mChatPagerAdapter;
+   // ChatView mChatView;
+
+    Cursor mCursorChats;
+    
     SimpleAlertHandler mHandler;
     MenuItem menuOtr, menuCall;
 
-    private AlertDialog mSmileyDialog;
-    private ChatSwitcher mChatSwitcher;
+   //private ChatSwitcher mChatSwitcher;
     private LayoutInflater mInflater;
 
     private long mAccountId = -1;
@@ -74,20 +84,61 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setContentView(R.layout.chat_view);
-        
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);        
+        setContentView(R.layout.chat_pager);
 
-        
-        mChatView = (ChatView) findViewById(R.id.chatView);
-        mHandler = mChatView.getHandler();
-        mInflater = LayoutInflater.from(this);
-        
         getSipAccount();
+
+        mChatPager = (ViewPager) findViewById(R.id.chatpager);
+        mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
+        {
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onPageSelected(int arg0) {
+               
+            }
+            
+        });
         
         
+        mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
+        mChatPager.setAdapter(mChatPagerAdapter);
         
+        mApp = (ImApp)getApplication();
+        mInflater = LayoutInflater.from(this);
+      //  mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
+
+        mContextMenuHandler = new ContextMenuHandler();
+
+        final Handler handler = new Handler();
+        mApp.callWhenServiceConnected(handler, new Runnable() {
+            public void run() {
+                resolveIntent(getIntent());
+            }
+        });
+    }
+    
+    
+    
+    private void initChatView ()
+    {
+     //   mChatView = (ChatView) findViewById(R.id.chatView);
+     //  mHandler = mChatView.getHandler();
+     //   mChatView.getHistoryView().setOnCreateContextMenuListener(this);
+
+        /*
         EditText mCompose = (EditText)findViewById(R.id.composeMessage);
         mCompose.setOnLongClickListener(new OnLongClickListener ()
         {
@@ -106,26 +157,13 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
             
         });
-       
+       */
         
-
-        mApp = (ImApp)getApplication();
-        mChatSwitcher = new ChatSwitcher(this, mHandler, mApp, mInflater, null);
-
-        mContextMenuHandler = new ContextMenuHandler();
-        mChatView.getHistoryView().setOnCreateContextMenuListener(this);
-
-        final Handler handler = new Handler();
-        mApp.callWhenServiceConnected(handler, new Runnable() {
-            public void run() {
-                resolveIntent(getIntent());
-            }
-        });
     }
     
     protected void setHomeIcon (Drawable d)
     {
-        getSherlock().getActionBar().setIcon(d);
+      //  getSherlock().getActionBar().setIcon(d);
     }
     
     private void getSipAccount ()
@@ -146,15 +184,27 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     @Override
     protected void onResume() {
         super.onResume();
-        mChatView.onResume();
+        
         getSipAccount();
     }
 
     @Override
     protected void onPause() {
-        mChatView.onPause();
+        
+        
         super.onPause();
     }
+
+    @Override
+    protected void onDestroy() {
+
+        if (mCursorChats != null)
+            mCursorChats.close();
+        
+        super.onDestroy();
+    }
+
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -169,7 +219,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             if (providerId == -1L || mAccountId == -1L) {
                 finish();
             } else {
-                mChatSwitcher.open();
+             //   mChatSwitcher.open();
             }
             return;
         }
@@ -182,22 +232,41 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             if ((providerId == -1) || (from == null)) {
                 finish();
             } else {
-                mChatView.bindSubscription(providerId, from);
+                //chatView.bindSubscription(providerId, from);
             }
         } else {
             Uri data = intent.getData();
             String type = getContentResolver().getType(data);
             if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
-                mChatView.bindChat(ContentUris.parseId(data));
+                
+                long requestedChatId = ContentUris.parseId(data);
+                
+                //chatView.bindChat(ContentUris.parseId(data));
+                mCursorChats.moveToPosition(0);
+                int posIdx = 0;
+                while (mCursorChats.moveToNext())
+                {
+                    long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                    
+                    if (chatId == requestedChatId)
+                    {
+                        mChatPager.setCurrentItem(posIdx+1);
+                        break;
+                    }
+                    
+                    posIdx++;
+                }
+                
+                
             } else if (Imps.Invitation.CONTENT_ITEM_TYPE.equals(type)) {
-                mChatView.bindInvitation(ContentUris.parseId(data));
+                //chatView.bindInvitation(ContentUris.parseId(data));
             }
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         menuOtr = menu.findItem(R.id.menu_view_otr);
@@ -215,7 +284,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         updateOtrMenuState();
         return true;
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -229,20 +298,14 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
             return true;
 
         case R.id.menu_view_profile:
-            mChatView.viewProfile();
+            //getChatView().viewProfile();
             return true;
 
         case R.id.menu_end_conversation:
-            mChatView.closeChatSession();
+            //getChatView().closeChatSession();
             return true;
          
-        case R.id.menu_switch_chats:
-            if (mChatSwitcher.isOpen()) {
-                mChatSwitcher.close();
-            } else {
-                mChatSwitcher.open();
-            }
-            return true;
+      
 
         case android.R.id.home:
             showChatList();
@@ -253,26 +316,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
           //  finish();
             return true;
             
-        case R.id.menu_prev_chat:
-            switchChat(-1);
-            return true;
-
-        case R.id.menu_next_chat:
-            switchChat(1);
-            return true;
-
-        case R.id.menu_quick_switch_0:
-        case R.id.menu_quick_switch_1:
-        case R.id.menu_quick_switch_2:
-        case R.id.menu_quick_switch_3:
-        case R.id.menu_quick_switch_4:
-        case R.id.menu_quick_switch_5:
-        case R.id.menu_quick_switch_6:
-        case R.id.menu_quick_switch_7:
-        case R.id.menu_quick_switch_8:
-        case R.id.menu_quick_switch_9:
-            mChatSwitcher.handleShortcut(item.getAlphabeticShortcut());
-            return true;
+      
         }
 
         return super.onOptionsItemSelected(item);
@@ -310,13 +354,15 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     private void sendCallInvite ()
     {
         
-        mChatView.sendMessage("&#9742; Click to start call <a href=\"https://foo.com\">sip:" + this.mSipAccount + "</a>");
+       // getChatView().sendMessage("&#9742; Click to start call <a href=\"https://foo.com\">sip:" + this.mSipAccount + "</a>");
         
     }
     
     private void switchOtrState() {
 
-        IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+        ChatView chatView = getCurrentChatView ();
+        
+        IOtrChatSession otrChatSession =  chatView.getOtrChatSession();
         int toastMsgId;
         
         if (SessionStatus.values() != null && otrChatSession != null)
@@ -330,7 +376,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
                 } else {
                     otrChatSession.stopChatEncryption();
                     toastMsgId = R.string.stopping_otr_chat;
-                    mChatView.updateWarningView();
+                    chatView.updateWarningView();
                 }
                 updateOtrMenuState();
                 
@@ -343,10 +389,12 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
 
     public void updateOtrMenuState() {
         
-        if (menuOtr == null)
+        ChatView chatView = getCurrentChatView ();
+
+        if (menuOtr == null || chatView == null)
             return;
 
-        IOtrChatSession otrChatSession = mChatView.getOtrChatSession();
+        IOtrChatSession otrChatSession =  chatView.getOtrChatSession();
 
         if (otrChatSession != null) {
             try {
@@ -371,113 +419,44 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         }
     }
 
-   private void showRosterScreen() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setClass(this, ContactListActivity.class);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatView.getAccountId());
-        startActivity(intent);
-    }
 
-//    private void showSmileyDialog() {
-//        if (mSmileyDialog == null) {
-//            long providerId = mChatView.getProviderId();
-//
-//            final BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-//            int[] icons = brandingRes.getSmileyIcons();
-//            String[] names = brandingRes
-//                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_NAMES);
-//            final String[] texts = brandingRes
-//                    .getStringArray(BrandingResourceIDs.STRING_ARRAY_SMILEY_TEXTS);
-//
-//            final int N = names.length;
-//
-//            List<Map<String, ?>> entries = new ArrayList<Map<String, ?>>();
-//            for (int i = 0; i < N; i++) {
-//                // We might have different ASCII for the same icon, skip it if
-//                // the icon is already added.
-//                boolean added = false;
-//                for (int j = 0; j < i; j++) {
-//                    if (icons[i] == icons[j]) {
-//                        added = true;
-//                        break;
-//                    }
-//                }
-//                if (!added) {
-//                    HashMap<String, Object> entry = new HashMap<String, Object>();
-//
-//                    entry.put("icon", icons[i]);
-//                    entry.put("name", names[i]);
-//                    entry.put("text", texts[i]);
-//
-//                    entries.add(entry);
-//                }
-//            }
-//
-//            final SimpleAdapter a = new SimpleAdapter(this, entries, R.layout.smiley_menu_item,
-//                    new String[] { "icon", "name", "text" }, new int[] { R.id.smiley_icon,
-//                                                                        R.id.smiley_name,
-//                                                                        R.id.smiley_text });
-//            SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
-//                public boolean setViewValue(View view, Object data, String textRepresentation) {
-//                    if (view instanceof ImageView) {
-//                        Drawable img = brandingRes.getSmileyIcon((Integer) data);
-//                        ((ImageView) view).setImageDrawable(img);
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            };
-//            a.setViewBinder(viewBinder);
-//
-//            AlertDialog.Builder b = new AlertDialog.Builder(this);
-//
-//            b.setTitle(brandingRes.getString(BrandingResourceIDs.STRING_MENU_INSERT_SMILEY));
-//
-//            b.setCancelable(true);
-//            b.setAdapter(a, new DialogInterface.OnClickListener() {
-//                public final void onClick(DialogInterface dialog, int which) {
-//                    HashMap<String, Object> item = (HashMap<String, Object>) a.getItem(which);
-//                    mChatView.insertSmiley((String) item.get("text"));
-//                }
-//            });
-//
-//            mSmileyDialog = b.create();
-//        }
-//
-//        mSmileyDialog.show();
-//    }
-
+    /*
     private void switchChat(int delta) {
-        long providerId = mChatView.getProviderId();
-        long accountId = mChatView.getAccountId();
-        String contact = mChatView.getUserName();
+        
+        ChatView chatView = getCurrentChatView ();
+        long providerId =  chatView.getProviderId();
+        long accountId =  chatView.getAccountId();
+        String contact =  chatView.getUserName();
 
         mChatSwitcher.rotateChat(delta, contact, accountId, providerId);
-    }
+    }*/
 
+    /*
     private void startContactPicker() {
         Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
-        ContentUris.appendId(builder, mChatView.getProviderId());
-        ContentUris.appendId(builder, mChatView.getAccountId());
+        ContentUris.appendId(builder,  getChatView().getProviderId());
+        ContentUris.appendId(builder,  getChatView().getAccountId());
         Uri data = builder.build();
 
         try {
             Intent i = new Intent(Intent.ACTION_PICK, data);
-            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS, mChatView
+            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS,  getChatView()
                     .getCurrentChatSession().getParticipants());
             startActivityForResult(i, REQUEST_PICK_CONTACTS);
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+      
+        /*
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {
-                    IChatSession chatSession = mChatView.getCurrentChatSession();
+                    IChatSession chatSession =  getChatView().getCurrentChatSession();
                     if (chatSession.isGroupChatSession()) {
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
@@ -489,7 +468,7 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
                     mHandler.showServiceErrorAlert();
                 }
             }
-        }
+        }*/
     }
 
     void showInvitationHasSent(String contact) {
@@ -513,7 +492,10 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
                 mChatSession.inviteContact(mContact);
                 mHandler.post(new Runnable() {
                     public void run() {
-                        mChatView.bindChat(chatId);
+                        
+                        ChatView chatView = getCurrentChatView ();
+
+                        chatView.bindChat(chatId);
                         showInvitationHasSent(mContact);
                     }
                 });
@@ -531,9 +513,12 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
     /** Show the context menu on a history item. */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        
+        ChatView chatView = getCurrentChatView ();
+
         AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         mContextMenuHandler.mPosition = info.position;
-        Cursor cursor = mChatView.getMessageAtPosition(info.position);
+        Cursor cursor =  chatView.getMessageAtPosition(info.position);
         int type = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Messages.TYPE));
         if (type == Imps.MessageType.OUTGOING) {
             menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(
@@ -541,39 +526,145 @@ public class NewChatActivity extends ThemeableActivity implements View.OnCreateC
         }
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
+    final class ContextMenuHandler implements OnMenuItemClickListener {
         int mPosition;
 
-        public boolean onMenuItemClick(MenuItem item) {
-            Cursor c;
-            c = mChatView.getMessageAtPosition(mPosition);
-
-            switch (item.getItemId()) {
-            case MENU_RESEND:
-                String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
-                mChatView.getComposedMessage().setText(text);
-                break;
-            default:
-                return false;
-            }
-
-            return true;
-        }
-
+     
         @Override
         public boolean onMenuItemClick(android.view.MenuItem item) {
+            
+            ChatView chatView = getCurrentChatView ();
+            
             Cursor c;
-            c = mChatView.getMessageAtPosition(mPosition);
+            c =  chatView.getMessageAtPosition(mPosition);
 
             switch (item.getItemId()) {
             case MENU_RESEND:
                 String text = c.getString(c.getColumnIndexOrThrow(Imps.Messages.BODY));
-                mChatView.getComposedMessage().setText(text);
+                chatView.getComposedMessage().setText(text);
                 break;
             default:
                 return false;
             }            return false;
         }
     }
+    
+    
 
+    public class ChatViewPagerAdapter extends FragmentStatePagerAdapter {
+        
+        
+        public ChatViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+            
+            mCursorChats = managedQuery(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
+        }
+
+        @Override
+        public int getCount() {
+            return mCursorChats.getCount();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            
+            long chatId = -1;
+            
+            try
+            {
+                mCursorChats.moveToPosition(position);            
+                chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+            }
+            catch (Exception e)
+            {
+                mCursorChats = managedQuery(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
+
+                mCursorChats.moveToPosition(position);       
+                chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+            }
+            
+            return ChatViewFragment.newInstance(chatId);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+           
+            try
+            {
+                       mCursorChats.moveToPosition(position);
+                            return mCursorChats.getString(ChatView.USERNAME_COLUMN);
+            }
+            catch (Exception e)
+            {
+                mCursorChats = managedQuery(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
+
+                mCursorChats.moveToPosition(position);       
+                return mCursorChats.getString(ChatView.USERNAME_COLUMN);
+            }
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return super.saveState();
+        }
+        
+        
+    }
+    
+    public static class ChatViewFragment extends Fragment {
+        long mChatId;
+        ChatView mChatView;
+        /**
+         * Create a new instance of CountingFragment, providing "num"
+         * as an argument.
+         */
+        static ChatViewFragment newInstance(long chatId) {
+            ChatViewFragment f = new ChatViewFragment();
+
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putLong("chatId", chatId);
+            f.setArguments(args);
+
+            return f;
+        }
+
+        /**
+         * When creating, retrieve this instance's number from its arguments.
+         */
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mChatId = getArguments() != null ? getArguments().getLong("chatId") : 1;
+            
+        }
+
+        /**
+         * The Fragment's UI is just a simple text view showing its
+         * instance number.
+         */
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            
+            mChatView = (ChatView)inflater.inflate(R.layout.chat_view, container, false);;
+            mChatView.bindChat(mChatId);
+            return mChatView;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+           
+        }
+
+    }
+    
+    public ChatView getCurrentChatView ()
+    {
+        ChatView chatView = ((ChatViewFragment)mChatPagerAdapter.getItem(mChatPager.getCurrentItem())).mChatView;
+        return chatView;
+    }
+    
+    
 }

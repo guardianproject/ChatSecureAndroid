@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.TorProxyInfo;
+import info.guardianproject.otr.app.im.app.DatabaseUtils;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
@@ -23,10 +24,7 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -117,6 +115,8 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -180,10 +180,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private int mGlobalId;
     private static int mGlobalCount;
     
-    private final Random rnd = new Random();
+    private final Random rndForTorCircuits = new Random();
     
     // Maintains a sequence counting up to the user configured heartbeat interval
     private int heartbeatSequence = 0;
+    
+
+    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
+
 
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -302,20 +306,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             session.onMessagePostponed(packet.getPacketID());
         }
     }
-
-    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
     
     public void getVCard(String jid) {
 
-        Contact contact = getContactListManager().getContact(jid);
+        qAvatar.add(jid);
         
-       // if (contact != null && contact.getPresence().isOnline())
-        //{
-            qAvatar.add(jid);
-            
-            if (!threadAvatarQ.isAlive())
-                threadAvatarQ.start();
-        //} 
+        if (!threadAvatarQ.isAlive())
+            threadAvatarQ.start();
+       
     }
     
     private Thread threadAvatarQ = new Thread ()
@@ -325,40 +323,37 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             String jid = null;
             
+            ContentResolver resolver = mContext.getContentResolver();
+            
             try
             {
                 while ((jid = qAvatar.take()) != null)
                 {
             
                     try {
-                                  
-                        String fileName = android.util.Base64.encodeToString(jid.getBytes(), android.util.Base64.NO_WRAP) + ".jpg";
-                        File fileDirAvatars = new File(aContext.getCacheDir(),"avatars");
-                        fileDirAvatars.mkdirs();                    
-                        File file = new File(fileDirAvatars, fileName);
-                        
-                        if (!file.exists())
+                       
+                        if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
                         {
-                            
                             VCard vCard = new VCard();
                             
                             // FIXME synchronize this to executor thread
                             vCard.load(mConnection, jid);
             
                             // If VCard is loaded, then save the avatar to the personal folder.
-                            byte[] bytes = vCard.getAvatar();
-                
-                            if (bytes != null) {
-                                    
-                                    OutputStream output = new FileOutputStream(file);
-                                    output.write(bytes);
-                                    output.close();
-                               
+                            byte[] avatarBytes = vCard.getAvatar();
+                            String avatarHash = vCard.getAvatarHash();
+                            
+                            if (avatarBytes != null)
+                            {
+                              
+                                DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
+                                
+                                // int providerId, int accountId, byte[] data, String hash,String contact
                             }
+                      
                         }
-                        
                     } catch (Exception ex) {
-                       // Log.w(TAG,"unable to save avatar",ex);
+                       Log.w(TAG,"unable to save avatar",ex);
                     }
                 }
             }
@@ -782,8 +777,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     && port == TorProxyInfo.PROXY_PORT) //9050
             {
                 //if the proxy is for Orbot/Tor then generate random usr/pwd to isolate Tor streams
-                username = rnd.nextInt(100000)+"";
-                password = rnd.nextInt(100000)+"";
+                username = rndForTorCircuits.nextInt(100000)+"";
+                password = rndForTorCircuits.nextInt(100000)+"";
                 
             }
             
@@ -804,7 +799,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (Debug.DEBUG_ENABLED) {
             Debug.onConnectionStart();
         }
-        
+     
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
@@ -984,14 +979,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 */
                 
                
-                if (session.getParticipant() instanceof ChatGroup && smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
-                {
-
-                    debug(TAG,"received group chat message from ourselves. Ignoring.");
-                    
-                }
-                else
-                {
+              if (!smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
+              {
                     Message rec = new Message(body);
                     rec.setTo(mUser.getAddress());
                     rec.setFrom(new XmppAddress(smackMessage.getFrom()));
@@ -999,6 +988,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     boolean good = session.onReceiveMessage(rec);
                 
+                    
+                    
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {
                             debug(TAG, "sending delivery receipt");
@@ -1011,7 +1002,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                      } else if (!good) {
                              debug(TAG, "packet processing error");
                      }
-                }
+              }
+                
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
 
@@ -1647,16 +1639,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
-              //  loadContactListsAsync();
 
                 for (String address : addresses)
-                {
                     getVCard(address);
-                
-                //    Contact contact = mContactListManager.getContact(address);
-                    
-                    
-                }
                 
             }
 

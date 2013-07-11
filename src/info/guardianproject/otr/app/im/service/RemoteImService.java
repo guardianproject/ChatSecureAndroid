@@ -286,8 +286,17 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
         values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
-        // insert on the "account_status" uri actually replaces the existing value 
-        cr.update(Imps.AccountStatus.CONTENT_URI, values, null, null);
+        
+        try
+        {
+            //insert on the "account_status" uri actually replaces the existing value 
+            cr.update(Imps.AccountStatus.CONTENT_URI, values, null, null);
+        }
+        catch (Exception e)
+        {
+            //this can throw NPE on restart sometimes if database has not been unlocked
+            debug("database is not unlocked yet. caught NPE from mDbHelper in ImpsProvider");
+        }
     }
 
 

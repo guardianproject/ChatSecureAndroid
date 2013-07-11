@@ -39,6 +39,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.AttributeSet;
@@ -83,7 +84,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
    // IImConnection mConn;
     ActiveChatListView mActiveChatListView;
     ContactListFilterView mFilterView;
-    SimpleAlertHandler mHandler;
+    
     SlidingMenu menu;
     
     ContextMenuHandler mContextMenuHandler;
@@ -98,6 +99,40 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     long[] mAccountIds;
     private long mLastProviderId = -1;
     
+    Handler mHandler =  new Handler() {
+      
+        @Override
+        public void handleMessage(Message msg) {
+            /*
+            long providerId = ((long) msg.arg1 << 32) | msg.arg2;
+            if (providerId != mProviderId) {
+                return;
+            }
+        */
+            
+            switch (msg.what) {
+
+            case ImApp.EVENT_CONNECTION_LOGGED_IN:
+                log("Connection resumed");
+                //updateWarningView();
+                return;
+            case ImApp.EVENT_CONNECTION_SUSPENDED:
+                log("Connection suspended");
+               // updateWarningView();
+                return;
+            case ImApp.EVENT_CONNECTION_DISCONNECTED:
+                log("Handle event connection disconnected.");
+              //  updateWarningView();
+              //  promptDisconnectedEvent(msg);
+                return;
+            }
+
+            super.handleMessage(msg);
+        }
+    };
+    
+    
+    
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -111,7 +146,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         
         mApp = (ImApp)getApplication();
         
-        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
+        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, mHandler);
 
         mContextMenuHandler = new ContextMenuHandler();
         mActiveChatListView.getListView().setOnCreateContextMenuListener(this);
@@ -223,7 +258,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             } catch (RemoteException e) {
                 
                 mPresenceView.loggingIn(false);
-                mHandler.showServiceErrorAlert();
+            //    mHandler.showServiceErrorAlert();
             }
 
             Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
@@ -241,9 +276,6 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     
     private void setupActionBarList ()
     {
-
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         
         Cursor providerCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
@@ -385,7 +417,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             showGroupChatDialog();
             
             return true;
-        case android.R.id.home:
+      
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
         //    finish();
@@ -786,7 +818,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
                 startActivity(i);
                 
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+              //  mHandler.showServiceErrorAlert();
             }
            
         }
@@ -801,7 +833,11 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 cr, mLastProviderId, false /* don't keep updated */, null /* no handler */);
 
-        final String chatDomain = settings.getDomain();
+        String chatDomain = "conference." + settings.getDomain();
+        
+        settings.close();
+        
+        
         
      // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
@@ -841,6 +877,8 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             })
             .create().show();
         
+        
+        
     }
     
     public void startGroupChat (String room, String server, long providerId)
@@ -871,11 +909,11 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
             }
             else
             {
-                mHandler.showServiceErrorAlert();
+               // mHandler.showServiceErrorAlert();
             }
             
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+          //  mHandler.showServiceErrorAlert();
         }
        
     }
