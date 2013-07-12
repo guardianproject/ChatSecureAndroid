@@ -96,6 +96,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         
+        /*
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
         .detectDiskReads()
         .detectDiskWrites()
@@ -107,6 +108,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         .penaltyLog()
         .penaltyDeath()
         .build());
+        */
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
@@ -144,15 +146,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mContextMenuHandler = new ContextMenuHandler();
 
         final Handler handler = new Handler();
-        mApp.callWhenServiceConnected(handler, new Runnable() {
-            public void run() {
-                resolveIntent(getIntent());
-                
-                mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
-                mChatPager.setAdapter(mChatPagerAdapter);
-               
-            }
-        });
+        
+        
+        mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
+        mChatPager.setAdapter(mChatPagerAdapter);
+        
         
     }
     

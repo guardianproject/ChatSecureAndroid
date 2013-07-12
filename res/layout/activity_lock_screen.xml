@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#dddddd"
+    android:background="@drawable/wp"
      >
 
     <LinearLayout
