@@ -115,8 +115,7 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -311,57 +310,65 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         qAvatar.add(jid);
         
-        if (!threadAvatarQ.isAlive())
-            threadAvatarQ.start();
        
     }
     
-    private Thread threadAvatarQ = new Thread ()
+    private void loadVCardsAsync ()
     {
-        
-        public void run ()
-        {
-            String jid = null;
+     // Using an AsyncTask to load the slow images in a background thread
+        new AsyncTask<String, Void, String>() {
             
-            ContentResolver resolver = mContext.getContentResolver();
-            
-            try
-            {
-                while ((jid = qAvatar.take()) != null)
-                {
-            
-                    try {
-                       
-                        if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
-                        {
-                            VCard vCard = new VCard();
-                            
-                            // FIXME synchronize this to executor thread
-                            vCard.load(mConnection, jid);
-            
-                            // If VCard is loaded, then save the avatar to the personal folder.
-                            byte[] avatarBytes = vCard.getAvatar();
-                            String avatarHash = vCard.getAvatarHash();
-                            
-                            if (avatarBytes != null)
-                            {
-                              
-                                DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
-                                
-                                // int providerId, int accountId, byte[] data, String hash,String contact
-                            }
-                      
-                        }
-                    } catch (Exception ex) {
-                       Log.w(TAG,"unable to save avatar",ex);
-                    }
-                }
+            @Override
+            protected String doInBackground(String... params) {
+                loadVCards();
+                return "";
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+               
             }
-            catch (InterruptedException e)
-            {
-                Log.w(TAG,"qavatar interrupted");
+        }.execute("");
+    }
+    
+    private void loadVCards ()
+    {
+        String jid = null;
+        ContentResolver resolver = mContext.getContentResolver();
+        
+      
+        while ((jid = qAvatar.poll()) != null)
+        {
+    
+            try {
+               
+                if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
+                {
+                    VCard vCard = new VCard();
+                    
+                    // FIXME synchronize this to executor thread
+                    vCard.load(mConnection, jid);
+    
+                    // If VCard is loaded, then save the avatar to the personal folder.
+                    byte[] avatarBytes = vCard.getAvatar();
+                    String avatarHash = vCard.getAvatarHash();
+                    
+                    if (avatarBytes != null)
+                    {
+                      
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
+                        
+                        // int providerId, int accountId, byte[] data, String hash,String contact
+                    }
+              
+                }
+            } catch (Exception ex) {
+               Log.w(TAG,"unable to save avatar",ex);
             }
         }
+       
+        
         
     };
 
@@ -759,6 +766,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // TODO should we really be using the same name for both address and name?
         setState(LOGGED_IN, null);
         debug(TAG, "logged in");
+        
+      
 
     }
 
@@ -1643,6 +1652,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 for (String address : addresses)
                     getVCard(address);
                 
+               
+                loadVCardsAsync ();
             }
 
             @Override
@@ -1657,6 +1668,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     getVCard(address);
                 
                
+                loadVCardsAsync ();
             }
         };
 

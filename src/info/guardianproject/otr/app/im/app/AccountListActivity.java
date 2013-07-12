@@ -87,7 +87,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private CacheWordActivityHandler mCacheWord;
     
-    private final static int SCAN_REQUEST_CODE = 1234; //otr key import scanning
+    private final static int SCAN_REQUEST_CODE = 7171; //otr key import scanning
     
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
@@ -132,19 +132,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        Intent intent = getIntent();
-
-        if (ImApp.ACTION_QUIT.equals(intent.getAction())) {
-            signOutAndKillProcess();
-            return;
-        }
+        refreshProviderData();
         
-        mAdapter = new ProviderAdapter(this, mProviderCursor);
-        setListAdapter(mAdapter);
+        
 
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
         FontUtils.setRobotoFont(this, godfatherView);
@@ -175,6 +165,18 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
         
         checkForUpdates();
+    }
+    
+    private void refreshProviderData ()
+    {
+        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        Intent intent = getIntent();
+        
+        mAdapter = new ProviderAdapter(this, mProviderCursor);
+        setListAdapter(mAdapter);
     }
     
     
@@ -221,7 +223,18 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mHandler.registerForBroadcastEvents();
         mCacheWord.onResume();
         
+        if (!mCacheWord.isLocked())
+        {
+           onCacheWordOpened();
+           
+        }
+        
         checkForCrashes();
+        
+        if (getIntent().hasExtra("EXIT") && getIntent().getExtras().getBoolean("EXIT"))
+        {
+            signOutAndKillProcess();
+        }
         
     }
     
@@ -238,21 +251,17 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
             long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
-            gotoAccount ();
-
+           
             if (state == Imps.ConnectionStatus.OFFLINE) {
-                boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-               // boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
-                
-                if (isKeepSignedIn) {
+             
                   signIn(accountId);
-                } 
-                //else if (isAccountEditible) {
-                  //  intent = getEditAccountIntent();
-                //}
+                
+            }
+            else
+            {
+                gotoAccount(accountId);
             }
             
-            gotoAccount();
             
         }
 
@@ -277,22 +286,25 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         // Remember that the user signed in.
         setKeepSignedIn(accountId, true);
 
-
         long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
         String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
+        
         boolean isActive = false; // TODO(miron)
         mSignInHelper.signIn(password, providerId, accountId, isActive);
+        
+        refreshProviderData ();
+        
+        
     }
 
-    protected void gotoAccount() {
-       // long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+    
+    protected void gotoAccount(long accountId)
+    {
 
-        Intent intent = new Intent(this, ChatListActivity.class);
-        // clear the back stack of the account setup
-      //  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-     //   intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+        Intent intent = new Intent(this, NewChatActivity.class);
+       //intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
-      //  finish();
+    
     }
 
     boolean isSigningIn(Cursor cursor) {
@@ -324,13 +336,19 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private void signOutAndKillProcess() {
         
-        signOutAll ();
+        try
+        {
+            signOutAll ();
         
-        mCacheWord.manuallyLock();
+            mCacheWord.manuallyLock();
+        }
+        catch (Exception e){}
+        catch (Error e2){}
 
-        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        ((ImApp)getApplication()).stopImServiceIfInactive();
+        
+        Intent intent = new Intent(getApplicationContext(), LockScreenActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("EXIT", true);
         startActivity(intent);
         
     }
@@ -344,7 +362,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             signOut(accountId);
         } while (mProviderCursor.moveToNext());
         
-        ((ImApp)getApplication()).stopImServiceIfInactive();
         
     }
 
@@ -405,7 +422,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
-            startActivityForResult(sintent,SCAN_REQUEST_CODE);
+            startActivity(sintent);
             return true;
         case R.id.menu_import_keys:
             importKeyStore();
@@ -599,6 +616,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
             Log.e(TAG, "bad menuInfo", e);
             return false;
         }
+        
         long providerId = info.id;
         Cursor providerCursor = (Cursor) getListAdapter().getItem(info.position);
         long accountId = providerCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
@@ -773,6 +791,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
     @Override
     public void onCacheWordUninitialized() {
        
+        finish ();
+        
     }
 
 
@@ -808,6 +828,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
+        
+        
     }
     
     private void checkForCrashes() {

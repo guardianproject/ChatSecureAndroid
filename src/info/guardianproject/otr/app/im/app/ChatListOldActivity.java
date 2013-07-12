@@ -67,7 +67,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 //  mScreen.finish();
 //mContactListView.setAutoRefreshContacts(false);
 
-public class ChatListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener, ContactListListener {
+public class ChatListOldActivity extends ThemeableActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -144,6 +144,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         getSherlock().getActionBar().setHomeButtonEnabled(true);
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         
+        
         mApp = (ImApp)getApplication();
         
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, mHandler);
@@ -151,10 +152,11 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         mContextMenuHandler = new ContextMenuHandler();
         mActiveChatListView.getListView().setOnCreateContextMenuListener(this);
 
-            setupSideBar();
+           // setupSideBar();
         
     }
     
+    /*
     private void setupSideBar ()
     {
         
@@ -206,7 +208,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
         mApp.registerForConnEvents(mHandler);
 
     }
-    
+    */
     
     private void initAccount (long accountId)
     {
@@ -364,7 +366,7 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, ChatListActivity.this);
+                return new ProviderListItem(context, ChatListOldActivity.this);
             }
             return null;
         }
@@ -597,12 +599,12 @@ public class ChatListActivity extends ThemeableActivity implements View.OnCreate
     @Override
     protected void onResume() {
         super.onResume();
-           
         
         ((ImApp)getApplication()).startImServiceIfNeed(true);
         
         mApp.registerForConnEvents(mHandler);
-        mActiveChatListView.setAutoRefreshContacts(true);
+        //mActiveChatListView.setAutoRefreshContacts(true);
+        
     }
 
     @Override

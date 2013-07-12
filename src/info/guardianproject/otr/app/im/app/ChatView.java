@@ -45,9 +45,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import net.java.otr4j.session.SessionStatus;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.AsyncQueryHandler;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -65,6 +68,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
@@ -87,6 +91,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
@@ -96,6 +101,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -170,7 +176,8 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
     private static final long SHOW_TIME_STAMP_INTERVAL = 60 * 1000; // 1 minute
-    private static final long SHOW_DELIVERY_INTERVAL = 10 * 1000; // 10 seconds
+    private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 10 seconds
+    private static final long DEFAULT_QUERY_INTERVAL = 1000;
     private static final int QUERY_TOKEN = 10;
 
     // Async QueryHandler
@@ -220,6 +227,7 @@ public class ChatView extends LinearLayout {
             if (!(view instanceof MessageView)) {
                 return;
             }
+            
             URLSpan[] links = ((MessageView) view).getMessageLinks();
             if (links.length == 0) {
                 return;
@@ -257,32 +265,32 @@ public class ChatView extends LinearLayout {
         @Override
         public void onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
 
         }
 
         @Override
         public void onContactJoined(IChatSession ses, Contact contact) {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
         @Override
         public void onContactLeft(IChatSession ses, Contact contact) {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
         @Override
         public void onSendMessageError(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg, ImErrorInfo error) {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
         public void onStatusChanged(IChatSession ses) throws RemoteException {
-            scheduleRequery(0);
+            scheduleRequery(DEFAULT_QUERY_INTERVAL);
         };
     };
 
@@ -311,7 +319,7 @@ public class ChatView extends LinearLayout {
             for (Contact c : contacts) {
                 if (c.getAddress().getAddress().equals(mUserName)) {
                     mHandler.post(mUpdateChatCallback);
-                    scheduleRequery(0);
+                    scheduleRequery(DEFAULT_QUERY_INTERVAL);
                     break;
                 }
             }
@@ -359,18 +367,61 @@ public class ChatView extends LinearLayout {
         Button approveSubscription = (Button) findViewById(R.id.btnApproveSubscription);
         Button declineSubscription = (Button) findViewById(R.id.btnDeclineSubscription);
 
+      
         
-        
-        mWarningText.setOnTouchListener(new OnTouchListener() {
+        mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
+        {
 
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                
+                
 
-                viewProfile();
-
+             // Gets a handle to the clipboard service.
+             ClipboardManager clipboard = (ClipboardManager)
+                     mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                
+             if (arg1 instanceof MessageView)
+             {
+                 String textToCopy = ((MessageView)arg1).getLastMessage();
+                 
+                 ClipData clip = ClipData.newPlainText("chat",textToCopy);
+    
+                 clipboard.setPrimaryClip(clip);
+                 
+                 Toast.makeText(mActivity, "message copied to the clipboard", Toast.LENGTH_SHORT).show();
+                 
+             }
+                
                 return false;
             }
+            
+        });
+        
+        mWarningText.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+               viewProfile();
+                
+            }
+
+           
+
+        });
+        
+        mWarningText.setOnLongClickListener(new OnLongClickListener()
+        {
+
+            @Override
+            public boolean onLongClick(View v) {
+                
+                mActivity.switchOtrState(ChatView.this);
+                
+                return true;
+            }
+            
         });
         
 
@@ -496,7 +547,7 @@ public class ChatView extends LinearLayout {
         updateContactInfo();
 
         setStatusIcon();
-        setTitle();
+        
 
         IImConnection conn = mApp.getConnection(mProviderId);
         if (conn == null) {
@@ -534,9 +585,9 @@ public class ChatView extends LinearLayout {
         mNickName = mCursor.getString(NICKNAME_COLUMN);
     }
 
+    /*
     private void setTitle() {
         
-        /*
         if (mType == Imps.Contacts.TYPE_GROUP) {
             final String[] projection = { Imps.GroupMembers.NICKNAME };
             Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, mChatId);
@@ -564,7 +615,7 @@ public class ChatView extends LinearLayout {
             mActivity.setTitle(buf.toString());
             
         } else {
-            */
+            
         
             StringBuilder buf = new StringBuilder();
            
@@ -583,7 +634,7 @@ public class ChatView extends LinearLayout {
            // mActivity.setHomeIcon(avatar);
             
        // }
-    }
+    }*/
     
     private Drawable loadAvatar (String jid)
     {
@@ -884,7 +935,7 @@ public class ChatView extends LinearLayout {
             ContentResolver cr = mContext.getContentResolver();
             cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mChatId), null, null);
         }
-        mActivity.finish();
+        
     }
 
     public void closeChatSessionIfInactive() {
@@ -914,10 +965,16 @@ public class ChatView extends LinearLayout {
         if (mOtrKeyManager != null) {
             try {
 
-                remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
+                
                 localFingerprint = mOtrKeyManager.getLocalFingerprint();
-                isVerified = mOtrKeyManager.isKeyVerified(mUserName);
-
+                
+                remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
+                
+                if (remoteFingerprint != null)
+                    isVerified = mOtrKeyManager.isKeyVerified(mUserName);
+                else
+                    isVerified = false;
+                
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -1145,7 +1202,7 @@ public class ChatView extends LinearLayout {
 
         initOtr();
         
-        mActivity.updateOtrMenuState();
+        
 
         //check if the chat is otr or not
         if (mOtrChatSession != null) {
@@ -1220,7 +1277,14 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mWarningText.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
-            } else {
+            } 
+            else if (mPresenceStatus == Imps.Presence.OFFLINE)
+            {
+                mWarningText.setTextColor(Color.WHITE);
+                mWarningText.setBackgroundColor(Color.DKGRAY);
+                message = mContext.getString(R.string.presence_offline);
+            }
+            else {
 
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
@@ -1235,6 +1299,8 @@ public class ChatView extends LinearLayout {
         } else {
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
+            mWarningText.setTextColor(Color.WHITE);
+            mWarningText.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
         }
 
@@ -1641,14 +1707,13 @@ public class ChatView extends LinearLayout {
         private int mErrCodeColumn;
         private int mDeltaColumn;
         private int mDeliveredColumn;
-        private ChatBackgroundMaker mBgMaker;
 
         private LayoutInflater mInflater;
 
         public MessageAdapter(Activity context, Cursor c) {
             super(context, c, false);
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            mBgMaker = new ChatBackgroundMaker(context);
+           
             if (c != null) {
                 resolveColumnIndex(c);
             }
@@ -1681,7 +1746,7 @@ public class ChatView extends LinearLayout {
         public void bindView(View view, Context context, Cursor cursor) {
             MessageView messageView = (MessageView) view;
 
-            int type = cursor.getInt(mTypeColumn);
+            mType = cursor.getInt(mTypeColumn);
             String contact = isGroupChat() ? cursor.getString(mNicknameColumn) : mNickName;
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
@@ -1697,7 +1762,7 @@ public class ChatView extends LinearLayout {
             
             MessageView.EncryptionState encState = EncryptionState.NONE;
             
-            switch (type) {
+            switch (mType) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
@@ -1719,12 +1784,9 @@ public class ChatView extends LinearLayout {
                 break;
 
             default:
-                messageView.bindPresenceMessage(contact, type, isGroupChat(), isScrolling());
+                messageView.bindPresenceMessage(contact, mType, isGroupChat(), isScrolling());
             }
 
-            //if (!isScrolling()) {
-             //   mBgMaker.setBackground(messageView, contact, type);
-           // }
 
             updateWarningView();
 
@@ -1732,7 +1794,7 @@ public class ChatView extends LinearLayout {
                 log("Setting delivery icon");
                 mExpectingDelivery = true;
                 setDeliveryIcon();
-                scheduleRequery(0); // FIXME workaround to no refresh
+                scheduleRequery(DEFAULT_QUERY_INTERVAL); // FIXME workaround to no refresh
             } else if (cursor.getPosition() == cursor.getCount() - 1) {
                 // if showTimeStamp is false for the latest message, then set a timer to query the
                 // cursor again in a minute, so we can update the last message timestamp if no new

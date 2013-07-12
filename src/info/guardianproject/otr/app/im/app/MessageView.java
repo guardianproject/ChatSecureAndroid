@@ -66,6 +66,8 @@ public class MessageView extends LinearLayout {
     
     private ImageView mDeliveryIcon;
     private Resources mResources;
+    
+    private CharSequence lastMessage = null;
 
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,7 +90,11 @@ public class MessageView extends LinearLayout {
     public URLSpan[] getMessageLinks() {
         return mTextViewForMessages.getUrls();
     }
+    
 
+    public String getLastMessage () {
+        return lastMessage.toString();
+    }
     public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
@@ -98,8 +104,8 @@ public class MessageView extends LinearLayout {
         setPadding(100, 0, 3, 3);
               
         
-        CharSequence message = formatMessage(body);
-        mTextViewForMessages.setText(message);
+       lastMessage = formatMessage(body);
+        mTextViewForMessages.setText(lastMessage);
         
        mDeliveryIcon.setVisibility(INVISIBLE);
         
@@ -142,9 +148,11 @@ public class MessageView extends LinearLayout {
         setLayoutParams(lp);
         setGravity(Gravity.LEFT);
         setPadding(3,0,100,3);
+
         
-        CharSequence message = formatMessage(body);
-        mTextViewForMessages.setText(message);
+        lastMessage = formatMessage(body);
+         mTextViewForMessages.setText(lastMessage);
+         
      //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
         
         if (delivery == DeliveryState.DELIVERED) {
@@ -205,7 +213,7 @@ public class MessageView extends LinearLayout {
         }*/
 
         //remove HTML tags since we can't display HTML
-       // body = body.replaceAll("\\<.*?\\>", "");
+       body = body.replaceAll("\\<.*?\\>", "");
 
         SpannableStringBuilder buf = new SpannableStringBuilder();
         

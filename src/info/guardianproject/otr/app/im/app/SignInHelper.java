@@ -143,7 +143,7 @@ public class SignInHelper {
 
     public void goToAccount(long accountId) {
         Intent intent;
-        intent = new Intent(mContext, ChatListActivity.class);
+        intent = new Intent(mContext, NewChatActivity.class);
         // clear the back stack of the account setup
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
 

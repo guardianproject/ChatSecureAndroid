@@ -129,34 +129,8 @@ public class ContactView extends LinearLayout {
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
         
-        /*
-        int iconId = 0;
-
-        // status icon
-
-        if (Imps.Contacts.TYPE_GROUP == type) {
-            iconId = lastMsg == null ? R.drawable.group_chat : R.drawable.group_chat_new;
-        } else if (hasChat) {
-            iconId = lastMsg == null ? BrandingResourceIDs.DRAWABLE_READ_CHAT
-                                    : BrandingResourceIDs.DRAWABLE_UNREAD_CHAT;
-        } else {
-            iconId = PresenceUtils.getStatusIconId(presence);
-        }*/
         
         
-        if (presence == Imps.Presence.AVAILABLE || presence == Imps.Presence.IDLE)
-        {
-            mAvatar.setEnabled(true);
-        }
-        else if (presence == Imps.Presence.AWAY)
-        {
-            mAvatar.setEnabled(true);
-        }
-        else
-        {
-            mAvatar.setEnabled(false);
-        }
-
         //mPresence.setImageDrawable(brandingRes.getDrawable(iconId));
        // Drawable presenceIcon = brandingRes.getDrawable(iconId);
 
@@ -192,8 +166,8 @@ public class ContactView extends LinearLayout {
             }
             
             if (Imps.Contacts.TYPE_GROUP == type) {
-                mAvatar.setImageDrawable(mAvatarUnknown);
-
+                mAvatar.setImageResource(R.drawable.group_chat);
+                
             }
             else
             {

@@ -776,7 +776,7 @@
     
     <string name="lock_screen_open">Open</string>
     <string name="title_activity_lock_screen">ChatSecure Locked</string>
-    <string name="lock_screen_create_passphrase">Please choose a passphrase to secure access to this app</string>
+    <string name="lock_screen_create_passphrase">Confirm Passphrase</string>
 	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
 	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
 	<string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
@@ -802,7 +802,12 @@
     <string name="menu_new_group_chat">Group Chat</string>
     <string name="create_or_join_group_chat">Create or Join Group Chat</string>
     <string name="connect">Connect</string>
+    <string name="their_fingerprint_verified_">Their Fingerprint (Verified)</string>
+    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this key?</string>
+    <string name="verify_key_">Verify key?</string>
+    <string name="the_remote_key_fingerprint_has_been_verified_">The remote key fingerprint has been verified!</string>
     
+    <string name="menu_panic">Panic</string>
     
 </resources>
 
