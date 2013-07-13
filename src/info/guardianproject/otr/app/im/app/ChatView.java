@@ -40,6 +40,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -95,6 +96,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -272,12 +274,23 @@ public class ChatView extends LinearLayout {
             scheduleRequery(0);
         }
 
+        @Override
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
             scheduleRequery(0);
         }
 
+        @Override
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(0);
+        };
+        
+        @Override
+        public void onIncomingData(IChatSession ses, byte[] data) {
+            try {
+                Log.i("OTR_DATA", "incoming data " + new String(data, "UTF8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
     };
 

@@ -22,12 +22,16 @@ import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatListener;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrChatSessionAdapter;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrKeyManagerAdapter;
 import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.DataHandler;
+import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.GroupListener;
 import info.guardianproject.otr.app.im.engine.GroupMemberListener;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -37,19 +41,26 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.SystemServices;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.java.otr4j.session.SessionID;
+
 import org.jivesoftware.smack.packet.Packet;
 
-import net.java.otr4j.session.SessionID;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
@@ -92,9 +103,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private boolean mHasUnreadMessages;
 
     private RemoteImService service = null;
+    private DataHandler mDataHandler;
+
+    private DataAdapter mDataListener;
 
     public ChatSessionAdapter(ChatSession adaptee, ImConnectionAdapter connection) {
         mAdaptee = adaptee;
+        mDataListener = new DataAdapter();
+        mDataHandler = new OtrDataHandler(mAdaptee, mDataListener);
         mConnection = connection;
 
         service = connection.getContext();
@@ -275,6 +291,15 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mAdaptee.sendMessageAsync(msg);
         long now = System.currentTimeMillis();
         insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
+    }
+
+    public void offerData(String url) {
+        if (mConnection.getState() == ImConnection.SUSPENDED) {
+            // TODO send later
+            return;
+        }
+
+        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, null);
     }
 
     /**
@@ -550,6 +575,45 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         return mContentResolver.update(builder.build(), values, null, null);
     }
 
+    class DataAdapter implements DataListener {
+        @Override
+        public void onTransferComplete(Address from, String url, byte[] data) {
+            // TODO have a specific notifier for files / data
+            String username = from.getAddress();
+            String nickname = getNickName(username);
+            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                    getId(), username, nickname, "File received", false);
+            File sdCard = Environment.getExternalStorageDirectory();
+            String[] path = url.split("/"); 
+            String sanitizedPeer = SystemServices.sanitize(username);
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+            File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
+            dir.mkdirs();
+            File file = new File(dir, sanitizedPath);
+            try {
+                OutputStream output = new FileOutputStream(file);
+                output.write(data);
+                output.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Uri uri = SystemServices.Scanner.scan(service, file.getPath());
+            SystemServices.Viewer.viewImage(service, uri);
+        }
+
+        @Override
+        public void onTransferFailed(Address from, String url, String reason) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void onTransferProgress(Address from, String url, float f) {
+            // TODO Auto-generated method stub
+            
+        }
+    }
+    
     class ListenerAdapter implements MessageListener, GroupMemberListener {
 
         public boolean  onIncomingMessage(ChatSession ses, final Message msg) {
@@ -706,6 +770,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 }
             }
             mRemoteListeners.finishBroadcast();
+        }
+
+        @Override
+        public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value) {
+            mDataHandler.onIncomingRequest(msg.getTo(), value);
+        }
+
+        @Override
+        public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value) {
+            mDataHandler.onIncomingResponse(msg.getTo(), value);
         }
     }
 

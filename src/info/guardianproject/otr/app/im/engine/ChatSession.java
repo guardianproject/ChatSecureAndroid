@@ -51,7 +51,6 @@ public class ChatSession {
         mManager = manager;
         mListeners = new CopyOnWriteArrayList<MessageListener>();
         mHistoryMessages = new Vector<Message>();
-
     }
 
     public ImEntity getParticipant() {
@@ -120,6 +119,21 @@ public class ChatSession {
         mHistoryMessages.add(message);
 
         mOtrChatManager.transformSending(message);
+
+        mManager.sendMessageAsync(this, message);
+    }
+
+    /**
+     * Sends message + data to other participant(s) in this session asynchronously.
+     * 
+     * @param message the message to send.
+     * @param data the data to send.
+     */
+    public void sendDataAsync(Message message, boolean isResponse, byte[] data) {
+        if (message.getTo() == null)
+            message.setTo(mParticipant.getAddress());
+
+        mOtrChatManager.transformSending(message, isResponse, data);
 
         mManager.sendMessageAsync(this, message);
     }
@@ -194,5 +208,4 @@ public class ChatSession {
     public List<Message> getHistoryMessages() {
         return Collections.unmodifiableList(mHistoryMessages);
     }
-
 }

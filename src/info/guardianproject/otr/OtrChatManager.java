@@ -10,6 +10,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -185,7 +186,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrEngine.getSessionStatus(getSessionId(localUserId, remoteUserId)).toString();
     }
 
-    public String decryptMessage(String localUserId, String remoteUserId, String msg) throws OtrException {
+    public String decryptMessage(String localUserId, String remoteUserId, String msg, List<TLV> tlvs) throws OtrException {
         String plain = null;
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
@@ -193,13 +194,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         if (mOtrEngine != null && sessionId != null) {
             mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
-            plain = mOtrEngine.transformReceiving(sessionId, msg);
+            plain = mOtrEngine.transformReceiving(sessionId, msg, tlvs);
             OtrSm otrSm = mOtrSms.get(sessionId);
 
             if (otrSm != null) {
-                List<TLV> tlvs = otrSm.getPendingTlvs();
-                if (tlvs != null) {
-                    String encrypted = mOtrEngine.transformSending(sessionId, "", tlvs);
+                List<TLV> smTlvs = otrSm.getPendingTlvs();
+                if (smTlvs != null) {
+                    String encrypted = mOtrEngine.transformSending(sessionId, "", smTlvs);
                     mOtrEngineHost.injectMessage(sessionId, encrypted);
 
                 }
@@ -212,6 +213,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void transformSending(Message message) {
+        transformSending(message, false, null);
+    }
+    
+    public void transformSending(Message message, boolean isResponse, byte[] data) {
         String localUserId = message.getFrom().getAddress();
         String remoteUserId = message.getTo().getAddress();
         String body = message.getBody();
@@ -226,7 +231,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
                 if (sessionStatus != SessionStatus.PLAINTEXT || sessionPolicy.getRequireEncryption()) {
-                    body = mOtrEngine.transformSending(sessionId, body);
+                    body = mOtrEngine.transformSending(sessionId, body, isResponse, data);
                     message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
                 } else if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getAllowV2()
                            && sessionPolicy.getSendWhitespaceTag()) {
