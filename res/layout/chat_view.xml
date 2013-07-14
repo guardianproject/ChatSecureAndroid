@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:background="#ffeeeeee"
         android:visibility="gone">
 
         <ImageView android:id="@+id/warningIcon"

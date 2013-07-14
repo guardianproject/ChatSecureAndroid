@@ -416,7 +416,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
             return true;
         case R.id.menu_new_group_chat:
             
-            showGroupChatDialog();
+      //      showGroupChatDialog();
             
             return true;
       
@@ -827,97 +827,4 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
         
         
     }
-    
-    private void showGroupChatDialog ()
-    {
-        ContentResolver cr = getContentResolver();
-
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                cr, mLastProviderId, false /* don't keep updated */, null /* no handler */);
-
-        String chatDomain = "conference." + settings.getDomain();
-        
-        settings.close();
-        
-        
-        
-     // This example shows how to add a custom layout to an AlertDialog
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.alert_dialog_group_chat, null);
-        final TextView tvServer = (TextView) textEntryView.findViewById(R.id.chat_server);
-        
-        tvServer.setText(chatDomain);
-        
-        new AlertDialog.Builder(this)            
-            .setTitle(R.string.create_or_join_group_chat)
-            .setView(textEntryView)
-            .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                    /* User clicked OK so do some stuff */
-                    
-                    String chatRoom = null;
-                    String chatServer = null;
-                    
-                    TextView tv = (TextView)textEntryView.findViewById(R.id.chat_room);
-                    
-                    chatRoom = tv.getText().toString();
-                    
-                    tv = (TextView) textEntryView.findViewById(R.id.chat_server);
-                    
-                    chatServer = tv.getText().toString();
-                    
-                    startGroupChat (chatRoom, chatServer, mLastProviderId);
-                    
-                }
-            })
-            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                    /* User clicked cancel so do some stuff */
-                }
-            })
-            .create().show();
-        
-        
-        
-    }
-    
-    public void startGroupChat (String room, String server, long providerId)
-    {
-        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
-        
-        String roomAddress = room + '@' + server;
-        
-        try {
-            IChatSessionManager manager = conn.getChatSessionManager();
-            IChatSession session = manager.getChatSession(roomAddress);
-            if (session == null) {
-                session = manager.createMultiUserChatSession(roomAddress);
-            }
-
-            if (session != null)
-            {
-                long id = session.getId();
-            
-                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
-                Intent i = new Intent(Intent.ACTION_VIEW, data);
-                i.addCategory(ImApp.IMPS_CATEGORY);
-            
-                if (menu.isShown())
-                    menu.toggle();
-            
-                startActivity(i);
-            }
-            else
-            {
-               // mHandler.showServiceErrorAlert();
-            }
-            
-        } catch (RemoteException e) {
-          //  mHandler.showServiceErrorAlert();
-        }
-       
-    }
-    
 }

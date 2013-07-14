@@ -123,7 +123,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         super.onCreate(icicle);
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-      
+        
         ThemeableActivity.setBackgroundImage(this);
         
         mApp = (ImApp)getApplication();
@@ -302,7 +302,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     {
 
         Intent intent = new Intent(this, NewChatActivity.class);
-       //intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
         startActivity(intent);
     
     }
@@ -339,17 +339,16 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         try
         {
             signOutAll ();
-        
-            mCacheWord.manuallyLock();
+
+            if (mCacheWord != null)
+                mCacheWord.manuallyLock();
         }
         catch (Exception e){}
         catch (Error e2){}
 
-        ((ImApp)getApplication()).stopImServiceIfInactive();
+        ((ImApp)getApplication()).forceStopImService();
         
-        Intent intent = new Intent(getApplicationContext(), LockScreenActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        finish();
         
     }
  
@@ -790,15 +789,16 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
     @Override
     public void onCacheWordUninitialized() {
-       
-        finish ();
-        
+       // this will never happen
     }
 
 
     @Override
     public void onCacheWordLocked() {
      
+        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
 

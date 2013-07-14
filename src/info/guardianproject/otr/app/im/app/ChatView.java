@@ -81,6 +81,8 @@ import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -346,6 +348,36 @@ public class ChatView extends LinearLayout {
     void unregisterForConnEvents() {
         mApp.unregisterForConnEvents(mHandler);
     }
+    
+    private static final int SWIPE_MIN_DISTANCE = 250;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 400;
+    private GestureDetector gestureDetector;
+    View.OnTouchListener gestureListener;
+
+    class MyGestureDetector extends SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            try {
+              //  if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                //    return false;
+                // right to left swipe
+                if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                 //   Toast.makeText(SelectFilterActivity.this, "Left Swipe", Toast.LENGTH_SHORT).show();
+                    
+                   closeChatSession();
+                   
+                   mActivity.refreshChatViews();
+                   
+                   
+                }  
+            } catch (Exception e) {
+                // nothing
+            }
+            return false;
+        }
+
+    }
 
     @Override
     protected void onFinishInflate() {
@@ -367,7 +399,16 @@ public class ChatView extends LinearLayout {
         Button approveSubscription = (Button) findViewById(R.id.btnApproveSubscription);
         Button declineSubscription = (Button) findViewById(R.id.btnDeclineSubscription);
 
-      
+        // Gesture detection
+        gestureDetector = new GestureDetector(getContext(), new MyGestureDetector());
+        gestureListener = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        };
+
+
+        mHistory.setOnTouchListener(gestureListener);
         
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
@@ -377,13 +418,14 @@ public class ChatView extends LinearLayout {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 
                 
-
-             // Gets a handle to the clipboard service.
-             ClipboardManager clipboard = (ClipboardManager)
-                     mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                
              if (arg1 instanceof MessageView)
              {
+
+                 // Gets a handle to the clipboard service.
+                 ClipboardManager clipboard = (ClipboardManager)
+                         mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+
+                 
                  String textToCopy = ((MessageView)arg1).getLastMessage();
                  
                  ClipData clip = ClipData.newPlainText("chat",textToCopy);
@@ -391,6 +433,8 @@ public class ChatView extends LinearLayout {
                  clipboard.setPrimaryClip(clip);
                  
                  Toast.makeText(mActivity, "message copied to the clipboard", Toast.LENGTH_SHORT).show();
+                 
+                 return true;
                  
              }
                 
@@ -505,6 +549,7 @@ public class ChatView extends LinearLayout {
         });
     }
 
+    /*
     public void onResume() {
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
@@ -536,7 +581,7 @@ public class ChatView extends LinearLayout {
         unregisterChatListener();
         unregisterForConnEvents();
         unregisterChatSessionListener();
-    }
+    }*/
 
     
     void updateChat() {
@@ -690,8 +735,6 @@ public class ChatView extends LinearLayout {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + chatId);
             }
-         //   mActivity.finish();
-            return;
         } else {
             mChatSession = getChatSession(mCursor);
 
@@ -700,6 +743,8 @@ public class ChatView extends LinearLayout {
             updateChat();
             registerChatListener();
         }
+        
+        updateWarningView();
     }
 
     private void initOtr() {
@@ -1217,8 +1262,8 @@ public class ChatView extends LinearLayout {
             IImConnection conn = mApp.getConnection(mProviderId);
             isConnected = (conn == null) ? false : conn.getState() != ImConnection.SUSPENDED;
         } catch (RemoteException e) {
-            // do nothing
-            return;
+           
+            isConnected = false;
         }
 
         if (isConnected) {
@@ -1249,16 +1294,16 @@ public class ChatView extends LinearLayout {
                             message = mContext.getString(R.string.otr_session_status_encrypted);
 
                             mWarningText.setTextColor(Color.BLACK);
-                            mWarningText.setBackgroundResource(R.color.otr_yellow);
+                            mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
                         } else {
                             message = mContext.getString(R.string.otr_session_status_verified);
 
                             mWarningText.setTextColor(Color.BLACK);
-                            mWarningText.setBackgroundResource(R.color.otr_green);
+                            mStatusWarningView.setBackgroundResource(R.color.otr_green);
                         }
                     } else {
                         mWarningText.setTextColor(Color.WHITE);
-                        mWarningText.setBackgroundResource(R.color.otr_red);
+                        mStatusWarningView.setBackgroundResource(R.color.otr_red);
                         message = mContext.getString(R.string.otr_session_status_plaintext);
                     }
 
@@ -1275,13 +1320,13 @@ public class ChatView extends LinearLayout {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
 
                 mWarningText.setTextColor(Color.WHITE);
-                mWarningText.setBackgroundColor(Color.DKGRAY);
+                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
             } 
             else if (mPresenceStatus == Imps.Presence.OFFLINE)
             {
                 mWarningText.setTextColor(Color.WHITE);
-                mWarningText.setBackgroundColor(Color.DKGRAY);
+                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
             }
             else {
@@ -1292,7 +1337,7 @@ public class ChatView extends LinearLayout {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
                 
                 mWarningText.setTextColor(Color.WHITE);
-                mWarningText.setBackgroundResource(R.color.otr_red);
+                mStatusWarningView.setBackgroundResource(R.color.otr_red);
                 message = mContext.getString(R.string.otr_session_status_plaintext);
             }
 
