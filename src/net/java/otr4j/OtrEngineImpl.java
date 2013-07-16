@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import net.java.otr4j.io.messages.ExtraSymmetricData;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionImpl;
@@ -60,16 +61,25 @@ public class OtrEngineImpl implements OtrEngine {
     }
 
     public String transformReceiving(SessionID sessionID, String msgText) throws OtrException {
-        return this.getSession(sessionID).transformReceiving(msgText);
+        return this.getSession(sessionID).transformReceiving(msgText, null);
+    }
+
+    public String transformReceiving(SessionID sessionID, String msgText, ExtraSymmetricData extra) throws OtrException {
+        return this.getSession(sessionID).transformReceiving(msgText, extra);
     }
 
     public String transformSending(SessionID sessionID, String msgText) throws OtrException {
-        return this.getSession(sessionID).transformSending(msgText, null);
+        return this.getSession(sessionID).transformSending(msgText, null, null);
     }
 
     public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs)
             throws OtrException {
-        return this.getSession(sessionID).transformSending(msgText, tlvs);
+        return this.getSession(sessionID).transformSending(msgText, tlvs, null);
+    }
+
+    public String transformSending(SessionID sessionID, String msgText, List<TLV> tlvs, ExtraSymmetricData extra)
+            throws OtrException {
+        return this.getSession(sessionID).transformSending(msgText, tlvs, extra);
     }
 
     public void endSession(SessionID sessionID) throws OtrException {

@@ -273,6 +273,10 @@ class AuthContextImpl implements AuthContext {
         }
         return s;
     }
+    
+    public byte[] getExtraSymmetricKey() throws OtrException {
+        return h2(EXTAR_SYMMETRIC_KEY);
+    }
 
     private byte[] getC() throws OtrException {
         if (c != null)

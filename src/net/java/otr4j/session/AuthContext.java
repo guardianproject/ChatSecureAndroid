@@ -27,6 +27,7 @@ interface AuthContext {
     public static final byte M2_START = (byte) 0x03;
     public static final byte M1p_START = (byte) 0x04;
     public static final byte M2p_START = (byte) 0x05;
+    public static final byte EXTAR_SYMMETRIC_KEY = (byte) 0xFF;
 
     public abstract void reset();
 
@@ -47,4 +48,6 @@ interface AuthContext {
     public abstract PublicKey getRemoteLongTermPublicKey();
 
     public abstract KeyPair getLocalLongTermKeyPair();
+    
+    public abstract byte[] getExtraSymmetricKey() throws OtrException;
 }
