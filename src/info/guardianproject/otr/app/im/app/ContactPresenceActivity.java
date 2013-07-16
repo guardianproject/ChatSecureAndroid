@@ -132,7 +132,9 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 OtrAndroidKeyManagerImpl keyManager = OtrAndroidKeyManagerImpl.getInstance(this.getApplicationContext());
                 
                 remoteFingerprintVerified = keyManager.isVerifiedUser(remoteAddress);
-                remoteFingerprint = keyManager.getRemoteFingerprint(remoteAddress);
+                
+                if (remoteFingerprintVerified)
+                    remoteFingerprint = keyManager.getRemoteFingerprint(remoteAddress);
                 
             } catch (IOException e) {
                Log.e(TAG,"error reading key data",e);

@@ -157,11 +157,11 @@ public class ChatView extends LinearLayout {
     private IChatSessionManager mChatSessionManager;
     private IChatSessionListener mChatSessionListener;
 
-    private IChatSession mChatSession;
+    private IChatSession mCurrentChatSession;
     private IOtrKeyManager mOtrKeyManager;
     private IOtrChatSession mOtrChatSession;
 
-    private long mChatId;
+    long mLastChatId;
     int mType;
     String mNickName;
     String mUserName;
@@ -296,6 +296,7 @@ public class ChatView extends LinearLayout {
         };
     };
 
+
     private Runnable mUpdateChatCallback = new Runnable() {
         public void run() {
             if (mCursor.requery() && mCursor.moveToFirst()) {
@@ -303,6 +304,7 @@ public class ChatView extends LinearLayout {
             }
         }
     };
+    
     private IContactListListener mContactListListener = new IContactListListener.Stub() {
         public void onAllContactListsLoaded() {
         }
@@ -587,20 +589,15 @@ public class ChatView extends LinearLayout {
     void updateChat() {
         setViewType(VIEW_TYPE_CHAT);
 
-        long oldChatId = mChatId;
-
         updateContactInfo();
 
         setStatusIcon();
         
-
         IImConnection conn = mApp.getConnection(mProviderId);
         if (conn == null) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
                 log("Connection has been signed out");
           
-            //  mActivity.finish();
-            
             return;
         }
 
@@ -609,19 +606,16 @@ public class ChatView extends LinearLayout {
             mHistory.setAdapter(mMessageAdapter);
         }
 
-        // only change the message adapter when we switch to another chat
-        if (mChatId != oldChatId) {
-            startQuery();
-            mComposeMessage.setText("");
-            mOtrChatSession = null;
-        }
-
+        startQuery(getChatId());
+        mComposeMessage.setText("");
+        mOtrChatSession = null;
+    
         updateWarningView();
         setDeliveryIcon();
     }
 
     private void updateContactInfo() {
-        mChatId = mCursor.getLong(CONTACT_ID_COLUMN);
+       // mChatId = mCursor.getLong(CONTACT_ID_COLUMN);
         mProviderId = mCursor.getLong(PROVIDER_COLUMN);
         mAccountId = mCursor.getLong(ACCOUNT_COLUMN);
         mPresenceStatus = mCursor.getInt(PRESENCE_STATUS_COLUMN);
@@ -725,7 +719,15 @@ public class ChatView extends LinearLayout {
         }
     }
 
+    public void rebind ()
+    {
+        bindChat(mLastChatId);
+    }
+    
     public void bindChat(long chatId) {
+        
+        mLastChatId = chatId;
+        
         if (mCursor != null) {
             mCursor.deactivate();
         }
@@ -736,43 +738,59 @@ public class ChatView extends LinearLayout {
                 log("Failed to query chat: " + chatId);
             }
         } else {
-            mChatSession = getChatSession(mCursor);
+            mCurrentChatSession = getChatSession(mCursor);
 
-            // This will save the current chatId and providerId in the relevant fields.
-            // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
-            updateChat();
-            registerChatListener();
+            if (mCurrentChatSession != null)
+            {
+                // This will save the current chatId and providerId in the relevant fields.
+                // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
+                updateChat();
+                registerChatListener();
+            }
         }
         
         updateWarningView();
     }
+    
+    private IChatSession getChatSession ()
+    {
+        return getChatSession(false);
+    }
+    
+    private IChatSession getChatSession (boolean autoInit)
+    {
+        if (mCurrentChatSession == null && autoInit)
+            bindChat(mLastChatId);
+        
+        return mCurrentChatSession;
+    }
 
-    private void initOtr() {
+    private void initOtr()  {
 
-        try {
-
-            if (mOtrChatSession == null && mChatSession != null) {
-                mOtrChatSession = mChatSession.getOtrChatSession();
-
+        try
+        {
+            if (mOtrChatSession == null && getChatSession () != null) {
+                mOtrChatSession = getChatSession ().getOtrChatSession();
+    
                 if (mOtrChatSession != null)
                     Log.i(ImApp.LOG_TAG, "ChatView: OtrChatSession was init'd");
             }
-
+    
             if (mOtrChatSession != null) {
-
+    
                 if (mOtrKeyManager == null) {
-                    mOtrKeyManager = mChatSession.getOtrKeyManager();
-
+                    mOtrKeyManager = getChatSession ().getOtrKeyManager();
+    
                     if (mOtrKeyManager != null) {
                         Log.i(ImApp.LOG_TAG, "ChatView: OtrKeyManager is init'd");
-
+    
                     }
                 }
-            }
-
-        } catch (Exception e) {
-            Log.e(ImApp.LOG_TAG, "unable to get otr key mgr", e);
-
+             }
+        }
+        catch (Exception e)
+        {
+            Log.e(ImApp.LOG_TAG,"error setting up OTR session",e);
         }
 
     }
@@ -901,7 +919,7 @@ public class ChatView extends LinearLayout {
         return mHistory;
     }
 
-    private void startQuery() {
+    private void startQuery(long chatId) {
         if (mQueryHandler == null) {
             mQueryHandler = new QueryHandler(mContext);
         } else {
@@ -909,7 +927,7 @@ public class ChatView extends LinearLayout {
             mQueryHandler.cancelOperation(QUERY_TOKEN);
         }
 
-        Uri uri = Imps.Messages.getContentUriByThreadId(mChatId);
+        Uri uri = Imps.Messages.getContentUriByThreadId(chatId);
 
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("queryCursor: uri=" + uri);
@@ -963,34 +981,34 @@ public class ChatView extends LinearLayout {
         return mMessageAdapter == null ? null : mMessageAdapter.getCursor();
     }
 
-    /*
-    public void insertSmiley(String smiley) {
-        mComposeMessage.append(mMarkup.applyEmoticons(smiley));
-    }*/
-
     public void closeChatSession() {
-        if (mChatSession != null) {
+        if (getChatSession() != null) {
             try {
-                mChatSession.leave();
+                getChatSession().leave();
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
         } else {
             // the conversation is already closed, clear data in database
             ContentResolver cr = mContext.getContentResolver();
-            cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mChatId), null, null);
+            cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId), null, null);
         }
         
     }
 
     public void closeChatSessionIfInactive() {
-        if (mChatSession != null) {
+        if (getChatSession() != null) {
             try {
-                mChatSession.leaveIfInactive();
+                getChatSession().leaveIfInactive();
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
         }
+     else {
+        // the conversation is already closed, clear data in database
+        ContentResolver cr = mContext.getContentResolver();
+        cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId), null, null);
+    }
     }
 
     public void viewProfile() {
@@ -1001,7 +1019,7 @@ public class ChatView extends LinearLayout {
         if (mOtrKeyManager == null)
             initOtr();
 
-        Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mChatId);
+        Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, getChatId());
 
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
@@ -1073,15 +1091,11 @@ public class ChatView extends LinearLayout {
 
     public long getChatId() {
         try {
-            return mChatSession == null ? -1 : mChatSession.getId();
+            return getChatSession() == null ? -1 : getChatSession().getId();
         } catch (RemoteException e) {
             mHandler.showServiceErrorAlert();
             return -1;
         }
-    }
-
-    public IChatSession getCurrentChatSession() {
-        return mChatSession;
     }
 
     private IChatSessionManager getChatSessionManager(long providerId) {
@@ -1139,10 +1153,12 @@ public class ChatView extends LinearLayout {
         if (TextUtils.isEmpty(msg.trim())) {
             return;
         }
-
-        if (mChatSession != null) {
+        
+        IChatSession session = getChatSession(true);
+        
+        if (session != null) {
             try {
-                mChatSession.sendMessage(msg);
+                session.sendMessage(msg);
                 mComposeMessage.setText("");
                 mComposeMessage.requestFocus();
                 requeryCursor();
@@ -1160,9 +1176,9 @@ public class ChatView extends LinearLayout {
             return;
         }
 
-        if (mChatSession != null) {
+        if (getChatSession() != null) {
             try {
-                mChatSession.sendMessage(msg);
+                getChatSession().sendMessage(msg);
                 requeryCursor();
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
@@ -1177,8 +1193,8 @@ public class ChatView extends LinearLayout {
             log("registerChatListener");
         }
         try {
-            if (mChatSession != null) {
-                mChatSession.registerChatListener(mChatListener);
+            if (getChatSession() != null) {
+                getChatSession().registerChatListener(mChatListener);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
             if (conn != null) {
@@ -1196,8 +1212,8 @@ public class ChatView extends LinearLayout {
             log("unregisterChatListener");
         }
         try {
-            if (mChatSession != null) {
-                mChatSession.unregisterChatListener(mChatListener);
+            if (getChatSession() != null) {
+                getChatSession().unregisterChatListener(mChatListener);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
             if (conn != null) {
@@ -1246,8 +1262,6 @@ public class ChatView extends LinearLayout {
         SessionStatus sessionStatus = SessionStatus.PLAINTEXT;
 
         initOtr();
-        
-        
 
         //check if the chat is otr or not
         if (mOtrChatSession != null) {
@@ -1376,9 +1390,9 @@ public class ChatView extends LinearLayout {
     }
 
     private void userActionDetected() {
-        if (mChatSession != null) {
+        if (getChatSession() != null) {
             try {
-                mChatSession.markAsRead();
+                getChatSession().markAsRead();
                 // TODO OTRCHAT updateSecureWarning
                 //updateSecureWarning();
                 updateWarningView();
@@ -1866,9 +1880,9 @@ public class ChatView extends LinearLayout {
             int oldState = mScrollState;
             mScrollState = scrollState;
 
-            if (mChatSession != null) {
+            if (getChatSession() != null) {
                 try {
-                    mChatSession.markAsRead();
+                    getChatSession().markAsRead();
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert();
                 }

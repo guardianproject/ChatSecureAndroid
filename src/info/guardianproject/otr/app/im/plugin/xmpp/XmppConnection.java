@@ -306,13 +306,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
     
-    public void getVCard(String jid) {
-
-        qAvatar.add(jid);
-        
-       
-    }
-    
     private void loadVCardsAsync ()
     {
      // Using an AsyncTask to load the slow images in a background thread
@@ -1650,9 +1643,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             public void entriesUpdated(Collection<String> addresses) {
 
                 for (String address : addresses)
-                    getVCard(address);
+                    qAvatar.add(address);
                 
-               
                 loadVCardsAsync ();
             }
 
@@ -1665,9 +1657,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             public void entriesAdded(Collection<String> addresses) {
                 
                 for (String address : addresses)
-                    getVCard(address);
+                    qAvatar.add(address);
                 
-               
                 loadVCardsAsync ();
             }
         };

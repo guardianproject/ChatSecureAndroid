@@ -426,10 +426,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         case R.id.menu_import_keys:
             importKeyStore();
             return true;
-        case R.id.menu_exit:
-            signOutAndKillProcess();
+       // case R.id.menu_exit:
+      //      signOutAndKillProcess();
             
-            return true;
+          //  return true;
         }
         return super.onOptionsItemSelected(item);
     }
