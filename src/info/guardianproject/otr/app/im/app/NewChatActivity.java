@@ -636,16 +636,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
             
+
+            
             if (mCursorChats != null && (!mCursorChats.isClosed()))
                 mCursorChats.close();
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
             
+            super.notifyDataSetChanged();
+            
             for (int i = 1; i < getCount(); i++)
             {
-                ((ChatViewFragment)getItem(i)).mChatView.rebind();
+                ChatViewFragment frag = ((ChatViewFragment)getItem(i));
+                
+                if (frag != null && frag.mChatView != null)
+                    frag.mChatView.rebind();
             }
             
-            super.notifyDataSetChanged();
             
         }
 
