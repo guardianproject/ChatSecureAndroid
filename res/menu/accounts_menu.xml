@@ -50,7 +50,7 @@
          />
           
           
-          
+          <!-- 
           
             <item android:id="@+id/menu_exit"
      
@@ -61,5 +61,6 @@
          
          
          />
+          -->
           
 </menu>

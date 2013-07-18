@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#dddddd"
+    android:background="@drawable/wp"
      >
 
     <LinearLayout
@@ -16,23 +16,12 @@
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="162dp"
-            android:layout_height="162dp"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_chatsecure" />
-
-        <TextView
-            android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="40dp"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#777777" />
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/launch_chatsecure" />
 
         <FrameLayout
             android:layout_width="match_parent"

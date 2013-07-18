@@ -36,6 +36,7 @@ public class ChatGroup extends ImEntity {
 
     public ChatGroup(Address address, String name, Collection<Contact> members,
             ChatGroupManager manager) {
+        
         mAddress = address;
         mName = name;
         mManager = manager;

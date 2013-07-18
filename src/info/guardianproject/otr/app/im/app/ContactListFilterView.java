@@ -49,8 +49,6 @@ public class ContactListFilterView extends LinearLayout {
     private final SimpleAlertHandler mHandler;
     private final ConnectionListenerAdapter mConnectionListener;
 
-    //UserPresenceView mPresenceView;
-  //  private ContactListActivity mActivity;
     private IImConnection mConn;
 
     public ContactListFilterView(Context context, AttributeSet attrs) {

@@ -17,15 +17,18 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.util.Locale;
-
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
+
+import java.io.IOException;
+import java.util.Locale;
+
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -45,10 +48,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -65,7 +68,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
     private long providerId;
     private ImApp mApp;
 
-    private final static String TAG = "Gibberbot";
+    private final static String TAG = ImApp.LOG_TAG;
 
     public ContactPresenceActivity() {
     }
@@ -78,7 +81,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         setContentView(R.layout.contact_presence_activity);
 
-        //   ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
+        ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
@@ -91,6 +94,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             return;
         }
 
+       
         if (i.getExtras() != null) {
             remoteFingerprint = i.getExtras().getString("remoteFingerprint");
 
@@ -106,7 +110,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         }
 
-        updateUI();
 
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(uri, null, null, null, null);
@@ -124,12 +127,28 @@ public class ContactPresenceActivity extends ThemeableActivity {
 //            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
+            
+            try {
+                OtrAndroidKeyManagerImpl keyManager = OtrAndroidKeyManagerImpl.getInstance(this.getApplicationContext());
+                
+                remoteFingerprintVerified = keyManager.isVerifiedUser(remoteAddress);
+                
+                if (remoteFingerprintVerified)
+                    remoteFingerprint = keyManager.getRemoteFingerprint(remoteAddress);
+                
+            } catch (IOException e) {
+               Log.e(TAG,"error reading key data",e);
+            }
+            
+            
 
             BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
-//            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-//                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
+            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
+                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
+            
+            imgAvatar.setImageDrawable(avatar);
 
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             String displayName = nickname;
@@ -155,6 +174,9 @@ public class ContactPresenceActivity extends ThemeableActivity {
             }
         }
         c.close();
+        
+
+        updateUI();
     }
 
     
@@ -176,14 +198,16 @@ public class ContactPresenceActivity extends ThemeableActivity {
             txtFingerprintRemote.setText(remoteFingerprint);
 
             if (remoteFingerprintVerified) {
-                lblFingerprintRemote.setText("Their Fingerprint (Verified)");
+                lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
                 txtFingerprintRemote.setBackgroundColor(Color.GREEN);
             } else
                 txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
 
             txtFingerprintRemote.setTextColor(Color.BLACK);
 
-            txtFingerprintLocal.setText(localFingerprint);
+            if (localFingerprint != null)
+                txtFingerprintLocal.setText(localFingerprint);
+            
         } else {
             txtFingerprintRemote.setVisibility(View.GONE);
             txtFingerprintLocal.setVisibility(View.GONE);
@@ -209,14 +233,14 @@ public class ContactPresenceActivity extends ThemeableActivity {
     }
 
     private void confirmVerify() {
-        String message = "Are you sure you want to confirm this key?";
+        String message = getString(R.string.are_you_sure_you_want_to_confirm_this_key_);
 
-        new AlertDialog.Builder(this).setTitle("Verify key?").setMessage(message)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle(R.string.verify_key_).setMessage(message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         verifyRemoteFingerprint();
                     }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }
@@ -224,7 +248,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
     }
 
     private void verifyRemoteFingerprint() {
-        Toast.makeText(this, "The remote key fingerprint has been verified!", Toast.LENGTH_SHORT)
+        Toast.makeText(this, R.string.the_remote_key_fingerprint_has_been_verified_, Toast.LENGTH_SHORT)
                 .show();
 
         IOtrKeyManager okm;

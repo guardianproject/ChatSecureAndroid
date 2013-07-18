@@ -78,6 +78,7 @@
     <string name="menu_view_accounts">Accounts</string>
     <!-- Screen menu item on active chat list to start new chat -->
     <string name="menu_new_chat">New Chat</string>
+    
     <!-- Screen menu item on accounts list to create new account -->
     <string name="menu_new_account">New Account</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
@@ -298,10 +299,9 @@
     <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> has left</string>
     <!-- Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
     
-    <!-- <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+     <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
     
-    <string name="time_stamp" format="date"><xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g><xliff:g id="ampm">a</xliff:g></string>
-    
+        
     <!-- The send button on the chat screen. -->
     <string name="send">Send</string>
     <!-- Error message when a chat failed to be sent.-->
@@ -743,7 +743,7 @@
 	 <string name="start_on_boot">Start ChatSecure Automatically</string>
 	 <string name="start_on_boot_summary">Always start and automatically sign into previously logged in accounts</string>
 	 
-	 <string name="empty_account_message">You have no accounts configured.\n\nTap here to add one!</string>
+	 <string name="empty_account_message">You have no\naccounts configured.\n\nTap here to add one!</string>
 	 
 	 <string name="google_account">Google Account</string>
 	 
@@ -776,7 +776,7 @@
     
     <string name="lock_screen_open">Open</string>
     <string name="title_activity_lock_screen">ChatSecure Locked</string>
-    <string name="lock_screen_create_passphrase">Create passphrase</string>
+    <string name="lock_screen_create_passphrase">Confirm Passphrase</string>
 	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
 	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
 	<string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
@@ -798,5 +798,16 @@
 	<string name="pref_cacheword_timeout_title">Password Timeout</string>
 	<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
 
+	<!-- Screen menu item on active chat list to start new chat -->
+    <string name="menu_new_group_chat">Group Chat</string>
+    <string name="create_or_join_group_chat">Create or Join Group Chat</string>
+    <string name="connect">Connect</string>
+    <string name="their_fingerprint_verified_">Their Fingerprint (Verified)</string>
+    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this key?</string>
+    <string name="verify_key_">Verify key?</string>
+    <string name="the_remote_key_fingerprint_has_been_verified_">The remote key fingerprint has been verified!</string>
+    
+    <string name="menu_panic">Panic</string>
+    
 </resources>
 

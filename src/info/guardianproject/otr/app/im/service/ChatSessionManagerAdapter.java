@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.GroupListener;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,6 @@ import java.util.List;
 
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.util.Log;
 
 /** manages the chat sessions for a given protocol */
 public class ChatSessionManagerAdapter extends
@@ -85,20 +85,33 @@ public class ChatSessionManagerAdapter extends
                 return null;
             }
         }
-        ImConnection imConnection = mConnection.getAdaptee();
-        String userName = imConnection.getLoginUserName();
+        
         ChatSession session = mChatSessionManager.createChatSession(contact);
-
-        /*
-        if (mOtrChatManager == null) {
-            RemoteImService.debug("mOtrChatManager == null");
-        } else {
-            RemoteImService.debug("mOtrChatManager.startSession(" + userName + ", "
-                                  + contactAddress + ")");
-            //mOtrChatManager.startSession(userName, contactAddress);
-        }*/
         
         return getChatSessionAdapter(session);
+    }
+    
+    public IChatSession createMultiUserChatSession(String roomAddress) 
+    {
+        
+        ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
+        
+        groupMan.createChatGroupAsync(roomAddress);
+
+        Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
+        
+        ChatGroup chatGroup = groupMan.getChatGroup(address);
+        
+        if (chatGroup != null)
+        {
+            ChatSession session = mChatSessionManager.createChatSession(chatGroup);
+
+            return getChatSessionAdapter(session);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void closeChatSession(ChatSessionAdapter adapter) {

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <style name="Theme.Chatsecure" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarItemBackground">@drawable/selectable_background_chatsecure</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Chatsecure</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Chatsecure</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Chatsecure</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Chatsecure</item>
+        <item name="actionBarStyle">@style/ActionBar.Transparent.Chatsecure</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_chatsecure</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_chatsecure</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Chatsecure</item>
+
+        
+    </style>
+
+    <style name="ActionBar.Solid.Chatsecure" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+        <item name="background">@drawable/ab_solid_chatsecure</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_chatsecure</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_chatsecure</item>
+        <item name="progressBarStyle">@style/ProgressBar.Chatsecure</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Chatsecure" parent="@style/Widget.Sherlock.Light.ActionBar">
+        <item name="background">@drawable/ab_transparent_chatsecure</item>
+        <item name="progressBarStyle">@style/ProgressBar.Chatsecure</item>
+    </style>
+	
+    <style name="PopupMenu.Chatsecure" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_chatsecure</item>	
+    </style>
+	
+    <style name="DropDownListView.Chatsecure" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_chatsecure</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Chatsecure" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_chatsecure</item>
+    </style>
+	
+    <style name="DropDownNav.Chatsecure" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_ab_chatsecure</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_chatsecure</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_chatsecure</item>
+    </style>
+    
+    <style name="ProgressBar.Chatsecure" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_chatsecure</item>
+    </style>
+    
+    <style name="ActionButton.CloseMode.Chatsecure" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_chatsecure</item>
+    </style>
+    
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Chatsecure.Widget" parent="@style/Theme.Sherlock">
+        <item name="popupMenuStyle">@style/PopupMenu.Chatsecure</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Chatsecure</item>
+    </style>
+
+</resources>

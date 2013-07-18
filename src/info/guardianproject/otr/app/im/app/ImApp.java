@@ -228,6 +228,7 @@ public class ImApp extends Application {
     
     public void setAppTheme (Activity activity)
     {
+        /*
         
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
@@ -235,19 +236,23 @@ public class ImApp extends Application {
         
         if (themeDark)
         {            
-            setTheme(R.style.Theme_Gibberbot);
+            setTheme(R.style.Theme_Sherlock);
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot);
+                activity.setTheme(R.style.Theme_Sherlock);
         }
         else
         {
-            setTheme(R.style.Theme_Gibberbot_Light);
+            setTheme(R.style.Theme_Chatsecure);
             
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot_Light);
+                activity.setTheme(R.style.Theme_Chatsecure);
         }
+        
+        Configuration config = getResources().getConfiguration();
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        */
         
     }
     

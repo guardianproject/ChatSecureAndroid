@@ -44,8 +44,6 @@
             android:layout_height="64sp"
             android:layout_weight="0"
             android:scaleType="centerCrop" 
-            android:padding="2sp"
-            android:background="#000000"
             />
 
         <LinearLayout

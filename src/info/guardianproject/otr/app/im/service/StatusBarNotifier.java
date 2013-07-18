@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -114,7 +113,7 @@ public class StatusBarNotifier {
 
     public void notifyLoggedIn(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ChatListActivity.class);
+        Intent intent = new Intent(mContext, NewChatActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);
@@ -124,7 +123,7 @@ public class StatusBarNotifier {
 
     public void notifyDisconnected(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ChatListActivity.class);
+        Intent intent = new Intent(mContext, NewChatActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);
