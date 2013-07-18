@@ -260,6 +260,10 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 return defaultValue;
             }
         }
+
+        public boolean hasProperty(String id) {
+            return mProperties.containsKey(id);
+        }
     }
 
     private List<OtrKeyManagerListener> listeners = new Vector<OtrKeyManagerListener>();
@@ -550,7 +554,9 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         // and is useful for transferring rosters to other apps.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            this.store.setProperty(buildPublicKeyVerifiedId(userId, fingerprintString.toLowerCase()), false);
+            String verifiedToken = buildPublicKeyVerifiedId(userId, fingerprintString.toLowerCase());
+            if (!this.store.hasProperty(verifiedToken))
+                this.store.setProperty(verifiedToken, false);
             this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
         } catch (OtrCryptoException e) {
             e.printStackTrace();
