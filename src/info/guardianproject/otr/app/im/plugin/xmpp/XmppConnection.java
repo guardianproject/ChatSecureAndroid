@@ -1,7 +1,10 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.TorProxyInfo;
+import info.guardianproject.otr.app.im.app.DatabaseUtils;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -12,6 +15,7 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
+import info.guardianproject.otr.app.im.engine.Invitation;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
@@ -20,10 +24,7 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -76,12 +78,16 @@ import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smackx.Form;
+import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.XHTMLManager;
 import org.jivesoftware.smackx.XHTMLText;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.RoomInfo;
 import org.jivesoftware.smackx.packet.ChatStateExtension;
 import org.jivesoftware.smackx.packet.LastActivity;
 import org.jivesoftware.smackx.packet.OfflineMessageInfo;
@@ -109,6 +115,7 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -172,10 +179,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private int mGlobalId;
     private static int mGlobalCount;
     
-    private final Random rnd = new Random();
+    private final Random rndForTorCircuits = new Random();
     
     // Maintains a sequence counting up to the user configured heartbeat interval
     private int heartbeatSequence = 0;
+    
+
+    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
+
 
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -294,71 +305,63 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             session.onMessagePostponed(packet.getPacketID());
         }
     }
-
-    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
     
-    public void getVCard(String jid) {
-
-        Contact contact = getContactListManager().getContact(jid);
-        
-       // if (contact != null && contact.getPresence().isOnline())
-        //{
-            qAvatar.add(jid);
+    private void loadVCardsAsync ()
+    {
+     // Using an AsyncTask to load the slow images in a background thread
+        new AsyncTask<String, Void, String>() {
             
-            if (!threadAvatarQ.isAlive())
-                threadAvatarQ.start();
-        //} 
+            @Override
+            protected String doInBackground(String... params) {
+                loadVCards();
+                return "";
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+               
+            }
+        }.execute("");
     }
     
-    private Thread threadAvatarQ = new Thread ()
+    private void loadVCards ()
     {
+        String jid = null;
+        ContentResolver resolver = mContext.getContentResolver();
         
-        public void run ()
+      
+        while ((jid = qAvatar.poll()) != null)
         {
-            String jid = null;
-            
-            try
-            {
-                while ((jid = qAvatar.take()) != null)
+    
+            try {
+               
+                if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
                 {
-            
-                    try {
-                                  
-                        String fileName = android.util.Base64.encodeToString(jid.getBytes(), android.util.Base64.NO_WRAP) + ".jpg";
-                        File fileDirAvatars = new File(aContext.getCacheDir(),"avatars");
-                        fileDirAvatars.mkdirs();                    
-                        File file = new File(fileDirAvatars, fileName);
+                    VCard vCard = new VCard();
+                    
+                    // FIXME synchronize this to executor thread
+                    vCard.load(mConnection, jid);
+    
+                    // If VCard is loaded, then save the avatar to the personal folder.
+                    byte[] avatarBytes = vCard.getAvatar();
+                    String avatarHash = vCard.getAvatarHash();
+                    
+                    if (avatarBytes != null)
+                    {
+                      
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
                         
-                        if (!file.exists())
-                        {
-                            
-                            VCard vCard = new VCard();
-                            
-                            // FIXME synchronize this to executor thread
-                            vCard.load(mConnection, jid);
-            
-                            // If VCard is loaded, then save the avatar to the personal folder.
-                            byte[] bytes = vCard.getAvatar();
-                
-                            if (bytes != null) {
-                                    
-                                    OutputStream output = new FileOutputStream(file);
-                                    output.write(bytes);
-                                    output.close();
-                               
-                            }
-                        }
-                        
-                    } catch (Exception ex) {
-                       // Log.w(TAG,"unable to save avatar",ex);
+                        // int providerId, int accountId, byte[] data, String hash,String contact
                     }
+              
                 }
-            }
-            catch (InterruptedException e)
-            {
-                Log.w(TAG,"qavatar interrupted");
+            } catch (Exception ex) {
+               Log.w(TAG,"unable to save avatar",ex);
             }
         }
+       
+        
         
     };
 
@@ -404,16 +407,211 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public int getCapability() {
-        // TODO chat groups
-        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT;
+        
+        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT & ImConnection.CAPABILITY_GROUP_CHAT;
     }
 
+    private XmppChatGroupManager mChatGroupManager = null;
+    
     @Override
-    public ChatGroupManager getChatGroupManager() {
-        // TODO chat groups
-        return null;
+    public synchronized ChatGroupManager getChatGroupManager() {
+       
+        if (mChatGroupManager == null)
+            mChatGroupManager = new XmppChatGroupManager();
+        
+        return mChatGroupManager;
     }
 
+    public class XmppChatGroupManager extends ChatGroupManager
+    {
+
+        private Hashtable<String,MultiUserChat> mMUCs = new Hashtable<String,MultiUserChat>();
+        
+        public MultiUserChat getMultiUserChat (String chatRoomJid)
+        {
+            return mMUCs.get(chatRoomJid);
+        }
+        
+        @Override
+        public void createChatGroupAsync(String chatRoomJid) {
+           
+            RoomInfo roomInfo = null;
+
+            Address address = new XmppAddress (chatRoomJid);
+            
+            try
+            {
+                roomInfo = MultiUserChat.getRoomInfo(mConnection, chatRoomJid);
+            }
+            catch (Exception e)
+            {
+                //who knows?
+            }
+            
+            
+            if (roomInfo == null)
+            {
+                //should be room@server
+                String[] parts = chatRoomJid.split("@");
+                String room = parts[0];
+                String server = parts[1];
+                String nickname = mUser.getName().split("@")[0];
+                
+                try {
+                    
+                    // Create a MultiUserChat using a Connection for a room
+                    MultiUserChat muc = new MultiUserChat(mConnection, chatRoomJid);
+    
+                    // Create the room
+                    muc.create(nickname);
+                    
+                    Form form = muc.getConfigurationForm();
+                    Form submitForm = form.createAnswerForm();
+                    for (Iterator fields = form.getFields();fields.hasNext();){
+                      FormField field = (FormField) fields.next();
+                        if(!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable()!= null){
+                            submitForm.setDefaultAnswer(field.getVariable());
+                        }
+                    }               
+                    submitForm.setAnswer("muc#roomconfig_publicroom", true);
+                    muc.sendConfigurationForm(submitForm);
+                    muc.join(nickname);
+                    
+                    ChatGroup chatGroup = new ChatGroup(address,room,this);
+                    mGroups.put(address.getAddress(), chatGroup);                    
+                    mMUCs.put(chatRoomJid, muc);
+                    
+                } catch (XMPPException e) {
+                  
+                    Log.e(ImApp.LOG_TAG,"error creating MUC",e);
+                }
+            }
+            else
+            {
+                joinChatGroupAsync(address);
+            }
+            
+        }
+
+        @Override
+        public void deleteChatGroupAsync(ChatGroup group) {
+            
+            String chatRoomJid = group.getAddress().getAddress();
+         
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);
+             
+                try {
+                    muc.destroy("", null);
+                    
+                    mMUCs.remove(chatRoomJid);
+                    
+                } catch (XMPPException e) {
+                    Log.e(ImApp.LOG_TAG,"error destroying MUC",e);
+                }
+                
+            }
+            
+        }
+
+        @Override
+        protected void addGroupMemberAsync(ChatGroup group, Contact contact) {
+            // TODO Auto-generated method stub
+            
+            
+            
+        }
+
+        @Override
+        protected void removeGroupMemberAsync(ChatGroup group, Contact contact) {
+            // TODO Auto-generated method stub
+            
+            
+        }
+
+        @Override
+        public void joinChatGroupAsync(Address address) {
+            
+           String chatRoomJid = address.getAddress();
+           String[] parts = chatRoomJid.split("@");
+           String room = parts[0];
+           String server = parts[1];
+           String nickname = mUser.getName().split("@")[0];
+            
+           try {
+                              
+               // Create a MultiUserChat using a Connection for a room
+               MultiUserChat muc = new MultiUserChat(mConnection, chatRoomJid);
+
+               // Create the room
+               muc.join(nickname);
+               
+               ChatGroup chatGroup = new ChatGroup(address,room,this);
+               mGroups.put(address.getAddress(), chatGroup);               
+               mMUCs.put(chatRoomJid, muc);
+               
+               
+               
+            } catch (XMPPException e) {
+                Log.e(ImApp.LOG_TAG,"error joining MUC",e);
+            }
+                
+        }
+
+        @Override
+        public void leaveChatGroupAsync(ChatGroup group) {
+            String chatRoomJid = group.getAddress().getAddress();
+            
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);               
+                muc.leave();                
+                mMUCs.remove(chatRoomJid);
+                
+            }
+            
+        }
+
+        @Override
+        public void inviteUserAsync(ChatGroup group, Contact invitee) {
+            
+            String chatRoomJid = group.getAddress().getAddress();
+            
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);               
+            
+                String reason = ""; //no reason for now
+                muc.invite(invitee.getAddress().getAddress(),reason);
+                
+            }
+            
+        }
+
+        @Override
+        public void acceptInvitationAsync(Invitation invitation) {
+            
+            Address addressGroup = invitation.getGroupAddress();
+            
+            joinChatGroupAsync (addressGroup);
+           
+        }
+
+        @Override
+        public void rejectInvitationAsync(Invitation invitation) {
+         
+            Address addressGroup = invitation.getGroupAddress();
+            
+            String reason = ""; // no reason for now
+            
+            MultiUserChat.decline(mConnection, addressGroup.getAddress(),invitation.getSender().getAddress(),reason);            
+             
+            
+        }
+        
+    };
+    
     @Override
     public synchronized ChatSessionManager getChatSessionManager() {
 
@@ -561,6 +759,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // TODO should we really be using the same name for both address and name?
         setState(LOGGED_IN, null);
         debug(TAG, "logged in");
+        
+      
 
     }
 
@@ -579,8 +779,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     && port == TorProxyInfo.PROXY_PORT) //9050
             {
                 //if the proxy is for Orbot/Tor then generate random usr/pwd to isolate Tor streams
-                username = rnd.nextInt(100000)+"";
-                password = rnd.nextInt(100000)+"";
+                username = rndForTorCircuits.nextInt(100000)+"";
+                password = rndForTorCircuits.nextInt(100000)+"";
                 
             }
             
@@ -601,7 +801,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (Debug.DEBUG_ENABLED) {
             Debug.onConnectionStart();
         }
-        
+     
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
         boolean requireTls = providerSettings.getRequireTls();
         boolean doDnsSrv = providerSettings.getDoDnsSrv();
@@ -754,17 +954,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String address = parseAddressBase(smackMessage.getFrom());
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
+                
+                ChatSession session = findOrCreateSession(address);
+                
                 if (dr != null) {
-                    ChatSession session = findOrCreateSession(address);
+                    
                     debug(TAG, "got delivery receipt for " + dr.getId());
                     session.onMessageReceipt(dr.getId());
                 }
                 
                 String body = smackMessage.getBody();
                 
-                /*
                 //if it has an XHTML body, use it
-                Iterator it = XHTMLManager.getBodies(smackMessage);
+                /*
+                Iterator<String> it = XHTMLManager.getBodies(smackMessage);
                 if (it.hasNext())
                 {
                     String htmlBody = (String) it.next();
@@ -772,31 +975,37 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     if (htmlBody != null && htmlBody.length() > 0)
                         body = htmlBody;
                 }
-                *
+                
                 if (body == null)
                     return;
                 */
                 
-                Message rec = new Message(body);
-                rec.setTo(mUser.getAddress());
-                rec.setFrom(new XmppAddress(smackMessage.getFrom()));
-                rec.setDateTime(new Date());
+               
+              if (!smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
+              {
+                    Message rec = new Message(body);
+                    rec.setTo(mUser.getAddress());
+                    rec.setFrom(new XmppAddress(smackMessage.getFrom()));
+                    rec.setDateTime(new Date());
 
-                ChatSession session = findOrCreateSession(address);
-                boolean good = session.onReceiveMessage(rec);
+                    boolean good = session.onReceiveMessage(rec);
                 
-                if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                    if (good) {
-                        debug(TAG, "sending delivery receipt");
+                    
+                    
+                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                        if (good) {
+                            debug(TAG, "sending delivery receipt");
                         // got XEP-0184 request, send receipt
-                        sendReceipt(smackMessage);
-                        session.onReceiptsExpected();
-                    } else {
+                            sendReceipt(smackMessage);
+                            session.onReceiptsExpected();
+                                                } else {
                         debug(TAG, "not sending delivery receipt due to processing error");
-                    }
-                } else if (!good) {
-                    debug(TAG, "packet processing error");
-                }
+                        }
+                     } else if (!good) {
+                             debug(TAG, "packet processing error");
+                     }
+              }
+                
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
 
@@ -1153,26 +1362,44 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final class XmppChatSessionManager extends ChatSessionManager {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
-            org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
-                    message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
-            msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
             
-
-            String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-            msg.setBody(bodyPlain);
             
-            // Create an XHTMLText to send with the message
-            XHTMLText xhtmlText = new XHTMLText(null, null);
-            xhtmlText.appendOpenParagraphTag("font-size:large");
-            xhtmlText.append(message.getBody());     
-            xhtmlText.appendCloseParagraphTag();
-       
-            // Add the XHTML text to the message
-            XHTMLManager.addBody(msg, xhtmlText.toString());
+            String chatRoomJid = message.getTo().getAddress();
+            MultiUserChat muc = ((XmppChatGroupManager)getChatGroupManager()).getMultiUserChat(chatRoomJid);
             
-            debug(TAG, "sending packet ID " + msg.getPacketID());
-            message.setID(msg.getPacketID());
-            sendPacket(msg);
+            if (muc != null)
+            {
+                org.jivesoftware.smack.packet.Message msg = muc.createMessage();
+               
+                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
+                msg.setBody(bodyPlain);
+                
+                message.setID(msg.getPacketID());
+                sendPacket(msg);
+            }
+            else
+            {
+                org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
+                        message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
+                msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
+                
+    
+                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
+                msg.setBody(bodyPlain);
+                
+                // Create an XHTMLText to send with the message
+                XHTMLText xhtmlText = new XHTMLText(null, null);
+                xhtmlText.appendOpenParagraphTag("font-size:large");
+                xhtmlText.append(message.getBody());     
+                xhtmlText.appendCloseParagraphTag();
+           
+                // Add the XHTML text to the message
+                XHTMLManager.addBody(msg, xhtmlText.toString());
+                
+             //   debug(TAG, "sending packet ID " + msg.getPacketID());
+                message.setID(msg.getPacketID());
+                sendPacket(msg);
+            }
         }
 
         ChatSession findSession(String address) {
@@ -1184,6 +1411,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             return null;
         }
     }
+    
 
     public ChatSession findSession(String address) {
         return mSessionManager.findSession(address);
@@ -1413,17 +1641,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
-              //  loadContactListsAsync();
 
                 for (String address : addresses)
-                {
-                    getVCard(address);
+                    qAvatar.add(address);
                 
-                //    Contact contact = mContactListManager.getContact(address);
-                    
-                    
-                }
-                
+                loadVCardsAsync ();
             }
 
             @Override
@@ -1435,9 +1657,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             public void entriesAdded(Collection<String> addresses) {
                 
                 for (String address : addresses)
-                    getVCard(address);
+                    qAvatar.add(address);
                 
-               
+                loadVCardsAsync ();
             }
         };
 
@@ -2105,6 +2327,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         pm.addExtensionProvider("bad-sessionid", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.BadSessionIDError());
         pm.addExtensionProvider("session-expired", "http://jabber.org/protocol/commands", new AdHocCommandDataProvider.SessionExpiredError());
         
-    }
+    }        
 
+    
+    
 }

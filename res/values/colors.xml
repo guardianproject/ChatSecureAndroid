@@ -26,9 +26,18 @@
     <color name="error">#ffcc5555</color>
     
         <color name="android_green">#FFA4C639</color>
+            <color name="android_green_light">#aaA4C639</color>
     <color name="honeycombish_blue">#FF58BAED</color>
     <color name="soft_grey">#FF777777</color>
     <color name="background_light">#FFEFEFEF</color>
+    <color name="background_med">#FFdddddd</color>
     <color name="background_dark">#FF343434</color>
+    
+    <color name="otr_red">#AAFF7575</color>
+    <color name="otr_yellow">#AAF5F7C4</color>
+    <color name="otr_green">#AA8BFEA8</color>
+    
+    <color name="incoming_message">#AA99E0FF</color>
+    <color name="outgoing_message">#AAEAF7FB</color>
     
 </resources>

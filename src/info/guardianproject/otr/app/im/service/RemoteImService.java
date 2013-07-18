@@ -25,11 +25,11 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener.State;
+import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
 import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -209,7 +209,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         Notification notification = new Notification(R.drawable.ic_stat_status, getString(R.string.app_name),
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-        Intent notificationIntent = new Intent(this, AccountListActivity.class);
+        Intent notificationIntent = new Intent(this, NewChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -286,8 +286,17 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
         values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
-        // insert on the "account_status" uri actually replaces the existing value 
-        cr.update(Imps.AccountStatus.CONTENT_URI, values, null, null);
+        
+        try
+        {
+            //insert on the "account_status" uri actually replaces the existing value 
+            cr.update(Imps.AccountStatus.CONTENT_URI, values, null, null);
+        }
+        catch (Exception e)
+        {
+            //this can throw NPE on restart sometimes if database has not been unlocked
+            debug("database is not unlocked yet. caught NPE from mDbHelper in ImpsProvider");
+        }
     }
 
 

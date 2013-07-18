@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.12-alpha-2"
-     android:versionCode="63"
+     android:versionName="0.0.12-alpha-3-UI"
+     android:versionCode="64"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="18" />
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="18" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -52,11 +52,9 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_chatsecure"
-             android:theme="@style/Theme.Gibberbot.Light"
+             android:theme="@style/Theme.Sherlock.Light"
              android:allowBackup="false"
-             android:largeHeap="true"
 			>
-		
         <!-- 	
                      android:taskAffinity="info.guardianproject.otr.app.task.im" 
         
@@ -81,11 +79,6 @@ android:anyDensity="true"
 			         
              </activity>
         
-        <activity android:name=".app.ChatListActivity"
-                          android:exported="false"
-                            android:windowSoftInputMode="stateHidden|adjustResize"
-            
-            />
         <activity android:name=".app.ActiveChatListView"
                           android:exported="false"
             
@@ -184,26 +177,23 @@ android:anyDensity="true"
                 >
         </activity>
         
-<!-- 
+
         <activity android:name=".app.ImUrlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="info.guardianproject.otr.app.im.category.AIM" />
-                <category android:name="info.guardianproject.otr.app.im.category.MSN" />
-                <category android:name="info.guardianproject.otr.app.im.category.YAHOO" />
+                <category android:name="info.guardianproject.otr.app.im.category.XMPP" />
                 <data android:scheme="im" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="imto" android:host="aim"/>
-                <data android:scheme="imto" android:host="yahoo"/>
-                <data android:scheme="imto" android:host="msn"/>
+                <data android:scheme="imto" android:host="xmpp"/>
+                
             </intent-filter>
         </activity>
- -->
+
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
              android:launchMode="singleTop"
@@ -400,7 +390,6 @@ android:anyDensity="true"
         </activity>
           
         <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false"
-             
              />
           
         <activity android:name="net.hockeyapp.android.UpdateActivity" />

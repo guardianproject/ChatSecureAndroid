@@ -407,7 +407,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         return getRemoteFingerprint(sessionID.getFullUserID());
     }
 
-    private String getRemoteFingerprint(String userId) {
+    public String getRemoteFingerprint(String userId) {
         if (!Address.hasResource(userId))
             return null;
         byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");

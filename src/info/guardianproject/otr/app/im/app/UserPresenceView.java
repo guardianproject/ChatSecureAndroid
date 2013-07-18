@@ -322,4 +322,6 @@ public class UserPresenceView extends LinearLayout {
         }
         updateView();
     }
+    
+
 }

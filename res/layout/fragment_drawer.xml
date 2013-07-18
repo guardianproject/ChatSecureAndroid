@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="match_parent"
+    android:background="#565552"
+    android:orientation="vertical" >
+
+<View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33999999"/>
+    <Button
+        android:id="@+id/btnDrawerAccount"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        
+            android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:gravity="left|center_vertical"
+        android:text="@string/menu_view_accounts"
+                android:textColor="#dddddd"
+        
+         />
+    
+    
+    
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33999999"
+    
+    />
+    
+    <Button
+        android:id="@+id/btnDrawerAddContact"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:gravity="left|center_vertical"
+        android:text="@string/add_contact_title"
+                android:textColor="#dddddd"
+        
+        
+         />
+    
+    
+     <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33999999"
+    
+    />
+    
+    <Button
+        android:id="@+id/btnDrawerGroupChat"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:gravity="left|center_vertical"
+        android:text="@string/menu_new_group_chat"
+                android:textColor="#dddddd"
+        
+        
+         />
+    
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33999999"
+    
+    />
+    
+    <Button
+        android:id="@+id/btnDrawerSettings"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_nav_media_settings"
+        android:gravity="left|center_vertical"
+        android:text="@string/menu_settings"
+                android:textColor="#dddddd"
+        
+        
+         />
+    
+    
+<View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:background="#33999999"/>
+
+<Button
+        android:id="@+id/btnDrawerPanic"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_context_panic"
+        android:gravity="left|center_vertical"
+        android:text="@string/menu_panic"
+                android:textColor="#dddddd"
+        
+        
+         />
+</LinearLayout>

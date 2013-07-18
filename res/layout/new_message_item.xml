@@ -28,7 +28,7 @@
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:padding="6dip"
-    android:background="#66CCCCCC"
+		android:id="@+id/message_container"
 		>
 
 	    <TextView android:id="@+id/message"

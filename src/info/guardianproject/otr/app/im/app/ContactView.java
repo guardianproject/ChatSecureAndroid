@@ -18,9 +18,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +32,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Environment;
+import android.opengl.Visibility;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -61,7 +58,10 @@ public class ContactView extends LinearLayout {
                                                 Imps.Presence.PRESENCE_STATUS,
                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
                                                 Imps.Chats.LAST_MESSAGE_DATE,
-                                                Imps.Chats.LAST_UNREAD_MESSAGE, };
+                                                Imps.Chats.LAST_UNREAD_MESSAGE,
+                                                Imps.Contacts.AVATAR_DATA
+                                                
+    };
 
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
@@ -75,6 +75,7 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_CONTACT_CUSTOM_STATUS = 9;
     static final int COLUMN_LAST_MESSAGE_DATE = 10;
     static final int COLUMN_LAST_MESSAGE = 11;
+    static final int COLUMN_AVATAR_DATA = 12;
 
     //private ImageView mPresence;
     private TextView mLine1;
@@ -83,12 +84,15 @@ public class ContactView extends LinearLayout {
     private Context mContext; 
     private ImageView mAvatar;
     
-    
+    private Drawable mAvatarUnknown;
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
         mContext = context;
+        
+        mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
+        
     }
 
     @Override
@@ -125,45 +129,20 @@ public class ContactView extends LinearLayout {
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
         
-        /*
-        int iconId = 0;
-
-        // status icon
-
-        if (Imps.Contacts.TYPE_GROUP == type) {
-            iconId = lastMsg == null ? R.drawable.group_chat : R.drawable.group_chat_new;
-        } else if (hasChat) {
-            iconId = lastMsg == null ? BrandingResourceIDs.DRAWABLE_READ_CHAT
-                                    : BrandingResourceIDs.DRAWABLE_UNREAD_CHAT;
-        } else {
-            iconId = PresenceUtils.getStatusIconId(presence);
-        }*/
         
         
-        if (presence == Imps.Presence.AVAILABLE || presence == Imps.Presence.IDLE)
-        {
-            mAvatar.setBackgroundColor(Color.GREEN);
-        }
-        else if (presence == Imps.Presence.AWAY)
-        {
-            mAvatar.setBackgroundColor(Color.YELLOW);
-        }
-        else
-        {
-            mAvatar.setBackgroundColor(Color.GRAY);
-        }
-
         //mPresence.setImageDrawable(brandingRes.getDrawable(iconId));
        // Drawable presenceIcon = brandingRes.getDrawable(iconId);
 
         // line1
         CharSequence contact;
-        
+        /*
         if (Imps.Contacts.TYPE_GROUP == type) {
             ContentResolver resolver = getContext().getContentResolver();
             long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
             contact = queryGroupMembers(resolver, id);
         } else {
+        */
 
             //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
             // String address = ImpsAddressUtils.getDisplayableAddress(username);
@@ -186,13 +165,21 @@ public class ContactView extends LinearLayout {
                 }
             }
             
-            mAvatar.setImageResource(R.drawable.ic_launcher_gibberbot);
+            if (Imps.Contacts.TYPE_GROUP == type) {
+                mAvatar.setImageResource(R.drawable.group_chat);
+                
+            }
+            else
+            {
+                mAvatar.setImageDrawable(mAvatarUnknown);
+            }
             
-            Drawable d = loadAvatar (address);
-            if (d != null)
-                mAvatar.setImageDrawable(d);
+            Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA);
 
-        }
+            if (avatar != null)
+                mAvatar.setImageDrawable(avatar);
+
+     //   }
         mLine1.setText(contact);
 
         // time stamp
@@ -211,12 +198,16 @@ public class ContactView extends LinearLayout {
         if (showChatMsg && lastMsg != null) {
 
             //remove HTML tags since we can't display HTML
-            status = lastMsg.replaceAll("\\<.*?\\>", "");
-            mLine2.setTextAppearance(mContext, Typeface.BOLD);
+            status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
+            setBackgroundResource(R.color.incoming_message);
+            
+            
         }
         else
         {
+            mLine2.setVisibility(View.VISIBLE);
             mLine2.setTextAppearance(mContext, Typeface.NORMAL);
+            setBackgroundResource(android.R.color.transparent);
         }
         
         if (TextUtils.isEmpty(status)) {
@@ -244,33 +235,12 @@ public class ContactView extends LinearLayout {
         //    contactInfoPanel.setBackgroundResource(R.drawable.bubble);
       //      mLine1.setTextColor(r.getColor(R.color.chat_contact));
         } else {
-            contactInfoPanel.setBackgroundDrawable(null);
-            contactInfoPanel.setPadding(4, 0, 0, 0);
+         //   contactInfoPanel.setBackgroundDrawable(null);
+          //  contactInfoPanel.setPadding(4, 0, 0, 0);
          //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
         }
     }
     
-    private Drawable loadAvatar (String jid)
-    {
-        try
-        {
-            //String filename = Base64.encodeBase64String(jid.getBytes()) + ".jpg";
-            String fileName = Base64.encodeToString(jid.getBytes(), Base64.NO_WRAP) + ".jpg";
-            File sdCard = new File(getContext().getCacheDir(),"avatars");
-            File fileAvatar = new File(sdCard, fileName);
-            
-            if (fileAvatar.exists())
-                return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
-            else
-                return null;
-        }
-        catch (IOException ioe)
-        {
-            Log.e("Contacts","error loading avatar",ioe);
-            return null;
-        }
-    }
-
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };
         Uri uri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, groupId);
@@ -284,6 +254,8 @@ public class ContactView extends LinearLayout {
                 }
             }
         }
+        c.close();
+        
         return buf.toString();
     }
 
