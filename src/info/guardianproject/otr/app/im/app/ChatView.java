@@ -394,13 +394,6 @@ public class ChatView extends LinearLayout {
         mStatusWarningView = findViewById(R.id.warning);
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
-
-        Button acceptInvitation = (Button) findViewById(R.id.btnAccept);
-        Button declineInvitation = (Button) findViewById(R.id.btnDecline);
-
-        Button approveSubscription = (Button) findViewById(R.id.btnApproveSubscription);
-        Button declineSubscription = (Button) findViewById(R.id.btnDeclineSubscription);
-
         // Gesture detection
         gestureDetector = new GestureDetector(getContext(), new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
@@ -468,29 +461,6 @@ public class ChatView extends LinearLayout {
                 return true;
             }
             
-        });
-        
-
-        acceptInvitation.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                acceptInvitation();
-            }
-        });
-        declineInvitation.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                declineInvitation();
-            }
-        });
-
-        approveSubscription.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                approveSubscription();
-            }
-        });
-        declineSubscription.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                declineSubscription();
-            }
         });
 
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
@@ -840,59 +810,7 @@ public class ChatView extends LinearLayout {
         mApp.dismissChatNotification(providerId, from);
     }
 
-    void acceptInvitation() {
-        try {
-
-            IImConnection conn = mApp.getConnection(mProviderId);
-            if (conn != null) {
-                // register a chat session listener and wait for a group chat
-                // session to be created after we accept the invitation.
-                registerChatSessionListener();
-                conn.acceptInvitation(mInvitationId);
-            }
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
-    }
-
-    void declineInvitation() {
-        try {
-            IImConnection conn = mApp.getConnection(mProviderId);
-            if (conn != null) {
-                conn.rejectInvitation(mInvitationId);
-            }
-          //  mActivity.finish();
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
-    }
-
-    void approveSubscription() {
-        IImConnection conn = mApp.getConnection(mProviderId);
-
-        try {
-            IContactListManager manager = conn.getContactListManager();
-            manager.approveSubscription(mUserName);
-        } catch (RemoteException ex) {
-            mHandler.showServiceErrorAlert();
-        }
-     //   mActivity.finish();
-    }
-
-    void declineSubscription() {
-        IImConnection conn = mApp.getConnection(mProviderId);
-
-        if (conn != null)
-        {
-            try {
-                IContactListManager manager = conn.getContactListManager();
-                manager.declineSubscription(mUserName);
-            } catch (RemoteException ex) {
-                mHandler.showServiceErrorAlert();
-            }
-        }
-    //    mActivity.finish();
-    }
+    
 
     private void setViewType(int type) {
         mViewType = type;

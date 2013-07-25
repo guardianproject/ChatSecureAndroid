@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
@@ -100,20 +101,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-        /*
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-        .detectDiskReads()
-        .detectDiskWrites()
-        .detectNetwork()   // or .detectAll() for all detectable problems
-        .penaltyLog()
-        .build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-        .detectLeakedSqlLiteObjects()
-        .penaltyLog()
-        .penaltyDeath()
-        .build());
-        */
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
@@ -279,6 +266,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 finish();
             } else {
                 //chatView.bindSubscription(providerId, from);
+                
+                showSubscriptionDialog (providerId, from);
+                
             }
         } else {
             Uri data = intent.getData();
@@ -1293,6 +1283,74 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
           //  mHandler.showServiceErrorAlert();
         }
        
+    }
+    
+    void acceptInvitation(long providerId, long invitationId) {
+        try {
+
+            IImConnection conn = mApp.getConnection(providerId);
+            if (conn != null) {
+                conn.acceptInvitation(invitationId);
+            }
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
+
+    void declineInvitation(long providerId, long invitationId) {
+        try {
+            IImConnection conn = mApp.getConnection(providerId);
+            if (conn != null) {
+                conn.rejectInvitation(invitationId);
+            }
+        } catch (RemoteException e) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
+    
+    void showSubscriptionDialog (final long subProviderId, final String subFrom)
+    {
+        new AlertDialog.Builder(this)            
+        .setTitle(getString(R.string.subscriptions))
+        .setMessage(getString(R.string.subscription_prompt,subFrom))
+        .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                approveSubscription(subProviderId, subFrom);
+            }
+        })
+        .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                declineSubscription(subProviderId, subFrom);
+            }
+        })
+        .create().show();
+    }
+
+    void approveSubscription(long providerId, String userName) {
+        IImConnection conn = mApp.getConnection(providerId);
+
+        try {
+            IContactListManager manager = conn.getContactListManager();
+            manager.approveSubscription(userName);
+        } catch (RemoteException ex) {
+            mHandler.showServiceErrorAlert();
+        }
+    }
+
+    void declineSubscription(long providerId, String userName) {
+        IImConnection conn = mApp.getConnection(providerId);
+
+        if (conn != null)
+        {
+            try {
+                IContactListManager manager = conn.getContactListManager();
+                manager.declineSubscription(userName);
+            } catch (RemoteException ex) {
+                mHandler.showServiceErrorAlert();
+            }
+        }
     }
     
 
