@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -66,7 +67,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -132,14 +133,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-        refreshProviderData();
-        
-        
-
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
-        FontUtils.setRobotoFont(this, godfatherView);
-        
-        registerForContextMenu(getListView());
+     
+      //  registerForContextMenu(getListView());
         
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
         emptyView.setVisibility(View.GONE);
@@ -162,37 +158,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-
-        
         checkForUpdates();
     }
     
-    private void refreshProviderData ()
-    {
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        Intent intent = getIntent();
-        
-        mAdapter = new ProviderAdapter(this, mProviderCursor);
-        setListAdapter(mAdapter);
-    }
     
-    
-    
-    private void reloadList ()
-    {
-     //   mProviderCursor.close();
-        mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
-        
-        mAdapter = new ProviderAdapter(this, mProviderCursor);
-        setListAdapter(mAdapter);
-    }
-
     @Override
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
@@ -238,8 +207,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
     }
     
+    
 
-    private void signInAccountAtPosition(int position) {
+    protected void openAccountAtPosition(int position) {
         
         mProviderCursor.moveToPosition(position);
 
@@ -254,7 +224,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
            
             if (state == Imps.ConnectionStatus.OFFLINE) {
              
-                  signIn(accountId);
+                Intent intent = getEditAccountIntent();
+                startActivity(intent);
                 
             }
             else
@@ -264,23 +235,27 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
             
         }
+        
 
     }
+    
 
-    private void signIn(long accountId) {
+    public void signIn(long accountId) {
         if (accountId <= 0) {
             Log.w(TAG, "signIn: account id is 0, bail");
             return;
         }
 
-        boolean isAccountEditible = mProviderCursor.getInt(ACTIVE_ACCOUNT_LOCKED) == 0;
-        if (isAccountEditible && mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
-            // no password, edit the account
-            if (Log.isLoggable(TAG, Log.DEBUG))
-                log("no pw for account " + accountId);
-            Intent intent = getEditAccountIntent();
-            startActivity(intent);
-            return;
+        
+        mProviderCursor.moveToFirst();
+        while (!mProviderCursor.isAfterLast())
+        {
+            long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+            
+            if (cAccountId == accountId)
+                break;
+            
+            mProviderCursor.moveToNext();
         }
 
         // Remember that the user signed in.
@@ -292,9 +267,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         boolean isActive = false; // TODO(miron)
         mSignInHelper.signIn(password, providerId, accountId, isActive);
         
-        refreshProviderData ();
-        
-        
+        mProviderCursor.moveToPosition(-1);
     }
 
     
@@ -325,12 +298,15 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         if (!mProviderCursor.moveToFirst()) {
             return false;
         }
+        
         do {
             if (isSignedIn(mProviderCursor)) {
                 return false;
             }
         } while (mProviderCursor.moveToNext());
 
+        mProviderCursor.moveToPosition(-1);
+        
         return true;
     }
 
@@ -361,32 +337,42 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             signOut(accountId);
         } while (mProviderCursor.moveToNext());
         
+        mProviderCursor.moveToPosition(-1);
         
     }
 
-    private void signOut(final long accountId) {
-        if (accountId == 0) {
-            Log.w(TAG, "signOut: account id is 0, bail");
-            return;
+    public void signOut(final long accountId) {
+       
+        
+        if (mProviderCursor.isAfterLast())
+        {
+            mProviderCursor.moveToFirst();
+            while (!mProviderCursor.isAfterLast())
+            {
+                long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+                
+                if (cAccountId == accountId)
+                    break;
+                
+                mProviderCursor.moveToNext();
+            }
+            
+
+            mProviderCursor.moveToPosition(-1);
         }
 
         // Remember that the user signed out and do not auto sign in until they
         // explicitly do so
         setKeepSignedIn(accountId, false);
 
-        // Sign out
-        mApp.callWhenServiceConnected(mHandler, new Runnable() {
-            public void run() {
-                try {
-                    IImConnection conn = mApp.getConnectionByAccount(accountId);
-                    if (conn != null) {
-                        conn.logout();
-                    }
-                } catch (RemoteException ex) {
-                    Log.e(TAG, "signOut failed", ex);
-                }
+        try {
+            IImConnection conn = mApp.getConnectionByAccount(accountId);
+            if (conn != null) {
+                conn.logout();
             }
-        });
+        } catch (Exception ex) {
+            Log.e(TAG, "signOut failed", ex);
+        }
     }
 
     private void setKeepSignedIn(final long accountId, boolean signin) {
@@ -557,6 +543,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        /*
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -601,13 +588,14 @@ private Handler mHandlerGoogleAuth = new Handler ()
                     android.R.drawable.ic_menu_edit);
             menu.add(0, ID_REMOVE_ACCOUNT, 0, R.string.menu_remove_account).setIcon(
                     android.R.drawable.ic_menu_delete);
-        }
+        }*/
     }
 
     
     @SuppressWarnings("deprecation")
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
+        /*
         AdapterView.AdapterContextMenuInfo info;
         try {
             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -621,6 +609,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         long accountId = providerCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
 
         mProviderCursor.moveToPosition(info.position);
+                    Intent intent = new Intent(getContext(), NewChatActivity.class);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                    getContext().startActivity(intent);
         
         switch (item.getItemId()) {
         case ID_EDIT_ACCOUNT: {
@@ -662,13 +653,16 @@ private Handler mHandlerGoogleAuth = new Handler ()
         }
 
         }
-
+    */
+        
         return false;
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        signInAccountAtPosition(position);
+      
+        
+        
     }
 
     /*
@@ -716,22 +710,25 @@ private Handler mHandlerGoogleAuth = new Handler ()
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, AccountListActivity.this);
+                return new ProviderListItem(context, AccountListActivity.this, AccountListActivity.this);
             }
             return null;
         }
     }
 
     private final class ProviderAdapter extends CursorAdapter {
-        private LayoutInflater mInflater;
 
-        @SuppressWarnings("deprecation")
-        public ProviderAdapter(Context context, Cursor c) {
-            super(context, c);
+        public ProviderAdapter(Context context, Cursor c, boolean autoRequery) {
+            super(context, c, autoRequery);
+            
             mInflater = LayoutInflater.from(context).cloneInContext(context);
             mInflater.setFactory(new ProviderListItemFactory());
         }
 
+        private LayoutInflater mInflater;
+
+      
+        
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             // create a custom view, so we can manage it ourselves. Mainly, we want to
@@ -817,6 +814,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
     }
     
+    
     private void initProviderCursor ()
     {
         String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
@@ -829,6 +827,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         
+        mAdapter = new ProviderAdapter(this, mProviderCursor, true);
+        setListAdapter(mAdapter);
         
     }
     

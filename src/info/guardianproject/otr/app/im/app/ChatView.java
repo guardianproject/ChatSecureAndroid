@@ -600,12 +600,11 @@ public class ChatView extends LinearLayout {
           
             return;
         }
-
-        if (mMessageAdapter == null) {
-            mMessageAdapter = new MessageAdapter(mActivity, null);
-            mHistory.setAdapter(mMessageAdapter);
-        }
-
+        
+        mMessageAdapter = new MessageAdapter(mActivity, null);
+        mHistory.setAdapter(mMessageAdapter);
+        mHistory.invalidate();
+        
         startQuery(getChatId());
         mComposeMessage.setText("");
         mOtrChatSession = null;
@@ -724,6 +723,12 @@ public class ChatView extends LinearLayout {
         bindChat(mLastChatId);
     }
     
+    private void deleteChat ()
+    {
+        Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mLastChatId);
+        mActivity.getContentResolver().delete(contactUri,null,null);
+    }
+    
     public void bindChat(long chatId) {
         
         mLastChatId = chatId;
@@ -733,6 +738,7 @@ public class ChatView extends LinearLayout {
         }
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         mCursor = mActivity.managedQuery(contactUri, CHAT_PROJECTION, null, null, null);
+        
         if (mCursor == null || !mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + chatId);
@@ -744,6 +750,7 @@ public class ChatView extends LinearLayout {
             {
                 // This will save the current chatId and providerId in the relevant fields.
                 // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
+                
                 updateChat();
                 registerChatListener();
             }
@@ -985,15 +992,14 @@ public class ChatView extends LinearLayout {
         if (getChatSession() != null) {
             try {
                 getChatSession().leave();
+                
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
-        } else {
-            // the conversation is already closed, clear data in database
-            ContentResolver cr = mContext.getContentResolver();
-            cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId), null, null);
-        }
+        } 
         
+        deleteChat();
+                
     }
 
     public void closeChatSessionIfInactive() {
@@ -1259,7 +1265,7 @@ public class ChatView extends LinearLayout {
         String message = null;
         boolean isConnected;
 
-        SessionStatus sessionStatus = SessionStatus.PLAINTEXT;
+        SessionStatus sessionStatus = null;
 
         initOtr();
 
@@ -1282,7 +1288,11 @@ public class ChatView extends LinearLayout {
 
         if (isConnected) {
 
-            if (mType == Imps.Contacts.TYPE_TEMPORARY) {
+            if (mType == Imps.Contacts.TYPE_GROUP) {
+                visibility = View.GONE;
+                message = "";
+            }
+            else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mNickName);
             } else if (mPresenceStatus == Imps.Presence.OFFLINE) {
@@ -1294,7 +1304,13 @@ public class ChatView extends LinearLayout {
 
             }
 
-            if (sessionStatus == SessionStatus.ENCRYPTED) {
+            if (mPresenceStatus == Imps.Presence.OFFLINE)
+            {
+                mWarningText.setTextColor(Color.WHITE);
+                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+                message = mContext.getString(R.string.presence_offline);
+            }
+            else if (sessionStatus == SessionStatus.ENCRYPTED) {
                 try {
 
                     if (mOtrKeyManager == null)
@@ -1327,7 +1343,6 @@ public class ChatView extends LinearLayout {
                     
                  //   mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
                 } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } else if (sessionStatus == SessionStatus.FINISHED) {
@@ -1336,14 +1351,8 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
-            } 
-            else if (mPresenceStatus == Imps.Presence.OFFLINE)
-            {
-                mWarningText.setTextColor(Color.WHITE);
-                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-                message = mContext.getString(R.string.presence_offline);
-            }
-            else {
+            }  
+            else if (sessionStatus == SessionStatus.PLAINTEXT) {
 
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
@@ -1356,11 +1365,17 @@ public class ChatView extends LinearLayout {
             }
 
         } else {
+            /*
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mWarningText.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
+            */
+
+            mWarningText.setTextColor(Color.WHITE);
+            mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+            message = mContext.getString(R.string.presence_offline);
         }
 
         mStatusWarningView.setVisibility(visibility);
@@ -1419,19 +1434,13 @@ public class ChatView extends LinearLayout {
 
             switch (msg.what) {
 
-            case ImApp.EVENT_CONNECTION_LOGGED_IN:
-                log("Connection resumed");
-                updateWarningView();
-                return;
-            case ImApp.EVENT_CONNECTION_SUSPENDED:
-                log("Connection suspended");
-                updateWarningView();
-                return;
             case ImApp.EVENT_CONNECTION_DISCONNECTED:
                 log("Handle event connection disconnected.");
                 updateWarningView();
                 promptDisconnectedEvent(msg);
                 return;
+             default:
+                 updateWarningView();
             }
 
             super.handleMessage(msg);
@@ -1870,6 +1879,8 @@ public class ChatView extends LinearLayout {
                 }
             }
         }
+        
+        
 
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                 int totalItemCount) {

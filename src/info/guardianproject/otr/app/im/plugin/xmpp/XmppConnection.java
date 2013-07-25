@@ -70,8 +70,10 @@ import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.DefaultPacketExtension;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.provider.PrivacyProvider;
@@ -115,7 +117,6 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -306,6 +307,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
     
+    /*
     private void loadVCardsAsync ()
     {
      // Using an AsyncTask to load the slow images in a background thread
@@ -331,39 +333,77 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ContentResolver resolver = mContext.getContentResolver();
         
       
-        while ((jid = qAvatar.poll()) != null)
+        try
         {
-    
-            try {
+            while ((jid = qAvatar.poll(1000, TimeUnit.MILLISECONDS)) != null)
+            {
+        
+                loadVCard (resolver, jid);
                
-                if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
-                {
-                    VCard vCard = new VCard();
-                    
-                    // FIXME synchronize this to executor thread
-                    vCard.load(mConnection, jid);
+               
+            }
+        }
+        catch (Exception e) {}
+       
+        
+        
+    };*/
     
-                    // If VCard is loaded, then save the avatar to the personal folder.
+    private boolean loadVCard (ContentResolver resolver, String jid, boolean forceLoad)
+    {
+        try {
+            
+            
+            if (forceLoad || (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid)))
+            {
+                debug(ImApp.LOG_TAG, "loading vcard for: " + jid);
+                
+                VCard vCard = new VCard();
+                
+                // FIXME synchronize this to executor thread
+              
+                    vCard.load(mConnection, jid);
+               
+
+                // If VCard is loaded, then save the avatar to the personal folder.
+                String avatarHash = vCard.getAvatarHash();
+                
+                if (avatarHash != null)
+                {
                     byte[] avatarBytes = vCard.getAvatar();
-                    String avatarHash = vCard.getAvatarHash();
                     
                     if (avatarBytes != null)
                     {
                       
+                        debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);
+                        
                         DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
                         
                         // int providerId, int accountId, byte[] data, String hash,String contact
+                        return true;
                     }
-              
                 }
-            } catch (Exception ex) {
-               Log.w(TAG,"unable to save avatar",ex);
+          
             }
+            
+        } catch (XMPPException e) {
+            
+            Log.d(ImApp.LOG_TAG,"err loading vcard",e);
+            
+            if (e.getStreamError() != null)
+            {
+                String streamErr = e.getStreamError().getCode();
+                
+                if (streamErr != null && (streamErr.contains("404") || streamErr.contains("503")))
+                    {
+                       return false;
+                    }
+            }
+          
         }
-       
         
-        
-    };
+        return false;
+    }
 
     @Override
     protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -1410,6 +1450,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             return null;
         }
+        
     }
     
 
@@ -1642,10 +1683,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
+                /*
                 for (String address : addresses)
                     qAvatar.add(address);
                 
-                loadVCardsAsync ();
+                loadVCardsAsync();
+                */
             }
 
             @Override
@@ -1656,14 +1699,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
                 
+                /*
                 for (String address : addresses)
                     qAvatar.add(address);
                 
-                loadVCardsAsync ();
+               
+                loadVCardsAsync();
+                */
             }
         };
 
         private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+            
             
             String name = parseAddressName(presence.getFrom());
             String address = parseAddressBase(presence.getFrom());
@@ -1723,6 +1770,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Contact[] contacts = new Contact[] { contact };
 
             notifyContactsPresenceUpdated(contacts);
+            
+         //   loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress());
+            
+            PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
+            if (pe != null) {
+                DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
+                String hash = dpe.getValue("photo");
+                
+                if (hash != null)
+                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),true);
+                
+            }
         }
 
         @Override
@@ -2329,6 +2388,32 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
     }        
 
+    class NameSpace {
+
+        public static final String DISCO_INFO = "http://jabber.org/protocol/disco#info";
+        public static final String DISCO_ITEMS = "http://jabber.org/protocol/disco#items";
+        public static final String IQ_GATEWAY = "jabber:iq:gateway";
+        public static final String IQ_GATEWAY_REGISTER = "jabber:iq:gateway:register";
+        public static final String IQ_LAST = "jabber:iq:last";
+        public static final String IQ_REGISTER = "jabber:iq:register";
+        public static final String IQ_REGISTERED = "jabber:iq:registered";
+        public static final String IQ_ROSTER = "jabber:iq:roster";
+        public static final String IQ_VERSION = "jabber:iq:version";
+        public static final String CHATSTATES = "http://jabber.org/protocol/chatstates";
+        public static final String XEVENT = "jabber:x:event";
+        public static final String XDATA = "jabber:x:data";
+        public static final String MUC = "http://jabber.org/protocol/muc";
+        public static final String MUC_USER = MUC + "#user";
+        public static final String MUC_ADMIN = MUC + "#admin";
+        public static final String SPARKNS = "http://www.jivesoftware.com/spark";
+        public static final String DELAY = "urn:xmpp:delay";
+        public static final String OFFLINE = "http://jabber.org/protocol/offline";
+        public static final String X_DELAY = "jabber:x:delay";
+        public static final String VCARD_TEMP = "vcard-temp";
+        public static final String VCARD_TEMP_X_UPDATE = "vcard-temp:x:update";
+        public static final String ATTENTIONNS = "urn:xmpp:attention:0";
+
+    }
     
     
 }

@@ -146,7 +146,11 @@ public class DatabaseUtils {
     
 
     private static Drawable decodeAvatar(byte[] data) {
-        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length);
+        
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize=2;
+        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+        
         Drawable avatar = new BitmapDrawable(b);
         return avatar;
     }

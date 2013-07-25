@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter;
@@ -204,9 +205,15 @@ public class ContactListFilterView extends LinearLayout {
         }
 
         @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+           
+
+            return super.getView(position, convertView, parent);
+        }
+
+        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-          //  v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mSearchString, false);
         }
 

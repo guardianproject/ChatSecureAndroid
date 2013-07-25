@@ -85,6 +85,7 @@ public class ImUrlActivity extends ThemeableActivity {
         long accountId;
 
         mConn = mApp.getConnection(providerId);
+
         if (mConn == null) {
             Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
             if (c == null) {
@@ -195,6 +196,7 @@ public class ImUrlActivity extends ThemeableActivity {
                     }
                 }
             }
+            
             mToAddress = data.getSchemeSpecificPart();
         } else {
             mProviderName = findMatchingProvider(host);
@@ -225,19 +227,7 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     private String getProviderNameForCategory(String providerCategory) {
-        if (providerCategory != null) {
-            if (providerCategory.equalsIgnoreCase("info.guardianproject.otr.app.im.category.AIM")) {
-                return Imps.ProviderNames.AIM;
-            } else if (providerCategory
-                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.MSN")) {
-                return Imps.ProviderNames.MSN;
-            } else if (providerCategory
-                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.YAHOO")) {
-                return Imps.ProviderNames.YAHOO;
-            }
-        }
-
-        return null;
+        return Imps.ProviderNames.XMPP;
     }
 
     private String findMatchingProvider(String provider) {
@@ -245,6 +235,10 @@ public class ImUrlActivity extends ThemeableActivity {
             return null;
         }
 
+        if (provider.equalsIgnoreCase("xmpp"))
+            return Imps.ProviderNames.XMPP;
+        
+        /*
         if (Imps.ProviderNames.AIM.equalsIgnoreCase(provider)) {
             return Imps.ProviderNames.AIM;
         }
@@ -255,7 +249,7 @@ public class ImUrlActivity extends ThemeableActivity {
 
         if (Imps.ProviderNames.YAHOO.equalsIgnoreCase(provider)) {
             return Imps.ProviderNames.YAHOO;
-        }
+        }*/
 
         return null;
     }

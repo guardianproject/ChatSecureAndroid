@@ -366,7 +366,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, ChatListOldActivity.this);
+                return new ProviderListItem(context, ChatListOldActivity.this, null);
             }
             return null;
         }

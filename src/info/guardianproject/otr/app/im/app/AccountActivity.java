@@ -88,6 +88,8 @@ public class AccountActivity extends ThemeableActivity {
     CheckBox mRememberPass;
     CheckBox mUseTor;
     Button mBtnSignIn;
+    Button mBtnDelete;
+    
     Button mBtnAdvanced;
     TextView mTxtFingerprint;
 
@@ -121,8 +123,11 @@ public class AccountActivity extends ThemeableActivity {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {
-                if (state == ImConnection.LOGGING_IN)
+                if (state == ImConnection.LOGGED_IN)
+                {
                     mSignInHelper.goToAccount(accountId);
+                    finish();
+                }
             }
         };
         mSignInHelper.setSignInListener(signInListener);
@@ -141,7 +146,8 @@ public class AccountActivity extends ThemeableActivity {
 
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
-
+        mBtnDelete = (Button) findViewById(R.id.btnDelete);
+        
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -177,10 +183,18 @@ public class AccountActivity extends ThemeableActivity {
             // TODO once we implement multiple IM protocols
             mProviderId = ContentUris.parseId(i.getData());
             provider = mApp.getProvider(mProviderId);
-            setTitle(getResources().getString(R.string.add_account, provider.mFullName));
 
-            settings = new Imps.ProviderSettings.QueryMap(
-                    cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+            if (provider != null)
+            {
+                setTitle(getResources().getString(R.string.add_account, provider.mFullName));
+    
+                settings = new Imps.ProviderSettings.QueryMap(
+                        cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+            }
+            else
+            {
+                finish();
+            }
 
             
         } else if (Intent.ACTION_EDIT.equals(action)) {
@@ -260,6 +274,19 @@ public class AccountActivity extends ThemeableActivity {
             public void onClick(View v) {
                 showAdvanced();
             }
+        });
+        
+        mBtnDelete.setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+               
+                deleteAccount();
+                finish();
+                
+            }
+            
         });
 
         mBtnSignIn.setOnClickListener(new OnClickListener() {
@@ -691,7 +718,8 @@ public class AccountActivity extends ThemeableActivity {
         boolean rememberPass = mRememberPass.isChecked();
         if (rememberPass && !hasNameAndPassword) {
             mRememberPass.setChecked(false);
-            rememberPass = false;
+            rememberPass = false; 
+    
         }
         mRememberPass.setEnabled(hasNameAndPassword);
         mRememberPass.setFocusable(hasNameAndPassword);
@@ -722,6 +750,15 @@ public class AccountActivity extends ThemeableActivity {
         }
     };
 
+    private void deleteAccount ()
+    {
+        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
+        getContentResolver().delete(accountUri, null, null);
+        Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId);
+        getContentResolver().delete(providerUri, null, null);
+      
+    }
+    
     private void showAdvanced() {
 
         checkUserChanged();

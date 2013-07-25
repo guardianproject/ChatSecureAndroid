@@ -674,7 +674,6 @@ public class ImApp extends Application {
     IImConnection getConnection(long providerId) {
         synchronized (mConnections) {
             
-            
             if (mConnections.size() == 0)
                 fetchActiveConnections();
         
