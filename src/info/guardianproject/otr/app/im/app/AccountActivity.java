@@ -236,6 +236,8 @@ public class AccountActivity extends ThemeableActivity {
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
 
             mUseTor.setChecked(settings.getUseTor());
+            
+            mBtnDelete.setVisibility(View.VISIBLE);
 
 
         } else {
