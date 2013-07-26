@@ -84,6 +84,7 @@
                     android:maxLines="1"
                     android:paddingRight="8dip"
                     android:text="5:55pm"
+                    	android:layout_alignParentRight="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                      android:layout_toRightOf="@+id/line1"
                      />
