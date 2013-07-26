@@ -114,6 +114,7 @@
 			android:layout_width="fill_parent"
 			android:layout_gravity="bottom" 
 			style="@style/btn_white"
+			android:visibility="gone"
 			/>
 	</LinearLayout>
 	</LinearLayout>
