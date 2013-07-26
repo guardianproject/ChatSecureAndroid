@@ -32,7 +32,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 public class LockScreenActivity extends SherlockActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
-    private final static int MIN_PASS_LENGTH = 6;
+    private final static int MIN_PASS_LENGTH = 4;
     // private final static int MAX_PASS_ATTEMPTS = 3;
     // private final static int PASS_RETRY_WAIT_TIMEOUT = 30000;
 
