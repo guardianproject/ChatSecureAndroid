@@ -148,9 +148,13 @@ public class DatabaseUtils {
     private static Drawable decodeAvatar(byte[] data) {
         
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize=2;
-        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);
         
+        if (data.length > 32000)        
+            options.inSampleSize = 2;
+        else if (data.length > 64000)        
+            options.inSampleSize = 2;
+        
+        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
         Drawable avatar = new BitmapDrawable(b);
         return avatar;
     }

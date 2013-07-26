@@ -22,10 +22,10 @@ import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.util.FontUtils;
 
 import java.util.List;
 
@@ -46,9 +46,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -57,7 +55,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -200,11 +197,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         checkForCrashes();
         
-        if (getIntent().hasExtra("EXIT") && getIntent().getExtras().getBoolean("EXIT"))
+        if (getIntent().hasExtra("EXIT"))
         {
-            signOutAndKillProcess();
+            handlePanic();
         }
-        
     }
     
     
@@ -239,6 +235,22 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     }
     
+    public void refreshAccountState ()
+    {
+        mProviderCursor.moveToFirst();
+        while (!mProviderCursor.isAfterLast())
+        {
+            long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+            
+            try
+            {
+                IImConnection conn = mApp.getConnectionByAccount(cAccountId);
+            }
+            catch (Exception e){}
+            
+            mProviderCursor.moveToNext();
+        }
+    }
 
     public void signIn(long accountId) {
         if (accountId <= 0) {
@@ -280,64 +292,28 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     
     }
 
-    boolean isSigningIn(Cursor cursor) {
-        int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        return connectionStatus == Imps.ConnectionStatus.CONNECTING;
-    }
-
-    private boolean isSignedIn(Cursor cursor) {
-        int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        return connectionStatus == Imps.ConnectionStatus.ONLINE;
-    }
-
-    private boolean allAccountsSignedOut() {
+    private void handlePanic() {
         
-        if (mProviderCursor == null)
-            return false;
-        
-        if (!mProviderCursor.moveToFirst()) {
-            return false;
-        }
-        
-        do {
-            if (isSignedIn(mProviderCursor)) {
-                return false;
-            }
-        } while (mProviderCursor.moveToNext());
-
-        mProviderCursor.moveToPosition(-1);
-        
-        return true;
-    }
-
-    private void signOutAndKillProcess() {
-        
-        try
-        {
-            signOutAll ();
-
-            if (mCacheWord != null)
-                mCacheWord.manuallyLock();
-        }
-        catch (Exception e){}
-        catch (Error e2){}
-
+        signOutAll ();
         ((ImApp)getApplication()).forceStopImService();
-        
-        finish();
         
     }
  
     private void signOutAll() {
       
-        if (!mProviderCursor.moveToFirst())
-            return;
-        do {
-            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-            signOut(accountId);
-        } while (mProviderCursor.moveToNext());
         
         mProviderCursor.moveToPosition(-1);
+        
+        while (mProviderCursor.moveToNext())
+        {
+            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+            signOut(accountId);
+        }
+                
+        if (mCacheWord != null)
+            mCacheWord.manuallyLock();
+        
+        finish();
         
     }
 
@@ -385,7 +361,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.menu_sign_out_all).setVisible(!allAccountsSignedOut());
         return true;
     }
 
@@ -830,6 +805,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
         mAdapter = new ProviderAdapter(this, mProviderCursor, true);
         setListAdapter(mAdapter);
         
+        refreshAccountState();
     }
     
     private void checkForCrashes() {

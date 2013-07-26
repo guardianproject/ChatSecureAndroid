@@ -39,9 +39,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
+import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
+
 public class ContactListFilterView extends LinearLayout {
 
-    private ListView mFilterList;
+    private ActionSlideExpandableListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -81,9 +83,10 @@ public class ContactListFilterView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (ListView) findViewById(R.id.filteredList);
+        mFilterList = (ActionSlideExpandableListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
+        
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -94,7 +97,22 @@ public class ContactListFilterView extends LinearLayout {
 
             }
         });
+        
+        mFilterList.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
 
+            @Override
+            public void onClick(View listView, View buttonview, int position) {
+
+                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+                if (mListener != null)
+                    if (buttonview.getId() == R.id.btnExListChat)
+                        mListener.startChat(c);
+                   
+            }
+    }, R.id.btnExListChat, R.id.btnExListProfile);
+
+       // 
+        
         //if (!isInEditMode())
           //  mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
 

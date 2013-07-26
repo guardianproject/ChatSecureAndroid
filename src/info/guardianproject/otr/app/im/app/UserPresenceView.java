@@ -315,12 +315,15 @@ public class UserPresenceView extends LinearLayout {
     
     public void refreshLogginInStatus ()
     {
-        try {
-            loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
-        } catch (RemoteException e) {
-            
-           loggingIn(false);
-        //    mHandler.showServiceErrorAlert();
+        if (mConn != null)
+        {
+            try {
+                loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+            } catch (RemoteException e) {
+                
+               loggingIn(false);
+            //    mHandler.showServiceErrorAlert();
+            }
         }
     }
 

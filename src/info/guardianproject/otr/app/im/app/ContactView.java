@@ -116,7 +116,7 @@ public class ContactView extends LinearLayout {
             mHolder.mLine2 = (TextView) findViewById(R.id.line2);
            
             mHolder.mTimeStamp = (TextView) findViewById(R.id.timestamp);
-            mHolder.mAvatar = (ImageView)findViewById(R.id.avatar);
+            mHolder.mAvatar = (ImageView)findViewById(R.id.expandable_toggle_button);
             
             setTag(mHolder);
         }
