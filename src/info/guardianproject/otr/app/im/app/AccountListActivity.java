@@ -22,7 +22,6 @@ import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -63,8 +62,9 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.espiandev.showcaseview.ShowcaseView;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager, ShowcaseView.OnShowcaseEventListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -84,7 +84,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     private SignInHelper mSignInHelper;
 
     private CacheWordActivityHandler mCacheWord;
-    
+    private ShowcaseView sv;
+
     private final static int SCAN_REQUEST_CODE = 7171; //otr key import scanning
     
     private static final String[] PROVIDER_PROJECTION = {
@@ -155,9 +156,20 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-        checkForUpdates();
+       // checkForUpdates();
+        
+
+       
     }
     
+    private void doShowcase ()
+    {
+        ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+        co.hideOnClickOutside = true;
+        sv = ShowcaseView.insertShowcaseView(R.id.menu_new_account, this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
+        
+      //  sv.setOnShowcaseEventListener(this);
+    }
     
     @Override
     protected void onPause() {
@@ -415,16 +427,17 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mAccountList = new String[listProviders.size()+1];
         
         int i = 0;
+        mAccountList[i] = getString(R.string.google_account);
+        i++;
         
         for (String providerName : listProviders)
             mAccountList[i++] = providerName;
                 
-        mAccountList[i] = getString(R.string.google_account);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
 
-                if (pos > helper.getProviderNames().size()-1) //google accounts based on xmpp
+                if (pos == 0) //google accounts based on xmpp
                 {           
                     showGoogleAccountListDialog();
                 }
@@ -815,5 +828,15 @@ private Handler mHandlerGoogleAuth = new Handler ()
       private void checkForUpdates() {
         // Remove this for store builds!
         UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
+      }
+      
+      @Override
+      public void onShowcaseViewHide(ShowcaseView showcaseView) {
+       
+      }
+
+      @Override
+      public void onShowcaseViewShow(ShowcaseView showcaseView) {
+         
       }
 }
