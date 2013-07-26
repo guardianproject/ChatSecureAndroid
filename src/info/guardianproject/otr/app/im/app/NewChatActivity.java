@@ -124,6 +124,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
     
     
+
     private SlidingMenu menu = null;
     
     private void initSideBar ()
@@ -320,7 +321,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         while (mCursorChats.moveToNext())
         {
-            long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+            long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
             
             if (chatId == requestedChatId)
             {
@@ -652,7 +653,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             //    mCursorChats.close();
             
             if (mCursorChats == null)
-                mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
+                mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
                 mCursorChats.requery();
         }
@@ -664,8 +665,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
             
             mCursorChats.requery();
-            
-          //  mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, ChatView.CHAT_PROJECTION, null, null, null);
             
             super.notifyDataSetChanged();
 
@@ -704,12 +703,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             {
                 int positionMod = position - 1;
                 
-                long chatId = -1;
+                long contactChatId = -1;
                 
                 mCursorChats.moveToPosition(positionMod);            
-                chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                contactChatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
                 
-                return ChatViewFragment.newInstance(chatId);
+                return ChatViewFragment.newInstance(contactChatId);
             }
         }
 
@@ -1056,7 +1055,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             NewChatActivity activity = (NewChatActivity)getActivity();
             
             if (c != null && activity != null) {
-                long chatId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
+                long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
                 String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
                 
                 long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
@@ -1071,7 +1070,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                     activity.refreshChatViews();
                     
-                    activity.showChat(chatId);
+                    activity.showChat(chatContactId);
                     
                   
                     
@@ -1161,18 +1160,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     public static class ChatViewFragment extends Fragment {
         
-      
+         ChatView mChatView;
+         
         /**
          * Create a new instance of CountingFragment, providing "num"
          * as an argument.
          */
-        static ChatViewFragment newInstance(long chatId) {
+        static ChatViewFragment newInstance(long chatContactId) {
             
             ChatViewFragment f = new ChatViewFragment();
 
             // Supply num input as an argument.
             Bundle args = new Bundle();
-            args.putLong("chatId", chatId);
+            args.putLong("contactChatId", chatContactId);
             f.setArguments(args);
 
             return f;
@@ -1196,13 +1196,29 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             
-            long chatId = getArguments().getLong("chatId");
-            ChatView mChatView = (ChatView)inflater.inflate(R.layout.chat_view, container, false);
-            mChatView.bindChat(chatId);                       
+            long chatContactId = getArguments().getLong("contactChatId");
+            mChatView = (ChatView)inflater.inflate(R.layout.chat_view, container, false);
+            mChatView.bindChat(chatContactId);                       
             
             return mChatView;
         }
-        
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            
+            if (mChatView != null)
+                mChatView.stopListening();
+            
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            
+            if (mChatView != null)
+                mChatView.startListening();
+        }
         
 
     }
