@@ -95,7 +95,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -161,7 +160,7 @@ public class ChatView extends LinearLayout {
     private IOtrKeyManager mOtrKeyManager;
     private IOtrChatSession mOtrChatSession;
 
-    long mLastChatId;
+    long mLastChatId=-1;
     int mType;
     String mNickName;
     String mUserName;
@@ -352,8 +351,8 @@ public class ChatView extends LinearLayout {
     }
     
     private static final int SWIPE_MIN_DISTANCE = 250;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 400;
+   // private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 300;
     private GestureDetector gestureDetector;
     View.OnTouchListener gestureListener;
 
@@ -519,14 +518,15 @@ public class ChatView extends LinearLayout {
                 sendMessage();
             }
         });
+        
     }
 
-    /*
-    public void onResume() {
+  
+    public void startListening() {
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
             if (cursor == null) {
-                startQuery();
+                startQuery(getChatId());
             } else {
                 requeryCursor();
             }
@@ -537,15 +537,15 @@ public class ChatView extends LinearLayout {
         updateWarningView();
     }
 
-    public void onPause() {
+    public void stopListening() {
         Cursor cursor = getMessageCursor();
         if (cursor != null) {
             cursor.deactivate();
         }
         cancelRequery();
-        if (mViewType == VIEW_TYPE_CHAT && mChatSession != null) {
+        if (mViewType == VIEW_TYPE_CHAT && mCurrentChatSession != null) {
             try {
-                mChatSession.markAsRead();
+                mCurrentChatSession.markAsRead();
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
             }
@@ -553,8 +553,9 @@ public class ChatView extends LinearLayout {
         unregisterChatListener();
         unregisterForConnEvents();
         unregisterChatSessionListener();
-    }*/
+    }
 
+    
     
     void updateChat() {
         setViewType(VIEW_TYPE_CHAT);
@@ -695,25 +696,28 @@ public class ChatView extends LinearLayout {
     
     private void deleteChat ()
     {
-        Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mLastChatId);
-        mActivity.getContentResolver().delete(contactUri,null,null);
+        Uri chatUri = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId);
+        mActivity.getContentResolver().delete(chatUri,null,null);
     }
     
-    public void bindChat(long chatId) {
+    public void bindChat(long contactId) {
         
-        mLastChatId = chatId;
+        mLastChatId = contactId;
         
         if (mCursor != null) {
             mCursor.deactivate();
         }
-        Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
+        
+        Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, contactId);
         mCursor = mActivity.managedQuery(contactUri, CHAT_PROJECTION, null, null, null);
         
         if (mCursor == null || !mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("Failed to query chat: " + chatId);
+                log("Failed to query chat: " + contactId);
             }
+            mLastChatId = -1;
         } else {
+            
             mCurrentChatSession = getChatSession(mCursor);
 
             if (mCurrentChatSession != null)
@@ -928,11 +932,9 @@ public class ChatView extends LinearLayout {
                 mHandler.showServiceErrorAlert();
             }
         }
-     else {
-        // the conversation is already closed, clear data in database
-        ContentResolver cr = mContext.getContentResolver();
-        cr.delete(ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId), null, null);
-    }
+        
+        deleteChat();
+    
     }
 
     public void viewProfile() {
@@ -1283,17 +1285,13 @@ public class ChatView extends LinearLayout {
             }
 
         } else {
-            /*
+            
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mWarningText.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
-            */
-
-            mWarningText.setTextColor(Color.WHITE);
-            mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-            message = mContext.getString(R.string.presence_offline);
+            
         }
 
         mStatusWarningView.setVisibility(visibility);
