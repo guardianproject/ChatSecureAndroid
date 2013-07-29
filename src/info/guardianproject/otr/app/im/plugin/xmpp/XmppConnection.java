@@ -1030,9 +1030,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     rec.setFrom(new XmppAddress(smackMessage.getFrom()));
                     rec.setDateTime(new Date());
 
-                    boolean good = session.onReceiveMessage(rec);
-                
+                    smackMessage.getTo();
+                    smackMessage.getThread();
+                    smackMessage.getType();
                     
+                    boolean good = session.onReceiveMessage(rec);
                     
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {
@@ -2117,8 +2119,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mStreamHandler.isResumePossible()) {
                     // Connect without binding, will automatically trigger a resume
                     debug(TAG, "resume");
-                    mConnection.connect(false);
-                    //initServiceDiscovery();
+                    mConnection.connect();
+                    initServiceDiscovery();
                 } else {
                     
                     mConnection.disconnect();
