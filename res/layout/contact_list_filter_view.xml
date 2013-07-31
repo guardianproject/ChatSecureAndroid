@@ -69,13 +69,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:hint="enter custom status"
             android:inputType="textCapSentences|textAutoCorrect"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceMediumInverse" />
+            android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
         <TextView
             android:id="@+id/statusView"
@@ -91,6 +90,17 @@
             android:textAppearance="?android:attr/textAppearanceLargeInverse"
             android:visibility="gone" />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
+    
+   
+          <EditText
+            android:id="@+id/contactSearch"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+             android:fontFamily="sans-serif-light" />
 
         <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
             
@@ -101,5 +111,6 @@
         android:background="#00000000"
         android:cacheColorHint="#00000000" />
 
+        
    
 </info.guardianproject.otr.app.im.app.ContactListFilterView>
