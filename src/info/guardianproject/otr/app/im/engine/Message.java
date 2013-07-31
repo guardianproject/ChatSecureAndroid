@@ -24,12 +24,14 @@ import android.os.Parcelable;
 
 /** Represents an instant message send between users. */
 public class Message implements Parcelable {
+    
     private String mId;
     private Address mFrom;
     private Address mTo;
     private String mBody;
     private Date mDate;
-
+    private int mType;
+    
     /**
      * @param msg
      * @throws NullPointerException if msg is null.
@@ -50,6 +52,7 @@ public class Message implements Parcelable {
         if (time != -1) {
             mDate = new Date(time);
         }
+        mType = source.readInt();
     }
 
     /**
@@ -139,6 +142,7 @@ public class Message implements Parcelable {
         AddressParcelHelper.writeToParcel(dest, mTo);
         dest.writeString(mBody);
         dest.writeLong(mDate == null ? -1 : mDate.getTime());
+        dest.writeInt(mType);
     }
 
     public int describeContents() {
@@ -154,4 +158,15 @@ public class Message implements Parcelable {
             return new Message[size];
         }
     };
+    
+
+
+    public int getType() {
+        return mType;
+    }
+
+    public void setType(int mType) {
+        this.mType = mType;
+    }
+
 }

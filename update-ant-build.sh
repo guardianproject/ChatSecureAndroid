@@ -8,6 +8,7 @@ android update project --path external/OnionKit/libonionkit --name OnionKit -t a
 android update project --path external/AndroidPinning --name libpinning -t android-17
 android update project --path external/cacheword/cachewordlib --name cacheword -t android-17
 android update project --path external/SlidingMenu/library --name sliding -t android-17
+android update project --path external/SlideListView/library --name slidelist -t android-17
 
 cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar

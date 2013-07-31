@@ -557,11 +557,9 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String username = msg.getFrom().getAddress();
             String nickname = getNickName(username);
             long time = msg.getDateTime().getTime();
-            if (mIsGroupChat) {
-                insertOrUpdateChat(nickname + ": " + body);
-            } else {
-                insertOrUpdateChat(body);
-            }
+            
+            insertOrUpdateChat(body);
+            
             insertMessageInDb(nickname, body, time, Imps.MessageType.INCOMING);
 
             int N = mRemoteListeners.beginBroadcast();

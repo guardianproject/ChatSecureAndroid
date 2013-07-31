@@ -70,8 +70,10 @@ import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
+import org.jivesoftware.smack.packet.DefaultPacketExtension;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.provider.PrivacyProvider;
@@ -83,8 +85,6 @@ import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
-import org.jivesoftware.smackx.XHTMLManager;
-import org.jivesoftware.smackx.XHTMLText;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.RoomInfo;
@@ -115,7 +115,6 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -306,6 +305,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
     
+    /*
     private void loadVCardsAsync ()
     {
      // Using an AsyncTask to load the slow images in a background thread
@@ -331,39 +331,77 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ContentResolver resolver = mContext.getContentResolver();
         
       
-        while ((jid = qAvatar.poll()) != null)
+        try
         {
-    
-            try {
+            while ((jid = qAvatar.poll(1000, TimeUnit.MILLISECONDS)) != null)
+            {
+        
+                loadVCard (resolver, jid);
                
-                if (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid))
-                {
-                    VCard vCard = new VCard();
-                    
-                    // FIXME synchronize this to executor thread
-                    vCard.load(mConnection, jid);
+               
+            }
+        }
+        catch (Exception e) {}
+       
+        
+        
+    };*/
     
-                    // If VCard is loaded, then save the avatar to the personal folder.
+    private boolean loadVCard (ContentResolver resolver, String jid, boolean forceLoad)
+    {
+        try {
+            
+            
+            if (forceLoad || (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid)))
+            {
+                debug(ImApp.LOG_TAG, "loading vcard for: " + jid);
+                
+                VCard vCard = new VCard();
+                
+                // FIXME synchronize this to executor thread
+              
+                    vCard.load(mConnection, jid);
+               
+
+                // If VCard is loaded, then save the avatar to the personal folder.
+                String avatarHash = vCard.getAvatarHash();
+                
+                if (avatarHash != null)
+                {
                     byte[] avatarBytes = vCard.getAvatar();
-                    String avatarHash = vCard.getAvatarHash();
                     
                     if (avatarBytes != null)
                     {
                       
+                        debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);
+                        
                         DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
                         
                         // int providerId, int accountId, byte[] data, String hash,String contact
+                        return true;
                     }
-              
                 }
-            } catch (Exception ex) {
-               Log.w(TAG,"unable to save avatar",ex);
+          
             }
+            
+        } catch (XMPPException e) {
+            
+            Log.d(ImApp.LOG_TAG,"err loading vcard",e);
+            
+            if (e.getStreamError() != null)
+            {
+                String streamErr = e.getStreamError().getCode();
+                
+                if (streamErr != null && (streamErr.contains("404") || streamErr.contains("503")))
+                    {
+                       return false;
+                    }
+            }
+          
         }
-       
         
-        
-    };
+        return false;
+    }
 
     @Override
     protected void doUpdateUserPresenceAsync(Presence presence) {
@@ -716,20 +754,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
                     debug (TAG, "google failed; may need to refresh");
+
+                    refreshGoogleToken (userName, password,providerSettings.getDomain());
                     
-                    //invalidate our old one, that is locally cached
-                    AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password.split(":")[1]);
-                
-                    String googleAcct = userName + '@' + providerSettings.getDomain();
-                    
-                    //request a new one
-                    password = GTalkOAuth2.getGoogleAuthToken(googleAcct, mContext.getApplicationContext());
-        
-                    //now store the new one, for future use until it expires
-                    final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                            GTalkOAuth2.NAME + ':' + password);
-                
-                    
+                                
                     mRetryLogin = true;
                     setState(LOGGING_IN, info);
 
@@ -761,6 +789,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         debug(TAG, "logged in");
         
       
+
+    }
+    
+    private void refreshGoogleToken (String userName, String oldPassword, String domain)
+    {
+      //invalidate our old one, that is locally cached
+        AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", oldPassword.split(":")[1]);
+    
+        //request a new one
+        String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+
+        //now store the new one, for future use until it expires
+        final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                GTalkOAuth2.NAME + ':' + password);
 
     }
 
@@ -809,6 +851,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         boolean useSASL = true;//!allowPlainAuth;
 
+        mIsGoogleAuth = password.startsWith(GTalkOAuth2.NAME);
+
         String domain = providerSettings.getDomain();
         String requestedServer = providerSettings.getServer();
         if ("".equals(requestedServer))
@@ -817,6 +861,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mPriority = providerSettings.getXmppResourcePrio();
         int serverPort = providerSettings.getPort();
 
+
+        if (mIsGoogleAuth)
+        {
+            this.refreshGoogleToken(userName, password, domain);
+        }
+        
+        
         String server = requestedServer;
 
         providerSettings.close(); // close this, which was opened in do_login()
@@ -887,7 +938,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
         //add gtalk auth in
-        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+        
         
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
@@ -906,16 +957,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
 
-        if (password.startsWith(GTalkOAuth2.NAME))
+        if (mIsGoogleAuth)
         {
-            mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
             password = password.split(":")[1];
+            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
         }
         else
         {
-            mIsGoogleAuth = false;
+            SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME);
             SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         }
                 
@@ -988,9 +1039,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     rec.setFrom(new XmppAddress(smackMessage.getFrom()));
                     rec.setDateTime(new Date());
 
-                    boolean good = session.onReceiveMessage(rec);
-                
+                    smackMessage.getTo();
+                    smackMessage.getThread();
+                    smackMessage.getType();
                     
+                    boolean good = session.onReceiveMessage(rec);
                     
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {
@@ -1213,8 +1266,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //mStrongTrustManager.setDomain(domain);
         //mStrongTrustManager.setServer(requestedServer);
         
-        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),
-                                                          new String[] {"f30012bbc18c231ac1a44b788e410ce754182513"},
+
+        String[] PINLIST = {XmppCertPins.TALKGOOGLE, XmppCertPins.DUKGO, XmppCertPins.CHATFACEBOOK, XmppCertPins.JABBERCCCDE, XmppCertPins.BINARYPARADOX};
+        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),PINLIST,
                                                         0);
         
         mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
@@ -1371,8 +1425,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             {
                 org.jivesoftware.smack.packet.Message msg = muc.createMessage();
                
-                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-                msg.setBody(bodyPlain);
+                msg.setBody(message.getBody());
                 
                 message.setID(msg.getPacketID());
                 sendPacket(msg);
@@ -1383,18 +1436,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
                 msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
                 
-    
-                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-                msg.setBody(bodyPlain);
-                
-                // Create an XHTMLText to send with the message
-                XHTMLText xhtmlText = new XHTMLText(null, null);
-                xhtmlText.appendOpenParagraphTag("font-size:large");
-                xhtmlText.append(message.getBody());     
-                xhtmlText.appendCloseParagraphTag();
-           
-                // Add the XHTML text to the message
-                XHTMLManager.addBody(msg, xhtmlText.toString());
+                msg.setBody(message.getBody());
                 
              //   debug(TAG, "sending packet ID " + msg.getPacketID());
                 message.setID(msg.getPacketID());
@@ -1410,6 +1452,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             return null;
         }
+        
     }
     
 
@@ -1642,10 +1685,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
+                /*
                 for (String address : addresses)
                     qAvatar.add(address);
                 
-                loadVCardsAsync ();
+                loadVCardsAsync();
+                */
             }
 
             @Override
@@ -1656,14 +1701,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
                 
+                /*
                 for (String address : addresses)
                     qAvatar.add(address);
                 
-                loadVCardsAsync ();
+               
+                loadVCardsAsync();
+                */
             }
         };
 
         private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+            
             
             String name = parseAddressName(presence.getFrom());
             String address = parseAddressBase(presence.getFrom());
@@ -1723,6 +1772,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Contact[] contacts = new Contact[] { contact };
 
             notifyContactsPresenceUpdated(contacts);
+            
+         //   loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress());
+            
+            PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
+            if (pe != null) {
+                DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
+                String hash = dpe.getValue("photo");
+                
+                if (hash != null)
+                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),true);
+                
+            }
         }
 
         @Override
@@ -2057,10 +2118,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     // Connect without binding, will automatically trigger a resume
                     debug(TAG, "resume");
                     mConnection.connect(false);
-                    //initServiceDiscovery();
+                    initServiceDiscovery();
                 } else {
                     
-                    mConnection.disconnect();
+                   //mConnection.disconnect();
+                   
                     mConnection = null;
                     
                     do_login();
@@ -2329,6 +2391,129 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
     }        
 
-    
+    class NameSpace {
+
+        public static final String DISCO_INFO = "http://jabber.org/protocol/disco#info";
+        public static final String DISCO_ITEMS = "http://jabber.org/protocol/disco#items";
+        public static final String IQ_GATEWAY = "jabber:iq:gateway";
+        public static final String IQ_GATEWAY_REGISTER = "jabber:iq:gateway:register";
+        public static final String IQ_LAST = "jabber:iq:last";
+        public static final String IQ_REGISTER = "jabber:iq:register";
+        public static final String IQ_REGISTERED = "jabber:iq:registered";
+        public static final String IQ_ROSTER = "jabber:iq:roster";
+        public static final String IQ_VERSION = "jabber:iq:version";
+        public static final String CHATSTATES = "http://jabber.org/protocol/chatstates";
+        public static final String XEVENT = "jabber:x:event";
+        public static final String XDATA = "jabber:x:data";
+        public static final String MUC = "http://jabber.org/protocol/muc";
+        public static final String MUC_USER = MUC + "#user";
+        public static final String MUC_ADMIN = MUC + "#admin";
+        public static final String SPARKNS = "http://www.jivesoftware.com/spark";
+        public static final String DELAY = "urn:xmpp:delay";
+        public static final String OFFLINE = "http://jabber.org/protocol/offline";
+        public static final String X_DELAY = "jabber:x:delay";
+        public static final String VCARD_TEMP = "vcard-temp";
+        public static final String VCARD_TEMP_X_UPDATE = "vcard-temp:x:update";
+        public static final String ATTENTIONNS = "urn:xmpp:attention:0";
+
+    }
+
+    class XmppCertPins 
+    {
+        
+/*
+## Certificate 0 ##
+Subject: CN=xmpp.binaryparadox.net
+Issuer: CN=xmpp.binaryparadox.net
+SHA1 FP: 0B93EB84CCBB7AA2CB92CF61A0348F63CCED14C1
+SPKI Pin: B3A7C02FC620C25F3C395AB043BF3C7729CE3C41
+
+Connecting to jabber.ccc.de [2 of 4 hosts]
+There were 3 certs in chain.
+*/
+           public final static String BINARYPARADOX = "B3A7C02FC620C25F3C395AB043BF3C7729CE3C41";
+
+           /*
+## Certificate 0 ##
+Subject: CN=jabber.ccc.de, O=Chaos Computer Club e.V., L=Hamburg, ST=Hamburg,
+C=DE
+Issuer: CN=CAcert Class 3 Root, OU=http://www.CAcert.org, O=CAcert Inc.
+SHA1 FP: 8155CF376967A47417A7BEAA9B712AC63D161D50
+SPKI Pin: ADE7618FE3BB26C20FC089F3EF9963D548D21457
+*/
+           
+           public final static String JABBERCCCDE = "ADE7618FE3BB26C20FC089F3EF9963D548D21457";
+
+           /*
+## Certificate 1 ##
+Subject: CN=CAcert Class 3 Root, OU=http://www.CAcert.org, O=CAcert Inc.
+Issuer: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority,
+OU=http://www.cacert.org, O=Root CA
+SHA1 FP: DB4C4269073FE9C2A37D890A5C1B18C4184E2A2D
+SPKI Pin: F061D83F958F4D78B147B31339978EA9C251BA9B
+*/
+           
+           /*
+## Certificate 2 ##
+Subject: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority,
+OU=http://www.cacert.org, O=Root CA
+Issuer: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority,
+OU=http://www.cacert.org, O=Root CA
+SHA1 FP: 135CEC36F49CB8E93B1AB270CD80884676CE8F33
+SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
+*/
+           
+           /*
+Connecting to chat.facebook.com [3 of 4 hosts]
+There were 2 certs in chain.
+
+## Certificate 0 ##
+Subject: CN=chat.facebook.com, O="Facebook, Inc.", L=Palo Alto, ST=California,
+C=US
+Issuer: CN=DigiCert High Assurance CA-3, OU=www.digicert.com, O=DigiCert Inc,
+C=US
+SHA1 FP: 22E50EEEAF2DAF8E440377196C4D95734DEE94D9
+SPKI Pin: 1C5CC68C8ABE4AA0DBC7729BEA05A4EC756464B6
+
+## Certificate 1 ##
+Subject: CN=DigiCert High Assurance CA-3, OU=www.digicert.com, O=DigiCert Inc,
+C=US
+Issuer: CN=DigiCert High Assurance EV Root CA, OU=www.digicert.com, O=DigiCert
+Inc, C=US
+SHA1 FP: A2E32A1A2E9FAB6EAD6B05F64EA0641339E10011
+SPKI Pin: 95F9D7434B1CE71DEF4211EE6BE3C0E0256FAD95
+*/
+           
+           public final static String CHATFACEBOOK = "1C5CC68C8ABE4AA0DBC7729BEA05A4EC756464B6";
+
+           /*
+Connecting to dukgo.com [4 of 4 hosts]
+There were 2 certs in chain.
+
+## Certificate 0 ##
+Subject: CN=*.dukgo.com, OU=EssentialSSL Wildcard, OU=Domain Control Validated
+Issuer: CN=EssentialSSL CA, O=COMODO CA Limited, L=Salford, ST=Greater
+Manchester, C=GB
+SHA1 FP: 7727F3D42E00BDBFBEF697470F013B9E1C41A8CB
+SPKI Pin: F44CF8786F4346082E18AB760CC49B6167B1B9D8
+
+## Certificate 1 ##
+Subject: CN=EssentialSSL CA, O=COMODO CA Limited, L=Salford, ST=Greater
+Manchester, C=GB
+Issuer: CN=COMODO Certification Authority, O=COMODO CA Limited, L=Salford,
+ST=Greater Manchester, C=GB
+SHA1 FP: 73820A20F8F47A457CD0B54CC4E4E31CEFA5C1E7
+SPKI Pin: CA91EDBE3EEF0F1736BDA1BA53E48E79B8ED7389
+*/
+           public final static String DUKGO = "F44CF8786F4346082E18AB760CC49B6167B1B9D8";
+     
+           /* Gmail/ Gtalk
+            * Calculating PIN for certificate: C=US, ST=California, L=Mountain View, O=Google Inc, CN=gmail.com
+Pin Value: 4b09f2c32d093a31a175168346a459e2f0179d89
+
+            */
+           
+           public final static String TALKGOOGLE = "4b09f2c32d093a31a175168346a459e2f0179d89";
+    }
     
 }

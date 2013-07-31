@@ -76,6 +76,13 @@ public class ActiveChatListView extends LinearLayout {
         };
     }
 
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
+
+
     private class MyChatSessionListener extends ChatSessionListenerAdapter {
         public MyChatSessionListener(SimpleAlertHandler handler) {
             super();

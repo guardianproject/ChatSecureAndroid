@@ -15,7 +15,7 @@
  * the License.
  */
 
-package info.guardianproject.otr.app.im.app;
+package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.IOtrKeyManager;
@@ -71,7 +71,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountActivity extends ThemeableActivity {
+public class LLXmppAccountActivity extends ThemeableActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -130,7 +130,7 @@ public class AccountActivity extends ThemeableActivity {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {
-                if (state == ImConnection.LOGGING_IN || state == ImConnection.LOGGED_IN)
+                if (state == ImConnection.LOGGED_IN)
                 {
                     mSignInHelper.goToAccount(accountId);
                     finish();
@@ -269,7 +269,7 @@ public class AccountActivity extends ThemeableActivity {
                 if (mRememberPass.isChecked()) {
                     String msg = brandingRes
                             .getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LLXmppAccountActivity.this, msg, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -306,10 +306,10 @@ public class AccountActivity extends ThemeableActivity {
                 
                 if (mUseTor.isChecked())
                 {
-                    OrbotHelper oh = new OrbotHelper(AccountActivity.this);
+                    OrbotHelper oh = new OrbotHelper(LLXmppAccountActivity.this);
                     if (!oh.isOrbotRunning())
                     {
-                        oh.requestOrbotStart(AccountActivity.this);
+                        oh.requestOrbotStart(LLXmppAccountActivity.this);
                         return;
                     }
                 }
@@ -519,7 +519,7 @@ public class AccountActivity extends ThemeableActivity {
                     // TODO move these strings to strings.xml
                     isGood = false;
                     Toast.makeText(
-                            AccountActivity.this,
+                            LLXmppAccountActivity.this,
                             "The port value '" + splitColon[1]
                                     + "' after the : could not be parsed as a number!",
                             Toast.LENGTH_LONG).show();
@@ -626,7 +626,7 @@ public class AccountActivity extends ThemeableActivity {
 
     void signOutUsingActivity() {
 
-        Intent intent = new Intent(AccountActivity.this, SignoutActivity.class);
+        Intent intent = new Intent(LLXmppAccountActivity.this, SignoutActivity.class);
         intent.setData(mAccountUri);
 
         startActivity(intent);
@@ -835,7 +835,7 @@ public class AccountActivity extends ThemeableActivity {
                     otrKeyManager.generateLocalKeyPair();
 
                 } else {
-                    Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
+                    Toast.makeText(LLXmppAccountActivity.this, "OTR is not initialized yet",
                             Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {

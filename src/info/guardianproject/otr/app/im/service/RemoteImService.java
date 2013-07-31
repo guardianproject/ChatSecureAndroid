@@ -206,14 +206,15 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     private void startForegroundCompat() {
-        Notification notification = new Notification(R.drawable.ic_stat_status, getString(R.string.app_name),
+        Notification notification = new Notification(R.drawable.notify_chatsecure, getString(R.string.app_name),
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
         Intent notificationIntent = new Intent(this, NewChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setLatestEventInfo(this, getString(R.string.app_name), "Active.", notification.contentIntent);
+        notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.presence_available), notification.contentIntent);
+        
         mForegroundStarter = new ForegroundStarter(this);
         mForegroundStarter.startForegroundCompat(1000, notification);
     }

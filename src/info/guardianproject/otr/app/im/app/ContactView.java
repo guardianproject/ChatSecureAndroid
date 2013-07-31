@@ -20,8 +20,6 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -31,19 +29,15 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.opengl.Visibility;
+import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,14 +71,14 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_LAST_MESSAGE = 11;
     static final int COLUMN_AVATAR_DATA = 12;
 
-    //private ImageView mPresence;
-    private TextView mLine1;
-    private TextView mLine2;
-    private TextView mTimeStamp;
-    private Context mContext; 
-    private ImageView mAvatar;
-    
+   
     private Drawable mAvatarUnknown;
+   
+    private Context mContext; 
+    
+    
+    private static final int cacheSize = 100; // 4MiB
+    private static LruCache bitmapCache = new LruCache(cacheSize);
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -95,16 +89,37 @@ public class ContactView extends LinearLayout {
         
     }
 
+    private ViewHolder mHolder = null;
+    
+    class ViewHolder 
+    {
+        //ImageView mPresence;
+        TextView mLine1;
+        TextView mLine2;
+        TextView mTimeStamp;
+        ImageView mAvatar;
+        
+    }
+    
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        //mPresence = (ImageView) findViewById(R.id.presence);
-        mLine1 = (TextView) findViewById(R.id.line1);
-        mLine2 = (TextView) findViewById(R.id.line2);
-        mLine2.setCompoundDrawablePadding(5);
-        mTimeStamp = (TextView) findViewById(R.id.timestamp);
-        mAvatar = (ImageView)findViewById(R.id.avatar);
+        mHolder = (ViewHolder)getTag();
+        
+        if (mHolder == null)
+        {
+            mHolder = new ViewHolder();
+            
+            //mPresence = (ImageView) findViewById(R.id.presence);
+            mHolder.mLine1 = (TextView) findViewById(R.id.line1);
+            mHolder.mLine2 = (TextView) findViewById(R.id.line2);
+           
+            mHolder.mTimeStamp = (TextView) findViewById(R.id.timestamp);
+            mHolder.mAvatar = (ImageView)findViewById(R.id.expandable_toggle_button);
+            
+            setTag(mHolder);
+        }
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
@@ -112,8 +127,13 @@ public class ContactView extends LinearLayout {
     }
 
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
+        
+        mHolder = (ViewHolder)getTag();
+        
         Resources r = getResources();
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
+        
+        mHolder.mLine2.setCompoundDrawablePadding(5);
         
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
@@ -166,31 +186,41 @@ public class ContactView extends LinearLayout {
             }
             
             if (Imps.Contacts.TYPE_GROUP == type) {
-                mAvatar.setImageResource(R.drawable.group_chat);
+                mHolder.mAvatar.setImageResource(R.drawable.group_chat);
                 
             }
             else
             {
-                mAvatar.setImageDrawable(mAvatarUnknown);
-            }
             
-            Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA);
-
-            if (avatar != null)
-                mAvatar.setImageDrawable(avatar);
+                Drawable avatar = (Drawable)bitmapCache.get(address);
+                
+                if (avatar == null)
+                {
+                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA);
+                    
+                    if (avatar != null)
+                        bitmapCache.put(address, avatar);
+                    
+                }
+                
+                if (avatar != null)
+                    mHolder.mAvatar.setImageDrawable(avatar);
+                else
+                    mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
+            }
 
      //   }
-        mLine1.setText(contact);
+            mHolder.mLine1.setText(contact);
 
         // time stamp
         if (showChatMsg && hasChat) {
-            mTimeStamp.setVisibility(VISIBLE);
+            mHolder.mTimeStamp.setVisibility(VISIBLE);
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(cursor.getLong(COLUMN_LAST_MESSAGE_DATE));
             DateFormat formatter = DateFormat.getTimeInstance(DateFormat.SHORT);
-            mTimeStamp.setText(formatter.format(cal.getTime()));
+            mHolder. mTimeStamp.setText(formatter.format(cal.getTime()));
         } else {
-            mTimeStamp.setVisibility(GONE);
+            mHolder.mTimeStamp.setVisibility(GONE);
         }
 
         // line2
@@ -205,8 +235,8 @@ public class ContactView extends LinearLayout {
         }
         else
         {
-            mLine2.setVisibility(View.VISIBLE);
-            mLine2.setTextAppearance(mContext, Typeface.NORMAL);
+            mHolder.mLine2.setVisibility(View.VISIBLE);
+            mHolder.mLine2.setTextAppearance(mContext, Typeface.NORMAL);
             setBackgroundResource(android.R.color.transparent);
         }
         
@@ -227,7 +257,7 @@ public class ContactView extends LinearLayout {
             status = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
         }
 
-        mLine2.setText(status);
+        mHolder.mLine2.setText(status);
        // mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
         View contactInfoPanel = findViewById(R.id.contactInfo);
@@ -257,6 +287,11 @@ public class ContactView extends LinearLayout {
         c.close();
         
         return buf.toString();
+    }
+    
+    public static Drawable getAvatar (String address)
+    {
+        return (Drawable) bitmapCache.get(address);
     }
 
 }

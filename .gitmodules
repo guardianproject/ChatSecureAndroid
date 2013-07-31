@@ -19,3 +19,15 @@
 [submodule "external/AndroidPinning"]
 	path = external/AndroidPinning
 	url = https://github.com/moxie0/AndroidPinning.git
+[submodule "external/SlideListView"]
+	path = external/SlideListView
+	url = https://github.com/guardianproject/Android-SlideExpandableListView.git
+[submodule "external/MessageBar"]
+	path = external/MessageBar
+	url = https://github.com/SimonVT/MessageBar.git
+[submodule "external/ShowcaseView"]
+	path = external/ShowcaseView
+	url = https://github.com/Espiandev/ShowcaseView.git
+[submodule "external/NineOldAndroids"]
+	path = external/NineOldAndroids
+	url = https://github.com/JakeWharton/NineOldAndroids.git

@@ -19,24 +19,16 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
-
-import java.io.File;
-import java.io.IOException;
-
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,7 +36,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -56,8 +47,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
     
@@ -263,9 +252,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             showAccounts();
         } else if (countSignedIn >= 1) {
             showActiveAccount();
-        } else if (countConfigured > 0) {
+        } else {
             showAccounts();
-        }
+        }/*
         else
         {
             setContentView(R.layout.welcome_activity);
@@ -282,7 +271,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             });
 
             
-        }
+        }*/
     
     }
     

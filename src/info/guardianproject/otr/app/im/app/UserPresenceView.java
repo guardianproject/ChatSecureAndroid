@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -308,6 +309,21 @@ public class UserPresenceView extends LinearLayout {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = super.getView(position, convertView, parent);
             return view;
+        }
+        
+    }
+    
+    public void refreshLogginInStatus ()
+    {
+        if (mConn != null)
+        {
+            try {
+                loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+            } catch (RemoteException e) {
+                
+               loggingIn(false);
+            //    mHandler.showServiceErrorAlert();
+            }
         }
     }
 

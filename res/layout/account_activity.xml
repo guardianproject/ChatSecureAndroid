@@ -93,7 +93,9 @@
 	         -->
 	<LinearLayout android:id="@+id/linearLayout1"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
+		android:layout_height="fill_parent"
+		android:orientation="vertical"
+		>
 		<Button android:id="@+id/btnSignIn"
 			android:text="@string/sign_in"
 			android:background="@drawable/btn_green"
@@ -102,6 +104,17 @@
 			android:layout_width="fill_parent"
 			android:layout_gravity="bottom" 
 			style="@style/btn_white"
+			/>
+		
+		<Button android:id="@+id/btnDelete"
+			android:text="@string/menu_remove_account"
+			android:background="@drawable/btn_red"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="3dip"
+			android:layout_width="fill_parent"
+			android:layout_gravity="bottom" 
+			style="@style/btn_white"
+			android:visibility="gone"
 			/>
 	</LinearLayout>
 	</LinearLayout>

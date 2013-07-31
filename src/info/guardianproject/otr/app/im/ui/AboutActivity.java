@@ -1,15 +1,11 @@
 package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.AccountActivity;
 import info.guardianproject.otr.app.im.app.AccountListActivity;
 import info.guardianproject.otr.app.im.app.ThemeableActivity;
-import info.guardianproject.otr.app.im.provider.Imps;
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
