@@ -19,7 +19,14 @@
 
 <resources>
     
-    <style name="AppTheme" parent="Theme.Sherlock.Light" />
+    <style name="AppTheme" parent="Theme.Sherlock.Light" >
+    
+         <item name="messageBarContainerStyle">@style/MessageBar.Container</item>
+		<item name="messageBarTextStyle">@style/MessageBar.Message</item>
+		<item name="messageBarButtonStyle">@style/MessageBar.Button</item>
+        
+        </style>
+    
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>

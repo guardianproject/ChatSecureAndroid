@@ -30,6 +30,8 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_chatsecure</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Chatsecure</item>
 
+       
+
         
     </style>
 
