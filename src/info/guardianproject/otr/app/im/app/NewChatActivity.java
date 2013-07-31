@@ -180,18 +180,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             @Override
             public void onClick(View v) {
                
+                /*
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
                 intent.putExtra("EXIT", true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                */
                 
-                /*
+                
                 Uri packageURI = Uri.parse("package:info.guardianproject.otr.app.im");
 
-                intent = new Intent(Intent.ACTION_DELETE, packageURI);
+                Intent intent = new Intent(Intent.ACTION_DELETE, packageURI);
                 startActivity(intent);
-                */
-                        
+                  
                 
             }
             
@@ -233,12 +234,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     {
         if (mLastProviderId != -1 && mAccountId != -1)
         {
-        Intent i = new Intent(this, AddContactActivity.class);
-        i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mLastProviderId);
-        i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-     //   i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
-       //         mContactListView.getSelectedContactList());
-        startActivity(i);
+            Intent i = new Intent(this, AddContactActivity.class);
+            i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mLastProviderId);
+            i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+         //   i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
+           //         mContactListView.getSelectedContactList());
+            startActivity(i);
         }
     }
 
