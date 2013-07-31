@@ -72,8 +72,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
     ImApp mApp;
 
-    ProviderAdapter mAdapter; 
-    
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
@@ -642,43 +640,9 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     }
     
     
-    private class ProviderListItemFactory implements LayoutInflater.Factory {
-        public View onCreateView(String name, Context context, AttributeSet attrs) {
-            if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, ContactListActivity.this);
-            }
-            return null;
-        }
-    }
     
-    private class ProviderAdapter extends CursorAdapter {
-        private LayoutInflater mInflater;
-
-        @SuppressWarnings("deprecation")
-        public ProviderAdapter(Context context, Cursor c) {
-            super(context, c);
-            mInflater = LayoutInflater.from(context).cloneInContext(context);
-            mInflater.setFactory(new ProviderListItemFactory());
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // create a custom view, so we can manage it ourselves. Mainly, we want to
-            // initialize the widget views (by calling getViewById()) in newView() instead of in
-            // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
-                    parent, false);
-            view.init(cursor);
-            return view;
-        }
-        
-        
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ((ProviderListItem) view).bindView(cursor);
-        }
-    }
+    
+    
 
   
     public boolean onClose() {
@@ -744,4 +708,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         
         
     }
+    
+    public void showProfile (Cursor c){}
 }

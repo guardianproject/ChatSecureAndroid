@@ -22,37 +22,43 @@
     class="info.guardianproject.otr.app.im.app.ContactView"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:paddingTop="0dip"
     android:paddingBottom="0dip"
     android:paddingLeft="0dip"
     android:paddingRight="0dip">
 
-    <LinearLayout
+    <LinearLayout 
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+              
+    <RelativeLayout
         android:id="@+id/contactInfo"
-        android:layout_width="0dip"
-    	android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
         android:layout_marginRight="2dip"
-        android:layout_weight="1"
         android:orientation="horizontal"
         android:paddingLeft="0dip"
         android:paddingTop="0dip" >
 
         <ImageView
-            android:id="@+id/avatar"
+            android:id="@+id/expandable_toggle_button"
             android:layout_width="64sp"
             android:layout_height="64sp"
-            android:layout_weight="0"
             android:scaleType="centerCrop" 
+				android:layout_alignParentLeft="true"
             />
 
         <LinearLayout
             android:id="@+id/contactrow"	
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="3dip"
-            android:paddingTop="3dip" >
+            android:paddingTop="3dip"
+             android:layout_toRightOf="@+id/expandable_toggle_button"
+             >
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -78,31 +84,69 @@
                     android:maxLines="1"
                     android:paddingRight="8dip"
                     android:text="5:55pm"
+                    	android:layout_alignParentRight="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_alignParentRight="true"
-                    
+                     android:layout_toRightOf="@+id/line1"
                      />
-          	</RelativeLayout>
-
-            <TextView
+                
+                  <TextView
                 android:id="@+id/line2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-light"
                 android:text="this is the subline"
+                android:layout_below="@+id/line1"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
+                
+             
+          	</RelativeLayout>
 
-        <!-- 
-        <ImageView
-            android:id="@+id/presence"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="6dip"
-            android:scaleType="fitXY" />
-             -->
-    </LinearLayout>
+          
+        </LinearLayout>
+       
+    </RelativeLayout>
+    
+    <LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:id="@+id/expandable"
+			android:background="#dddddd"
+			>
+
+		<ImageView
+				android:id="@+id/btnExListChat"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_menu_new_chat"
+				/>
+
+                  <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/menu_new_chat"
+                    android:gravity="center"
+                
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		<ImageView
+				android:id="@+id/btnExListProfile"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_menu_info"/>
+		
+		 <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:fontFamily="sans-serif-light"
+                                    android:gravity="center"
+                
+                android:text="@string/account_setup_personal_profile_title"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	</LinearLayout>
+	</LinearLayout>
 
 </view>

@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter;
@@ -38,9 +39,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
+import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
+
 public class ContactListFilterView extends LinearLayout {
 
-    private ListView mFilterList;
+    private ActionSlideExpandableListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -76,13 +79,21 @@ public class ContactListFilterView extends LinearLayout {
             
         };
     }
+    
+
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
 
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (ListView) findViewById(R.id.filteredList);
+        mFilterList = (ActionSlideExpandableListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
+        
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -93,7 +104,24 @@ public class ContactListFilterView extends LinearLayout {
 
             }
         });
+        
+        mFilterList.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
 
+            @Override
+            public void onClick(View listView, View buttonview, int position) {
+
+                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+                if (mListener != null)
+                    if (buttonview.getId() == R.id.btnExListChat)
+                        mListener.startChat(c);
+                    else if (buttonview.getId() == R.id.btnExListProfile)
+                        mListener.showProfile(c);
+                
+            }
+    }, R.id.btnExListChat, R.id.btnExListProfile);
+
+       // 
+        
         //if (!isInEditMode())
           //  mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
 
@@ -204,9 +232,15 @@ public class ContactListFilterView extends LinearLayout {
         }
 
         @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+           
+
+            return super.getView(position, convertView, parent);
+        }
+
+        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-          //  v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mSearchString, false);
         }
 
@@ -222,6 +256,7 @@ public class ContactListFilterView extends LinearLayout {
     public interface ContactListListener {
      
         public void startChat (Cursor c);
+        public void showProfile (Cursor c);
     }
     
     

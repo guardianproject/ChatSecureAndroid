@@ -99,7 +99,7 @@ public class Imps {
 
             return retVal;
         }
-
+        
         public static final String getProviderNameForId(ContentResolver cr, long providerId) {
             Cursor cursor = cr.query(CONTENT_URI, PROVIDER_PROJECTION, _ID + "=" + providerId,
                     null, null);

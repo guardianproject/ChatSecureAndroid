@@ -16,19 +16,18 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAccountActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.Iterator;
 import java.util.Set;
 
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionManager;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.util.LogCleaner;
-
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -85,6 +84,7 @@ public class ImUrlActivity extends ThemeableActivity {
         long accountId;
 
         mConn = mApp.getConnection(providerId);
+
         if (mConn == null) {
             Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
             if (c == null) {
@@ -120,7 +120,7 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     private void addAccount(long providerId) {
-        Intent intent = new Intent(this, AccountActivity.class);
+        Intent intent = new Intent(this, XmppAccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
         intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
@@ -130,7 +130,7 @@ public class ImUrlActivity extends ThemeableActivity {
 
     private void editAccount(long accountId) {
         Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-        Intent intent = new Intent(this, AccountActivity.class);
+        Intent intent = new Intent(this, XmppAccountActivity.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.setData(accountUri);
         intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
@@ -195,6 +195,7 @@ public class ImUrlActivity extends ThemeableActivity {
                     }
                 }
             }
+            
             mToAddress = data.getSchemeSpecificPart();
         } else {
             mProviderName = findMatchingProvider(host);
@@ -225,19 +226,7 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     private String getProviderNameForCategory(String providerCategory) {
-        if (providerCategory != null) {
-            if (providerCategory.equalsIgnoreCase("info.guardianproject.otr.app.im.category.AIM")) {
-                return Imps.ProviderNames.AIM;
-            } else if (providerCategory
-                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.MSN")) {
-                return Imps.ProviderNames.MSN;
-            } else if (providerCategory
-                    .equalsIgnoreCase("info.guardianproject.otr.app.im.category.YAHOO")) {
-                return Imps.ProviderNames.YAHOO;
-            }
-        }
-
-        return null;
+        return Imps.ProviderNames.XMPP;
     }
 
     private String findMatchingProvider(String provider) {
@@ -245,6 +234,10 @@ public class ImUrlActivity extends ThemeableActivity {
             return null;
         }
 
+        if (provider.equalsIgnoreCase("xmpp"))
+            return Imps.ProviderNames.XMPP;
+        
+        /*
         if (Imps.ProviderNames.AIM.equalsIgnoreCase(provider)) {
             return Imps.ProviderNames.AIM;
         }
@@ -255,7 +248,7 @@ public class ImUrlActivity extends ThemeableActivity {
 
         if (Imps.ProviderNames.YAHOO.equalsIgnoreCase(provider)) {
             return Imps.ProviderNames.YAHOO;
-        }
+        }*/
 
         return null;
     }

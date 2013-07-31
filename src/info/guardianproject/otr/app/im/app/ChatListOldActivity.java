@@ -351,7 +351,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
             // bindView(), which can be called more often.
             ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
                     parent, false);
-            view.init(cursor);
+            view.init(cursor,false);
             return view;
         }
         
@@ -366,7 +366,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
     private class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, ChatListOldActivity.this);
+                return new ProviderListItem(context, ChatListOldActivity.this, null);
             }
             return null;
         }
@@ -827,4 +827,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
         
         
     }
+    
+
+    public void showProfile (Cursor c){}
 }
