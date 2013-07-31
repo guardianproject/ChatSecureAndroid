@@ -85,8 +85,6 @@ import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
 import org.jivesoftware.smackx.PrivateDataManager;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
-import org.jivesoftware.smackx.XHTMLManager;
-import org.jivesoftware.smackx.XHTMLText;
 import org.jivesoftware.smackx.bytestreams.socks5.provider.BytestreamsProvider;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.RoomInfo;
@@ -756,20 +754,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
                     debug (TAG, "google failed; may need to refresh");
+
+                    refreshGoogleToken (userName, password,providerSettings.getDomain());
                     
-                    //invalidate our old one, that is locally cached
-                    AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", password.split(":")[1]);
-                
-                    String googleAcct = userName + '@' + providerSettings.getDomain();
-                    
-                    //request a new one
-                    password = GTalkOAuth2.getGoogleAuthToken(googleAcct, mContext.getApplicationContext());
-        
-                    //now store the new one, for future use until it expires
-                    final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                            GTalkOAuth2.NAME + ':' + password);
-                
-                    
+                                
                     mRetryLogin = true;
                     setState(LOGGING_IN, info);
 
@@ -801,6 +789,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         debug(TAG, "logged in");
         
       
+
+    }
+    
+    private void refreshGoogleToken (String userName, String oldPassword, String domain)
+    {
+      //invalidate our old one, that is locally cached
+        AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", oldPassword.split(":")[1]);
+    
+        //request a new one
+        String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+
+        //now store the new one, for future use until it expires
+        final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                GTalkOAuth2.NAME + ':' + password);
 
     }
 
@@ -849,6 +851,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         boolean useSASL = true;//!allowPlainAuth;
 
+        mIsGoogleAuth = password.startsWith(GTalkOAuth2.NAME);
+
         String domain = providerSettings.getDomain();
         String requestedServer = providerSettings.getServer();
         if ("".equals(requestedServer))
@@ -857,6 +861,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mPriority = providerSettings.getXmppResourcePrio();
         int serverPort = providerSettings.getPort();
 
+
+        if (mIsGoogleAuth)
+        {
+            this.refreshGoogleToken(userName, password, domain);
+        }
+        
+        
         String server = requestedServer;
 
         providerSettings.close(); // close this, which was opened in do_login()
@@ -946,9 +957,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         }
 
-        if (password.startsWith(GTalkOAuth2.NAME))
+        if (mIsGoogleAuth)
         {
-            mIsGoogleAuth = true;
             mConfig.setSASLAuthenticationEnabled(true);
             password = password.split(":")[1];
             SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
@@ -956,7 +966,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         else
         {
-            mIsGoogleAuth = false;
             SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME);
             SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         }
@@ -1415,8 +1424,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             {
                 org.jivesoftware.smack.packet.Message msg = muc.createMessage();
                
-                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-                msg.setBody(bodyPlain);
+                msg.setBody(message.getBody());
                 
                 message.setID(msg.getPacketID());
                 sendPacket(msg);
@@ -1427,18 +1435,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
                 msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
                 
-    
-                String bodyPlain = message.getBody().replaceAll("\\<.*?\\>", "");
-                msg.setBody(bodyPlain);
-                
-                // Create an XHTMLText to send with the message
-                XHTMLText xhtmlText = new XHTMLText(null, null);
-                xhtmlText.appendOpenParagraphTag("font-size:large");
-                xhtmlText.append(message.getBody());     
-                xhtmlText.appendCloseParagraphTag();
-           
-                // Add the XHTML text to the message
-                XHTMLManager.addBody(msg, xhtmlText.toString());
+                msg.setBody(message.getBody());
                 
              //   debug(TAG, "sending packet ID " + msg.getPacketID());
                 message.setID(msg.getPacketID());
@@ -2119,11 +2116,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mStreamHandler.isResumePossible()) {
                     // Connect without binding, will automatically trigger a resume
                     debug(TAG, "resume");
-                    mConnection.connect();
+                    mConnection.connect(false);
                     initServiceDiscovery();
                 } else {
                     
-                    mConnection.disconnect();
+                   //mConnection.disconnect();
+                   
                     mConnection = null;
                     
                     do_login();
