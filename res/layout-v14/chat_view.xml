@@ -51,14 +51,12 @@
             android:fontFamily="sans-serif-light"
              />
         
-         <CheckBox
-            android:id="@+id/otrSwitch"
-            android:paddingRight="6dip"
-            android:paddingLeft="6dip"
-            android:layout_weight="0"
-            android:layout_gravity="center_vertical"
-            android:layout_width="20dip"
-            android:layout_height="fill_parent"/>
+         <Switch
+                android:id="@+id/otrSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            />
  
         <ImageView android:id="@+id/deliveryIcon"            
             android:layout_width="16dip"

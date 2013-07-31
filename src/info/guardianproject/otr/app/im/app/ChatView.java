@@ -48,7 +48,6 @@ import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.WallpaperManager;
 import android.content.AsyncQueryHandler;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -96,6 +95,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -152,7 +153,7 @@ public class ChatView extends LinearLayout {
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
-
+    private CompoundButton mOtrSwitch;
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
     private IChatSessionListener mChatSessionListener;
@@ -413,6 +414,8 @@ public class ChatView extends LinearLayout {
         };
 
 
+        mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
+        
         mHistory.setOnTouchListener(gestureListener);
         
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
@@ -460,6 +463,19 @@ public class ChatView extends LinearLayout {
 
         });
         
+        mOtrSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener()
+        {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mActivity.switchOtrState(ChatView.this,isChecked);
+                
+            }
+            
+            
+        });
+       
+        /*
         mWarningText.setOnLongClickListener(new OnLongClickListener()
         {
 
@@ -471,7 +487,7 @@ public class ChatView extends LinearLayout {
                 return true;
             }
             
-        });
+        });*/
 
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -1200,7 +1216,7 @@ public class ChatView extends LinearLayout {
         boolean isConnected;
 
         SessionStatus sessionStatus = null;
-
+        
         initOtr();
 
         //check if the chat is otr or not
@@ -1243,6 +1259,8 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
+                mOtrSwitch.setChecked(false);
+                
             }
             else if (sessionStatus == SessionStatus.ENCRYPTED) {
                 try {
@@ -1250,6 +1268,8 @@ public class ChatView extends LinearLayout {
                     if (mOtrKeyManager == null)
                         initOtr();
 
+                    mOtrSwitch.setChecked(true);
+                    
                     String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
                     boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
 
@@ -1281,13 +1301,16 @@ public class ChatView extends LinearLayout {
                 }
             } else if (sessionStatus == SessionStatus.FINISHED) {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
-
+                mOtrSwitch.setChecked(false);
+                
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
             }  
             else if (sessionStatus == SessionStatus.PLAINTEXT) {
 
+            //    mOtrSwitch.setChecked(false);
+                
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
 
@@ -1300,6 +1323,9 @@ public class ChatView extends LinearLayout {
 
         } else {
             
+            mOtrSwitch.setChecked(false);
+            
+            
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
@@ -1307,12 +1333,13 @@ public class ChatView extends LinearLayout {
             message = mContext.getString(R.string.disconnected_warning);
             
         }
-
+        
         mStatusWarningView.setVisibility(visibility);
         if (visibility == View.VISIBLE) {
             mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
         }
+        
 
     }
 

@@ -430,28 +430,27 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void switchOtrState(ChatView chatView) {
+    public void switchOtrState(ChatView chatView, boolean otrEnabled) {
 
         
         IOtrChatSession otrChatSession =  chatView.getOtrChatSession();
-        int toastMsgId;
+        
         
         if (SessionStatus.values() != null && otrChatSession != null)
         {
             try {
                 SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
-                if (sessionStatus == SessionStatus.PLAINTEXT) {
-                    otrChatSession.startChatEncryption();
-                    toastMsgId = R.string.starting_otr_chat;
-    
-                } else {
-                    otrChatSession.stopChatEncryption();
-                    toastMsgId = R.string.stopping_otr_chat;
-                    chatView.updateWarningView();
-                }
-               // updateOtrMenuState();
                 
-                Toast.makeText(this, getString(toastMsgId), Toast.LENGTH_SHORT).show();
+                if (otrEnabled && (sessionStatus == SessionStatus.PLAINTEXT || sessionStatus == SessionStatus.FINISHED)) {
+                    otrChatSession.startChatEncryption();
+                 
+    
+                } else if (sessionStatus == SessionStatus.ENCRYPTED) {
+                    otrChatSession.stopChatEncryption();
+                   
+                }
+                
+                chatView.updateWarningView();
             } catch (RemoteException e) {
                 Log.d("Gibber", "error getting remote activity", e);
             }
