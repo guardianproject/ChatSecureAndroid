@@ -52,14 +52,9 @@ android:anyDensity="true"
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
              android:icon="@drawable/ic_launcher_chatsecure"
-             android:theme="@style/Theme.Sherlock.Light"
+             android:theme="@style/AppTheme"
              android:allowBackup="false"
 			>
-        <!-- 	
-                     android:taskAffinity="info.guardianproject.otr.app.task.im" 
-        
-     		  -->
-     		  
          <activity android:name=".app.WelcomeActivity"
          	>
             
