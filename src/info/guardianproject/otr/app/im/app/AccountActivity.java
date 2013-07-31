@@ -130,7 +130,7 @@ public class AccountActivity extends ThemeableActivity {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {
-                if (state == ImConnection.LOGGED_IN)
+                if (state == ImConnection.LOGGING_IN || state == ImConnection.LOGGED_IN)
                 {
                     mSignInHelper.goToAccount(accountId);
                     finish();

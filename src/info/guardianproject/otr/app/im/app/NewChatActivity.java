@@ -1075,6 +1075,28 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
         }
         
+        public void showProfile (Cursor c)
+        {
+            String remoteFingerprint = null;
+            String localFingerprint = null;
+            boolean isVerified = false;
+
+            if (c != null) {
+                long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
+           
+
+                long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
+                    Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatContactId);
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, data);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, providerId);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+
+                    startActivity(intent);
+             
+            }
+        }
+        
         public class ProviderAdapter extends CursorAdapter {
             private LayoutInflater mInflater;
 

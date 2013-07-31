@@ -708,4 +708,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         
         
     }
+    
+    public void showProfile (Cursor c){}
 }

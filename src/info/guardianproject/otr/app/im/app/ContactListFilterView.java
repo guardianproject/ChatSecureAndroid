@@ -79,6 +79,13 @@ public class ContactListFilterView extends LinearLayout {
             
         };
     }
+    
+
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
 
     @Override
     protected void onFinishInflate() {
@@ -107,7 +114,9 @@ public class ContactListFilterView extends LinearLayout {
                 if (mListener != null)
                     if (buttonview.getId() == R.id.btnExListChat)
                         mListener.startChat(c);
-                   
+                    else if (buttonview.getId() == R.id.btnExListProfile)
+                        mListener.showProfile(c);
+                
             }
     }, R.id.btnExListChat, R.id.btnExListProfile);
 
@@ -247,6 +256,7 @@ public class ContactListFilterView extends LinearLayout {
     public interface ContactListListener {
      
         public void startChat (Cursor c);
+        public void showProfile (Cursor c);
     }
     
     

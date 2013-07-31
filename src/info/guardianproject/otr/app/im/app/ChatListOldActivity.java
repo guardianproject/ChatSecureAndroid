@@ -827,4 +827,7 @@ public class ChatListOldActivity extends ThemeableActivity implements View.OnCre
         
         
     }
+    
+
+    public void showProfile (Cursor c){}
 }
