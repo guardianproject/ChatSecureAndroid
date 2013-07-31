@@ -705,7 +705,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void do_login() {
         
-        
         if (mConnection != null) {
             setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
                     "still trying..."));
@@ -755,9 +754,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     debug (TAG, "google failed; may need to refresh");
 
-                    refreshGoogleToken (userName, password,providerSettings.getDomain());
-                    
-                                
+                    password = refreshGoogleToken (userName, password,providerSettings.getDomain());
+                     
                     mRetryLogin = true;
                     setState(LOGGING_IN, info);
 
@@ -792,7 +790,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
     
-    private void refreshGoogleToken (String userName, String oldPassword, String domain)
+    private String refreshGoogleToken (String userName, String oldPassword, String domain)
     {
       //invalidate our old one, that is locally cached
         AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", oldPassword.split(":")[1]);
@@ -800,9 +798,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //request a new one
         String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
 
+        password = GTalkOAuth2.NAME + ':' + password;
         //now store the new one, for future use until it expires
         final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                GTalkOAuth2.NAME + ':' + password);
+               password );
+        
+        return password;
 
     }
 
@@ -864,7 +865,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (mIsGoogleAuth)
         {
-            this.refreshGoogleToken(userName, password, domain);
+            password = refreshGoogleToken(userName, password, domain);
         }
         
         
@@ -1003,62 +1004,54 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 debug(TAG, "receive message");
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
                 String address = parseAddressBase(smackMessage.getFrom());
+                String body = smackMessage.getBody();
+            
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
-                
-                ChatSession session = findOrCreateSession(address);
                 
                 if (dr != null) {
                     
                     debug(TAG, "got delivery receipt for " + dr.getId());
+                    ChatSession session = findOrCreateSession(address);
                     session.onMessageReceipt(dr.getId());
-                }
+                } 
                 
-                String body = smackMessage.getBody();
-                
-                //if it has an XHTML body, use it
-                /*
-                Iterator<String> it = XHTMLManager.getBodies(smackMessage);
-                if (it.hasNext())
+                if (body != null)
                 {
-                    String htmlBody = (String) it.next();
-                    
-                    if (htmlBody != null && htmlBody.length() > 0)
-                        body = htmlBody;
-                }
-                
-                if (body == null)
-                    return;
-                */
-                
-               
-              if (!smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
-              {
-                    Message rec = new Message(body);
-                    rec.setTo(mUser.getAddress());
-                    rec.setFrom(new XmppAddress(smackMessage.getFrom()));
-                    rec.setDateTime(new Date());
 
-                    smackMessage.getTo();
-                    smackMessage.getThread();
-                    smackMessage.getType();
+                  ChatSession session = findOrCreateSession(address);
+                   
+                  if (!smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
+                  {
+                        Message rec = new Message(body);
+                        rec.setTo(mUser.getAddress());
+                        rec.setFrom(new XmppAddress(smackMessage.getFrom()));
+                        rec.setDateTime(new Date());
+    
+                        rec.setType(Imps.MessageType.INCOMING);
+                        
+                        smackMessage.getTo();
+                        smackMessage.getThread();
+                        smackMessage.getType();
+                        
+                        boolean good = session.onReceiveMessage(rec);
+                        
+                        if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                            if (good) {
+                                debug(TAG, "sending delivery receipt");
+                            // got XEP-0184 request, send receipt
+                                sendReceipt(smackMessage);
+                                session.onReceiptsExpected();
+                                                    } else {
+                            debug(TAG, "not sending delivery receipt due to processing error");
+                            }
+                            
+                         } else if (!good) {
+                                 debug(TAG, "packet processing error");
+                         }
+                  }
+                }
                     
-                    boolean good = session.onReceiveMessage(rec);
-                    
-                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                        if (good) {
-                            debug(TAG, "sending delivery receipt");
-                        // got XEP-0184 request, send receipt
-                            sendReceipt(smackMessage);
-                            session.onReceiptsExpected();
-                                                } else {
-                        debug(TAG, "not sending delivery receipt due to processing error");
-                        }
-                     } else if (!good) {
-                             debug(TAG, "packet processing error");
-                     }
-              }
-                
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
 
@@ -1079,8 +1072,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 } else {
                     int type = parsePresence(presence);
 
+                    
                     Presence p = new Presence(type, presence.getStatus(), null, null,
                             Presence.CLIENT_TYPE_DEFAULT);
+                    
                     
                     String from = presence.getFrom();
                     String resource = null;
@@ -1094,6 +1089,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     }
                     
                     contact.setPresence(p);
+                    
+                    /*
+                    Message rec = new Message(presence.getStatus());
+                    rec.setTo(mUser.getAddress());
+                    rec.setFrom(new XmppAddress(address, name));
+                    rec.setDateTime(new Date());
+
+                    rec.setType(Imps.MessageType.STATUS);
+                    
+                    ChatSession session = findOrCreateSession(address);
+                    
+                    boolean good = session.onReceiveMessage(rec);
+                    */
+                    
 
                 }
             }
