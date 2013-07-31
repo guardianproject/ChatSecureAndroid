@@ -33,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.util.LruCache;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -66,11 +67,22 @@ public class MessageView extends LinearLayout {
     
     private ImageView mDeliveryIcon;
     private Resources mResources;
+    private ImageView mAvatarLeft;
+    private ImageView mAvatarRight;
     
     private CharSequence lastMessage = null;
+    
+    private static final int cacheSize = 10; // 4MiB
+    private static LruCache bitmapCache = new LruCache(cacheSize);
 
+    private static Drawable mAvatarUnknown;
+    
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        
+        if (mAvatarUnknown == null)
+            mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
+
     }
 
     @Override
@@ -81,7 +93,9 @@ public class MessageView extends LinearLayout {
         mTextViewForMessages = (TextView) findViewById(R.id.message);
         mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
         mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
-
+        mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
+        mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
+        
         mResources = getResources();
 
        
@@ -95,14 +109,15 @@ public class MessageView extends LinearLayout {
     public String getLastMessage () {
         return lastMessage.toString();
     }
-    public void bindIncomingMessage(String contact, String body, Date date, Markup smileyRes,
+    public void bindIncomingMessage(String address, String nickname, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        setGravity(Gravity.RIGHT);
+        setGravity(Gravity.LEFT);
         setLayoutParams(lp);     
-        setPadding(100, 0, 3, 3);
-              
+        setPadding(3,0,100,3);
+        
+        showAvatar(address,true);
         
        lastMessage = formatMessage(body);
         mTextViewForMessages.setText(lastMessage);
@@ -113,9 +128,6 @@ public class MessageView extends LinearLayout {
         {
          CharSequence tsText = formatTimeStamp(date);
          
-         if (showContact)
-             tsText = contact + " : " + tsText.toString();
-         
          mTextViewForTimestamp.setText(tsText);
          mTextViewForTimestamp.setGravity(Gravity.CENTER);
          mTextViewForTimestamp.setVisibility(View.VISIBLE);
@@ -125,7 +137,7 @@ public class MessageView extends LinearLayout {
         {
             if (showContact)
             {
-                mTextViewForTimestamp.setText(contact);
+                mTextViewForTimestamp.setText(address);
             }
             else
             {
@@ -139,16 +151,20 @@ public class MessageView extends LinearLayout {
 
     }
 
-    public void bindOutgoingMessage(String body, Date date, Markup smileyRes, boolean scrolling,
+    public void bindOutgoingMessage(String address, String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
-        String contact = mResources.getString(R.string.me);
+        
+        
         
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
        // lp.setMargins(3,3,100,3);
         setLayoutParams(lp);
-        setGravity(Gravity.LEFT);
-        setPadding(3,0,100,3);
+        setGravity(Gravity.RIGHT);
 
+        setPadding(100, 0, 3, 3);
+        
+        showAvatar(address,false);
+    
         
         lastMessage = formatMessage(body);
          mTextViewForMessages.setText(lastMessage);
@@ -187,7 +203,35 @@ public class MessageView extends LinearLayout {
         
     }
 
-    
+    private void showAvatar (String address, boolean isLeft)
+    {
+
+        mAvatarLeft.setVisibility(View.GONE);
+        mAvatarRight.setVisibility(View.GONE);
+        
+        if (address != null)
+        {
+            Drawable avatar = ContactView.getAvatar(address);
+            
+            if (avatar == null)
+            {
+                avatar = mAvatarUnknown;
+                
+            }
+        
+           
+            if (isLeft)
+            {
+                mAvatarLeft.setVisibility(View.VISIBLE);
+                mAvatarLeft.setImageDrawable(avatar);
+            }
+            else
+            {
+                mAvatarRight.setVisibility(View.VISIBLE);
+                mAvatarRight.setImageDrawable(avatar);
+            }
+        }    
+    }
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mTextViewForMessages.setText(message);
@@ -241,7 +285,9 @@ public class MessageView extends LinearLayout {
     }
 
     private SpannableString formatTimeStamp(Date date) {
-        DateFormat format = new SimpleDateFormat(mResources.getString(R.string.time_stamp));
+    //    DateFormat format = new SimpleDateFormat(mResources.getString(R.string.time_stamp));
+        
+        DateFormat format = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         String dateStr = format.format(date);
         SpannableString spanText = new SpannableString(dateStr);
         int len = spanText.length();

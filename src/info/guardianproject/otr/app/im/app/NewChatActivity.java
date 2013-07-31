@@ -335,20 +335,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     public void refreshChatViews ()
     {
-        //mChatPagerAdapter.notifyDataSetChanged();
         
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
-        //resolveIntent(getIntent());
-        
-        //mChatPager.invalidate();
-        
-        
-      //  mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
-      //  mChatPager.setAdapter(mChatPagerAdapter);
-      //  mChatPager.invalidate();
+     
         
     }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -1001,7 +994,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
              mLastProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
              
-             
              initConnection (accountId, mLastProviderId);
              
              c.close();
@@ -1041,8 +1033,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  uri = ContentUris.withAppendedId(uri, providerId);
                  uri = ContentUris.withAppendedId(uri, accountId);
                  mFilterView.doFilter(uri, null);
-                 
 
+                 mChatPagerAdapter.notifyDataSetChanged();
                 
              }        
              
@@ -1100,7 +1092,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 // bindView(), which can be called more often.
                 ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
                         parent, false);
-                view.init(cursor);
+                view.init(cursor, true);
                 return view;
             }
             

@@ -288,5 +288,10 @@ public class ContactView extends LinearLayout {
         
         return buf.toString();
     }
+    
+    public static Drawable getAvatar (String address)
+    {
+        return (Drawable) bitmapCache.get(address);
+    }
 
 }

@@ -724,7 +724,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
             // bindView(), which can be called more often.
             ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view,
                     parent, false);
-            view.init(cursor);
+            view.init(cursor, false);
             return view;
         }
 

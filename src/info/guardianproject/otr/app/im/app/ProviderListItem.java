@@ -71,16 +71,18 @@ public class ProviderListItem extends LinearLayout {
     
     private long mAccountId;
 
+    private boolean mShowLongName = false;
+    
     public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
         mActivity = activity;
         mSignInManager = signInManager;
     }
 
-    public void init(Cursor c) {
+    public void init(Cursor c, boolean showLongName) {
 
         
-        
+        mShowLongName = showLongName;
         
         mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
 
@@ -106,8 +108,12 @@ public class ProviderListItem extends LinearLayout {
                 .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_CONNECTION_STATUS);
 
         mProviderNameColors = mProviderName.getTextColors();
-        mLoginNameColors = mLoginName.getTextColors();
-        mChatViewColors = mChatView.getTextColors();
+        
+        if (mLoginName != null)
+            mLoginNameColors = mLoginName.getTextColors();
+        
+        if (mChatView != null)
+            mChatViewColors = mChatView.getTextColors();
         
         if (mStatusSwitch != null)
         {
@@ -212,27 +218,35 @@ public class ProviderListItem extends LinearLayout {
         setTag(mAccountId);
         
         ImApp app = (ImApp)mActivity.getApplication();
-        BrandingResources brandingRes = app.getBrandingResource(providerId);
-        //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mUnderBubble.setBackgroundDrawable(mDefaultBackground);
-        //mStatusIcon.setVisibility(View.GONE);
+        if (mUnderBubble != null)
+            mUnderBubble.setBackgroundDrawable(mDefaultBackground);
 
         mProviderName.setTextColor(mProviderNameColors);
+        
+        if (mLoginNameColors != null)
        mLoginName.setTextColor(mLoginNameColors);
+        
+        if (mChatViewColors != null)
        mChatView.setTextColor(mChatViewColors);
 
         if (!cursor.isNull(mActiveAccountIdColumn)) {
-            mLoginName.setVisibility(View.VISIBLE);
-            mProviderName.setVisibility(View.VISIBLE);
+            
+            if (mLoginName != null)
+            {    
+                mLoginName.setEnabled(false);
+            }
             
             mProviderName.setEnabled(false);
-            mLoginName.setEnabled(false);
             
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
             
-            mProviderName.setText(activeUserName + '@' + userDomain);
+            if (mShowLongName)
+                mProviderName.setText(activeUserName + '@' + userDomain);
+            else
+                mProviderName.setText(activeUserName);
 
+            
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
 
             StringBuffer secondRowText = new StringBuffer();
@@ -295,10 +309,6 @@ public class ProviderListItem extends LinearLayout {
 
                 if (mStatusSwitch != null)
                     mStatusSwitch.setChecked(false);
-                
-                secondRowText.append(providerDisplayName);
-
-                secondRowText.append(" - ");
                 
                 if (settings.getServer() != null && settings.getServer().length() > 0)
                 {

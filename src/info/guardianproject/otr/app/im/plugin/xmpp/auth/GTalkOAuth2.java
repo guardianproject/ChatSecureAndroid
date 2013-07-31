@@ -93,6 +93,7 @@ public static String getGoogleAuthTokenAllow(String name, Context context, Activ
     String retVal = null;
     Account account = getAccount(TYPE_GOOGLE_ACCT,name, aMgr);
     Bundle bundle = new Bundle();
+    
     AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, bundle, activity, 
             new AccountManagerCallback<Bundle>() {
 

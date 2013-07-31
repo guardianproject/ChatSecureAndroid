@@ -48,6 +48,7 @@ import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.WallpaperManager;
 import android.content.AsyncQueryHandler;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -176,7 +177,7 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_INVITATION = 2;
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
-    private static final long SHOW_TIME_STAMP_INTERVAL = 60 * 1000; // 1 minute
+    private static final long SHOW_TIME_STAMP_INTERVAL = 30 * 1000; // 1 minute
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 10 seconds
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
     private static final int QUERY_TOKEN = 10;
@@ -191,14 +192,18 @@ public class ChatView extends LinearLayout {
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
             mExpectingDelivery = false;
             setDeliveryIcon();
-            Cursor cursor = new DeltaCursor(c);
-
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("onQueryComplete: cursor.count=" + cursor.getCount());
+            
+            if (c != null)
+            {
+                Cursor cursor = new DeltaCursor(c);
+    
+                if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+                    log("onQueryComplete: cursor.count=" + cursor.getCount());
+                }
+    
+                if (mMessageAdapter != null && cursor != null)
+                    mMessageAdapter.changeCursor(cursor);
             }
-
-            if (mMessageAdapter != null && cursor != null)
-                mMessageAdapter.changeCursor(cursor);
         }
     }
 
@@ -230,35 +235,39 @@ public class ChatView extends LinearLayout {
             }
             
             URLSpan[] links = ((MessageView) view).getMessageLinks();
-            if (links.length == 0) {
-                return;
-            }
+            if (links.length > 0) {
+                
 
-            final ArrayList<String> linkUrls = new ArrayList<String>(links.length);
-            for (URLSpan u : links) {
-                linkUrls.add(u.getURL());
+                final ArrayList<String> linkUrls = new ArrayList<String>(links.length);
+                for (URLSpan u : links) {
+                    linkUrls.add(u.getURL());
+                }
+                ArrayAdapter<String> a = new ArrayAdapter<String>(mActivity,
+                        android.R.layout.select_dialog_item, linkUrls);
+                AlertDialog.Builder b = new AlertDialog.Builder(mActivity);
+                b.setTitle(R.string.select_link_title);
+                b.setCancelable(true);
+                b.setAdapter(a, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri uri = Uri.parse(linkUrls.get(which));
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
+                        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, mActivity.getPackageName());
+                        mActivity.startActivity(intent);
+                    }
+                });
+                b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                b.show();
             }
-            ArrayAdapter<String> a = new ArrayAdapter<String>(mActivity,
-                    android.R.layout.select_dialog_item, linkUrls);
-            AlertDialog.Builder b = new AlertDialog.Builder(mActivity);
-            b.setTitle(R.string.select_link_title);
-            b.setCancelable(true);
-            b.setAdapter(a, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Uri uri = Uri.parse(linkUrls.get(which));
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, mActivity.getPackageName());
-                    mActivity.startActivity(intent);
-                }
-            });
-            b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            b.show();
+            else
+            {
+                viewProfile();
+            }
         }
     };
 
@@ -292,6 +301,8 @@ public class ChatView extends LinearLayout {
 
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
+         
+            
         };
     };
 
@@ -720,17 +731,20 @@ public class ChatView extends LinearLayout {
             
             mCurrentChatSession = getChatSession(mCursor);
 
+            updateChat();
+            
             if (mCurrentChatSession != null)
             {
                 // This will save the current chatId and providerId in the relevant fields.
                 // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
                 
-                updateChat();
                 registerChatListener();
             }
         }
         
         updateWarningView();
+        
+        
     }
     
     private IChatSession getChatSession ()
@@ -1704,7 +1718,10 @@ public class ChatView extends LinearLayout {
         }
 
         private void resolveColumnIndex(Cursor c) {
+            
+            
             mNicknameColumn = c.getColumnIndexOrThrow(Imps.Messages.NICKNAME);
+            
             mBodyColumn = c.getColumnIndexOrThrow(Imps.Messages.BODY);
             mDateColumn = c.getColumnIndexOrThrow(Imps.Messages.DATE);
             mTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.TYPE);
@@ -1731,14 +1748,17 @@ public class ChatView extends LinearLayout {
             MessageView messageView = (MessageView) view;
 
             mType = cursor.getInt(mTypeColumn);
-            String contact = isGroupChat() ? cursor.getString(mNicknameColumn) : mNickName;
+            String address = mUserName;
+            String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mNickName;
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
             long timestamp = cursor.getLong(mDateColumn);
+            
             Date date = showTimeStamp ? new Date(timestamp) : null;
             boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
             boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
+            
             MessageView.DeliveryState deliveryState = DeliveryState.NEUTRAL;
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
@@ -1751,7 +1771,7 @@ public class ChatView extends LinearLayout {
                 if (body != null)
                 {
                     
-                    messageView.bindIncomingMessage(contact, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                    messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
@@ -1762,13 +1782,13 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
                 break;
 
             default:
-                messageView.bindPresenceMessage(contact, mType, isGroupChat(), isScrolling());
+                messageView.bindPresenceMessage(address, mType, isGroupChat(), isScrolling());
             }
 
 
