@@ -162,7 +162,7 @@ public class XmppStreamHandler {
                     }
 
                     if (outgoingQueue.size() > maxOutgoingQueueSize) {
-                        Log.e(XmppConnection.TAG, "not receiving acks?  outgoing queue full");
+//                        Log.e(XmppConnection.TAG, "not receiving acks?  outgoing queue full");
                         outgoingQueue.remove();
                     }
                 } else if (isOutgoingSmEnabled && outgoingQueue.contains(packet)) {
