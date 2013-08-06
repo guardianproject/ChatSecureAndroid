@@ -156,18 +156,16 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-       // checkForUpdates();
-        
-        getWindow().setBackgroundDrawableResource(R.drawable.wp);
-
-       
+        checkForUpdates();
+        doShowcase();
     }
     
     private void doShowcase ()
     {
         ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
         co.hideOnClickOutside = true;
-        sv = ShowcaseView.insertShowcaseView(R.id.menu_new_account, this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
+        sv = ShowcaseView.insertShowcaseView(getListView(), this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
+        
         
       //  sv.setOnShowcaseEventListener(this);
     }
