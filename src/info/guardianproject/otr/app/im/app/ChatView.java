@@ -476,7 +476,7 @@ public class ChatView extends LinearLayout {
             
             @Override
             public void onClick(View view) {
-                mActivity.switchOtrState(ChatView.this, mOtrSwitch.isChecked());
+                mActivity.switchOtrState(ChatView.this, ChatView.this.getOtrChatSession(), mOtrSwitch.isChecked());
             }
         });
        
@@ -846,23 +846,18 @@ public class ChatView extends LinearLayout {
 
         try
         {
-            if (mOtrChatSession == null && getChatSession () != null) {
+            //if (mOtrChatSession == null && getChatSession () != null) {
+            
+            if (getChatSession() != null)
                 mOtrChatSession = getChatSession ().getOtrChatSession();
-    
-                if (mOtrChatSession != null)
-                    Log.i(ImApp.LOG_TAG, "ChatView: OtrChatSession was init'd");
-            }
+            else
+                mOtrChatSession = null;
     
             if (mOtrChatSession != null) {
     
-                if (mOtrKeyManager == null) {
                     mOtrKeyManager = getChatSession ().getOtrKeyManager();
     
-                    if (mOtrKeyManager != null) {
-                        Log.i(ImApp.LOG_TAG, "ChatView: OtrKeyManager is init'd");
-    
-                    }
-                }
+                
              }
         }
         catch (Exception e)

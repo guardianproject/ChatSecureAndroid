@@ -431,11 +431,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void switchOtrState(ChatView chatView, boolean otrEnabled) {
+    public void switchOtrState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
 
-        
-        IOtrChatSession otrChatSession =  chatView.getOtrChatSession();
-        
         
         if (SessionStatus.values() != null && otrChatSession != null)
         {
