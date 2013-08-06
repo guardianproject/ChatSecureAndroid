@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -119,8 +120,19 @@ public class MessageView extends LinearLayout {
         
         showAvatar(address,true);
         
-       lastMessage = formatMessage(body);
-        mTextViewForMessages.setText(lastMessage);
+       lastMessage = body;// formatMessage(body);
+        
+        try {
+            SpannableString spannablecontent=new SpannableString(lastMessage);
+
+            EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+            
+            mTextViewForMessages.setText(spannablecontent);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         
        mDeliveryIcon.setVisibility(INVISIBLE);
         
@@ -166,11 +178,19 @@ public class MessageView extends LinearLayout {
         showAvatar(address,false);
     
         
-        lastMessage = formatMessage(body);
-         mTextViewForMessages.setText(lastMessage);
+        lastMessage = body;//formatMessage(body);
          
-     //   mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg));
-        
+         try {
+             SpannableString spannablecontent=new SpannableString(lastMessage);
+
+             EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+             
+             mTextViewForMessages.setText(spannablecontent);
+         } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+         
         if (delivery == DeliveryState.DELIVERED) {
             mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
             mDeliveryIcon.setVisibility(VISIBLE);
@@ -245,44 +265,7 @@ public class MessageView extends LinearLayout {
         mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
-    private CharSequence formatMessage(String body) {
-        
-        /*
-        if (body.indexOf('\r') != -1) {
-            // first convert \r\n pair to \n, then single \r to \n.
-            // here we can't use HideReturnsTransformationMethod because
-            // it does only 1 to 1 transformation and is unable to handle
-            // the "\r\n" case.
-            body = body.replace("\r\n", "\n").replace('\r', '\n');
-        }*/
-
-        //remove HTML tags since we can't display HTML
-       body = body.replaceAll("\\<.*?\\>", "");
-
-        SpannableStringBuilder buf = new SpannableStringBuilder();
-        
-        /*
-
-        if (scrolling) {
-            buf.append(body);
-        } else {
-            
-          //  buf.setSpan(ChatView.STYLE_NORMAL, 0, buf.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            buf.append(body);
-
-           
-        }
-        */
-        
-        buf.append(body);
-        
-        /*
-        if (date != null) {
-            appendTimeStamp(buf, date);
-        }*/
-        
-        return buf;
-    }
+   
 
     private SpannableString formatTimeStamp(Date date) {
     //    DateFormat format = new SimpleDateFormat(mResources.getString(R.string.time_stamp));

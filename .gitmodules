@@ -31,3 +31,6 @@
 [submodule "external/NineOldAndroids"]
 	path = external/NineOldAndroids
 	url = https://github.com/JakeWharton/NineOldAndroids.git
+[submodule "external/AndroidEmojiInput"]
+	path = external/AndroidEmojiInput
+	url = https://github.com/n8fr8/AndroidEmojiInput.git
