@@ -2,7 +2,7 @@
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wp"
+    android:background="@drawable/bgfidelity"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -10,8 +10,8 @@
         android:id="@+id/frameRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:orientation="vertical" >
+        android:layout_margin="0dp"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView1"
@@ -20,11 +20,14 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/launch_chatsecure" />
+            android:src="@drawable/chatsecure_banner"
+            android:layout_margin="10dip" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:background="#cc333333"
+            >
 
             <LinearLayout
                 android:id="@+id/llCreatePassphrase"

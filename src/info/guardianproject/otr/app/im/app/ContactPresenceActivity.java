@@ -199,9 +199,9 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
             if (remoteFingerprintVerified) {
                 lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
-                txtFingerprintRemote.setBackgroundColor(Color.GREEN);
+                txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_green));
             } else
-                txtFingerprintRemote.setBackgroundColor(Color.YELLOW);
+                txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_yellow));
 
             txtFingerprintRemote.setTextColor(Color.BLACK);
 
