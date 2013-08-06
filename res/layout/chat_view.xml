@@ -156,6 +156,17 @@
 	     
 	     >
 	
+    <ImageButton
+        android:id="@+id/btnEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="24dip"
+        android:background="@drawable/ad_selectable_background"
+        android:fontFamily="sans-serif-light"
+        android:paddingBottom="3sp"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"
+        android:paddingTop="3sp"
+        android:src="@drawable/smiley_smile" />
       
       <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
@@ -186,5 +197,12 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
+      
+   <android.support.v4.view.ViewPager
+               android:id="@+id/emojiPager"
+        android:layout_width="match_parent"
+        android:layout_height="140dip"
+        android:visibility="gone"
+       />
       
 </info.guardianproject.otr.app.im.app.ChatView>

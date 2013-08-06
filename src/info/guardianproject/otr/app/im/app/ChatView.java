@@ -17,6 +17,9 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.emoji.EmojiGroup;
+import info.guardianproject.emoji.EmojiManager;
+import info.guardianproject.emoji.EmojiPagerAdapter;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IChatListener;
@@ -42,6 +45,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import net.java.otr4j.session.SessionStatus;
@@ -73,6 +77,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.Browser;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -105,6 +110,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.JsonSyntaxException;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -150,6 +157,8 @@ public class ChatView extends LinearLayout {
     private View mStatusWarningView;
     private ImageView mWarningIcon;
     private TextView mWarningText;
+    
+    private ViewPager mEmojiPager;
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
@@ -413,7 +422,7 @@ public class ChatView extends LinearLayout {
             }
         };
 
-
+      
         mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
         
         mHistory.setOnTouchListener(gestureListener);
@@ -546,8 +555,69 @@ public class ChatView extends LinearLayout {
             }
         });
         
+        initEmoji();
+        
+        
+        
     }
 
+    private static EmojiManager emojiManager = null;
+    
+    private synchronized void initEmoji ()
+    {
+        if (emojiManager == null)
+        {
+            emojiManager = EmojiManager.getInstance(mContext);
+
+            try
+            {
+                emojiManager.addJsonDefinitions("emoji/phantom.json", "emoji/phantom", "png");
+             
+                emojiManager.addJsonPlugins();
+                
+            }
+            catch (JsonSyntaxException jse)
+            {
+                    Log.e(ImApp.LOG_TAG,"could not parse json", jse);
+            }
+            catch (IOException fe)
+            {
+                    Log.e(ImApp.LOG_TAG,"could not load emoji definition",fe);
+            }       
+            catch (Exception fe)
+            {
+                    Log.e(ImApp.LOG_TAG,"could not load emoji definition",fe);
+            }      
+        }
+        
+        
+        mEmojiPager = (ViewPager)this.findViewById(R.id.emojiPager);
+            
+        Collection<EmojiGroup> emojiGroups = emojiManager.getEmojiGroups();
+        
+        EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
+      
+        mEmojiPager.setAdapter(emojiPagerAdapter);
+        
+        ImageView btnEmoji = (ImageView)findViewById(R.id.btnEmoji);
+        btnEmoji.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                 
+                if (mEmojiPager.getVisibility() == View.GONE)
+                    mEmojiPager.setVisibility(View.VISIBLE);
+                else
+                    mEmojiPager.setVisibility(View.GONE);
+            }
+            
+        });
+
+        
+           
+        
+    }
   
     public void startListening() {
         if (mViewType == VIEW_TYPE_CHAT) {
