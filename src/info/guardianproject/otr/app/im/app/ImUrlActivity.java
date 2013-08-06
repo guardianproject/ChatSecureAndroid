@@ -16,9 +16,13 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -27,8 +31,10 @@ import info.guardianproject.util.LogCleaner;
 import java.util.Iterator;
 import java.util.Set;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -37,8 +43,9 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 
-public class ImUrlActivity extends ThemeableActivity {
+public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PW_COLUMN = 1;
@@ -52,6 +59,12 @@ public class ImUrlActivity extends ThemeableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+
+        CacheWordActivityHandler cacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);        
+        cacheWord.connectToService();
+        
+        
         Intent intent = getIntent();
         if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
             if (!resolveIntent(intent)) {
@@ -61,7 +74,7 @@ public class ImUrlActivity extends ThemeableActivity {
 
             if (TextUtils.isEmpty(mToAddress)) {
                 LogCleaner.warn(ImApp.LOG_TAG, "<ImUrlActivity>Invalid to address");
-                finish();
+              //  finish();
                 return;
             }
             mApp = (ImApp)getApplication();
@@ -174,6 +187,13 @@ public class ImUrlActivity extends ThemeableActivity {
     private boolean resolveIntent(Intent intent) {
         Uri data = intent.getData();
         String host = data.getHost();
+        
+        if (data.getScheme().equals("immu"))
+        {
+            this.openMultiUserChat(data);
+         
+            return true;
+        }        
 
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("resolveIntent: host=" + host);
@@ -236,19 +256,6 @@ public class ImUrlActivity extends ThemeableActivity {
         if (provider.equalsIgnoreCase("xmpp"))
             return Imps.ProviderNames.XMPP;
         
-        /*
-        if (Imps.ProviderNames.AIM.equalsIgnoreCase(provider)) {
-            return Imps.ProviderNames.AIM;
-        }
-
-        if (Imps.ProviderNames.MSN.equalsIgnoreCase(provider)) {
-            return Imps.ProviderNames.MSN;
-        }
-
-        if (Imps.ProviderNames.YAHOO.equalsIgnoreCase(provider)) {
-            return Imps.ProviderNames.YAHOO;
-        }*/
-
         return null;
     }
 
@@ -266,5 +273,58 @@ public class ImUrlActivity extends ThemeableActivity {
 
     private static void log(String msg) {
         Log.d(ImApp.LOG_TAG, "<ImUrlActivity> " + msg);
+    }
+    
+
+    @Override
+    public void onCacheWordUninitialized() {
+        Log.d(ImApp.LOG_TAG,"cache word uninit");
+        
+        showLockScreen();
+    }
+    
+    void openMultiUserChat(final Uri data) {
+        
+        new AlertDialog.Builder(this)            
+        .setTitle("Join Chat Room?")
+        .setMessage("An external app is attempting to connect you to a chatroom. Allow?")
+        .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                Intent intent = new Intent(ImUrlActivity.this, NewChatActivity.class);        
+                intent.setData(data);
+                startActivity(intent);
+                
+            }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                /* User clicked cancel so do some stuff */
+            }
+        })
+        .create().show();
+        
+       
+    }
+
+    void showLockScreen() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("originalIntent", getIntent());
+        startActivity(intent);
+       
+    }
+    
+    @Override
+    public void onCacheWordLocked() {
+     
+
+        showLockScreen();
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+     
     }
 }
