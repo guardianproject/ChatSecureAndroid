@@ -476,7 +476,7 @@ public class ChatView extends LinearLayout {
             
             @Override
             public void onClick(View view) {
-                mActivity.switchOtrState(ChatView.this, ChatView.this.getOtrChatSession(), mOtrSwitch.isChecked());
+                mActivity.setOTRState(ChatView.this, ChatView.this.getOtrChatSession(), mOtrSwitch.isChecked());
             }
         });
        
@@ -1161,7 +1161,19 @@ public class ChatView extends LinearLayout {
     }
 
     boolean isGroupChat() {
-        return Imps.Contacts.TYPE_GROUP == mType;
+        
+        boolean isGroupChat = false;
+        
+        if (mCurrentChatSession != null)
+        {
+            try {
+                isGroupChat = mCurrentChatSession.isGroupChatSession();
+            }
+            catch (Exception e){}
+            
+        }
+           
+        return isGroupChat;
     }
 
     void sendMessage() {
@@ -1277,6 +1289,13 @@ public class ChatView extends LinearLayout {
         boolean isConnected;
 
         SessionStatus sessionStatus = null;
+
+        if (this.isGroupChat())
+        {
+            //no OTR in group chat
+            mStatusWarningView.setVisibility(View.GONE);
+            return;
+        }
         
         initOtr();
 
@@ -1362,7 +1381,7 @@ public class ChatView extends LinearLayout {
                 }
             } else if (sessionStatus == SessionStatus.FINISHED) {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
-                mOtrSwitch.setChecked(false);
+                mOtrSwitch.setChecked(true);
                 
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
@@ -1858,20 +1877,23 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                    
-                    messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
 
             case Imps.MessageType.OUTGOING:
             case Imps.MessageType.POSTPONED:
-                int errCode = cursor.getInt(mErrCodeColumn);
-                if (errCode != 0) {
-                    messageView.bindErrorMessage(errCode);
-                } else {
-                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
-                            deliveryState, encState);
+                
+                if (!isGroupChat())
+                {
+                    int errCode = cursor.getInt(mErrCodeColumn);
+                    if (errCode != 0) {
+                        messageView.bindErrorMessage(errCode);
+                    } else {
+                        messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                                deliveryState, encState);
+                    }
                 }
                 break;
 

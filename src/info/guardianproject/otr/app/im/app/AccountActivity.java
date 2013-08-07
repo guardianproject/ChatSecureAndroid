@@ -390,8 +390,13 @@ public class AccountActivity extends ThemeableActivity {
     
     @Override
     protected void onDestroy() {
-        mSignInHelper.stop();
-        settings.close();
+       
+        if (mSignInHelper != null)
+            mSignInHelper.stop();
+        
+        if (settings != null)
+            settings.close();
+        
         super.onDestroy();
     }
     

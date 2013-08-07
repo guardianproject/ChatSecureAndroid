@@ -471,7 +471,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         
         @Override
-        public void createChatGroupAsync(String chatRoomJid) {
+        public boolean createChatGroupAsync(String chatRoomJid) throws Exception {
            
             RoomInfo roomInfo = null;
 
@@ -479,6 +479,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             try
             {
+                //first check if the room already exists
                 roomInfo = MultiUserChat.getRoomInfo(mConnection, chatRoomJid);
             }
             catch (Exception e)
@@ -486,9 +487,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 //who knows?
             }
             
-            
             if (roomInfo == null)
             {
+              //if the room does not exist, then create one
+                
                 //should be room@server
                 String[] parts = chatRoomJid.split("@");
                 String room = parts[0];
@@ -500,33 +502,62 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     // Create a MultiUserChat using a Connection for a room
                     MultiUserChat muc = new MultiUserChat(mConnection, chatRoomJid);
     
-                    // Create the room
-                    muc.create(nickname);
-                    
-                    Form form = muc.getConfigurationForm();
-                    Form submitForm = form.createAnswerForm();
-                    for (Iterator fields = form.getFields();fields.hasNext();){
-                      FormField field = (FormField) fields.next();
-                        if(!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable()!= null){
-                            submitForm.setDefaultAnswer(field.getVariable());
+                    try
+                    {
+                        // Create the room
+                        muc.create(nickname);
+                    }
+                    catch (XMPPException iae)
+                    {
+                        if (iae.getMessage().contains("Creation failed"))
+                        {
+                            //some server's don't return the proper 201 create code, so we can just assume the room was created!
                         }
-                    }               
-                    submitForm.setAnswer("muc#roomconfig_publicroom", true);
-                    muc.sendConfigurationForm(submitForm);
+                        else
+                        {
+                            throw iae;
+                        }
+                    }
+                    
+                    try
+                    {
+                        Form form = muc.getConfigurationForm();
+                        Form submitForm = form.createAnswerForm();
+                        for (Iterator fields = form.getFields();fields.hasNext();){
+                          FormField field = (FormField) fields.next();
+                            if(!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable()!= null){
+                                submitForm.setDefaultAnswer(field.getVariable());
+                            }
+                        }               
+                        submitForm.setAnswer("muc#roomconfig_publicroom", true);
+                        muc.sendConfigurationForm(submitForm);
+                    }
+                    catch (XMPPException xe)
+                    {
+                        if (Debug.DEBUG_ENABLED)
+                            Log.w(ImApp.LOG_TAG,"(ignoring) got an error configuring MUC room: " + xe.getLocalizedMessage());
+                    }
+                    
                     muc.join(nickname);
                     
                     ChatGroup chatGroup = new ChatGroup(address,room,this);
                     mGroups.put(address.getAddress(), chatGroup);                    
                     mMUCs.put(chatRoomJid, muc);
                     
+                    return true;
+                    
                 } catch (XMPPException e) {
                   
                     Log.e(ImApp.LOG_TAG,"error creating MUC",e);
+                    return false;
                 }
             }
             else
             {
+                //otherwise, join the room!
+                
                 joinChatGroupAsync(address);
+                return true;
             }
             
         }

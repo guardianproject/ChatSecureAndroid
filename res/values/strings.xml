@@ -809,5 +809,7 @@
     
     <string name="menu_panic">Panic</string>
     
+    <string name="unable_to_create_or_join_group_chat">Unable to create or join group chat</string>
+    
 </resources>
 

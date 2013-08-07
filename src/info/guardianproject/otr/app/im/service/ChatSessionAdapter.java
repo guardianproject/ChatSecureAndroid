@@ -718,7 +718,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         public void convertToGroupChat() {
             mGroupMgr.addGroupListener(this);
             mGroupName = "G" + System.currentTimeMillis();
-            mGroupMgr.createChatGroupAsync(mGroupName);
+            try
+            {
+                mGroupMgr.createChatGroupAsync(mGroupName);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         public void onGroupCreated(ChatGroup group) {

@@ -29,6 +29,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import android.app.AlertDialog;
@@ -92,10 +93,26 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
 
     void handleIntent() {
         ContentResolver cr = getContentResolver();
-        long providerId = Imps.Provider.getProviderIdForName(cr, mProviderName);
+        
+        
+        long providerId = -1;// = Imps.Provider.getProviderIdForName(cr, mProviderName);
         long accountId;
+        
+        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
+        
+        if (!listConns.isEmpty())
+        {
+            
+            mConn = listConns.get(0);
+            try {
+                providerId = mConn.getProviderId();
+                accountId = mConn.getAccountId();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
 
-        mConn = mApp.getConnection(providerId);
+//        mConn = mApp.getConnection(providerId);
 
         if (mConn == null) {
             Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
@@ -301,6 +318,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 /* User clicked cancel so do some stuff */
+                finish();
             }
         })
         .create().show();

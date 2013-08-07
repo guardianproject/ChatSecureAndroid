@@ -120,7 +120,17 @@ public class MessageView extends LinearLayout {
         
         showAvatar(address,true);
         
-       lastMessage = body;// formatMessage(body);
+        if (showContact)
+        {
+            String[] nickParts = nickname.split("/");
+            
+            lastMessage = nickParts[nickParts.length-1] + ": " + body;
+            
+        }
+        else
+        {
+            lastMessage = body;// formatMessage(body);
+        }
         
         try {
             SpannableString spannablecontent=new SpannableString(lastMessage);
@@ -147,15 +157,10 @@ public class MessageView extends LinearLayout {
         }
         else
         {
-            if (showContact)
-            {
-                mTextViewForTimestamp.setText(address);
-            }
-            else
-            {
+            
             mTextViewForTimestamp.setText("");
             mTextViewForTimestamp.setVisibility(View.GONE);
-            }
+           
         }
         
         mMessageContainer.setBackgroundResource(R.color.incoming_message);

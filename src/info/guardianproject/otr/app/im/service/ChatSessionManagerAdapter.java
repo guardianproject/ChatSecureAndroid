@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.service;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
 
 /** manages the chat sessions for a given protocol */
 public class ChatSessionManagerAdapter extends
@@ -96,20 +98,28 @@ public class ChatSessionManagerAdapter extends
         
         ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
         
-        groupMan.createChatGroupAsync(roomAddress);
-
-        Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
-        
-        ChatGroup chatGroup = groupMan.getChatGroup(address);
-        
-        if (chatGroup != null)
+        try
         {
-            ChatSession session = mChatSessionManager.createChatSession(chatGroup);
-
-            return getChatSessionAdapter(session);
+            groupMan.createChatGroupAsync(roomAddress);
+    
+            Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
+            
+            ChatGroup chatGroup = groupMan.getChatGroup(address);
+            
+            if (chatGroup != null)
+            {
+                ChatSession session = mChatSessionManager.createChatSession(chatGroup);
+    
+                return getChatSessionAdapter(session);
+            }
+            else
+            {
+                return null;
+            }
         }
-        else
+        catch (Exception e)
         {
+            Log.e(ImApp.LOG_TAG,"unable to join group chat",e);
             return null;
         }
     }

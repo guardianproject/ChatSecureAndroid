@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.jivesoftware.smack.XMPPException;
+
 /**
  * ChatGroupManager manages the creating, removing and the member of ChatGroups.
  */
@@ -78,8 +80,9 @@ public abstract class ChatGroupManager {
      * have left.
      * 
      * @param name the name of the ChatGroup to be created.
+     * @throws Exception 
      */
-    public abstract void createChatGroupAsync(String name);
+    public abstract boolean createChatGroupAsync(String name) throws Exception;
 
     /**
      * Deletes a certain ChatGroup. This method returns immediately and the

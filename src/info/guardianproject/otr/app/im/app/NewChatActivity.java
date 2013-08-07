@@ -459,7 +459,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void switchOtrState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
+    public void setOTRState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
 
         
         if (SessionStatus.values() != null && otrChatSession != null)
@@ -467,11 +467,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             try {
                 SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                 
-                if (otrEnabled && (sessionStatus == SessionStatus.PLAINTEXT || sessionStatus == SessionStatus.FINISHED)) {
+                if (otrEnabled && (sessionStatus == SessionStatus.PLAINTEXT)) {
                     otrChatSession.startChatEncryption();
                  
     
-                } else if (sessionStatus == SessionStatus.ENCRYPTED) {
+                } else if ((!otrEnabled) && (sessionStatus == SessionStatus.ENCRYPTED  || sessionStatus == SessionStatus.FINISHED)) {
                     otrChatSession.stopChatEncryption();
                    
                 }
@@ -991,10 +991,35 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              if (selIdx != -1)
                  spinnerAccounts.setSelection(selIdx);
              
-             if (mAccountIds.length == 1)
+             else if (mAccountIds.length == 1)
              {
                  spinnerAccounts.setVisibility(View.GONE);
                  initAccount(mAccountIds[0]);
+             }
+             else
+             {
+                 List<IImConnection> listConns = ((ImApp)getActivity().getApplication()).getActiveConnections();
+                 
+                 for (IImConnection conn : listConns)
+                 {
+                     try
+                     {
+                         long activeAccountId = conn.getAccountId();
+                         int spinnerIdx = -1;
+                         for (long accountId : mAccountIds )
+                         {
+                             spinnerIdx++;
+                             
+                             if (accountId == activeAccountId)
+                             {
+                                 spinnerAccounts.setSelection(spinnerIdx);
+                                 break;
+                             }
+                         }
+                         
+                     }
+                     catch (Exception e){}
+                 }
              }
              
             
@@ -1358,11 +1383,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
             else
             {
-               // mHandler.showServiceErrorAlert();
+                mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
+                
             }
             
         } catch (RemoteException e) {
-          //  mHandler.showServiceErrorAlert();
+           mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
         }
        
     }

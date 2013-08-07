@@ -461,21 +461,21 @@
 	"alts": ["beating_heart"],
 	"name": "heartbeat",
 	"name-ja": "ドキドキしているハート",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "1f493"
 },
 {
 	"moji": "💩",
 	"name": "poop",
 	"name-ja": "うんち(顔あり)",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "1f4a9"
 },
 {
 	"moji": "💬",
 	"name": "speech_balloon",
 	"name-ja": "フキダシ",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "1f4ac",
 	"attribution": "Mike Boers"
 },
@@ -483,7 +483,7 @@
 	"moji": "🔞",
 	"name": "no_one_under_eighteen_symbol",
 	"name-ja": "18禁",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "1f51e",
 	"attribution": "Świstak"
 },
@@ -1064,7 +1064,7 @@
 	"moji": "🚹",
 	"name": "mens_symbol",
 	"name-ja": "男性マーク",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "1f6b9",
 	"attribution": "Ken Gander"
 },
@@ -1073,7 +1073,7 @@
 	"alts": ["black_sun_with_rays"],
 	"name": "sun",
 	"name-ja": "晴れ",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2600",
 	"attribution": "Aleksandr Panzin"
 },
@@ -1081,7 +1081,7 @@
 	"moji": "☁",
 	"name": "cloud",
 	"name-ja": "曇り",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2601",
 	"attribution": "Oliver Salzburg"
 },
@@ -1104,28 +1104,28 @@
 	"moji": "♈",
 	"name": "Aries",
 	"name-ja": "牡羊座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2648"
 },
 {
 	"moji": "♉",
 	"name": "Taurus",
 	"name-ja": "牡牛座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2649"
 },
 {
 	"moji": "♊",
 	"name": "Gemini",
 	"name-ja": "双子座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264a"
 },
 {
 	"moji": "♋",
 	"name": "Cancer",
 	"name-ja": "蟹座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264b",
 	"attribution": "Glenn Møller"
 },
@@ -1133,63 +1133,63 @@
 	"moji": "♌",
 	"name": "Leo",
 	"name-ja": "獅子座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264c"
 },
 {
 	"moji": "♍",
 	"name": "Virgo",
 	"name-ja": "乙女座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264d"
 },
 {
 	"moji": "♎",
 	"name": "Libra",
 	"name-ja": "天秤座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264e"
 },
 {
 	"moji": "♏",
 	"name": "Scorpius",
 	"name-ja": "蠍座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "264f"
 },
 {
 	"moji": "♐",
 	"name": "Sagittarius",
 	"name-ja": "射手座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2650"
 },
 {
 	"moji": "♑",
 	"name": "Capricorn",
 	"name-ja": "山羊座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2651"
 },
 {
 	"moji": "♒",
 	"name": "Aquarius",
 	"name-ja": "水瓶座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2652"
 },
 {
 	"moji": "♓",
 	"name": "Pisces",
 	"name-ja": "魚座",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2653"
 },
 {
 	"moji": "♿",
 	"name": "wheelchair",
 	"name-ja": "車椅子マーク",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "267f",
 	"attribution": "Adam Baxter"
 },
@@ -1221,14 +1221,14 @@
 	"moji": "❤",
 	"name": "heart",
 	"name-ja": "ハート",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "2764"
 },
 {
 	"moji": "㊙",
 	"name": "circled_ideograph_secret",
 	"name-ja": "マル秘",
-	"category": "abstract",
+	"category": "zabstract",
 	"unicode": "3299",
 	"attribution": "Benjamin Bangsberg"
 },
@@ -1367,7 +1367,7 @@
 {
 	"name": "shit",
 	"name-ja": "うんち",
-	"category": "abstract",
+	"category": "zabstract",
 	"attribution": "Adam Neuwirth"
 },
 {
@@ -1484,18 +1484,5 @@
 	"name": "smiley_stuck_out_tongue_winking_eye",
 	"name-ja": "スマイリー(あっかんべー)",
 	"category": "faces"
-},
-{
-	"name": "Kagetsuki",
-	"name-ja": "影月",
-	"category": "individuals",
-	"contributor": "影月零",
-	"url": "http://zero.幻信.org"
-},
-{
-	"name": "Giorgio",
-	"name-ja": "ジョルジョ",
-	"category": "individuals",
-	"contributor": "Giorgio"
 }
 ]
