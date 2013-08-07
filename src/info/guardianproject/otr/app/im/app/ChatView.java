@@ -1866,12 +1866,12 @@ public class ChatView extends LinearLayout {
             boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
             boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
             
-            MessageView.DeliveryState deliveryState = DeliveryState.NEUTRAL;
+            DeliveryState deliveryState = DeliveryState.NEUTRAL;
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
             }
             
-            MessageView.EncryptionState encState = EncryptionState.NONE;
+            EncryptionState encState = EncryptionState.NONE;
             
             switch (mType) {
             case Imps.MessageType.INCOMING:
