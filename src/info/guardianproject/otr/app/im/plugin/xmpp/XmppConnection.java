@@ -1,6 +1,7 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.TorProxyInfo;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.DatabaseUtils;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
@@ -23,6 +24,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
+import info.guardianproject.util.LogCleaner;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -1625,7 +1627,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             // This group will also contain all the unfiled contacts.  We will create it locally if it
             // does not exist.
-            String generalGroupName = "Buddies";
+            String generalGroupName = mContext.getString(R.string.buddies);
 
             for (Iterator<RosterGroup> giter = roster.getGroups().iterator(); giter.hasNext();) {
 
@@ -1725,29 +1727,30 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
-                /*
-                for (String address : addresses)
-                    qAvatar.add(address);
                 
-                loadVCardsAsync();
-                */
+                Collection<Contact> contacts = new ArrayList<Contact>(addresses.size());
+                
+                for (String address : addresses)
+                {
+                    contacts.add(findOrCreateContact(address, address));
+                }
+                
+                notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
+
+                LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " + addresses.size());
+
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-               
+                LogCleaner.debug(ImApp.LOG_TAG, "entries deleted notification: " + addresses.size());
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
                 
-                /*
-                for (String address : addresses)
-                    qAvatar.add(address);
-                
-               
-                loadVCardsAsync();
-                */
+                LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
+             
             }
         };
 
