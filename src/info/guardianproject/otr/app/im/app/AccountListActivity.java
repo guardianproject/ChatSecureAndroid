@@ -269,7 +269,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             return;
         }
 
-        
         mProviderCursor.moveToFirst();
         while (!mProviderCursor.isAfterLast())
         {
