@@ -163,7 +163,8 @@ public class MessageView extends LinearLayout {
            
         }
         
-        mMessageContainer.setBackgroundResource(R.color.incoming_message);
+        mMessageContainer.setBackgroundResource(R.color.incoming_message_bg);        
+        mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
 
     }
@@ -223,9 +224,8 @@ public class MessageView extends LinearLayout {
 
         }
         
-        mMessageContainer.setBackgroundResource(R.color.outgoing_message);
-        
-        
+        mMessageContainer.setBackgroundResource(R.color.outgoing_message_bg);       
+        mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
     }
 
     private void showAvatar (String address, boolean isLeft)
