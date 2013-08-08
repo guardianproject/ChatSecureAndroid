@@ -700,7 +700,7 @@
 	<string name="allow_plain_text_auth">Allow Plain Text Auth</string>
 	<string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
 	<string name="tls_verification">TLS Verification</string>
-	<string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+	<string name="require_tls_ssl_connection">Require TLS Connection</string>
 	<string name="transport_encryption">Transport Encryption</string>
 	<string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
 	<string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
@@ -810,6 +810,8 @@
     <string name="menu_panic">Panic</string>
     
     <string name="unable_to_create_or_join_group_chat">Unable to create or join group chat</string>
+    
+    <string name="buddies">Buddies</string>
     
 </resources>
 
