@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
@@ -152,10 +153,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private boolean mIsGoogleAuth = false;
     
+    /*
     private final static String TRUSTSTORE_TYPE = "BKS";
     private final static String TRUSTSTORE_PATH = "debiancacerts.bks";
     private final static String TRUSTSTORE_PASS = "changeit";
     private final static String KEYMANAGER_TYPE = "X509";
+    */
     private final static String SSLCONTEXT_TYPE = "TLS";
 
     private X509TrustManager mTrustManager;
@@ -981,14 +984,32 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             mConfig.setSecurityMode(SecurityMode.required);
 
+            mConfig.setVerifyChainEnabled(true);
+            mConfig.setVerifyRootCAEnabled(true);
+            mConfig.setExpiredCertificatesCheckEnabled(true);
+            mConfig.setNotMatchingDomainCheckEnabled(true);
+            mConfig.setSelfSignedCertificateEnabled(false);
+            
+            // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
+            // can enable MITM.
+            initSSLContext(domain, requestedServer, mConfig);
+
+
         } else {
             // if it finds a cert, still use it, but don't check anything since 
             // TLS errors are not expected by the user
             mConfig.setSecurityMode(SecurityMode.enabled);
+            mConfig.setSocketFactory(new DummySSLSocketFactory(getTrustManager()));
+
 
             if (!allowPlainAuth)
                 SASLAuthentication.unsupportSASLMechanism("PLAIN");
 
+            mConfig.setVerifyChainEnabled(false);
+            mConfig.setVerifyRootCAEnabled(false);
+            mConfig.setExpiredCertificatesCheckEnabled(false);
+            mConfig.setNotMatchingDomainCheckEnabled(false);
+            mConfig.setSelfSignedCertificateEnabled(true);
         }
 
         if (mIsGoogleAuth)
@@ -1004,20 +1025,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         }
                 
-        mConfig.setVerifyChainEnabled(true);
-        mConfig.setVerifyRootCAEnabled(true);
-        mConfig.setExpiredCertificatesCheckEnabled(true);
-        mConfig.setNotMatchingDomainCheckEnabled(true);
-        mConfig.setSelfSignedCertificateEnabled(false);
-
-        mConfig.setTruststoreType(TRUSTSTORE_TYPE);
-        mConfig.setTruststorePath(TRUSTSTORE_PATH);
-        mConfig.setTruststorePassword(TRUSTSTORE_PASS);
-        
-        // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
-        // can enable MITM.
-        initSSLContext(domain, requestedServer, mConfig);
-
         // Don't use smack reconnection - not reliable
         mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
@@ -1285,35 +1292,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initSSLContext(String domain, String requestedServer,
             ConnectionConfiguration config) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException  {
 
-        /*
-        ks = KeyStore.getInstance(TRUSTSTORE_TYPE);
-        
-        try {
-            ks.load(new FileInputStream(TRUSTSTORE_PATH), TRUSTSTORE_PASS.toCharArray());
-        } catch (Exception e) {
-            ks = null;
-        }
-
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KEYMANAGER_TYPE);
-        try {
-            kmf.init(ks, TRUSTSTORE_PASS.toCharArray());
-            kms = kmf.getKeyManagers();
-        } catch (NullPointerException npe) {
-            kms = null;
-        }
-*/
         
         sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
         
-        //mStrongTrustManager.setDomain(domain);
-        //mStrongTrustManager.setServer(requestedServer);
-        
-
-        String[] PINLIST = {XmppCertPins.TALKGOOGLE, XmppCertPins.DUKGO, XmppCertPins.CHATFACEBOOK, XmppCertPins.JABBERCCCDE, XmppCertPins.BINARYPARADOX};
-        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),PINLIST,
-                                                        0);
-        
-        mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
+        mTrustManager = getTrustManager ();
 
         SecureRandom mSecureRandom = new java.security.SecureRandom();
         
@@ -1323,6 +1305,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         config.setCustomSSLContext(sslContext);
         config.setCallbackHandler(this);
 
+    }
+    
+    public synchronized X509TrustManager getTrustManager ()
+    {
+        if (mTrustManager == null)
+        {
+            String[] PINLIST = {XmppCertPins.TALKGOOGLE, XmppCertPins.DUKGO, XmppCertPins.CHATFACEBOOK, XmppCertPins.JABBERCCCDE, XmppCertPins.BINARYPARADOX};
+            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),PINLIST, 0);
+        
+            mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
+        }
+            
+        return mTrustManager;
     }
 
     /*
