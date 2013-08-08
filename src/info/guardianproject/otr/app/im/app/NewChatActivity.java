@@ -461,25 +461,26 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     public void setOTRState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
 
-        
-        if (SessionStatus.values() != null && otrChatSession != null)
+                
+        if (otrChatSession != null)
         {
             try {
-                SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
+               // SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                 
-                if (otrEnabled && (sessionStatus == SessionStatus.PLAINTEXT)) {
+                if (otrEnabled) {
                     otrChatSession.startChatEncryption();
-                 
-    
-                } else if ((!otrEnabled) && (sessionStatus == SessionStatus.ENCRYPTED  || sessionStatus == SessionStatus.FINISHED)) {
-                    otrChatSession.stopChatEncryption();
-                   
                 }
+                else
+                {
+                    otrChatSession.stopChatEncryption();    
+                }                 
                 
-                chatView.updateWarningView();
+             
             } catch (RemoteException e) {
                 Log.d("Gibber", "error getting remote activity", e);
             }
+            
+            chatView.updateWarningView();
         }
     }
 
