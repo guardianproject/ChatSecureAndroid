@@ -64,7 +64,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
-        if (text != null && text != "5222" && text != "0") {
+        if (text != null && settings.getPort() != 5222 && settings.getPort() != 0) {
             mPort.setSummary(text);
         }
         text = settings.getServer();
@@ -112,7 +112,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
                         .show();
             }
-            if (value != "5222" && value != "0")
+            if (settings.getPort() != 5222 && settings.getPort() != 0)
                 mPort.setSummary(value);
         } else if (key.equals("pref_account_server")) {
             value = prefs.getString(key, null);
