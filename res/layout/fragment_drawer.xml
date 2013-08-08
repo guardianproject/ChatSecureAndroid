@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="180dp"
     android:layout_height="match_parent"
-    android:background="#565552"
+    android:background="@drawable/bgcolor1"
     android:orientation="vertical" >
-
+<!-- android:background="#565552" -->
 <View
     android:layout_width="fill_parent"
     android:layout_height="1dp"

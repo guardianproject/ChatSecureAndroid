@@ -307,7 +307,7 @@
     <!-- Error message when a chat failed to be sent.-->
     <string name="msg_sent_failed">This message could not be sent.</string>
     <!-- Warning message displayed in the chat screen when connection is lost.-->
-    <string name="disconnected_warning">Lost connection to server. Messages will be sent when online.</string>
+    <string name="disconnected_warning">Messages will be sent on reconnect</string>
     <!-- Warning message displayed in the chat screen when the contact is offline.-->
     <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
     <!-- Warning message displayed in the chat screen when the contact is not in the user's list.-->
