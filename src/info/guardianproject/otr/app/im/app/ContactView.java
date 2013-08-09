@@ -196,7 +196,7 @@ public class ContactView extends LinearLayout {
                 
                 if (avatar == null)
                 {
-                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA);
+                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                     
                     if (avatar != null)
                         bitmapCache.put(address, avatar);

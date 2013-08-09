@@ -132,7 +132,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private void initSideBar ()
     {
         menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);
+        menu.setMode(SlidingMenu.LEFT);        
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
@@ -409,7 +409,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
       
 
         case android.R.id.home:
-            showChatList();
+            finish();// close this view and return to account list
             return true;
             
         case R.id.menu_view_accounts:
@@ -423,13 +423,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return super.onOptionsItemSelected(item);
     }
     
-    private void showChatList ()
-    {
-     //   Intent intent = new Intent (this, ChatListActivity.class);
-      //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-       // startActivity(intent);
-         finish();
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
