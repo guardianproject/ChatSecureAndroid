@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CompoundButton;
 
 public class ChatViewPager extends ViewPager {
 
@@ -23,6 +24,11 @@ public class ChatViewPager extends ViewPager {
        if(v != this && v instanceof ViewPager) {
           return true;
        }
-       return super.canScroll(v, checkV, dx, x, y);
+       else if (v instanceof CompoundButton)
+       {
+           return false;
+       }
+       else
+           return super.canScroll(v, checkV, dx, x, y);
     }
 }

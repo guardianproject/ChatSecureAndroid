@@ -57,7 +57,7 @@ public class BlockedContactView extends LinearLayout {
         String nickname = cursor.getString(BlockedContactsActivity.NICKNAME_COLUMN);
 
         Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor,
-                BlockedContactsActivity.AVATAR_COLUMN);
+                BlockedContactsActivity.AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
 
         if (avatar != null) {
             mAvatar.setImageDrawable(avatar);

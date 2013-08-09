@@ -46,9 +46,23 @@ public class ProviderListItem extends LinearLayout {
     private Activity mActivity;
     private SignInManager mSignInManager;
     
-    //private ImageView mProviderIcon;
-  //  private ImageView mStatusIcon;
-    private CompoundButton mStatusSwitch;
+    private CompoundButton mSignInSwitch;
+    private OnCheckedChangeListener mCheckedChangeListner = new OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+           
+            if (isChecked)
+                mSignInManager.signIn(mAccountId);
+            else
+                mSignInManager.signOut(mAccountId);
+            
+            mUserChanged = true;
+        }
+        
+    };
+    private boolean mUserChanged = false;
+    
     private TextView mProviderName;
     private TextView mLoginName;
     private TextView mChatView;
@@ -88,7 +102,7 @@ public class ProviderListItem extends LinearLayout {
 
         //mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
    //     mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
-        mStatusSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
+        mSignInSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
         mChatView = (TextView) findViewById(R.id.conversations);
@@ -115,7 +129,7 @@ public class ProviderListItem extends LinearLayout {
         if (mChatView != null)
             mChatViewColors = mChatView.getTextColors();
         
-        if (mStatusSwitch != null)
+        if (mSignInSwitch != null)
         {
             mProviderName.setOnClickListener(new OnClickListener ()
             {
@@ -145,27 +159,8 @@ public class ProviderListItem extends LinearLayout {
                 
             });
             
-            mStatusSwitch.setOnTouchListener(new OnTouchListener () {
-    
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    
-                    if (event.getAction() == MotionEvent.ACTION_UP)
-                    {
-                        
-                        if (!mStatusSwitch.isChecked())
-                            mSignInManager.signIn(mAccountId);
-                        else
-                            mSignInManager.signOut(mAccountId);
-                        
-                        return true;
-                      
-                    }
-                    
-                    return false;
-                }
-                
-            });
+            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+         
             
             if (mBtnSettings != null)
             {
@@ -261,18 +256,26 @@ public class ProviderListItem extends LinearLayout {
                 mProviderName.setEnabled(true);
                 mLoginName.setEnabled(true);
 
-                if (mStatusSwitch != null)
-                    mStatusSwitch.setChecked(true);
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(true);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
                 
                 break;
 
             case Imps.ConnectionStatus.ONLINE:
-
+            
                 mProviderName.setEnabled(true);
                 mLoginName.setEnabled(true);
                 
-                if (mStatusSwitch != null)
-                    mStatusSwitch.setChecked(true);
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(true);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
                 
              
                 secondRowText.append(getPresenceString(cursor, getContext()));
@@ -307,8 +310,12 @@ public class ProviderListItem extends LinearLayout {
             default:
                 
 
-                if (mStatusSwitch != null)
-                    mStatusSwitch.setChecked(false);
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(false);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
                 
                 if (settings.getServer() != null && settings.getServer().length() > 0)
                 {

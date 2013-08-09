@@ -71,9 +71,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class AccountActivity extends ThemeableActivity {
+public class CreateAccountActivity extends ThemeableActivity {
 
-    public static final String TAG = "AccountActivity";
+    public static final String TAG = "CreateAccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
     private long mProviderId = 0;
     private long mAccountId = 0;
@@ -269,7 +269,7 @@ public class AccountActivity extends ThemeableActivity {
                 if (mRememberPass.isChecked()) {
                     String msg = brandingRes
                             .getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateAccountActivity.this, msg, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -306,10 +306,10 @@ public class AccountActivity extends ThemeableActivity {
                 
                 if (mUseTor.isChecked())
                 {
-                    OrbotHelper oh = new OrbotHelper(AccountActivity.this);
+                    OrbotHelper oh = new OrbotHelper(CreateAccountActivity.this);
                     if (!oh.isOrbotRunning())
                     {
-                        oh.requestOrbotStart(AccountActivity.this);
+                        oh.requestOrbotStart(CreateAccountActivity.this);
                         return;
                     }
                 }
@@ -524,7 +524,7 @@ public class AccountActivity extends ThemeableActivity {
                     // TODO move these strings to strings.xml
                     isGood = false;
                     Toast.makeText(
-                            AccountActivity.this,
+                            CreateAccountActivity.this,
                             "The port value '" + splitColon[1]
                                     + "' after the : could not be parsed as a number!",
                             Toast.LENGTH_LONG).show();
@@ -631,7 +631,7 @@ public class AccountActivity extends ThemeableActivity {
 
     void signOutUsingActivity() {
 
-        Intent intent = new Intent(AccountActivity.this, SignoutActivity.class);
+        Intent intent = new Intent(CreateAccountActivity.this, SignoutActivity.class);
         intent.setData(mAccountUri);
 
         startActivity(intent);
@@ -840,7 +840,7 @@ public class AccountActivity extends ThemeableActivity {
                     otrKeyManager.generateLocalKeyPair();
 
                 } else {
-                    Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
+                    Toast.makeText(CreateAccountActivity.this, "OTR is not initialized yet",
                             Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {

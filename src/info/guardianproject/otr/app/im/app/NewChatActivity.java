@@ -27,8 +27,10 @@ import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+
+import java.util.List;
+
 import net.java.otr4j.session.SessionStatus;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -130,7 +132,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private void initSideBar ()
     {
         menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);
+        menu.setMode(SlidingMenu.LEFT);        
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
@@ -250,6 +252,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
     void resolveIntent(Intent intent) {
+        
         if (requireOpenDashboardOnStart(intent)) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1L);
             mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
@@ -280,29 +283,54 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (data != null)
             {
-                String type = getContentResolver().getType(data);
-                if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
+                if (data.getScheme().equals("immu"))
+                {
+                    String user = data.getUserInfo();
+                    String host = data.getHost();
+                    String path = null;
                     
-                    long requestedChatId = ContentUris.parseId(data);
-                                        
-                    mCursorChats.moveToPosition(0);
-                    int posIdx = 0;
-                    while (mCursorChats.moveToNext())
+                    if (data.getPathSegments().size() > 0)
+                        path = data.getPathSegments().get(0);
+                         
+                    if (host != null && path != null)
                     {
-                        long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
                         
-                        if (chatId == requestedChatId)
+                        if (!listConns.isEmpty())
                         {
-                            mChatPager.setCurrentItem(posIdx+2);
-                            break;
+                            
+                             startGroupChat(path, host, listConns.get(0));
+                            
+                           
+                        }
+                    }
+                }
+                else
+                {
+                    String type = getContentResolver().getType(data);
+                    if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
+                        
+                        long requestedChatId = ContentUris.parseId(data);
+                                            
+                        mCursorChats.moveToPosition(0);
+                        int posIdx = 0;
+                        while (mCursorChats.moveToNext())
+                        {
+                            long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                            
+                            if (chatId == requestedChatId)
+                            {
+                                mChatPager.setCurrentItem(posIdx+2);
+                                break;
+                            }
+                            
+                            posIdx++;
                         }
                         
-                        posIdx++;
+                   
+                    } else if (Imps.Invitation.CONTENT_ITEM_TYPE.equals(type)) {
+                        //chatView.bindInvitation(ContentUris.parseId(data));
                     }
-                    
-               
-                } else if (Imps.Invitation.CONTENT_ITEM_TYPE.equals(type)) {
-                    //chatView.bindInvitation(ContentUris.parseId(data));
                 }
             }
             else
@@ -381,7 +409,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
       
 
         case android.R.id.home:
-            showChatList();
+            finish();// close this view and return to account list
             return true;
             
         case R.id.menu_view_accounts:
@@ -395,13 +423,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return super.onOptionsItemSelected(item);
     }
     
-    private void showChatList ()
-    {
-     //   Intent intent = new Intent (this, ChatListActivity.class);
-      //  intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-       // startActivity(intent);
-         finish();
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -431,27 +452,28 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void switchOtrState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
+    public void setOTRState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
 
-        
-        if (SessionStatus.values() != null && otrChatSession != null)
+                
+        if (otrChatSession != null)
         {
             try {
-                SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
+               // SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                 
-                if (otrEnabled && (sessionStatus == SessionStatus.PLAINTEXT || sessionStatus == SessionStatus.FINISHED)) {
+                if (otrEnabled) {
                     otrChatSession.startChatEncryption();
-                 
-    
-                } else if (sessionStatus == SessionStatus.ENCRYPTED) {
-                    otrChatSession.stopChatEncryption();
-                   
                 }
+                else
+                {
+                    otrChatSession.stopChatEncryption();    
+                }                 
                 
-                chatView.updateWarningView();
+             
             } catch (RemoteException e) {
                 Log.d("Gibber", "error getting remote activity", e);
             }
+            
+            chatView.updateWarningView();
         }
     }
 
@@ -963,10 +985,35 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              if (selIdx != -1)
                  spinnerAccounts.setSelection(selIdx);
              
-             if (mAccountIds.length == 1)
+             else if (mAccountIds.length == 1)
              {
                  spinnerAccounts.setVisibility(View.GONE);
                  initAccount(mAccountIds[0]);
+             }
+             else
+             {
+                 List<IImConnection> listConns = ((ImApp)getActivity().getApplication()).getActiveConnections();
+                 
+                 for (IImConnection conn : listConns)
+                 {
+                     try
+                     {
+                         long activeAccountId = conn.getAccountId();
+                         int spinnerIdx = -1;
+                         for (long accountId : mAccountIds )
+                         {
+                             spinnerIdx++;
+                             
+                             if (accountId == activeAccountId)
+                             {
+                                 spinnerAccounts.setSelection(spinnerIdx);
+                                 break;
+                             }
+                         }
+                         
+                     }
+                     catch (Exception e){}
+                 }
              }
              
             
@@ -1288,7 +1335,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     
                     chatServer = tv.getText().toString();
                     
-                    startGroupChat (chatRoom, chatServer, mLastProviderId);
+                    startGroupChat (chatRoom, chatServer, ((ImApp)getApplication()).getConnection(mLastProviderId));
                     
                 }
             })
@@ -1304,10 +1351,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void startGroupChat (String room, String server, long providerId)
+    public void startGroupChat (String room, String server, IImConnection conn)
     {
-        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
-        
         String roomAddress = room + '@' + server;
         
         try {
@@ -1332,11 +1377,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
             else
             {
-               // mHandler.showServiceErrorAlert();
+                mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
+                
             }
             
         } catch (RemoteException e) {
-          //  mHandler.showServiceErrorAlert();
+           mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
         }
        
     }

@@ -146,7 +146,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA));
+                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
             
             imgAvatar.setImageDrawable(avatar);
 

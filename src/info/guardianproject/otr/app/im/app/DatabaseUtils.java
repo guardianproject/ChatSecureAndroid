@@ -52,12 +52,12 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn) {
+    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
         byte[] rawData = cursor.getBlob(dataColumn);
         if (rawData == null) {
             return null;
         }
-        return decodeAvatar(rawData);
+        return decodeAvatar(rawData, width, height);
     }
 
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
@@ -69,7 +69,7 @@ public class DatabaseUtils {
 
     public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn,
             int encodedDataColumn, String username, boolean updateBlobUseCursor,
-            ContentResolver resolver, Uri updateBlobUri) {
+            ContentResolver resolver, Uri updateBlobUri, int width, int height) {
         /**
          * Optimization: the avatar table in IM content provider have two
          * columns, one for the raw blob data, another for the base64 encoded
@@ -100,7 +100,7 @@ public class DatabaseUtils {
             }
         }
 
-        return decodeAvatar(rawData);
+        return decodeAvatar(rawData, width, height);
     }
 
     public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data, 
@@ -145,19 +145,39 @@ public class DatabaseUtils {
     }
     
 
-    private static Drawable decodeAvatar(byte[] data) {
+    private static Drawable decodeAvatar(byte[] data, int width, int height) {
         
         BitmapFactory.Options options = new BitmapFactory.Options();
-        
-        if (data.length > 32000)        
-            options.inSampleSize = 2;
-        else if (data.length > 64000)        
-            options.inSampleSize = 2;
-        
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length,options);               
+        options.inSampleSize = calculateInSampleSize(options, width, height);
+        options.inJustDecodeBounds = false;
         Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
         Drawable avatar = new BitmapDrawable(b);
         return avatar;
     }
+    
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height > reqHeight || width > reqWidth) {
+
+        // Calculate ratios of height and width to requested height and width
+        final int heightRatio = Math.round((float) height / (float) reqHeight);
+        final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+        // Choose the smallest ratio as inSampleSize value, this will guarantee
+        // a final image with both dimensions larger than or equal to the
+        // requested height and width.
+        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+    }
+
+    return inSampleSize;
+}
 
     /**
      * Update IM provider database for a plugin using newly loaded information.

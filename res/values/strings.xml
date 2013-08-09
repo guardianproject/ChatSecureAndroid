@@ -307,7 +307,7 @@
     <!-- Error message when a chat failed to be sent.-->
     <string name="msg_sent_failed">This message could not be sent.</string>
     <!-- Warning message displayed in the chat screen when connection is lost.-->
-    <string name="disconnected_warning">Lost connection to server. Messages will be sent when online.</string>
+    <string name="disconnected_warning">Messages will be sent on reconnect</string>
     <!-- Warning message displayed in the chat screen when the contact is offline.-->
     <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
     <!-- Warning message displayed in the chat screen when the contact is not in the user's list.-->
@@ -700,7 +700,7 @@
 	<string name="allow_plain_text_auth">Allow Plain Text Auth</string>
 	<string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
 	<string name="tls_verification">TLS Verification</string>
-	<string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+	<string name="require_tls_ssl_connection">Require TLS Connection</string>
 	<string name="transport_encryption">Transport Encryption</string>
 	<string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
 	<string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
@@ -808,6 +808,10 @@
     <string name="the_remote_key_fingerprint_has_been_verified_">The remote key fingerprint has been verified!</string>
     
     <string name="menu_panic">Panic</string>
+    
+    <string name="unable_to_create_or_join_group_chat">Unable to create or join group chat</string>
+    
+    <string name="buddies">Buddies</string>
     
 </resources>
 
