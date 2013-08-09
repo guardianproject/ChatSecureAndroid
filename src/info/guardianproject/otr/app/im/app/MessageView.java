@@ -21,7 +21,6 @@ import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,23 +28,16 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -132,15 +124,21 @@ public class MessageView extends LinearLayout {
             lastMessage = body;// formatMessage(body);
         }
         
-        try {
-            SpannableString spannablecontent=new SpannableString(lastMessage);
-
-            EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
-            
-            mTextViewForMessages.setText(spannablecontent);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (lastMessage.length() > 0)
+        {
+            try {
+                SpannableString spannablecontent=new SpannableString(lastMessage);
+                EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+                
+                mTextViewForMessages.setText(spannablecontent);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            mTextViewForMessages.setText(lastMessage);
         }
         
         
