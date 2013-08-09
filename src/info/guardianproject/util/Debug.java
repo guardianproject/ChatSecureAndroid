@@ -4,10 +4,12 @@ public class Debug {
     public static final boolean DEBUG_ENABLED = false;
 
     public static void onConnectionStart() {
-        //android.os.Debug.waitForDebugger();
+        if (DEBUG_ENABLED)
+        android.os.Debug.waitForDebugger();
     }
 
     public static void onServiceStart() {
-        //android.os.Debug.waitForDebugger();
+        if (DEBUG_ENABLED)
+        android.os.Debug.waitForDebugger();
     }
 }

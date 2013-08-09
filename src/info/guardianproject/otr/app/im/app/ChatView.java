@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
@@ -102,6 +101,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -162,7 +162,21 @@ public class ChatView extends LinearLayout {
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
+    
     private CompoundButton mOtrSwitch;
+    private boolean mOtrSwitchTouched = false;
+    private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()
+    {
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mActivity.setOTRState(ChatView.this, ChatView.this.getOtrChatSession(), isChecked);
+         
+            mOtrSwitchTouched = true;
+        }
+        
+    };
+    
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
     private IChatSessionListener mChatSessionListener;
@@ -337,6 +351,7 @@ public class ChatView extends LinearLayout {
         }
 
         public void onContactsPresenceUpdate(Contact[] contacts) {
+            
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onContactsPresenceUpdate()");
             }
@@ -472,28 +487,10 @@ public class ChatView extends LinearLayout {
 
         });
         
-        mOtrSwitch.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View view) {
-                mActivity.switchOtrState(ChatView.this, ChatView.this.getOtrChatSession(), mOtrSwitch.isChecked());
-            }
-        });
-       
-        /*
-        mWarningText.setOnLongClickListener(new OnLongClickListener()
-        {
-
-            @Override
-            public boolean onLongClick(View v) {
-                
-                mActivity.switchOtrState(ChatView.this);
-                
-                return true;
-            }
-            
-        });*/
-
+        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
+        
+        
+        
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -844,25 +841,28 @@ public class ChatView extends LinearLayout {
 
     private void initOtr()  {
 
-        try
+        if (mOtrChatSession == null)
         {
-            //if (mOtrChatSession == null && getChatSession () != null) {
-            
-            if (getChatSession() != null)
-                mOtrChatSession = getChatSession ().getOtrChatSession();
-            else
-                mOtrChatSession = null;
-    
-            if (mOtrChatSession != null) {
-    
-                    mOtrKeyManager = getChatSession ().getOtrKeyManager();
-    
+            try
+            {
+                //if (mOtrChatSession == null && getChatSession () != null) {
                 
-             }
-        }
-        catch (Exception e)
-        {
-            Log.e(ImApp.LOG_TAG,"error setting up OTR session",e);
+                if (getChatSession() != null)
+                    mOtrChatSession = getChatSession ().getOtrChatSession();
+                else
+                    mOtrChatSession = null;
+        
+                if (mOtrChatSession != null) {
+        
+                        mOtrKeyManager = getChatSession ().getOtrKeyManager();
+        
+                    
+                 }
+            }
+            catch (Exception e)
+            {
+                Log.e(ImApp.LOG_TAG,"error setting up OTR session",e);
+            }
         }
 
     }
@@ -988,7 +988,7 @@ public class ChatView extends LinearLayout {
 
         // This is redundant if there are messages in view, because the cursor requery will update everything.
         // However, if there are no messages, no update will trigger below, and we still want this to update.
-        updateWarningView();
+        updateWarningView(true);
 
         // TODO: async query?
         Cursor cursor = getMessageCursor();
@@ -1161,7 +1161,19 @@ public class ChatView extends LinearLayout {
     }
 
     boolean isGroupChat() {
-        return Imps.Contacts.TYPE_GROUP == mType;
+        
+        boolean isGroupChat = false;
+        
+        if (mCurrentChatSession != null)
+        {
+            try {
+                isGroupChat = mCurrentChatSession.isGroupChatSession();
+            }
+            catch (Exception e){}
+            
+        }
+           
+        return isGroupChat;
     }
 
     void sendMessage() {
@@ -1270,13 +1282,28 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    void updateWarningView() {
+    void updateWarningView()
+    {
+        updateWarningView(false);
+    }
+    
+    void updateWarningView(boolean overrideUserTouch) {
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
         boolean isConnected;
 
         SessionStatus sessionStatus = null;
+        
+        if (overrideUserTouch)
+            mOtrSwitchTouched = false;
+
+        if (this.isGroupChat())
+        {
+            //no OTR in group chat
+            mStatusWarningView.setVisibility(View.GONE);
+            return;
+        }
         
         initOtr();
 
@@ -1320,7 +1347,15 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
-                mOtrSwitch.setChecked(false);
+                
+                /*
+                if (!mOtrSwitchTouched)
+                {
+                    mOtrSwitch.setOnCheckedChangeListener(null);
+                    mOtrSwitch.setChecked(false);
+                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
+                }
+                */
                 
             }
             else if (sessionStatus == SessionStatus.ENCRYPTED) {
@@ -1329,7 +1364,12 @@ public class ChatView extends LinearLayout {
                     if (mOtrKeyManager == null)
                         initOtr();
 
-                    mOtrSwitch.setChecked(true);
+                    if (!mOtrSwitchTouched)
+                    {                    
+                        mOtrSwitch.setOnCheckedChangeListener(null);
+                        mOtrSwitch.setChecked(true);
+                        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
+                    }
                     
                     String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
                     boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
@@ -1362,15 +1402,30 @@ public class ChatView extends LinearLayout {
                 }
             } else if (sessionStatus == SessionStatus.FINISHED) {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
-                mOtrSwitch.setChecked(false);
+
+                if (!mOtrSwitchTouched)
+                { 
+                    mOtrSwitch.setOnCheckedChangeListener(null);
+                    mOtrSwitch.setChecked(true);
+                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
+                }
                 
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
+                
+                mOtrChatSession = null;
             }  
             else if (sessionStatus == SessionStatus.PLAINTEXT) {
 
             //    mOtrSwitch.setChecked(false);
+
+                if (!mOtrSwitchTouched)
+                { 
+                    mOtrSwitch.setOnCheckedChangeListener(null);
+                    mOtrSwitch.setChecked(false);
+                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
+                }
                 
 //                ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
@@ -1384,7 +1439,10 @@ public class ChatView extends LinearLayout {
 
         } else {
             
+
+            mOtrSwitch.setOnCheckedChangeListener(null);
             mOtrSwitch.setChecked(false);
+            mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
             
             
             visibility = View.VISIBLE;
@@ -1426,9 +1484,8 @@ public class ChatView extends LinearLayout {
         if (getChatSession() != null) {
             try {
                 getChatSession().markAsRead();
-                // TODO OTRCHAT updateSecureWarning
-                //updateSecureWarning();
-                updateWarningView();
+              
+              //  updateWarningView();
 
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert();
@@ -1847,31 +1904,34 @@ public class ChatView extends LinearLayout {
             boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
             boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
             
-            MessageView.DeliveryState deliveryState = DeliveryState.NEUTRAL;
+            DeliveryState deliveryState = DeliveryState.NEUTRAL;
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
             }
             
-            MessageView.EncryptionState encState = EncryptionState.NONE;
+            EncryptionState encState = EncryptionState.NONE;
             
             switch (mType) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                    
-                    messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
 
             case Imps.MessageType.OUTGOING:
             case Imps.MessageType.POSTPONED:
-                int errCode = cursor.getInt(mErrCodeColumn);
-                if (errCode != 0) {
-                    messageView.bindErrorMessage(errCode);
-                } else {
-                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
-                            deliveryState, encState);
+                
+                if (!isGroupChat())
+                {
+                    int errCode = cursor.getInt(mErrCodeColumn);
+                    if (errCode != 0) {
+                        messageView.bindErrorMessage(errCode);
+                    } else {
+                        messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                                deliveryState, encState);
+                    }
                 }
                 break;
 
@@ -1879,8 +1939,7 @@ public class ChatView extends LinearLayout {
                 messageView.bindPresenceMessage(address, mType, isGroupChat(), isScrolling());
             }
 
-
-            updateWarningView();
+           // updateWarningView();
 
             if (!mExpectingDelivery && isDelivered) {
                 log("Setting delivery icon");
@@ -1949,4 +2008,5 @@ public class ChatView extends LinearLayout {
     EditText getComposedMessage() {
         return mComposeMessage;
     }
+
 }

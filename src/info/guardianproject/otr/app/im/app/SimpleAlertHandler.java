@@ -100,6 +100,10 @@ public class SimpleAlertHandler extends Handler {
         showAlert(R.string.error, R.string.service_error);
     }
 
+    public void showServiceErrorAlert(String msg) {
+        showAlert(R.string.error, msg);
+    }
+    
     public void showContactError(int errorType, ImErrorInfo error, String listName, Contact contact) {
         int id = 0;
         switch (errorType) {

@@ -37,7 +37,9 @@
     <color name="otr_yellow">#FFBB33</color>
     <color name="otr_green">#99CC00</color>
     
-    <color name="incoming_message">#AA99E0FF</color>
-    <color name="outgoing_message">#AAEAF7FB</color>
+    <color name="incoming_message_bg">#AA66CC</color>
+    <color name="incoming_message_fg">#DDDDDD</color>
+    <color name="outgoing_message_bg">#AAEAF7FB</color>
+    <color name="outgoing_message_fg">#333333</color>
     
 </resources>

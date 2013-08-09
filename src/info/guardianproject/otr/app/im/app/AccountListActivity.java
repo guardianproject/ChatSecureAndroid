@@ -158,13 +158,15 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         checkForUpdates();
         doShowcase();
+        
+        getWindow().setBackgroundDrawableResource(R.drawable.bgcolor2);
     }
     
     private void doShowcase ()
     {
         ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
         co.hideOnClickOutside = true;
-        sv = ShowcaseView.insertShowcaseView(getListView(), this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
+      //  sv = ShowcaseView.insertShowcaseView(getListView(), this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
         
         
       //  sv.setOnShowcaseEventListener(this);
@@ -269,7 +271,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             return;
         }
 
-        
         mProviderCursor.moveToFirst();
         while (!mProviderCursor.isAfterLast())
         {

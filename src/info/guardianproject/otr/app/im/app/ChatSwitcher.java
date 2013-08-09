@@ -403,7 +403,7 @@ public class ChatSwitcher {
             }
 
             ImageView avatarView = (ImageView) view.findViewById(R.id.avatar);
-            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c, mAvatarDataColumn);
+            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c, mAvatarDataColumn, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
 
             if (avatar == null) {
                 avatarView.setImageResource(R.drawable.avatar_unknown);

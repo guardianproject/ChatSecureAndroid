@@ -21,7 +21,6 @@ import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,23 +28,16 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -120,17 +112,33 @@ public class MessageView extends LinearLayout {
         
         showAvatar(address,true);
         
-       lastMessage = body;// formatMessage(body);
-        
-        try {
-            SpannableString spannablecontent=new SpannableString(lastMessage);
-
-            EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+        if (showContact)
+        {
+            String[] nickParts = nickname.split("/");
             
-            mTextViewForMessages.setText(spannablecontent);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            lastMessage = nickParts[nickParts.length-1] + ": " + body;
+            
+        }
+        else
+        {
+            lastMessage = body;// formatMessage(body);
+        }
+        
+        if (lastMessage.length() > 0)
+        {
+            try {
+                SpannableString spannablecontent=new SpannableString(lastMessage);
+                EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+                
+                mTextViewForMessages.setText(spannablecontent);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            mTextViewForMessages.setText(lastMessage);
         }
         
         
@@ -147,18 +155,14 @@ public class MessageView extends LinearLayout {
         }
         else
         {
-            if (showContact)
-            {
-                mTextViewForTimestamp.setText(address);
-            }
-            else
-            {
+            
             mTextViewForTimestamp.setText("");
             mTextViewForTimestamp.setVisibility(View.GONE);
-            }
+           
         }
         
-        mMessageContainer.setBackgroundResource(R.color.incoming_message);
+        mMessageContainer.setBackgroundResource(R.color.incoming_message_bg);        
+        mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
 
     }
@@ -218,9 +222,8 @@ public class MessageView extends LinearLayout {
 
         }
         
-        mMessageContainer.setBackgroundResource(R.color.outgoing_message);
-        
-        
+        mMessageContainer.setBackgroundResource(R.color.outgoing_message_bg);       
+        mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
     }
 
     private void showAvatar (String address, boolean isLeft)
