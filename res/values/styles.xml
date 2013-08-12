@@ -27,6 +27,10 @@
         
         </style>
     
+        <style name="AppThemeDark" parent="Theme.Sherlock" >
+    
+         
+        </style>
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>
