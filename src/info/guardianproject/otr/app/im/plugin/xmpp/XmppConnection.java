@@ -390,7 +390,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
         } catch (XMPPException e) {
             
-            Log.d(ImApp.LOG_TAG,"err loading vcard",e);
+            Log.d(ImApp.LOG_TAG,"err loading vcard");
             
             if (e.getStreamError() != null)
             {
