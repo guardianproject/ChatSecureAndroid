@@ -266,7 +266,7 @@ public class UserPresenceView extends LinearLayout {
                 
             }
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+         //   mHandler.showServiceErrorAlert();
         }
     }
 
@@ -334,7 +334,7 @@ public class UserPresenceView extends LinearLayout {
             if (newPresence != null)
                 mPresence = newPresence;
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+       //     mHandler.showServiceErrorAlert();
         }
         updateView();
     }
