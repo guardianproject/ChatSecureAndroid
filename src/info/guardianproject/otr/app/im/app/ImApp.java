@@ -110,8 +110,8 @@ public class ImApp extends Application {
      */
     ArrayList<Message> mQueue = new ArrayList<Message>();
 
-    /** A flag indicates that we have called to start the service. */
-    private boolean mServiceStarted;
+    /** A flag indicates that we have called tomServiceStarted start the service. */
+//    private boolean mServiceStarted;
     private Context mApplicationContext;
     private Resources mPrivateResources;
 
@@ -349,10 +349,10 @@ public class ImApp extends Application {
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
         serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
         
-        if (!mServiceStarted)
+        if (mImService == null)
         {
             mApplicationContext.startService(serviceIntent);
-            mServiceStarted = true;
+         
             mConnectionListener = new MyConnListener(new Handler());
         }
         
@@ -374,7 +374,7 @@ public class ImApp extends Application {
             hasActiveConnection = !mConnections.isEmpty();
         }
 
-        if (!hasActiveConnection && mServiceStarted) {
+        if (!hasActiveConnection) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("stop ImService because there's no active connections");
 
@@ -385,7 +385,7 @@ public class ImApp extends Application {
             Intent intent = new Intent();
             intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             mApplicationContext.stopService(intent);
-            mServiceStarted = false;
+         
         }
     }
     
@@ -394,7 +394,7 @@ public class ImApp extends Application {
     
     public synchronized void forceStopImService() 
     {
-        if (mServiceStarted && mImService != null) {
+        if (mImService != null) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("stop ImService");
 
@@ -404,7 +404,7 @@ public class ImApp extends Application {
             Intent intent = new Intent();
             intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             mApplicationContext.stopService(intent);
-            mServiceStarted = false;
+         
         }
     }
     
