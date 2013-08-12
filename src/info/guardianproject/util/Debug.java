@@ -5,11 +5,11 @@ public class Debug {
 
     public static void onConnectionStart() {
         if (DEBUG_ENABLED)
-        android.os.Debug.waitForDebugger();
+            android.os.Debug.waitForDebugger();
     }
 
     public static void onServiceStart() {
         if (DEBUG_ENABLED)
-        android.os.Debug.waitForDebugger();
+            android.os.Debug.waitForDebugger();
     }
 }
