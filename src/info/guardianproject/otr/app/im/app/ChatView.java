@@ -433,7 +433,11 @@ public class ChatView extends LinearLayout {
         gestureDetector = new GestureDetector(getContext(), new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
+                
+                if (gestureDetector != null && event != null)
+                    return gestureDetector.onTouchEvent(event);
+                else
+                    return false;
             }
         };
 
@@ -1033,9 +1037,9 @@ public class ChatView extends LinearLayout {
         String localFingerprint = null;
         boolean isVerified = false;
 
-        if (mOtrKeyManager == null)
-            initOtr();
-
+        if (getChatId() == -1)
+            return;
+        
         Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, getChatId());
 
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
@@ -1061,7 +1065,6 @@ public class ChatView extends LinearLayout {
             // TODO define these in ImServiceConstants
             intent.putExtra("remoteFingerprint", remoteFingerprint);
             intent.putExtra("localFingerprint", localFingerprint);
-
             intent.putExtra("remoteVerified", isVerified);
         }
 
