@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>ཨུ་ཚུགས་བྱེད་པའམ་རེ་སྐུལ་ཞུ་བ།</item>
+    <item>རང་བཞིན་གྱི་འབད་བརྩོན།</item>
+    <item>རེ་སྐུལ་ཞུས་བ་ནང་བཞིན</item>
+    <item>བྱེད་དཀའ་བའམ་ཡང་ན་ནམ་ཡང་བྱེད་མི་ཐུབ་པ།</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>ཨུ་ཚུགས</item>
+    <item>རང་བཞིན་ནས</item>
+    <item>རེ་སྐུལ་བྱས</item>
+    <item>མི་ཐུབ་པ་བཟོས</item>
+  </string-array>
+</resources>

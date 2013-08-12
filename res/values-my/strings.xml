@@ -1,0 +1,540 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="ro_perm_label">စာတိုများ ဖတ်ရန်</string>
+  <string name="ro_perm_desc">\n        Allows applications to read data from the IM content provider.\n    </string>
+  <string name="wo_perm_label">စာတိုများ ရေးရန်</string>
+  <string name="wo_perm_desc">\n        Allows applications to write data to the IM content provider.\n    </string>
+  <!--The application label. This appears in the application launcher on the
+    Home screen. This is a noun.-->
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <string name="landing_page_title">အကောင့်တစ်ခုရွေးပါ</string>
+  <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">အကြောင်း</string>
+  <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">အကောင့်ပေါင်းထည့်</string>
+  <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">အကောင့်ပြင်ဆင်</string>
+  <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">အကောင့်ကိုဖယ်ပစ်</string>
+  <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">အားလံုးကိုထွက်</string>
+  <!--These strings displayed on the landing page.-->
+  <!--The title of the landing page.-->
+  <string name="choose_account_title">အကောင့်တစ်ခုရွေးပါ</string>
+  <!--Displays the number of ongoing chats on the landing page.-->
+  <!--Sign in progress screen menu items.-->
+  <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
+  <string name="menu_cancel_signin">ဝင်ရောက်နေခြင်းပယ်ဖျက်</string>
+  <!--Contact list screen menu and context menu items.-->
+  <!--This is a screen menu item for the Contact List Screen. It lets the
+    user to add a friend to the friend list. May be overrided by the plugin.-->
+  <string name="menu_add_contact">အဆက်အသွယ်ပေါင်းထည့်</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    remove a contact from the list. May be overrided by the plugin.-->
+  <string name="menu_remove_contact">အဆက်အသွယ်ပယ်ဖျက်</string>
+  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    block a contact. May be overrided by the plugin.-->
+  <string name="menu_block_contact">အဆက်အသွယ်အားပိတ်ထား</string>
+  <!--Screen menu item on the contact list screen to go to the blocked list
+    screen.-->
+  <string name="menu_view_blocked">ပိတ်ထားသော</string>
+  <!--Screen menu item on the contact list to go back to the landing page,
+    where you can choose which IM service you want to use-->
+  <string name="menu_view_accounts">အကောင့်များ</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">စကားဝိုင်းအသစ်</string>
+  <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">အကောင့်အသစ်</string>
+  <!--Screen menu item on the contact list to go to the setting page.-->
+  <string name="menu_settings">ဆက်တင်</string>
+  <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">အဆက်အသွယ်ရှာဖွေ</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the user to
+    start a chat with a friend. May be overried by the plugin.-->
+  <string name="menu_start_chat">စကားဝိုင်းစ</string>
+  <!--Screen menu item on the contact list to sign out the service.-->
+  <string name="menu_sign_out">ထွက်ခွာ</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a contact in the contact list. It lets the
+    user to view the contact's profile. May be overrided by the plugin.-->
+  <string name="menu_view_profile">အတည်ပြု</string>
+  <!--Context/drop-down menu item for the contact list screen. The context menu is
+    displayed when the user long clicks on a conversation in the contact list. It lets the
+    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">စာဝှက်စနစ်စတင်</string>
+  <string name="menu_otr_stop">စာဝှက်စနစ်ရပ်ဆိုင်း</string>
+  <string name="menu_clear_chat">စကားဝိုင်းရှင်း</string>
+  <string name="menu_end_conversation">စကားဝိုင်းဆုံး</string>
+  <!--Chat screen menu and context menu items.-->
+  <!--Screen menu item on the chat screen to go back the contact list screen.
+    May be overrided by the plugin.-->
+  <string name="menu_view_contact_list">အဆက်အသွယ်စာရင်း</string>
+  <!--Screen menu item on the chat screen to invite another contact to join the chat.
+    Currently not supported.-->
+  <string name="menu_invite_contact">ဖိတ်ခေါ် \u2026</string>
+  <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
+    switch between chats. May be overrided by the plugin.-->
+  <string name="menu_switch_chats">စကားဝိုင်းပြောင်း</string>
+  <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
+  <string name="menu_insert_smiley">မျက်နှာပြောင် ထည့်မည်</string>
+  <string name="menu_resend">ထပ်ပို့</string>
+  <!--Strings for the contact info screen-->
+  <string name="menu_scan">လက်ဗွေအားစိစစ်</string>
+  <string name="menu_fingerprint">သင့်လက်ဗွေ</string>
+  <string name="menu_verify_fingerprint">လက်ဗွေအားအတည်ပြု</string>
+  <string name="menu_verify_secret">လျို့ဝှက်ချက်အတည်ပြု</string>
+  <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
+     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
+     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
+     be appended to the end of this.-->
+  <string name="menu_plus">မီနူး+</string>
+  <!--The title of a simple input dialog. Currently not used.-->
+  <!--Strings for the confirm dialogs-->
+  <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
+  <string name="confirm">အတည်ပြုချက်</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">ဝန်ဆောင်မှုအားလံုးမှထွက်ခွာမည်လား</string>
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <!--The "OK" button label for the error message dialog.-->
+  <string name="ok">အိုကေ</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="cancel">ပယ်ဖျက်</string>
+  <!--The "OK" button label for the confirm dialogs.-->
+  <string name="yes">အိုကေ</string>
+  <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="no">ပယ်ဖျက်</string>
+  <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <!--These strings displayed on the landing page.-->
+  <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <!--These strings are displayed on the account setup page.-->
+  <!--The username label. May be overrided by the plugin.-->
+  <string name="label_username">User@Host</string>
+  <!--The password label.-->
+  <string name="label_password">စကားဝှက်:</string>
+  <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
+  <string name="remember_password">စကားဝှက်အားသိမ်းဆည်းထား</string>
+  <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
+  <string name="keep_me_signed_in">အလိုအလျောက်ဝင်</string>
+  <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
+  <string name="sign_up">အကောင့် မရှိဘူးလား?</string>
+  <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">လုံခြုံရေးအတွက် အသင့်၏ ဖုန်း ပျောက်ဆုံးခိုးယူခံရပါက အသင့် ကွန်ပျူတာဝဘ်ဆိုက်မှ တစ်ဆင့် အသင့် စကားဝှက်ကို ပြောင်းလဲပါ။</string>
+  <string name="check_auto_sign_in">ဤအချက်သည် အက်ပလီကေးရှင်ကို ဖွင့်လိုက်တိုင်း အသင့်ကို အလိုလို ဝင်စေပါသည်။ ဤအချက်ကို ပိတ်ရန် ပြန်ထွက်၍ \"အလိုအလျောက် ဝင်\" အမှန်ခြစ်ကွက်ကို အမှန်ခြစ်ဖယ်ပေးပါ။</string>
+  <!--The button label which lets the user to sign into the IM service.-->
+  <string name="sign_in">ဝင်ရောက်</string>
+  <!--These strings are displayed the sign in progress screen.-->
+  <!--The title of the sign-in progress screen.-->
+  <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
+  <string name="signing_in_wait">ဝင်နေတယ် \u2026</string>
+  <!--Dialog title-->
+  <!--This is the title for the background data prompt dialog, asking the user whether
+    to enable the background data if it is disabled when launch the IM app-->
+  <string name="bg_data_prompt_title">ကွန်ယက်အချက်အလက်ပိတ်ထား</string>
+  <!--Dialog messages:-->
+  <!--This is the message displayed in the prompt dialog when we launch IM but found
+    the background data is disabled-->
+  <string name="bg_data_prompt_message">\n အက်ပလီကေးရှင်မှ ဝင်သုံးရန် ကွန်ရက်ဒေတာ ချိတ်ဆက်မှု (နောက်ကွယ် ဒေတာများ အပါအဝင်) ကို လိုအပ်ပါတယ်။ \n</string>
+  <!--Dialog buttons:-->
+  <!--OK button for the prompt dialog-->
+  <string name="bg_data_prompt_ok">ခွင့်ပြု</string>
+  <!--Cancel button for the prompt dialog-->
+  <string name="bg_data_prompt_cancel">ထွက်ခွာ</string>
+  <!--These strings are displayed on the contact list page.-->
+  <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <!--Displays the number of online contacts in a list.-->
+  <!--The title of the subscription request group if there is any.-->
+  <string name="subscriptions">မိတ်ဖွဲ့ ကမ်းလှမ်မ်းချက်များ</string>
+  <!--Prefix of the contact if he/she is not in the user's list.-->
+  <string name="unknown_contact">(</string>
+  <!--Displayed as a child item of the contact list if it's empty.-->
+  <string name="empty_contact_group">ဘာမှမရှိ</string>
+  <!--Displayed as a child item of the ongoing chat group if it's empty.-->
+  <string name="empty_conversation_group">စကားစမြည်ပြောထားသည်များမရှိ</string>
+  <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
+  <string name="contacts_picker_title">ဖိတ်ခေါ်ရမည့် အဆက်အသွယ်များ ရွေးပါ</string>
+  <string name="contact_filter_hint">အဆက်အသွယ်အားရှာရန်ရိုက်ပါ</string>
+  <string name="empty_contact_list">အဆက်အသွယ်တစ်ခုမှမတွေ့</string>
+  <!--The title of blocked contact list.-->
+  <!--Displayed if there isn't any blocked contact.-->
+  <string name="no_blocked_contact">ပိတ်ထားသော အဆက်အသွယ် မရှိ</string>
+  <!--These strings are displayed in the contact info dialog.-->
+  <!--The title of the contact profile dialog.-->
+  <string name="contact_profile_title">အဆက်အသွယ်ပရိုဖိုင်</string>
+  <!--The label of the status on the contact profile dialog.-->
+  <string name="label_status">အခြေအနေ:</string>
+  <!--The label of the client type on the contact profile dialog.-->
+  <string name="label_client_type">ကလိုင်းယင့်　အမျိုးအစား:</string>
+  <!--The client type which indicates the contact is sign in with a PC client.-->
+  <string name="client_type_computer">ကွန်ပျူတာ</string>
+  <!--The client type which indicates the contact is sign in with a mobile client.-->
+  <string name="client_type_mobile">မိုဘိုင်း</string>
+  <!--The contact presence status. May be overrided by the plugin.-->
+  <!--This is an adjective describing the "online" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_available">လိုင်းပေါ်တွင်ရှိ</string>
+  <!--This is an adjective describing the "busy" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_busy">အလုပ်ရှုပ်နေ</string>
+  <!--This is an adjective describing the "away" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_away">အဝေးတွင်</string>
+  <!--This is an adjective describing the "idle" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_idle">အားနေ</string>
+  <!--This is an adjective describing the "offline" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_offline">လိုင်းပေါ်တွင်မရှိ</string>
+  <!--This is an adjective describing the "invisible" status for the user. It appears in the
+    drop-down status menu on the Contact List screen-->
+  <string name="presence_invisible">အောဖ့်လိုင်းဟု ပြပါ</string>
+  <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
+  <!--These strings are displayed on the chat screen-->
+  <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <!--In the chat history list, this label is added before the chats the user typed-->
+  <string name="me">ကျွန်ုပ်</string>
+  <!--On the chat screen, this is the hint text in the input field where the user enters the
+    chat. This needs to fit in both portrait and landscape mode-->
+  <string name="compose_hint">ရေးဖွဲ့ရန်ရိုက်ပါ</string>
+  <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <!--The send button on the chat screen.-->
+  <string name="send">ပို့</string>
+  <!--Error message when a chat failed to be sent.-->
+  <string name="msg_sent_failed">ဤအကြောင်းကြားချက်အားမပို့နိုင်</string>
+  <!--Warning message displayed in the chat screen when connection is lost.-->
+  <string name="disconnected_warning">ဆာဗာနှင့်ချိတ်ဆက်မှုပြတ်တောက်၊　လိုင်းပေါ်ရောက်ပါက　အကြောင်းကြားချက်အား　ပို့မည်</string>
+  <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
+  <string name="select_link_title">လင့်ရွေးပါ</string>
+  <!--Displayed when there is no active chats in the chat dashboard.-->
+  <string name="empty_chat_list">ပြောနေတဲ့ စကားဝိုင်း မရှိ</string>
+  <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် စနေပါသည်...</string>
+  <string name="stopping_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် ရပ်နေပါသည်...</string>
+  <!--Add contact screen-->
+  <!--This is the title of the Add Contact Screen.-->
+  <string name="add_contact_title">အဆက်အသွယ်ပေါင်းထည့်</string>
+  <!--The label of the email input box on the Add Contact Screen.-->
+  <string name="input_contact_label">အသင့်ဖိတ်ခေါ်လို့သည့် လူ၏ အီးမေးလ်လိပ်စာ -</string>
+  <!--The label of the list spinner on the Add Contact Screen.-->
+  <string name="choose_list_label">စာရင်းရွေးချယ်:</string>
+  <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
+  <string name="invite_instruction">အဆက်အသွယ်ထဲမှပေါင်းထည့်ရန်အမည်ကိုရိုက်ပါ.</string>
+  <!--The label of the button on the Add Contact Screen to send the invitation.-->
+  <string name="invite_label">ဖိတ်ခေါ်ချက်ပို့</string>
+  <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">လိုကယ်ကွန်ရန် စကားဝိုင်း (Bonjour/ZeroConf)</string>
+  <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">အကောင့်ပြင်ဆင်မှု</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">လိုင်းပေါ်တွင်မရှိသောအဆက်သွယ်များအားဖျောက်</string>
+  <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
+  <string name="notification_group_title">အကြောင်းကြားချက်ဆင်တင်</string>
+  <!--This is the text label of the setting for IM notifications; a summary is displayed in
+    smaller text below this label-->
+  <string name="notification_enabled_title">IM အကြာင်းကြားချက်များ</string>
+  <!--This is the summary of the setting for IM notifications-->
+  <string name="notification_enabled_summary">စာသစ်ရောက်လျှင် အခြေအနေပြဘားတွင်း အကြောင်းကြားပါ။</string>
+  <!--This is the text label of the vibrate notification setting; a summary is displayed in
+    smaller text below this label-->
+  <string name="foreground_service_title">Use foreground priority</string>
+  <string name="foreground_service_summary">အန်းဒရိုက်မှ ဒီကော်နက်ရှင်ဆားဗစ်ကို ပြန်စနိုင်ခြင်းကို လျော့ချပါ။ အချက်ပြဧရိယာတွင် အချက်ပြမှု ပေါ်နေပါလိမ့်မည်။</string>
+  <string name="heartbeat_interval_title">နှလုံးခုန်နူန်း</string>
+  <string name="heartbeat_interval_summary">ဘက်ထရီစား သက်သာစေရန် မိနစ်များများ သုံးပါ။ </string>
+  <string name="notification_vibrate_title">တုန်ခါ</string>
+  <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_vibrate_summary">စာရောက်လာလျှင် တုန်ပေးပါ</string>
+  <!--This is the text label of the sound notification setting; a summary is displayed in
+    smaller text below this label-->
+  <string name="notification_sound_title">အသံ</string>
+  <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_sound_summary">စာရောက်လာလျှင် ringtone ဖွင့်ပါ</string>
+  <!--This is the text label selecting the ringtone. Clicking on this will take the user to
+    the ringtone picker-->
+  <string name="notification_ringtone_title">ringtone ရွေးရန်</string>
+  <!--Group chat invitation screen (Currently not used.)-->
+  <!--The prompt message displayed on the group chat invitation screen.-->
+  <!--Toast when group chat invitation has been sent to the contact.-->
+  <!--The button for accepting an invitation.-->
+  <string name="accept_invitation">လက်ခံ</string>
+  <!--The button for decline an invitation.-->
+  <string name="decline_invitation">ငြင်းဆို</string>
+  <!--Friend subscription screen-->
+  <!--The button for approving a subscription request.-->
+  <string name="approve_subscription">လက်ခံ</string>
+  <!--The button for delecling a subscription request.-->
+  <string name="decline_subscription">ငြင်းဆို</string>
+  <!--Toast when approve a subscription request failed.-->
+  <!--Toast when decline a subscription request failed.-->
+  <!--Notification bar messages-->
+  <!--This is the notification bar message when a new IM arrives.-->
+  <!--This is the notification bar message when new IMs comes from more than one contact.-->
+  <!--This is the notification bar message when an invitation from someone arrived.-->
+  <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
+  <string name="notify_groupchat_label">အုပ်စုလိုက် စကားဝိုင်း တောင်းဆိုခြင်း</string>
+  <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
+  <!--Toast when a contact is added into a list.-->
+  <!--Toast when a contact is deleted from the list.-->
+  <!--Toast when a contact is blocked.-->
+  <!--Toast when a contact is unblocked.-->
+  <!--IM service permission-->
+  <string name="perm_label">IM ဝန်ဆောင်မှုစတင်</string>
+  <string name="perm_desc">အက်ပလီကေးရှင်းများကို intent သုံး၍  IM ဆားဗစ် စရန် ခွင့်ပြုပါ။</string>
+  <!--Errors-->
+  <!--The title of the error dialog-->
+  <string name="error">အာရုံစိုက်ရန်</string>
+  <!--Error message for sign in failed.-->
+  <!--Error message for creating contact list failed.-->
+  <string name="add_list_failed">စာရင်းအားမပေါင်းထည့်လိုက်ပါ</string>
+  <!--Error message for blocking contact failed.-->
+  <string name="block_contact_failed">အဆက်အသွယ်ကို ပိတ်ဆို့ထားခြင်း မရှိပါ။</string>
+  <!--Error message for unblocking contact failed.-->
+  <string name="unblock_contact_failed">အဆက်အသွယ်ကို ပိတ်ဆို့မှုဖွင့်ထားခြင်း မရှိပါ။</string>
+  <!--Error message for when the user didn't select a contact as required.-->
+  <string name="select_contact">ကျေးဇူးပြုပြီး　ပထမဦးစွာ　အဆက်အသွယ်ကိုရွေးချယ်ပါ</string>
+  <!--Error message for when the current connection disconnected.-->
+  <string name="disconnected">ကော်နက်ရှင် ကျသွားပြီ</string>
+  <!--Error message for when the IM service has died.-->
+  <string name="service_error">ဝန်ဆောင်မှုအမှား!</string>
+  <!--Error message for loading contact list failed.-->
+  <string name="load_contact_list_failed">အဆက်အသွယ်စာရင်း တင်ယူထားခြင်း မရှိပါ။</string>
+  <!--Error message for failed to connect to the server.-->
+  <string name="cant_connect_to_server">ဆာဗာသို့ ချိတ်ဆက်၍ မရပါ။ ကျေးဇူးပြုပြီး ကောနက်ရှင်  စစ်ကြည့်ပါ။</string>
+  <!--Error message for when the contact is already in the list.-->
+  <!--Error message for when the contact is blocked.-->
+  <!--Error message for when the contact list is not compeletely loaded.-->
+  <string name="contact_not_loaded">အဆက်အသွယ်စာရင်းအားဆွဲတင်နေစဉ်　ကျေးဇူးပြု၍　ခေတ္တစောင့်ပါ</string>
+  <!--Error message for when a network error occurred.-->
+  <string name="network_error">ကွန်ယက်အမှားပေါ်ပေါက်</string>
+  <string name="wifi_not_connected_error">ဤကော်နက်ရှင်အတွက် ဝိုင်ဖိုင် လိုပါတယ်။</string>
+  <!--Error message for lack of server support error.-->
+  <string name="service_not_support">ဆာဗာက ဤဖန်ရှင်အား ထောက်ပံနိုင်ခြင်း မရှိပါ</string>
+  <!--Erorr message for bad password error.-->
+  <string name="invalid_password">သင်ရိုက်ထည့်သောစကားဝှက်အားလက်မခံနိင်</string>
+  <!--Error message for server internal error.-->
+  <string name="internal_server_error">ဆာဗာမှ　အမှားနှင့်ကြံုတွေ့</string>
+  <!--Error message for when the server does not implement the feature.-->
+  <string name="not_implemented">ဆာဗာက ဤဖန်ရှင်အား ထောက်ပံနိုင်ခြင်း မရှိပါ</string>
+  <!--Error message for server not available error.-->
+  <string name="service_unavaiable">လက်ရှိတွင်ဆာဗာအားမရရှိနိုင်</string>
+  <!--Error message for timeout error.-->
+  <string name="timeout">ဆာဗာမှ အကြောင်းမပြန်ပါ</string>
+  <!--Error message for when the server does not support the current protocol version.-->
+  <string name="version_not_supported">လက်ရှိမူကွဲအားဆာဗာမှထောက်ပံ့ခြင်းမပြု</string>
+  <!--Error message for when the message queue on the server is full.-->
+  <string name="message_queue_full">စာသားအတန်း ပြည့်နေပြီ</string>
+  <!--Error message for when the domain is not supported by the server.-->
+  <string name="domain_not_supported">ဆာဗာက ဒိုမိန်းသို့ ဆင့်ကမ်းပို့ခြင်း ခွင့်မပြုပါ</string>
+  <!--Error message for a bad username error.-->
+  <string name="unknown_user">ရိုက်လိုက်သည့် အကောင့်အမည်ကို မသိရှိပါ</string>
+  <!--Error message for when the user is blocked by the recipient.-->
+  <string name="recipient_blocked_the_user">အသင့်ကို တစ်ဖက်ယူဇာမှ ပိတ်ထားပါတယ်။</string>
+  <!--Error message for session expired error.-->
+  <string name="session_expired">ဆက်ရှင်သက်တမ်းကုန်ဆံုး၊ ကျေးဇူးပြု၍နောက်တစ်ကြိမ်ဝင်ရောက်ပါ</string>
+  <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
+  <string name="forced_logout">အခြားကလိုင်းယင့်မှ ဝင်ထားခြင်း ဖြစ်သည်။</string>
+  <string name="already_logged_in">အခြားကလိုင်းယင့်မှ ဝင်ထားခြင်း ဖြစ်သည်။</string>
+  <!--Error message for msisdn error.-->
+  <string name="msisdn_error">ဆင်းမ်ကတ်မှ အသင့်ဖုန်းနံပါတ် ဖတ်၍ မရပါ။ အကူအညီအတွက် အော်ပရေတာကို ဆက်သွယ်ပါရန်။</string>
+  <!--Error message for when the user is not signed in.-->
+  <string name="not_signed_in">သင်သည်　လက်ရှိတွင်　မဝင်ရသေးပါ</string>
+  <!--Generic error.-->
+  <!--Smiley names. May be overrided by the plugin.-->
+  <string-array name="default_smiley_names">
+    <item>ပျော်နေ</item>
+    <item>ဝမ်းနည်း</item>
+    <item>မျက်စိမှိတ်</item>
+    <item>လျှာထုတ်</item>
+    <item>အံဩ</item>
+    <item>နမ်း</item>
+    <item>အော်</item>
+    <item>အေးဆေး</item>
+    <item>ငွေပါးစပ်</item>
+    <item>ပါးစပ်ထဲမှာ ခြေထောက်</item>
+    <item>စိတ်အနှောင့်အယှက်ဖြစ်နေ</item>
+    <item>အိန်ဂျယ်</item>
+    <item>မဆုံးဖြတ်ရသေး</item>
+    <item>ငိုနေ</item>
+    <item>နှုတ်ခမ်း စိထားတယ်</item>
+    <item>ရယ်နေ</item>
+    <item>စိတ်ရှုပ်နေ</item>
+  </string-array>
+  <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <string-array name="smiley_names">
+    <item>ပျော်နေ</item>
+    <item>ဝမ်းနည်း</item>
+    <item>မျက်စိမှိတ်</item>
+    <item>လျှာထုတ်</item>
+    <item>အံဩ</item>
+    <item>နမ်း</item>
+    <item>အော်</item>
+    <item>အေးဆေး</item>
+    <item>ငွေပါးစပ်</item>
+    <item>ပါးစပ်ထဲမှာ ခြေထောက်</item>
+    <item>စိတ်အနှောင့်အယှက်ဖြစ်နေ</item>
+    <item>အိန်ဂျယ်</item>
+    <item>မဆုံးဖြတ်ရသေး</item>
+    <item>ငိုနေ</item>
+    <item>နှုတ်ခမ်း စိထားတယ်</item>
+    <item>ရယ်နေ</item>
+    <item>စိတ်ရှုပ်နေ</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:0</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="menu_contact_list">အဆက်အသွယ်စာရင်း</string>
+  <string name="menu_view_encrypt_chat">ဝှက်ခြင်း အဖွင့်/အပိတ်</string>
+  <string name="use_tor">Tor ကို သုံး၍ ချိတ်ဆက်ပါ (Orbot app လိုအပ်ပါသည်)</string>
+  <!--Welcome Splash Screen-->
+  <string name="welcome_skip">စသုံးဖို့ မစောင့်နိုင်တော့ဘူးလား</string>
+  <string name="welcome_about">စသုံးရန်</string>
+  <string name="welcome_account">အကောင့်ပြင်ဆင်မှု</string>
+  <!--About: Welcome-->
+  <!--About: OTR-->
+  <string name="about_otr_title">ဘယ်လို လုံခြုံတာလဲ?</string>
+  <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.\n\nThe OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
+  <!--About: Security-->
+  <string name="about_security_title">ကျွန်တော့်စကားဝိုင်းတွေ လုံခြုံရဲ့လား?</string>
+  <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">စကားဝှက် သတ်မှတ်ရန်</string>
+  <string name="setup_passphrase_label1">စကားဝှက် -</string>
+  <string name="setup_passphrase_label2">စကားဝှက် (တစ်ဖန်) -</string>
+  <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">စကားဝှက်</string>
+  <string name="account_setup_advanced_button">အကောင့် ဆက်တင်များ</string>
+  <string name="account_select_type">အကောင့်အမျိုးအစား</string>
+  <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">စွဲမြဲခြင်း</string>
+  <string name="account_setup_pers_pw_title">စကားဝှက် မှတ်ထားပါ</string>
+  <string name="account_setup_pers_pw_on">စကားဝှက် ခေတ္တသိမ်းထားသည်</string>
+  <string name="account_setup_pers_pw_off">စကားဝှက် ခေတ္တသိမ်းထားခြင်းမရှိပါ။</string>
+  <string name="account_setup_pers_auto_title">အလိုအလျောက် ဝင်ပါ</string>
+  <string name="account_setup_pers_now_title">ယခု ဝင်ရန်</string>
+  <string name="account_setup_pers_now_on">အကောင့်ပြင်ဆင်သတ်မှတ်ပြီး ဆက်သွယ်ပါ</string>
+  <string name="account_setup_pers_now_off">အကောင့်ပြင်ဆင်သတ်မှတ်ပြီး မဆက်သွယ်ပါနှင့်</string>
+  <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">ကိုယ်ရေးကိုယ်တာ (အရေးမကြီး)</string>
+  <string name="account_setup_personal_alias_title">အကောင့် အမည်ကွဲ (အသင့် နာမည်)</string>
+  <string name="account_setup_personal_alias_sub">အသင့်အကောင်း အွန်လိုင်းတွင် ပေါ်နေပုံ</string>
+  <string name="account_setup_personal_profile_title">ပရိုဖိုင်</string>
+  <string name="account_setup_personal_profile_sub">မိမိအကြောင်း တစ်စေ့တစ်စောင်း</string>
+  <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">အတင်းဝှက် / ရိုးရိုးစာသား ငြင်း</string>
+  <string name="account_setup_advanced_enc_auto">ဖြစ်နိုင်လျှင် စကားဝိုင်းများကို အလိုအလျှောက်ဝှက်ပါ</string>
+  <string name="account_setup_advanced_enc_req">တောင်းဆိုသည့်အတိုင်း စာကားဝိုင်းများကို ဝှက်</string>
+  <string name="account_setup_advanced_enc_off">စကားဝိုင်းဝှက်ခြင်းကို ပိတ်ပါ</string>
+  <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">အချက်အလက်များကို စစ်ဆေးအတည်ပြုနေပါတယ်...</string>
+  <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်...</string>
+  <string name="account_setup_signin_c">ဝင်နေသည်...</string>
+  <!--Account Setup: Sign In Errors-->
+  <string name="label_fingerprint_remote">၎င်းတို့ လက်ဗွေရာ</string>
+  <string name="label_fingerprint_local">သင့်လက်ဗွေ</string>
+  <string name="menu_sign_in">ဝင်</string>
+  <string name="menu_gen_key">ကီး ပြန်ဖန်တီးရန်</string>
+  <string name="otr_session_status_plaintext">သတိပေးချက်၊ ဤစကားဝိုင်းကို ဝှက်ထားခြင်းမရှိပါ</string>
+  <string name="otr_session_status_encrypted">ဤစကားဝိုင်းသည် လုံခြုံစိတ်ချရသော်လည်း စကားဝိုင်းတွင် ပါဝင်သောသူများကို အတည်ပြုပြီး မဟုတ်ပါ။</string>
+  <string name="otr_session_status_finished">သတိပေးချက် - စကားဝိုင်းဝှက်ခြင်း ရပ်လိုက်ပါပြီ</string>
+  <string name="otr_session_status_verified">ဤစကားဝိုင်းသည် အတည်ပြုပြီး လုံခြုံစိတ်ချရသည်။</string>
+  <string name="account_wizard_setup_title">အကောင့်ဆိုင်ရာ </string>
+  <string name="account_wizard_account_title">အသင့် အကောင့် အိုင်ဒီ</string>
+  <string name="account_wizard_host_title">ဆာဗာ သတ်မှတ်ရန်</string>
+  <string name="account_wizard_ready_title">အသင့်ဖြစ်ပြီလား</string>
+  <string name="account_wizard_account_body">အသင့်၏ အကောင့်အိုင်ဒီကို ရိုက်ပါ (user@hostname) - </string>
+  <string name="account_wizard_host_body">အသင့်၏ jabber/xmpp စကားဝိုင်းဆာဗာ အိမ်ရှင်စက်အမည်နှင့် port နံပါတ် (ပုံမှန် ၅၂၂၂၂) ကို ပြင်ဆင်ရေးသားပါ။</string>
+  <string name="account_wizard_no_domain_warning">အသင့်အကောင့်အိုင်ဒီ ရိုက်ထားသည်တွင် @hostname.com မပါရှိပါ။ ထပ်မံကြိုးစားကြည့်ပါ။</string>
+  <string name="account_wizard_no_root_domain_warning">အသင့်ဆာဗာတင် .com, .net  (သို့) အခြား အလားတူ နောက်ဆက်တွဲများ မပါရှိပါ။ ထပ်မံကြိုးစားကြည့်ပါ။</string>
+  <string name="signin_password_prompt">စကားဝှက် ရိုက်ပါ -</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">အကောင့်ဆက်တင်</string>
+  <string name="pref_default_locale">defLoc</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">အဖွဲ့များ</string>
+  <string name="otr_gen_key">OTR ကီးတွဲသစ် ဖန်တီးနေပါတယ်...</string>
+  <string name="search_label">အဆက်အသွယ်</string>
+  <string name="search_hint">စကားပြောဆိုမည့် အဆက်အသွယ်၏ အမည်ရိုက်ရန်</string>
+  <string name="search_button_text">သွားရန်</string>
+  <string name="menu_locale">ဘာသာစကား</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">ဘာသာစကားများ</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">ဘယ်ဘာသာစကားကို InTheClear မှာ ပြရမလဲ </string>
+  <string name="do_srv_lookup">SRV ရှာဖွေမှု ပြုလုပ်ပါ</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">ဒိုမိန်းနာမည်မှ XMPP ဆာဗာကို ရှာရန် DNS SRV ကို သုံးပါ</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">ဝှက်ထားခြင်းမရှိသော ပေးပို့မှုတွင် ယူဇာအမည်နှင့် စကားဝှက်ကို ရိုးရိုးစာသားအနေဖြင့် ပေးပို့ခြင်း ခွင့်ပြုပါ</string>
+  <string name="allow_plain_text_auth">Plain Text စိစစ်စစ်ဆေးမှု ခွင့်ပြုပါ</string>
+  <string name="verify_that_the_certificate_is_trusted">ဤ certificate သည် ယုံကြည်စိတ်ချရကြောင်း အတည်ပြုပါ</string>
+  <string name="tls_verification">TLS စစ်ဆေးခြင်း</string>
+  <string name="require_tls_ssl_connection">TLS/SSL ကော်နက်ရှင် သုံးမည်</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">ဝှက်ထားသည့် စကားဝိုင်းများ စတင်ပုံ</string>
+  <string name="the_server_to_connect_to_if_needed">လိုအပ်လျှင် ချိတ်ဆက်ရမည့် ဆာဗာ</string>
+  <string name="connect_server">ဆာဗာသို့ ချိတ်ဆက်ခြင်း</string>
+  <string name="tcp_port_for_xmpp_server">XMPP ဆာဗာအတွက် TCP Port</string>
+  <string name="server_port">ဆာဗာ Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ဤကော်နက်ရှင်ကို အခြားဝင်ထားသော ကလိုင်းယင့်များထံမှ ခွဲခြားရန်</string>
+  <string name="xmpp_resource_prio_title">XMPP Resource Priority</string>
+  <string name="xmpp_resource_prio_summary">Messages to clients with multiple active resources will be sent to the resource with the highest priority</string>
+  <string name="btn_next">ရှေ့သို့</string>
+  <string name="btn_back">နောက်သို့</string>
+  <string name="title_chats">စကားဝိုင်းများ</string>
+  <string name="new_messages_notify">စာအသစ်၊ ပို့သူမှာ </string>
+  <string name="smp_question_title">စိစစ်စစ်ဆေးခြင်း</string>
+  <string name="smp_question_summary">အသင့်အဆက်အသွယ်ကို အတည်ပြုစစ်ဆေးရန် မေးရမည့် မေးခွန်းနှင့် သူတို့ ဖြေရမည့် အဖြေကို ရိုက်ပါ။</string>
+  <string name="smp_question_hint">မေးရမည့် မေးခွန်း</string>
+  <string name="qmp_answer_hint">မျှော်လင့်ထားသော အဖြေ</string>
+  <string name="remote_verified_us">အသင့် အဆက်အသွယကို အောင်မြင်စွာ စစ်ဆေးပြီးပါပြီ။ ယခု ၎င်းကို အတည်ပြုရန် မေးခွန်းမေးပါ။</string>
+  <string name="no_messages">စကားဝိုင်း မရှိပါ။ \n\nအသစ်စရန် ဒီမှာ ထိနှိပ်ပါ။</string>
+  <string name="pref_theme_dark">အရောင်ရင့်ရင့် အဆင်အယင်သုံးပါ</string>
+  <string name="warning_tor_connect">Tor ကို အသုံးပြုမည် ဖြစ်၍ XMPP \'ဆာဗာ ချိတ်ဆက်မှု\' အိမ်ရှင်စက်အမည်ကို အကောင့်ဆက်တင်ထဲတွင် တိုက်ရိုက် ရိုက်ထည့်ရမည်</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot_summary">နဂိုဝင်သုံးဖူးသည့် အကောင့်များသို့ အလိုအလျှောက် ဝင်ရန်</string>
+  <string name="empty_account_message">ပြင်ဆင်ထားသည့် အကောင့်များ မရှိပါ။ အကောင့်သစ်တစ်ခုထည့် ဤနေရာကို ထိနှိပ်ပါ။</string>
+  <string name="google_account">ဂူးဂဲ အကောင့်</string>
+  <string name="pref_in_memory_db_title">စာများကို မမ်မိုရီအတွင်းသာ သိမ်းရန်</string>
+  <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>
+  <string name="pref_background_title">နောက်ခံပုံ</string>
+  <string name="pref_background_summary">အက်ပလီကေးရှင်း၏ နောက်ခံပုံလမ်းကြောင်းကို  (\"/sdcard/foo.jpg\") သတ်မှတ်ရန်</string>
+  <string name="pref_group_security_title">Security and Privacy</string>
+  <string name="pref_group_looknfeel_title">User Interface</string>
+  <string name="pref_group_tuning_title">အခြား</string>
+  <string name="_open_conversations">ဖွင့်ထားသော စကားဝိုင်းများ</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">ထွက်ရန်</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">ဆားဗစ်အားလုံးမှ ထွက်၍ ပရောဆက်များအားလုံးကို ပိတ်မည်လား?</string>
+</resources>

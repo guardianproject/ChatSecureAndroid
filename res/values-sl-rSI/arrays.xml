@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Kuvvet iste /</item>
-    <item>Otomatik Denemesi</item>
-    <item>Talep olarak</item>
-    <item>Engelli / Asla</item>
+    <item>Zahtevaj</item>
+    <item>Samodejno poskusi</item>
+    <item>Če je zahtevano</item>
+    <item>Onemogočeno / Nikoli</item>
   </string-array>
   <string-array name="otr_options_values">
-    <item>zorunlu</item>
-    <item>otomatik</item>
-    <item>istenen</item>
-    <item>geçersiz</item>
+    <item>zahtevaj</item>
+    <item>samodejno</item>
+    <item>zahtevano</item>
+    <item>onemogočeno</item>
   </string-array>
   <string-array name="languages">
-    <item>Default</item>
+    <item>Standardno</item>
     <item>العربية</item>
     <item>فارسی</item>
     <item>中文(简体)</item>

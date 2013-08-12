@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">\nبه برنامه ها اجازه میدهد به ارایه دهنده محتوا در مسنجر اطلاعات وارد کنند \n</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">ربات پرچونه</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">یک حساب کاربری انتخاب کنید</string>
@@ -138,7 +137,6 @@
   <string name="sign_in">ورود</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">درحال راه اندازی ربات پرچونه...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">امضا\u2026\n</string>
   <!--Dialog title-->
@@ -206,17 +204,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">آفلاین به نظر برسید</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">مجرای دادهها</string>
-  <string name="data_encoding_label">رمزگذاری داده ها</string>
-  <string name="cir_channel_label">کانال CIR</string>
-  <string name="host_label">میزبان</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">اس ام اس</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">ذخیره</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -238,7 +225,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">ارسال</string>
   <!--Error message when a chat failed to be sent.-->
@@ -422,25 +410,6 @@
     <item>گیج</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>خوشحال</item>
     <item>غمگین</item>
@@ -484,23 +453,17 @@
   <string name="menu_view_encrypt_chat">رمزگذاری روشن/خاموش</string>
   <string name="use_tor">اتصال به واسطه تور (به برنامه رباط پیازی احتیاج دارد)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">ربات پرچونه</string>
-  <string name="welcome_first">آیا اولین بار است که از ربات پرچونه استفاده میکنید؟</string>
   <string name="welcome_skip">نمیتوانید برای شروع منتظر شوید؟</string>
   <string name="welcome_about">شروع کنید</string>
   <string name="welcome_account">راه اندازی حساب کاربری</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">درباره ربات پرچونه</string>
-  <string name="about_welcome">ربات پرچونه یک برنامه پیام رسان همراه است که ویژگیهای امنیتی اضافی را فراهم میکند تا از جاسوسی دیگران بر ارتباطات و گفتگوهای شما جلوگیری کند.\n این برنامه از هر سرویس گفتگویی که از پروتکل ایکس ام پی پی XMPP یا جبرJabber استفاده میکند، مانند Gtalk گوگل و Jabber.org حمایت میکند</string>
   <!--About: OTR-->
   <string name="about_otr_title">چگونه امن است؟</string>
   <string name="about_otr">\'پیام رسانی محرمانه\' یک سیستم امنیتی است که برای بوجود آوردن حریم خصوصی، بر مبنای تقلید از ویژگیهای یک مکالمه خصوصی در دنیای حقیقی طراحی شده است، که شامل رمزگذاری، احراز هویت، قابلیت انکار و رازداری میشود. پروتکل محرمانه با کلاینتهای گفتگوی دستکتاپ از قبیل Pidgin و Adium سازگار است.</string>
   <!--About: Security-->
   <string name="about_security_title">آیا گفتگوهای من امن هستند؟</string>
-  <string name="about_security">ویژگی رمزگذاری گفتگوی رباط پرچونه، تنها زمانی که بقیه هم از یک برنامه یا نرم افزار سازگار دیگر استفاده میکنند کار میکند. پس شما باید اطمینان حاصل کنید که افراد درحال تماس با شما از ربات پرچونه برای موبایل و یا Adium یا Pidgin برای کامپیوترهای دسکتاپ استفاده میکنند. شما میتوانید وارد تنظیمات حساب کاربری شده و تنظیم کنید که بطور دقیق، چه وقت و چگونه ربات پرچونه برای رمزگذاری گفتگوهای شما اقدام کند.\nاجازه بدید شروع کنیم!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">راه اندازی گذرواژه</string>
-  <string name="setup_passphrase">قبل از شروع، یک گذرواژه امن برای حفاظت اطلاعات خود  از دسترسی غیرمجاز در ربات پرچونه انتخاب کنید.</string>
   <string name="setup_passphrase_label1">گذرواژه:</string>
   <string name="setup_passphrase_label2">گذرواژه (دوباره):</string>
   <!--Account Setup: Account-->
@@ -514,8 +477,6 @@
   <string name="account_setup_pers_pw_on">رمز عبور کش شده</string>
   <string name="account_setup_pers_pw_off">رمز عبور کش نشده</string>
   <string name="account_setup_pers_auto_title">ورود خودکار</string>
-  <string name="account_setup_pers_auto_on">بهنگام راه اندازی ربات پرچونه متصل شو</string>
-  <string name="account_setup_pers_auto_off">بهنگام راه اندازی رباط پرچونه متصل نشو</string>
   <string name="account_setup_pers_now_title">الان وارد شوید</string>
   <string name="account_setup_pers_now_on">پس از انجام تنظیمات، متصل شو</string>
   <string name="account_setup_pers_now_off">پس از انجام تنظیمات، متصل نشو</string>
@@ -535,16 +496,10 @@
   <string name="account_setup_signin_b">درحال تولید یک جفت کلید...</string>
   <string name="account_setup_signin_c">درحال ورود...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">ربات پرچونه در زمان تایید نام کاربری یا رمز ورود شما با خطا مواجه شد - لطفا پس از بررسی دوباره تلاش کنید.</string>
-  <string name="account_setup_error_keypair">ربات پرچونه، در هنگام تولید یک جفت کلید با خطا مواجه شد.</string>
-  <string name="account_setup_error_server">ربات پرچونه، در هنگام ارتباط با سرور گفتگو با یک خطا مواجه شد - لطفا تنظیمات را بررسی و دوباره تلاش کنید.</string>
-  <string name="account_setup_error_connectivity">ربات پرچونه، درهنگام ارتباط با یک خطا مواجه شد - لطفا ارتباط خود با شبکه را بررسی و دوباره تلاش کنید.</string>
   <string name="label_fingerprint_remote">اثر انگشت آنها</string>
   <string name="label_fingerprint_local">اثر انگشت شما</string>
   <string name="menu_sign_in">ورود</string>
   <string name="menu_gen_key">تولید دوباره کلید</string>
-  <string name="error_suspended_connection">ربات پرچونه یک ارتباط با شبکه را از دست داده است</string>
-  <string name="error_reestablish_connection">ربات پرچونه در تلاش است تا دوباره یک ارتباط برقرار کند</string>
   <string name="otr_session_status_plaintext">هشدار: این گفتگو رمزگذاری نشده</string>
   <string name="otr_session_status_encrypted">این گفتگو امن است اما هویت شرکت کنندگان تایید نشده</string>
   <string name="otr_session_status_finished">هشدار: رمزگذاری گفتگو متوقف شده است.</string>
@@ -553,16 +508,14 @@
   <string name="account_wizard_account_title">شناسه حساب کاربری شما</string>
   <string name="account_wizard_host_title">پیکربندی سرور</string>
   <string name="account_wizard_ready_title">آماده اید؟</string>
-  <string name="account_wizard_setup_body">شناسه حساب کاربری خود را برای پیکربندی ربات پرچونه برای سرویس گفتگوی XMPP تان وارد کنید. این شناسه شبیه یک آدرس ایمیل است:</string>
   <string name="account_wizard_account_body">لطفا حساب کاربری خود را وارد کنید (user@hostname):</string>
   <string name="account_wizard_host_body">لطفا عدد پورت (پیشفرض 5222 است) و نام میزبان سرور خود را وارد و یا ویرایش کنید.</string>
-  <string name="account_wizard_ready_body">رباط پرچونه پیکربندی شده، حالا وقت این است که به سرویس خود متصل شوید و بصورت امن، مطمین و خصوصی گفتگو کنید!</string>
   <string name="account_wizard_no_domain_warning">شما برای شناسه حساب کاربری خود، قسمت @hostname.com را وارد نکرده اید. لطفن دوباره تلاش کنید!</string>
   <string name="account_wizard_no_root_domain_warning">نام میزبان شما پسوند .com یا .net یا شبیه به اینها را نداشت. لطفا دوباره تلاش کنید!</string>
   <string name="signin_password_prompt">رمز عبور خود را وارد کنید:</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">تنظیمات حساب کاربری</string>
   <string name="pref_default_locale">defLoc\n</string>
-  <string name="warning_alpha">هشدار: این یک انتشار غیر پایانی از ربات پرچونه است که ممکن است حفره های امنیتی و اشکالاتی داشته باشد.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">گروه ها</string>
   <string name="otr_gen_key">درحال تولید یک جفت کلید OTR...</string>
@@ -599,4 +552,8 @@
   <string name="qmp_answer_hint">پاسخ مورد انتظار</string>
   <string name="remote_verified_us">دوست شما، هویت شما را تایید کرده. حالا شما برای تایید هویت دوستتان سوال خود را بپرسید</string>
   <string name="no_messages">گفتگویی وجود ندارد\n\nاینجا را کلیک کنید تا شروع کنید</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

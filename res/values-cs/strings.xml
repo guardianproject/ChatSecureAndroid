@@ -136,7 +136,6 @@
   <string name="sign_in">Přihlásit se</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Přihlašování...</string>
   <!--Dialog title-->
@@ -204,17 +203,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Zobrazit jako offline</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">Datový kanál</string>
-  <string name="data_encoding_label">Kódování dat</string>
-  <string name="cir_channel_label">CIR kanál</string>
-  <string name="host_label">Host</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Uložit</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -236,7 +224,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Odeslat</string>
   <!--Error message when a chat failed to be sent.-->
@@ -416,25 +405,6 @@
     <item>Zmatený</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>Happy</item>
     <item>Smutný</item>
@@ -477,12 +447,10 @@
   <string name="menu_view_encrypt_chat">Šifrování On / Off</string>
   <string name="use_tor">Připojit přes Tor (Vyžaduje aplikaci Orbot)</string>
   <!--Welcome Splash Screen-->
-  <string name="welcome_first">Používáte poprvé? </string>
   <string name="welcome_skip">Už se nemůžu dočkat, jak začít?</string>
   <string name="welcome_about">Jak začít</string>
   <string name="welcome_account">Nastavení účtu</string>
   <!--About: Welcome-->
-  <string name="about_welcome">Gibberbot je mobilní instant messaging aplikace, která poskytuje zvláštní bezpečnostní prvky, které zabraňují ostatním špehování vašich rozhovorů a komunikace. \n\nAplikace podporuje všechny služby, které používají Jabber, nebo XMPP protokol, jako je Google GTalk, nebo Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Jak je to bezpečné?</string>
   <!--About: Security-->
@@ -500,8 +468,6 @@
   <string name="account_setup_pers_pw_on">Heslo ukládat do mezipaměti</string>
   <string name="account_setup_pers_pw_off">Heslo neukládat do mezipaměti</string>
   <string name="account_setup_pers_auto_title">Automaticky přihlásit</string>
-  <string name="account_setup_pers_auto_on">Připojt Gibberbot po spuštění</string>
-  <string name="account_setup_pers_auto_off">Nepřipojovat Gibberbot po spuštění</string>
   <string name="account_setup_pers_now_title">Přihlásit se nyní</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">Osobní (volitelné)</string>
@@ -512,14 +478,8 @@
   <string name="account_setup_signin_b">Generování dvojice klíčů ...</string>
   <string name="account_setup_signin_c">Podepisování ...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">V Gibberbotu došlo k chybě při ověřování uživatelského jména nebo hesla - zkontrolujte je a zkuste to znovu.</string>
-  <string name="account_setup_error_keypair">V Gibberbotu došlo k chybě při generování dvojce klíčů.</string>
-  <string name="account_setup_error_server">V Gibberbotu došlo k chybě při připojování k chat serveru - prosím zkontrolujte nastavení a zkuste to znovu.</string>
-  <string name="account_setup_error_connectivity">V Gibberbotu došlo k chybě při připojování - prosím zkontrolujte připojení k síti a zkuste to znovu.</string>
   <string name="menu_sign_in">Přihlásit</string>
   <string name="menu_gen_key">Přegenerovat klíč</string>
-  <string name="error_suspended_connection">Gibberbot ztratil připojení k síti</string>
-  <string name="error_reestablish_connection">Gibberbot se pokouší o obnovu připojení.</string>
   <string name="otr_session_status_plaintext">Upozornění: Tento chat NENÍ šifrován</string>
   <string name="otr_session_status_encrypted">Tento chat je bezpečný, ale totožnost účastníků NEBYLA ověřena</string>
   <string name="otr_session_status_finished">Upozornění: šifrování chatu bylo zastaveno.</string>
@@ -532,7 +492,6 @@
   <string name="signin_password_prompt">Vložte vaše heslo:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">Nastavení účtu</string>
-  <string name="warning_alpha">UPOZORNĚNÍ: Toto je předčasné uvolnění Gibberbotu, které může stále obsahovat bezpečnostní díry nebo chyby.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupiny</string>
   <string name="search_label">Kontakt</string>
@@ -551,4 +510,8 @@
   <string name="btn_back">Zpět</string>
   <string name="title_chats">Konverzece</string>
   <string name="new_messages_notify">Nová zpráva(y) od</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

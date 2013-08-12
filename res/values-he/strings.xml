@@ -5,397 +5,224 @@
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">אודות</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">הוספת חשבון</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">ערוך חשבון</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">מחק חשבון</string>
   <!--Screen menu item: sign out all service.-->
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
-  <string name="menu_cancel_signin">Annuller login</string>
   <!--Contact list screen menu and context menu items.-->
   <!--This is a screen menu item for the Contact List Screen. It lets the
     user to add a friend to the friend list. May be overrided by the plugin.-->
-  <string name="menu_add_contact">Tilføj kontakt</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     remove a contact from the list. May be overrided by the plugin.-->
-  <string name="menu_remove_contact">Slet kontakt</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     block a contact. May be overrided by the plugin.-->
-  <string name="menu_block_contact">Bloker kontakt</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
-  <string name="menu_view_blocked">Blokeret</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
-  <string name="menu_view_accounts">Kontoliste</string>
+  <string name="menu_view_accounts">חשבונות</string>
   <!--Screen menu item on active chat list to start new chat-->
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
-  <string name="menu_settings">Indstillinger</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
-  <string name="menu_start_chat">Start chat</string>
   <!--Screen menu item on the contact list to sign out the service.-->
-  <string name="menu_sign_out">Log ud</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Vis profil</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_end_conversation">Afslut chat</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
-  <string name="menu_view_contact_list">Liste over kontakter</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Inviter ...</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">Skift chats</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
-  <string name="menu_insert_smiley">Indsæt smiley</string>
   <!--Strings for the contact info screen-->
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
      be appended to the end of this.-->
-  <string name="menu_plus">Menu+</string>
   <!--The title of a simple input dialog. Currently not used.-->
   <!--Strings for the confirm dialogs-->
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
-  <string name="confirm">Bekræft</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
   <!--The "OK" button label for the error message dialog.-->
-  <string name="ok">OK</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="cancel">Annuller</string>
   <!--The "OK" button label for the confirm dialogs.-->
-  <string name="yes">OK</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="no">Annuller</string>
+  <string name="no">ביטול</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
-  <string name="label_username">Brugernavn:</string>
+  <string name="label_username">User@Host</string>
   <!--The password label.-->
-  <string name="label_password">Adgangskode:</string>
+  <string name="label_password">סיסמה</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
-  <string name="remember_password">Husk min adgangskode.</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Log mig automatisk ind.</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
-  <string name="sign_up">Har du ikke en konto?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_auto_sign_in">Denne valgmulighed logger dig automatisk ind, hver gang du åbner dette program. For at deaktivere denne valgmulighed skal du logge ud og så fjerne markeringen i afkrydsningsfeltet \\"Log mig ind automatisk\\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
-  <string name="sign_in">Log ind</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Logger ind ...</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Baggrundsdata er deaktiveret</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
-  <string name="bg_data_prompt_ok">Aktiver</string>
   <!--Cancel button for the prompt dialog-->
-  <string name="bg_data_prompt_cancel">Afslut</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
   <!--The title of the subscription request group if there is any.-->
-  <string name="subscriptions">Venneinvitationer</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
-  <string name="unknown_contact">(\"<i>\"Ukendt\"</i>\")</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
-  <string name="empty_contact_group">Tom</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">Der er ingen samtaler</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
-  <string name="contacts_picker_title">Vælg kontakt(er), der skal inviteres</string>
-  <string name="contact_filter_hint">Indtast for at finde kontakt</string>
-  <string name="empty_contact_list">Der blev ikke fundet nogen kontakter.</string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
   <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">Der er ingen blokerede kontakter.</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">Kontaktens profil</string>
   <!--The label of the status on the contact profile dialog.-->
-  <string name="label_status">Status:</string>
   <!--The label of the client type on the contact profile dialog.-->
-  <string name="label_client_type">Klienttype:</string>
   <!--The client type which indicates the contact is sign in with a PC client.-->
-  <string name="client_type_computer">Computer</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
-  <string name="client_type_mobile">Mobil</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_available">Online</string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_busy">Optaget</string>
   <!--This is an adjective describing the "away" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_away">Ikke til stede</string>
   <!--This is an adjective describing the "idle" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_idle">Ikke aktiv</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_offline">Offline</string>
   <!--This is an adjective describing the "invisible" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_invisible">Vis som offline</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
-  <string name="me">Mig</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Indtast for at skrive</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
   <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
-  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
-  <string name="send">Send</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Beskeden kunne ikke sendes.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Forbindelsen til serveren er gået tabt. Beskeden sendes, når du er online.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
-  <string name="select_link_title">Vælg link</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">Der er ingen aktive chats.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
-  <string name="add_contact_title">Tilføj kontakt</string>
   <!--The label of the email input box on the Add Contact Screen.-->
-  <string name="input_contact_label">E-mail-adresse på den person, du ønsker at invitere:</string>
   <!--The label of the list spinner on the Add Contact Screen.-->
-  <string name="choose_list_label">Vælg en liste:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Indtast et navn for at tilføje fra Kontakter.</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
-  <string name="invite_label">Send invitation</string>
   <!--provider plugin names-->
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="hide_offline_contacts">Skjul offline kontakter</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
-  <string name="notification_group_title">Meddelelsesindstillinger</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">IM-meddelelser</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Underret i statuslinjen, når der kommer en IM</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_vibrate_title">Vibrer</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Vibrer også, når der kommer en IM</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_sound_title">Lyd</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Spil også ringetone, når der kommer en IM</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Vælg ringetone</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
   <!--The button for accepting an invitation.-->
-  <string name="accept_invitation">Accepter</string>
   <!--The button for decline an invitation.-->
-  <string name="decline_invitation">Afvis</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
   <!--The button for approving a subscription request.-->
-  <string name="approve_subscription">Accepter</string>
   <!--The button for delecling a subscription request.-->
-  <string name="decline_subscription">Afvis</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
-  <string name="notify_groupchat_label">Gruppechatinvitation</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
   <!--IM service permission-->
-  <string name="perm_label">start IM-tjeneste</string>
-  <string name="perm_desc">Lader programmer starte IM-tjeneste efter hensigt.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
-  <string name="error">Bemærk</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">Listen blev ikke tilføjet.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">Kontakten blev ikke blokeret.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">Blokeringen af kontakten blev ikke ophævet.</string>
   <!--Error message for when the user didn't select a contact as required.-->
-  <string name="select_contact">Vælg en kontakt først.</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">\"Afbrudt!\"\n</string>
   <!--Error message for when the IM service has died.-->
-  <string name="service_error">Servicefejl!</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">Listen over kontakter blev ikke indlæst.</string>
   <!--Error message for failed to connect to the server.-->
-  <string name="cant_connect_to_server">Der kan ikke oprettes forbindelse til serveren. Kontroller din forbindelse.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">Vent, mens din liste over kontakter indlæses.</string>
   <!--Error message for when a network error occurred.-->
-  <string name="network_error">Der opstod en netværksfejl.</string>
   <!--Error message for lack of server support error.-->
-  <string name="service_not_support">Serveren understøtter ikke denne funktionalitet.</string>
   <!--Erorr message for bad password error.-->
-  <string name="invalid_password">Den adgangskode, du indtastede, er ikke gyldig.</string>
   <!--Error message for server internal error.-->
-  <string name="internal_server_error">Serveren registrerede en fejl.</string>
   <!--Error message for when the server does not implement the feature.-->
-  <string name="not_implemented">Serveren understøtter ikke denne funktionalitet.</string>
   <!--Error message for server not available error.-->
-  <string name="service_unavaiable">Serveren er ikke tilgængelig i øjeblikket.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">Der opstod timeout for serveren.</string>
   <!--Error message for when the server does not support the current protocol version.-->
-  <string name="version_not_supported">Serveren understøtter ikke den aktuelle version.</string>
   <!--Error message for when the message queue on the server is full.-->
-  <string name="message_queue_full">Beskedkøen er fuld.</string>
   <!--Error message for when the domain is not supported by the server.-->
-  <string name="domain_not_supported">Serveren understøtter ikke videresendelse til domænet.</string>
   <!--Error message for a bad username error.-->
-  <string name="unknown_user">Det indtastede brugernavn kunne ikke genkendes.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Beklager! Du er blokeret af brugeren.</string>
   <!--Error message for session expired error.-->
-  <string name="session_expired">Sessionen er udløbet. Log ind igen.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
-  <string name="forced_logout">du er logget ind fra en anden klient.</string>
-  <string name="already_logged_in">du er allerede logget ind fra en anden klient.</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">Beklager! Telefonnummeret kan ikke læses fra dit SIM-kort. Kontakt din udbyder for at få hjælp.</string>
   <!--Error message for when the user is not signed in.-->
-  <string name="not_signed_in">Du er ikke logget ind i øjeblikket.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
-  <string-array name="default_smiley_names">
-    <item>Glad</item>
-    <item>Trist</item>
-    <item>Blinker</item>
-    <item>Rækker tunge</item>
-    <item>Overrasket</item>
-    <item>Kysser</item>
-    <item>Råber</item>
-    <item>Sej</item>
-    <item>Pengeglad</item>
-    <item>Forlegen</item>
-    <item>Flov</item>
-    <item>Engel</item>
-    <item>Uafklaret</item>
-    <item>Græder</item>
-    <item>Lukket med syv segl</item>
-    <item>Griner</item>
-    <item>Forvirret</item>
-  </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="smiley_names">
-    <item>Glad</item>
-    <item>Trist</item>
-    <item>Blinker</item>
-    <item>Rækker tunge</item>
-    <item>Overrasket</item>
-    <item>Kysser</item>
-    <item>Råber</item>
-    <item>Sej</item>
-    <item>Pengeglad</item>
-    <item>Forlegen</item>
-    <item>Flov</item>
-    <item>Engel</item>
-    <item>Uafklaret</item>
-    <item>Græder</item>
-    <item>Lukket med syv segl</item>
-    <item>Griner</item>
-    <item>Forvirret</item>
-  </string-array>
   <!--Welcome Splash Screen-->
   <!--About: Welcome-->
   <!--About: OTR-->
@@ -404,6 +231,7 @@
   <!--Account Setup: Account-->
   <!--Account Setup: Persistence-->
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_profile_sub">פתק קצר עליך</string>
   <!--Account Setup: Advanced-->
   <!--Account Setup: First Sign In-->
   <!--Account Setup: Sign In Errors-->

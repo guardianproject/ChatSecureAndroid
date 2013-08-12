@@ -1,16 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">czytaj wiadomości</string>
+  <string name="ro_perm_desc">\nZezwala aplikacji na odczyt danych od dostawcy zawartości czatu.\n</string>
+  <string name="wo_perm_label">twórz wiadomości</string>
+  <string name="wo_perm_desc">\nZezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.\n</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
+  <string name="im_label">Bezpieczny Komunikator = ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Wybierz konto</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">O Gibberbot</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Dodaj kont</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">Edytuj konto</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Usuń konto</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Wyloguj całość</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Wybierz konto</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
@@ -34,10 +46,13 @@
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Lista kont</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Nowy czat</string>
   <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">Nowe konto</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Ustawienia</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Przeglądaj kontakty</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -52,7 +67,11 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">Rozpocznij szyfrowanie</string>
+  <string name="menu_otr_stop">Zakończ szyfrowanie</string>
+  <string name="menu_clear_chat">Wyczyść czat</string>
   <string name="menu_end_conversation">Zakończ czat</string>
+  <string name="menu_voip_title">Bezpieczna rozmowa głosowa</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -64,8 +83,13 @@
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Przełącz czaty</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
-  <string name="menu_insert_smiley">Wstaw emotikon</string>
+  <string name="menu_insert_smiley">Wstaw emotikonę</string>
+  <string name="menu_resend">Wyślij ponowniw</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Skanuj odcisk palca</string>
+  <string name="menu_fingerprint">Twój odcisk palca</string>
+  <string name="menu_verify_fingerprint">Potwierdź odcisk palca</string>
+  <string name="menu_verify_secret">Potwierdź Sekret</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -76,6 +100,7 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Potwierdź</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">Czy chcesz wylogować się z wszystkich usług ?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -99,7 +124,7 @@
   <string name="add_account"></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
-  <string name="label_username">Nazwa użytkownika:</string>
+  <string name="label_username">Nazwa użytkownika (User@Host):</string>
   <!--The password label.-->
   <string name="label_password">Hasło:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
@@ -109,12 +134,13 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Nie masz konta?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">Dla twojego bezpieczeństwa, gdy stracisz lub zgubisz telefon, zmień hasło przez stronę internetową.</string>
   <string name="check_auto_sign_in">Ta opcja powoduje automatyczne logowanie użytkownika przy każdym uruchomieniu tej aplikacji. Aby wyłączyć tę opcję, wyloguj się, a następnie usuń zaznaczenie pola wyboru „Zaloguj automatycznie”.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Zaloguj</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">Włączam Bezpiecznego Komunikatora = ChatSecure...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Trwa logowanie…</string>
   <!--Dialog title-->
@@ -203,7 +229,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Wyślij</string>
   <!--Error message when a chat failed to be sent.-->
@@ -219,6 +246,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Brak aktywnych czatów.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy...</string>
+  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy...</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Dodaj kontakt</string>
@@ -231,7 +260,11 @@
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Wyślij zaproszenie</string>
   <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Rozmowy w sieci lokalnej (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">Tworzenie konta</string>
+  <string name="encryption_and_anonymity_title">Szyfrowanie i Anonimowość</string>
   <string name="hide_offline_contacts">Ukryj kontakty offline</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">Ustawienia powiadomień</string>
@@ -242,6 +275,10 @@
   <string name="notification_enabled_summary">Sygnalizuj nową wiadomość czatu na pasku stanu</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="foreground_service_title">Użyj wysoki priorytet</string>
+  <string name="foreground_service_summary">Zmniejsz prawdopodobieństwo, że Android zresetuje twoje poączenie z serwisem. To zostanie wyświetlone w polu powiadamiania</string>
+  <string name="heartbeat_interval_title">Interwał pulsu serca</string>
+  <string name="heartbeat_interval_summary">Użyj większej wartości (w minutach) aby oszczędzać baterię. Wyższa wartość może spowodować, że provider zakończy twoje połączenie ze względu na nieaktywność.</string>
   <string name="notification_vibrate_title">Wibracje</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Sygnalizuj wiadomość czatu wibracją</string>
@@ -323,6 +360,7 @@
   <string name="contact_not_loaded">Czekaj, trwa ładowanie listy kontaktów.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Wystąpił błąd sieciowy.</string>
+  <string name="wifi_not_connected_error">WiFi jest wymagane dla tego połącznia</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Serwer nie obsługuje tej funkcji.</string>
   <!--Erorr message for bad password error.-->
@@ -396,17 +434,190 @@
     <item>Śmieje się</item>
     <item>Zakłopotanie</item>
   </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="menu_contact_list">Lista kontaktów</string>
+  <string name="menu_view_encrypt_chat">Włączo/Wyłącz szyfrowanie</string>
+  <string name="use_tor">Połącz wykorzytując Tor (Wymaga aplikacji Orbot)</string>
   <!--Welcome Splash Screen-->
+  <string name="app_name">Bezpieczny Komunikator = ChatSecure</string>
+  <string name="welcome_first">Pierwszy raz używasz Bezpiecznyego Komunikatora = ChatSecure ?</string>
+  <string name="welcome_skip">Nie możesz doczekać się żeby zacząć ? :)</string>
+  <string name="welcome_about">Zaczynij tutaj</string>
+  <string name="welcome_account">Tworzenie konta</string>
   <!--About: Welcome-->
+  <string name="about_welcome_title">O BezpiecznymKomunikatorze = ChatSecure</string>
+  <string name="about_welcome">Bezpieczny komunikator = ChatSecure zapewnia bezpieczeństwo, które uniemożliwi śledzenie twoich rozmów.\n\nAplikacja wspiera każdy serwis komunikacyjny, który używa protokołów Jabber lub XMPP, jak na przykład Google GTalk lub Jabber.org.</string>
   <!--About: OTR-->
+  <string name="about_otr_title">Jak to jest zabezpieczone ?</string>
+  <string name="about_otr">OTR, skrót od ang. \"Off-the-Record Messaging\", to system zabezpieczenia na celu umożliwienia prywatności poprzez naśladowanie charakterystyki prywatnej rozmowy w rzeczywistym świecie, w tym szyfrowanie, uwierzytelnianie, zaprzeczenie i \"forward secrecy\" . \n\nProtokół OTR jest zgodny z klientami czatu stacjonarnymi takie jak Adium lub Pidgin.</string>
   <!--About: Security-->
+  <string name="about_security_title">Czy moje rozmowy są zabezpieczone?</string>
+  <string name="about_security">Bezpieczny komunikator = ChatSecure działa w trybie bezpiecznym jeśli obaj uzytkownicy używają kompatybilnych aplikacji, więc upewnij się, że twoi znajomi korzystają z ChatSecure w komórkach bądź Adium lub Pidgin w przypadku korzystania z komputera. Pamiętaj aby ustawić jak i kiedy ChatSecure będzie szyfrował twoje rozmowy w Ustawieniach konta.</string>
   <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">Ustawienie wyrażenia hasłowego</string>
+  <string name="setup_passphrase">Przed rozpoczęciem wybierz bezpieczne wyrażenie hasłowe aby chronić swój Bezpieczny Komunikator = SecureChat przed niechcianym/niebezpiecznym dostępem z zewnątrz.</string>
+  <string name="setup_passphrase_label1">Wyrażenie hasłowe:</string>
+  <string name="setup_passphrase_label2">Wyrażenie hasłowe (powtórz):</string>
   <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">użytkownik@domena.com</string>
+  <string name="account_setup_new_username">nowy użytkownik</string>
+  <string name="account_setup_service_provider">dostawca serwisu (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">hasło</string>
+  <string name="account_setup_password_confirm">powtórz hasło</string>
+  <string name="account_setup_advanced_button">Zaawansowane ustawienia konta</string>
+  <string name="account_select_type">Rodzaj konta</string>
+  <string name="btn_create_new_account">Zarejstruj konto</string>
   <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">Trwałość</string>
+  <string name="account_setup_pers_pw_title">Zapamiętaj hasło</string>
+  <string name="account_setup_pers_pw_on">Hasło zbuforowane</string>
+  <string name="account_setup_pers_pw_off">Hasło niezbuforowane</string>
+  <string name="account_setup_pers_auto_title">Automatycznie zaloguj</string>
+  <string name="account_setup_pers_auto_on">Połącz Bezpieczny Komunikator = ChatSecure przy starcie</string>
+  <string name="account_setup_pers_auto_off">Nie łącz Bezpieczny Komunikator = ChatSecure przy starcie </string>
+  <string name="account_setup_pers_now_title">Zaloguj teraz</string>
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">Prywatny (opcja)</string>
+  <string name="account_setup_personal_alias_title">Alias konta (twoja imię)</string>
+  <string name="account_setup_personal_alias_sub">Jak wygląda twoje konto w sieci</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Krótka informacja o tobie</string>
   <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">Wymuś szyforwanie / odmawiaj używania zwykłego tekstu</string>
+  <string name="account_setup_advanced_enc_auto">Kiedy możliwe, szyfruj rozmowy automatycznie</string>
+  <string name="account_setup_advanced_enc_req">Szyfruj rozmowy jak zażądane</string>
+  <string name="account_setup_advanced_enc_off">Wyłącz szyfrowanie rozmów</string>
   <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń...</string>
+  <string name="account_setup_signin_b">Generowanie klucza...</string>
+  <string name="account_setup_signin_c">Trwa logowanie...</string>
   <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">Bezpieczy Komunikator = ChatSecure wykrył błąd w trakcie logowania - sprawdź ponownie nazwę użytkownika i hasło</string>
+  <string name="account_setup_error_keypair">Bezpieczny Komunikator = ChatSecure napotkał błąd w trakcie generowania klucza.</string>
+  <string name="account_setup_error_server">Bezpieczny Komunikator = ChatSecure napotkał błąd w trakcie podłączania się ze serwerem czat - sprawdź ustawienia i spróbuj ponownie.</string>
+  <string name="account_setup_error_connectivity">Bezpieczny Komunikator = ChatSecure napotkał błąd w trakcie podłączania się - sprawdź łączność sieciową i spróbuj ponownie.</string>
+  <string name="label_fingerprint_remote">Ich odcisk palca</string>
+  <string name="label_fingerprint_local">Twój odcisk palca</string>
+  <string name="menu_sign_in">Zaloguj</string>
+  <string name="menu_gen_key">Regenerowanie klucza</string>
+  <string name="error_suspended_connection">Bezpieczny komunikator = ChatSecure utracił połączenie do sieci</string>
+  <string name="error_reestablish_connection">Bezpieczny komunikator próbuje nawiązać połączenie z siecią</string>
+  <string name="otr_session_status_plaintext">Ostrzeżenie: Ta rozmowa nie jest kodowana !</string>
+  <string name="otr_session_status_encrypted">Ostrzeżenie: Ta rozmowa jest zaszyfrowana ALE użytkownicy nie są zweryfikowani !</string>
+  <string name="otr_session_status_finished">Ostrzeżenie: szyfrowanie zostało zaprzestane</string>
+  <string name="otr_session_status_verified">Ta rozmowa jest zaszyfrowana i uzytkownicy zweryfikowani</string>
+  <string name="account_wizard_setup_title">Czarodziej Konta</string>
+  <string name="account_wizard_account_title">ID twojego konta</string>
+  <string name="account_wizard_host_title">Skonfiguruj serwer</string>
+  <string name="account_wizard_ready_title">Czy jesteś gotów?</string>
+  <string name="account_wizard_setup_body">Wpisz ID twojego konta by skonfigurować Bezpiecznego Komunikatora = ChatSecure dla twojego serwisu czata XMPP. Wygląda jak adres email:</string>
+  <string name="account_wizard_account_body">Wprowadź ID twojego konta (użytkownik@nazwa_hosta):</string>
+  <string name="account_wizard_host_body">Wprowadź lub edytuj nazwę hosta twojego serwera rozmów jabber/xmpp oraz numer portu (5222 jest domyślny).</string>
+  <string name="account_wizard_ready_body">Bezpieczny Komunikator = ChatSecure został skonfigurowany, teraz możesz się podłączyć do twojego serwisu i czatować, bezpiecznie i prywatnie!</string>
+  <string name="account_wizard_no_domain_warning">Nie wprowadziłeś części @nazwa-hosta.com dla ID twojego konta. Spróbuj ponownie!</string>
+  <string name="account_wizard_no_root_domain_warning">Twój hostname (nazwa hostu) serwera nie ma .com, .net lub podobnego załącznika. Spróbuj ponownie!</string>
+  <string name="signin_password_prompt">Wpisz swoje hasło:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">Ustawienia konta</string>
+  <string name="pref_default_locale">domLok</string>
+  <string name="warning_alpha">Ostrzeżenie: To jest wczesna wersja Bezpiecznego komunikatora = ChatSecure więc może posiadać luki bezpieczeństwa.</string>
   <!--added 2011/09/01-->
+  <string name="menu_view_groups">Grupy</string>
+  <string name="otr_gen_key">Generowanie nowego klucza OTR...</string>
+  <string name="search_label">Kontakt</string>
+  <string name="search_hint">Wpisz osobę z którą chcesz rozpocząć rozmowę</string>
+  <string name="search_button_text">Idź</string>
+  <string name="menu_locale">Język</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Języki</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaki język powinien być wyświetlany w InTheClear ?</string>
+  <string name="do_srv_lookup">Wyszukaj SRV</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Użyj DNS SRV aby znaleźć aktualny serwer XMPP korzystając z nazwy domeny</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Zezwól aby dane użytkownika i hasło zostały wysłane w postaci tekstu czyli nie były zaszyfrowane. Odradzamy</string>
+  <string name="allow_plain_text_auth">Zezwól autoryzację z użyciem niezaszyfrowanego tekstu</string>
+  <string name="verify_that_the_certificate_is_trusted">Zweryfikuj czy cerytfikat jest zaufany</string>
+  <string name="tls_verification">Weryfikacja TLS</string>
+  <string name="require_tls_ssl_connection">Wymaga połączenia TLS/SSL</string>
+  <string name="transport_encryption">Transportuj Szyfrowanie</string>
+  <string name="how_encrypted_chats_are_started">jak zaszyfrowane rozmowy są rozpoczynane</string>
+  <string name="the_server_to_connect_to_if_needed">Serwer do ustanowienia połącznia gdy nastąpi taka potrzeba</string>
+  <string name="connect_server">Połącz Serwer</string>
+  <string name="tcp_port_for_xmpp_server">Port TCP dla serwera XMPP</string>
+  <string name="server_port">Port Serwera</string>
+  <string name="xmpp_resource">Źródło XMPP</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">aby rozróżnić to połączenie od innych klientów też zalogownych</string>
+  <string name="xmpp_resource_prio_title">Priorytet Zasób XMPP</string>
+  <string name="xmpp_resource_prio_summary">Wiadomości wysłane do klientów zawierających wielu aktywnych zasób zostaną wysłane do zasobu z najwyższym priorytetem</string>
+  <string name="btn_next">Dalej</string>
+  <string name="btn_back">Cofnij</string>
+  <string name="title_chats">Rozmowy</string>
+  <string name="new_messages_notify">Nowa/e wiadomość/i od</string>
+  <string name="smp_question_title">Autentykacja</string>
+  <string name="smp_question_summary">Wpisz pytanie aby wysłać do tego kontaktu i odpowiedź jakiej oczekujesz, w celu zweryfikowania toższamości osoby</string>
+  <string name="smp_question_hint">pytanie, które chcesz zadać</string>
+  <string name="qmp_answer_hint">oczekiwana odpowiedź</string>
+  <string name="remote_verified_us">Twoj kontakt zweryfikował twoją tożsamość. Teraz ty zweryfikuj osobę po drugiej stronie zadając swoje pytanie.</string>
+  <string name="no_messages">Brak trwających rozmów\n\nKliknij tu aby rozpocząć rozmowę!</string>
+  <string name="pref_theme_dark">Użyj ciemnej skórki</string>
+  <string name="warning_tor_connect">Używasz Tor więc podaj XMPP  \'Connect Server\' hostname bezpośrednio w Zaawansowanych ustawieniach konta</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">Automatycznie włącz Bezpieczny komunikator = ChatSecure</string>
+  <string name="start_on_boot_summary">Zawsze loguj automatycznie do poprzednio używanego konta lub kont</string>
+  <string name="empty_account_message">Nie masz skonfigurowanego konta.\n\nKliknij aby dodać konto!</string>
+  <string name="google_account">Konto Google</string>
+  <string name="pref_in_memory_db_title">Przetrzymywanie wiadomości jedynie w pamięci</string>
+  <string name="pref_in_memory_db_summary">Zapisuj wiadomości w pamięci, nie na pamięci flash, aby chronić przed wykradnięciem. (Może spowodować utratę wiadomości)</string>
+  <string name="pref_background_title">Obrazek tła</string>
+  <string name="pref_background_summary">Wskaż scieżkę (\"/sdcard/foo.jpg\") dla obrazu tła w aplikacji</string>
+  <string name="pref_group_security_title">Zabezpiecznia i prywatność</string>
+  <string name="pref_group_looknfeel_title">Interfejs uzytkownika</string>
+  <string name="pref_group_tuning_title">Inne Dostrajanie</string>
+  <string name="_open_conversations">Otwarte rozmowy</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Wyjście</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Czy chcesz wylogować się z serwisu i zakończyć wszystkie procesy (twarde wyłącznie) ?</string>
+  <string name="rekey_message">Proszę wpisać *nowe* wyrażenie hasłowe. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
+  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości...)</string>
+  <string name="enter_pass">Wprowadź twoje wyrażenie hasłowe:</string>
+  <string name="new_pass">Witamy! Wprowadź mocne wyrażenie hasłowe aby zabezpiecznyć twoje rozmowy. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
+  <string name="pass_err_length">Twoje wyrażenie hasłowe nie jest wystarczająco długie (minimum 6 znaków)</string>
+  <string name="pass_err_upper">Twoje wyrażenie hasłowe nie zawiera żadnej Dużej litery a powinno</string>
+  <string name="pass_err_lower">Twoje wyrażenie hasłowe nie zawiera żadnej małej litery a powinno</string>
+  <string name="pass_err_num">Twoje wyrażenie hasłowe nie zawiera żadnej cyfry a powinno</string>
+  <string name="lock_screen_open">Otwórz</string>
+  <string name="title_activity_lock_screen">Bezpieczny Komunikator = ChatSecure Zablokowany</string>
+  <string name="lock_screen_create_passphrase">Stwórz wyrażenie hasłowe</string>
+  <string name="lock_screen_passphrase_hint">Wprowadź wyrażenie hasłowe</string>
+  <string name="lock_screen_passphrase_not_set_enter">Wprowadź nowe wyrażenie hasłowe</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Potwierdź nowe wyrażenie hasłowe</string>
+  <string name="lock_screen_passphrases_not_matching">Wyrażenia hasłowe są od siebie różne, spróbuj ponownie</string>
+  <string name="pref_sip_account_title">Bezpieczny Głos</string>
+  <string name="pref_sip_account_summary">Proszę wpisać twoje konto OStel.co lub inne konto serwisu zabezpieczone SIP tutaj dla integracji rozmowy</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">Dostrzegliśmy zbiór kluczy OTR do importowania. Chcesz teraz zeskanować hasło QR?</string>
+  <string name="menu_import_keys">Importuj Zbiór Kluczy OTR</string>
+  <string name="successfully_imported_otr_keyring">Pomyślnie zaimportowany Zbiór Kluczy OTR</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Zbiór Kluczy OTR nie został zaimportowany; Proszę sprawdzić, czy plik istnieje w właściwym formacie i lokalizacji</string>
+  <string name="pref_cacheword_timeout_title">Hasło wygasło po przekroczeniu czasu</string>
+  <string name="pref_cacheword_timeout_summary">Jak długo szyfrowanie aplikacji powinno zostać odblokowane.</string>
 </resources>

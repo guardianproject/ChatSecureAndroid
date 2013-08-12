@@ -6,7 +6,7 @@
   <string name="wo_perm_desc">\n        Staat applicaties om data te schrijven naar de IM content provider.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chat - Selecteer een account</string>
@@ -72,6 +72,7 @@
   <string name="menu_otr_stop">Stop Versleuteling</string>
   <string name="menu_clear_chat">Chat Leegmaken</string>
   <string name="menu_end_conversation">Chat beëindigen</string>
+  <string name="menu_voip_title">Secure Call</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -140,7 +141,7 @@
   <string name="sign_in">Aanmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">ChatSecure aan het initialiseren...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Aanmelden...</string>
   <!--Dialog title-->
@@ -208,18 +209,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Offline weergeven</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="preference_title"></string>
-  <string name="data_channel_label">Data kanaal</string>
-  <string name="data_encoding_label">Data encodering</string>
-  <string name="cir_channel_label">CIR kanaal</string>
-  <string name="host_label">Host</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Opslaan</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -241,7 +230,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Verzenden</string>
   <!--Error message when a chat failed to be sent.-->
@@ -426,25 +416,6 @@
     <item>Verward</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>Blij</item>
     <item>Bedroefd</item>
@@ -477,7 +448,7 @@
     <item>:-!</item>
     <item>:-[</item>
     <item>O:-)</item>
-    <item>:-\\</item>
+    <item>:-\</item>
     <item>:\'(</item>
     <item>:-X</item>
     <item>:-D</item>
@@ -488,30 +459,34 @@
   <string name="menu_view_encrypt_chat">Versleutel On/Off</string>
   <string name="use_tor">Verbind via Tor (Vereist de Orbot app)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">Uw eerste keer met Gibberbot?</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Eerste keer dat u met ChatSecure werkt?</string>
   <string name="welcome_skip">Kunt u niet wachten om te beginnen?</string>
   <string name="welcome_about">Aan de slag</string>
   <string name="welcome_account">Account Instellen</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Over Gibberbot</string>
-  <string name="about_welcome">Gibberbot is een mobiele instant messaging app met extra beveiligingsfuncties die voorkomen dat anderen je gesprekken en communicatie kunnen begluren.\n\nDe app ondersteunt iedere chat service die het Jabber of XMPP protocol gebruikt, zoals Google GTalk of Jabber.org.</string>
+  <string name="about_welcome_title">Over ChatSecure</string>
+  <string name="about_welcome">ChatSecure is een mobile chat applicatie met extra beveiligingsonderdelen. Deze zorgen ervoor dat anderen jouw communicatie niet kan lezen.\n\nDe applicatie ondersteund alle chat diensten die het Jabber of XMPP protocol gebruiken, zoals Google GTalk of Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Waarom is het veilig?</string>
   <string name="about_otr">\'Off-the-Record Messaging\' is een beveiligingssysteem ontwikkeld om privacy te beschermen door het nabootsen van privé gesprekken in de echte wereld, met Versleuteling, Authentificatie, Mogelijke ontkenning en Forward Secrecy.\n\nHet OTR-protocol is compatibel met desktop chatcliënten als Adium of Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">Zijn mijn chats veilig?</string>
-  <string name="about_security">Gibberbot\'s chat versleuteling werkt alleen wanneer de ander een compatibele app of programma gebruik. Maak je er dus zeker van dat je contacten Gibberbot op hun mobiel of Adium of Pidgin op hun desktop gebruiken. Je kunt veranderen hoe Gibberbot verbindingen probeert te versleutelen bij Account Instellingen.\n\nAan de slag!</string>
+  <string name="about_security">Gibberbot\'s chat versleuteling werkt alleen wanneer de ander een compatibele app of programma gebruik. Zorg er dus voor dat je zeker weet dat contacten Gibberbot op hun mobiel of Adium of Pidgin op hun desktop gebruiken. Je kunt veranderen hoe Gibberbot verbindingen probeert te versleutelen bij Account Instellingen.⏎\n⏎\nAan de slag!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Toegangscode Instellen</string>
-  <string name="setup_passphrase">Stel voordat u begint een toegangscode in om Gibberbot te beschermen tegen onrechtvaardige toegang.</string>
+  <string name="setup_passphrase">Stel voordat u begint een wachtwoord in om jouw ChatSecure data te beschermen.</string>
   <string name="setup_passphrase_label1">Toegangscode:</string>
   <string name="setup_passphrase_label2">Toegangscode (opnieuw):</string>
   <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">gebruiker@domein.com</string>
+  <string name="account_setup_new_username">nieuwe gebruikersnaam</string>
+  <string name="account_setup_service_provider">service provider (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">wachtwoord</string>
+  <string name="account_setup_password_confirm">wachtwoord bevestigen</string>
   <string name="account_setup_advanced_button">Geavanceerde Account Instellingen</string>
   <string name="account_select_type">Account Type</string>
+  <string name="btn_create_new_account">Registreer Account</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">Volhouden</string>
   <string name="account_setup_pers_pw_title">Wachtwoord Onthouden</string>
@@ -539,7 +514,7 @@
   <string name="account_setup_signin_b">Sleutelpaar aan het genereren...</string>
   <string name="account_setup_signin_c">In aan het loggen...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot trof een fout aan bij het valideren van uw gebruikersnaam of wachtwoord - controleert u ze alstublieft en probeer opnieuw.</string>
+  <string name="account_setup_error_validating">Gibberbot trof een fout aan bij het valideren van uw gebruikersnaam en wachtwoord - controleert u ze alstublieft en probeer opnieuw.</string>
   <string name="account_setup_error_keypair">Gibberbot trof een fout aan tijdens het genereren van een sleutelpaar.</string>
   <string name="account_setup_error_server">Gibberbot trof een fout aan tijdens het verbinding maken met de chatserver - controleer alstublieft uw instellingen en probeer opnieuw.</string>
   <string name="account_setup_error_connectivity">Gibberbot trof een fout aan tijdens het verbinding maken - controleert u alstublieft uw netwerkverbinding en probeer opnieuw.</string>
@@ -560,10 +535,11 @@
   <string name="account_wizard_setup_body">Voer uw gebruikersnaam in om Gibberbot in te stellen voor uw XMPP chatservice. Het lijkt op een e-mail adres:</string>
   <string name="account_wizard_account_body">Voer alstublieft uw gebruikersnaam in (gebruiker@domein):</string>
   <string name="account_wizard_host_body">Voer in of bewerk alstublieft uw jabber/xmpp chatserver hostnaam en poortnummer (standaard is dit 5222).</string>
-  <string name="account_wizard_ready_body">Gibberbot is nu ingesteld. Het is nu tijd om verbinding te maken met uw serviceaanbieder en versleuteld, veilig en privé te chatten!</string>
+  <string name="account_wizard_ready_body">Gibberbot is nu ingesteld. Het is tijd om verbinding te maken met uw chatservice om versleuteld, veilig en privé te chatten!</string>
   <string name="account_wizard_no_domain_warning">U voerde geen @hostnaam.com gedeelte in bij uw gebruikersnaam. Probeer opnieuw!</string>
   <string name="account_wizard_no_root_domain_warning">Uw server hostnaam bevatte geen .com, .net of een vergelijkbare appendix. Probeer opnieuw!</string>
   <string name="signin_password_prompt">Voer uw wachtwoord in:</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">Account Instellingen</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">LET OP: Dit is een prille versie van Gibberbot die beveiligingslekken of fouten kan bevatten.</string>
@@ -584,7 +560,7 @@
   <string name="tls_verification">TLS Verificatie</string>
   <string name="require_tls_ssl_connection">Vereis TLS/SSL verbinding</string>
   <string name="transport_encryption">Transport Versleuteling</string>
-  <string name="how_encrypted_chats_are_started">hoe versleutelde chats gestart worden</string>
+  <string name="how_encrypted_chats_are_started">Hoe de versleuteling van de chat te starten.</string>
   <string name="the_server_to_connect_to_if_needed">De server om mee te verbinding, indien nodig</string>
   <string name="connect_server">Server Adres</string>
   <string name="tcp_port_for_xmpp_server">TCP Poort voor XMPP Server</string>
@@ -603,4 +579,49 @@
   <string name="qmp_answer_hint">het verwachte antwoord</string>
   <string name="remote_verified_us">Uw contact heeft u succesvol geauthentificeerd. Authentificeer nu uw contact door uw eigen vraag te stellen.</string>
   <string name="no_messages">Nog geen conversaties.\n\nKlik hier om te beginnen!</string>
+  <string name="pref_theme_dark">Gebruik Donker Thema</string>
+  <string name="warning_tor_connect">Omdat u Tor gebruikt, moet u de XMPP \'Server Adres\' hostnaam direct invoeren bij Geavanceerde Account Instellingen</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">Start Gibberbot Automatisch</string>
+  <string name="start_on_boot_summary">Altijd starten en automatisch inloggen op eerder ingelogde accounts</string>
+  <string name="empty_account_message">U heeft geen accounts ingesteld.\n\nKlik hier om een nieuwe toe te voegen!</string>
+  <string name="google_account">Google Account</string>
+  <string name="pref_in_memory_db_title">Uitsluitend Berichten Opslag in het Geheugen</string>
+  <string name="pref_in_memory_db_summary">Berichten alleen opslaan in het geheugen, niet in de flashopslag, om zo extractie van berichten te kunnen voorkomen. (Leidt mogelijk tot verlies van berichten)</string>
+  <string name="pref_background_title">Achtergrondafbeelding</string>
+  <string name="pref_background_summary">Stel het pad (\"/sdcard/foo.jpg\") in voor een achtergrondafbeelding voor de app</string>
+  <string name="pref_group_security_title">Beveiliging en Privacy</string>
+  <string name="pref_group_looknfeel_title">Gebruikersinterface</string>
+  <string name="pref_group_tuning_title">Overige Tuning</string>
+  <string name="_open_conversations">open conversatie(s)</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Uitschakelen</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Wilt u uitloggen bij alle services EN alle processen stopzetten (ruwe stopzetting)?</string>
+  <string name="rekey_message">Vul een nieuw wachtwoord in. Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
+  <string name="do_rekey">Jouw bestaande berichten worden met het nieuwe wachtwoord versleuteld (geduld...)</string>
+  <string name="enter_pass">Voer wachtwoord in:</string>
+  <string name="new_pass">Welkom! Vul een sterk wachtwoord in om uw berichten te beveiligen.  Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
+  <string name="pass_err_length">Uw wachtwoord was niet lang genoeg</string>
+  <string name="pass_err_upper">Uw wachtwoord bevatte geen hoofdletters</string>
+  <string name="pass_err_lower">Uw wachtwoord bevatte geen kleine letters</string>
+  <string name="pass_err_num">Uw wachtwoord bevatte geen cijfers</string>
+  <string name="lock_screen_open">Openen</string>
+  <string name="title_activity_lock_screen">ChatSecure vergrendeld</string>
+  <string name="lock_screen_create_passphrase">Maak wachtwoord</string>
+  <string name="lock_screen_passphrase_hint">Voer wachtwoord in</string>
+  <string name="lock_screen_passphrase_not_set_enter">Voer nieuw wachtwoord in</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Bevestig nieuw wachtwoord</string>
+  <string name="lock_screen_passphrases_not_matching">Wachtwoorden kwamen niet overeen, probeer opnieuw</string>
+  <string name="pref_sip_account_title">Secure Voice</string>
+  <string name="pref_sip_account_summary">Gebruik uw OStel.co of andere beveiligde SIP service account voor telefoon integratie.</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">We hebben een OTR-sleutelopslag gevonden. Wil je nu het QR-wachtwoord scannen om deze te importeren?</string>
+  <string name="menu_import_keys">Importeer OTR-sleutels</string>
+  <string name="successfully_imported_otr_keyring">OTR-sleutelring succesvol geïmporteerd</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-sleutelopslag niet geïmporteerd. Controleer of het bestand bestaat en in het juiste formaat en op de juiste plek is.</string>
+  <string name="pref_cacheword_timeout_title">Wachtwoord-timeout</string>
+  <string name="pref_cacheword_timeout_summary">Hoe lang moet app-versleuteling ontsleuteld blijven</string>
 </resources>

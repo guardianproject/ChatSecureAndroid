@@ -1,16 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">läs meddelanden</string>
+  <string name="ro_perm_desc">\nTillåt applikationer att läsa data från IM innehållsleverantör.</string>
+  <string name="wo_perm_label">skriv meddelanden</string>
+  <string name="wo_perm_desc">\nTillåt applikationer att skriva data till IM innehållsleverantör.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Välj ett konto</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">Om</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Lägg till konto</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">Ändra konto</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Ta bort konto</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Logga ut alla</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Välj ett konto</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
@@ -34,10 +46,13 @@
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Kontolista</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Ny chatt</string>
   <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">Nytt konto</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Inställningar</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Sök kontakter</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -52,7 +67,11 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">Starta kryptering</string>
+  <string name="menu_otr_stop">Stoppa kryptering</string>
+  <string name="menu_clear_chat">Rensa chatt</string>
   <string name="menu_end_conversation">Avsluta chatt</string>
+  <string name="menu_voip_title">Säkert samtal</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -65,7 +84,12 @@
   <string name="menu_switch_chats">Byt chatt</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Infoga känsloikon</string>
+  <string name="menu_resend">Skicka igen</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Skanna fingeravtryck</string>
+  <string name="menu_fingerprint">Ditt fingeravtryck</string>
+  <string name="menu_verify_fingerprint">Verifiera fingeravtryck</string>
+  <string name="menu_verify_secret">Verifiera hemlighet</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -76,6 +100,7 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Bekräfta</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">Vill du logga ut ur alla tjänster?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -109,12 +134,13 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Har du inget konto?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">För din säkerhet, om din telefon blir borttappad eller stulen, gå till webbsidan på din dator och ändra ditt lösenord.</string>
   <string name="check_auto_sign_in">Det här alternativet loggar in dig automatiskt varje gång du öppnar programmet. Om du vill inaktivera alternativet loggar du ut och avmarkerar kryssrutan Logga in mig automatiskt.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Logga in</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">startar upp ChatSecure</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Loggar in…</string>
   <!--Dialog title-->
@@ -203,7 +229,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Skicka</string>
   <!--Error message when a chat failed to be sent.-->
@@ -219,6 +246,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Ingen aktiv chatt.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">Startar krypterad chattsession...</string>
+  <string name="stopping_otr_chat">Stoppar krypterad chattsession...</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Lägg till kontakt</string>
@@ -231,7 +260,11 @@
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Skicka inbjudan</string>
   <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Lokal nätverkschatt (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">Kontoinstallation</string>
+  <string name="encryption_and_anonymity_title">Kryptering och anonymitet</string>
   <string name="hide_offline_contacts">Dölj kontakter som är offline</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">Aviseringsinställningar</string>
@@ -242,6 +275,10 @@
   <string name="notification_enabled_summary">Avisering i statusfältet när jag får chattmeddelanden</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="foreground_service_title">Använd förgrundsprioritet</string>
+  <string name="foreground_service_summary">Minska chansen att Android startar om vår anslutningstjänst. Detta placerar en notifikation i notifikationsområdet.</string>
+  <string name="heartbeat_interval_title">Pulsintervall</string>
+  <string name="heartbeat_interval_summary">Använd ett högre värde (i minuter) för att spara batteri. Ett högt värde kan göra att leverantören stänger din anslutning på grund av inaktivitet.</string>
   <string name="notification_vibrate_title">Vibrera</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Vibrera även när jag får chattmeddelanden</string>
@@ -323,6 +360,7 @@
   <string name="contact_not_loaded">Vänta medan vi hämtar din Kontaktlista.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Ett nätverksfel har inträffat.</string>
+  <string name="wifi_not_connected_error">WiFi behövs för denna anslutning.</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Servern stöder inte den här funktionen.</string>
   <!--Erorr message for bad password error.-->
@@ -396,17 +434,192 @@
     <item>Skrattar</item>
     <item>Förvirrad</item>
   </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="menu_contact_list">Kontaktlista</string>
+  <string name="menu_view_encrypt_chat">Kryptering av/på</string>
+  <string name="use_tor">Anslut via Tor (kräver Orbot app)</string>
   <!--Welcome Splash Screen-->
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Första gången du använder ChatSecure?</string>
+  <string name="welcome_skip">Kan du inte vänta på att komma igång?</string>
+  <string name="welcome_about">Kom igång</string>
+  <string name="welcome_account">Kontoinstallation</string>
   <!--About: Welcome-->
+  <string name="about_welcome_title">Om ChatSecure</string>
+  <string name="about_welcome">ChatSecure är en chatt app för mobiler som ger extra säkerhetsfunktioner som hindrar andra från att spionera på dina konversationer och kommunikationer.\n\nAppen har stöd för alla chatt tjänster som använder Jabber eller XMPP protokollen, t.ex. Google Talk eller Jabber.org.</string>
   <!--About: OTR-->
+  <string name="about_otr_title">Hur är det säkert?</string>
+  <string name="about_otr">\'Off-the-Record chatt\' är ett säkerhetssystem designat för att möjliggöra sekretess genom att härma egenskaperna av ett privat samtal i den riktiga världen, inklusive kryptering, autentisering, förnekande, och framåt sekretess.\n\nOTR-protokollet är kompatibelt med chatt klienter för datorer som t.ex. Adium eller Pidgin.</string>
   <!--About: Security-->
+  <string name="about_security_title">Är mina chattar säkra?</string>
+  <string name="about_security">ChatSecure\'s chatt kryptering fungerar endast när du chattar med andra som använder en kompatibel app eller program, så se till att dina kontakter också använder ChatSecure för mobilen och Adium eller Pidgin för datorn. Du kan ställa in exakt hur och när ChatSecure försöker kryptera dina chatter i Kontoinställningar.\n\nLåt oss börja!</string>
   <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">Lösenordsetup</string>
+  <string name="setup_passphrase">Innan du startar var vänlig välj ett säkert lösenord för att skydda din ChatSecure data från obehörig tillgång.</string>
+  <string name="setup_passphrase_label1">Lösenord:</string>
+  <string name="setup_passphrase_label2">Lösenord (igen):</string>
   <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">nytt användarnamn</string>
+  <string name="account_setup_service_provider">serviceleverantör (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">lösenord</string>
+  <string name="account_setup_password_confirm">bekräfta lösenord</string>
+  <string name="account_setup_advanced_button">Avancerade kontoinställningar</string>
+  <string name="account_select_type">Kontotyp</string>
+  <string name="btn_create_new_account">Registrera Konto</string>
   <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">Uthållighet</string>
+  <string name="account_setup_pers_pw_title">Kom ihåg lösenord</string>
+  <string name="account_setup_pers_pw_on">Lösenord lagrat</string>
+  <string name="account_setup_pers_pw_off">Lösenord ej lagrat</string>
+  <string name="account_setup_pers_auto_title">Logga in automatisk</string>
+  <string name="account_setup_pers_auto_on">Anslut vid ChatSecure uppstart</string>
+  <string name="account_setup_pers_auto_off">Anslut ej vid ChatSecure uppstart</string>
+  <string name="account_setup_pers_now_title">Logga in nu</string>
+  <string name="account_setup_pers_now_on">Anslut följande konto setup</string>
+  <string name="account_setup_pers_now_off">Anslut ej följande konto setup</string>
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">Personligt (valfritt)</string>
+  <string name="account_setup_personal_alias_title">Kontoalias (ditt namn)</string>
+  <string name="account_setup_personal_alias_sub">Hur ditt konto ser ut online</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">En kort text om dig själv</string>
   <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">Tvinga kryptering / vägra klartext</string>
+  <string name="account_setup_advanced_enc_auto">När möjligt, kryptera chatter automatiskt</string>
+  <string name="account_setup_advanced_enc_req">Kryptera chatter vid begäran</string>
+  <string name="account_setup_advanced_enc_off">Inaktivera chatt kryptering</string>
   <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">Validerar referenser...</string>
+  <string name="account_setup_signin_b">Genererar nyckelpar...</string>
+  <string name="account_setup_signin_c">Loggar in...</string>
   <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">ChatSecure stötte på ett fel vid validering av ditt användernamn och lösenord - var vänlig kolla dem och försök igen.</string>
+  <string name="account_setup_error_keypair">ChatSecure stötte på ett fel vid generering av ett nyckelpar.</string>
+  <string name="account_setup_error_server">ChatSecure stötte på ett fel vid anslutning till chattservern - var vänlig kolla din konfigurering och försök igen.</string>
+  <string name="account_setup_error_connectivity">ChatSecure stötte på ett fel vid anslutning - var vänlig dubbelkolla din nätverksanslutning och försök igen.</string>
+  <string name="label_fingerprint_remote">Deras fingeravtryck</string>
+  <string name="label_fingerprint_local">Ditt fingeravtryck</string>
+  <string name="menu_sign_in">Logga in</string>
+  <string name="menu_gen_key">Regenerera nyckel</string>
+  <string name="error_suspended_connection">ChatSecure har tappat anslutningen till nätverket</string>
+  <string name="error_reestablish_connection">ChatSecure försöker återetablera en anslutning</string>
+  <string name="otr_session_status_plaintext">Varning: Denna chatt är INTE krypterad</string>
+  <string name="otr_session_status_encrypted">Denna chatt är säker men identiteterna av deltagarna har INTE verifierats</string>
+  <string name="otr_session_status_finished">Varning: Chattkryptering har stoppats.</string>
+  <string name="otr_session_status_verified">Denna chatt är säker och verifierad</string>
+  <string name="account_wizard_setup_title">Kontoguide</string>
+  <string name="account_wizard_account_title">Ditt konto ID</string>
+  <string name="account_wizard_host_title">Konfigurera server</string>
+  <string name="account_wizard_ready_title">Är du redo?</string>
+  <string name="account_wizard_setup_body">Skriv in ditt konto ID för att konfigurera ChatSecure för din XMPP chattservice. Den ser ut som en email adress:</string>
+  <string name="account_wizard_account_body">Var vänlig skriv in ditt konto ID (användare@värd):</string>
+  <string name="account_wizard_host_body">Var vänlig skriv in eller redigera ditt jabber/xmpp chattserver värdnamn och portnummer (5222 är standard).</string>
+  <string name="account_wizard_ready_body">ChatSecure har konfigurerats och nu är det dags att ansluta till din service, och börja chatta säkert och privat!</string>
+  <string name="account_wizard_no_domain_warning">Du skrev inte in en @värdnamn.com del av ditt konto ID. Försök igen!</string>
+  <string name="account_wizard_no_root_domain_warning">Ditt server värdnamn hade inte ett .com, .net, eller liknande appendix. Försök igen!</string>
+  <string name="signin_password_prompt">Skriv in ditt lösenord:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">Kontoinställningar</string>
+  <string name="pref_default_locale">defLoc</string>
+  <string name="warning_alpha">VARNING: Detta är en tidig release av ChatSecure som fortfarande kan innehålla säkerhetshål eller buggar.</string>
   <!--added 2011/09/01-->
+  <string name="menu_view_groups">Grupper</string>
+  <string name="otr_gen_key">Genererar nytt OTR nyckelpar...</string>
+  <string name="search_label">Kontakt</string>
+  <string name="search_hint">skriv namnet på en kontakt du vill chatta med</string>
+  <string name="search_button_text">Börja</string>
+  <string name="menu_locale">Språk</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Vilket språk ska InTheClear visa?</string>
+  <string name="do_srv_lookup">Gör SRV koll</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Använd DNS SRV för att hitta XMPP servern from domännamnet</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Tillåt användarnamnet och lösenordet att skickas som klartext när okrypterad transport används</string>
+  <string name="allow_plain_text_auth">Tillåt klartext autentisering</string>
+  <string name="verify_that_the_certificate_is_trusted">Verifiera att certifikatet är pålitligt</string>
+  <string name="tls_verification">TLS verifikation</string>
+  <string name="require_tls_ssl_connection">Kräv TLS/SSL anslutning</string>
+  <string name="transport_encryption">Transportkryptering</string>
+  <string name="how_encrypted_chats_are_started">hur krypterade chatter startas</string>
+  <string name="the_server_to_connect_to_if_needed">Servern att ansluta till, vid behov</string>
+  <string name="connect_server">Anslut server</string>
+  <string name="tcp_port_for_xmpp_server">TCP port för XMPP server</string>
+  <string name="server_port">Serverport</string>
+  <string name="xmpp_resource">XMPP resurs</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">för att skilja denna anslutning från andra klienter som också är inloggade</string>
+  <string name="xmpp_resource_prio_title">XMPP resursprioritet</string>
+  <string name="xmpp_resource_prio_summary">Meddelanden till klienter med flera aktiva resurser kommer skickas till resursen med högst prioritet</string>
+  <string name="btn_next">Nästa</string>
+  <string name="btn_back">Bakåt</string>
+  <string name="title_chats">Konversationer</string>
+  <string name="new_messages_notify">Nytt meddelande(n) från</string>
+  <string name="smp_question_title">Autentisering</string>
+  <string name="smp_question_summary">Skriv en fråga och skicka till din kontakt, och svaret du förväntas få, för att verifiera att dom verkligen är de dom påstår.</string>
+  <string name="smp_question_hint">fråga</string>
+  <string name="qmp_answer_hint">förväntat svar</string>
+  <string name="remote_verified_us">Din kontakt har framgångsrikt autentiserat dig. Autentisera nu din kontakt genom att fråga in egen fråga.</string>
+  <string name="no_messages">Inga konversationer.\n\nKlicka här för att starta en!</string>
+  <string name="pref_theme_dark">Använd mörkt tema</string>
+  <string name="warning_tor_connect">Eftersom du använder Tor måste du skriva in XMPP \'Anslutningsserver\' värdnamn direkt i Avancerade kontoinställningar</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">Starta ChatSecure automatiskt</string>
+  <string name="start_on_boot_summary">Starta alltid och logga automatiskt in på tidigare inloggade konton</string>
+  <string name="empty_account_message">Du har inga konton konfigurerade.\n\nKlicka här för att lägga till ett!</string>
+  <string name="google_account">Googlekonto</string>
+  <string name="pref_in_memory_db_title">Endast lagring av meddelanden i minnet</string>
+  <string name="pref_in_memory_db_summary">Lagra endast meddelanden i minnet, inte på flash lagringen, för att skydda mot att någon kommer åt meddelandena. (Kan orsaka förlorade meddelanden)</string>
+  <string name="pref_background_title">Bakgrundsbild</string>
+  <string name="pref_background_summary">Ställ in sökväg (\"/sdcard/foo.jpg\") till en bakgrundsbild för appen</string>
+  <string name="pref_group_security_title">Säkerhet och sekretess</string>
+  <string name="pref_group_looknfeel_title">Användargränssnitt</string>
+  <string name="pref_group_tuning_title">Annan inställning</string>
+  <string name="_open_conversations">öppna konversation(er)</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Avsluta</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Vill du logga ut ur alla tjänster OCH döda alla processer (hård avslutning)?</string>
+  <string name="rekey_message">Skriv in ett *nytt* lösenord. Det måste innehålla minst en stor bokstav, en liten bokstav, och en siffra, och vara längre än sex karaktärer.</string>
+  <string name="do_rekey">Krypterar dina existerande noteringar med det nya lösenordet (tålamod...)</string>
+  <string name="enter_pass">Skriv in ditt lösenord:</string>
+  <string name="new_pass">Välkommen! Skriv in ett starkt lösenord för att säkra dina noteringar. Det måste innehålla minst en stor bokstav, en liten bokstav, en siffra, och vara längre än sex karaktärer.</string>
+  <string name="pass_err_length">Ditt lösenord var inte långt nog</string>
+  <string name="pass_err_upper">Ditt lösenord innehåll inte någon stor bokstav</string>
+  <string name="pass_err_lower">Ditt lösenord innehåll inte någon liten bokstav</string>
+  <string name="pass_err_num">Ditt lösenord innehöll inte någon siffra</string>
+  <string name="lock_screen_open">Öppna</string>
+  <string name="title_activity_lock_screen">ChatSecure låst</string>
+  <string name="lock_screen_create_passphrase">Skapa lösenord</string>
+  <string name="lock_screen_passphrase_hint">Skriv in lösenord</string>
+  <string name="lock_screen_passphrase_not_set_enter">Skriv in nytt lösenord</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Bekräfta nytt lösenord</string>
+  <string name="lock_screen_passphrases_not_matching">Lösenord matchade inte, var vänlig försök igen</string>
+  <string name="pref_sip_account_title">Säkert samtal</string>
+  <string name="pref_sip_account_summary">Skriv in din OStel.co eller annat säkert SIP service konto här för samtalsintegration</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">Vi har upptäckt en OTR nyckel att importera. Vill du skanna QR lösenordet nu?</string>
+  <string name="menu_import_keys">Importera OTR nyckellagring</string>
+  <string name="successfully_imported_otr_keyring">Framgågsrik import av OTR nyckelring</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR nyckelring ej importerad; Var vänlig kolla att filen existerar i rätt format och på rätt plats</string>
+  <string name="pref_cacheword_timeout_title">Lösenord timeout</string>
+  <string name="pref_cacheword_timeout_summary">Tid som applikationskrypteringen ska vara olåst</string>
 </resources>

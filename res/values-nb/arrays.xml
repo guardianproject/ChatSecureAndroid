@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Kuvvet iste /</item>
-    <item>Otomatik Denemesi</item>
-    <item>Talep olarak</item>
-    <item>Engelli / Asla</item>
+    <item>Tvinge / Kreve</item>
+    <item>Automatisk forsøk</item>
+    <item>Som forespurt</item>
+    <item>Deaktivert / Aldri</item>
   </string-array>
   <string-array name="otr_options_values">
-    <item>zorunlu</item>
-    <item>otomatik</item>
-    <item>istenen</item>
-    <item>geçersiz</item>
+    <item>tvinge</item>
+    <item>automatisk</item>
+    <item>på forespørsel</item>
+    <item>deaktivert</item>
   </string-array>
   <string-array name="languages">
-    <item>Default</item>
+    <item>Standard</item>
     <item>العربية</item>
     <item>فارسی</item>
     <item>中文(简体)</item>
@@ -28,7 +28,7 @@
     <item>Italiano</item>
     <item>Magyar</item>
     <item>Nederlands</item>
-    <item>Norwegian Bokmål</item>
+    <item>Norsk Bokmål</item>
     <item>Português</item>
     <item>Pyccĸий</item>
     <item>Slovenčina</item>

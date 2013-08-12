@@ -6,7 +6,7 @@
   <string name="wo_perm_desc">يسمح للتطبيقات بكتابة البيانات إلى مزود محتوى الرسائل الفورية.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">جيبربوت</string>
+  <string name="im_label">شات سيكيور ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">دردشة -- حدد حساب</string>
@@ -72,6 +72,7 @@
   <string name="menu_otr_stop">وقف التشفير</string>
   <string name="menu_clear_chat">امسح سجل المحادثة</string>
   <string name="menu_end_conversation">نهاية دردشة</string>
+  <string name="menu_voip_title">إتصال أمن</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -140,7 +141,7 @@
   <string name="sign_in">تسجيل الدخول</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">انطلق يا جيبربوت!</string>
+  <string name="signing_in_to">انطلق يا شات سيكيور!</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
   <!--Dialog title-->
@@ -208,18 +209,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">الظهور دون اتصال</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="preference_title"></string>
-  <string name="data_channel_label">قناة البيانات</string>
-  <string name="data_encoding_label">ترميز البيانات</string>
-  <string name="cir_channel_label">قناة سي آي آر</string>
-  <string name="host_label">العنوان</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">الرسائل القصيرة</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">إكس إم إل</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">حفظ</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -241,7 +230,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">إرسال</string>
   <!--Error message when a chat failed to be sent.-->
@@ -288,6 +278,8 @@
     smaller text below this label-->
   <string name="foreground_service_title">استخدم أولوية المقدمة</string>
   <string name="foreground_service_summary">قلل من احتمالية ان يقوم الاندرويد بإعادة الاتصال</string>
+  <string name="heartbeat_interval_title">فترة النبض</string>
+  <string name="heartbeat_interval_summary">استخدم قيمة أعلى لحفظ بطاريتك. القيمة العالية قد تتسبب باغلاق اتصالك بسبب عدم نشاط الاتصال.</string>
   <string name="notification_vibrate_title">اهتز</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">اهتز أيضا عند وصول الرسائل الفورية</string>
@@ -424,25 +416,6 @@
     <item>الخلط</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>سعيد</item>
     <item>حزين</item>
@@ -486,19 +459,20 @@
   <string name="menu_view_encrypt_chat">تشفير On/Off</string>
   <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
   <!--Welcome Splash Screen-->
-  <string name="welcome_first">هل هذه أول مرة تستخدم بها جيبربوت؟</string>
+  <string name="app_name">شات سيكيور </string>
+  <string name="welcome_first">هل هذه أول مرة تستخدم بها شات سيكيور (ChatSecure)؟</string>
   <string name="welcome_skip">غير قادر على الانتظار؟</string>
   <string name="welcome_about">إبدأ</string>
   <string name="welcome_account">إعداد الحساب</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">عن جيبربوت</string>
-  <string name="about_welcome">جيبربوت هو تطبيق للرسائل الفورية يقوم بتوفير مميزات أمنية كثيرة تمنع الآخرين من التنصت على محادثاتك و اتصالاتك. يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك.</string>
+  <string name="about_welcome_title">عن شات سيكيور (ChatSecure)</string>
+  <string name="about_welcome">شات سيكيور (ChatSecure) هو تطبيق للرسائل الفورية يقوم بتوفير مميزات أمنية كثيرة تمنع الآخرين من التنصت على محادثاتك و اتصالاتك.\n\n يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك.</string>
   <!--About: OTR-->
   <string name="about_otr_title">ما هي المميزات الأمنية؟</string>
   <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة وضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك وأمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر.</string>
   <!--About: Security-->
   <string name="about_security_title">هل محادثاتي آمنة؟</string>
-  <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل)، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهمة. هل أنت جاهز للتحدث بكامل الخصوصية والأمان؟ هيا بنا!</string>
+  <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل) ، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهة. \n\nهل أنت جاهز للتحدث بكامل الخصوصية و الأمان؟ هيا بنا!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">إعداد كلمة السر</string>
   <string name="setup_passphrase">قبل أن نبدأ باستخدام جيبربوت، يرجى إدخال كلمة سر آمنة و محكمة حتى تمنع الدخول غير المصرح به على بيانات جيبربوت لديك.</string>
@@ -506,17 +480,21 @@
   <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
   <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">الاسم@العنوان.كوم</string>
+  <string name="account_setup_new_username">اسم مستخدم جديد</string>
+  <string name="account_setup_service_provider">مقدم الخدمة (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">كلمة السر</string>
+  <string name="account_setup_password_confirm">تأكيد كلمة السر</string>
   <string name="account_setup_advanced_button">إعدادات الحساب المتقدمة</string>
   <string name="account_select_type">نوع الحساب</string>
+  <string name="btn_create_new_account">تسجيل حساب</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">إصرار</string>
   <string name="account_setup_pers_pw_title">تذكر كلمة المرور</string>
   <string name="account_setup_pers_pw_on">تم حفظ كلمة السر مؤقتاً</string>
   <string name="account_setup_pers_pw_off">لم يتم حفظ كلمة السر مؤقتاً</string>
   <string name="account_setup_pers_auto_title">تسجيل الدخول تلقائيا</string>
-  <string name="account_setup_pers_auto_on">قم بالاتصال تلقائياً عند تشغيل جيبربوت</string>
-  <string name="account_setup_pers_auto_off">لا تقم بالاتصال تلقائياً عند تشغيل جيبربوت</string>
+  <string name="account_setup_pers_auto_on">قم بالاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
+  <string name="account_setup_pers_auto_off">لا تقم بالاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
   <string name="account_setup_pers_now_title">تسجيل الدخول الآن</string>
   <string name="account_setup_pers_now_on">قم بالاتصال بعد الانتهاء من إعداد الحساب</string>
   <string name="account_setup_pers_now_off">لا تقم بالاتصال تلقائياً بعد إعداد الحساب</string>
@@ -554,16 +532,17 @@
   <string name="account_wizard_account_title">رقم حسابك</string>
   <string name="account_wizard_host_title">إعداد الموقع</string>
   <string name="account_wizard_ready_title">هل أنت مستعد؟</string>
-  <string name="account_wizard_setup_body">أدخل رقم حسابك لتضبيط جيبربوت للاتصال بموقع المحادثة. رقم الحساب يشبه صيغة الايميل الالكتروني:</string>
+  <string name="account_wizard_setup_body">أدخل رقم حسابك لتضبيط شات سيكيور(ChatSecure) للاتصال بخدمة المحادثة (XMPP). رقم الحساب يشبه صيغة الايميل الالكتروني:</string>
   <string name="account_wizard_account_body">الرجاء إدخال رقم حسابك (اسم المستخدم @ الموقع) :</string>
   <string name="account_wizard_host_body">أدخل اسم موقع مقدم خدمة المحادثة و رقم المنفذ (رقم المنفذ الافتراضي هو 5222).</string>
-  <string name="account_wizard_ready_body">تم إعداد جيبربوت، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
+  <string name="account_wizard_ready_body">تم إعداد شات سيكيور (ChatSecure)، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
   <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
   <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
   <string name="signin_password_prompt">أدخل كلمة السر:</string>
-  
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">إعدادات الحساب</string>
-  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من جيبربوت و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
+  <string name="pref_default_locale">defLoc</string>
+  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من شات سيكيور (ChatSecure) و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">المجموعات</string>
   <string name="otr_gen_key">يتم إنشاء زوج من مفاتيح التشفير خارج السجل OTR</string>
@@ -598,4 +577,51 @@
   <string name="smp_question_summary">أدخل سؤال لصديقك، و الاجابة التي تتوقع منهم وضعها، حتى تتحقق من هويتهم.</string>
   <string name="smp_question_hint">السؤال</string>
   <string name="qmp_answer_hint">الاجابة المتوقعة</string>
+  <string name="remote_verified_us">طرف المحادثة الآخر نجح بالتحقق من هويتك. الآن قم بالتحقق من هويته عن طريق سؤالك الخاص.</string>
+  <string name="no_messages">لا توجد محادثات.\n\nاضغط هنا لبدأ واحدة!</string>
+  <string name="pref_theme_dark">استخدم قالب ألوان غامقة</string>
+  <string name="warning_tor_connect">لأنك تستخدم شبكة تور، يجب ان تدخل عنوان خادم الاتصال XMPP Connect Server مباشرة بإعدادات الحساب المتقدمة</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">إبدأ شات سيكيور (ChatSecure) تلقائياً</string>
+  <string name="start_on_boot_summary">دائماً إبدأ و ادخل بالحسابات تلقائياً</string>
+  <string name="empty_account_message">لا توجد لديك حسابات تم ضبطها.\n\nاضغط هنا لإضافة حساب!</string>
+  <string name="google_account">حساب جوجل </string>
+  <string name="pref_in_memory_db_title">مخزن الرسائل في الذاكرة فقط</string>
+  <string name="pref_in_memory_db_summary">فقط إحفض الرسائل في الذاكرة، وليس على ذاكرة الفلاش، للحماية ضد إستخراج الرسائل (قد يسبب خسارة بعض الرسائل)</string>
+  <string name="pref_background_title">صورة خلفية</string>
+  <string name="pref_background_summary">حدد المسار (\"/sdcard/foo.jpg\") كصورة خلفية للبرنامج</string>
+  <string name="pref_group_security_title">الأمن والخصوصية</string>
+  <string name="pref_group_looknfeel_title">واجهة المستخدم</string>
+  <string name="pref_group_tuning_title">تعديلات أخرى </string>
+  <string name="_open_conversations">المحادثة/المحادثات المفتوحة</string>
+  <string name="_via_orbot">اوربوت/Orbot (تور/Tor)</string>
+  <string name="menu_exit">اخرج</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات و إغلاق جميع العمليات (hard exit)؟</string>
+  <string name="rekey_message">أدخل عبارة سرية جديدة. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
+  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة...</string>
+  <string name="enter_pass">أدخل كلمة السر:</string>
+  <string name="new_pass">مرحباً! أدخل عبارة سرية قوية لتشفير دفتر ملاحظاتك. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
+  <string name="pass_err_length">عبارتك السرية ليست طويلة بما يكفي.</string>
+  <string name="pass_err_upper">لم تحتوي عبارتك السرية على أي حروف كبيرة.</string>
+  <string name="pass_err_lower">لم تحتوي عبارتك السرية على أي حروف صغيرة.</string>
+  <string name="pass_err_num">لم تحتوي عبارتك السرية على أي أرقام.</string>
+  <string name="lock_screen_open">افتح</string>
+  <string name="title_activity_lock_screen">شات سيكيور مقفل</string>
+  <string name="lock_screen_create_passphrase">أنشأ عبارة سرية</string>
+  <string name="lock_screen_passphrase_hint">أدخل عبارة سرية</string>
+  <string name="lock_screen_passphrase_not_set_enter">أدخل عبارة سرية جديدة</string>
+  <string name="lock_screen_passphrase_not_set_confirm">تأكيد العبارة السرية</string>
+  <string name="lock_screen_passphrases_not_matching">العبارات السرية المدخلة لم تتطابق. حاول مرة أخرى.</string>
+  <string name="pref_sip_account_title">إتصال أمن</string>
+  <string name="pref_sip_account_summary">أدخل حسابك في OStel.co أو أي حساب SIP لربط الاتصال.</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">تم اكتشاف مفتاح OTR (تشفير خارج السجل) ليتم استيراده. هل تود القيام بمسح الQR كود الآن؟</string>
+  <string name="menu_import_keys">استيراد مفتاح تشفير خارج السجل OTR</string>
+  <string name="successfully_imported_otr_keyring">تم استيراد مفتاح التسجيل خارج السجل بنجاح</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">لم يتم استيراد مفتاح التسجيل خارج السجل. تأكد من أن الملف بالصيغة أو المكان الصحيحين.</string>
+  <string name="pref_cacheword_timeout_title">انتهاء المدة المؤقتة لحفظ كلمة السر</string>
+  <string name="pref_cacheword_timeout_summary">المدة التي يبقى بها تشفير البرنامح مفتوحاً.</string>
 </resources>
