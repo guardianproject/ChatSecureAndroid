@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -68,6 +67,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import de.schildbach.wallet.util.LinuxSecureRandom;
 
 public class ImApp extends Application {
     
@@ -221,6 +221,9 @@ public class ImApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        new LinuxSecureRandom(); // init proper random number generator
+        
         mBroadcaster = new Broadcaster();
 
         setAppTheme(null);
