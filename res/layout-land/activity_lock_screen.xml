@@ -20,11 +20,13 @@
             android:layout_gravity="left"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/launch_chatsecure" />
+            android:src="@drawable/chatsecure_banner" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+             >
 
             <LinearLayout
                 android:id="@+id/llCreatePassphrase"
