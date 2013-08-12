@@ -103,11 +103,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     protected void onCreate(Bundle icicle) {
+        
         super.onCreate(icicle);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
-
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         
@@ -116,15 +116,38 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
-       
         initSideBar ();
         
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
-        resolveIntent(getIntent());
+        
+        new java.util.Timer().schedule( 
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        handlerIntent.sendEmptyMessage(0);
+                    }
+                }, 
+                1000 
+        );
+        
+     
        
     }
     
+    private Handler handlerIntent = new Handler ()
+    {
+
+        @Override
+        public void handleMessage(Message msg) {
+           super.handleMessage(msg);
+           
+           if (msg.what == 0)
+               resolveIntent(getIntent());
+            
+        }
+        
+    };
     
 
     private SlidingMenu menu = null;
@@ -311,20 +334,23 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
                         long requestedChatId = ContentUris.parseId(data);
-                                            
-                        mCursorChats.moveToPosition(0);
-                        int posIdx = 0;
-                        while (mCursorChats.moveToNext())
+                                           
+                        if (mCursorChats != null)
                         {
-                            long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
-                            
-                            if (chatId == requestedChatId)
+                            mCursorChats.moveToPosition(0);
+                            int posIdx = 0;
+                            while (mCursorChats.moveToNext())
                             {
-                                mChatPager.setCurrentItem(posIdx+2);
-                                break;
+                                long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                                
+                                if (chatId == requestedChatId)
+                                {
+                                    mChatPager.setCurrentItem(posIdx+2);
+                                    break;
+                                }
+                                
+                                posIdx++;
                             }
-                            
-                            posIdx++;
                         }
                         
                    
@@ -1022,6 +1048,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          public void initAccount (long accountId)
          {
 
+             if (accountId == -1)
+                 return;
+             
              ContentResolver cr = getActivity().getContentResolver();
              Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), null,
                      null, null, null);
@@ -1058,14 +1087,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              
              if (conn != null)
              {
-                 //mActiveChatListView.setConnection(conn);     
-                 
                  mPresenceView.setConnection(conn);
 
                  try {
                      mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
-                 } catch (RemoteException e) {
-                     
+                 } catch (RemoteException e) {        
                      mPresenceView.loggingIn(false);
                  //    mHandler.showServiceErrorAlert();
                  }
@@ -1074,6 +1100,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
                  //mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                    //                                                  : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                 
                  uri = ContentUris.withAppendedId(uri, providerId);
                  uri = ContentUris.withAppendedId(uri, accountId);
                  mFilterView.doFilter(uri, null);
