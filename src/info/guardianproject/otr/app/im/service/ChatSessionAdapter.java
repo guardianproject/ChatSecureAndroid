@@ -272,9 +272,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         Message msg = new Message(text);
         // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
         msg.setFrom(mConnection.getLoginUser().getAddress());
+        
+        msg.setType(Imps.MessageType.OUTGOING);
+        
         mAdaptee.sendMessageAsync(msg);
+        
         long now = System.currentTimeMillis();
-        insertMessageInDb(null, text, now, Imps.MessageType.OUTGOING, 0, msg.getID());
+        insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
     /**
@@ -311,8 +315,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
             msg.setFrom(mConnection.getLoginUser().getAddress());
             msg.setID(id);
-            updateMessageInDb(id, Imps.MessageType.OUTGOING, System.currentTimeMillis());
-            mAdaptee.sendMessageAsync(msg);
+            msg.setType(Imps.MessageType.OUTGOING);
+            
+            mAdaptee.sendMessageAsync(msg);            
+            
+            updateMessageInDb(id, msg.getType(), System.currentTimeMillis());
 
         }
         //c.commitUpdates();
@@ -560,7 +567,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             insertOrUpdateChat(body);
             
-            insertMessageInDb(nickname, body, time, Imps.MessageType.INCOMING);
+            insertMessageInDb(nickname, body, time, msg.getType());
 
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
