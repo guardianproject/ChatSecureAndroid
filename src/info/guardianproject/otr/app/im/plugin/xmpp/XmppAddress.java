@@ -5,60 +5,68 @@ import android.os.Parcel;
 
 public class XmppAddress extends Address {
 
-    private String address;
-    private String name;
-    private String resource;
+    private String mAddress;
+    private String mScreenName;
+    private String mResource;
     
     public XmppAddress() {
-    }
-
-    public XmppAddress(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
-
-    public XmppAddress(String address) {
         
-        this (address.replaceFirst("@.*", ""), address);
+    }
+    public XmppAddress(String name, String address, String resource) {
+        mScreenName = name;
+        mAddress = address;
+        mResource = resource;
+    }
+    
+    public XmppAddress(String name, String address) {
+        mScreenName = name;
+        mAddress = address;
+        
+        int resIdx;
+        
+        if ((resIdx = mAddress.indexOf("/"))!=-1)
+                mResource = mAddress.substring(resIdx+1);
+     
+    }
+
+    public XmppAddress(String fullJid) {
+        
+        mScreenName = fullJid.replaceFirst("@.*", "");
+        mAddress = fullJid;
+        
+        int resIdx;
+        if ((resIdx = fullJid.indexOf("/"))!=-1)
+            mResource = fullJid.substring(resIdx+1);
         
     }
 
     @Override
     public String getAddress() {
-        if (resource != null)
-            return address + "/" + resource;
-        else
-            return address;
+        return mAddress;
     }
 
     @Override
     public String getScreenName() {
-        if (resource != null)
-            return name + " (" + resource + ")";
-        else 
-            return name;
+        return mScreenName;
     }
-    
-    @Override
-    public Address appendResource(String resource) {
-        XmppAddress result = new XmppAddress(name, address);
-        result.resource = resource;
-        return result;
-    }
-
+   
     @Override
     public void readFromParcel(Parcel source) {
-        name = source.readString();
-        address = source.readString();
+        mScreenName = source.readString();
+        mAddress = source.readString();
+        mResource = source.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest) {
-        dest.writeString(name);
-        dest.writeString(address);
+        dest.writeString(mScreenName);
+        dest.writeString(mAddress);
+        dest.writeString(mResource);
     }
     
+    @Override
     public String getResource() {
-        return resource;
+        return mResource;
     }
+    
 }

@@ -21,15 +21,9 @@ import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.AccountSettingsActivity;
-import info.guardianproject.otr.app.im.app.BrandingResources;
-import info.guardianproject.otr.app.im.app.ImApp;
-import info.guardianproject.otr.app.im.app.ProviderDef;
-import info.guardianproject.otr.app.im.app.SignInHelper;
-import info.guardianproject.otr.app.im.app.SignoutActivity;
-import info.guardianproject.otr.app.im.app.ThemeableActivity;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
@@ -46,6 +40,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -57,6 +52,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -64,6 +60,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,21 +83,30 @@ public class AccountActivity extends ThemeableActivity {
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
     private static final int ACCOUNT_PASSWORD_COLUMN = 3;
+    
+    public final static String DEFAULT_SERVER_GOOGLE = "talk.l.google.com";
+    public final static String DEFAULT_SERVER_FACEBOOK = "chat.facebook.com";
+    public final static String DEFAULT_SERVER_JABBERORG = "hermes.jabber.org";
+    public final static String DEFAULT_SERVER_DUKGO = "dukgo.com";
+    public final static String ONION_JABBERCCC = "okj7xc6j2szr2y75.onion";
+    
     //    private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
     //    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
 
     Uri mAccountUri;
     EditText mEditUserAccount;
     EditText mEditPass;
+    EditText mEditPassConfirm;
     CheckBox mRememberPass;
     CheckBox mUseTor;
     Button mBtnSignIn;
     Button mBtnDelete;
+    Spinner mSpinnerDomains;
     
     Button mBtnAdvanced;
     TextView mTxtFingerprint;
 
-    Imps.ProviderSettings.QueryMap settings;
+    Imps.ProviderSettings.QueryMap mSettings;
     
     boolean isEdit = false;
     boolean isSignedIn = false;
@@ -115,6 +121,8 @@ public class AccountActivity extends ThemeableActivity {
     IOtrKeyManager otrKeyManager;
     private SignInHelper mSignInHelper;
 
+    private boolean mIsNewAccount = false;
+    
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -122,9 +130,14 @@ public class AccountActivity extends ThemeableActivity {
         setContentView(R.layout.account_activity);
         Intent i = getIntent();
         
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSherlock().getActionBar()!=null)
+        {
+            getSherlock().getActionBar().setHomeButtonEnabled(true);
+            getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
+        mIsNewAccount = getIntent().getBooleanExtra("register", false);
+        
         mSignInHelper = new SignInHelper(this);
         SignInHelper.Listener signInListener = new SignInHelper.Listener() {
             public void connectedToService() {
@@ -147,11 +160,26 @@ public class AccountActivity extends ThemeableActivity {
         });
 
         mEditPass = (EditText) findViewById(R.id.edtPass);
+        
+        mEditPassConfirm = (EditText) findViewById(R.id.edtPassConfirm);
+        mSpinnerDomains = (Spinner) findViewById(R.id.spinnerDomains);
+        
+        if (mIsNewAccount)
+        {
+            mEditPassConfirm.setVisibility(View.VISIBLE);
+            mSpinnerDomains.setVisibility(View.VISIBLE);
+            mEditUserAccount.setHint(R.string.account_setup_new_username);
+        }
+        
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
         mUseTor = (CheckBox) findViewById(R.id.useTor);
        
 
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
+        
+        if (mIsNewAccount)
+            mBtnSignIn.setText("Create Account");
+        
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
         mBtnDelete = (Button) findViewById(R.id.btnDelete);
         
@@ -195,8 +223,8 @@ public class AccountActivity extends ThemeableActivity {
             {
                 setTitle(getResources().getString(R.string.add_account, provider.mFullName));
     
-                settings = new Imps.ProviderSettings.QueryMap(
-                        cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                mSettings = new Imps.ProviderSettings.QueryMap(
+                        cr, mProviderId, true /* don't keep updated */, null /* no handler */);
             }
             else
             {
@@ -232,19 +260,21 @@ public class AccountActivity extends ThemeableActivity {
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = mApp.getProvider(mProviderId);
 
-            settings = new Imps.ProviderSettings.QueryMap(
+            mSettings = new Imps.ProviderSettings.QueryMap(
                     cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
             mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
-                                   + settings.getDomain();
+                                   + mSettings.getDomain();
             mEditUserAccount.setText(mOriginalUserAccount);
             mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
 
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
 
-            mUseTor.setChecked(settings.getUseTor());
+            mUseTor.setChecked(mSettings.getUseTor());
             
             mBtnDelete.setVisibility(View.VISIBLE);
+            
+            cursor.close();
 
 
         } else {
@@ -259,20 +289,6 @@ public class AccountActivity extends ThemeableActivity {
         }
 
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
-
-        mRememberPass.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                CheckBox mRememberPass = (CheckBox) v;
-
-                if (mRememberPass.isChecked()) {
-                    String msg = brandingRes
-                            .getString(BrandingResourceIDs.STRING_TOAST_CHECK_SAVE_PASSWORD);
-                    Toast.makeText(AccountActivity.this, msg, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         mEditUserAccount.addTextChangedListener(mTextWatcher);
         mEditPass.addTextChangedListener(mTextWatcher);
@@ -316,45 +332,84 @@ public class AccountActivity extends ThemeableActivity {
                 
 
                 final String pass = mEditPass.getText().toString();
+                final String passConf = mEditPassConfirm.getText().toString();
                 final boolean rememberPass = mRememberPass.isChecked();
                 final boolean isActive = false; // TODO(miron) does this ever need to be true?
                 ContentResolver cr = getContentResolver();
 
-                if (!parseAccount(mEditUserAccount.getText().toString())) {
-                    mEditUserAccount.selectAll();
-                    mEditUserAccount.requestFocus();
-                    return;
+                if (mIsNewAccount)
+                {
+                    mDomain = (String)mSpinnerDomains.getSelectedItem();
+                    String fullUser = mEditUserAccount.getText().toString();
+                    
+                    if (fullUser.indexOf("@")==-1)
+                        fullUser += '@' + mDomain;
+                    
+                    if (!parseAccount(fullUser)) {
+                        mEditUserAccount.selectAll();
+                        mEditUserAccount.requestFocus();
+                        return;
+                    }
+                }
+                else
+                {
+                    if (!parseAccount(mEditUserAccount.getText().toString())) {
+                        mEditUserAccount.selectAll();
+                        mEditUserAccount.requestFocus();
+                        return;
+                    }
                 }
 
                 final long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
                         rememberPass ? pass : null);
 
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-
+                
                 //if remember pass is true, set the "keep signed in" property to true
-
-                if (isSignedIn) {
-                    signOut();
-                    isSignedIn = false;
-                } else {
-                    ContentValues values = new ContentValues();
-                    values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
-                    getContentResolver().update(mAccountUri, values, null, null);
-
-                    if (!mOriginalUserAccount.equals(mUserName + '@' + mDomain)
-                        && shouldShowTermOfUse(brandingRes)) {
-                        confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
-                            }
-                        });
-                    } else {
-                        mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                if (mIsNewAccount)
+                {
+                    if (pass.equals(passConf))
+                    {
+                        createNewAccount(mUserName, pass);
+                        ContentValues values = new ContentValues();
+                        values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
+                        getContentResolver().update(mAccountUri, values, null, null);
+                        mSignInHelper.activateAccount(mProviderId, accountId);
+                        //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                        //isSignedIn = true;
+                        //updateWidgetState();
+                        finish();
                     }
-                    isSignedIn = true;
+                    else
+                    {
+                       Toast.makeText(AccountActivity.this, "Your passwords do not match", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                updateWidgetState();
+                else
+                {
+                    if (isSignedIn) {
+                        signOut();
+                        isSignedIn = false;
+                    } else {
+                        ContentValues values = new ContentValues();
+                        values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
+                        getContentResolver().update(mAccountUri, values, null, null);
+                        
+                        if (!mOriginalUserAccount.equals(mUserName + '@' + mDomain)
+                            && shouldShowTermOfUse(brandingRes)) {
+                            confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                                }
+                            });
+                        } else {
+                            mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                        }
+                        isSignedIn = true;
+                    }
+                    updateWidgetState();
+                }
                 
             }
         });
@@ -368,7 +423,6 @@ public class AccountActivity extends ThemeableActivity {
 
         updateWidgetState();
         
-
         if (i.hasExtra("newuser"))
         {
             String newuser = i.getExtras().getString("newuser");
@@ -393,18 +447,20 @@ public class AccountActivity extends ThemeableActivity {
        
         if (mSignInHelper != null)
             mSignInHelper.stop();
-        
-        if (settings != null)
-            settings.close();
-        
+                
         super.onDestroy();
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            checkUserChanged();
+        }
+        return super.onKeyDown(keyCode, event);
     }
     
     private void updateUseTor(boolean useTor) {
         checkUserChanged();
-    
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
     
         OrbotHelper orbotHelper = new OrbotHelper(this);
         
@@ -415,53 +471,18 @@ public class AccountActivity extends ThemeableActivity {
             orbotHelper.promptToInstall(this);
             
             mUseTor.setChecked(false);
-            settings.setUseTor(false);
-            settings.setServer("");
+            mSettings.setUseTor(false);
         }
         else
         {
-        
-            // if using Tor, disable DNS SRV to reduce anonymity leaks
-            settings.setDoDnsSrv(!useTor);
-        
-            String server = settings.getServer();
-        
-            if (useTor && (server == null || server.length() == 0)) {
-                server = settings.getDomain();
-                String domain = settings.getDomain().toLowerCase();
-        
-                // a little bit of custom handling here
-                if (domain.equals("gmail.com")) {
-                    server = "talk.l.google.com";
-                } else if (domain.equals("jabber.ccc.de")) {
-                    server = "okj7xc6j2szr2y75.onion";
-                } else if (domain.equals("jabber.org")) {
-                    server = "hermes.jabber.org";
-                } else if (domain.equals("chat.facebook.com")) {
-                    server = "chat.facebook.com";
-                } else if (domain.equals("dukgo.com")) {
-                    server = "dukgo.com";
-                    //settings.setTlsCertVerify(false); //remove this - MemorizingTrustManager will now prompt
-                }
-                else
-                {
-                    Toast.makeText(this, getString(R.string.warning_tor_connect), Toast.LENGTH_LONG).show();
-                }
-        
-            }
-            else
-            {
-                
-            }
-            
-            settings.setServer(server);
-            settings.setUseTor(useTor);
+            mSettings.setUseTor(useTor);
         }
-        
-        settings.close();
+                
+        settingsForDomain(mSettings.getDomain(),mSettings.getPort());
+             
       
     }
-
+/*
     private void getOTRKeyInfo() {
 
         if (mApp != null && mApp.getRemoteImService() != null) {
@@ -490,7 +511,7 @@ public class AccountActivity extends ThemeableActivity {
             }
         }
 
-    }
+    }*/
 
     private void checkUserChanged() {
         String username = mEditUserAccount.getText().toString().trim();
@@ -502,10 +523,10 @@ public class AccountActivity extends ThemeableActivity {
             
         }
         
+        
+        
     }
     
-   
-
     boolean parseAccount(String userField) {
         boolean isGood = true;
         String[] splitAt = userField.trim().split("@");
@@ -549,56 +570,98 @@ public class AccountActivity extends ThemeableActivity {
         return isGood;
     }
 
-    void settingsForDomain(String domain, int port) {
-
+    /*
+     * If we know the direct XMPP server for a domain, we should turn off DNS lookup
+     * because it is slow, error prone, and a way to leak information from third parties
+     */
+    void settingsForDomain(String domain,int port) {
 
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
             // http://code.google.com/apis/talk/open_communications.html
-            settings.setDoDnsSrv(true);
-            settings.setServer("");
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            
+            mSettings.setDoDnsSrv(false);
+            mSettings.setServer(DEFAULT_SERVER_GOOGLE);            
+            mSettings.setDomain(domain);
+            mSettings.setPort(DEFAULT_PORT);
+            mSettings.setRequireTls(true);
+            mSettings.setTlsCertVerify(true);
+            mSettings.setAllowPlainAuth(false);
         } 
         else if (mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
             //this is not @gmail but IS a google account
-            settings.setDoDnsSrv(false);
-            settings.setServer("talk.google.com"); //set the google connect server
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            mSettings.setDoDnsSrv(false);
+            mSettings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
+            mSettings.setDomain(domain);
+            mSettings.setPort(DEFAULT_PORT);
+            mSettings.setRequireTls(true);
+            mSettings.setTlsCertVerify(true);
+            mSettings.setAllowPlainAuth(false);
         }
         else if (domain.equals("jabber.org")) {
-            settings.setDoDnsSrv(true);
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);
-            settings.setServer("");
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            mSettings.setDoDnsSrv(false);
+            mSettings.setServer(DEFAULT_SERVER_JABBERORG);            
+            mSettings.setDomain(domain);
+            mSettings.setPort(DEFAULT_PORT);            
+            mSettings.setRequireTls(true);
+            mSettings.setTlsCertVerify(true);
+            mSettings.setAllowPlainAuth(false);
         } else if (domain.equals("facebook.com")) {
-            settings.setDoDnsSrv(false);
-            settings.setDomain("chat.facebook.com");
-            settings.setPort(DEFAULT_PORT);
-            settings.setServer("chat.facebook.com");
-            settings.setRequireTls(true); //facebook TLS now seems to be on
-            settings.setTlsCertVerify(false); //but cert verify can still be funky - off by default
-            settings.setAllowPlainAuth(false);
-        } else {
-            settings.setDoDnsSrv(true);
-            settings.setDomain(domain);
-            settings.setPort(port);
-            settings.setServer("");
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            mSettings.setDoDnsSrv(false);
+            mSettings.setDomain(DEFAULT_SERVER_FACEBOOK);
+            mSettings.setPort(DEFAULT_PORT);
+            mSettings.setServer(DEFAULT_SERVER_FACEBOOK);
+            mSettings.setRequireTls(true); //facebook TLS now seems to be on
+            mSettings.setTlsCertVerify(true); //but cert verify can still be funky - off by default
+            mSettings.setAllowPlainAuth(false);
+        } 
+        else if (domain.equals("jabber.ccc.de")) {
+            
+            if (mSettings.getUseTor())
+            {                
+                mSettings.setDoDnsSrv(false);
+                mSettings.setServer(ONION_JABBERCCC);
+            }
+            else
+            {
+                mSettings.setDoDnsSrv(true);
+                mSettings.setServer("");
+            }
+            
+            mSettings.setDomain(domain);
+            mSettings.setPort(DEFAULT_PORT);            
+            mSettings.setRequireTls(true);
+            mSettings.setTlsCertVerify(true);
+            mSettings.setAllowPlainAuth(false);
+        }        
+        else {
+          
+            mSettings.setDomain(domain);
+            mSettings.setPort(port);
+            
+            //if use Tor, turn off DNS resolution, and set Server manually from Domain
+            if (mSettings.getUseTor())
+            {
+                mSettings.setDoDnsSrv(false);
+                
+                //if Tor is off, and the user has not provided any values here, set to the @domain
+                if (mSettings.getServer() == null || mSettings.getServer().length() == 0)
+                    mSettings.setServer(domain);
+            }
+            else if (mSettings.getServer() == null || mSettings.getServer().length() == 0)
+            {
+                //if Tor is off, and the user has not provided any values here, then reset to nothing
+                mSettings.setDoDnsSrv(true);
+                mSettings.setServer("");
+            }
+            
+            mSettings.setRequireTls(true);
+            mSettings.setTlsCertVerify(true);
+            mSettings.setAllowPlainAuth(false);
         }
+        
+        
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -766,11 +829,9 @@ public class AccountActivity extends ThemeableActivity {
 
     private void deleteAccount ()
     {
-        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
-        getContentResolver().delete(accountUri, null, null);
-        Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, mProviderId);
-        getContentResolver().delete(providerUri, null, null);
       
+        //need to delete 
+        ((ImApp)getApplication()).deleteAccount(mAccountId, mProviderId);
     }
     
     private void showAdvanced() {
@@ -886,7 +947,44 @@ public class AccountActivity extends ThemeableActivity {
         return out.toString();
     }
 
-    
+    public void createNewAccount (String usernameNew, String passwordNew)
+    {
+        
+        new AsyncTask<String, Void, String>() {
+            
+            @Override
+            protected String doInBackground(String... params) {
+                try {
+                                        
+                    settingsForDomain(mDomain, mPort);
+                    
+                    XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
+                    xmppConn.registerAccount(mSettings, params[0], params[1]);
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    
+                    return e.getLocalizedMessage();
+                    
+                }
+                return null;
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                
+                if (result != null)
+                {
+                    Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
+                }
+               
+            }
+        }.execute(usernameNew, passwordNew);
+        
+        
+    }
    
 
 }

@@ -40,12 +40,30 @@
 	        android:cursorVisible="true"
 	        android:inputType="textEmailAddress"/>
 	
+	    <Spinner android:id="@+id/spinnerDomains"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:drawSelectorOnTop="true"
+		    android:visibility="gone"
+		    android:entries="@array/account_domains"
+		    android:prompt="@string/select_domain_new_account"
+		/>
+	    
 	    <EditText android:id="@+id/edtPass"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:hint="@string/account_setup_password"
 	        android:autoText="false"
 	        android:selectAllOnFocus="true" android:inputType="textPassword"/>
+	    
+	      <EditText android:id="@+id/edtPassConfirm"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/account_setup_password_confirm"
+	        android:autoText="false"
+	        android:visibility="gone"
+	        android:selectAllOnFocus="true" android:inputType="textPassword"/>
+	    
 	    <LinearLayout 	    android:orientation="vertical"
 	       android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="20dip"></LinearLayout>
 	      

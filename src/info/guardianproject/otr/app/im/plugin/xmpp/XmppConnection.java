@@ -53,6 +53,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import net.java.otr4j.session.SessionStatus;
+
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -200,9 +202,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         aContext = context;
 
-        //mStrongTrustManager = new StrongTrustManager(aContext);
-        //mStrongTrustManager.setNotifyVerificationSuccess(false);
-        //mStrongTrustManager.setNotifyVerificationFail(false);
+        Debug.onConnectionStart();
         
         //setup SSL managers
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
@@ -304,7 +304,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     void postpone(final org.jivesoftware.smack.packet.Packet packet) {
         if (packet instanceof org.jivesoftware.smack.packet.Message) {
-            ChatSession session = findOrCreateSession(parseAddressBase(packet.getTo()));
+            ChatSession session = findOrCreateSession(packet.getTo());
             session.onMessagePostponed(packet.getPacketID());
         }
     }
@@ -1063,9 +1063,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void processPacket(Packet packet) {
-                debug(TAG, "receive message");
+                debug(TAG, "receive message: " + packet.getFrom() + " to " + packet.getTo());
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
-                String address = parseAddressBase(smackMessage.getFrom());
+                String address = smackMessage.getFrom();
                 String body = smackMessage.getBody();
             
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
@@ -1081,37 +1081,31 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (body != null)
                 {
 
-                  ChatSession session = findOrCreateSession(address);
+                    ChatSession session = findOrCreateSession(address);
                    
-                  if (!smackMessage.getFrom().equals(mUser.getAddress().getAddress()))
-                  {
-                        Message rec = new Message(body);
-                        rec.setTo(mUser.getAddress());
-                        rec.setFrom(new XmppAddress(smackMessage.getFrom()));
-                        rec.setDateTime(new Date());
-    
-                        rec.setType(Imps.MessageType.INCOMING);
+                    Message rec = new Message(body);
+                    rec.setTo(mUser.getAddress());
+                    rec.setFrom(new XmppAddress(smackMessage.getFrom()));
+                    rec.setDateTime(new Date());
+
+                    rec.setType(Imps.MessageType.INCOMING);
+                    
+                    boolean good = session.onReceiveMessage(rec);
+                    
+                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                        if (good) {
+                            debug(TAG, "sending delivery receipt");
+                        // got XEP-0184 request, send receipt
+                            sendReceipt(smackMessage);
+                            session.onReceiptsExpected();
+                                                } else {
+                        debug(TAG, "not sending delivery receipt due to processing error");
+                        }
                         
-                        smackMessage.getTo();
-                        smackMessage.getThread();
-                        smackMessage.getType();
-                        
-                        boolean good = session.onReceiveMessage(rec);
-                        
-                        if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                            if (good) {
-                                debug(TAG, "sending delivery receipt");
-                            // got XEP-0184 request, send receipt
-                                sendReceipt(smackMessage);
-                                session.onReceiptsExpected();
-                                                    } else {
-                            debug(TAG, "not sending delivery receipt due to processing error");
-                            }
-                            
-                         } else if (!good) {
-                                 debug(TAG, "packet processing error");
-                         }
-                  }
+                     } else if (!good) {
+                             debug(TAG, "packet processing error");
+                     }
+                  
                 }
                     
             }
@@ -1122,13 +1116,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void processPacket(Packet packet) {
 
-                org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence) packet;
-                String address = parseAddressBase(presence.getFrom());
-                String name = parseAddressName(presence.getFrom());
-                Contact contact = findOrCreateContact(name, address);
+                org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence) packet;              
+                Contact contact = findOrCreateContact(presence.getFrom());
 
-                if (presence.getType() == Type.subscribe) {
-                    debug(TAG, "sub request from " + address);
+                if (presence.getType() == Type.subscribe) {                    
                     mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(
                             contact);
                 } else {
@@ -1328,13 +1319,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         setState(DISCONNECTED, info);
     }
 
-    protected static String parseAddressBase(String from) {
-        return from.replaceFirst("/.*", "");
-    }
-
-    protected static String parseAddressName(String from) {
-        return from.replaceFirst("@.*", "");
-    }
 
     @Override
     public void logoutAsync() {
@@ -1407,23 +1391,27 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ChatSession session = mSessionManager.findSession(address);
 
         if (session == null) {
-            Contact contact = findOrCreateContact(parseAddressName(address), address);
+            Contact contact = findOrCreateContact(address);
             session = mSessionManager.createChatSession(contact);
         }
         return session;
     }
 
-    Contact findOrCreateContact(String name, String address) {
+    Contact findOrCreateContact(String address) {
         Contact contact = mContactListManager.getContact(address);
         if (contact == null) {
-            contact = makeContact(name, address);
+            contact = makeContact(address);
         }
 
         return contact;
     }
 
-    private static Contact makeContact(String name, String address) {
-        Contact contact = new Contact(new XmppAddress(name, address), name);
+    
+    private static Contact makeContact(String address) {
+        
+        XmppAddress xAddress = new XmppAddress(address);
+        
+        Contact contact = new Contact(xAddress, xAddress.getScreenName());
 
         return contact;
     }
@@ -1502,7 +1490,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public String normalizeAddress(String address) {
-            return address;
+            return address.split("/")[0];
         }
 
         @Override
@@ -1542,7 +1530,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Collection<Contact> contacts = new ArrayList<Contact>();
             for (RosterEntry entry : entryIter) {
                 
-                String address = parseAddressBase(entry.getUser());
+                String address = entry.getUser();
 
                 /* Skip entries present in the skip list */
                 if (skipList != null && !skipList.add(address))
@@ -1551,9 +1539,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String name = entry.getName();
                 if (name == null)
                     name = address;
-
-                XmppAddress xaddress = new XmppAddress(name, address);
                 
+                XmppAddress xaddress = new XmppAddress(name, address);
+
                 org.jivesoftware.smack.packet.Presence presence = roster.getPresence(address);
                 
                 String status = presence.getStatus();
@@ -1688,11 +1676,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         
         RosterListener rListener = new RosterListener() {
-
+            
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
+                LogCleaner.debug(ImApp.LOG_TAG, "presence changed: " + presence.getFrom());
                 handlePresenceChanged(presence);
 
             }
@@ -1700,39 +1689,54 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
+                execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
                 
-                Collection<Contact> contacts = new ArrayList<Contact>(addresses.size());
-                
-                for (String address : addresses)
-                {
-                    contacts.add(findOrCreateContact(address, address));
-                }
-                
-                notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
-
-                LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " + addresses.size());
-
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-                LogCleaner.debug(ImApp.LOG_TAG, "entries deleted notification: " + addresses.size());
+                //LogCleaner.debug(ImApp.LOG_TAG, "entries deleted notification: " + addresses.size());
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
                 
-                LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
+                
+             //   LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
              
             }
         };
+        
+        class UpdateContactsRunnable implements Runnable {
+            
+            private ContactListManager mConMgr;
+            private Collection<String> mAddresses;
+            
+            public UpdateContactsRunnable (ContactListManager conMgr, Collection<String> addresses)
+            {
+                mConMgr = conMgr;
+                mAddresses = addresses;
+            }
+            
+            public void run ()
+            {
+                Collection<Contact> contacts = new ArrayList<Contact>();
+                
+                for (String address :mAddresses)
+                    contacts.add(findOrCreateContact(address));
+                
+                mConMgr.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
+
+                LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " +contacts.size());
+               
+            }
+
+
+        }
 
         private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
             
             
-            String name = parseAddressName(presence.getFrom());
-            String address = parseAddressBase(presence.getFrom());
-
             String status = presence.getStatus();
             String resource = null;
             
@@ -1745,8 +1749,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
             }
             
-            
-            XmppAddress xaddress = new XmppAddress(name, address);
+            XmppAddress xaddress = new XmppAddress(presence.getFrom());
             
             if (mConnection == null)
                 return;
@@ -1873,15 +1876,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Roster roster = mConnection.getRoster();
             String[] groups = new String[] { list.getName() };
             try {
-                final String name = parseAddressName(address);
-                roster.createEntry(address, name, groups);
+                Contact contact = makeContact(address);
+                roster.createEntry(address, contact.getName(), groups);
 
                 // If contact exists locally, don't create another copy
-                Contact contact = makeContact(name, address);
+                
                 if (!containsContact(contact))
                     notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
                 else
-                    debug(TAG, "skip adding existing contact locally " + name);
+                    debug(TAG, "skip adding existing contact locally " + contact.getName());
             } catch (XMPPException e) {
                 throw new RuntimeException(e);
             }
@@ -1911,7 +1914,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public Contact createTemporaryContact(String address) {
             debug(TAG, "create temporary " + address);
-            return makeContact(parseAddressName(address), address);
+            return makeContact(address);
         }
     }
 
@@ -2453,6 +2456,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
     
     }
+    
         
     
 }

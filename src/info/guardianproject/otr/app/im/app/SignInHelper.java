@@ -8,6 +8,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -114,7 +115,9 @@ public class SignInHelper {
             try {
                 connection.unregisterConnectionListener(mListener);
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "handle connection error",e);
             }
         }
         
@@ -212,7 +215,9 @@ public class SignInHelper {
                 return;
             }
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "sign in account",e);
         }
     }
 
@@ -244,7 +249,7 @@ public class SignInHelper {
                         }).show();
     }
 
-    private void activateAccount(long providerId, long accountId) {
+    public void activateAccount(long providerId, long accountId) {
         // Update the active value. We restrict to only one active
         // account per provider right now, so update all accounts of
         // this provider to inactive first and then update this
