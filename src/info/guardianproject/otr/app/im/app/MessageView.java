@@ -116,12 +116,12 @@ public class MessageView extends LinearLayout {
         {
             String[] nickParts = nickname.split("/");
             
-            lastMessage = nickParts[nickParts.length-1] + ": " + body;
+            lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
             
         }
         else
         {
-            lastMessage = body;// formatMessage(body);
+            lastMessage = formatMessage(body);
         }
         
         if (lastMessage.length() > 0)
@@ -161,12 +161,23 @@ public class MessageView extends LinearLayout {
            
         }
         
-        mMessageContainer.setBackgroundResource(R.color.incoming_message_bg);        
+        if (encryption == EncryptionState.NONE)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+        else if (encryption == EncryptionState.ENCRYPTED)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+        
         mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
 
     }
 
+    private String formatMessage (String body)
+    {
+        return android.text.Html.fromHtml(body).toString();
+    }
+    
     public void bindOutgoingMessage(String address, String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
@@ -222,7 +233,13 @@ public class MessageView extends LinearLayout {
 
         }
         
-        mMessageContainer.setBackgroundResource(R.color.outgoing_message_bg);       
+        if (encryption == EncryptionState.NONE)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+        else if (encryption == EncryptionState.ENCRYPTED)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
+            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+                  
         mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
     }
 
