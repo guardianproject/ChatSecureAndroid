@@ -722,6 +722,25 @@ public class ImApp extends Application {
         }
     }
 
+    public void deleteAccount (long accountId, long providerId)
+    {
+        ContentResolver resolver = getContentResolver();
+        
+        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+        resolver.delete(accountUri, null, null);
+        
+        Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
+        resolver.delete(providerUri, null, null);
+      
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, providerId);
+        ContentUris.appendId(builder, accountId);        
+        resolver.delete(builder.build(), null, null);
+        
+        
+        
+    }
+    
     public void removePendingCall(Handler target) {
         synchronized (mQueue) {
             Iterator<Message> iter = mQueue.iterator();
