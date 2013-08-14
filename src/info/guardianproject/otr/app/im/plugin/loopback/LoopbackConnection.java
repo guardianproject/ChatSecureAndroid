@@ -112,7 +112,7 @@ public class LoopbackConnection extends ImConnection {
         String userName = Imps.Account.getUserName(contentResolver, accountId);
         mUserPresence = new Presence(Presence.AVAILABLE, "available", null, null,
                 Presence.CLIENT_TYPE_DEFAULT);
-        mUser = new Contact(new LoopbackAddress(userName + "!", "loopback"), userName);
+        mUser = new Contact(new LoopbackAddress(userName + "!", "loopback", null), userName);
         setState(LOGGED_IN, null);
     }
 
@@ -151,7 +151,7 @@ public class LoopbackConnection extends ImConnection {
             Collection<Contact> contacts = new ArrayList<Contact>();
             Contact[] contacts_array = new Contact[1];
             contacts.toArray(contacts_array);
-            Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com");
+            Address dummy_addr = new LoopbackAddress("dummy", "dummy@google.com",null);
 
             Contact dummy = new Contact(dummy_addr, "dummy");
             dummy.setPresence(new Presence(Presence.AVAILABLE, "available", null, null,
@@ -203,7 +203,7 @@ public class LoopbackConnection extends ImConnection {
 
         @Override
         protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
-            Contact contact = new Contact(new LoopbackAddress(address, address), address);
+            Contact contact = new Contact(new LoopbackAddress(address, address, null), address);
             contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null,
                     Presence.CLIENT_TYPE_DEFAULT));
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
@@ -234,13 +234,15 @@ public class LoopbackConnection extends ImConnection {
 
         private String address;
         private String name;
-
+        private String resource;
+        
         public LoopbackAddress() {
         }
 
-        public LoopbackAddress(String name, String address) {
+        public LoopbackAddress(String name, String address, String resource) {
             this.name = name;
             this.address = address;
+            this.resource = resource;
         }
 
         @Override
@@ -252,17 +254,24 @@ public class LoopbackConnection extends ImConnection {
         public String getScreenName() {
             return address;
         }
+        
+        @Override
+        public String getResource() {
+            return null;
+        }
 
         @Override
         public void readFromParcel(Parcel source) {
             name = source.readString();
             address = source.readString();
+            resource = source.readString();
         }
 
         @Override
         public void writeToParcel(Parcel dest) {
             dest.writeString(name);
             dest.writeString(address);
+            dest.writeString(resource);
         }
 
     }
