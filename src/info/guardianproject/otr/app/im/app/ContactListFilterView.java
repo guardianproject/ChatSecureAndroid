@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -162,7 +163,9 @@ public class ContactListFilterView extends LinearLayout {
         try {
             mConn.registerConnectionListener(mConnectionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 
@@ -170,7 +173,9 @@ public class ContactListFilterView extends LinearLayout {
         try {
             mConn.unregisterConnectionListener(mConnectionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 

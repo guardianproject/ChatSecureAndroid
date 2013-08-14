@@ -28,6 +28,7 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -172,7 +173,8 @@ public class ActiveChatListView extends LinearLayout {
                     mScreen.startActivity(intent);
                     setAutoRefreshContacts(false);
                 } catch (RemoteException e) {
-                    mHandler.showServiceErrorAlert();
+                    mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                    LogCleaner.error(ImApp.LOG_TAG, "error starting chat",e);
                 }
             
             clearFocusIfEmpty(c);
@@ -199,7 +201,7 @@ public class ActiveChatListView extends LinearLayout {
                     session.leave();
                 }
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             }
             
             clearFocusIfEmpty(c);
@@ -319,19 +321,15 @@ public class ActiveChatListView extends LinearLayout {
             try {
                 IChatSessionManager chatManager = conn.getChatSessionManager();
                 chatManager.registerChatSessionListener(mChatListListener);
-                
+                conn.registerConnectionListener(mConnectionListener);
+
     
             } 
             catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "error registering listeners",e);
             }
             
-            try {
-                conn.registerConnectionListener(mConnectionListener);
-            } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
-           }
-        
     }
 
     private void unregisterListeners(IImConnection conn) {
@@ -341,7 +339,9 @@ public class ActiveChatListView extends LinearLayout {
             chatManager.unregisterChatSessionListener(mChatListListener);
         } 
         catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "error unreg listener",e);
         }
         
     }

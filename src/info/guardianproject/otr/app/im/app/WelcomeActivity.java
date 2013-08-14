@@ -149,6 +149,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             
         } catch (Exception e) {
             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+            
+            Toast.makeText(this, "MAJOR ERROR: Unable to unlock or load app database. Please re-install the app or clear data.",Toast.LENGTH_LONG).show();
+            finish();
+            
             // needs to be unlocked
             return false;
         }

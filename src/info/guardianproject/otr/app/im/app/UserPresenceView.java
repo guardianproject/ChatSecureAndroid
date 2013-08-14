@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,9 @@ public class UserPresenceView extends LinearLayout {
                 mStatusItems.add(new StatusItem(supportedStatus[i], icon, text));
             }
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "get status adapter error",e);
         }
 
         return new StatusIconAdapter(mContext, mStatusItems);
@@ -145,7 +148,9 @@ public class UserPresenceView extends LinearLayout {
             mPresence = conn.getUserPresence();
             mProviderId = conn.getProviderId();
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "set connection error",e);
         }
         if (mPresence == null) {
             mPresence = new Presence();

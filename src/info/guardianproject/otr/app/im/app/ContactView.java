@@ -229,7 +229,7 @@ public class ContactView extends LinearLayout {
 
             //remove HTML tags since we can't display HTML
             status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
-            setBackgroundResource(R.color.incoming_message_bg);
+            setBackgroundResource(R.color.incoming_message_bg_plaintext);
             
             
         }

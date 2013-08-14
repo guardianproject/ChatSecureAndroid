@@ -29,6 +29,7 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -191,7 +192,9 @@ public class ContactListView extends LinearLayout {
                 
                 setAutoRefreshContacts(false);
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
             clearFocusIfEmpty(c);
         }
@@ -223,7 +226,9 @@ public class ContactListView extends LinearLayout {
                     session.leave();
                 }
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
             clearFocusIfEmpty(c);
         }
@@ -263,7 +268,9 @@ public class ContactListView extends LinearLayout {
             IContactListManager manager = mConn.getContactListManager();
             return (manager.getState() == ContactListManager.LISTS_LOADED);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+            
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             return false;
         }
     }
@@ -292,7 +299,9 @@ public class ContactListView extends LinearLayout {
                                     ErrorResUtils.getErrorRes(getResources(), res, address));
                         }
                     } catch (RemoteException e) {
-                        mHandler.showServiceErrorAlert();
+                        
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                     }
                 }
             };
@@ -331,7 +340,9 @@ public class ContactListView extends LinearLayout {
                                     ErrorResUtils.getErrorRes(getResources(), res, address));
                         }
                     } catch (RemoteException e) {
-                        mHandler.showServiceErrorAlert();
+                        
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                     }
                 }
             };
@@ -384,7 +395,9 @@ public class ContactListView extends LinearLayout {
             listManager.registerContactListListener(mContactListListener);
             listManager.registerSubscriptionListener(mSubscriptionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+            
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 
@@ -394,7 +407,9 @@ public class ContactListView extends LinearLayout {
             listManager.unregisterContactListListener(mContactListListener);
             listManager.unregisterSubscriptionListener(mSubscriptionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+            
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 

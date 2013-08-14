@@ -227,13 +227,6 @@ public class ProviderListItem extends LinearLayout {
 
         if (!cursor.isNull(mActiveAccountIdColumn)) {
             
-            if (mLoginName != null)
-            {    
-                mLoginName.setEnabled(false);
-            }
-            
-            mProviderName.setEnabled(false);
-            
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
             
             if (mShowLongName)
@@ -253,9 +246,6 @@ public class ProviderListItem extends LinearLayout {
             case Imps.ConnectionStatus.CONNECTING:
                 secondRowText.append(r.getString(R.string.signing_in_wait));
 
-                mProviderName.setEnabled(true);
-                mLoginName.setEnabled(true);
-
                 if (mSignInSwitch != null && (!mUserChanged))
                 {
                     mSignInSwitch.setOnCheckedChangeListener(null);
@@ -267,9 +257,6 @@ public class ProviderListItem extends LinearLayout {
 
             case Imps.ConnectionStatus.ONLINE:
             
-                mProviderName.setEnabled(true);
-                mLoginName.setEnabled(true);
-                
                 if (mSignInSwitch != null && (!mUserChanged))
                 {
                     mSignInSwitch.setOnCheckedChangeListener(null);

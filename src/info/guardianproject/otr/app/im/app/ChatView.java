@@ -41,6 +41,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,8 +87,6 @@ import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -100,6 +99,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
@@ -159,6 +159,7 @@ public class ChatView extends LinearLayout {
     private TextView mWarningText;
     
     private ViewPager mEmojiPager;
+    private View mActionBox;
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
@@ -386,36 +387,6 @@ public class ChatView extends LinearLayout {
         mApp.unregisterForConnEvents(mHandler);
     }
     
-    private static final int SWIPE_MIN_DISTANCE = 250;
-   // private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 300;
-    private GestureDetector gestureDetector;
-    View.OnTouchListener gestureListener;
-
-    class MyGestureDetector extends SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            try {
-              //  if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                //    return false;
-                // right to left swipe
-                if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                 //   Toast.makeText(SelectFilterActivity.this, "Left Swipe", Toast.LENGTH_SHORT).show();
-                    
-                   closeChatSession();
-                   
-                   mActivity.refreshChatViews();
-                   
-                   
-                }  
-            } catch (Exception e) {
-                // nothing
-            }
-            return false;
-        }
-
-    }
-
     @Override
     protected void onFinishInflate() {
       //  mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
@@ -429,23 +400,9 @@ public class ChatView extends LinearLayout {
         mStatusWarningView = findViewById(R.id.warning);
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
-        // Gesture detection
-        gestureDetector = new GestureDetector(getContext(), new MyGestureDetector());
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                
-                if (gestureDetector != null && event != null)
-                    return gestureDetector.onTouchEvent(event);
-                else
-                    return false;
-            }
-        };
-
-      
+     
         mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
-        
-        mHistory.setOnTouchListener(gestureListener);
-        
+       
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
 
@@ -552,6 +509,50 @@ public class ChatView extends LinearLayout {
             }
         });
         
+
+        mActionBox = (View)findViewById(R.id.actionBox);
+        ImageButton btnActionBox = (ImageButton)findViewById(R.id.btnActionBox);
+        btnActionBox.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                 
+                if (mActionBox.getVisibility() == View.GONE)
+                    mActionBox.setVisibility(View.VISIBLE);
+                else
+                    mActionBox.setVisibility(View.GONE);
+            }
+            
+        });
+        
+        ImageButton btnEndChat = (ImageButton)findViewById(R.id.btnEndChat);
+        btnEndChat.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                 
+                ChatView.this.closeChatSession();
+                mActivity.refreshChatViews();
+            }
+            
+        });
+        
+        ImageButton btnProfile = (ImageButton)findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                 
+                viewProfile();
+            }
+            
+        });
+        
+        
+        
         initEmoji();
         
         
@@ -611,7 +612,6 @@ public class ChatView extends LinearLayout {
             
         });
 
-        
            
         
     }
@@ -641,7 +641,9 @@ public class ChatView extends LinearLayout {
             try {
                 mCurrentChatSession.markAsRead();
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
         unregisterChatListener();
@@ -1011,7 +1013,9 @@ public class ChatView extends LinearLayout {
                 getChatSession().leave();
                 
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         } 
         
@@ -1024,7 +1028,9 @@ public class ChatView extends LinearLayout {
             try {
                 getChatSession().leaveIfInactive();
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
         
@@ -1082,7 +1088,9 @@ public class ChatView extends LinearLayout {
                     manager.blockContact(mUserName);
                   //  mActivity.finish();
                 } catch (RemoteException e) {
-                    mHandler.showServiceErrorAlert();
+
+                    mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                    LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
                 }
             }
         };
@@ -1113,7 +1121,9 @@ public class ChatView extends LinearLayout {
         try {
             return getChatSession() == null ? -1 : getChatSession().getId();
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+            
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             return -1;
         }
     }
@@ -1127,7 +1137,9 @@ public class ChatView extends LinearLayout {
                 try {
                     mChatSessionManager = conn.getChatSessionManager();
                 } catch (RemoteException e) {
-                    mHandler.showServiceErrorAlert();
+                    
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
                 }
             }
         }
@@ -1156,7 +1168,9 @@ public class ChatView extends LinearLayout {
             try {
                 return sessionMgr.getChatSession(username);
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
 
@@ -1195,9 +1209,13 @@ public class ChatView extends LinearLayout {
                 mComposeMessage.requestFocus();
                 requeryCursor();
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             } catch (Exception e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
     }
@@ -1212,10 +1230,9 @@ public class ChatView extends LinearLayout {
             try {
                 getChatSession().sendMessage(msg);
                 requeryCursor();
-            } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
             } catch (Exception e) {
-                mHandler.showServiceErrorAlert();
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e);    
             }
         }
     }
@@ -1264,7 +1281,9 @@ public class ChatView extends LinearLayout {
             try {
                 sessionMgr.registerChatSessionListener(mChatSessionListener);
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
     }
@@ -1280,7 +1299,9 @@ public class ChatView extends LinearLayout {
                 // twice.
                 mChatSessionListener = null;
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
     }
@@ -1491,7 +1512,9 @@ public class ChatView extends LinearLayout {
               //  updateWarningView();
 
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
     }
@@ -1543,7 +1566,9 @@ public class ChatView extends LinearLayout {
                 updateWarningView();
 
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "on chat session created error",e);    
             }
         }
     }
@@ -1913,6 +1938,26 @@ public class ChatView extends LinearLayout {
             }
             
             EncryptionState encState = EncryptionState.NONE;
+            if (mType == Imps.MessageType.INCOMING_ENCRYPTED)
+            {
+                mType = Imps.MessageType.INCOMING;
+                encState = EncryptionState.ENCRYPTED;
+            }
+            else if (mType == Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED)
+            {
+                 mType = Imps.MessageType.INCOMING;
+                 encState = EncryptionState.ENCRYPTED_AND_VERIFIED;
+            }
+            else if (mType == Imps.MessageType.OUTGOING_ENCRYPTED)
+            {
+                mType = Imps.MessageType.OUTGOING;
+                encState = EncryptionState.ENCRYPTED;
+            }
+            else if (mType == Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED)
+            {
+                 mType = Imps.MessageType.OUTGOING;
+                 encState = EncryptionState.ENCRYPTED_AND_VERIFIED;
+            }
             
             switch (mType) {
             case Imps.MessageType.INCOMING:
@@ -1981,7 +2026,9 @@ public class ChatView extends LinearLayout {
                 try {
                     getChatSession().markAsRead();
                 } catch (RemoteException e) {
-                    mHandler.showServiceErrorAlert();
+                    
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
                 }
             }
 

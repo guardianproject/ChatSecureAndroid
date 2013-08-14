@@ -182,7 +182,7 @@ public class BlockedContactsActivity extends ListActivity {
                         IContactListManager manager = conn.getContactListManager();
                         manager.unBlockContact(mUserName);
                     } catch (RemoteException e) {
-                        mHandler.showServiceErrorAlert();
+                        mHandler.showServiceErrorAlert(e.getMessage());
                     }
                 }
             };

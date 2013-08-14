@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -701,7 +702,9 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                 
                 //mContactListView.setAutoRefreshContacts(false);
             } catch (RemoteException e) {
-                mHandler.showServiceErrorAlert();
+
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
            
         }

@@ -96,10 +96,6 @@ public class SimpleAlertHandler extends Handler {
         }
     }
 
-    public void showServiceErrorAlert() {
-        showAlert(R.string.error, R.string.service_error);
-    }
-
     public void showServiceErrorAlert(String msg) {
         showAlert(R.string.error, msg);
     }

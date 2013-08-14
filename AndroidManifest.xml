@@ -198,7 +198,6 @@ android:anyDensity="true"
 
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
-             android:launchMode="singleTop"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -215,6 +214,7 @@ android:anyDensity="true"
         <activity android:name=".app.AccountActivity"
             android:windowSoftInputMode="stateUnchanged"
             android:exported="false"
+            android:theme="@android:style/Theme.Dialog">            
             >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -257,6 +257,7 @@ android:anyDensity="true"
         <activity android:name=".app.AddContactActivity"
             android:label="@string/add_contact_title"
                           android:exported="false"
+                          android:theme="@android:style/Theme.Dialog"
             
             />
 
@@ -264,6 +265,7 @@ android:anyDensity="true"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                android:exported="false"
+               android:launchMode="singleTop"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -306,7 +308,8 @@ android:anyDensity="true"
         <activity android:name=".app.ContactPresenceActivity" 
               android:uiOptions="splitActionBarWhenNarrow"
              android:configChanges="orientation|keyboardHidden|screenSize"
-                          android:exported="false"
+                          android:exported="false"                          
+            android:theme="@style/AppThemeDark"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

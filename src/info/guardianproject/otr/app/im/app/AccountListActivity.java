@@ -148,7 +148,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                
                 if (getListView().getCount() == 0)
                 {
-                    showNewAccountListDialog();
+                    showExistingAccountListDialog();
                 }
                         
                 
@@ -210,10 +210,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         checkForCrashes();
         
-        if (getIntent().hasExtra("EXIT"))
-        {
-            handlePanic();
-        }
     }
     
     
@@ -223,7 +219,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mProviderCursor.moveToPosition(position);
 
         if (mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            showNewAccountListDialog();
+            showExistingAccountListDialog();
             
         } else {
 
@@ -312,20 +308,22 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
  
     private void signOutAll() {
-      
-        
-        mProviderCursor.moveToPosition(-1);
-        
-        while (mProviderCursor.moveToNext())
+              
+        if (mProviderCursor != null)
         {
-            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-            signOut(accountId);
+            mProviderCursor.moveToPosition(-1);
+            
+            while (mProviderCursor.moveToNext())
+            {
+                long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                signOut(accountId);
+            }
+                    
+            if (mCacheWord != null)
+                mCacheWord.manuallyLock();
+            
+            finish();
         }
-                
-        if (mCacheWord != null)
-            mCacheWord.manuallyLock();
-        
-        finish();
         
     }
 
@@ -389,8 +387,11 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         case R.id.menu_sign_out_all:
             signOutAll();
             return true;
-        case R.id.menu_new_account:
-            showNewAccountListDialog();
+        case R.id.menu_existing_account:
+            showExistingAccountListDialog();
+            return true;
+        case R.id.menu_create_account:
+            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true);
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -417,7 +418,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
 
     }
-    private void showNewAccountListDialog() {
+    private void showExistingAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
@@ -444,7 +445,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 else
                 {
                     //otherwise support the actual plugin-type
-                    showSetupAccountForm(mAccountList[pos],null, null);
+                    showSetupAccountForm(mAccountList[pos],null, null, false);
                 }
             }
         });
@@ -494,7 +495,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
                            String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
                    
                            //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password);
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false);
                         }
                     };
                     thread.start();
@@ -506,7 +507,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
     }
     
-    public void showSetupAccountForm (String providerType, String username, String token)
+    public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
         ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
@@ -522,6 +523,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
         if (token != null)
             intent.putExtra("newpass", token);
+        
+        intent.putExtra("register", createAccount);
         
         startActivity(intent);
     }

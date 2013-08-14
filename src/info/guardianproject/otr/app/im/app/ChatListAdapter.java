@@ -224,7 +224,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
     
  
 
-
+    /*
     void startQuerySubscriptions() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQuerySubscriptions()");
@@ -234,7 +234,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
     }
-
+    */
 
     public long getChildId(int groupPosition, int childPosition) {
         if (isPosForOngoingConversation(groupPosition)) {

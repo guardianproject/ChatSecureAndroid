@@ -231,7 +231,7 @@ public class ChatPagerAdapter extends FragmentStatePagerAdapter {
     
  
 
-
+    /*
     void startQuerySubscriptions() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("startQuerySubscriptions()");
@@ -240,7 +240,7 @@ public class ChatPagerAdapter extends FragmentStatePagerAdapter {
         Uri uri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
         uri = ContentUris.withAppendedId(uri, mAccountId);
-    }
+    }*/
 
 
     public long getChildId(int groupPosition, int childPosition) {

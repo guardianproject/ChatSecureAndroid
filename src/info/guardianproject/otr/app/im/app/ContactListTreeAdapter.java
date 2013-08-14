@@ -220,9 +220,11 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
             log("startQuerySubscriptions()");
         }
 
-        Uri uri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-        uri = ContentUris.withAppendedId(uri, mProviderId);
-        uri = ContentUris.withAppendedId(uri, mAccountId);
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, mProviderId);
+        ContentUris.appendId(builder, mAccountId);
+        
+        Uri uri = builder.build();
 
         mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri, ContactView.CONTACT_PROJECTION,
                 String.format(Locale.US, "%s=%d AND %s=%d", Imps.Contacts.SUBSCRIPTION_STATUS,
