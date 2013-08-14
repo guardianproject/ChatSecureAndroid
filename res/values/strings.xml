@@ -654,9 +654,9 @@
     <string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
 	<string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
 	
-	<string name="otr_session_status_plaintext">Encryption is not enabled</string>
-	<string name="otr_session_status_encrypted">Encryption enabled (Tap to verify)</string>
-	<string name="otr_session_status_finished">Chat encryption has stopped</string>
+	<string name="otr_session_status_plaintext">Encryption is off</string>
+	<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
+	<string name="otr_session_status_finished">Encryption has been stopped</string>
 	<string name="otr_session_status_verified">Encrypted and verified!</string>
 	
 	<string name="account_wizard_setup_title">Account Wizard</string>
@@ -813,5 +813,6 @@
     
     <string name="buddies">Buddies</string>
     
+    <string name="select_domain_new_account">Choose a domain</string>
 </resources>
 

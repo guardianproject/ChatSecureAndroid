@@ -154,6 +154,15 @@
 	     
 	     >
 	
+        <ImageButton
+        android:id="@+id/btnActionBox"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:background="@drawable/ad_selectable_background"
+        android:fontFamily="sans-serif-light"
+      
+        android:paddingBottom="5sp"
+        android:src="@drawable/ic_btn_round_more_normal" />
       
     <ImageButton
         android:id="@+id/btnEmoji"
@@ -161,7 +170,10 @@
         android:layout_height="32dip"
         android:background="@drawable/ad_selectable_background"
         android:scaleType="centerInside"
+        
+        android:paddingBottom="5sp"
         android:src="@drawable/smiley_smile" />
+    
       <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
            
@@ -192,7 +204,30 @@
 
       </LinearLayout>
       
-  
+    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	     android:layout_gravity="fill_vertical"
+	             android:gravity="bottom"
+	     android:visibility="gone"
+	     android:id="@+id/actionBox"
+	     >
+     
+      <ImageButton
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_info" />
+     <ImageButton
+        android:id="@+id/btnEndChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_close" />
+     
+      </LinearLayout>
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"

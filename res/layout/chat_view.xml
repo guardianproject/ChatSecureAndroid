@@ -156,16 +156,25 @@
 	     
 	     >
 	
-    <ImageButton
-        android:id="@+id/btnEmoji"
-        android:layout_width="wrap_content"
-        android:layout_height="24dip"
+       
+        <ImageButton
+        android:id="@+id/btnActionBox"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
-        android:paddingBottom="3sp"
-        android:paddingLeft="5sp"
-        android:paddingRight="5sp"
-        android:paddingTop="3sp"
+      
+        android:paddingBottom="5sp"
+        android:src="@drawable/ic_btn_round_more_normal" />
+      
+    <ImageButton
+        android:id="@+id/btnEmoji"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:background="@drawable/ad_selectable_background"
+        android:scaleType="centerInside"
+        
+        android:paddingBottom="5sp"
         android:src="@drawable/smiley_smile" />
       
       <EditText android:id="@+id/composeMessage"
@@ -179,15 +188,12 @@
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
              
-         android:layout_alignParentLeft="true"
             />
            
     <ImageButton
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/composeMessage"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
         android:paddingBottom="3sp"
@@ -197,7 +203,32 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
-      
+  
+  <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	     android:layout_gravity="fill_vertical"
+	             android:gravity="bottom"
+	     android:visibility="gone"
+	     android:id="@+id/actionBox"
+	     >
+     
+      <ImageButton
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_info" />
+     <ImageButton
+        android:id="@+id/btnEndChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_close" />
+     
+      </LinearLayout>
+  
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"
