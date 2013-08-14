@@ -24,20 +24,14 @@ import android.os.Parcel;
  * User, Contact list, User Group, etc.
  */
 public abstract class Address {
+    
     /**
      * Gets a string representation of this address.
      * 
      * @return a string representation of this address.
      */
     public abstract String getAddress();
-    
-    /*
-    public String getContactName() {
-        String name = getFullName();
-        String[] split = name.split("/", 2);
-        return split[0];
-    }
-*/
+ 
     /**
      * Gets a user friendly screen name of this address object.
      * 
@@ -45,11 +39,14 @@ public abstract class Address {
      */
     public abstract String getScreenName();
 
-    /** Append a resource if the address type supports it. */
-    public Address appendResource(String resource) {
-        return this;
-    }
+    /**
+     * Gets a resource value
+     * 
+     * @return the resource name.
+     */
+    public abstract String getResource();
 
+    
     public abstract void writeToParcel(Parcel dest);
 
     public abstract void readFromParcel(Parcel source);
