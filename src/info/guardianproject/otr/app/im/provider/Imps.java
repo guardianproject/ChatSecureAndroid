@@ -726,6 +726,16 @@ public class Imps {
         int OTR_TURNED_ON_BY_USER = 11;
         /* off the record status turned on by buddy */
         int OTR_TURNED_ON_BY_BUDDY = 12;
+        
+        /* received message */
+        int INCOMING_ENCRYPTED = 13;
+        /* received message */
+        int INCOMING_ENCRYPTED_VERIFIED = 14;
+        
+        /* received message */
+        int OUTGOING_ENCRYPTED = 15;
+        /* received message */
+        int OUTGOING_ENCRYPTED_VERIFIED = 16;
     }
 
     /** The common columns for messages table */
