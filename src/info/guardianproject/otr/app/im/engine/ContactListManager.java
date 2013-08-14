@@ -485,7 +485,7 @@ public abstract class ContactListManager {
      * 
      * @param contacts the contacts who have updated presence information
      */
-    protected void notifyContactsPresenceUpdated(Contact[] contacts) {
+    public void notifyContactsPresenceUpdated(Contact[] contacts) {
         for (ContactListListener listener : mContactListListeners) {
             listener.onContactsPresenceUpdate(contacts);
         }
