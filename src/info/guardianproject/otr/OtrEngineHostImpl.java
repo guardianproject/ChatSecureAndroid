@@ -85,7 +85,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public Address appendSessionResource(SessionID session, Address to) {
         String resource = mSessionResources.get(session);
-        return to.appendResource(resource);
+        return to;//.appendResource(resource);
     }
 
     public ImConnectionAdapter findConnection(String localAddress) {
@@ -148,7 +148,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
         Message msg = new Message(body);
 
-        msg.setFrom(connection.getLoginUser().getAddress());
+        msg.setFrom(connection.getLoginUser().getAddress());sessionID.getFullUserID();
         final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
         msg.setTo(appendSessionResource(sessionID, to));
         msg.setDateTime(new Date());
@@ -166,28 +166,12 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
-        showToast("ERROR: " + error);
     }
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
      
-
-        showToast("WARNING: " + warning);
     }
 
-    /*
-    private void showDialog(String title, String msg) {
-        Intent nIntent = new Intent(mContext.getApplicationContext(), WarningDialogActivity.class);
-        nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        nIntent.putExtra("title", title);
-        nIntent.putExtra("msg", msg);
-
-        mContext.getApplicationContext().startActivity(nIntent);
-    }
-    */
-    private void showToast(String msg) {
-        mContext.showToast(msg, Toast.LENGTH_LONG);
-    }
+    
 }

@@ -40,9 +40,9 @@ public class OtrChatListener implements MessageListener {
         
         } catch (OtrException e) {
             
-            OtrDebugLogger.log("error decrypting message", e);                
-            msg.setBody("error decryption message: " + body);
-            
+            OtrDebugLogger.log("error decrypting message");                
+            msg.setBody("error decryption message body");
+            mMessageListener.onIncomingMessage(session, msg);
         }
         
         

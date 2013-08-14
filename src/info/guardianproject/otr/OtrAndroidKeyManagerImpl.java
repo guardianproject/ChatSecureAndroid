@@ -428,7 +428,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
             return fingerprintString;
         } catch (OtrCryptoException e) {
-            e.printStackTrace();
+            OtrDebugLogger.log("OtrCryptoException getting remote fingerprint",e);
             return null;
         }
     }
@@ -436,21 +436,31 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
     public boolean isVerified(SessionID sessionID) {
         if (sessionID == null)
             return false;
-
+        
         String userId = sessionID.getUserID();
         String fullUserID = sessionID.getFullUserID();
-        if (!Address.hasResource(fullUserID))
-            throw new IllegalArgumentException("User ID is not full JID");
-        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(fullUserID));
+        
+        if (!Address.hasResource(userId))
+            return false;
 
-        return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+        if (!Address.hasResource(fullUserID))
+            return false;
+        
+        String remoteFingerprint =getRemoteFingerprint(fullUserID);
+        
+        if (remoteFingerprint != null)
+        {
+            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, remoteFingerprint);
+            return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public boolean isVerifiedUser(String fullUserId) {
         if (fullUserId == null)
-            return false;
-
-        if (!Address.hasResource(fullUserId))
             return false;
 
         String userId = Address.stripResource(fullUserId);
@@ -515,7 +525,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private PublicKey loadRemotePublicKeyFromStore(String userId) {
         if (!Address.hasResource(userId))
-            throw new IllegalArgumentException("User ID is not full JID");
+           return null;
+        
         byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
         if (b64PubKey == null) {
             return null;
@@ -547,7 +558,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         String userId = sessionID.getFullUserID();
         if (!Address.hasResource(userId))
-            throw new IllegalArgumentException("User ID is not full JID");
+            return;
         
         this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
@@ -619,7 +630,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private static String buildPublicKeyVerifiedId(String userId, String fingerprint) {
         if (fingerprint == null)
-            throw new IllegalArgumentException("No fingerprint");
+            return null;
 
         return Address.stripResource(userId) + "." + fingerprint + ".publicKey.verified";
     }
