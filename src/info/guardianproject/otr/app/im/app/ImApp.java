@@ -33,6 +33,7 @@ import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
+import info.guardianproject.util.PRNGFixes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,6 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.schildbach.wallet.util.LinuxSecureRandom;
 
 public class ImApp extends Application {
     
@@ -222,7 +222,7 @@ public class ImApp extends Application {
     public void onCreate() {
         super.onCreate();
         
-        new LinuxSecureRandom(); // init proper random number generator
+        PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
         
         mBroadcaster = new Broadcaster();
 
