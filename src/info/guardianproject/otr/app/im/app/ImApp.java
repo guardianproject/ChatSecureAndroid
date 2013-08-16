@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -33,6 +35,7 @@ import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
+import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.PRNGFixes;
 
 import java.util.ArrayList;
@@ -412,6 +415,27 @@ public class ImApp extends Application {
     }
     
   
+    private CacheWordActivityHandler mCacheWord;
+
+    public void setCacheWord ( CacheWordActivityHandler cacheWord)
+    {
+        mCacheWord = cacheWord;
+    }
+    
+    public void initOtrStoreKey ()
+    {
+        if ( getRemoteImService() != null)
+        {
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+    
+            try {
+               getRemoteImService().unlockOtrStore(pkey);
+             } catch (RemoteException e) {
+               
+                 LogCleaner.error(ImApp.LOG_TAG, "eror initializing otr key", e);
+             }
+        }
+    }
 
     private ServiceConnection mImServiceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -420,6 +444,9 @@ public class ImApp extends Application {
 
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
+            
+            if (mCacheWord != null && mCacheWord.getEncryptionKey() != null)
+                initOtrStoreKey();
 
             synchronized (mQueue) {
                 for (Message msg : mQueue) {

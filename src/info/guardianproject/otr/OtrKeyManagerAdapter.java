@@ -3,21 +3,25 @@
  */
 package info.guardianproject.otr;
 
+import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.session.SessionID;
 import android.os.RemoteException;
 
 /** @author n8fr8 */
 public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 
-    private OtrAndroidKeyManagerImpl mKeyManager;
+    private OtrKeyManager mKeyManager;
 
     private String mRemoteUserId;
 
     private String mAccountId;
     private OtrChatManager mOtrChatManager;
 
+    private SessionID mSessionId;
+
     public OtrKeyManagerAdapter(OtrChatManager otrChatManager, String accountId,
             String remoteUserId) {
+        
         this.mKeyManager = otrChatManager.getKeyManager();
         this.mOtrChatManager = otrChatManager;
 
@@ -26,29 +30,34 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
         // on demand.
         this.mRemoteUserId = remoteUserId;
         this.mAccountId = accountId;
+        
+        mSessionId = mOtrChatManager.getSessionId(mAccountId, mRemoteUserId);
     }
 
     @Override
     public void verifyKey(String address) throws RemoteException {
+        
         SessionID sessionId = mOtrChatManager.getSessionId(mAccountId, address);
-        mKeyManager.verifyUser(sessionId.getFullUserID());
+        mKeyManager.verify(sessionId);
+        
     }
 
     @Override
     public void unverifyKey(String address) throws RemoteException {
         SessionID sessionId = mOtrChatManager.getSessionId(mAccountId, address);
-        mKeyManager.unverifyUser(sessionId.getFullUserID());
+        mKeyManager.unverify(sessionId);
     }
 
     @Override
     public boolean isKeyVerified(String address) throws RemoteException {
         SessionID sessionId = mOtrChatManager.getSessionId(mAccountId, address);
-        return mKeyManager.isVerifiedUser(sessionId.getFullUserID());
+        return mKeyManager.isVerified(sessionId);
     }
 
     @Override
     public String getLocalFingerprint() throws RemoteException {
-        return mKeyManager.getLocalFingerprint(mAccountId);
+        return mKeyManager.getLocalFingerprint(mSessionId);
+        
     }
 
     @Override
@@ -60,8 +69,7 @@ public class OtrKeyManagerAdapter extends IOtrKeyManager.Stub {
 
     @Override
     public void generateLocalKeyPair() throws RemoteException {
-
-        mKeyManager.generateLocalKeyPair(mAccountId);
+        mKeyManager.generateLocalKeyPair(mSessionId);
     }
 
 }

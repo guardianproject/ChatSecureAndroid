@@ -19,10 +19,10 @@ import java.util.Hashtable;
 import java.util.List;
 
 import net.java.otr4j.OtrEngineHost;
+import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import android.widget.Toast;
 
 /*
  * OtrEngineHostImpl is the connects this app and the OtrEngine
@@ -33,19 +33,19 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     private List<ImConnectionAdapter> mConnections;
     private OtrPolicy mPolicy;
 
-    private OtrAndroidKeyManagerImpl mOtrKeyManager;
+    private OtrKeyManager mOtrKeyManager;
 
     private ImService mContext;
 
     private Hashtable<SessionID, String> mSessionResources;
 
-    public OtrEngineHostImpl(OtrPolicy policy, ImService context) throws IOException {
+    public OtrEngineHostImpl(OtrPolicy policy, ImService context, OtrKeyManager otrKeyManager) throws IOException {
         mPolicy = policy;
         mContext = context;
 
         mSessionResources = new Hashtable<SessionID, String>();
 
-        mOtrKeyManager = OtrAndroidKeyManagerImpl.getInstance(context.getApplicationContext());
+        mOtrKeyManager = otrKeyManager;
 
         mOtrKeyManager.addListener(new OtrKeyManagerListener() {
             public void verificationStatusChanged(SessionID session) {
@@ -99,7 +99,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         return null;
     }
 
-    public OtrAndroidKeyManagerImpl getKeyManager() {
+    public OtrKeyManager getKeyManager() {
         return mOtrKeyManager;
     }
 

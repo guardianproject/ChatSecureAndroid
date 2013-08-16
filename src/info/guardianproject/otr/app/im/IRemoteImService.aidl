@@ -67,6 +67,11 @@ interface IRemoteImService {
     IOtrKeyManager getOtrKeyManager(String accountId);
     
     /**
+    * do it
+    */
+    boolean unlockOtrStore (String password);
+    
+    /**
     * cleaning up rpocess
     **/
     void setKillProcessOnStop (boolean killProcess);
