@@ -25,7 +25,9 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.hockeyapp.android.CrashManager;
@@ -45,6 +47,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -122,6 +125,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         super.onCreate(icicle);
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        ((ImApp)getApplication()).setCacheWord(mCacheWord);
         
         ThemeableActivity.setBackgroundImage(this);
         
@@ -760,16 +764,25 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
         if (requestCode == SCAN_REQUEST_CODE)
         {
-            boolean success = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
-            
-            if (success)
+            try
             {
-                Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+                boolean success = OtrAndroidKeyManagerImpl.getInstance(this).handleKeyScanResult(requestCode, resultCode, data, this, null);
+                
+                if (success)
+                {
+                    Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
+        
+                }
             }
-            else
+            catch (IOException ioe)
             {
                 Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
-    
+
+                LogCleaner.error(ImApp.LOG_TAG, "problem importing key",ioe);
             }
         }
     }
@@ -799,18 +812,21 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
         int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
         
-        mCacheWord.setTimeoutMinutes(defaultTimeout);   
+        mCacheWord.setTimeoutMinutes(defaultTimeout);  
         
-        initProviderCursor ();
+        
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+
+            
+        initProviderCursor (pkey);
         
     }
     
     
-    private void initProviderCursor ()
+    private void initProviderCursor (String pkey)
     {
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-        
+
         uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
       
         mProviderCursor = managedQuery(uri, PROVIDER_PROJECTION,

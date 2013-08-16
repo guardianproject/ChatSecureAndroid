@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -37,6 +38,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -113,6 +115,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     {
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        
+        ((ImApp)getApplication()).setCacheWord(mCacheWord);
         
         mCacheWord.connectToService();
         
@@ -552,7 +558,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        
        if (pkey != null)
        {
+            
            cursorUnlocked(pkey);
+           
+           ((ImApp)getApplication()).initOtrStoreKey();
+           
        
            int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
            mCacheWord.setTimeoutMinutes(defaultTimeout);
