@@ -48,7 +48,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,6 +68,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -348,23 +348,42 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         {
                             mCursorChats.moveToPosition(0);
                             int posIdx = 0;
+                            boolean foundChatView = false;
+                            
                             while (mCursorChats.moveToNext())
                             {
                                 long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
                                 
                                 if (chatId == requestedChatId)
                                 {
-                                    mChatPager.setCurrentItem(posIdx+2);
+                                    mChatPager.setCurrentItem(posIdx+1);
+                                    foundChatView = true;
                                     break;
                                 }
                                 
                                 posIdx++;
+                            }
+                            
+                            if (!foundChatView)
+                            {
+                                
+                                Uri.Builder builder = Imps.Chats.CONTENT_URI.buildUpon();
+                                ContentUris.appendId(builder, requestedChatId);
+                                Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
+                                
+                                mContactList.startChat(cursor);
+                                
+                                
                             }
                         }
                         
                    
                     } else if (Imps.Invitation.CONTENT_ITEM_TYPE.equals(type)) {
                         //chatView.bindInvitation(ContentUris.parseId(data));
+                        
+                        
+
+                        
                     }
                 }
             }
@@ -928,8 +947,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
               
               mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
 
-
              mFilterView.setListener(this);
+             
+             TextView txtEmpty = (TextView)mFilterView.findViewById(R.id.empty);
+             
+             txtEmpty.setOnClickListener(new OnClickListener ()
+             {
+
+                @Override
+                public void onClick(View v) {
+                  
+                    ((NewChatActivity)getActivity()).showInviteContactDialog();
+                }
+                 
+             });
+             
+             ((ListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
              
              
              ((ImApp)getActivity().getApplication()).registerForConnEvents(mPresenceHandler);

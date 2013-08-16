@@ -110,5 +110,17 @@
         android:layout_weight="1"
         android:background="@drawable/bgcolor2"
         />
+	<TextView
+	    android:id="@+id/empty"
+	    android:text="@string/empty_contact_list"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="center"
+	    android:layout_gravity="center_vertical"
+	    android:textSize="24dp"
+	     android:layout_weight="1"
+	    		            android:fontFamily="sans-serif-light"
+
+	    />
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>

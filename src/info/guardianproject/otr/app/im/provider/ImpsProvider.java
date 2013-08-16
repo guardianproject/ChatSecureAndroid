@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.provider;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
 
@@ -1156,6 +1157,12 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         } catch (Exception e) {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
             return null;
+        }
+        
+        if (pkey != null)
+        {
+            OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
+            
         }
     
 

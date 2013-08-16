@@ -224,7 +224,7 @@
     <!-- Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
     <string name="contacts_picker_title">Select contact(s) to invite</string>
     <string name="contact_filter_hint">Type to find contact</string>
-    <string name="empty_contact_list">No contacts found.</string>
+    <string name="empty_contact_list">No contacts found.\n\nTap to invite.</string>
 
     <!-- The title of blocked contact list.-->
     <string name="blocked_list_title">Blocked contacts - <xliff:g id="user">%1$s</xliff:g></string>

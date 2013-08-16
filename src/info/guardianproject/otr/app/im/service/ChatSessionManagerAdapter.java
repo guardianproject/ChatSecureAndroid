@@ -50,7 +50,6 @@ public class ChatSessionManagerAdapter extends
     ChatGroupManager mGroupManager;
     HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
     ChatSessionListenerAdapter mSessionListenerAdapter;
-    OtrChatManager mOtrChatManager;
     final RemoteCallbackList<IChatSessionListener> mRemoteListeners = new RemoteCallbackList<IChatSessionListener>();
 
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
@@ -60,9 +59,7 @@ public class ChatSessionManagerAdapter extends
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();
         mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
-        RemoteImService service = connection.getContext();
-        mOtrChatManager = service.getOtrChatManager();
-
+     
         if ((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
             mGroupManager = connAdaptee.getChatGroupManager();
             mGroupManager.addGroupListener(new ChatGroupListenerAdapter());

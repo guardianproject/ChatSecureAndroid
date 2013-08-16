@@ -125,7 +125,8 @@ public class ChatSession {
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
             SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),message.getTo().getAddress());            
-            boolean verified = mOtrChatManager.getKeyManager().isVerifiedUser(sId.getFullUserID());
+            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
+            
             
             if (verified)
             {
@@ -174,9 +175,11 @@ public class ChatSession {
 
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
 
+        SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());            
+
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
-            boolean verified = mOtrChatManager.getKeyManager().isVerifiedUser(message.getFrom().getAddress());
+            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
             
             if (verified)
             {

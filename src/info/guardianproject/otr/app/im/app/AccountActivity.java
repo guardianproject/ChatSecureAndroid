@@ -105,7 +105,7 @@ public class AccountActivity extends Activity {
     Button mBtnAdvanced;
     TextView mTxtFingerprint;
 
-    Imps.ProviderSettings.QueryMap mSettings;
+    //Imps.ProviderSettings.QueryMap settings;
     
     boolean isEdit = false;
     boolean isSignedIn = false;
@@ -216,8 +216,6 @@ public class AccountActivity extends Activity {
             {
                 setTitle(getResources().getString(R.string.add_account, provider.mFullName));
     
-                mSettings = new Imps.ProviderSettings.QueryMap(
-                        cr, mProviderId, true /* don't keep updated */, null /* no handler */);
             }
             else
             {
@@ -253,21 +251,22 @@ public class AccountActivity extends Activity {
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = mApp.getProvider(mProviderId);
 
-            mSettings = new Imps.ProviderSettings.QueryMap(
+            Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                     cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
             mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
-                                   + mSettings.getDomain();
+                                   + settings.getDomain();
             mEditUserAccount.setText(mOriginalUserAccount);
             mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
 
             mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
 
-            mUseTor.setChecked(mSettings.getUseTor());
+            mUseTor.setChecked(settings.getUseTor());
             
             mBtnDelete.setVisibility(View.VISIBLE);
             
             cursor.close();
+            settings.close();
 
 
         } else {
@@ -456,7 +455,9 @@ public class AccountActivity extends Activity {
         checkUserChanged();
     
         OrbotHelper orbotHelper = new OrbotHelper(this);
-        
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+
         if (useTor && (!orbotHelper.isOrbotInstalled()))
         {
             //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
@@ -464,21 +465,22 @@ public class AccountActivity extends Activity {
             orbotHelper.promptToInstall(this);
             
             mUseTor.setChecked(false);
-            mSettings.setUseTor(false);
+            settings.setUseTor(false);
         }
         else
         {
-            mSettings.setUseTor(useTor);
+            settings.setUseTor(useTor);
         }
                 
-        settingsForDomain(mSettings.getDomain(),mSettings.getPort());
+        settingsForDomain(settings.getDomain(),settings.getPort());
              
+        settings.close();
       
     }
 /*
     private void getOTRKeyInfo() {
 
-        if (mApp != null && mApp.getRemoteImService() != null) {
+        if (mApp != null && FFF != null) {
             try {
                 otrKeyManager = mApp.getRemoteImService().getOtrKeyManager(mOriginalUserAccount);
 
@@ -569,89 +571,92 @@ public class AccountActivity extends Activity {
      */
     void settingsForDomain(String domain,int port) {
 
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
             // http://code.google.com/apis/talk/open_communications.html
             
-            mSettings.setDoDnsSrv(false);
-            mSettings.setServer(DEFAULT_SERVER_GOOGLE);            
-            mSettings.setDomain(domain);
-            mSettings.setPort(DEFAULT_PORT);
-            mSettings.setRequireTls(true);
-            mSettings.setTlsCertVerify(true);
-            mSettings.setAllowPlainAuth(false);
+            settings.setDoDnsSrv(false);
+            settings.setServer(DEFAULT_SERVER_GOOGLE);            
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
         } 
         else if (mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
             //this is not @gmail but IS a google account
-            mSettings.setDoDnsSrv(false);
-            mSettings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
-            mSettings.setDomain(domain);
-            mSettings.setPort(DEFAULT_PORT);
-            mSettings.setRequireTls(true);
-            mSettings.setTlsCertVerify(true);
-            mSettings.setAllowPlainAuth(false);
+            settings.setDoDnsSrv(false);
+            settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
         }
         else if (domain.equals("jabber.org")) {
-            mSettings.setDoDnsSrv(false);
-            mSettings.setServer(DEFAULT_SERVER_JABBERORG);            
-            mSettings.setDomain(domain);
-            mSettings.setPort(DEFAULT_PORT);            
-            mSettings.setRequireTls(true);
-            mSettings.setTlsCertVerify(true);
-            mSettings.setAllowPlainAuth(false);
+            settings.setDoDnsSrv(false);
+            settings.setServer(DEFAULT_SERVER_JABBERORG);            
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);            
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
         } else if (domain.equals("facebook.com")) {
-            mSettings.setDoDnsSrv(false);
-            mSettings.setDomain(DEFAULT_SERVER_FACEBOOK);
-            mSettings.setPort(DEFAULT_PORT);
-            mSettings.setServer(DEFAULT_SERVER_FACEBOOK);
-            mSettings.setRequireTls(true); //facebook TLS now seems to be on
-            mSettings.setTlsCertVerify(true); //but cert verify can still be funky - off by default
-            mSettings.setAllowPlainAuth(false);
+            settings.setDoDnsSrv(false);
+            settings.setDomain(DEFAULT_SERVER_FACEBOOK);
+            settings.setPort(DEFAULT_PORT);
+            settings.setServer(DEFAULT_SERVER_FACEBOOK);
+            settings.setRequireTls(true); //facebook TLS now seems to be on
+            settings.setTlsCertVerify(true); //but cert verify can still be funky - off by default
+            settings.setAllowPlainAuth(false);
         } 
         else if (domain.equals("jabber.ccc.de")) {
             
-            if (mSettings.getUseTor())
+            if (settings.getUseTor())
             {                
-                mSettings.setDoDnsSrv(false);
-                mSettings.setServer(ONION_JABBERCCC);
+                settings.setDoDnsSrv(false);
+                settings.setServer(ONION_JABBERCCC);
             }
             else
             {
-                mSettings.setDoDnsSrv(true);
-                mSettings.setServer("");
+                settings.setDoDnsSrv(true);
+                settings.setServer("");
             }
             
-            mSettings.setDomain(domain);
-            mSettings.setPort(DEFAULT_PORT);            
-            mSettings.setRequireTls(true);
-            mSettings.setTlsCertVerify(true);
-            mSettings.setAllowPlainAuth(false);
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);            
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
         }        
         else {
           
-            mSettings.setDomain(domain);
-            mSettings.setPort(port);
+            settings.setDomain(domain);
+            settings.setPort(port);
             
             //if use Tor, turn off DNS resolution, and set Server manually from Domain
-            if (mSettings.getUseTor())
+            if (settings.getUseTor())
             {
-                mSettings.setDoDnsSrv(false);
+                settings.setDoDnsSrv(false);
                 
                 //if Tor is off, and the user has not provided any values here, set to the @domain
-                if (mSettings.getServer() == null || mSettings.getServer().length() == 0)
-                    mSettings.setServer(domain);
+                if (settings.getServer() == null || settings.getServer().length() == 0)
+                    settings.setServer(domain);
             }
-            else if (mSettings.getServer() == null || mSettings.getServer().length() == 0)
+            else if (settings.getServer() == null || settings.getServer().length() == 0)
             {
                 //if Tor is off, and the user has not provided any values here, then reset to nothing
-                mSettings.setDoDnsSrv(true);
-                mSettings.setServer("");
+                settings.setDoDnsSrv(true);
+                settings.setServer("");
             }
             
-            mSettings.setRequireTls(true);
-            mSettings.setTlsCertVerify(true);
-            mSettings.setAllowPlainAuth(false);
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
+            settings.setAllowPlainAuth(false);
         }
         
         
@@ -951,13 +956,18 @@ public class AccountActivity extends Activity {
                                         
                     settingsForDomain(mDomain, mPort);
                     
+                    Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                            getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+
+                    
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
-                    xmppConn.registerAccount(mSettings, params[0], params[1]);
+                    xmppConn.registerAccount(settings, params[0], params[1]);
+                    
+                    settings.close();
 
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    
+                   LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
+                   
                     return e.getLocalizedMessage();
                     
                 }
