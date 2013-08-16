@@ -7,9 +7,7 @@
  * the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
@@ -32,6 +30,7 @@ import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import android.app.AlertDialog;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -64,11 +63,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-public class AccountActivity extends ThemeableActivity {
+public class AccountActivity extends Activity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -130,12 +129,6 @@ public class AccountActivity extends ThemeableActivity {
         setContentView(R.layout.account_activity);
         Intent i = getIntent();
         
-        if (getSherlock().getActionBar()!=null)
-        {
-            getSherlock().getActionBar().setHomeButtonEnabled(true);
-            getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         mIsNewAccount = getIntent().getBooleanExtra("register", false);
         
         mSignInHelper = new SignInHelper(this);
@@ -845,7 +838,7 @@ public class AccountActivity extends ThemeableActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.account_settings_menu, menu);
 
         if (isEdit) {

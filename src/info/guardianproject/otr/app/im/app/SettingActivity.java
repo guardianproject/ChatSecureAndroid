@@ -93,7 +93,14 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         } else if (key.equals("pref_foreground_service")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
         } else if (key.equals("pref_heartbeat_interval")) {
-            settings.setHeartbeatInterval(Integer.valueOf(prefs.getString(key, String.valueOf(DEFAULT_HEARTBEAT_INTERVAL))));
+            try
+            {
+                settings.setHeartbeatInterval(Integer.valueOf(prefs.getString(key, String.valueOf(DEFAULT_HEARTBEAT_INTERVAL))));
+            }
+            catch (NumberFormatException nfe)
+            {
+                settings.setHeartbeatInterval((DEFAULT_HEARTBEAT_INTERVAL));
+            }
         }
         else if (key.equals("pref_default_locale"))
         {

@@ -79,6 +79,7 @@
         <item>dukgo.com</item>
         <item>jabber.ccc.de</item>
         <item>gabbler.de</item>
+        <item>blah.im</item>
         <item>xmpp.kz</item>
         <item>jabber.at</item>
         <item>inbox.im</item>
@@ -86,6 +87,8 @@
         <item>chatme.im</item>
         <item>jabb3r.net</item>
         <item>jabber.belnet.be</item>
+        <item>xmpp.jp</item>
+        <item>xmpp.ru.net</item>
     </string-array>
 	
 </resources>

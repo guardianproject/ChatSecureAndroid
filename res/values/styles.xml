@@ -28,8 +28,6 @@
         </style>
     
         <style name="AppThemeDark" parent="Theme.Sherlock" >
-    
-         
         </style>
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">

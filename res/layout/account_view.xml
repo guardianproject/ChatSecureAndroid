@@ -92,8 +92,8 @@
             android:paddingLeft="6dip"
             android:layout_weight="0"
             android:layout_gravity="center_vertical"
-            android:layout_width="20dip"
-            android:layout_height="fill_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
          
          
         <ImageView
