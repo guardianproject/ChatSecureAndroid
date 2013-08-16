@@ -31,12 +31,13 @@
     android:defaultValue="auto">
   </ListPreference>
   
-  
+ <!--
    <EditTextPreference 
           android:key="pref_sip_account"
           android:title="@string/pref_sip_account_title"
           android:summary="@string/pref_sip_account_summary"
            />
+-->
 
   <!-- 
   <CheckBoxPreference
@@ -68,10 +69,6 @@
   
  </ListPreference>
 
- <CheckBoxPreference android:key="themeDark"
-    android:title="@string/pref_theme_dark"
-    android:defaultValue="false" />
- 
    <EditTextPreference 
           android:key="pref_background"
           android:title="@string/pref_background_title"
@@ -102,7 +99,6 @@
           android:numeric="integer"
           android:maxLength="2"
           android:defaultValue="60" />
-  
    
    <CheckBoxPreference android:key="pref_hide_offline_contacts"
     android:title="@string/hide_offline_contacts"
