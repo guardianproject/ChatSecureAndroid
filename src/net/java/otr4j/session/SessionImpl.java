@@ -70,16 +70,16 @@ public class SessionImpl implements Session {
     }
 
     @Override
-    public void addTlvHandler(OtrTlvHandler handler) {
+    public synchronized void addTlvHandler(OtrTlvHandler handler) {
         tlvHandlers.add(handler);
     }
 
     @Override
-    public void removeTlvHandler(OtrTlvHandler handler) {
+    public synchronized void removeTlvHandler(OtrTlvHandler handler) {
         tlvHandlers.remove(handler);
     }
 
-    public BigInteger getS() {
+    public synchronized BigInteger getS() {
         return ess;
     }
 
@@ -237,7 +237,7 @@ public class SessionImpl implements Session {
      * @see net.java.otr4j.session.ISession#getSessionStatus()
      */
 
-    public SessionStatus getSessionStatus() {
+    public synchronized SessionStatus getSessionStatus() {
         return sessionStatus;
     }
 
@@ -286,7 +286,7 @@ public class SessionImpl implements Session {
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
-    public String transformReceiving(String msgText) throws OtrException {
+    public synchronized String transformReceiving(String msgText) throws OtrException {
         OtrPolicy policy = getSessionPolicy();
         if (!policy.getAllowV1() && !policy.getAllowV2()) {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
@@ -672,7 +672,7 @@ public class SessionImpl implements Session {
      * 
      * @see net.java.otr4j.session.ISession#startSession()
      */
-    public void startSession() throws OtrException {
+    public synchronized void startSession() throws OtrException {
         if (this.getSessionStatus() == SessionStatus.ENCRYPTED)
             return;
 
@@ -687,7 +687,7 @@ public class SessionImpl implements Session {
      * 
      * @see net.java.otr4j.session.ISession#endSession()
      */
-    public void endSession() throws OtrException {
+    public synchronized void endSession() throws OtrException {
         SessionStatus status = this.getSessionStatus();
         switch (status) {
         case ENCRYPTED:
