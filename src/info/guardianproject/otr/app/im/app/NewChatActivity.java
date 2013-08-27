@@ -109,6 +109,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
+        
+        mHandler = new SimpleAlertHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
