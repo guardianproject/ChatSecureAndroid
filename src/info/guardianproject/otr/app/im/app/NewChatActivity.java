@@ -49,6 +49,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -110,6 +111,27 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         setContentView(R.layout.chat_pager);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
+        mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
+                {
+
+                    @Override
+                    public void onPageScrollStateChanged(int arg0) {
+                       
+                        
+                    }
+
+                    @Override
+                    public void onPageScrolled(int arg0, float arg1, int arg2) {
+                       
+                        
+                    }
+
+                    @Override
+                    public void onPageSelected(int arg0) {
+                       
+                    }
+            
+                });
         
         mApp = (ImApp)getApplication();
         mInflater = LayoutInflater.from(this);
@@ -356,7 +378,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 
                                 if (chatId == requestedChatId)
                                 {
-                                    mChatPager.setCurrentItem(posIdx+1);
+                                    mChatPager.setCurrentItem(posIdx+2);
                                     foundChatView = true;
                                     break;
                                 }
@@ -520,7 +542,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         if (otrChatSession != null)
         {
             try {
-               // SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                 
                 if (otrEnabled) {
                     otrChatSession.startChatEncryption();
@@ -531,8 +552,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }                 
                 
              
-            } catch (RemoteException e) {
-                Log.d("Gibber", "error getting remote activity", e);
+            } catch (NullPointerException e) {
+                Log.d(ImApp.LOG_TAG, "error starting or stopping chat", e);
+            }
+             catch (RemoteException e) {
+                Log.d(ImApp.LOG_TAG, "error getting remote activity", e);
             }
             
             chatView.updateWarningView();
@@ -725,13 +749,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
             
-           // if (mCursorChats != null && (!mCursorChats.isClosed()))
-            //    mCursorChats.close();
-            
             if (mCursorChats == null)
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
                 mCursorChats.requery();
+            
+            
         }
         
         

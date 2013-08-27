@@ -468,7 +468,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             mConnections.add(imConnectionAdapter);
 
             initOtr();
-            mOtrChatManager.addConnection(imConnectionAdapter);
+            if (mOtrChatManager != null)
+                mOtrChatManager.addConnection(imConnectionAdapter);
 
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
