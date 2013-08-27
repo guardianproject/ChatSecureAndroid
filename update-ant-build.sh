@@ -11,7 +11,7 @@ android update project --path external/SlidingMenu/library --name sliding -t and
 android update project --path external/SlideListView/library --name slidelist -t android-17
 android update project --path external/NineOldAndroids/library --name nineold -t android-17
 android update project --path external/MessageBar/library --name messagebar -t android-17
-android update project --path external/ShowcaseView/library --name showcase -t android-17
+android update project --path external/ShowcaseView/library --name showcase -t android-17 -l ../../NineOldAndroids/library
 android update project --path external/AndroidEmojiInput/library --name emoji -t android-17
 
 cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-support-v4.jar
