@@ -65,9 +65,8 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.espiandev.showcaseview.ShowcaseView;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager, ShowcaseView.OnShowcaseEventListener {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -87,7 +86,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     private SignInHelper mSignInHelper;
 
     private CacheWordActivityHandler mCacheWord;
-    private ShowcaseView sv;
 
     private final static int SCAN_REQUEST_CODE = 7171; //otr key import scanning
     
@@ -161,20 +159,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         });
         
         checkForUpdates();
-        doShowcase();
         
         getWindow().setBackgroundDrawableResource(R.drawable.bgcolor2);
     }
     
-    private void doShowcase ()
-    {
-        ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
-        co.hideOnClickOutside = true;
-      //  sv = ShowcaseView.insertShowcaseView(getListView(), this, "Many of You!", "ChatSecure supports accounts on your favorite services, and your own hosted servers as well!", co);
-        
-        
-      //  sv.setOnShowcaseEventListener(this);
-    }
     
     @Override
     protected void onPause() {
@@ -849,13 +837,4 @@ private Handler mHandlerGoogleAuth = new Handler ()
         UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
       }
       
-      @Override
-      public void onShowcaseViewHide(ShowcaseView showcaseView) {
-       
-      }
-
-      @Override
-      public void onShowcaseViewShow(ShowcaseView showcaseView) {
-         
-      }
 }

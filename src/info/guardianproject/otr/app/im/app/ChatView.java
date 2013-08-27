@@ -796,6 +796,7 @@ public class ChatView extends LinearLayout {
         mActivity.getContentResolver().delete(chatUri,null,null);
     }
     
+   
     public void bindChat(long contactId) {
         
         mLastChatId = contactId;
@@ -816,6 +817,7 @@ public class ChatView extends LinearLayout {
             
             mCurrentChatSession = getChatSession(mCursor);
 
+            
             updateChat();
             
             if (mCurrentChatSession != null)
@@ -1166,7 +1168,12 @@ public class ChatView extends LinearLayout {
         IChatSessionManager sessionMgr = getChatSessionManager(providerId);
         if (sessionMgr != null) {
             try {
-                return sessionMgr.getChatSession(username);
+                IChatSession session = sessionMgr.getChatSession(username);
+                
+                if (session == null)
+                    session = sessionMgr.createChatSession(username);
+              
+                return session;
             } catch (RemoteException e) {
                 
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
