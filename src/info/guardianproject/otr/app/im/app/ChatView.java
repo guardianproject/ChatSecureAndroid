@@ -1978,16 +1978,14 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.OUTGOING:
             case Imps.MessageType.POSTPONED:
                 
-                if (!isGroupChat())
-                {
-                    int errCode = cursor.getInt(mErrCodeColumn);
-                    if (errCode != 0) {
-                        messageView.bindErrorMessage(errCode);
-                    } else {
-                        messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
-                                deliveryState, encState);
-                    }
+                int errCode = cursor.getInt(mErrCodeColumn);
+                if (errCode != 0) {
+                    messageView.bindErrorMessage(errCode);
+                } else {
+                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                            deliveryState, encState);
                 }
+                
                 break;
 
             default:

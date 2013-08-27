@@ -254,7 +254,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                
                 showGroupChatDialog();
                         
-                
+                if (menu.isMenuShowing())
+                    menu.toggle();
             }
             
         });
@@ -1487,9 +1488,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                 Intent i = new Intent(Intent.ACTION_VIEW, data);
                 i.addCategory(ImApp.IMPS_CATEGORY);
-            
-                if (menu.isShown())
-                    menu.toggle();
             
                 startActivity(i);
             }
