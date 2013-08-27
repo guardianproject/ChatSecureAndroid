@@ -358,12 +358,12 @@ public class ImApp extends Application {
         if (mImService == null)
         {
             mApplicationContext.startService(serviceIntent);
-         
             mConnectionListener = new MyConnListener(new Handler());
         }
         
-        mApplicationContext
-          .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
+        if (mImServiceConn != null)
+            mApplicationContext
+                .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
 
                    
     }
@@ -692,10 +692,12 @@ public class ImApp extends Application {
     }
 
     public IImConnection createConnection(long providerId, long accountId) throws RemoteException {
+        
         if (mImService == null) {
             // Service hasn't been connected or has died.
             return null;
         }
+        
         IImConnection conn = getConnection(providerId);
         if (conn == null) {
             conn = mImService.createConnection(providerId, accountId);
@@ -916,7 +918,7 @@ public class ImApp extends Application {
                         mConnections.remove(providerId);
                     }
                     // stop the service if there isn't an active connection anymore.
-                    stopImServiceIfInactive();
+                  //  stopImServiceIfInactive();
                     break;
 
                 case ImConnection.SUSPENDED:
