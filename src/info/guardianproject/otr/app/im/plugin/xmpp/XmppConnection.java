@@ -1447,9 +1447,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         ChatSession findSession(String address) {
+            
+            String nAddress = address.split("/")[0];
+            
             for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
                 ChatSession session = iter.next();
-                if (session.getParticipant().getAddress().getAddress().equals(address))
+                
+                String tAddress = session.getParticipant().getAddress().getAddress().split("/")[0];
+                
+                if (tAddress.equalsIgnoreCase(nAddress))
                     return session;
             }
             return null;
@@ -1489,7 +1495,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public String normalizeAddress(String address) {
-            return address.split("/")[0];
+            return address.split("/")[0].toLowerCase();
         }
 
         @Override
