@@ -20,4 +20,7 @@ package info.guardianproject.otr.app.im.engine;
 /** The abstract representation of any addressable entities. */
 public abstract class ImEntity {
     public abstract Address getAddress();
+    public boolean isGroup() {
+        return false;
+    }
 }
