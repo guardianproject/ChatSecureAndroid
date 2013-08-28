@@ -278,7 +278,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mAdaptee.sendMessageAsync(msg);
         
         long now = System.currentTimeMillis();
-        insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
+        if (!isGroupChatSession())
+            insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
     /**
