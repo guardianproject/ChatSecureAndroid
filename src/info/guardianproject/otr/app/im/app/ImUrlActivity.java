@@ -170,8 +170,11 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         Intent intent = new Intent(this, AccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-        intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
+//        intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
 
+        if (mFromAddress != null)
+            intent.putExtra("newuser", mFromAddress + '@' + mHost);
+        
         startActivity(intent);
     }
 
@@ -233,6 +236,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 chatRoom = data.getPathSegments().get(0);
            
             mToAddress = chatRoom + '@' + mHost;
+            
+            mProviderName = Imps.ProviderNames.XMPP;
             
             return true;
         }        
