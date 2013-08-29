@@ -206,10 +206,30 @@ public class AccountActivity extends Activity {
             }
         }
 
-        if (Intent.ACTION_INSERT.equals(action)) {
+        if (Intent.ACTION_INSERT.equals(action) && uri.getScheme().equals("ima")) {
+            ImPluginHelper helper = ImPluginHelper.getInstance(this);
+            String authority = uri.getAuthority();
+            String[] userpass_host = authority.split("@");
+            String[] user_pass = userpass_host[0].split(":");
+            mUserName = user_pass[0];
+            String pass = user_pass[1];
+            mDomain = userpass_host[1];
+            mPort = 0;
+            mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0));//xmpp
+            final long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
+            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+
+            // TODO check if the account exists on our side
+            createNewAccount(mUserName, pass);
+            ContentValues values = new ContentValues();
+            values.put(AccountColumns.KEEP_SIGNED_IN, 1);
+            getContentResolver().update(mAccountUri, values, null, null);
+            mSignInHelper.activateAccount(mProviderId, accountId);
+            finish();
+        } else if (Intent.ACTION_INSERT.equals(action)) {
             mOriginalUserAccount = "";
             // TODO once we implement multiple IM protocols
-            mProviderId = ContentUris.parseId(i.getData());
+            mProviderId = ContentUris.parseId(uri);
             provider = mApp.getProvider(mProviderId);
 
             if (provider != null)
@@ -962,9 +982,7 @@ public class AccountActivity extends Activity {
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
                     xmppConn.registerAccount(settings, params[0], params[1]);
-                    
-                    settings.close();
-
+                    // settings closed in registerAccount
                 } catch (Exception e) {
                    LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
                    
