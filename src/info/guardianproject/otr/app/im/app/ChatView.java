@@ -562,6 +562,27 @@ public class ChatView extends LinearLayout {
             
         });
         
+        ImageButton btnSharePicture = (ImageButton)findViewById(R.id.btnSendPicture);
+        btnSharePicture.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startImagePicker();
+            }
+            
+        });
+        
+        ImageButton btnShareFile = (ImageButton)findViewById(R.id.btnSendFile);
+        btnShareFile.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startFilePicker();
+            }
+            
+        });
         
         
         initEmoji();

@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -75,6 +76,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.Maps;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -639,13 +641,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
     }*/
     
-    private void startImagePicker() {
+    void startImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_SEND_IMAGE);
     }
     
-    private void startFilePicker() {
+    void startFilePicker() {
         Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
         selectFile.setType("file/*");
         startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
@@ -798,11 +800,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
 
     public class ChatViewPagerAdapter extends FragmentStatePagerAdapter {
-        
+        Map<Integer, ChatViewFragment> fragmentList;
         
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            
+            fragmentList = Maps.newHashMap();
             if (mCursorChats == null)
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
@@ -943,7 +945,25 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         }
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int pos) {
+            Object item = super.instantiateItem(container, pos);
+            if (pos > 0) {
+                ChatViewFragment frag = (ChatViewFragment)item;
+                fragmentList.put(pos, frag);
+            }
+            return item;
+        }
         
+        @Override
+        public void destroyItem(ViewGroup container, int pos, Object object) {
+            fragmentList.remove(pos);
+            super.destroyItem(container, pos, object);
+        }
+        
+        public ChatView getChatViewAt(int pos) {
+            return fragmentList.get(pos).getChatView();
+        }
     }
     
     
@@ -1448,7 +1468,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 mChatView.startListening();
         }
         
-
+        public ChatView getChatView() {
+            return mChatView;
+        }
     }
     
     public ChatView getCurrentChatView ()
@@ -1457,7 +1479,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         if ((cItemIdx = mChatPager.getCurrentItem()) > 0)
         {
-            return (ChatView)((ChatViewFragment)mChatPagerAdapter.getItem(cItemIdx)).getView();            
+            return mChatPagerAdapter.getChatViewAt(cItemIdx);            
         }
         else
             return null;
