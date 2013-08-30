@@ -586,8 +586,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             // TODO have a specific notifier for files / data
             String username = from.getScreenName();
             String nickname = getNickName(username);
-            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, "File received", false);
             File sdCard = Environment.getExternalStorageDirectory();
             String[] path = url.split("/"); 
             String sanitizedPeer = SystemServices.sanitize(username);
@@ -603,7 +601,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 throw new RuntimeException(e);
             }
             Uri uri = SystemServices.Scanner.scan(service, file.getPath());
-            SystemServices.Viewer.viewImage(service, uri);
+            mStatusBarNotifier.notifyFile(mConnection.getProviderId(), mConnection.getAccountId(),
+                    getId(), username, nickname, sanitizedPath, uri, false);
         }
 
         @Override

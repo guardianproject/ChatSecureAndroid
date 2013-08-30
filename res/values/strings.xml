@@ -397,6 +397,9 @@
     <string name="subscription_notify_text">
         New friend invitation from <xliff:g id="user">%s</xliff:g>
     </string>
+    <string name="file_notify_text">
+        New file <xliff:g id="filename">%s</xliff:g> from <xliff:g id="user">%s</xliff:g>
+    </string>
     <!-- This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used. -->
     <string name="notify_groupchat_label">Group chat invitation</string>
     <!-- This is the text label of the group chat invitation message in the notification. Currently not used. -->

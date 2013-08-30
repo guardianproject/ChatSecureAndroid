@@ -75,6 +75,13 @@ public class SystemServices {
             intent.setDataAndType(aUri, aMime);
             aContext.startActivity(intent);
         }
+
+        public static Intent getViewImageIntent(Uri uri) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "image/*");
+            return intent;
+        }
     }
 
     public static String sanitize(String path) {
