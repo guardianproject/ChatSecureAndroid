@@ -56,6 +56,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public class OtrDataHandler implements DataHandler {
+    private static final String URI_PREFIX_OTR_IN_BAND = "otr-in-band:/storage/";
     private static final int MAX_OUTSTANDING = 3;
     private static final int MAX_CHUNK_LENGTH = 32768;
 
@@ -75,8 +76,6 @@ public class OtrDataHandler implements DataHandler {
     private ChatSession mChatSession;
 
     private DataListener mDataListener;
-
-    private static String sStashUri;
 
     public OtrDataHandler(ChatSession chatSession, DataListener dataListener) {
         this.mChatSession = chatSession;
@@ -141,11 +140,11 @@ public class OtrDataHandler implements DataHandler {
         
         String requestMethod = req.getRequestLine().getMethod();
         String uid = req.getFirstHeader("Request-Id").getValue();
+        String url = req.getRequestLine().getUri();
 
         if (requestMethod.equals("OFFER")) {
-            Log.i(TAG, "incoming OFFER");
-            String url = req.getRequestLine().getUri();
-            if (!url.startsWith("otr-in-band:")) {
+            Log.i(TAG, "incoming OFFER " + url);
+            if (!url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
                 Log.w(TAG, "Unknown url scheme " + url);
                 sendResponse(us, 400, "Unknown scheme", uid, EMPTY_BODY);
                 return;
@@ -169,11 +168,16 @@ public class OtrDataHandler implements DataHandler {
             // Handle offer
             // TODO ask user to confirm we want this
             transfer.perform();
-        } else if (requestMethod.equals("GET")) {
-            Log.i(TAG, "incoming GET");
+        } else if (requestMethod.equals("GET") && url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
+            Log.i(TAG, "incoming GET " + url);
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             try {
-                FileInputStream is = new FileInputStream(sStashUri);
+                Offer offer = offerCache.getIfPresent(url);
+                if (offer == null) {
+                    sendResponse(us, 400, "No such offer made", uid, EMPTY_BODY);
+                    return;
+                }
+                
                 if (!req.containsHeader("Range"))
                 {
                     sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
@@ -199,6 +203,7 @@ public class OtrDataHandler implements DataHandler {
                     sendResponse(us, 400, "Range must be at most " + MAX_CHUNK_LENGTH, uid, EMPTY_BODY);
                     return;
                 }
+                FileInputStream is = new FileInputStream(offer.getUri());
                 readIntoByteBuffer(byteBuffer, is, start, end);
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
@@ -212,7 +217,7 @@ public class OtrDataHandler implements DataHandler {
             Log.i(TAG, "Sent sha1 is " + sha1sum(body));
             sendResponse(us, 200, "OK", uid, body);
         } else {
-            Log.w(TAG, "Unknown method " + requestMethod);
+            Log.w(TAG, "Unknown method / url " + requestMethod + " " + url);
             sendResponse(us, 400, "OK", uid, EMPTY_BODY);
         }
     }
@@ -348,7 +353,6 @@ public class OtrDataHandler implements DataHandler {
     @Override
     public void offerData(Address us, String localUri, Map<String, String> headers) {
         // TODO stash localUri and intended recipient
-        sStashUri = localUri;
         long length = new File(localUri).length();
         if (length > MAX_TRANSFER_LENGTH) {
             throw new RuntimeException("Length too large " + length);
@@ -365,8 +369,10 @@ public class OtrDataHandler implements DataHandler {
         }
         headers.put("File-Hash-SHA1", sha1sum(byteBuffer.toByteArray()));
         String[] paths = localUri.split("/");
-        String url = "otr-in-band:/storage/" + SystemServices.sanitize(paths[paths.length - 1]);
-        sendRequest(us, "OFFER", url, headers, EMPTY_BODY, new Request("OFFER", url));
+        String url = URI_PREFIX_OTR_IN_BAND + SystemServices.sanitize(paths[paths.length - 1]);
+        Request request = new Request("OFFER", url);
+        offerCache.put(url, new Offer(localUri));
+        sendRequest(us, "OFFER", url, headers, EMPTY_BODY, request);
     }
 
     public Request performGetData(Address us, String url, Map<String, String> headers, int start, int end) {
@@ -379,6 +385,18 @@ public class OtrDataHandler implements DataHandler {
         return requestMemo;
     }
 
+    static class Offer {
+        private String mUri;
+
+        public Offer(String uri) {
+            this.mUri = uri;
+        }
+        
+        public String getUri() {
+            return mUri;
+        }
+    }
+    
     static class Request {
         public Request(String method, String url, int start, int end) {
             this.method = method;
@@ -473,6 +491,7 @@ public class OtrDataHandler implements DataHandler {
         }
     }
     
+    Cache<String, Offer> offerCache = CacheBuilder.newBuilder().maximumSize(100).build();
     Cache<String, Request> requestCache = CacheBuilder.newBuilder().maximumSize(100).build();
     Cache<String, Transfer> transferCache = CacheBuilder.newBuilder().maximumSize(100).build();
     
