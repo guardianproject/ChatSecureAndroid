@@ -16,10 +16,15 @@ Follow the steps from the prep section, then:
 Add the following as Android projects (File->New->Project..., Android project from existing code), 
 after following the steps in the prep section:
 
-    * external/ActionBarSherlock/library (rename project to ActionBarSherlock)
-    * external/OnionKit/library (rename project to OnionKit)
-    * external/MemorizingTrustManager (uncheck the example project and rename the remaining project to MemorizingTrustManager)
-    * Gibberbot itself
+1. File --> Import... --> Android --> Existing Android Code Into Workspace
+    * external/OnionKit/library
+    * external/MemorizingTrustManager
+    * external/ActionBarSherlock/library
+
+2. Right-click on the project called 'library' --> Refactor --> Rename... and
+   rename it to 'ActionBarSherlock'
+
+3. Import Gibberbot itself like #1 above
     
 
 == Old Stuff

@@ -14,8 +14,7 @@ import android.util.Log;
  * including on boot.
  */
 public class BootCompletedListener extends BroadcastReceiver {
-    private static final String TAG = "Gibberbot.AutoConnectListener";
-  
+    
     public final static String BOOTFLAG = "BOOTFLAG";
     
     @Override
@@ -29,13 +28,15 @@ public class BootCompletedListener extends BroadcastReceiver {
         {
             if (prefStartOnBoot)
             {
-                ImApp.getApplication().startImServiceIfNeed(true);
+              //  ImApp.getApplication().startImServiceIfNeed(true);
             }
             else
             {
+                /*
                 Log.d(ImApp.LOG_TAG,"killing auto-connect process");
                 android.os.Process.killProcess(android.os.Process.myPid()); 
                 System.exit(0);
+                */
             }
         }
         

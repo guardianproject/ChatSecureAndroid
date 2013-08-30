@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">ཉེར་སྤྱོད་དག་ལ་IM ནང་དོན་མཁོ་སྤྲོད་ཀྱི་སྒང་དུ་རེའུ་མིག་འབྲི་རུ་བཅུག</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">གླེང་མོལ། - ཐོ་མཛོད་ཞིག་གདམ།</string>
@@ -84,6 +83,7 @@
   <string name="menu_switch_chats">གླེང་མོལ་བརྗེ་པོ་རྒྱོབས།</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">སེམས་ཁམས་མཚོན་རྟགས་འཇུག</string>
+  <string name="menu_resend">བསྐྱར་དུ་ཐོངས།</string>
   <!--Strings for the contact info screen-->
   <string name="menu_scan">མཛུབ་རིས་ཞིབ་བརྟག་བྱེད།</string>
   <string name="menu_fingerprint">ཁྱེད་རང་གི་མཛུབ་རིས།</string>
@@ -139,7 +139,6 @@
   <string name="sign_in">ནང་དུ་ཞུགས།</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">getting the Gibberbot going...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">ནང་ཞུགས་བྱེད་བཞིན་ཡོད། \u2026</string>
   <!--Dialog title-->
@@ -207,18 +206,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">དྲ་ཐོག་ན་མི་འདུག </string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="preference_title"></string>
-  <string name="data_channel_label">རེའུ་མིག་གི་བརྒྱུད་ལམ།</string>
-  <string name="data_encoding_label">རེའུ་མིག་ཨང་སྒྲིག</string>
-  <string name="cir_channel_label">CIR བརྒྱུད་ལམ།</string>
-  <string name="host_label">གནས་ཚང་།</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">འཕྲིན་ཐུང་།</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">ཉར་ཚགས་བྱེད།</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -240,7 +227,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">གཏོང་།</string>
   <!--Error message when a chat failed to be sent.-->
@@ -287,6 +275,7 @@
     smaller text below this label-->
   <string name="foreground_service_title">སྔོན་སྤྱོད་རིམ་པ་གལ་ཆེ་ཤོས་དེ་བེད་སྤྱོད་ཐོངས་། </string>
   <string name="foreground_service_summary">ཡིས་ང་ཚོའི་དྲ་འབྲེལ་ཞབས་ཞུ་བསྐྱར་དུ་འགོ་འཛུགས་བྱེད་པའི་གོ་སྐབས་ཉུང་དུ་ཐོངས་། འདི་ཡིས་བརྡ་གཏོང་ཁོར་ཡུག་ཏུ་བརྡ་འཇོག་གི་རེད་། </string>
+  <string name="heartbeat_interval_title">སྙིང་གི་འཕར་ལྡིང་གི་བར་གླགས། </string>
   <string name="notification_vibrate_title"> འདར་བཅུག</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">འཕྲིན་ཐུང་འབྱོར་སྐབས་ཡང་འདར་བཅུག</string>
@@ -423,25 +412,6 @@
     <item> ཐེ་ཚོམ་སྐྱེས་པ།</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>དགའ་པོ།</item>
     <item> ཡིད་སྐྱོ་བོ།</item>
@@ -485,23 +455,17 @@
   <string name="menu_view_encrypt_chat">གསང་བ་སྡོམ་/མི་སྡོམ།</string>
   <string name="use_tor">ཀྲོར་བརྒྱུད་ནས་འབྲེལ་མཐུད་བྱོས།</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">ཐེངས་དང་པོར་(Gibberbot)བེད་སྤྱོད་གཏོང་གི་ཡོད་དམ།</string>
   <string name="welcome_skip">འགོ་འཛུགས་པར་རྔམས་ཀྱི་འདུག</string>
   <string name="welcome_about">འགོ་བཙུགས་།</string>
   <string name="welcome_account">བང་མཛོད་སྒྲིག་འཇུག</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Gibberbot ཡི་སྐོར།</string>
-  <string name="about_welcome">Gibberbot ནི་ལག་འཁྱེར་ཁ་པར་གྱི་འཕྲིན་ཐུང་ཉེར་སྤྱོད་ཅིག་ཡིན་ཞིང་། དེས་བདེ་སྲུང་མ་ལག་འཕར་མ་མཁོ་སྤྲོད་བྱས་དེ་ཁྱེད་ཀྱི་གླེང་མོལ་དང་འབྲེལ་ལམ་ལ་རྩད་གཅོད་གཏོང་མཁན་ཚོ་འགོག་གི་རེད་། \n\nཉེར་སྤྱོད་དེས། དྲ་ཐོག་གླེང་མོལ་གྱི་ཞབས་ཞུ་གང་རུང་སྟེ་། Jabber དང་ XMPP protocal ཡི་ཁོངས་སུ་གཏོགས་པའི་ Google GTalk or Jabber.org རིགས་ལ་རྒྱབ་སྐྱོར་བྱེད་གི་རེད་། </string>
   <!--About: OTR-->
   <string name="about_otr_title">དེ་ཇི་ལྟར་བདེ་འཇགས་ཡིན་ནམ།</string>
   <string name="about_otr">ཟིན་ཐོ་མེད་པའི་འཕྲིན་གཏོང་ནི་འཛམ་གླིང་ནང་གི་སྒེར་གྱི་གླེང་མོལ་ཚང་མ་གསང་བདེ་ཡོང་བའི་ཆེད་དུ་བཟོས་བའི་བདེ་འཇགས་མ་ལག་ཞིག་སྟེ། དེའི་ཁོངས་སུ་གསང་སྡོམ་དང་ར་སྤྲོད། ཕྱི་འདོར་། གསང་གཏོང་བཅས་ཚུད། \n\nOTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium དང་ཡང་ན་ Pidgin  ལྟ་བུའི་མཉམ་དུ་བསྟུན་ཐུབ་།\n\n</string>
   <!--About: Security-->
   <string name="about_security_title">ངའི་གླེང་མོལ་དེ་བདེ་འཇགས་ཡིན་ནམ།</string>
-  <string name="about_security">ཁྱེད་ནས་འཕྲིན་ཐུང་གཏོང་ས་དེས་ཀྱང་ཉར་སྤྱོད་མ་ལག་གཅིག་མཚུངས་བེད་སྤྱོད་བཏང་ན། ད་གཟོད་ཁྱེད་ཀྱི་ Gibberbot གླེང་མོལ་གསང་སྡོམ་པར་གཞི་དེས་ལས་ཀ་བྱེད་ཐུབ། དེར་བརྟེན། ཁྱེད་ཀྱིས་འབྲེལ་གཏུགས་བྱེད་ས་དེས་ལག་འཁྱེར་ཁ་པར་སྟེངGibberbot དང་གློག་ཀླད་སྟེང་Adiumདང་Pidgin བེད་སྤྱོད་གཏོང་གི་ཡོད་མེད་ཁག་ཐེག་བྱོས། ཁྱེད་ནས་ཇི་ལྟར་Gibberbot ཡིས་ཁྱེད་ཀྱི་གླེང་མོལ་གསང་ཉར་བྱེད་ཀྱི་ཡོད་མེད་རྟོགས་ཐུབ། \nམཉམ་དུ་འགོ་འཛུགས། </string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">གསང་ཚིག་སྒྲིག་སྦྱོར་བྱེད།</string>
-  <string name="setup_passphrase">འགོ་འཛུགས་མ་བྱས་སྔོན་ལ། ཁྱེད་རང་གི Gibberbot རེའུ་མིག་དེ་ནང་འཛུལ་གཞན་ལས་འགོག་ཆེད་ཉེན་སྲུང་ཅན་གྱི་གསང་ཚིག་ཞིག་འདེམས། </string>
   <string name="setup_passphrase_label1">གསང་ཚིག :</string>
   <string name="setup_passphrase_label2">གསང་ཚིག (སླར་ཡང་།):</string>
   <!--Account Setup: Account-->
@@ -515,8 +479,6 @@
   <string name="account_setup_pers_pw_on">གསང་ཚིག་ཉར་བ།</string>
   <string name="account_setup_pers_pw_off">གསང་ཚིག་ཉར་མི་འདུག</string>
   <string name="account_setup_pers_auto_title">རང་འགུལ་གྱིས་ནང་དུ་འཛུལ་འཇུག</string>
-  <string name="account_setup_pers_auto_on">Gibberbot start-up ལ་མཐུད།</string>
-  <string name="account_setup_pers_auto_off">Gibberbot start-up ལ་མ་མཐུད། </string>
   <string name="account_setup_pers_now_title">ད་ལྟ་ནང་དུ་ཞུགས།</string>
   <string name="account_setup_pers_now_on">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མཐུད།</string>
   <string name="account_setup_pers_now_off">གཤམ་གྱི་ཐོ་བྱང་སྒྲིག་འཇུག་དེར་མ་མཐུད།</string>
@@ -536,16 +498,10 @@
   <string name="account_setup_signin_b">ལྡེ་མིག་གི་ཆ་བསྐྲུན་གྱི་ཡོད།...</string>
   <string name="account_setup_signin_c">ནང་དུ་ཞུགས་བཞིན་ཡོད།</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">ཁྱེད་ཀྱི་མིང་དང་གསང་ཚིག་དག་སྐྱེལ་བྱེད་དུས་།Gibberbot ལ་དཀའ་ངལ་ཞིག་འཕྲད་འདུག སྐུ་མཁྱེན། དེ་ལ་བསྐྱར་དུ་ཚོད་ལྟ་དང་རྟག་དཔྱད་ཐོངས།</string>
-  <string name="account_setup_error_keypair">གཙོ་ངོས་བཟོ་འདོན་གྱི་སྐབས་སུ་། Gibberbot དཀའ་ངལ་ཞིག་ལ་འཕྲད་འདུག</string>
-  <string name="account_setup_error_server">གླེང་མོལ་ཞབས་ཞུ་དང་འབྲེལ་མཐུད་རྒྱག་པའི་སྐབས་སུ། Gibberbot དཀའ་ངལ་ཞིག་ལ་འཕྲད་འདུག སྐུ་མཁྱེན། ཁྱེད་ཀྱི་སྡེབ་སྒྲིག་མ་ལག་ལ་བལྟ་ཞིབ་བྱས་ནས་བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
-  <string name="account_setup_error_connectivity">དྲ་འབྲེལ་གྱི་སྐབས་སུ། Gibberbot ལ་དཀའ་ངལ་འཕྲད་འདུག སྐུ་མཁྱེན། ཁྱེད་ཀྱི་དྲ་བའི་འབྲེལ་མཐུད་ལ་ཞིབ་ལྟ་བྱས་ནས་བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="label_fingerprint_remote">ཁོང་ཚོའི་མཛུབ་ཐེལ།</string>
   <string name="label_fingerprint_local">ཁྱེད་ཀྱི་མཛུབ་ཐེལ། </string>
   <string name="menu_sign_in">ནང་དུ་ཞུགས།</string>
   <string name="menu_gen_key">ལྡེ་མིག་གི་ཚབ།</string>
-  <string name="error_suspended_connection">Gibbertbot ཡིས་དྲ་རྒྱ་དང་འབྲེལ་མཐུད་བརླགས་འདུག </string>
-  <string name="error_reestablish_connection">Gibberbot ཡིས་དྲ་འབྲེལ་སླར་གསོ་ལ་འབད་བརྩོན་བྱེད་བཞིན་ཡོད། </string>
   <string name="otr_session_status_plaintext">ཉེན་བརྡ། གླེང་མོལ་འདི་གསང་སྡོམ་བྱེད་མེད།</string>
   <string name="otr_session_status_encrypted">གློག་མོལ་དེ་བདེ་འཇགས་ཡིན། འོན་ཀྱང་། གླེང་མོལ་བྱེད་མཁན་རྣམས་ཀྱི་ངོ་རྟགས་ར་སྤྲོད་བྱས་མེད་།</string>
   <string name="otr_session_status_finished">ཉེན་བརྡ། གླེང་མོལ་གྱི་གསང་སྡོམ་བཀག་ཟིན།</string>
@@ -554,15 +510,14 @@
   <string name="account_wizard_account_title">ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་ངོ་རྟགས།</string>
   <string name="account_wizard_host_title">སྡེབ་སྒྲིག་ཞབས་ཞུའི་འཕྲུལ་ཆས།</string>
   <string name="account_wizard_ready_title">ཁྱེད་རང་གྲ་སྒྲིག་ཡིན་ནམ།</string>
-  <string name="account_wizard_setup_body">ཁྱེད་ཀྱི་ XMPP ཡི་གླེང་མོལ་ཞབས་ཞུའི་ཆེད་དུ་། ཁྱེད་རང་གི་ཐོ་མཛོད་ཁ་བྱང་བཅུག་ནས་ Gibberbot དེ་སྡེབ་སྒྲིག་བྱོས།</string>
   <string name="account_wizard_account_body">སྐུ་མཁྱེན། ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་གསང་གྲངས་བཅུག (user@hostname)</string>
   <string name="account_wizard_host_body">སྐུ་མཁྱེན། ཁྱེད་རང་གི་ Jabber/XMPP གླེང་མོལ་ཞབས་ཞུའི་མིང་དང་ཨང་གྲངས་འཇུག་རོགས། \n(5222 ནི་གཏན་འཁེལ་ཡིན།)</string>
-  <string name="account_wizard_ready_body">Gibberbot དེ་སྡེབ་སྒྲིག་བྱས་ཟིན། དེ་ནི་ཁྱེད་ཀྱི་ཞབས་འབྲེལ་ལ་མཐུད་ནས། བདེ་འཇགས་ཡོད་པ་དང་ཉེན་སྲུང་ཡོད་པ། གསང་རྒྱ་ལྡན་པ་བཅས་ཀྱི་སྒོ་ནས་གླེང་མོལ་འགོ་བཙུགས། </string>
   <string name="account_wizard_no_domain_warning">ཁྱེད་ཀྱིས་ཁྱེད་ཀྱི་ཐོ་མཛོད་ཀྱི་ཁ་བྱང་གི་ཆེད་དུ་། hostname.com ལ་ནང་འཇུག་བྱས་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="account_wizard_no_root_domain_warning">ཁྱེད་རང་གི་དྲ་ཐོག་ཞབས་ཞུའི་མིང་ལ་ .com དང་ .net   ཡང་ན་ཟུར་སྣོན་སོགས་ཅི་ཡང་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="signin_password_prompt">ཁྱེད་རང་གི་གསང་ཡིག་འཇོག</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">ཐོ་མཛོད་སྒྲིག་བཟོ།</string>
-  <string name="warning_alpha">WARNING: This is an early release of Gibberbot that may still include security holes or bugs.</string>
+  <string name="pref_default_locale">སྒེ་ཧྥི་ལོ་ཁུ།</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups"> ཚན་པ་ཁག</string>
   <string name="otr_gen_key">OTR ལྡེ་མིག་གསར་བ་ཞིག་མཁོ་སྒྲུབ་བཞིན་པ། </string>
@@ -597,4 +552,26 @@
   <string name="smp_question_summary">ཁོང་ཚོ་སུ་ཡིན་པ་ར་སྤྲོད་པའི་ཕྱིར་། ཁྱེད་ཀྱི་འབྲེལ་མཐུད་ཚོར་དྲི་བ་དང་དེ་ལ་བབས་པའི་ལན་བསྐུར་།</string>
   <string name="smp_question_hint">དྲི་བ་ནི། </string>
   <string name="qmp_answer_hint">ཚོད་དཔག་གི་ལན།</string>
+  <string name="remote_verified_us">ཁྱེད་ཀྱི་འབྲེལ་བ་དེས་ཁྱེད་རང་་དག་སྐྱེལ་ལེགས་འགྲུབ་བྱས་འདུག ད། ཁྱེད་ཀྱི་དྲི་བ་དག་དྲིས་ནས་ཁྱེད་ཀྱི་འབྲེལ་བ་དེ་དག་སྐྱེད་བྱེད་དགོས། </string>
+  <string name="no_messages">གླེང་མོལ་མི་འདུག⏎\n⏎འདི་ནས་གཅིག་འགོ་ཚུགས། </string>
+  <string name="pref_theme_dark">པར་གཞི་ནག་པོ་དེ་བེད་སྤྱོད་ཐོངས། </string>
+  <string name="warning_tor_connect">ཁྱེད་ཀྱིས་ བེད་སྤྱོད་གཏོང་གི་ཡོད་པར་བརྟེན། ཁྱེད་ཀྱིས་ངེས་པར་དུ་ XMPP ཡི་འབྲེལ་མཐུད་མཁོ་སྤྲོད་མཁན་གྱི་མིང་གཙོ་བོ་དེ་ཐད་ཀར་རྒྱ་ཆེ་བའི་ཐོ་མཛོད་སྒྲིག་བཟོའི་ཁོངས་སུ་འཇུག་དགོས་རེད། </string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot_summary">རྟག་པར་དུ་འགོ་འཛུགས་པ་དང་རང་བཞིན་ནས་ཁ་སྔོན་ནང་འཛུལ་བྱས་བའི་ཐོ་བྱང་དེ་ལ་ཐོ་འགོད་བྱོས། </string>
+  <string name="empty_account_message">ཁྱོད་ལ་སྡེབ་སྒྲིག་ཟིན་པའི་ཐོ་མཛོད་མི་འདུག⏎\n⏎འདི་ནས་གཅིག་བསྣོན། </string>
+  <string name="google_account">གྷོ་རྒལ་ཐོ་མཛོད། </string>
+  <string name="pref_in_memory_db_title">ནང་གསོག་འཕྲིན་ཐུང་གི་མཛོད་གཅིག་པོ། </string>
+  <string name="pref_in_memory_db_summary">འཕྲིན་ཐུང་ཕྱིར་གྱར་མ་འབྱུང་བའི་ཆེད་དུ། འཕྲིན་ཐུང་དག་ནང་གསོག་ཡོ་ཆས་ཀྱི་ཁོངས་སུ་ཉོར། flashཧྤི་ལ་ཞེས་ཉར་ཀྱི་ཉར་གསོགས་ཁོངས་སུ་མ་ཉར། (དེ་ཡིས་འཕྲིན་ཐུང་བརླག་པར་རྐྱེན་བྱེད་སྲིད)</string>
+  <string name="pref_background_title">རྒྱབ་ལྗོངས་ཀྱི་སྣང་བརྙན། </string>
+  <string name="pref_background_summary">བཀོལ་སྤྱོད་མ་ལག་འདིའི་ཆེད་དུ། རྒྱབ་ལྗོངས་སྣང་བརྙན་དེ་ལ་ (\"/sdcard/foo.jpg\")སྒྲིག་འཇུག་བྱོས། </string>
+  <string name="pref_group_security_title">ཉེན་སྲུང་དང་བདེ་འཇགས། </string>
+  <string name="pref_group_looknfeel_title">བེད་སྤྱོད་གཏོང་མཁན་གྱི་མཐུད་ངོས། </string>
+  <string name="pref_group_tuning_title">ཉར་གསོག་གཞན་པ། </string>
+  <string name="_open_conversations">གླེང་མོལ་སྒོ་ཕྱེས།(s)</string>
+  <string name="_via_orbot">ཨོར་བྷོ་ཁྲི(ཁྲོར)</string>
+  <string name="menu_exit">ཕྱིར་ཐོན། </string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">ཁྱེད་ཀྱིས་ཞབས་ཞུ་ཚང་མ་སྒོ་བརྒྱབ་ནས་བརྒྱུད་རིམ་ཚང་མ་མེད་པར་གཏོང་འདོད་དམ། (hard exit)?</string>
 </resources>

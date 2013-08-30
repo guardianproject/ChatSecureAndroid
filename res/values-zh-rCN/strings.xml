@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">允许程序写入数据即时信息内容提供商。</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">聊天 - 选择一个帐户</string>
@@ -134,7 +133,6 @@
   <string name="sign_in">登录</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">正在登录...</string>
   <!--Dialog title-->
@@ -202,17 +200,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">显示为离线</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">数据通道</string>
-  <string name="data_encoding_label">数据编码</string>
-  <string name="cir_channel_label">税务局局长通道</string>
-  <string name="host_label">主机</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP的</string>
-  <string name="sms">短信</string>
-  <string name="tcp">技术合作计划</string>
-  <string name="xml">XML的</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">保存</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -234,7 +221,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">发送</string>
   <!--Error message when a chat failed to be sent.-->
@@ -432,20 +420,16 @@
   <string name="menu_view_encrypt_chat">加密On/Off</string>
   <string name="use_tor">通过Tor连接（需要Orbot应用程序）</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">第一次使用Gibberbot？</string>
   <string name="welcome_skip">Can\'t迫不及待地开始了吗？</string>
   <string name="welcome_about">关于Gibberbot</string>
   <string name="welcome_account">帐户设置</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">欢迎来到Gibberbot</string>
   <!--About: OTR-->
   <string name="about_otr_title">它是如何保障？</string>
   <!--About: Security-->
   <string name="about_security_title">是我的聊天安全吗？</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">口令设置</string>
-  <string name="setup_passphrase">在你开始之前，请选择安全的密码来保护您的Gibberbot从不公正的访问数据。</string>
   <string name="setup_passphrase_label1">Passphrase:</string>
   <string name="setup_passphrase_label2">密码（再次）:</string>
   <!--Account Setup: Account-->
@@ -455,8 +439,6 @@
   <string name="account_setup_pers_pw_on">密码缓存</string>
   <string name="account_setup_pers_pw_off">密码不缓存</string>
   <string name="account_setup_pers_auto_title">自动登录</string>
-  <string name="account_setup_pers_auto_on">连接在Gibberbot启动</string>
-  <string name="account_setup_pers_auto_off">Don\'t连接在Gibberbot启动</string>
   <string name="account_setup_pers_now_title">立即登录</string>
   <string name="account_setup_pers_now_on">连接以下帐户设置</string>
   <string name="account_setup_pers_now_off">Don\'t联络以下帐户设置</string>
@@ -476,16 +458,10 @@
   <string name="account_setup_signin_b">生成密钥对...</string>
   <string name="account_setup_signin_c">登入中..</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot遇到了一个错误在验证您的用户名和密码 - 请检查并再试一次。</string>
-  <string name="account_setup_error_keypair">Gibberbot遇到了一个错误，而生成一个密钥对。</string>
-  <string name="account_setup_error_server">Gibberbot遇到了一个错误，而连接到聊天服务器 - 请检查您的配置，然后再试一次。</string>
-  <string name="account_setup_error_connectivity">Gibberbot连接时遇到了一个错误 - 请doublecheck您的网络连接，然后再试一次。</string>
   <string name="label_fingerprint_remote">他们的指纹</string>
   <string name="label_fingerprint_local">指纹</string>
   <string name="menu_sign_in">登录</string>
   <string name="menu_gen_key">再生的关键</string>
-  <string name="error_suspended_connection">Gibberbot已经失去了一个连接到网络</string>
-  <string name="error_reestablish_connection">Gibberbot试图restablish连接</string>
   <string name="otr_session_status_plaintext">Warning:此聊天是不加密</string>
   <string name="otr_session_status_encrypted">此聊天是安全的，但参加者的身份尚未被验证</string>
   <string name="otr_session_status_finished">Warning:聊天加密已停止。</string>
@@ -494,11 +470,13 @@
   <string name="account_wizard_account_title">您的帐户ID</string>
   <string name="account_wizard_host_title">配置服务器</string>
   <string name="account_wizard_ready_title">你准备好了吗？</string>
-  <string name="account_wizard_setup_body">请输入您的帐户ID，自动配置Gibberbot为你聊天service.\n\nIt可能看起来像一个电子邮件地址 - 这样yourname@gmail.com，或someone@jabber.org，例如。</string>
   <string name="account_wizard_account_body">请输入您的帐户ID（用户@主机名）:</string>
   <string name="account_wizard_host_body">请输入或编辑您的jabber/xmpp聊天服务器的主机名和端口号（默认是5222）。</string>
-  <string name="account_wizard_ready_body">Gibberbot已经配置了，现在是时候来连接您的服务，并开始聊天安全，安全和私下！</string>
   <string name="signin_password_prompt">输入您的password:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <!--added 2011/09/01-->
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

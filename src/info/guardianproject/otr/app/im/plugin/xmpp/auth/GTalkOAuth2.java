@@ -93,6 +93,7 @@ public static String getGoogleAuthTokenAllow(String name, Context context, Activ
     String retVal = null;
     Account account = getAccount(TYPE_GOOGLE_ACCT,name, aMgr);
     Bundle bundle = new Bundle();
+    
     AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, bundle, activity, 
             new AccountManagerCallback<Bundle>() {
 
@@ -130,6 +131,8 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     if (account != null) {
       try {
           
+          //aMgr.updateCredentials(account, authTokenType, options, activity, callback, handler);
+          
         return aMgr.blockingGetAuthToken(account, authTokenType, true);
       } catch (OperationCanceledException e) {
         Log.e(NAME, "auth canceled", e);
@@ -141,6 +144,8 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     }
     return null;
   }
+
+
 
 //help method for getting proper account
 public static Account getAccount(String type, String name, AccountManager aMgr) {

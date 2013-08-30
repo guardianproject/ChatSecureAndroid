@@ -30,13 +30,13 @@
         android:layout_height="fill_parent"
          android:padding="10dip"
         android:orientation="vertical" >   
-<!-- 
-        <ImageView android:id="@+id/imgAvatar"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:padding="2dip"
-            android:background="@drawable/picture_frame_background" />
 
+        <ImageView android:id="@+id/imgAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dip"
+            android:background="@drawable/avatar_unknown" />
+            <!-- 
         <TextView android:id="@+id/labelName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -51,21 +51,21 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
            />
 
-        <TextView android:id="@+id/labelStatus"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+           <LinearLayout
+      
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+         android:padding="0dip"
+         
             android:layout_marginTop="8dip"
+        android:orientation="horizontal" >   
+        <TextView android:id="@+id/labelStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_status" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:padding="10dip"
-        android:orientation="horizontal" >
- 
         <TextView android:id="@+id/txtStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,6 +73,7 @@
              android:textSize="10pt"
              />
 
+        </LinearLayout>
         <TextView android:id="@+id/txtStatusText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +83,6 @@
             android:textStyle="italic"
             android:textSize="10pt"
              />
-</LinearLayout>
 <!-- 
         <TextView android:id="@+id/labelClientType"
             android:layout_width="fill_parent"
@@ -110,11 +110,6 @@
             android:layout_height="wrap_content"
             android:textSize="10pt"
             android:text="" />
-         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="" />    
         
        <TextView android:id="@+id/labelFingerprintLocal"
             android:layout_width="fill_parent"

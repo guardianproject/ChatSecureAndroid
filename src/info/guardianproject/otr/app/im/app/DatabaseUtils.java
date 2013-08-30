@@ -52,12 +52,12 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn) {
+    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
         byte[] rawData = cursor.getBlob(dataColumn);
         if (rawData == null) {
             return null;
         }
-        return decodeAvatar(rawData);
+        return decodeAvatar(rawData, width, height);
     }
 
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
@@ -69,7 +69,7 @@ public class DatabaseUtils {
 
     public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn,
             int encodedDataColumn, String username, boolean updateBlobUseCursor,
-            ContentResolver resolver, Uri updateBlobUri) {
+            ContentResolver resolver, Uri updateBlobUri, int width, int height) {
         /**
          * Optimization: the avatar table in IM content provider have two
          * columns, one for the raw blob data, another for the base64 encoded
@@ -100,10 +100,10 @@ public class DatabaseUtils {
             }
         }
 
-        return decodeAvatar(rawData);
+        return decodeAvatar(rawData, width, height);
     }
 
-    private static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data,
+    public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data, 
             String username) {
         ContentValues values = new ContentValues(3);
         values.put(Imps.Avatars.DATA, data);
@@ -114,13 +114,86 @@ public class DatabaseUtils {
         String[] selectionArgs = new String[] { username };
 
         resolver.update(updateUri, values, buf.toString(), selectionArgs);
+        
     }
+    
+    public static boolean hasAvatarContact(ContentResolver resolver, Uri updateUri, 
+            String username) {
+        ContentValues values = new ContentValues(3);
+        values.put(Imps.Avatars.CONTACT, username);
 
-    private static Drawable decodeAvatar(byte[] data) {
-        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length);
+        StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
+        buf.append("=?");
+
+        String[] selectionArgs = new String[] { username };
+
+        return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
+        
+    }
+    
+    public static boolean doesHashExist(ContentResolver resolver, Uri queryUri, 
+            String jid, String hash) {
+
+        StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
+        buf.append("=?");
+        buf.append(" AND ");
+        buf.append(Imps.Avatars.HASH);
+        buf.append("=?");
+
+        String[] selectionArgs = new String[] { jid, hash };
+
+        //return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
+        
+        return resolver.query(queryUri, null, buf.toString(), selectionArgs, null).getCount() > 0;
+    }
+    
+    public static void insertAvatarBlob(ContentResolver resolver, Uri updateUri, long providerId, long accountId, byte[] data, String hash,
+            String contact) {
+        
+        ContentValues values = new ContentValues(3);
+        values.put(Imps.Avatars.DATA, data);
+        values.put(Imps.Avatars.CONTACT, contact);
+        values.put(Imps.Avatars.PROVIDER, providerId);
+        values.put(Imps.Avatars.ACCOUNT, accountId);
+        values.put(Imps.Avatars.HASH, hash);
+        resolver.insert(updateUri, values);
+        
+    }
+    
+
+    private static Drawable decodeAvatar(byte[] data, int width, int height) {
+        
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length,options);               
+        options.inSampleSize = calculateInSampleSize(options, width, height);
+        options.inJustDecodeBounds = false;
+        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
         Drawable avatar = new BitmapDrawable(b);
         return avatar;
     }
+    
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height > reqHeight || width > reqWidth) {
+
+        // Calculate ratios of height and width to requested height and width
+        final int heightRatio = Math.round((float) height / (float) reqHeight);
+        final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+        // Choose the smallest ratio as inSampleSize value, this will guarantee
+        // a final image with both dimensions larger than or equal to the
+        // requested height and width.
+        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+    }
+
+    return inSampleSize;
+}
 
     /**
      * Update IM provider database for a plugin using newly loaded information.

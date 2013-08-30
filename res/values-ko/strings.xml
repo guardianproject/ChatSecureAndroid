@@ -1,22 +1,22 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="ro_perm_label">인스턴트 메시지를 읽을 수</string>
-  <string name="ro_perm_desc">수 있도록 응용 프로그램은 메신저 콘텐츠 공급자에서 데이터를 읽을 수 없습니다.</string>
-  <string name="wo_perm_label">인스턴트 메시지를 써주세요</string>
-  <string name="wo_perm_desc">수 있도록 응용 프로그램은 메신저 콘텐츠 공급자에 데이터를 쓸 수 없습니다.</string>
+  <string name="ro_perm_label">쪽지 읽기</string>
+  <string name="ro_perm_desc">\n앱이 쪽지 컨텐트 프로바이더의 데이터를 읽기 가능하게 합니다.</string>
+  <string name="wo_perm_label">쪽지 쓰기</string>
+  <string name="wo_perm_desc">\n앱이 쪽지 컨텐트 프로바이더의 데이터를 쓰기 가능하게 합니다.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">채팅 - 선택 계정</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">이 앱에 대하여</string>
   <!--Conext menu item: add a new account.-->
   <string name="menu_add_account">계정 추가</string>
   <!--Conext menu item: edit an account.-->
   <string name="menu_edit_account">계정 수정</string>
   <!--Conext menu item: remove an account.-->
-  <string name="menu_remove_account">계정을 제거</string>
+  <string name="menu_remove_account">계정 삭제</string>
   <!--Screen menu item: sign out all service.-->
   <string name="menu_sign_out_all">모두 로그아웃</string>
   <!--These strings displayed on the landing page.-->
@@ -45,6 +45,7 @@
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">계정 목록</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">새 채팅 창</string>
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">설정</string>
@@ -64,9 +65,9 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_otr_start">시작 암호화</string>
-  <string name="menu_otr_stop">그만 암호화</string>
-  <string name="menu_clear_chat">지우기 채팅</string>
+  <string name="menu_otr_start">암호화 시작</string>
+  <string name="menu_otr_stop">암호화 중단</string>
+  <string name="menu_clear_chat">채팅 로그 지우기</string>
   <string name="menu_end_conversation">채팅 종료</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
@@ -74,7 +75,7 @@
   <string name="menu_view_contact_list">연락처 목록</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">초대...</string>
+  <string name="menu_invite_contact">초대\u2026</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">채팅 전환</string>
@@ -82,7 +83,7 @@
   <string name="menu_insert_smiley">이모티콘 삽입</string>
   <!--Strings for the contact info screen-->
   <string name="menu_scan">지문 스캔</string>
-  <string name="menu_fingerprint">당신 지문이</string>
+  <string name="menu_fingerprint">내 지문</string>
   <string name="menu_verify_fingerprint">지문 확인</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
@@ -94,7 +95,7 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">확인</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <string name="signout_all_confirm_message">당신은 모든 서비스를 로그인 하시겠습니까?</string>
+  <string name="signout_all_confirm_message">모든 서비스에서 로그아웃하시겠습니까?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -128,15 +129,14 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">계정이 없으세요?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">보안을 위해 휴대 전화를 분실하거나 도난, 사용자의 컴퓨터에있는 웹 사이트로 이동하여 비밀 번호를 변경할 수 있습니다.</string>
-  <string name="check_auto_sign_in">이 옵션을 선택하면 응용프로그램을 열 때마다 자동으로 로그인됩니다. 옵션을 사용 중지하려면 로그아웃한 다음 \'자동으로 로그인\' 확인란을 선택 취소하세요.</string>
+  <string name="check_save_password">휴대전화를 분실하거나 도난 당하셨으면 보안을 위해 다른 컴퓨터에서 웹 사이트로 접속하시어 비밀번호를 변경해 주십시오.</string>
+  <string name="check_auto_sign_in">이 옵션을 선택하면 앱이 시작할 때마다 자동으로 로그인됩니다. 중지하시려면 로그아웃한 다음 \'자동으로 로그인\' 확인란을 선택 취소하세요.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">로그인</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">로그인하는 중...</string>
+  <string name="signing_in_wait">로그인 중\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -166,11 +166,11 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">초대할 연락처 선택</string>
   <string name="contact_filter_hint">입력하여 연락처 찾기</string>
-  <string name="empty_contact_list">주소록이 없습니다.</string>
+  <string name="empty_contact_list">주소록이 비었습니다.</string>
   <!--The title of blocked contact list.-->
   <string name="blocked_list_title"></string>
   <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">차단된 주소록이 없습니다.</string>
+  <string name="no_blocked_contact">차단된 주소가 없습니다.</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
   <string name="contact_profile_title">연락처 프로필</string>
@@ -194,7 +194,7 @@
   <string name="presence_away">자리 비움</string>
   <!--This is an adjective describing the "idle" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_idle">자리 비움</string>
+  <string name="presence_idle">대기</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
   <string name="presence_offline">오프라인</string>
@@ -202,17 +202,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">오프라인으로 표시</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">데이터 채널</string>
-  <string name="data_encoding_label">데이터 인코딩</string>
-  <string name="cir_channel_label">CIR 채널</string>
-  <string name="host_label">숙주</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP를</string>
-  <string name="sms">SMS는</string>
-  <string name="tcp">하는 tcp</string>
-  <string name="xml">XML을</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">저장</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -234,13 +223,14 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">전송</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">메시지를 보내지 못했습니다.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">서버와의 연결이 끊어졌습니다. 메시지는 온라인 상태일 때 전송됩니다.</string>
+  <string name="disconnected_warning">서버와 연결이 끊어졌습니다. 메시지는 온라인 상태일 때 전송됩니다.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <string name="contact_offline_warning"></string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
@@ -264,24 +254,25 @@
   <!--provider plugin names-->
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">계정 설정</string>
+  <string name="encryption_and_anonymity_title">암호화 및 익명</string>
   <string name="hide_offline_contacts">오프라인 주소록 숨기기</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">알림 설정</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">메신저 알림</string>
+  <string name="notification_enabled_title">쪽지 알림</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">메신저가 오면 상태 표시줄에 알림</string>
+  <string name="notification_enabled_summary">쪽지가 오면 상태 표시줄에 알림</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_vibrate_title">진동</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">메신저가 오면 진동</string>
+  <string name="notification_vibrate_summary">쪽지 오면 진동</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="notification_sound_title">사운드</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">메신저가 오면 벨소리 재생</string>
+  <string name="notification_sound_summary">쪽지 오면 벨소리 재생</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
   <string name="notification_ringtone_title">벨소리 선택</string>
@@ -334,9 +325,9 @@
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">목록이 추가되지 않았습니다.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">연락처를 차단하지 못했습니다.</string>
+  <string name="block_contact_failed">연락처를 차단하지 못 했습니다.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">연락처를 차단 해제하지 못했습니다.</string>
+  <string name="unblock_contact_failed">연락처를 차단 해제하지 못 했습니다.</string>
   <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">먼저 연락처를 선택하세요.</string>
   <!--Error message for when the current connection disconnected.-->
@@ -360,7 +351,7 @@
   <!--Erorr message for bad password error.-->
   <string name="invalid_password">입력한 비밀번호가 올바르지 않습니다.</string>
   <!--Error message for server internal error.-->
-  <string name="internal_server_error">서버에 오류가 발생했습니다.</string>
+  <string name="internal_server_error">서버에서 오류가 발생했습니다.</string>
   <!--Error message for when the server does not implement the feature.-->
   <string name="not_implemented">서버에서 이 기능을 지원하지 않습니다.</string>
   <!--Error message for server not available error.-->
@@ -376,11 +367,11 @@
   <!--Error message for a bad username error.-->
   <string name="unknown_user">입력한 사용자 이름을 인식할 수 없습니다.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">죄송합니다. 상대방에 의해 차단되었습니다.</string>
+  <string name="recipient_blocked_the_user">죄송합니다. 상대방이 차단했습니다.</string>
   <!--Error message for session expired error.-->
   <string name="session_expired">세션이 만료되었습니다. 다시 로그인하세요.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
-  <string name="forced_logout">다른 클라이언트로부터 로그인했습니다.</string>
+  <string name="forced_logout">다른 클라이언트에서 로그인했습니다.</string>
   <string name="already_logged_in">이미 다른 클라이언트로부터 로그인했습니다.</string>
   <!--Error message for msisdn error.-->
   <string name="msisdn_error">죄송합니다. SIM 카드에서 전화번호를 읽을 수 없습니다. 이동통신사에 문의하세요.</string>
@@ -390,115 +381,138 @@
   <string name="general_error"></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
-    <item>행복한</item>
-    <item>슬픈</item>
+    <item>기쁨</item>
+    <item>슬픔</item>
     <item>윙크</item>
-    <item>혀 튀어나와</item>
-    <item>놀란</item>
+    <item>메롱</item>
+    <item>놀람</item>
     <item>키스</item>
     <item>고함</item>
-    <item>시원한</item>
-    <item>머니 입</item>
-    <item>발에 입</item>
+    <item>멋쟁이</item>
+    <item>돈쟁이</item>
+    <item>아차</item>
     <item>당황</item>
     <item>천사</item>
-    <item>결심이 서지 않은</item>
+    <item>으음</item>
     <item>울음</item>
-    <item>입술이 봉인된</item>
+    <item>비밀</item>
     <item>웃음</item>
-    <item>혼란스러운</item>
+    <item>혼란</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
   <string-array name="smiley_names">
-    <item>행복한</item>
-    <item>슬픈</item>
+    <item>기쁨</item>
+    <item>슬픔</item>
     <item>윙크</item>
-    <item>혀 튀어나와</item>
-    <item>놀란</item>
+    <item>메롱</item>
+    <item>놀람</item>
     <item>키스</item>
-    <item>고함</item>
-    <item>시원한</item>
-    <item>머니 입</item>
-    <item>발에 입</item>
+    <item>입벌림</item>
+    <item>멋쟁이</item>
+    <item>돈쟁이</item>
+    <item>아차</item>
     <item>당황</item>
     <item>천사</item>
-    <item>결심이 서지 않은</item>
+    <item>으음</item>
     <item>울음</item>
-    <item>입술이 봉인된</item>
+    <item>비밀</item>
     <item>웃음</item>
-    <item>혼란스러운</item>
+    <item>혼란</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
   </string-array>
   <string name="menu_contact_list">연락처 목록</string>
   <string name="menu_view_encrypt_chat">암호화 On/Off</string>
-  <string name="use_tor">토르를 통해 연결 (Orbot 애플 리케이션 필요)</string>
+  <string name="use_tor">토르로 연결 (Orbot 앱 필요)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">처음 Gibberbot을 사용하고 계십니까?</string>
-  <string name="welcome_skip">Can\'t 시작하고 기다 리 겠어?</string>
-  <string name="welcome_about">소개 Gibberbot</string>
+  <string name="welcome_skip">건너뛰기</string>
+  <string name="welcome_about">소개</string>
   <string name="welcome_account">계정 설정</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Gibberbot에 오신 것을 환영합니다</string>
   <!--About: OTR-->
-  <string name="about_otr_title">어떻게 안전한가요?</string>
+  <string name="about_otr_title">얼마나 안전한가요?</string>
   <!--About: Security-->
   <string name="about_security_title">채팅은 안전한가요?</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">암호 설정</string>
-  <string name="setup_passphrase">당신이 시작하기 전에 부당한 액세스로부터 사용자의 Gibberbot 데이터를 보호할 수있는 안전한 암호를 선택하십시오.</string>
-  <string name="setup_passphrase_label1">Passphrase:</string>
-  <string name="setup_passphrase_label2">글 (다시) :</string>
+  <string name="setup_passphrase_label1">암호:</string>
+  <string name="setup_passphrase_label2">암호 (다시):</string>
   <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">암호</string>
+  <string name="account_setup_advanced_button">고급 계정 설정</string>
   <!--Account Setup: Persistence-->
-  <string name="account_setup_pers_sub">고집</string>
-  <string name="account_setup_pers_pw_title">비밀 번호 기억</string>
-  <string name="account_setup_pers_pw_on">비밀 번호 캐시</string>
-  <string name="account_setup_pers_pw_off">비밀 번호가 아니 캐시</string>
+  <string name="account_setup_pers_sub">지속 설정</string>
+  <string name="account_setup_pers_pw_title">비밀번호 기억</string>
+  <string name="account_setup_pers_pw_on">비밀번호 캐시</string>
+  <string name="account_setup_pers_pw_off">비밀번호 캐시하지 않음</string>
   <string name="account_setup_pers_auto_title">자동으로 로그인</string>
-  <string name="account_setup_pers_auto_on">Gibberbot에서 연결 시작</string>
-  <string name="account_setup_pers_auto_off">Don\'t는 Gibberbot에서 연결 시작</string>
-  <string name="account_setup_pers_now_title">지금의 로그인</string>
-  <string name="account_setup_pers_now_on">다음 계정 설정을 연결</string>
-  <string name="account_setup_pers_now_off">Don\'t가 계정 설정을 다음과 같은 연결</string>
+  <string name="account_setup_pers_now_title">로그인</string>
+  <string name="account_setup_pers_now_on">다음 계정 설정으로 접속</string>
+  <string name="account_setup_pers_now_off">다음 계정 설정으로 접속하지 않음</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">개인 (옵션)</string>
   <string name="account_setup_personal_alias_title">계정 별칭 (사용자 이름)</string>
-  <string name="account_setup_personal_alias_sub">귀하의 계정에 온라인으로 표시하는 방법</string>
+  <string name="account_setup_personal_alias_sub">계정을 온라인에서 보기</string>
   <string name="account_setup_personal_profile_title">프로필</string>
-  <string name="account_setup_personal_profile_sub">자신에 대한 간략한 추천 광고</string>
+  <string name="account_setup_personal_profile_sub">자신에 관한 간략한 정보</string>
   <!--Account Setup: Advanced-->
-  <string name="account_setup_advanced_enc_force">강제 암호화 / 쓰레기 일반 텍스트</string>
-  <string name="account_setup_advanced_enc_auto">가능하면, 자동적으로 암호화 채팅</string>
-  <string name="account_setup_advanced_enc_req">암호화 채팅으로 요청</string>
-  <string name="account_setup_advanced_enc_off">사용 안함 암호화 채팅</string>
+  <string name="account_setup_advanced_enc_force">암호화 강제 및 일반 텍스트 거부</string>
+  <string name="account_setup_advanced_enc_auto">가능하면 자동으로 채팅 암호화하기</string>
+  <string name="account_setup_advanced_enc_req">요청하면 채팅 암호화하기</string>
+  <string name="account_setup_advanced_enc_off">채팅 암호화 안 하기</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">확인 자격 증명 ...</string>
-  <string name="account_setup_signin_b">생성 키 쌍은 ...</string>
-  <string name="account_setup_signin_c">로그인할 ..</string>
+  <string name="account_setup_signin_a">신분증 확인 중···</string>
+  <string name="account_setup_signin_b">Keypair 생성 중···</string>
+  <string name="account_setup_signin_c">로그인 중···</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">사용자 이름 또는 비밀 번호를 확인하는 동안 Gibberbot는 오류가 발생했습니다 - 그들을 확인하고 다시 시도하십시오.</string>
-  <string name="account_setup_error_keypair">키 쌍을 생성하는 동안 Gibberbot 오류가 발생했습니다.</string>
-  <string name="account_setup_error_server">구성을 확인하고 다시 시도하십시오 - 서버를 채팅에 연결하는 동안 Gibberbot 오류가 발생했습니다.</string>
-  <string name="account_setup_error_connectivity">네트워크 연결을 doublecheck을 다시 시도하십시오 - 연결 Gibberbot 동안 오류가 발생했습니다.</string>
-  <string name="label_fingerprint_remote">그들의 지문</string>
-  <string name="label_fingerprint_local">당신 지문이</string>
+  <string name="label_fingerprint_remote">상대방 지문</string>
+  <string name="label_fingerprint_local">내 지문</string>
   <string name="menu_sign_in">로그인</string>
-  <string name="menu_gen_key">Regen 키</string>
-  <string name="error_suspended_connection">Gibberbot는 네트워크에 대한 연결을 잃었</string>
-  <string name="error_reestablish_connection">Gibberbot가 연결을 restablish려고하고있다</string>
-  <string name="otr_session_status_plaintext">이 채팅은 Warning:하지 암호화됩니다</string>
-  <string name="otr_session_status_encrypted">이 채팅은 있지만 안전 참가자의 신원이 확인되지되었습니다</string>
-  <string name="otr_session_status_finished">Warning: 채팅 암호화가 중지되었습니다.</string>
-  <string name="otr_session_status_verified">이것은 안전하고 검증된 채팅</string>
+  <string name="menu_gen_key">키 다시 생성</string>
+  <string name="otr_session_status_plaintext">주의: 이 채팅은 암호화되지 않습니다</string>
+  <string name="otr_session_status_encrypted">이 채팅은 안전하지만 참가자의 신원이 확인되지 않았습니다!</string>
+  <string name="otr_session_status_finished">주의: 채팅 암호화가 중지되었습니다.</string>
+  <string name="otr_session_status_verified">이 채팅은 안전하고 검즌되었습니다</string>
   <string name="account_wizard_setup_title">계정 마법사</string>
-  <string name="account_wizard_account_title">귀하의 계정 아이디</string>
-  <string name="account_wizard_host_title">구성할 서버</string>
-  <string name="account_wizard_ready_title">당신은 준비 됐나?</string>
-  <string name="account_wizard_setup_body">아마 이메일 주소 것 같아요 당신이 service.\n\nIt 채팅에 대해 자동으로 Gibberbot을 구성하는 귀하의 계정 ID를 입력 - 그래서 yourname@gmail.com, 또는 someone@jabber.org, 예를 들면.</string>
-  <string name="account_wizard_account_body">: 귀하의 계정 ID를 (사용자 @ 호스트 이름)을 입력하세요</string>
-  <string name="account_wizard_host_body">(5222는 기본값)을 입력하거나 jabber/xmpp를 편집할 채팅 서버 호스트 이름과 포트 번호를 바랍니다.</string>
-  <string name="account_wizard_ready_body">Gibberbot은 구성되었습니다 지금은, 당신의 서비스에 연결하고, 안전하게 채팅을 시작, 안전하게 비공개로 시간입니다!</string>
-  <string name="signin_password_prompt">당신의 password:를 입력하십시오</string>
+  <string name="account_wizard_account_title">계정 아이디</string>
+  <string name="account_wizard_host_title">서버 설정</string>
+  <string name="account_wizard_ready_title">준비되셨나요?</string>
+  <string name="account_wizard_account_body">계정 아이디를 입력하십시오 (예: user@hostname):</string>
+  <string name="account_wizard_host_body">Jabber/xmpp 채팅 서버 호스트 이름과 포트 번호를 입력해주십시오 (기본값 5222).</string>
+  <string name="account_wizard_no_domain_warning">계정 이름에 @hostname.com 부분을 넣지 않으셨습니다. 다시 시도해 주십시오.</string>
+  <string name="account_wizard_no_root_domain_warning">서버 호스트 이름에 .com, .net같은 최상위 도메인을 넣지 않으셨습니다. 다시 시도해 주십시오.</string>
+  <string name="signin_password_prompt">비밀번호:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">계정 설정</string>
   <!--added 2011/09/01-->
+  <string name="menu_view_groups">그룹</string>
+  <string name="otr_gen_key">새 OTR keypair 생성하기···</string>
+  <string name="search_label">연락처</string>
+  <string name="search_hint">채팅하시려는 연락처의 이름을 넣어보세요</string>
+  <string name="search_button_text">검색</string>
+  <string name="menu_locale">언어</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">언어</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear에 나올 언어를 선택하십시오.</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

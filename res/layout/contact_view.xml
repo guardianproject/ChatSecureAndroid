@@ -22,68 +22,131 @@
     class="info.guardianproject.otr.app.im.app.ContactView"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:paddingTop="2dip"
-    android:paddingBottom="2dip"
-    android:paddingLeft="9dip"
-    android:paddingRight="9dip">
+    android:layout_height="wrap_content"
+    android:paddingTop="0dip"
+    android:paddingBottom="0dip"
+    android:paddingLeft="0dip"
+    android:paddingRight="0dip">
 
+    <LinearLayout 
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+              
     <RelativeLayout
         android:id="@+id/contactInfo"
-        android:layout_width="0dip"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:layout_marginRight="5dip"
-        android:paddingLeft="6dip">
+        android:layout_marginRight="2dip"
+        android:orientation="horizontal"
+        android:paddingLeft="0dip"
+        android:paddingTop="0dip" >
 
         <ImageView
-            android:id="@+id/presence"
-            android:scaleType="fitXY"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="6dip">
-        </ImageView>
+            android:id="@+id/expandable_toggle_button"
+            android:layout_width="64sp"
+            android:layout_height="64sp"
+            android:scaleType="centerCrop" 
+				android:layout_alignParentLeft="true"
+            />
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/contactrow"	
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/presence"
-            android:layout_centerVertical="true">
+            android:orientation="vertical"
+            android:paddingLeft="3dip"
+            android:paddingTop="3dip"
+             android:layout_toRightOf="@+id/expandable_toggle_button"
+             >
 
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView android:id="@+id/line1"
-                    android:maxLines="1"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                     android:fontFamily="sans-serif-light"
-                     />
-
-                <TextView android:id="@+id/timestamp"
-                    android:maxLines="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dip"                    
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                     android:fontFamily="sans-serif-light"
-                    />
-            </LinearLayout>
-
-            <TextView android:id="@+id/line2"                
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/line1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="1"
+                    android:text="this is the first"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="1"
+                    android:paddingRight="8dip"
+                    android:text="5:55pm"
+                    	android:layout_alignParentRight="true"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                     android:layout_toRightOf="@+id/line1"
+                     />
+                
+                  <TextView
+                android:id="@+id/line2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:ellipsize="marquee"
-                 android:fontFamily="sans-serif-light"
-                />
+                android:fontFamily="sans-serif-light"
+                android:text="this is the subline"
+                android:layout_below="@+id/line1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+                
+             
+          	</RelativeLayout>
+
+          
         </LinearLayout>
+       
     </RelativeLayout>
+    
+    <LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:id="@+id/expandable"
+			android:background="#dddddd"
+			>
+
+		<ImageView
+				android:id="@+id/btnExListChat"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_menu_new_chat"
+				/>
+
+                  <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/menu_new_chat"
+                    android:gravity="center"
+                
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+		<ImageView
+				android:id="@+id/btnExListProfile"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_menu_info"/>
+		
+		 <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:fontFamily="sans-serif-light"
+                                    android:gravity="center"
+                
+                android:text="@string/account_setup_personal_profile_title"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	</LinearLayout>
+	</LinearLayout>
+
 </view>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Force / vereisen</item>
+    <item>Forceer / vereisen</item>
     <item>Automatisch proberen</item>
     <item>Op verzoek</item>
     <item>Uitgeschakeld / nooit</item>
@@ -13,23 +13,57 @@
     <item>uitgeschakeld</item>
   </string-array>
   <string-array name="languages">
-    <item>English</item>
-    <item>العربية</item>
-    <item>پارسی</item>
-    <item>中文(简体)</item>
-    <item>Deutsch</item>
-    <item>Español</item>
-    <item>Tibetan</item>
     <item>Default</item>
+    <item>العربية</item>
+    <item>فارسی</item>
+    <item>中文(简体)</item>
+    <item>日本語</item>
+    <item>한국어</item>
+    <item>Dansk</item>
+    <item>Deutsch</item>
+    <item>English</item>
+    <item>Español</item>
+    <item>Esperanto</item>
+    <item>Français</item>
+    <item>Italiano</item>
+    <item>Magyar</item>
+    <item>Nederlands</item>
+    <item>Norwegian Bokmål</item>
+    <item>Português</item>
+    <item>Pyccĸий</item>
+    <item>Slovenčina</item>
+    <item>Swedish</item>
+    <item>Tibetan བོད་སྐད།</item>
+    <item>Tiếng Việt</item>
+    <item>Tϋrkçe</item>
+    <item>Čeština</item>
+    <item>ελληνικά</item>
   </string-array>
   <string-array name="languages_values">
-    <item>en_us</item>
+    <item>xx</item>
     <item>ar</item>
     <item>fa</item>
-    <item>zh</item>
+    <item>zh-rCN</item>
+    <item>ja</item>
+    <item>ko</item>
+    <item>da</item>
     <item>de</item>
-    <item>es</item>
+    <item>en</item>
+    <item>es_ES</item>
+    <item>eo</item>
+    <item>fr</item>
+    <item>it</item>
+    <item>hu</item>
+    <item>nl</item>
+    <item>nb_NO</item>
+    <item>pt</item>
+    <item>ru</item>
+    <item>sk</item>
+    <item>sv</item>
     <item>bo</item>
-    <item>xx</item>
+    <item>vi</item>
+    <item>tr</item>
+    <item>cs</item>
+    <item>el</item>
   </string-array>
 </resources>

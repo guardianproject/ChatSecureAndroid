@@ -19,8 +19,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-            
     <EditText
         android:id="@+id/password_edit"
         android:layout_height="wrap_content"
@@ -34,5 +32,6 @@
         android:password="true"
         android:key="password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    
         
 </LinearLayout>

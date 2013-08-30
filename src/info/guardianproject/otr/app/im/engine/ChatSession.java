@@ -18,12 +18,15 @@
 package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionStatus;
 import android.util.Log;
 
 /**
@@ -110,17 +113,51 @@ public class ChatSession {
      * 
      * @param message the message to send.
      */
-    public void sendMessageAsync(Message message) {
+    public int sendMessageAsync(Message message) {
 
         if (message.getTo() == null)
-            message.setTo(mParticipant.getAddress());
+          message.setTo(mParticipant.getAddress());
+        
+     // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession - ??? NF 8/2013 still needs to be done?       
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getFrom().getAddress(),message.getTo().getAddress());
 
-        // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession
-        mHistoryMessages.add(message);
+        if (otrStatus == SessionStatus.ENCRYPTED)
+        {
+            SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),message.getTo().getAddress());            
+            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
+            
+            
+            if (verified)
+            {
+                message.setType(Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED);
+            }
+            else
+            {
+                message.setType(Imps.MessageType.OUTGOING_ENCRYPTED);
+            }
+         
+            mHistoryMessages.add(message);
 
-        mOtrChatManager.transformSending(message);
+            mOtrChatManager.transformSending(message);
 
-        mManager.sendMessageAsync(this, message);
+            mManager.sendMessageAsync(this, message);
+
+        }
+        else if (otrStatus == SessionStatus.FINISHED)
+        {
+            
+            onSendMessageError(message, new ImErrorInfo(ImErrorInfo.INVALID_SESSION_CONTEXT,"Please turn off encryption"));
+        }
+        else
+        {
+            mHistoryMessages.add(message);
+
+            mOtrChatManager.transformSending(message);
+
+            mManager.sendMessageAsync(this, message);
+
+        }                
+        return message.getType();
     }
 
     /**
@@ -149,6 +186,27 @@ public class ChatSession {
      */
     public boolean onReceiveMessage(Message message) {
         mHistoryMessages.add(message);
+
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
+
+        SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());            
+
+        if (otrStatus == SessionStatus.ENCRYPTED)
+        {
+            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
+            
+            if (verified)
+            {
+                message.setType(Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED);
+            }
+            else
+            {
+                message.setType(Imps.MessageType.INCOMING_ENCRYPTED);
+            }
+                
+        }
+        
+        
         //  BUG it only seems to find the most recently added listener.
         boolean good = true;
         

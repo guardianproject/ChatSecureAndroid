@@ -23,7 +23,7 @@
 
 	<EditTextPreference android:key="pref_account_xmpp_resource"
 		android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
-		android:defaultValue="Gibberbot"
+		android:defaultValue="ChatSecure"
 		android:title="@string/xmpp_resource" />
 	<EditTextPreference android:key="pref_account_xmpp_resource_prio"
 		android:summary="@string/xmpp_resource_prio_summary"

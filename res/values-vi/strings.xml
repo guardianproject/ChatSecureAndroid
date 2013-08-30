@@ -6,7 +6,7 @@
   <string name="wo_perm_desc">\nCho phép ứng dụng viết/thêm dữ liệu vào dịch vụ tin nhắn nhanh </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chọn một tài khoản</string>
@@ -63,7 +63,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Xác minh</string>
+  <string name="menu_view_profile">Xác minh </string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
@@ -72,6 +72,7 @@
   <string name="menu_otr_stop">Ngừng mã hoá</string>
   <string name="menu_clear_chat">Xoá chat</string>
   <string name="menu_end_conversation">Kết thúc chat</string>
+  <string name="menu_voip_title">Cuộc gọi an toàn</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -86,7 +87,7 @@
   <string name="menu_insert_smiley">Thêm biểu hiện cười</string>
   <string name="menu_resend">Gửi lại</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Quét vân tay</string>
+  <string name="menu_scan">Scan vân tay</string>
   <string name="menu_fingerprint">Vân tay của bạn</string>
   <string name="menu_verify_fingerprint">Xác nhận vân tay</string>
   <string name="menu_verify_secret">Xác nhận bí mật</string>
@@ -140,7 +141,7 @@
   <string name="sign_in">Đăng nhập</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">đang khởi động Gibberbot</string>
+  <string name="signing_in_to">đang khởi động ChatSecure...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Đang đăng nhập</string>
   <!--Dialog title-->
@@ -191,7 +192,7 @@
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_available">Trực tuyến</string>
+  <string name="presence_available">Online </string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
   <string name="presence_busy">Bận</string>
@@ -203,23 +204,11 @@
   <string name="presence_idle">Không làm gì</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_offline">Không trực tuyến</string>
+  <string name="presence_offline">Offline </string>
   <!--This is an adjective describing the "invisible" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_invisible">Có vẻ không trực tuyến</string>
+  <string name="presence_invisible">Có vẻ offline </string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="preference_title"></string>
-  <string name="data_channel_label">Kênh dữ liệu</string>
-  <string name="data_encoding_label">Mã hoá dữ liệu</string>
-  <string name="cir_channel_label">Kênh CIR</string>
-  <string name="host_label">Máy chủ</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">Tin nhắn điện thoại</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Lưu trữ</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -241,7 +230,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Gửi đi</string>
   <!--Error message when a chat failed to be sent.-->
@@ -426,25 +416,6 @@
     <item>Rối trí</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>Vui</item>
     <item>Buồn</item>
@@ -488,43 +459,47 @@
   <string name="menu_view_encrypt_chat">Mã hoá tắt/mở</string>
   <string name="use_tor">Kết nối qua mạng Tor (Cần ứng dụng Orbot )</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">Lần đầu dùng Gibberbot?</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Lần đầu dùng ChatSecure?</string>
   <string name="welcome_skip">Nôn nóng muốn bắt đầu ngay?</string>
   <string name="welcome_about">Bắt đầu</string>
   <string name="welcome_account">Cài đặt tài khoản</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Về Gibberbot</string>
-  <string name="about_welcome">Gibberbot là một dịch vụ tin nhắn nhanh di động với những chức năng ngăn chận những kẻ muốn rình mò những cuộc chuyện trò hoặc trao đổi thông tin của bạn.\n\nỨng dụng này hỗ trợ các dịch vụ tin nhắn dùng giao thức Jabber hoặc XMPP, như Google Gtalk hoặc Jabber.org. </string>
+  <string name="about_welcome_title">Thông tin về ChatSecure</string>
+  <string name="about_welcome">ChatSecure là một dịch vụ tin nhắn nhanh di động với những chức năng ngăn chận những kẻ muốn rình mò những cuộc chuyện trò hoặc trao đổi thông tin của bạn.\n\nDịch vụ này hỗ trợ các dịch vụ tin nhắn dùng giao thức Jabber hoặc XMPP, như Google Gtalk hoặc Jabber.org. </string>
   <!--About: OTR-->
-  <string name="about_otr_title">Làm cách nào ứng dụng này bảo vệ?</string>
+  <string name="about_otr_title">Ứng dụng này an toàn như thế nào?</string>
   <string name="about_otr">\'Off-the-Record Messaging\' là một hệ thống an ninh để bảo đảm quyền riêng tư bằng cách mô phỏng những đặc tính của một cuộc đối thoại riêng tư ở ngoài đời bao gồm Mã hóa, Xác thực, Phủ nhận, Bí mật Chuyển tiếp.\n\nGiao thức OTR tương hợp với các ứng dụng chat của máy vi tính như Adium hoặc Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">Chat của tôi có được an toàn không?</string>
-  <string name="about_security">Chức năng mã hóa chat của Gibberbot chỉ hữu hiệu khi đầu dây bên kia dùng ứng dụng tương hợp, thành ra bạn cần phải bảo đảm là người kia cũng dùng Gibberbot cho thiết bị di động và Adium hay Pidgin trên máy vi tính. Bạn có thể điều chỉnh tùy ý cách thức và khi nào Gibberbot mã hóa chat trong phần Cấu Hình Tài Khoản.\n\nHãy bắt đầu!</string>
+  <string name="about_security">Tính năng mã hóa nội dung chat hoặc còn gọi là tán gẫu trên ChatSecure chỉ có thể được thực hiện khi đối tượng mà bạn gửi cũng đồng thời sử dụng ChatSecure nếu dùng di động hoặc Adium hay Pidgin khi dùng trên máy tính. Bạn có thể tự mình chỉnh sửa loại, mức độ mã hóa thông tin của ChatSecure trong phần Thiết Lập Tài Khoản.\n\nHãy bắt đầu trải nghiệm đi nào!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Cài đặt cụm từ mật khẩu</string>
-  <string name="setup_passphrase">Trước khi bạn bắt đầu xin vui lòng chọn một cụm từ an toàn để bảo vệ dữ liệu Gibberbot.</string>
+  <string name="setup_passphrase">Trước khi bạn bắt đầu xin vui lòng chọn một cụm từ an toàn để bảo vệ dữ liệu ChatSecure.</string>
   <string name="setup_passphrase_label1">Cụm từ mật khẩu:</string>
   <string name="setup_passphrase_label2">Cụm từ mật khẩu (đánh lại):</string>
   <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">tên người dùng mới</string>
+  <string name="account_setup_service_provider">dịch vụ cung cấp (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">mật khẩu</string>
+  <string name="account_setup_password_confirm">xác nhận mật khẩu</string>
   <string name="account_setup_advanced_button">Cấu hình cao cấp tài khoản </string>
   <string name="account_select_type">Loại tài khoản</string>
+  <string name="btn_create_new_account">Đăng ký Tài Khoản</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">Kiên trì</string>
-  <string name="account_setup_pers_pw_title">Nhớ Mật Khẩu</string>
+  <string name="account_setup_pers_pw_title">Nhớ mật khẩu</string>
   <string name="account_setup_pers_pw_on">Nhớ mật khẩu trong bộ đệm</string>
   <string name="account_setup_pers_pw_off">Mật khẩu không được nhớ trong bộ đệm</string>
   <string name="account_setup_pers_auto_title">Tự động đăng nhập </string>
-  <string name="account_setup_pers_auto_on">Kết nối khi bắt đầu Gibberbot</string>
-  <string name="account_setup_pers_auto_off">Đừng kết nối khi bắt đầu Gibberbot</string>
-  <string name="account_setup_pers_now_title">Đang nhập vào ngay</string>
+  <string name="account_setup_pers_auto_on">Kết nối vào ChatSecure khi bắt đầu</string>
+  <string name="account_setup_pers_auto_off">Đừng kết nối vào ChatSecure khi bắt đầu</string>
+  <string name="account_setup_pers_now_title">Đăng nhập vào ngay</string>
   <string name="account_setup_pers_now_on">Kết nối vào sau khi cài đặt tài khoản xong</string>
   <string name="account_setup_pers_now_off">Đừng kết nối vào sau khi cài đặt tài khoản xong</string>
   <!--Account Setup: Personal-->
-  <string name="account_setup_personal_sub">Cá Nhân (tuỳ chọn)</string>
+  <string name="account_setup_personal_sub">Cá nhân (tuỳ chọn)</string>
   <string name="account_setup_personal_alias_title">Biệt hiệu của tài khoản( tên của bạn )</string>
   <string name="account_setup_personal_alias_sub">Tài khoản của bạn sẽ hiện ra như vầy</string>
   <string name="account_setup_personal_profile_title">Hồ sơ</string>
@@ -539,16 +514,16 @@
   <string name="account_setup_signin_b">Đang tạo ra bộ chìa khoá mã hoá</string>
   <string name="account_setup_signin_c">Đang đăng nhập vào</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot gặp lỗi khi xác nhận tên dùng và mật khẩu của bạn, xin xem và thử lại</string>
-  <string name="account_setup_error_keypair">Gibberbot gặp lỗi khi tạo ra chìa khoá mã hoá</string>
-  <string name="account_setup_error_server">Gibberbot gặp lỗi khi đang kết nối vào máy chủ - xin xem lại cấu hình của bạn và thử lại.</string>
-  <string name="account_setup_error_connectivity">Gibberbot gặp lỗi khi đang kết nối và máy chủ - xin xem lại mạng kết nối của bạn và thử lại.</string>
+  <string name="account_setup_error_validating">ChatSecure đã gặp lỗi khi đang xác nhận tên dùng và mật khẩu của bạn, xin hay xem và thử lại.</string>
+  <string name="account_setup_error_keypair">ChatSecure đã gặp lỗi khi đang tạo ra chì khoá mã hoá</string>
+  <string name="account_setup_error_server">ChatSecure đã gặp lỗi khi đang kết nối và máy chủ - xin vui lòng xem lại cấu hình của bạn và thử lại.</string>
+  <string name="account_setup_error_connectivity">ChatSecure đã gặp lỗi khi đang kết nối và máy chủ - xin hãy xem lại mạng kết nối của bạn và thử lại.</string>
   <string name="label_fingerprint_remote">Vân tay của họ</string>
   <string name="label_fingerprint_local">Vân tay của bạn</string>
   <string name="menu_sign_in">Đăng nhập</string>
   <string name="menu_gen_key">Tạo ra chìa khoá</string>
-  <string name="error_suspended_connection">Gibberbot mất kết nối vào mạng</string>
-  <string name="error_reestablish_connection">Gibberbot đang thử kết nối lại </string>
+  <string name="error_suspended_connection">ChatSecure đã bị mất kết nối vào mạng lưới</string>
+  <string name="error_reestablish_connection">ChatSecure đang thử kết nối lại </string>
   <string name="otr_session_status_plaintext">Cảnh Báo: Cuộc chuyện trò này không được mã hoá</string>
   <string name="otr_session_status_encrypted">Cuộc chuyện trò này an toàn nhưng căn cước của người tham gia CHƯA ĐƯỢC xác nhận</string>
   <string name="otr_session_status_finished">Cảnh Báo: mã hoá cho cuộc chuyện trò đã ngưng</string>
@@ -557,16 +532,17 @@
   <string name="account_wizard_account_title">Tên tài khoản bạn</string>
   <string name="account_wizard_host_title">Cấu hình máy chủ</string>
   <string name="account_wizard_ready_title">Bạn sẵn sàng chưa?</string>
-  <string name="account_wizard_setup_body">Hãy đánh vào tên tài khoản của bạn để cấu hình Gibberbot cho dịch vụ tin nhắn XMPP. Tên tài khoản nhìn giống như địa chỉ email:</string>
+  <string name="account_wizard_setup_body">Hãy đánh vào tên tài khoản của bạn để cấu hình ChatSecure cho dịch vụ tin nhắn XMPP. Tên tài khoản nhìn giống như địa chỉ email:</string>
   <string name="account_wizard_account_body">Hãy đánh vào tên tài khoản (user@hostname):</string>
   <string name="account_wizard_host_body">Hãy đánh vào hoặc điều chỉnh tên máy chủ và số cổng ( số mặc định là 5222 ) cho dịch vụ jabber/xmpp của bạn. </string>
-  <string name="account_wizard_ready_body">Gibberbot đã cấu hình xong, bây giờ bạn có thể sử dụng và bắt đầu chat một cách an toàn và riêng tư.</string>
+  <string name="account_wizard_ready_body">ChatSecure đã cấu hình xong, bây giờ bạn có thể sử dụng và bắt đầu chat một cách an toàn trong riêng tư.</string>
   <string name="account_wizard_no_domain_warning">Bạn chưa đánh vào phần @máy chủ của tên tài khoản của bạn. Xin hãy thử lại.</string>
   <string name="account_wizard_no_root_domain_warning">Tên máy chủ của bạn thiếu phần .com,.net hoặc những đuôi tên miền khác. Xin hãy thử lại.</string>
   <string name="signin_password_prompt">Đánh vào mật khẩu:</string>
-  <string name="account_settings_title">Cấu Hình Tài Khoản</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">Cấu hình tài khoản</string>
   <string name="pref_default_locale">defLoc</string>
-  <string name="warning_alpha">Cảnh Báo: Đây là phiên bản cũ của Gibberbot và có thể có những lổ hỗng an ninh hoặc lỗi.</string>
+  <string name="warning_alpha">Cảnh Báo: Đây là phiên bản cũ của ChatSecure và có thể có những lổ hỗng an ninh hoặc lỗi.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Nhóm</string>
   <string name="otr_gen_key">Tạo ra cặp chìa khoá mã hoá OTR mới</string>
@@ -605,4 +581,47 @@
   <string name="no_messages">Không có cuộc trò chuyện nào\n\nHãy gõ vào đây để bắt đầu</string>
   <string name="pref_theme_dark">Dùng định dạng nền tối</string>
   <string name="warning_tor_connect">Vì bạn đang xài Tor, bạn phải đánh vào tên máy chủ của XMPP \'Connect Server\' thẳng vào trong phần Cấu Hình Cao Cấp Tài Khoản.</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">Để ChatSEcure tự động chạy</string>
+  <string name="start_on_boot_summary">Tự động chạy và đăng nhập vào tài khoản từng dùng trước đó</string>
+  <string name="empty_account_message">Bạn chưa cấu hình tài khoản nào cả.\n\nBấm vào đây để thêm vào!</string>
+  <string name="google_account">Tài khoản Google</string>
+  <string name="pref_in_memory_db_title">Lưu Trữ Tin Nhắn Trong Bộ Nhớ Mà Thôi</string>
+  <string name="pref_in_memory_db_summary">Chỉ giữ tin nhắn trong bộ nhớ, không giữ trên bộ nhớ flash để tránh tin bị chép ra. (Tin có thể bị mất)</string>
+  <string name="pref_background_title">Hình nền</string>
+  <string name="pref_background_summary">Chọn tên tập tin của hình ảnh nền cho app</string>
+  <string name="pref_group_security_title">An Ninh và Riêng Tư</string>
+  <string name="pref_group_looknfeel_title">Giao Diện Sử Dụng</string>
+  <string name="pref_group_tuning_title">Các Chỉnh Sửa Khác</string>
+  <string name="_open_conversations">Mở xem các trao đổi</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Rời</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Bạn muốn rời khỏi mọi dịch vụ VÀ hủy tất cả quá trình đang chạy (rời hoàn toàn)?</string>
+  <string name="rekey_message">Điền vào các ký tự cho phần mật khẩu, nên nhớ, ký tự mật khẩu được hiển thị sẽ ở dạng *. Phần mật khẩu của bạn ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo. Việc làm này nhằm tăng tính bảo mật của mật khẩu.</string>
+  <string name="do_rekey">Đang mã hóa các ghi chú hiện có của bạn với các cụm từ mới (hãy kiên nhẫn đợi trong giây lát...)</string>
+  <string name="enter_pass">Đánh vào cụm từ mật khẩu:</string>
+  <string name="new_pass">Chào bạn! Hãy điền vào các cụm từ bảo mật để giúp cho ghi chú của bạn được an toàn hơn. Các cụm từ này ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo.</string>
+  <string name="pass_err_length">Cụm từ bảo mật không đạt yêu cầu về độ dài ký tự</string>
+  <string name="pass_err_upper">Cụm từ bảo mật không chứa bất kỳ ký tự nào được in hoa</string>
+  <string name="pass_err_lower">Cụm từ bảo mật không chứa bất kỳ ký tự in thường nào</string>
+  <string name="pass_err_num">Cụm từ bảo mật không chứa bất kỳ ký tự là chữ số nào</string>
+  <string name="lock_screen_open">Mở</string>
+  <string name="title_activity_lock_screen">Đã khóa ChatSecure</string>
+  <string name="lock_screen_create_passphrase">Tạo cụm từ bảo mật</string>
+  <string name="lock_screen_passphrase_hint">Đánh vào cụm từ mật khẩu:</string>
+  <string name="lock_screen_passphrase_not_set_enter">Đánh vào cụm từ mật khẩu mới:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Xác nhận cụm từ bảo mật mới</string>
+  <string name="lock_screen_passphrases_not_matching">Cụm từ bảo mật không khớp, xin thử lại lần nữa</string>
+  <string name="pref_sip_account_title">Bảo mật giọng nói</string>
+  <string name="pref_sip_account_summary">Điền vào OStel.co hoặc các dịch vụ tài khoản bảo mật SIP để tích hợp với cuộc gọi</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">Chương trình nhận diện một khóa OTR được nhập vào. Bạn có muốn quét mật khẩu cho QR bây giờ không?</string>
+  <string name="menu_import_keys">Nhập phần lưu OTR</string>
+  <string name="successfully_imported_otr_keyring">Đã nhập thành công khóa OTR</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTP vẫn chưa được nhập vào; Vui lòng kiểm tra tập tin có thẻ được tồn tại trong hệ thống ở một định dạng và địa điểm khác</string>
+  <string name="pref_cacheword_timeout_title">Thời hạn cho mật khẩu</string>
+  <string name="pref_cacheword_timeout_summary">Thời hạn mà ứng dụng mã hóa bị khóa lại</string>
 </resources>

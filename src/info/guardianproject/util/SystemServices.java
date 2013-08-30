@@ -38,7 +38,7 @@ public class SystemServices {
         public static void send(Context aContext, Uri aUri, Class<Activity> aTargetActivityClass) {
             NotificationManager mNotificationManager = (NotificationManager)aContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            int icon = R.drawable.ic_gb;
+            int icon = R.drawable.ic_action_message;
             CharSequence tickerText = "Secured download completed!"; // TODO string
             long when = System.currentTimeMillis();
 

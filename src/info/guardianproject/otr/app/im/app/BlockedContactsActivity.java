@@ -67,8 +67,9 @@ public class BlockedContactsActivity extends ListActivity {
         setContentView(R.layout.blocked_contacts_activity);
         mHandler = new SimpleAlertHandler(this);
 
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
         mApp.startImServiceIfNeed();
+        
         if (!resolveIntent()) {
             finish();
             return;
@@ -181,7 +182,7 @@ public class BlockedContactsActivity extends ListActivity {
                         IContactListManager manager = conn.getContactListManager();
                         manager.unBlockContact(mUserName);
                     } catch (RemoteException e) {
-                        mHandler.showServiceErrorAlert();
+                        mHandler.showServiceErrorAlert(e.getMessage());
                     }
                 }
             };

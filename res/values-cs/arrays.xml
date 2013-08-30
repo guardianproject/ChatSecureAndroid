@@ -12,22 +12,4 @@
     <item>požadovat</item>
     <item>zakázat</item>
   </string-array>
-  <string-array name="languages">
-    <item>Anglicky</item>
-    <item>العربية</item>
-    <item>پارسی</item>
-    <item>中文(简体)</item>
-    <item>Německy</item>
-    <item>Španělsky</item>
-    <item>Výchozí</item>
-  </string-array>
-  <string-array name="languages_values">
-    <item>en_us</item>
-    <item>ar</item>
-    <item>fa</item>
-    <item>zh</item>
-    <item>de</item>
-    <item>es</item>
-    <item>xx</item>
-  </string-array>
 </resources>

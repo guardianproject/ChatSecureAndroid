@@ -78,6 +78,7 @@
     <string name="menu_view_accounts">Accounts</string>
     <!-- Screen menu item on active chat list to start new chat -->
     <string name="menu_new_chat">New Chat</string>
+    
     <!-- Screen menu item on accounts list to create new account -->
     <string name="menu_new_account">New Account</string>
     <!-- Screen menu item on the contact list to go to the setting page.-->
@@ -108,6 +109,7 @@
     
     <string name="menu_end_conversation">End chat</string>
 
+    <string name="menu_voip_title">Secure Call</string>
     <!-- Chat screen menu and context menu items.-->
     <!-- Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -222,7 +224,7 @@
     <!-- Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
     <string name="contacts_picker_title">Select contact(s) to invite</string>
     <string name="contact_filter_hint">Type to find contact</string>
-    <string name="empty_contact_list">No contacts found.</string>
+    <string name="empty_contact_list">No contacts found.\n\nTap to invite.</string>
 
     <!-- The title of blocked contact list.-->
     <string name="blocked_list_title">Blocked contacts - <xliff:g id="user">%1$s</xliff:g></string>
@@ -297,16 +299,15 @@
     <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> has left</string>
     <!-- Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
     
-    <!-- <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+     <string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
     
-    <string name="time_stamp" format="date"><xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g><xliff:g id="ampm">a</xliff:g></string>
-    
+        
     <!-- The send button on the chat screen. -->
     <string name="send">Send</string>
     <!-- Error message when a chat failed to be sent.-->
     <string name="msg_sent_failed">This message could not be sent.</string>
     <!-- Warning message displayed in the chat screen when connection is lost.-->
-    <string name="disconnected_warning">Lost connection to server. Messages will be sent when online.</string>
+    <string name="disconnected_warning">Messages will be sent on reconnect</string>
     <!-- Warning message displayed in the chat screen when the contact is offline.-->
     <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
     <!-- Warning message displayed in the chat screen when the contact is not in the user's list.-->
@@ -594,9 +595,17 @@
 	
 	<!-- Account Setup: Account -->
     <string name="account_setup_example_email_address">user@domain.com</string>
+    <string name="account_setup_new_username">new username</string>
+    <string name="account_setup_service_provider">service provider (dukgo.com, jabber.ccc.de)</string>
+    
     <string name="account_setup_password">password</string>
+    
+    <string name="account_setup_password_confirm">confirm password</string>
+    
     <string name="account_setup_advanced_button">Advanced Account Settings</string>
     <string name="account_select_type">Account Type</string>
+    
+    <string name="btn_create_new_account">Register Account</string>
     	
 	<!-- Account Setup: Persistence -->
 	<string name="account_setup_pers_sub">Persistence</string>
@@ -645,10 +654,10 @@
     <string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
 	<string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
 	
-	<string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
-	<string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
-	<string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
-	<string name="otr_session_status_verified">This chat is secured and verified</string>
+	<string name="otr_session_status_plaintext">Encryption is off</string>
+	<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
+	<string name="otr_session_status_finished">Encryption has been stopped</string>
+	<string name="otr_session_status_verified">Encrypted and verified!</string>
 	
 	<string name="account_wizard_setup_title">Account Wizard</string>
 	<string name="account_wizard_account_title">Your Account ID</string>
@@ -691,7 +700,7 @@
 	<string name="allow_plain_text_auth">Allow Plain Text Auth</string>
 	<string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
 	<string name="tls_verification">TLS Verification</string>
-	<string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+	<string name="require_tls_ssl_connection">Require TLS Connection</string>
 	<string name="transport_encryption">Transport Encryption</string>
 	<string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
 	<string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
@@ -734,7 +743,7 @@
 	 <string name="start_on_boot">Start ChatSecure Automatically</string>
 	 <string name="start_on_boot_summary">Always start and automatically sign into previously logged in accounts</string>
 	 
-	 <string name="empty_account_message">You have no accounts configured.\n\nTap here to add one!</string>
+	 <string name="empty_account_message">You have no\naccounts configured.\n\nTap here to add one!</string>
 	 
 	 <string name="google_account">Google Account</string>
 	 
@@ -756,5 +765,54 @@
 	 <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
     <string name="signout_kill_confirm_message">Do you want to sign out all services AND kill all processes (hard exit)?</string>
     
+     <string name="rekey_message">Enter a *new* passphrase. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="do_rekey">Encrypting your existing notes with the new passphrase (patience...)</string>
+    <string name="enter_pass">Enter your passphrase:</string>
+    <string name="new_pass">Welcome! Enter a strong passphrase to secure your notes. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="pass_err_length">Your passphrase was not long enough</string>
+    <string name="pass_err_upper">Your passphrase did not contain any uppercase letters</string>
+    <string name="pass_err_lower">Your passphrase did not contain any lowercase letters</string>
+    <string name="pass_err_num">Your passphrase did not contain any numbers</string>
+    
+    <string name="lock_screen_open">Open</string>
+    <string name="title_activity_lock_screen">ChatSecure Locked</string>
+    <string name="lock_screen_create_passphrase">Confirm Passphrase</string>
+	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
+	<string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
+	<string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
+	<string name="lock_screen_passphrases_not_matching">Passphrases did not match, please try again</string>
+	
+	<string name="pref_sip_account_title">Secure Voice</string>
+	<string name="pref_sip_account_summary">Enter your OStel.co or other secure SIP service account here for call integration</string>
+	
+	<string name="default_service_provider">dukgo.com</string>
+	
+	<string name="detected_Otr_keystore_import">We have detected an OTR key store to import. Would you like to scan the QR password now?</string>
+    
+	<string name="menu_import_keys">Import OTR Keystore</string>
+    
+	<string name="successfully_imported_otr_keyring">Successfully imported OTR keyring</string>
+    
+	<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
+
+	<string name="pref_cacheword_timeout_title">Password Timeout</string>
+	<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
+
+	<!-- Screen menu item on active chat list to start new chat -->
+    <string name="menu_new_group_chat">Group Chat</string>
+    <string name="create_or_join_group_chat">Create or Join Group Chat</string>
+    <string name="connect">Connect</string>
+    <string name="their_fingerprint_verified_">Their Fingerprint (Verified)</string>
+    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this key?</string>
+    <string name="verify_key_">Verify key?</string>
+    <string name="the_remote_key_fingerprint_has_been_verified_">The remote key fingerprint has been verified!</string>
+    
+    <string name="menu_panic">Panic</string>
+    
+    <string name="unable_to_create_or_join_group_chat">Unable to create or join group chat</string>
+    
+    <string name="buddies">Buddies</string>
+    
+    <string name="select_domain_new_account">Choose a domain</string>
 </resources>
 

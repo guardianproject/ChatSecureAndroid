@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <string name="ro_perm_label">Instant Messages lesen</string>
+  <string name="ro_perm_label">Nachricht lesen</string>
   <string name="ro_perm_desc">\n        Erlaubt Anwendungen Daten vom IM-Provider zu lesen.\n    </string>
   <string name="wo_perm_label">Instant Messages schreiben</string>
   <string name="wo_perm_desc">\n        Erlaubt Anwendungen Daten zom IM-Provider zu schreiben.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chat - Wählen Sie ein Konto</string>
@@ -48,6 +48,7 @@
   <!--Screen menu item on active chat list to start new chat-->
   <string name="menu_new_chat">Neuer Chat</string>
   <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">Neues Konto</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Einstellungen</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
@@ -70,6 +71,7 @@
   <string name="menu_otr_stop">Beende OTR</string>
   <string name="menu_clear_chat">Clear Chat</string>
   <string name="menu_end_conversation">Chat beenden</string>
+  <string name="menu_voip_title">Sicherer Anruf</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -82,10 +84,12 @@
   <string name="menu_switch_chats">Chat wechseln</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Smiley einfügen</string>
+  <string name="menu_resend">Erneut senden</string>
   <!--Strings for the contact info screen-->
   <string name="menu_scan">Scan Fingerprint</string>
   <string name="menu_fingerprint">Mein Fingerabdruck</string>
   <string name="menu_verify_fingerprint">Fingerprint überprüfen</string>
+  <string name="menu_verify_secret">Überprüfen Geheimnis </string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -136,7 +140,7 @@
   <string name="sign_in">Anmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">ChatSecure am Laufen halten...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Anmeldung wird ausgeführt...</string>
   <!--Dialog title-->
@@ -204,17 +208,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Als offline anzeigen</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">Datenkanal</string>
-  <string name="data_encoding_label">Datenverschlüsselung</string>
-  <string name="cir_channel_label">CIR-Kanal</string>
-  <string name="host_label">Host</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Speichern</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -236,7 +229,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Senden</string>
   <!--Error message when a chat failed to be sent.-->
@@ -252,6 +246,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Keine aktiven Chats</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">Verschlüsselte Chat Session wird gestartet...</string>
+  <string name="stopping_otr_chat">Verschlüsselte Chat Session wird gestoppt...</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Kontakt hinzufügen</string>
@@ -265,6 +261,7 @@
   <string name="invite_label">Einladung senden</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="provider_full_name_llxmpp">Lokaler Netzwerk Chat (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">Konto-Setup</string>
   <string name="encryption_and_anonymity_title">Verschlüsselung und Anonymität</string>
@@ -278,6 +275,10 @@
   <string name="notification_enabled_summary">Bei Nachrichteneingang Benachrichtigung in Statuszeile anzeigen</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="foreground_service_title">Vordergrundpriorität verwenden</string>
+  <string name="foreground_service_summary">Reduzieren Sie die Chance, dass Android eine Verbindung neustartet. Dies wird eine Meldung im Infobereich platzieren. </string>
+  <string name="heartbeat_interval_title">Heartbeat interval</string>
+  <string name="heartbeat_interval_summary">Verwenden Sie einen höheren Wert (in Minuten), um Batterie zu sparen. Ein hoher Wert kann dazu führen das der Anbieter, die Verbindung wegen Inaktivität beendet. </string>
   <string name="notification_vibrate_title">Vibrieren</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Bei Nachrichteneingang vibrieren</string>
@@ -359,6 +360,7 @@
   <string name="contact_not_loaded">Kontaktliste wird geladen, bitte warten.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Ein Netzwerkfehler ist aufgetreten.</string>
+  <string name="wifi_not_connected_error">WiFi ist nötig für diese Verbindung.</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Diese Funktion wird vom Server nicht unterstützt.</string>
   <!--Erorr message for bad password error.-->
@@ -413,25 +415,6 @@
     <item>Verwirrt</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\\\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>Glücklich</item>
     <item>Traurig</item>
@@ -465,7 +448,7 @@
     <item>:-[</item>
     <item>O:-)</item>
     <item>:-\\</item>
-    <item>:\\\'(</item>
+    <item>:\'(</item>
     <item>:-X</item>
     <item>:-D</item>
     <item>o_O</item>
@@ -475,36 +458,42 @@
   <string name="menu_view_encrypt_chat">Verschlüsseln An/Aus</string>
   <string name="use_tor">Verbinden über Tor (Benötigt Orbot app)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">Sie benutzen Gibberbot zum ersten Mal?</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Benutzen Sie ChatSecure das erste mal?</string>
   <string name="welcome_skip">Intro überspringen!</string>
   <string name="welcome_about">Über Gibberbot</string>
   <string name="welcome_account">Konto-Setup</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Über Gibberbot</string>
-  <string name="about_welcome">Gibbertbot ist eine mobile Instant Messaging App, die zusätzliche Sicherheit bietet um andere zu hindern, Ihre Kommunikation abzuhören.\n\nGibberbot unterstützt jeden Service, der das Jabber- bzw. XMPP-Protokoll verwendet, wie GoogleTalk oder Jabber.org.</string>
+  <string name="about_welcome_title">Über ChatSecure</string>
+  <string name="about_welcome">ChatSecure ist eine Instant Messaging App für Mobilgeräte mit Sicherheitsfunktionen, die verhindern, daß Konversationen und Kommunikation ausspioniert werden.\n\nAlle Chat Dienste, welche das Jabber oder XMPP Protokoll benutzen werden unterstützt, wie zum Beispiel Gtalk oder Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Wie funktioniert OTR?</string>
   <string name="about_otr">\'Off-the-Record Messaging\' ist ein Verschlüsselungssystem, daß entworfen wurde, die Privatheit der Kommunikation in der echten Welt nachzubilden.\nIm einzelnen sind dies: Verschlüsselung um Menschen außer Reichweite auszusperren, Beglaubigung (Authentication) um der Identität des Gesprächspartners sicher zu sein, Abstreitbarkeit (Deniability) um im Nachhinein verleugnen zu können bestimmte Aussagen getroffen zu haben, Folgenlosigkeit (Perfect Forward Secrecy) damit der Verlust des privaten Schlüssels es nicht ermöglicht Kommunikation der Vergangenheit nachträglich zu enschlüsseln.\n\nDas eingesetzte OTR-Protokoll ist kompatibel mit Desktop-IM-Clients wie Adium, Pidgin ua. </string>
   <!--About: Security-->
   <string name="about_security_title">Sind meine Chats sicher?</string>
+  <string name="about_security">ChatSecures Chatverschlüsselung funktioniert nur wenn die Gegenseite ein kompatibles Programm benutzt. Deswegen sollten Sie darauf achten, dass Ihr Kontakt entweder auf dem Handy ChatSecure und Adium oder Pidgin auf dem Desktop benutzt. Feineinstellungen wie und wann ChatSecure verschlüsselt können in den Kontoeinstellungen vorgenommen werden.\n\nLassen Sie uns beginnen!</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Passphrase Setup</string>
-  <string name="setup_passphrase">Bevor Sie beginnen wählen Sie bitte ein sicheres Passwort, um Ihre Gibberbot-Daten vor unberechtigtem Zugriff zu schützen.</string>
+  <string name="setup_passphrase">Bevor Sie starten legen Sie bitte ein sicheres Passwort fest um Ihre ChatSecure Daten vor unberechtigtem Zugang zu schützen.</string>
   <string name="setup_passphrase_label1">Passwort:</string>
   <string name="setup_passphrase_label2">Passwort (Wiederholung) :</string>
   <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">Neuer Benutzername</string>
+  <string name="account_setup_service_provider">Dienstanbieter (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">Passwort</string>
+  <string name="account_setup_password_confirm">Passwort bestätigen</string>
   <string name="account_setup_advanced_button">Erweiterte Konten-Einstellungen</string>
+  <string name="account_select_type">Konto Typen</string>
+  <string name="btn_create_new_account">Konto registrieren</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">Persistenz</string>
   <string name="account_setup_pers_pw_title">Passwort speichern</string>
   <string name="account_setup_pers_pw_on">Passwort zwischengespeichert</string>
   <string name="account_setup_pers_pw_off">Passwort nicht zwischengespeichert</string>
   <string name="account_setup_pers_auto_title">Automatisch anmelden</string>
-  <string name="account_setup_pers_auto_on">Anmelden bei Gibberbot-Start</string>
-  <string name="account_setup_pers_auto_off">Bei Gibberbot-Start nicht anmelden</string>
+  <string name="account_setup_pers_auto_on">Beim Start von ChatSecure verbinden</string>
+  <string name="account_setup_pers_auto_off">Beim Start von ChatSecure nicht verbinden</string>
   <string name="account_setup_pers_now_title">Jetzt anmelden</string>
   <string name="account_setup_pers_now_on">Verbinden Sie folgendes Konto</string>
   <string name="account_setup_pers_now_off">Verbinden Sie folgendes Konto nicht</string>
@@ -524,16 +513,16 @@
   <string name="account_setup_signin_b">Generiere Schlüsselpaar ...</string>
   <string name="account_setup_signin_c">Melde an...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Bei der Validierung Ihres Benutzernamens oder Ihres Passworts ist ein Fehler aufgetreten - bitte versuchen Sie es erneut.</string>
-  <string name="account_setup_error_keypair">Fehler beim Generieren eines Schlüsselpaares.</string>
-  <string name="account_setup_error_server">Gibberbot ist ein Fehler aufgetreten, während eine Verbindung zum Chat-Server - bitte überprüfen Sie die Konfiguration und versuche es erneut.</string>
-  <string name="account_setup_error_connectivity">Fehler beim Verbinden - bitte überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut.</string>
+  <string name="account_setup_error_validating">ChatSecure erlitt bei der Überprüfung von Benutzername und Passwort eine Störung – bitte kontrollieren Sie beides und wiederholen Sie den Vorgang.</string>
+  <string name="account_setup_error_keypair">ChatSecure erlitt bei der Generierung des Schlüsselpaars eine Störung.</string>
+  <string name="account_setup_error_server">ChatSecure erfuhr beim Verbinden mit dem Chat Server einen Fehler – bitte prüfen Sie die Einstellungen und versuchen Sie es nochmals.</string>
+  <string name="account_setup_error_connectivity">ChatSecure erfuhr beim Verbinden einen Fehler – bitte prüfen Sie die Netzwerkverbindung und versuchen Sie es nochmals.</string>
   <string name="label_fingerprint_remote"> Fingerabdruck des Gegenübers</string>
   <string name="label_fingerprint_local">Mein Fingerabdruck</string>
   <string name="menu_sign_in">Anmelden</string>
   <string name="menu_gen_key">Schlüssel erneuern</string>
-  <string name="error_suspended_connection">Verbindung zum Netzwerk verloren</string>
-  <string name="error_reestablish_connection">Versuche Verbindung erneut zu erstellen</string>
+  <string name="error_suspended_connection">ChatSecure hat die Verbindung zum Netzwerk verloren</string>
+  <string name="error_reestablish_connection">ChatSecure versucht die Verbindung wiederaufzubauen</string>
   <string name="otr_session_status_plaintext">Achtung: Dieser Chat ist nicht verschlüsselt</string>
   <string name="otr_session_status_encrypted">Dieser Chat ist sicher, aber die Identität der Teilnehmer wurde noch nicht überprüft</string>
   <string name="otr_session_status_finished">Achtung: Die Chat-Verschlüsselung wurde beendet.</string>
@@ -542,22 +531,96 @@
   <string name="account_wizard_account_title">Meine Konto-ID</string>
   <string name="account_wizard_host_title">Server konfigurieren</string>
   <string name="account_wizard_ready_title">Sind Sie bereit?</string>
-  <string name="account_wizard_setup_body">Geben Sie Ihre Konto-ID ein. Wahrscheinlich sieht sie aus wie eine E-Mail-Adresse, zum Beispiel yourname@gmail.com oder someone@jabber.org.</string>
+  <string name="account_wizard_setup_body">Geben Sie die Konto ID ein um ChatSecure für den XMPP Chat Dienst zu konfigurieren. Es sieht wie eine Mailadresse aus:</string>
   <string name="account_wizard_account_body">Bitte geben Sie Ihre Konto-ID (user @ hostname) :</string>
   <string name="account_wizard_host_body">Bitte geben Sie Host und Port (5222 ist Standard) ihres \njabber/xmpp Servers ein.</string>
-  <string name="account_wizard_ready_body">Gibberbot wurde konfiguriert. Jetzt können Sie online gehen und einen Chat starten, sicher und privat!</string>
+  <string name="account_wizard_ready_body">ChatSecure wurde konfiguriert und ist nun für einen sicheren und privaten Chat verbindungsbereit.</string>
   <string name="account_wizard_no_domain_warning">An Ihrer Benutzerkennung fehlt ein Servername der Form @hostname.com</string>
   <string name="account_wizard_no_root_domain_warning">An Ihrer Benutzerkennung fehlt die Top-Level-Domain, beispielsweise .com</string>
   <string name="signin_password_prompt">Geben Sie Ihr Passwort ein:</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">Account-Einstellungen</string>
-  <string name="warning_alpha">ACHTUNG: Dies ist eine Testversion von Gibberbot, die noch Fehler oder Sicherheitslücken aufweisen kann.</string>
+  <string name="pref_default_locale">defLoc</string>
+  <string name="warning_alpha">WARNUNG: Dies ist eine frühe ChatSecure Veröffentlichung, die möglicherweise noch Sicherheitslöcher und Fehler enthält.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruppen</string>
   <string name="otr_gen_key">Erzeuge neues OTR Schlüsselpaar...</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">Geben Sie den Namen des Kontakts ein, mit dem Sie chatten möchten.</string>
   <string name="search_button_text">Auf gehts!</string>
+  <string name="menu_locale">Sprache</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Sprachen</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Welche Sprache sollte im InTheClear Display angezeigt werden? </string>
+  <string name="do_srv_lookup">SRV Betrachtung</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Nutze </string>
   <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Dürfen Nutzername und Passwort unverschlüsselt versendet weden, wenn die Verbindung nicht verschlüsselt ist?</string>
   <string name="allow_plain_text_auth">Unverschlüsselten Login erlauben</string>
+  <string name="verify_that_the_certificate_is_trusted">Überprüfen Sie, ob das Zertifikat vertrauenswürdig ist </string>
+  <string name="tls_verification">TLS Verifikation</string>
+  <string name="require_tls_ssl_connection">TLS/SSL Verbindung nötig</string>
+  <string name="transport_encryption">Transport Verschlüsselung</string>
+  <string name="how_encrypted_chats_are_started">wie verschlüsselte Chats gestartet werden</string>
+  <string name="the_server_to_connect_to_if_needed">Server verbinden, wen nötig</string>
+  <string name="connect_server">Server verbinden</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port für XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP-Ressource </string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">diese Verbindung von anderen Clients, die auch angemeldet sind unterscheiden</string>
+  <string name="xmpp_resource_prio_title">XMPP-Ressource Priorität</string>
+  <string name="xmpp_resource_prio_summary">Nachrichten für Kunden mit mehreren aktiven Ressourcen auf die Ressource mit der höchsten Priorität gesendet werden</string>
+  <string name="btn_next">Nächstes</string>
+  <string name="btn_back">Zurück</string>
+  <string name="title_chats">Chats</string>
+  <string name="new_messages_notify">Neue Nachricht(en) von</string>
+  <string name="smp_question_title">Authentifizierung</string>
+  <string name="smp_question_summary">Geben Sie eine Frage ein die ihrem Kontakt gesendet wird und die Antwort die Sie erwarten, um zu überprüfen, wer das ist.</string>
+  <string name="smp_question_hint">Frage stellen </string>
+  <string name="qmp_answer_hint">die erwartete Antwort</string>
+  <string name="remote_verified_us">Ihr Ansprechpartner wurde erfolgreich überprüft. Jetzt überprüfen Sie Ihre Kontaktdaten, indem Sie Ihre eigene Frage stellen. </string>
+  <string name="no_messages">No Chats.⏎\n⏎\nHier klicken um eines zu starten!</string>
+  <string name="pref_theme_dark">Dark Theme benutzen</string>
+  <string name="warning_tor_connect">Da Sie Tor verwenden, müssen Sie dens XMPP \' Connect Server \' hostnamen direkt in die Erweiterte Kontoeinstellungen eingeben</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">ChatSecure automatisch starten</string>
+  <string name="start_on_boot_summary">Automatischer Start und Anmeldung in vorher angemeldeten Konten</string>
+  <string name="empty_account_message">Sie haben keine Konten konfiguriert.⏎\n⏎\nKlicken Sie hier um eines zu konfigurieren!</string>
+  <string name="google_account">Google Konto</string>
+  <string name="pref_in_memory_db_title">In-Memory Message Storage Nur</string>
+  <string name="pref_in_memory_db_summary">Nachrichten im Speicher behalten, nicht auf Flash-Speicher, um gegen Nachrichten, die extrahiert wurden zu verteidigen. (Nachrichten können verloren werden)</string>
+  <string name="pref_background_title">Hintergrund Bild</string>
+  <string name="pref_background_summary">Pfad benutzen (\"/ sdcard / foo.jpg\"), um ein Hintergrundbild für den App zu benutzen</string>
+  <string name="pref_group_security_title">Sicherheit und Datenschutz</string>
+  <string name="pref_group_looknfeel_title">Benutzeroberfläche</string>
+  <string name="pref_group_tuning_title">Andere Feineinstellungen</string>
+  <string name="_open_conversations">Chat(s) öffnen</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Schliessen</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Wollen Sie sich von allen Diensten abmelden UND alle Prozesse killen (hartes Schliessen) ? </string>
+  <string name="rekey_message">Neue Passphrase eingeben. Es muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger wie sechs Ziffern sein.</string>
+  <string name="do_rekey">Ihre bestehenden Mitteilungen mit der neuen Passphrase verschlüsseln (bitte warten...)</string>
+  <string name="enter_pass">Eingabe Ihrer Passphrase:</string>
+  <string name="new_pass">Willkommen! Geben Sie zur Sicherung Ihrer Mitteilungen eine starke Passphrase ein. Es muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger wie sechs Ziffern sein.</string>
+  <string name="pass_err_length">Ihre Passphrase war nicht lang genug</string>
+  <string name="pass_err_upper">Ihre Passphrase enthält keine Großbuchstaben</string>
+  <string name="pass_err_lower">Ihre Passphrase enthält keine Kleinbuchstaben</string>
+  <string name="pass_err_num">Ihre Passphrase enthält keine Zahlen</string>
+  <string name="lock_screen_open">Öffnen</string>
+  <string name="title_activity_lock_screen">ChatSecure gesperrt</string>
+  <string name="lock_screen_create_passphrase">Passphrase erstellen</string>
+  <string name="lock_screen_passphrase_hint">Passphrase eingeben</string>
+  <string name="lock_screen_passphrase_not_set_enter">Neue Passphrase eingeben</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Passphrase bestätigen</string>
+  <string name="lock_screen_passphrases_not_matching">Passphrase stimmt nicht überein, bitte versuchen Sie es nochmal</string>
+  <string name="pref_sip_account_title">Sprachsicherung</string>
+  <string name="pref_sip_account_summary">Geben Sie hier Sipgate oder einen anderen sicheren SIP Dienst zur Anrufinetgration ein</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">Ein vorhandener OTR Key wurde entdeckt und kann importiert werden. Möchten Sie nun das QR Passwort scannen?</string>
+  <string name="menu_import_keys">Importiere OTR Keystore</string>
+  <string name="successfully_imported_otr_keyring">OTR Keyring erfolgreich importiert</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Der OTR Keyring ist nicht importiert; Bitte prüfen Sie die Korrektheit der Datei auf Format und Ort.</string>
+  <string name="pref_cacheword_timeout_title">Passwort Timeout</string>
+  <string name="pref_cacheword_timeout_summary">Dauer während die App Verschlüsselung entsperrt sein soll</string>
 </resources>

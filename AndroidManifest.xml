@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="0.0.11-RC5"
-     android:versionCode="57"
+     android:versionName="12.1.0"
+     android:versionCode="73"
      android:installLocation="auto"     
      >     
     <supports-screens
@@ -11,7 +11,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="18" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -20,11 +20,10 @@ android:anyDensity="true"
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />  
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-     
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
     
@@ -53,14 +52,10 @@ android:anyDensity="true"
 
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
-             android:icon="@drawable/ic_launcher_gibberbot"
-             android:taskAffinity="info.guardianproject.otr.app.task.im" 
-             android:theme="@style/Theme.Gibberbot.Light"
+             android:icon="@drawable/ic_launcher_chatsecure"
+             android:theme="@style/AppTheme"
              android:allowBackup="false"
-             android:largeHeap="true"
-             android:hardwareAccelerated="true"
 			>
-     		 
          <activity android:name=".app.WelcomeActivity"
          	>
             
@@ -68,40 +63,18 @@ android:anyDensity="true"
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
-               <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-				<action android:name="android.intent.action.PICK" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.GET_CONTENT" />
-
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern="*.otr"
-                    android:scheme="content" />
-            </intent-filter>
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="android.intent.action.PICK" />
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.GET_CONTENT" />
-
-                <data
-                    android:host="*"
-                    android:mimeType="*/*"
-                    android:pathPattern="*.otr"
-                    android:scheme="file" />
-            </intent-filter>
-        </activity>
+             <intent-filter>
+			        <action android:name="android.intent.action.VIEW" />
+			        <category android:name="android.intent.category.DEFAULT" />
+			        <category android:name="android.intent.category.BROWSABLE" />
+			        <data android:scheme="file" />
+			        <data android:mimeType="*/*" />
+			        <data android:pathPattern=".*\\.ofcaes" />
+			        <data android:host="*" />
+			    </intent-filter>
+			         
+             </activity>
         
-        <activity android:name=".app.ChatListActivity"
-                          android:exported="false"
-            
-            />
         <activity android:name=".app.ActiveChatListView"
                           android:exported="false"
             
@@ -130,8 +103,8 @@ android:anyDensity="true"
         
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
-               android:process=":remote"
                android:exported="false"
+               android:process=":remote"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -145,7 +118,7 @@ android:anyDensity="true"
         </service>
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
-               android:process=":remote"
+                 android:process=":remote"
                 android:exported="false"
         	>
             <intent-filter>
@@ -176,7 +149,7 @@ android:anyDensity="true"
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
             android:exported="false"
-            android:process=":remote"            
+              android:process=":remote"            
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
@@ -185,8 +158,7 @@ android:anyDensity="true"
         </service>
 
         <provider android:name=".provider.ImpsProvider"
-        	android:process=":remote"
-        	android:multiprocess="false"
+        	
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
@@ -201,29 +173,32 @@ android:anyDensity="true"
                 >
         </activity>
         
-<!-- 
+
         <activity android:name=".app.ImUrlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="info.guardianproject.otr.app.im.category.AIM" />
-                <category android:name="info.guardianproject.otr.app.im.category.MSN" />
-                <category android:name="info.guardianproject.otr.app.im.category.YAHOO" />
+                <category android:name="info.guardianproject.otr.app.im.category.XMPP" />
                 <data android:scheme="im" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="imto" android:host="aim"/>
-                <data android:scheme="imto" android:host="yahoo"/>
-                <data android:scheme="imto" android:host="msn"/>
+                <data android:scheme="imto" android:host="xmpp"/>
+                
+            </intent-filter>
+            
+             <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="immu"/>
+                
             </intent-filter>
         </activity>
- -->
+
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
-             android:launchMode="singleTop"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -240,6 +215,7 @@ android:anyDensity="true"
         <activity android:name=".app.AccountActivity"
             android:windowSoftInputMode="stateUnchanged"
             android:exported="false"
+            android:theme="@android:style/Theme.Dialog">            
             >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -282,6 +258,7 @@ android:anyDensity="true"
         <activity android:name=".app.AddContactActivity"
             android:label="@string/add_contact_title"
                           android:exported="false"
+                          android:theme="@android:style/Theme.Dialog"
             
             />
 
@@ -289,6 +266,7 @@ android:anyDensity="true"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                android:exported="false"
+               android:launchMode="singleTop"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -331,7 +309,8 @@ android:anyDensity="true"
         <activity android:name=".app.ContactPresenceActivity" 
               android:uiOptions="splitActionBarWhenNarrow"
              android:configChanges="orientation|keyboardHidden|screenSize"
-                          android:exported="false"
+                          android:exported="false"                          
+            android:theme="@style/AppThemeDark"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -370,7 +349,12 @@ android:anyDensity="true"
          	 
             />
          
-          
+           <activity
+            android:name=".LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+         
            <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
             android:configChanges="locale|screenSize|orientation"
          	android:theme="@android:style/Theme.Dialog"
@@ -384,9 +368,10 @@ android:anyDensity="true"
               android:exported="false"
                />
           
-          <receiver android:name=".app.AutoConnectListener" 
+          <receiver android:name=".app.NetworkConnectivityListener" 
               android:exported="true"
               android:enabled="true"
+                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -395,11 +380,25 @@ android:anyDensity="true"
           <receiver android:name=".app.BootCompletedListener" 
               android:exported="true"
               android:enabled="true"
+                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
+        
+           <activity
+            android:name=".app.LockScreenActivity"
+            android:label="@string/title_activity_lock_screen"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            
+             >
+        </activity>
+          
+        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false"
+             />
+          
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
         
         
     </application>

@@ -58,7 +58,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class AddContactActivity extends ThemeableActivity {
+public class AddContactActivity extends Activity {
 
     private static final String[] CONTACT_LIST_PROJECTION = { Imps.ContactList._ID,
                                                              Imps.ContactList.NAME, };
@@ -78,7 +78,7 @@ public class AddContactActivity extends ThemeableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApp = ImApp.getApplication(this);
+        mApp = (ImApp)getApplication();
         mHandler = new SimpleAlertHandler(this);
         resolveIntent(getIntent());
 

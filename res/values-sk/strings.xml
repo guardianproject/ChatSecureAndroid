@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">Umožňuje aplikáciám zapisovať dáta na poskytovateľa obsahu chatu.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chat - Vyberte konto</string>
@@ -45,15 +44,16 @@
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Zoznam účtov</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Nový rozhovor</string>
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Nastavenie</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
-  <string name="menu_search_contacts">Vyhľadávanie Kontakty</string>
+  <string name="menu_search_contacts">Vyhľadávanie Kontaktov</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
-  <string name="menu_start_chat">Štart chat</string>
+  <string name="menu_start_chat">Začať rozhovor</string>
   <!--Screen menu item on the contact list to sign out the service.-->
   <string name="menu_sign_out">Odhlásiť sa</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
@@ -64,10 +64,10 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_otr_start">Štart Šifrovanie</string>
-  <string name="menu_otr_stop">Stop Šifrovanie</string>
-  <string name="menu_clear_chat">Jasné Chat</string>
-  <string name="menu_end_conversation">Koniec chat</string>
+  <string name="menu_otr_start">Štart Šifrovania</string>
+  <string name="menu_otr_stop">Stop Šifrovania</string>
+  <string name="menu_clear_chat">Vyčistiť rozhovor</string>
+  <string name="menu_end_conversation">Ukončiť rozhovor</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -80,7 +80,7 @@
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Vložiť smejka</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Scan odtlačkov prstov</string>
+  <string name="menu_scan">Zosnímať odtlačok prsta</string>
   <string name="menu_fingerprint">Váš odtlačok prsta</string>
   <string name="menu_verify_fingerprint">Overte odtlačkov prstov</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
@@ -93,7 +93,7 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Potvrdiť</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <string name="signout_all_confirm_message">Chcete sa odhlásiť všetky služby?</string>
+  <string name="signout_all_confirm_message">Chcete sa odhlásiť zo všetkých služieb?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
@@ -114,23 +114,22 @@
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">User @ host</string>
   <!--The password label.-->
-  <string name="label_password">Password:</string>
+  <string name="label_password">Heslo:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
   <string name="remember_password">Pamätaj si moje heslo.</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
   <string name="keep_me_signed_in">Prihlasovať automaticky.</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
-  <string name="sign_up">Don\u2019t máte účet?</string>
+  <string name="sign_up">Nemáte účet?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">Pre vašu bezpečnosť, ak váš telefón stratený alebo ukradnutý, prejdite na webový server na vašom počítači a zmeniť heslo.</string>
-  <string name="check_auto_sign_in">Táto možnosť automaticky prihlasovať pri každom otvorení tejto aplikácie. Ak chcete zakázať možnosť, odhláste sa, potom jasné \ \"Prihlásiť ma automatically\" políčko.</string>
+  <string name="check_save_password">Pre vašu bezpečnosť, ak bol váš telefón stratený alebo ukradnutý, prejdite na webstránku a zmeňte si vaše heslo.</string>
+  <string name="check_auto_sign_in">Táto možnosť vás automaticky prihlási vždy, keď otvoríte aplikáciu. Pre zakázanie sa odhláste a odznačte pole \"Prihlasovať automaticky\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Prihlásiť sa</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">dostať Gibberbot deje ...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Podpisovanie in\u2026</string>
+  <string name="signing_in_wait">Prihlasovanie sa\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -140,9 +139,9 @@
     the background data is disabled-->
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
-  <string name="bg_data_prompt_ok">Umožňujú</string>
+  <string name="bg_data_prompt_ok">Umožniť</string>
   <!--Cancel button for the prompt dialog-->
-  <string name="bg_data_prompt_cancel">Prestať</string>
+  <string name="bg_data_prompt_cancel">Odísť</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
   <!--Displays the number of online contacts in a list.-->
@@ -191,17 +190,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Zobrazí offline</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">Dátový kanál</string>
-  <string name="data_encoding_label">Kódovanie dát</string>
-  <string name="cir_channel_label">CIR kanál</string>
-  <string name="host_label">Hostiteľské</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Uložiť</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <!--In the chat history list, this label is added before the chats the user typed-->
@@ -216,6 +204,7 @@
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
   <!--The send button on the chat screen.-->
   <string name="send">Poslať</string>
   <!--Error message when a chat failed to be sent.-->
@@ -396,20 +385,16 @@
   <string name="menu_view_encrypt_chat">Šifrovať On/Off</string>
   <string name="use_tor">Pripojenie cez Tor (vyžaduje Orbot app)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">Prvýkrát pomocou Gibberbot?</string>
   <string name="welcome_skip">Can\'t čakať začať?</string>
   <string name="welcome_about">O Gibberbot</string>
   <string name="welcome_account">Nastavenie účtu</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">Vitajte na Gibberbot</string>
   <!--About: OTR-->
   <string name="about_otr_title">Ako je to bezpečné?</string>
   <!--About: Security-->
   <string name="about_security_title">My sa Chaty bezpečne?</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Nastavenie heslo</string>
-  <string name="setup_passphrase">Predtým, než začnete prosím vyberte bezpečné heslo pre ochranu Gibberbot dáta z nespravodlivého prístupu.</string>
   <string name="setup_passphrase_label1">Passphrase:</string>
   <string name="setup_passphrase_label2">Heslo (znovu) :</string>
   <!--Account Setup: Account-->
@@ -419,8 +404,6 @@
   <string name="account_setup_pers_pw_on">Heslo medzipamäte</string>
   <string name="account_setup_pers_pw_off">Heslo nie je medzipamäte</string>
   <string name="account_setup_pers_auto_title">Automaticky prihlásiť</string>
-  <string name="account_setup_pers_auto_on">Pripojte sa Gibberbot start-up</string>
-  <string name="account_setup_pers_auto_off">Don\'t pripojiť na Gibberbot start-up</string>
   <string name="account_setup_pers_now_title">Prihlásiť sa teraz</string>
   <string name="account_setup_pers_now_on">Pripojte nasledujúce nastavenia účtu</string>
   <string name="account_setup_pers_now_off">Don\'t pripojiť nasledujúce nastavenia účtu</string>
@@ -440,16 +423,10 @@
   <string name="account_setup_signin_b">Generovanie páru kľúčov ...</string>
   <string name="account_setup_signin_c">Podpisovanie v. ..</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot došlo k chybe pri overovaní svoje užívateľské meno alebo heslo - skontrolujte a skúste to znova.</string>
-  <string name="account_setup_error_keypair">Gibberbot došlo k chybe pri generovaní páru kľúčov.</string>
-  <string name="account_setup_error_server">Gibberbot došlo k chybe pri pripájaní k serveru chatu - prosím skontrolujte vaše nastavenia a skúste to znova.</string>
-  <string name="account_setup_error_connectivity">Gibberbot došlo k chybe pri pripájaní - Skontrolujte prosím pripojenie k sieti a skúste to znova.</string>
   <string name="label_fingerprint_remote">Ich odtlačok prsta</string>
   <string name="label_fingerprint_local">Váš odtlačok prsta</string>
   <string name="menu_sign_in">Prihlásiť sa</string>
   <string name="menu_gen_key">Regen Key</string>
-  <string name="error_suspended_connection">Gibberbot stratil pripojenie k sieti</string>
-  <string name="error_reestablish_connection">Gibberbot sa pokúša restablish pripojenie</string>
   <string name="otr_session_status_plaintext">Warning: Tento chat nie je šifrovaná</string>
   <string name="otr_session_status_encrypted">Tento chat je bezpečné, ale totožnosť účastníkov nebola overená</string>
   <string name="otr_session_status_finished">Warning: chat šifrovanie bola zastavená.</string>
@@ -458,11 +435,13 @@
   <string name="account_wizard_account_title">Vaše ID účtu</string>
   <string name="account_wizard_host_title">Konfigurácia servera</string>
   <string name="account_wizard_ready_title">Ste pripravení?</string>
-  <string name="account_wizard_setup_body">Zadajte svoj účet číslo pre automatickú konfiguráciu Gibberbot pre vás chat service.\n\nIt pravdepodobne vyzerá ako e-mailové adresy - tak yourname@gmail.com, alebo someone@jabber.org, napríklad.</string>
   <string name="account_wizard_account_body">Prosím, zadajte svoje ID účtu (user @ hostname) :</string>
   <string name="account_wizard_host_body">Prosím, zadajte alebo upravte jabber/xmpp chatu servera meno počítača a číslo portu (predvolené je 5222).</string>
-  <string name="account_wizard_ready_body">Gibberbot bola nastavená, a teraz je čas sa pripojiť k vašim službám, a začnite bezpečne, spoľahlivo a súkromne!</string>
   <string name="signin_password_prompt">Zadajte svoje password:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <!--added 2011/09/01-->
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

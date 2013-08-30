@@ -16,11 +16,15 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -37,6 +41,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.v4.widget.SearchViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -51,18 +56,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
-import android.widget.SearchView;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContactListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
+public class ContactListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -74,8 +73,6 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
     ImApp mApp;
 
-    ProviderAdapter mAdapter; 
-    
     long mProviderId;
     long mAccountId;
     IImConnection mConn;
@@ -104,7 +101,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         mFilterView = (ContactListFilterView) getLayoutInflater().inflate(
                 R.layout.contact_list_filter_view, null);
 
-        mFilterView.setActivity(this);
+        mFilterView.setListener(this);
 
         mFilterView.getListView().setOnCreateContextMenuListener(this);
         
@@ -118,27 +115,25 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             return;
         }
         
-        mApp = ImApp.getApplication(this);
-        
-
-        
-     
+        mApp = (ImApp)getApplication();
         
     }
     
     private void initAccount ()
     {
 
+
+        
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
         if (c == null) {
-            finish();
+            //finish();
             return;
         }
         if (!c.moveToFirst()) {
            // c.close();
-            finish();
+            //finish();
             return;
         }
 
@@ -168,7 +163,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                             mConn = mApp.createConnection(mProviderId, mAccountId);
                         } catch (RemoteException e) {
                             Log.e(ImApp.LOG_TAG, "The connection cannot be created");
-                            finish();
+                          //  finish();
                         }
                     }
                   //  mFilterView.mPresenceView.setConnection(mConn);
@@ -254,7 +249,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         case android.R.id.home:
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-            finish();
+           // finish();
             return true;
 
         case R.id.menu_settings:
@@ -419,6 +414,11 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     @Override
     protected void onResume() {
         super.onResume();
+        
+        mApp = (ImApp)getApplication();
+        mApp.startImServiceIfNeed();
+        mApp.setAppTheme(this);
+        
         
         initAccount ();
         
@@ -632,7 +632,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
                     startActivity(getEditAccountIntent(false));
 
-                    finish();
+                   // finish();
                 }
                 return;
             }
@@ -641,43 +641,9 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     }
     
     
-    private class ProviderListItemFactory implements LayoutInflater.Factory {
-        public View onCreateView(String name, Context context, AttributeSet attrs) {
-            if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, ContactListActivity.this);
-            }
-            return null;
-        }
-    }
     
-    private class ProviderAdapter extends CursorAdapter {
-        private LayoutInflater mInflater;
-
-        @SuppressWarnings("deprecation")
-        public ProviderAdapter(Context context, Cursor c) {
-            super(context, c);
-            mInflater = LayoutInflater.from(context).cloneInContext(context);
-            mInflater.setFactory(new ProviderListItemFactory());
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // create a custom view, so we can manage it ourselves. Mainly, we want to
-            // initialize the widget views (by calling getViewById()) in newView() instead of in
-            // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
-                    parent, false);
-            view.init(cursor);
-            return view;
-        }
-        
-        
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ((ProviderListItem) view).bindView(cursor);
-        }
-    }
+    
+    
 
   
     public boolean onClose() {
@@ -712,4 +678,39 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
     static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
+
+
+    @Override
+    public void startChat(Cursor c) {
+
+        if (c != null) {
+            long id = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
+            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            try {
+                IChatSessionManager manager = mConn.getChatSessionManager();
+                IChatSession session = manager.getChatSession(username);
+                if (session == null) {
+                    manager.createChatSession(username);
+                }
+
+                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
+                Intent i = new Intent(Intent.ACTION_VIEW, data);
+                i.addCategory(ImApp.IMPS_CATEGORY);
+                
+                startActivity(i);
+              //  mScreen.finish();
+                
+                //mContactListView.setAutoRefreshContacts(false);
+            } catch (RemoteException e) {
+
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
+            }
+           
+        }
+        
+        
+    }
+    
+    public void showProfile (Cursor c){}
 }

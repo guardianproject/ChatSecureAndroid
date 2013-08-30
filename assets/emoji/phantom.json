@@ -1,0 +1,1488 @@
+[
+{
+	"moji": "🌀",
+	"name": "cyclone",
+	"name-ja": "台風",
+	"category": "nature",
+	"unicode": "1f300",
+	"attribution": "Sébastien Hut"
+},
+{
+	"moji": "🌈",
+	"name": "rainbow",
+	"name-ja": "虹",
+	"category": "nature",
+	"unicode": "1f308"
+},
+{
+	"moji": "🌌",
+	"name": "milky_way",
+	"name-ja": "天の川",
+	"category": "cosmos",
+	"unicode": "1f30c",
+	"attribution": "Jonah Libster"
+},
+{
+	"moji": "🌑",
+	"name": "new_moon",
+	"name-ja": "新月",
+	"category": "cosmos",
+	"unicode": "1f311"
+},
+{
+	"moji": "🌓",
+	"name": "first_quarter_moon",
+	"name-ja": "上弦の月",
+	"category": "cosmos",
+	"unicode": "1f313"
+},
+{
+	"moji": "🌔",
+	"name": "waxing_gibbous_moon",
+	"name-ja": "やや欠け月",
+	"category": "cosmos",
+	"unicode": "1f314"
+},
+{
+	"moji": "🌕",
+	"name": "full_moon",
+	"name-ja": "満月",
+	"category": "cosmos",
+	"unicode": "1f315"
+},
+{
+	"moji": "🌗",
+	"name": "last_quarter_moon",
+	"name-ja": "下弦の月",
+	"category": "cosmos",
+	"unicode": "1f317"
+},
+{
+	"moji": "🌙",
+	"name": "crescent_moon",
+	"name-ja": "三日月",
+	"category": "cosmos",
+	"unicode": "1f319"
+},
+{
+	"moji": "🌠",
+	"name": "shooting_star",
+	"name-ja": "流れ星",
+	"category": "cosmos",
+	"unicode": "1f320"
+},
+{
+	"moji": "🌛",
+	"name": "moon_with_face",
+	"name-ja": "顔月",
+	"category": "cosmos",
+	"unicode": "1f31b"
+},
+{
+	"moji": "🌟",
+	"name": "glowing_star",
+	"name-ja": "輝く星",
+	"category": "cosmos",
+	"unicode": "1f31f"
+},
+{
+	"moji": "🌵",
+	"name": "cactus",
+	"name-ja": "サボテン",
+	"category": "nature",
+	"unicode": "1f335",
+	"attribution": "xfer"
+},
+{
+	"moji": "🍊",
+	"name": "tangerine",
+	"name-ja": "みかん",
+	"category": "food",
+	"unicode": "1f34a",
+	"attribution": "Lunasea Studios"
+},
+{
+	"moji": "🍔",
+	"name": "hamburger",
+	"name-ja": "ハンバーガー",
+	"category": "food",
+	"unicode": "1f354"
+},
+{
+	"moji": "🍕",
+	"name": "pizza",
+	"name-ja": "ピザ",
+	"category": "food",
+	"unicode": "1f355"
+},
+{
+	"moji": "🍙",
+	"name": "rice_ball",
+	"name-ja": "おにぎり",
+	"category": "food",
+	"unicode": "1f359"
+},
+{
+	"moji": "🍥",
+	"alts": ["naruto"],
+	"name": "fish_cake_with_swirl_design",
+	"name-ja": "なると",
+	"category": "food",
+	"unicode": "1f365",
+	"attribution": "anonymous"
+},
+{
+	"moji": "🍰",
+	"name": "cake",
+	"name-ja": "ケーキ",
+	"category": "food",
+	"unicode": "1f370"
+},
+{
+	"moji": "🍱",
+	"name": "bento_box",
+	"name-ja": "お弁当",
+	"category": "food",
+	"unicode": "1f371",
+	"attribution": "Matthew Ender"
+},
+{
+	"moji": "🍹",
+	"name": "tropical_drink",
+	"name-ja": "トロピカルドリンク",
+	"category": "food",
+	"unicode": "1f379",
+	"attribution": "Jorge Lugo"
+},
+{
+	"moji": "🍺",
+	"name": "beer_mug",
+	"name-ja": "ビールジョッキ",
+	"category": "food",
+	"unicode": "1f37a",
+	"attribution": "Evereq"
+},
+{
+	"moji": "🎃",
+	"name": "jack_o_lantern",
+	"name-ja": "ジャック・オ・ランタン",
+	"category": "object",
+	"unicode": "1f383",
+	"attribution": "Noah Greenstein"
+},
+{
+	"moji": "🎤",
+	"name": "microphone",
+	"name-ja": "マイク",
+	"category": "object",
+	"unicode": "1f3a4",
+	"attribution": "Letia Nichols"
+},
+{
+	"moji": "🎮",
+	"name": "video_game",
+	"name-ja": "ゲームコントローラー",
+	"category": "object",
+	"unicode": "1f3ae",
+	"attribution": "Joel Thoms"
+},
+{
+	"moji": "🎸",
+	"name": "guitar",
+	"name-ja": "ギター",
+	"category": "object",
+	"unicode": "1f3b8",
+	"attribution": "barakmich"
+},
+{
+	"moji": "🎾",
+	"name": "tennis_racquet_and_ball",
+	"name-ja": "テニスラケットとボール",
+	"category": "object",
+	"unicode": "1f3be",
+	"attribution": "Pat May",
+	"url": "http://www.maycoworld.net"
+},
+{
+	"moji": "🏂",
+	"name": "snowboarder",
+	"name-ja": "スノーボード",
+	"category": "people",
+	"unicode": "1f3c2",
+	"attribution": "Bas Kok"
+},
+{
+	"moji": "🐌",
+	"name": "snail",
+	"name-ja": "カタツムリ",
+	"category": "nature",
+	"unicode": "1f40c"
+},
+{
+	"moji": "🐍",
+	"name": "snake",
+	"name-ja": "ヘビ",
+	"category": "nature",
+	"unicode": "1f40d"
+},
+{
+	"moji": "🐔",
+	"name": "chicken",
+	"name-ja": "ニワトリ",
+	"category": "nature",
+	"unicode": "1f414",
+	"attribution": "Daniel Devine"
+},
+{
+	"moji": "🐗",
+	"name": "boar",
+	"name-ja": "イノシシ",
+	"category": "nature",
+	"unicode": "1f417"
+},
+{
+	"moji": "🐘",
+	"name": "elephant",
+	"name-ja": "ゾウ",
+	"category": "nature",
+	"unicode": "1f418"
+},
+{
+	"moji": "🐙",
+	"name": "octopus",
+	"name-ja": "タコ",
+	"category": "nature",
+	"unicode": "1f419",
+	"attribution": "Antón Campos"
+},
+{
+	"moji": "🐡",
+	"alto": ["pufferfish"],
+	"name": "blowfish",
+	"name-ja": "フグ",
+	"category": "nature",
+	"unicode": "1f421",
+	"attribution": "Rompcat"
+},
+{
+	"moji": "🐣",
+	"name": "hatching_chick",
+	"name-ja": "ヒヨコ",
+	"category": "nature",
+	"unicode": "1f423",
+	"attribution": "Dmitry Pashkevich"
+},
+{
+	"moji": "🐧",
+	"name": "penguin",
+	"name-ja": "ペンギン",
+	"category": "nature",
+	"unicode": "1f427",
+	"attribution": "Sebastian Schauenburg"
+},
+{
+	"moji": "🐨",
+	"name": "koala",
+	"name-ja": "コアラ",
+	"category": "nature",
+	"unicode": "1f428"
+},
+{
+	"moji": "🐫",
+	"name": "bactrian_camel",
+	"name-ja": "フタコブラクダ",
+	"category": "nature",
+	"unicode": "1f42b"
+},
+{
+	"moji": "🐱",
+	"name": "cat_face",
+	"name-ja": "ネコ",
+	"category": "nature",
+	"unicode": "1f431",
+	"attribution": "Peether"
+},
+{
+	"moji": "🐳",
+	"name": "spouting_whale",
+	"name-ja": "クジラ",
+	"category": "nature",
+	"unicode": "1f433",
+	"attribution": "Fred Benenson"
+},
+{
+	"moji": "🐴",
+	"name": "horse",
+	"name-ja": "ウマ",
+	"category": "nature",
+	"unicode": "1f434"
+},
+{
+	"moji": "🐶",
+	"name": "dog_face",
+	"name-ja": "イヌ",
+	"category": "nature",
+	"unicode": "1f436",
+	"attribution": "Unspecial Ando"
+},
+{
+	"moji": "🐸",
+	"name": "frog_face",
+	"name-ja": "カエル",
+	"category": "nature",
+	"unicode": "1f438",
+	"attribution": "wispfrog"
+},
+{
+	"moji": "🐺",
+	"name": "wolf_face",
+	"name-ja": "オオカミ",
+	"category": "nature",
+	"unicode": "1f43a",
+	"attribution": "Hans de Wolf"
+},
+{
+	"moji": "🐾",
+	"name": "paw_prints",
+	"name-ja": "足跡(犬)",
+	"category": "nature",
+	"unicode": "1f43e",
+	"attribution": "patter-app.net"
+},
+{
+	"moji": "👊",
+	"name": "fisted_hand_sign",
+	"name-ja": "パンチ",
+	"category": "gesture",
+	"unicode": "1f44a",
+	"attribution": "Jy Yaworski"
+},
+{
+	"moji": "👍",
+	"name": "thumbs_up_sign",
+	"name-ja": "おやゆびサイン",
+	"category": "gesture",
+	"unicode": "1f44d",
+	"attribution": "unki2aut"
+},
+{
+	"moji": "👪",
+	"name": "family",
+	"name-ja": "家族",
+	"category": "people",
+	"unicode": "1f46a"
+},
+{
+	"moji": "👫",
+	"name": "couple_holding_hands",
+	"name-ja": "手をつないだカップル",
+	"category": "people",
+	"unicode": "1f46b"
+},
+{
+	"moji": "👬",
+	"name": "two_men_holding_hands",
+	"name-ja": "手をつないだ二人の男性",
+	"category": "people",
+	"unicode": "1f46c"
+},
+{
+	"moji": "👭",
+	"name": "two_women_holding_hands",
+	"name-ja": "手をつないだ二人の女性",
+	"category": "people",
+	"unicode": "1f46d"
+},
+{
+	"moji": "👸",
+	"name": "princess",
+	"name-ja": "お姫様",
+	"category": "people",
+	"unicode": "1f478",
+	"attribution": "Kim Baumann Larsen"
+},
+{
+	"moji": "👻",
+	"name": "ghost",
+	"name-ja": "お化け",
+	"category": "people",
+	"unicode": "1f47b",
+	"attribution": "Seto Konowa"
+},
+{
+	"moji": "👽",
+	"name": "extraterrestrial_alien",
+	"name-ja": "宇宙人",
+	"category": "people",
+	"unicode": "1f47d",
+	"attribution": "Lloyd Smart"
+},
+{
+	"moji": "💀",
+	"name": "skull",
+	"name-ja": "ドクロ",
+	"category": "people",
+	"unicode": "1f480",
+	"attribution": "Josh Freeman"
+},
+{
+	"moji": "💃",
+	"name": "dancer",
+	"name-ja": "ダンサー",
+	"category": "people",
+	"unicode": "1f483",
+	"attribution": "Daniel 'Crusher' Nersveen"
+},
+{
+	"moji": "💊",
+	"name": "pill",
+	"name-ja": "薬",
+	"category": "object",
+	"unicode": "1f48a",
+	"attribution": "Cynthia McCoy"
+},
+{
+	"moji": "💏",
+	"alts": ["kiss", "couple_kissing"],
+	"name": "couple_kiss",
+	"name-ja": "カップルのキス",
+	"category": "people",
+	"unicode": "1f48f"
+},
+{
+	"moji": "💑",
+	"name": "couple_with_heart",
+	"name-ja": "カップルとハート",
+	"category": "people",
+	"unicode": "1f491"
+},
+{
+	"moji": "💓",
+	"alts": ["beating_heart"],
+	"name": "heartbeat",
+	"name-ja": "ドキドキしているハート",
+	"category": "zabstract",
+	"unicode": "1f493"
+},
+{
+	"moji": "💩",
+	"name": "poop",
+	"name-ja": "うんち(顔あり)",
+	"category": "zabstract",
+	"unicode": "1f4a9"
+},
+{
+	"moji": "💬",
+	"name": "speech_balloon",
+	"name-ja": "フキダシ",
+	"category": "zabstract",
+	"unicode": "1f4ac",
+	"attribution": "Mike Boers"
+},
+{
+	"moji": "🔞",
+	"name": "no_one_under_eighteen_symbol",
+	"name-ja": "18禁",
+	"category": "zabstract",
+	"unicode": "1f51e",
+	"attribution": "Świstak"
+},
+{
+	"moji": "🗻",
+	"name": "mount_fuji",
+	"name-ja": "富士山",
+	"category": "nature",
+	"unicode": "1f5fb",
+	"attribution": "Yuki Kodama"
+},
+{
+	"moji": "😀",
+	"name": "grinning",
+	"name-ja": "にんまり",
+	"category": "faces",
+	"unicode": "1f600"
+},
+{
+	"moji": "😁",
+	"alts": ["grinning_face_with_smiling_eyes"],
+	"name": "grin",
+	"name-ja": "うっしっし",
+	"category": "faces",
+	"unicode": "1f601",
+	"attribution": "Joonas Pihlajamaa"
+},
+{
+	"moji": "😂",
+	"name": "face_with_tear_of_joy",
+	"name-ja": "泣き笑い",
+	"emoticon": ";D",
+	"category": "faces",
+	"unicode": "1f602"
+},
+{
+	"moji": "😃",
+	"alts": ["smiling_face_with_open_mouth"],
+	"name": "smiley",
+	"name-ja": "スマイル",
+	"emoticon": ":)",
+	"category": "faces",
+	"unicode": "1f603",
+	"attribution": "Eric Nikolaisen"
+},
+{
+	"moji": "😄",
+	"alts": ["smiling_face_with_open_mouth_and_smiling_eyes"],
+	"name": "smile",
+	"name-ja": "嬉しい顔",
+	"category": "faces",
+	"unicode": "1f604",
+	"attribution": "rastilin@gmail.com"
+},
+{
+	"moji": "😅",
+	"alts": ["smiling_face_with_open_mouth_and_cold_sweat"],
+	"name": "sweat_smile",
+	"name-ja": "冷や汗",
+	"category": "faces",
+	"unicode": "1f605",
+	"attribution": "Damien Goujard"
+},
+{
+	"moji": "😆",
+	"alts": ["smiling_face_with_open_mouth_and_tightly_closed_eyes"],
+	"name": "laughing",
+	"name-ja": "笑い",
+	"emoticon": ":D",
+	"category": "faces",
+	"unicode": "1f606"
+},
+{
+	"moji": "😉",
+	"alts": ["winking_face"],
+	"name": "wink",
+	"name-ja": "ウインク",
+	"emoticon": ";)",
+	"category": "faces",
+	"unicode": "1f609"
+},
+{
+	"moji": "😊",
+	"alts": ["smiling_face_with_smiling_eyes"],
+	"name": "blush",
+	"name-ja": "にこにこ",
+	"emoticon": ":$",
+	"category": "faces",
+	"unicode": "1f60a"
+},
+{
+	"moji": "😋",
+	"name": "face_savouring_delicious_food",
+	"name-ja": "うまい",
+	"category": "faces",
+	"unicode": "1f60b",
+	"attribution": "Merleawe | Foodie For My Tastebuds"
+},
+{
+	"moji": "😌",
+	"alts": ["relieved_face"],
+	"name": "relieved",
+	"name-ja": "ほっとした顔",
+	"category": "faces",
+	"unicode": "1f60c"
+},
+{
+	"moji": "😍",
+	"alts": ["smiling_face_with_heart_shaped_eyes"],
+	"name": "heart_eyes",
+	"name-ja": "目がハート",
+	"category": "faces",
+	"unicode": "1f60d",
+	"attribution": "Michael Day"
+},
+{
+	"moji": "😏",
+	"alts": ["smirk_face"],
+	"name": "smirk",
+	"name-ja": "ふっ",
+	"category": "faces",
+	"unicode": "1f60f"
+},
+{
+	"moji": "😑",
+	"alts": ["expressionless_face"],
+	"name": "expressionless",
+	"name-ja": "ぼけーっとした顔",
+	"category": "faces",
+	"unicode": "1f611"
+},
+{
+	"moji": "😒",
+	"alts": ["unamused_face"],
+	"name": "unamused",
+	"name-ja": "横目",
+	"category": "faces",
+	"unicode": "1f612"
+},
+{
+	"moji": "😓",
+	"alts": ["face_with_cold_sweat"],
+	"name": "sweat",
+	"name-ja": "困り顔",
+	"emoticon": "(:|",
+	"category": "faces",
+	"unicode": "1f613"
+},
+{
+	"moji": "😔",
+	"name": "pensive_face",
+	"name-ja": "しょんぼり",
+	"category": "faces",
+	"unicode": "1f614",
+	"attribution": "geekahedron"
+},
+{
+	"moji": "😕",
+	"alts": ["confused_face"],
+	"name": "confused",
+	"name-ja": "困る",
+	"emoticon": ":^)",
+	"category": "faces",
+	"unicode": "1f615"
+},
+{
+	"moji": "😗",
+	"alts": ["kissing_face"],
+	"name": "kissing",
+	"name-ja": "チュー",
+	"emoticon": ":*",
+	"category": "faces",
+	"unicode": "1f617"
+},
+{
+	"moji": "😘",
+	"alts": ["face_throwing_a_kiss"],
+	"name": "kissing_heart",
+	"name-ja": "投げキッス",
+	"category": "faces",
+	"unicode": "1f618"
+},
+{
+	"moji": "😙",
+	"alts": ["kissing_face_with_smiling_eyes"],
+	"name": "kissing_smiling_eyes",
+	"name-ja": "チューしよ",
+	"category": "faces",
+	"unicode": "1f619"
+},
+{
+	"moji": "😚",
+	"alts": ["kissing_face_with_closed_eyes"],
+	"name": "kissing_closed_eyes",
+	"name-ja": "チュッ",
+	"category": "faces",
+	"unicode": "1f61a",
+	"attribution": "Elena Maureen Martinez"
+},
+{
+	"moji": "😛",
+	"alts": ["face_with_stuck_out_tongue"],
+	"name": "stuck_out_tongue",
+	"name-ja": "べー",
+	"emoticon": ":P",
+	"category": "faces",
+	"unicode": "1f61b",
+	"attribution": "Victor Westmann"
+},
+{
+	"moji": "😜",
+	"alts": ["face_with_stuck_out_tongue_winking_eye"],
+	"name": "stuck_out_tongue_winking_eye",
+	"name-ja": "あっかんべー",
+	"emoticon": ";P",
+	"category": "faces",
+	"unicode": "1f61c"
+},
+{
+	"moji": "😝",
+	"alts": ["face_with_stuck_out_tongue_and_tightly_closed_eye"],
+	"name": "stuck_out_tongue_closed_eyes",
+	"name-ja": "べーっ",
+	"emoticon": "XP",
+	"category": "faces",
+	"unicode": "1f61d"
+},
+{
+	"moji": "😞",
+	"name": "disappointed_face",
+	"name-ja": "がっかり",
+	"category": "faces",
+	"unicode": "1f61e"
+},
+{
+	"moji": "😟",
+	"alts": ["worried_face"],
+	"name": "worried",
+	"name-ja": "心配",
+	"category": "faces",
+	"unicode": "1f61f"
+},
+{
+	"moji": "😠",
+	"name": "angry_face",
+	"name-ja": "怒った顔",
+	"category": "faces",
+	"unicode": "1f620",
+	"attribution": "Krysanto"
+},
+{
+	"moji": "😡",
+	"name": "pouting_face",
+	"name-ja": "ふくれっ面",
+	"category": "faces",
+	"unicode": "1f621"
+},
+{
+	"moji": "😢",
+	"name": "crying_face",
+	"name-ja": "涙",
+	"emoticon": ":'(",
+	"category": "faces",
+	"unicode": "1f622",
+	"attribution": "mike mg"
+},
+{
+	"moji": "😣",
+	"name": "persevering_face",
+	"name-ja": "がまん顔",
+	"category": "faces",
+	"unicode": "1f623"
+},
+{
+	"moji": "😤",
+	"name": "face_with_look_of_triumph",
+	"name-ja": "勝ち誇り",
+	"category": "faces",
+	"unicode": "1f624"
+},
+{
+	"moji": "😥",
+	"name": "disappointed_but_relieved_face",
+	"name-ja": "やれやれ",
+	"category": "faces",
+	"unicode": "1f625"
+},
+{
+	"moji": "😦",
+	"alts": ["frowning_face_with_open_mouth"],
+	"name": "frowning",
+	"name-ja": "しかめっ面",
+	"emoticon": ":(",
+	"category": "faces",
+	"unicode": "1f626"
+},
+{
+	"moji": "😧",
+	"alts": ["anguished_face"],
+	"name": "anguished",
+	"name-ja": "悲しい顔",
+	"category": "faces",
+	"unicode": "1f627"
+},
+{
+	"moji": "😨",
+	"name": "fearful_face",
+	"name-ja": "青ざめ",
+	"category": "faces",
+	"unicode": "1f628"
+},
+{
+	"moji": "😩",
+	"name": "weary_face",
+	"name-ja": "うんざり",
+	"emoticon": "X(",
+	"category": "faces",
+	"unicode": "1f629"
+},
+{
+	"moji": "😬",
+	"alts": ["grimacing_face"],
+	"name": "grimacing",
+	"name-ja": "いーっ",
+	"category": "faces",
+	"unicode": "1f62c"
+},
+{
+	"moji": "😭",
+	"name": "loudly_crying_face",
+	"name-ja": "大泣き",
+	"category": "faces",
+	"unicode": "1f62d"
+},
+{
+	"moji": "😮",
+	"alts": ["face_with_open_mouth"],
+	"name": "open_mouth",
+	"name-ja": "ぽかんと",
+	"emoticon": ":O",
+	"category": "faces",
+	"unicode": "1f62e"
+},
+{
+	"moji": "😯",
+	"alts": ["hushed_face"],
+	"name": "hushed",
+	"name-ja": "しーん",
+	"emoticon": ":x",
+	"category": "faces",
+	"unicode": "1f62f"
+},
+{
+	"moji": "😰",
+	"name": "face_with_open_mouth_and_cold_sweat",
+	"name-ja": "冷や汗2",
+	"category": "faces",
+	"unicode": "1f630"
+},
+{
+	"moji": "😲",
+	"name": "astonished_face",
+	"name-ja": "びっくり",
+	"category": "faces",
+	"unicode": "1f632"
+},
+{
+	"moji": "😳",
+	"alts": ["flushed_fase"],
+	"name": "flushed",
+	"name-ja": "ぽっ",
+	"category": "faces",
+	"unicode": "1f633"
+},
+{
+	"moji": "😴",
+	"alts": ["sleeping_face"],
+	"name": "sleeping",
+	"name-ja": "眠い",
+	"category": "faces",
+	"unicode": "1f634"
+},
+{
+	"moji": "😵",
+	"name": "dizzy_face",
+	"name-ja": "ふらふら",
+	"emoticon": "Xo",
+	"category": "faces",
+	"unicode": "1f635"
+},
+{
+	"moji": "😷",
+	"name": "face_with_medical_mask",
+	"name-ja": "風邪ひき",
+	"category": "faces",
+	"unicode": "1f637"
+},
+{
+	"moji": "😸",
+	"name": "grinning_cat_face_with_smiling_eyes",
+	"name-ja": "うっしっし(ネコ)",
+	"category": "faces",
+	"unicode": "1f638",
+	"attribution": "Robert Adam, II"
+},
+{
+	"moji": "😹",
+	"name": "cat_face_with_tears_of_joy",
+	"name-ja": "泣き笑い(ネコ)",
+	"category": "faces",
+	"unicode": "1f639"
+},
+{
+	"moji": "😺",
+	"name": "smiling_cat_face_with_open_mouth",
+	"name-ja": "にこ(ネコ)",
+	"category": "faces",
+	"unicode": "1f63a",
+	"attribution": "Laura47"
+},
+{
+	"moji": "😻",
+	"name": "smiling_cat_face_with_heart_shaped_eyes",
+	"name-ja": "目がハート(ネコ)",
+	"category": "faces",
+	"unicode": "1f63b",
+	"attribution": "Arvid Andersson"
+},
+{
+	"moji": "😼",
+	"name": "cat_face_with_wry_smile",
+	"name-ja": "きりり(ネコ)",
+	"category": "faces",
+	"unicode": "1f63c",
+	"attribution": "Nick Richards"
+},
+{
+	"moji": "😽",
+	"name": "kissing_cat_face_with_closed_eyes",
+	"name-ja": "チュー(ネコ)",
+	"category": "faces",
+	"unicode": "1f63d",
+	"attribution": "ErickaJo"
+},
+{
+	"moji": "😾",
+	"name": "pouting_cat_face",
+	"name-ja": "ぷー(ネコ)",
+	"category": "faces",
+	"unicode": "1f63e"
+},
+{
+	"moji": "😿",
+	"name": "crying_cat_face",
+	"name-ja": "涙ぽろり(ネコ)",
+	"category": "faces",
+	"unicode": "1f63f"
+},
+{
+	"moji": "🙀",
+	"name": "weary_cat_face",
+	"name-ja": "ほえー(ネコ)",
+	"category": "faces",
+	"unicode": "1f640",
+	"attribution": "Lars Ivar Igesund"
+},
+{
+	"moji": "🙅",
+	"name": "face_with_no_good_gesture",
+	"name-ja": "NG",
+	"category": "gesture",
+	"unicode": "1f645"
+},
+{
+	"moji": "🙆",
+	"name": "face_with_ok_gesture",
+	"name-ja": "OK!",
+	"category": "gesture",
+	"unicode": "1f646"
+},
+{
+	"moji": "🙇",
+	"name": "person_bowing_deeply",
+	"name-ja": "平謝り",
+	"category": "gesture",
+	"unicode": "1f647",
+	"attribution": "Michael B"
+},
+{
+	"moji": "🙈",
+	"name": "see_no_evil_monkey",
+	"name-ja": "見ざる",
+	"category": "gesture",
+	"unicode": "1f648",
+	"attribution": "Markj"
+},
+{
+	"moji": "🙉",
+	"name": "hear_no_evil_monkey",
+	"name-ja": "聞かざる",
+	"category": "gesture",
+	"unicode": "1f649"
+},
+{
+	"moji": "🙊",
+	"name": "speak_no_evil_monkey",
+	"name-ja": "言わざる",
+	"category": "gesture",
+	"unicode": "1f64a"
+},
+{
+	"moji": "🙋",
+	"name": "happy_person_raising_one_hand",
+	"name-ja": "キャラクター(挙手)",
+	"category": "gesture",
+	"unicode": "1f64b"
+},
+{
+	"moji": "🙌",
+	"name": "person_raising_both_hands_in_celebration",
+	"name-ja": "バンザイ",
+	"category": "gesture",
+	"unicode": "1f64c",
+	"attribution": "Anh Vu"
+},
+{
+	"moji": "🙍",
+	"name": "person_frowning",
+	"name-ja": "キャラクター(しょんぼり)",
+	"category": "gesture",
+	"unicode": "1f64d"
+},
+{
+	"moji": "🙎",
+	"name": "person_with_pouting_face",
+	"name-ja": "キャラクター(怒る)",
+	"category": "gesture",
+	"unicode": "1f64e"
+},
+{
+	"moji": "🙏",
+	"name": "person_with_folded_hands",
+	"name-ja": "お願い",
+	"category": "gesture",
+	"unicode": "1f64f"
+},
+{
+	"moji": "🚏",
+	"name": "bus_stop",
+	"name-ja": "バス停",
+	"category": "transportation",
+	"unicode": "1f68f",
+	"attribution": "Albert L Perrien II"
+},
+{
+	"moji": "🚗",
+	"name": "car",
+	"name-ja": "車",
+	"category": "transportation",
+	"unicode": "1f697"
+},
+{
+	"moji": "🚙",
+	"name": "RV",
+	"name-ja": "RV車",
+	"category": "transportation",
+	"unicode": "1f699"
+},
+{
+	"moji": "🚢",
+	"name": "ship",
+	"name-ja": "船",
+	"category": "transportation",
+	"unicode": "1f6a2",
+	"attribution": "Mike Canfield"
+},
+{
+	"moji": "🚹",
+	"name": "mens_symbol",
+	"name-ja": "男性マーク",
+	"category": "zabstract",
+	"unicode": "1f6b9",
+	"attribution": "Ken Gander"
+},
+{
+	"moji": "☀",
+	"alts": ["black_sun_with_rays"],
+	"name": "sun",
+	"name-ja": "晴れ",
+	"category": "zabstract",
+	"unicode": "2600",
+	"attribution": "Aleksandr Panzin"
+},
+{
+	"moji": "☁",
+	"name": "cloud",
+	"name-ja": "曇り",
+	"category": "zabstract",
+	"unicode": "2601",
+	"attribution": "Oliver Salzburg"
+},
+{
+	"moji": "☕",
+	"name": "hot_beverage",
+	"name-ja": "コーヒー",
+	"category": "object",
+	"unicode": "2615",
+	"attribution": "Jory Felice"
+},
+{
+	"moji": "☺",
+	"name": "white_smiling_face",
+	"name-ja": "スマイルフェイス",
+	"category": "faces",
+	"unicode": "263a"
+},
+{
+	"moji": "♈",
+	"name": "Aries",
+	"name-ja": "牡羊座",
+	"category": "zabstract",
+	"unicode": "2648"
+},
+{
+	"moji": "♉",
+	"name": "Taurus",
+	"name-ja": "牡牛座",
+	"category": "zabstract",
+	"unicode": "2649"
+},
+{
+	"moji": "♊",
+	"name": "Gemini",
+	"name-ja": "双子座",
+	"category": "zabstract",
+	"unicode": "264a"
+},
+{
+	"moji": "♋",
+	"name": "Cancer",
+	"name-ja": "蟹座",
+	"category": "zabstract",
+	"unicode": "264b",
+	"attribution": "Glenn Møller"
+},
+{
+	"moji": "♌",
+	"name": "Leo",
+	"name-ja": "獅子座",
+	"category": "zabstract",
+	"unicode": "264c"
+},
+{
+	"moji": "♍",
+	"name": "Virgo",
+	"name-ja": "乙女座",
+	"category": "zabstract",
+	"unicode": "264d"
+},
+{
+	"moji": "♎",
+	"name": "Libra",
+	"name-ja": "天秤座",
+	"category": "zabstract",
+	"unicode": "264e"
+},
+{
+	"moji": "♏",
+	"name": "Scorpius",
+	"name-ja": "蠍座",
+	"category": "zabstract",
+	"unicode": "264f"
+},
+{
+	"moji": "♐",
+	"name": "Sagittarius",
+	"name-ja": "射手座",
+	"category": "zabstract",
+	"unicode": "2650"
+},
+{
+	"moji": "♑",
+	"name": "Capricorn",
+	"name-ja": "山羊座",
+	"category": "zabstract",
+	"unicode": "2651"
+},
+{
+	"moji": "♒",
+	"name": "Aquarius",
+	"name-ja": "水瓶座",
+	"category": "zabstract",
+	"unicode": "2652"
+},
+{
+	"moji": "♓",
+	"name": "Pisces",
+	"name-ja": "魚座",
+	"category": "zabstract",
+	"unicode": "2653"
+},
+{
+	"moji": "♿",
+	"name": "wheelchair",
+	"name-ja": "車椅子マーク",
+	"category": "zabstract",
+	"unicode": "267f",
+	"attribution": "Adam Baxter"
+},
+{
+	"moji": "⚓",
+	"name": "anchor",
+	"name-ja": "いかり",
+	"category": "transportation",
+	"unicode": "2693",
+	"attribution": "Hein-Pieter van Braam"
+},
+{
+	"moji": "⚡",
+	"name": "high_voltage_sign",
+	"name-ja": "イナズマ",
+	"category": "object",
+	"unicode": "26a1",
+	"attribution": "Finallyanime!"
+},
+{
+	"moji": "✌",
+	"name": "victory_hand",
+	"name-ja": "チョキ",
+	"category": "gesture",
+	"unicode": "270c",
+	"attribution": "Rudy Dreamingrudes Valenta"
+},
+{
+	"moji": "❤",
+	"name": "heart",
+	"name-ja": "ハート",
+	"category": "zabstract",
+	"unicode": "2764"
+},
+{
+	"moji": "㊙",
+	"name": "circled_ideograph_secret",
+	"name-ja": "マル秘",
+	"category": "zabstract",
+	"unicode": "3299",
+	"attribution": "Benjamin Bangsberg"
+},
+{
+	"name": "smiling_face",
+	"name-ja": "笑顔",
+	"category": "faces"
+},
+{
+	"name": "relaxed",
+	"name-ja": "リラックス",
+	"category": "faces"
+},
+{
+	"name": "bowtie",
+	"name-ja": "ちょうネクタイ",
+	"category": "faces"
+},
+{
+	"name": "satisfied",
+	"name-ja": "満足",
+	"category": "faces"
+},
+{
+	"name": "wink2",
+	"name-ja": "ウインク2",
+	"category": "faces"
+},
+{
+	"name": "drunk",
+	"name-ja": "酔っ払い",
+	"category": "faces"
+},
+{
+	"name": "sun_with_face",
+	"name-ja": "顔太陽",
+	"category": "nature"
+},
+{
+	"name": "rainbow_solid",
+	"name-ja": "虹[不透明]",
+	"category": "nature"
+},
+{
+	"name": "rainbow_sky",
+	"name-ja": "虹空",
+	"category": "nature"
+},
+{
+	"name": "jumping_spider",
+	"name-ja": "ハエトリグモ",
+	"category": "nature"
+},
+{
+	"name": "jumping_spider_red",
+	"name-ja": "ハエトリグモ(赤)",
+	"category": "nature"
+},
+{
+	"name": "family_daughters",
+	"name-ja": "家族2",
+	"category": "people"
+},
+{
+	"name": "couple_in_love",
+	"name-ja": "手をつないだカップルとハート",
+	"category": "people"
+},
+{
+	"name": "two_men_in_love",
+	"name-ja": "手をつないだ二人の男性とハート",
+	"category": "people",
+	"attribution": "Michael Dandy"
+},
+{
+	"name": "two_men_with_heart",
+	"name-ja": "二人の男性とハート",
+	"category": "people"
+},
+{
+	"name": "two_women_in_love",
+	"name-ja": "手をつないだ二人の女性とハート",
+	"category": "people"
+},
+{
+	"name": "two_women_with_heart",
+	"name-ja": "二人の女性とハート",
+	"category": "people"
+},
+{
+	"name": "ninja",
+	"name-ja": "忍者",
+	"category": "people"
+},
+{
+	"name": "quoll",
+	"name-ja": "フクロネコ",
+	"category": "nature",
+	"attribution": "Peter Halasz"
+},
+{
+	"name": "palm_pre3",
+	"name-ja": "HP Palm Pre 3",
+	"category": "object",
+	"attribution": "Donald C. Kirker and webOS-Ports"
+},
+{
+	"name": "cutting_lines",
+	"name-ja": "カミソリ",
+	"category": "object",
+	"attribution": "Key Bump Apparel"
+},
+{
+	"name": "scuba_diver",
+	"name-ja": "スキューバダイバー",
+	"category": "people",
+	"attribution": "fidelinho"
+},
+{
+	"name": "penguin_chick",
+	"name-ja": "子どもペンギン",
+	"category": "nature"
+},
+{
+	"name": "pegasus_black",
+	"name-ja": "ペガサス(黒)",
+	"category": "nature",
+	"attribution": "Mark Atwood, the FallenPegasusbin"
+},
+{
+	"name": "puke_finger",
+	"name-ja": "嘔吐",
+	"category": "gesture",
+	"attribution": "Naya J."
+},
+{
+	"name": "shit",
+	"name-ja": "うんち",
+	"category": "zabstract",
+	"attribution": "Adam Neuwirth"
+},
+{
+	"name": "Happy_FMC",
+	"name-ja": "Happy FMC",
+	"category": "transportation",
+	"attribution": "The Grape"
+},
+{
+	"name": "lambda_chi_alpha",
+	"name-ja": "Lambda Chi Alpha",
+	"category": "food",
+	"attribution": "Vander Vander Gamma Iota Zeta"
+},
+{
+	"name": "apple_of_discord",
+	"name-ja": "不和の林檎",
+	"category": "object",
+	"attribution": "Jo-Herman Haughol"
+},
+{
+	"name": "gentleman_octopus",
+	"name-ja": "紳士蛸",
+	"category": "nature",
+	"attribution": "nickythegreek"
+},
+{
+	"name": "monster",
+	"name-ja": "怪物",
+	"category": "nature",
+	"attribution": "Themonsterfactory.com"
+},
+{
+	"name": "sunrise_over_mountains",
+	"name-ja": "Pacific Crest Trailからの日の出",
+	"category": "nature",
+	"attribution": "Justin Kazmark"
+},
+{
+	"name": "bgok",
+	"name-ja": "ニワトリ(鳴き)",
+	"category": "nature",
+	"attribution": "https://github.com/bgok"
+},
+{
+	"name": "phone_book",
+	"name-ja": "電話帳",
+	"category": "object",
+	"attribution": "Rod Dorman"
+},
+{
+	"name": "oars",
+	"name-ja": "櫂",
+	"category": "transportation",
+	"attribution": "Bridge"
+},
+{
+	"name": "siamese_kitten",
+	"name-ja": "シャム",
+	"category": "nature",
+	"attribution": "njx"
+},
+{
+	"name": "one_eyed_robot",
+	"name-ja": "ロボット",
+	"category": "object",
+	"attribution": "Mr. Daniel Scott Fowler"
+},
+{
+	"name": "octocat",
+	"name-ja": "オクトキャット",
+	"category": "object",
+	"attribution": "Josh Vera"
+},
+{
+	"name": "DSLR_click",
+	"name-ja": "一眼レフ",
+	"category": "object",
+	"attribution": "A.Tabisz"
+},
+{
+	"name": "high_hopes",
+	"name-ja": "大きな望み",
+	"category": "nature",
+	"attribution": "Meniou"
+},
+{
+	"name": "cookie_fairy",
+	"name-ja": "クッキーの妖精",
+	"category": "people",
+	"attribution": "Onery"
+},
+{
+	"name": "smiley_confused",
+	"name-ja": "スマイリー(困る)",
+	"category": "faces"
+},
+{
+	"name": "smiley_kissing_heart",
+	"name-ja": "スマイリー(投げキッス)",
+	"category": "faces"
+},
+{
+	"name": "smiley_sleeping",
+	"name-ja": "スマイリー(眠い)",
+	"category": "faces"
+},
+{
+	"name": "smiley_smile",
+	"name-ja": "スマイリー(嬉しい顔)",
+	"category": "faces"
+},
+{
+	"name": "smiley_stuck_out_tongue_winking_eye",
+	"name-ja": "スマイリー(あっかんべー)",
+	"category": "faces"
+}
+]

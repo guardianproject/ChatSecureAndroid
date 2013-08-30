@@ -279,6 +279,9 @@ public class ImPluginHelper {
         Cursor c = cr.query(Imps.Provider.CONTENT_URI, null /* projection */, where,
                 selectionArgs, null);
 
+        if (c == null)
+            return 0;
+        
         boolean pluginChanged;
         try {
             if (c.moveToFirst()) {

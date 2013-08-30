@@ -20,10 +20,11 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -31,6 +32,7 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filter;
@@ -38,9 +40,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
+import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
+
 public class ContactListFilterView extends LinearLayout {
 
-    private ListView mFilterList;
+    private ActionSlideExpandableListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -49,8 +53,6 @@ public class ContactListFilterView extends LinearLayout {
     private final SimpleAlertHandler mHandler;
     private final ConnectionListenerAdapter mConnectionListener;
 
-    //UserPresenceView mPresenceView;
-    private ContactListActivity mActivity;
     private IImConnection mConn;
 
     public ContactListFilterView(Context context, AttributeSet attrs) {
@@ -78,25 +80,49 @@ public class ContactListFilterView extends LinearLayout {
             
         };
     }
+    
+
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
 
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (ListView) findViewById(R.id.filteredList);
+        mFilterList = (ActionSlideExpandableListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
+        
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
                 
-                if (mActivity != null 
-                        && mActivity.mContactListView != null)
-                    mActivity.mContactListView.startChat(c);
+                if (mListener != null)
+                    mListener.startChat(c);
 
             }
         });
+        
+        mFilterList.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
 
+            @Override
+            public void onClick(View listView, View buttonview, int position) {
+
+                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+                if (mListener != null)
+                    if (buttonview.getId() == R.id.btnExListChat)
+                        mListener.startChat(c);
+                    else if (buttonview.getId() == R.id.btnExListProfile)
+                        mListener.showProfile(c);
+                
+            }
+    }, R.id.btnExListChat, R.id.btnExListProfile);
+
+       // 
+        
         //if (!isInEditMode())
           //  mPresenceView = (UserPresenceView) findViewById(R.id.userPresence);
 
@@ -137,7 +163,9 @@ public class ContactListFilterView extends LinearLayout {
         try {
             mConn.registerConnectionListener(mConnectionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 
@@ -145,7 +173,9 @@ public class ContactListFilterView extends LinearLayout {
         try {
             mConn.unregisterConnectionListener(mConnectionListener);
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
     }
 
@@ -154,8 +184,11 @@ public class ContactListFilterView extends LinearLayout {
         if (!uri.equals(mUri)) {
             mUri = uri;
 
+            if (mContactAdapter != null && mContactAdapter.getCursor() != null)
+                mContactAdapter.getCursor() .close();
+            
             Cursor contactCursor = runQuery(filterString);
-
+            
             if (mContactAdapter == null) {
                 mContactAdapter = new ContactAdapter(mContext, contactCursor);
                 mFilter = mContactAdapter.getFilter();
@@ -163,6 +196,8 @@ public class ContactListFilterView extends LinearLayout {
             } else {
                 mContactAdapter.changeCursor(contactCursor);
             }
+            
+            
         } else {
             mFilter.filter(filterString);
         }
@@ -183,8 +218,14 @@ public class ContactListFilterView extends LinearLayout {
             DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");
         }
 
-        return mContext.getContentResolver().query(mUri, ContactView.CONTACT_PROJECTION,
+        ContentResolver cr = mContext.getContentResolver();
+        
+        Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
                 buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        
+        
+        
+        return cursor;
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
@@ -196,9 +237,15 @@ public class ContactListFilterView extends LinearLayout {
         }
 
         @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+           
+
+            return super.getView(position, convertView, parent);
+        }
+
+        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-          //  v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mSearchString, false);
         }
 
@@ -211,8 +258,36 @@ public class ContactListFilterView extends LinearLayout {
         }
     }
 
-    public void setActivity(ContactListActivity mActivity) {
-        this.mActivity = mActivity;
+    public interface ContactListListener {
+     
+        public void startChat (Cursor c);
+        public void showProfile (Cursor c);
+    }
+    
+    
+    private ContactListListener mListener = null;
+    
+    public void setListener (ContactListListener listener)
+    {
+        mListener = listener;
+    }
+    
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+       
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        
+       
+        if (mContactAdapter != null && mContactAdapter.getCursor() != null)
+        {
+            mContactAdapter.getCursor().close();
+            mContactAdapter = null;
+        }
+        
+    }
 }

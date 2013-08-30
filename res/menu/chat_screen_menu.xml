@@ -40,6 +40,14 @@
         android:icon="@drawable/ic_menu_info"
          android:showAsAction="never"
          />
+    
+     <item android:id="@+id/menu_secure_call"
+        android:title="@string/menu_voip_title"
+        android:icon="@drawable/ic_menu_call" 
+         android:showAsAction="always"
+         android:visible="false"
+        />
+     
     <item android:id="@+id/menu_switch_chats"
         android:title="@string/menu_switch_chats"
         android:icon="@drawable/ic_menu_switch"

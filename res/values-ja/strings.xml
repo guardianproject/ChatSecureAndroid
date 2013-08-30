@@ -1,24 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="ro_perm_label">インスタントメッセージを読む</string>
-  <string name="ro_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーからデータを読み取ります。</string>
-  <string name="wo_perm_label">インスタントメッセージを書く</string>
-  <string name="wo_perm_desc">許可のアプリケーションは、IMのコンテンツプロバイダーにデータを書き込む。</string>
+  <string name="ro_perm_desc">\nアプリケーションがIMのコンテンツ・プロバイダーからデータを読み取ることを許可する。</string>
+  <string name="wo_perm_label">インスタントメッセージを作成</string>
+  <string name="wo_perm_desc">\nアプリケーションがIMのコンテンツ・プロバイダーにデータを書き込むことを許可する。</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">チャット - 選択してアカウント</string>
   <!--Landing page screen menu and context menu items.-->
   <!--Conext menu item: add a new account.-->
-  <string name="menu_add_account">アカウントを追加します。</string>
+  <string name="menu_add_account">アカウントを追加</string>
   <!--Conext menu item: edit an account.-->
   <string name="menu_edit_account">アカウントを編集</string>
   <!--Conext menu item: remove an account.-->
-  <string name="menu_remove_account">アカウントを削除する</string>
+  <string name="menu_remove_account">アカウントを削除</string>
   <!--Screen menu item: sign out all service.-->
-  <string name="menu_sign_out_all">すべてのアウトしましょう</string>
+  <string name="menu_sign_out_all">すべてサインアウト</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="choose_account_title">チャット - 選択してアカウント</string>
@@ -49,7 +48,7 @@
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">設定</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
-  <string name="menu_search_contacts">検索連絡先</string>
+  <string name="menu_search_contacts">連絡先を検索</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -64,9 +63,9 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_otr_start">[スタート]暗号化</string>
-  <string name="menu_otr_stop">停止暗号化</string>
-  <string name="menu_clear_chat">クリアチャット</string>
+  <string name="menu_otr_start">暗号化を開始</string>
+  <string name="menu_otr_stop">暗号化を停止</string>
+  <string name="menu_clear_chat">チャット履歴を消去</string>
   <string name="menu_end_conversation">チャット終了</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
@@ -81,8 +80,8 @@
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">絵文字を挿入</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">スキャン指紋</string>
-  <string name="menu_fingerprint">あなたの指紋</string>
+  <string name="menu_scan">フィンガープリントをスキャン</string>
+  <string name="menu_fingerprint">自分のフィンガープリント</string>
   <string name="menu_verify_fingerprint">確認指紋</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
@@ -94,7 +93,7 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">確認</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <string name="signout_all_confirm_message">あなたはすべてのサービスをログアウトしますか？</string>
+  <string name="signout_all_confirm_message">すべてのサービスからログアウトしますか？</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
   <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
@@ -128,13 +127,12 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">アカウントがない場合</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">セキュリティ保護のため、お使いの携帯電話が失われたり盗まれたり、コンピュータ上のWebサイトにアクセスし、パスワードを変更してください。</string>
-  <string name="check_auto_sign_in">このオプションをONにするとこのアプリケーションを開くたびに自動的にこのアカウントでログインします。このオプションをOFFにするにはログアウトしてから[自動ログイン]をOFFにしてください。</string>
+  <string name="check_save_password">セキュリティ保護のため、お使いの携帯電話を紛失したり盗まれた場合は、コンピュータ上のWebサイトにアクセスし、パスワードを変更してください。</string>
+  <string name="check_auto_sign_in">このオプションをONにするとこのアプリケーションを開くたびに自動的にこのアカウントでログインします。このオプションをOFFにするにはログアウトしてから「自動ログイン」をOFFにしてください。</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">ログイン</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">ログインしています...</string>
   <!--Dialog title-->
@@ -156,7 +154,7 @@
   <!--Displays the number of online contacts in a list.-->
   <string name="online_count"></string>
   <!--The title of the subscription request group if there is any.-->
-  <string name="subscriptions">友だちの招待</string>
+  <string name="subscriptions">友達を招待</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
   <string name="unknown_contact">（\"<i>\"不明\"</i>\"）</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
@@ -165,7 +163,7 @@
   <string name="empty_conversation_group">チャットなし</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">招待する連絡先を選択してください</string>
-  <string name="contact_filter_hint">検索する連絡先を入力</string>
+  <string name="contact_filter_hint">入力して、連絡先を検索</string>
   <string name="empty_contact_list">連絡先がありません。</string>
   <!--The title of blocked contact list.-->
   <string name="blocked_list_title"></string>
@@ -173,7 +171,7 @@
   <string name="no_blocked_contact">ブロック中のユーザーはいません。</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">連絡先プロファイル</string>
+  <string name="contact_profile_title">連絡先プロフィール</string>
   <!--The label of the status on the contact profile dialog.-->
   <string name="label_status">ステータス:</string>
   <!--The label of the client type on the contact profile dialog.-->
@@ -181,7 +179,7 @@
   <!--The client type which indicates the contact is sign in with a PC client.-->
   <string name="client_type_computer">パソコン</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
-  <string name="client_type_mobile">モバイル</string>
+  <string name="client_type_mobile">携帯</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
@@ -202,17 +200,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">オフラインとして表示</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">データチャネル</string>
-  <string name="data_encoding_label">データのエンコード</string>
-  <string name="cir_channel_label">CIRのチャンネル</string>
-  <string name="host_label">ホスト</string>
-  <string name="msisdn_label">MSISDNは</string>
-  <string name="http">HTTPの</string>
-  <string name="sms">SMSの</string>
-  <string name="tcp">TCPの</string>
-  <string name="xml">XMLの</string>
-  <string name="wbxml">wbxmlの</string>
-  <string name="save">名前を付けて保存</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -234,7 +221,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">送信</string>
   <!--Error message when a chat failed to be sent.-->
@@ -263,7 +251,8 @@
   <string name="invite_label">招待状を送る</string>
   <!--provider plugin names-->
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="account_setup_title">アカウントセットアップ</string>
+  <string name="account_setup_title">アカウントを設定する</string>
+  <string name="encryption_and_anonymity_title">暗号化と匿名性</string>
   <string name="hide_offline_contacts">オフラインの連絡先を表示しない</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">通知設定</string>
@@ -279,7 +268,7 @@
   <string name="notification_vibrate_summary">チャット受信: バイブレーションON</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_sound_title">サウンド</string>
+  <string name="notification_sound_title">音</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_sound_summary">チャット受信: 着信音ON</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
@@ -325,7 +314,7 @@
   <string name="unblock_contact_success"></string>
   <!--IM service permission-->
   <string name="perm_label">IM/チャットの起動</string>
-  <string name="perm_desc">intent経由でのIMサービスの開始をアプリケーションに許可します。</string>
+  <string name="perm_desc">アプリケーションがintent経由でIMサービスを開始することを許可します。</string>
   <!--Errors-->
   <!--The title of the error dialog-->
   <string name="error">注意</string>
@@ -344,7 +333,7 @@
   <!--Error message for when the IM service has died.-->
   <string name="service_error">サービスエラー</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">連絡先リストをロードできませんでした。</string>
+  <string name="load_contact_list_failed">連絡先リストを読み込めませんでした。</string>
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">サーバーに接続できません。接続を確認してください。</string>
   <!--Error message for when the contact is already in the list.-->
@@ -383,7 +372,7 @@
   <string name="forced_logout">別のクライアントからログインしています。</string>
   <string name="already_logged_in">別のクライアントから既にログインしています。</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">SIMカードから電話番号を読み取れませんでした。オペレータにお問い合わせください。</string>
+  <string name="msisdn_error">SIMカードから電話番号を読み取れませんでした。通信事業者にお問い合わせください。</string>
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">現在ログインしていません。</string>
   <!--Generic error.-->
@@ -393,18 +382,18 @@
     <item>幸せ</item>
     <item>悲しい</item>
     <item>ウィンク</item>
-    <item>舌を突き出し</item>
-    <item>びっくりした</item>
+    <item>ペロッ</item>
+    <item>びっくり</item>
     <item>キス</item>
     <item>叫び</item>
     <item>クール</item>
-    <item>金口</item>
-    <item>足口</item>
+    <item>ドル口</item>
+    <item>げっ！</item>
     <item>恥ずかしい</item>
     <item>エンジェル</item>
-    <item>未定</item>
-    <item>クライング</item>
-    <item>唇が封止されている</item>
+    <item>うーん…</item>
+    <item>泣く</item>
+    <item>口チャック</item>
     <item>笑う</item>
     <item>混乱</item>
   </string-array>
@@ -413,92 +402,84 @@
     <item>幸せ</item>
     <item>悲しい</item>
     <item>ウィンク</item>
-    <item>舌を突き出し</item>
-    <item>びっくりした</item>
+    <item>ペロッ</item>
+    <item>びっくり</item>
     <item>キス</item>
     <item>叫び</item>
     <item>クール</item>
-    <item>金口</item>
-    <item>足口</item>
+    <item>ドル口</item>
+    <item>げっ！</item>
     <item>恥ずかしい</item>
     <item>エンジェル</item>
-    <item>未定</item>
-    <item>クライング</item>
-    <item>唇が封止されている</item>
+    <item>うーん…</item>
+    <item>泣く</item>
+    <item>口チャック</item>
     <item>笑う</item>
     <item>混乱</item>
   </string-array>
   <string name="menu_contact_list">お問い合わせ一覧</string>
   <string name="menu_view_encrypt_chat">暗号化On/Off</string>
-  <string name="use_tor">Torを介して接続します（Orbotアプリが必要です）</string>
+  <string name="use_tor">Tor経由で接続します (Orbotアプリが必要です)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">最初の時間がGibberbotを使用して？</string>
-  <string name="welcome_skip">Can\'tを始めるために待つのか？</string>
-  <string name="welcome_about">についてGibberbot</string>
-  <string name="welcome_account">アカウントセットアップ</string>
+  <string name="welcome_skip">開始するまで待てませんか？</string>
+  <string name="welcome_about">Gibberbotについて</string>
+  <string name="welcome_account">アカウント設定</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">ようこそGibberbotに</string>
   <!--About: OTR-->
-  <string name="about_otr_title">どのように安全ですか？</string>
+  <string name="about_otr_title">どう安全なんですか？</string>
   <!--About: Security-->
   <string name="about_security_title">私のチャットは安全ですか？</string>
   <!--Setup: Passphrase-->
-  <string name="setup_passphrase_title">パスフレーズのセットアップ</string>
-  <string name="setup_passphrase">あなたが始める前に不正なアクセスからGibberbotデータを保護するために安全なパスフレーズを選択してください。</string>
-  <string name="setup_passphrase_label1">Passphrase:</string>
-  <string name="setup_passphrase_label2">パスフレーズ（再び）:</string>
+  <string name="setup_passphrase_title">パスフレーズの設定</string>
+  <string name="setup_passphrase_label1">パスフレーズ:</string>
+  <string name="setup_passphrase_label2">パスフレーズ（再入力）:</string>
   <!--Account Setup: Account-->
+  <string name="account_setup_password">パスワード</string>
+  <string name="account_setup_advanced_button">アカウントの詳細設定</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">永続性</string>
   <string name="account_setup_pers_pw_title">パスワードを記憶する</string>
-  <string name="account_setup_pers_pw_on">パスワードがキャッシュされて</string>
-  <string name="account_setup_pers_pw_off">パスワードがキャッシュされて</string>
-  <string name="account_setup_pers_auto_title">自動的にサインイン</string>
-  <string name="account_setup_pers_auto_on">Gibberbotで接続して起動</string>
-  <string name="account_setup_pers_auto_off">Don\'tはGibberbotで登録起動</string>
-  <string name="account_setup_pers_now_title">で今すぐしましょう</string>
-  <string name="account_setup_pers_now_on">次のアカウントのセットアップを接続してください</string>
-  <string name="account_setup_pers_now_off">Don\'tは、アカウントのセットアッププログラムの指示に従って登録</string>
+  <string name="account_setup_pers_pw_on">パスワードはキャッシュされました</string>
+  <string name="account_setup_pers_pw_off">パスワードがキャッシュされていません</string>
+  <string name="account_setup_pers_auto_title">自動サインイン</string>
+  <string name="account_setup_pers_now_title">今すぐログイン</string>
+  <string name="account_setup_pers_now_on">アカウント設定後に自動接続</string>
+  <string name="account_setup_pers_now_off">アカウント設定後に自動接続しない</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">パーソナル（オプション）</string>
-  <string name="account_setup_personal_alias_title">アカウントエイリアス（あなたの名前）</string>
-  <string name="account_setup_personal_alias_sub">アカウントをオンラインで表示される方法</string>
+  <string name="account_setup_personal_alias_title">アカウント名（あなたのニックネーム）</string>
+  <string name="account_setup_personal_alias_sub">アカウントをオンラインで表示する方法</string>
   <string name="account_setup_personal_profile_title">プロフィール</string>
-  <string name="account_setup_personal_profile_sub">自分自身についての簡単な宣伝</string>
+  <string name="account_setup_personal_profile_sub">簡単な自己紹介</string>
   <!--Account Setup: Advanced-->
-  <string name="account_setup_advanced_enc_force">強制的に暗号化/ごみの平文</string>
-  <string name="account_setup_advanced_enc_auto">可能な場合は、暗号化チャットを自動的に</string>
-  <string name="account_setup_advanced_enc_req">暗号化チャットは、要求された</string>
-  <string name="account_setup_advanced_enc_off">無効にする暗号化チャット</string>
+  <string name="account_setup_advanced_enc_force">暗号化されていないテキストを強制的に暗号化、または拒否する</string>
+  <string name="account_setup_advanced_enc_auto">可能な場合は、自動的にチャットを暗号化</string>
+  <string name="account_setup_advanced_enc_req">要求した時に、チャットを暗号化</string>
+  <string name="account_setup_advanced_enc_off">チャットの暗号化を無効にする</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">検証の資格...</string>
-  <string name="account_setup_signin_b">生成鍵ペア...</string>
-  <string name="account_setup_signin_c">ログイン署名..</string>
+  <string name="account_setup_signin_a">信用証明書を照合中...</string>
+  <string name="account_setup_signin_b">鍵ペア生成中...</string>
+  <string name="account_setup_signin_c">ログイン中..</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">ユーザー名またはパスワードを検証中Gibberbotにエラーが発生しました - それらを確認してから、もう一度試してみてください。</string>
-  <string name="account_setup_error_keypair">鍵ペアを生成中にGibberbotにエラーが発生しました。</string>
-  <string name="account_setup_error_server">設定を確認してから、もう一度試してみてください - チャットサーバーへの接続中にGibberbotにエラーが発生しました。</string>
-  <string name="account_setup_error_connectivity">ネットワーク接続をdoublecheckしてください、再試行してください - 接続中Gibberbotにエラーが発生しました。</string>
-  <string name="label_fingerprint_remote">自分の指紋</string>
-  <string name="label_fingerprint_local">あなたの指紋</string>
+  <string name="label_fingerprint_remote">相手のフィンガープリント</string>
+  <string name="label_fingerprint_local">あなたのフィンガープリント</string>
   <string name="menu_sign_in">サインイン</string>
-  <string name="menu_gen_key">レーゲンキー</string>
-  <string name="error_suspended_connection">Gibberbotは、ネットワークへの接続を失っている</string>
-  <string name="error_reestablish_connection">Gibberbot接続をrestablishしようとしている</string>
-  <string name="otr_session_status_plaintext">このチャットはWarning:しない暗号化されている</string>
-  <string name="otr_session_status_encrypted">これは、チャットが安全である参加者の身元は検証されている</string>
-  <string name="otr_session_status_finished">Warning:チャット暗号化が停止されています。</string>
-  <string name="otr_session_status_verified">これは固定され、検証チャット</string>
+  <string name="menu_gen_key">鍵の再生成</string>
+  <string name="otr_session_status_plaintext">警告：このチャットは暗号化されていません</string>
+  <string name="otr_session_status_encrypted">このチャットは安全なものですが、通信相手のID照合が済んでいません。</string>
+  <string name="otr_session_status_finished">警告：チャット暗号化が停止されています。</string>
+  <string name="otr_session_status_verified">このチャットの安全は確保されており、照合済みです。</string>
   <string name="account_wizard_setup_title">アカウントウィザード</string>
   <string name="account_wizard_account_title">アカウントIDを</string>
   <string name="account_wizard_host_title">サーバーの構成</string>
   <string name="account_wizard_ready_title">準備ができている？</string>
-  <string name="account_wizard_setup_body">おそらく、Eメールアドレスのように見えますがservice.\n\nItチャットを自動的にGibberbotを設定するには、アカウントIDを入力してください - のでyourname@gmail.com、またはsomeone@jabber.org~~V、例えば。</string>
   <string name="account_wizard_account_body">:アカウントID（ユーザ@ホスト名）を入力してください</string>
   <string name="account_wizard_host_body">（5222がデフォルトです）を入力するか、あなたのjabber/xmppを編集するチャットサーバーのホスト名とポート番号をしてください。</string>
-  <string name="account_wizard_ready_body">Gibberbotは、設定されている今、あなたのサービスに接続するために、安全にチャットを開始、しっかりと、そして個人の時間です！</string>
   <string name="signin_password_prompt">あなたのpassword:を入力してください</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <!--added 2011/09/01-->
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
 </resources>

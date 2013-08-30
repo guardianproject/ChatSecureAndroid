@@ -20,28 +20,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    
-   <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
- <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
-   android:key="pref_default_locale"
-   android:entryValues="@array/languages_values"
-   android:entries="@array/languages"
-  >
-  
-  
- </ListPreference>
-
- <CheckBoxPreference android:key="themeDark"
-    android:title="@string/pref_theme_dark"
-    android:defaultValue="false" />
- 
-   <EditTextPreference 
-          android:key="pref_background"
-          android:title="@string/pref_background_title"
-          android:summary="@string/pref_background_summary"
-           />
- </PreferenceCategory>
-  
   
    <PreferenceCategory android:title="@string/pref_group_security_title">
   
@@ -53,16 +31,52 @@
     android:defaultValue="auto">
   </ListPreference>
   
-  
+ <!--
+   <EditTextPreference 
+          android:key="pref_sip_account"
+          android:title="@string/pref_sip_account_title"
+          android:summary="@string/pref_sip_account_summary"
+           />
+-->
+
+  <!-- 
   <CheckBoxPreference
           android:key="pref_in_memory_db"
           android:title="@string/pref_in_memory_db_title"
           android:summary="@string/pref_in_memory_db_summary"
           android:defaultValue="true" />
-  
+          -->
+         
+         
+         <EditTextPreference 
+          android:key="pref_cacheword_timeout"
+          android:title="@string/pref_cacheword_timeout_title"
+          android:summary="@string/pref_cacheword_timeout_summary"
+           /> 
+    
 
   </PreferenceCategory>
   
+   
+    
+   <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
+ <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
+   android:key="pref_default_locale"
+   android:entryValues="@array/languages_values"
+   android:entries="@array/languages"
+  >
+  
+  
+ </ListPreference>
+
+   <EditTextPreference 
+          android:key="pref_background"
+          android:title="@string/pref_background_title"
+          android:summary="@string/pref_background_summary"
+           />
+ </PreferenceCategory>
+  
+   
       <PreferenceCategory android:title="@string/pref_group_tuning_title">
    
   <CheckBoxPreference
@@ -71,11 +85,12 @@
           android:summary="@string/start_on_boot_summary"
           android:defaultValue="true" />
   
-  <CheckBoxPreference
+  <!--  <CheckBoxPreference
           android:key="pref_foreground_service"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
           android:defaultValue="true" />
+  -->
 
   <EditTextPreference 
           android:key="pref_heartbeat_interval"
@@ -83,8 +98,7 @@
           android:summary="@string/heartbeat_interval_summary"
           android:numeric="integer"
           android:maxLength="2"
-          android:defaultValue="15" />
-  
+          android:defaultValue="60" />
    
    <CheckBoxPreference android:key="pref_hide_offline_contacts"
     android:title="@string/hide_offline_contacts"

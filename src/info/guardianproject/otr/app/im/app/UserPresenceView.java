@@ -16,18 +16,20 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.IImConnection;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -111,14 +113,18 @@ public class UserPresenceView extends LinearLayout {
                 if (s == Imps.Presence.OFFLINE) {
                     s = Imps.Presence.INVISIBLE;
                 }
-                ImApp app = ImApp.getApplication((Activity) mContext);
+                ImApp app = (ImApp)((Activity)mContext).getApplication();
+
+                
                 BrandingResources brandingRes = app.getBrandingResource(mProviderId);
                 Drawable icon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(s));
                 String text = brandingRes.getString(PresenceUtils.getStatusStringRes(s));
                 mStatusItems.add(new StatusItem(supportedStatus[i], icon, text));
             }
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "get status adapter error",e);
         }
 
         return new StatusIconAdapter(mContext, mStatusItems);
@@ -142,7 +148,9 @@ public class UserPresenceView extends LinearLayout {
             mPresence = conn.getUserPresence();
             mProviderId = conn.getProviderId();
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "set connection error",e);
         }
         if (mPresence == null) {
             mPresence = new Presence();
@@ -151,7 +159,8 @@ public class UserPresenceView extends LinearLayout {
     }
 
     private void updateView() {
-        ImApp app = ImApp.getApplication((Activity) mContext);
+        ImApp app = (ImApp)((Activity)mContext).getApplication();
+        
         BrandingResources brandingRes = app.getBrandingResource(mProviderId);
         int status = PresenceUtils.convertStatus(mPresence.getStatus());
         mStatusDialogButton.setImageDrawable(brandingRes.getDrawable(PresenceUtils
@@ -255,9 +264,14 @@ public class UserPresenceView extends LinearLayout {
             } else {
                 mPresence = newPresence;
                 updateView();
+                
+                ContentResolver cr =  mContext.getContentResolver();
+                Imps.ProviderSettings.setPresence(cr, mProviderId, status, statusText);
+             
+                
             }
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+         //   mHandler.showServiceErrorAlert();
         }
     }
 
@@ -301,6 +315,21 @@ public class UserPresenceView extends LinearLayout {
             View view = super.getView(position, convertView, parent);
             return view;
         }
+        
+    }
+    
+    public void refreshLogginInStatus ()
+    {
+        if (mConn != null)
+        {
+            try {
+                loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
+            } catch (RemoteException e) {
+                
+               loggingIn(false);
+            //    mHandler.showServiceErrorAlert();
+            }
+        }
     }
 
     public void loggingIn(boolean loggingIn) {
@@ -310,8 +339,10 @@ public class UserPresenceView extends LinearLayout {
             if (newPresence != null)
                 mPresence = newPresence;
         } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
+       //     mHandler.showServiceErrorAlert();
         }
         updateView();
     }
+    
+
 }

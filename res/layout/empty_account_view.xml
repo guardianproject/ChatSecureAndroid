@@ -25,6 +25,7 @@
         android:layout_height="fill_parent"
         android:text="@string/empty_account_message"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:fontFamily="sans-serif-light"
         android:textSize="24sp"
         android:textStyle="normal"
         android:gravity="center_vertical|center_horizontal"/>

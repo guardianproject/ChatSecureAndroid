@@ -99,7 +99,7 @@ public class Imps {
 
             return retVal;
         }
-
+        
         public static final String getProviderNameForId(ContentResolver cr, long providerId) {
             Cursor cursor = cr.query(CONTENT_URI, PROVIDER_PROJECTION, _ID + "=" + providerId,
                     null, null);
@@ -726,6 +726,16 @@ public class Imps {
         int OTR_TURNED_ON_BY_USER = 11;
         /* off the record status turned on by buddy */
         int OTR_TURNED_ON_BY_BUDDY = 12;
+        
+        /* received message */
+        int INCOMING_ENCRYPTED = 13;
+        /* received message */
+        int INCOMING_ENCRYPTED_VERIFIED = 14;
+        
+        /* received message */
+        int OUTGOING_ENCRYPTED = 15;
+        /* received message */
+        int OUTGOING_ENCRYPTED_VERIFIED = 16;
     }
 
     /** The common columns for messages table */
@@ -1110,6 +1120,9 @@ public class Imps {
         int IDLE = 3;
         int DO_NOT_DISTURB = 4;
         int AVAILABLE = 5;
+        
+        int NEW_ACCOUNT = -99;
+        
 
         /** The user defined status line. <P>Type: TEXT</P> */
         String PRESENCE_CUSTOM_STATUS = "status";
@@ -1391,6 +1404,13 @@ public class Imps {
          * rmq id received from the GTalk server
          */
         public static final String LAST_RMQ_RECEIVED = "last_rmq_rec";
+        
+        /**
+         * use for status persistence
+         */
+        public static final String PRESENCE_STATE = "presence_state";
+        public static final String PRESENCE_STATUS_MESSAGE = "presence_status_message";
+        
 
         /**
          * Query the settings of the provider specified by id
@@ -1435,6 +1455,28 @@ public class Imps {
             Cursor c = getSettingValue(cr, providerId, settingName);
             if (c != null) {
                 ret = c.getString(0);
+                c.close();
+            }
+
+            return ret;
+        }
+        
+        /**
+         * Get the string value of setting which is specified by provider id and
+         * the setting name.
+         * 
+         * @param cr The ContentResolver to use to access the settings table.
+         * @param providerId The id of the provider.
+         * @param settingName The name of the setting.
+         * @return The value of the setting if the setting exist, otherwise
+         *         return null.
+         */
+        public static int getIntValue(ContentResolver cr, long providerId, String settingName) {
+            int ret = -1;
+            
+            Cursor c = getSettingValue(cr, providerId, settingName);
+            if (c != null) {
+                ret = c.getInt(0);
                 c.close();
             }
 
@@ -1493,6 +1535,24 @@ public class Imps {
             cr.insert(CONTENT_URI, v);
         }
 
+        /**
+         * Save a long value of setting in the table providerSetting.
+         * 
+         * @param cr The ContentProvider used to access the providerSetting
+         *            table.
+         * @param providerId The id of the provider.
+         * @param name The name of the setting.
+         * @param value The value of the setting.
+         */
+        public static void putIntValue(ContentResolver cr, long providerId, String name, int value) {
+            ContentValues v = new ContentValues(3);
+            v.put(PROVIDER, providerId);
+            v.put(NAME, name);
+            v.put(VALUE, value);
+
+            cr.insert(CONTENT_URI, v);
+        }
+        
         /**
          * Save a boolean value of setting in the table providerSetting.
          * 
@@ -1790,6 +1850,26 @@ public class Imps {
             putLongValue(contentResolver, providerId, HEARTBEAT_INTERVAL, interval);
         }
 
+        /**
+         * A convenience method to user configure presence state and status
+         * 
+         * @param contentResolver The ContentResolver to use to access the
+         *            setting table.
+         * @param interval The heartbeat interval last received from the server.
+         */
+        public static void setPresence(ContentResolver contentResolver, long providerId,
+                int state, String statusMessage) {
+            
+            if (state != -1)
+                putIntValue(contentResolver, providerId, PRESENCE_STATE, state);
+            
+            if (statusMessage != null)
+                putStringValue(contentResolver, providerId, PRESENCE_STATUS_MESSAGE, statusMessage);
+        }
+
+        
+        
+        
         /** A convenience method to set the jid resource. */
         public static void setJidResource(ContentResolver contentResolver, long providerId,
                 String jidResource) {

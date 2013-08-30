@@ -17,21 +17,24 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.util.FontUtils;
-
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,8 +44,25 @@ public class ProviderListItem extends LinearLayout {
     private static final boolean LOCAL_DEBUG = false;
 
     private Activity mActivity;
-    //private ImageView mProviderIcon;
-    private ImageView mStatusIcon;
+    private SignInManager mSignInManager;
+    
+    private CompoundButton mSignInSwitch;
+    private OnCheckedChangeListener mCheckedChangeListner = new OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+           
+            if (isChecked)
+                mSignInManager.signIn(mAccountId);
+            else
+                mSignInManager.signOut(mAccountId);
+            
+            mUserChanged = true;
+        }
+        
+    };
+    private boolean mUserChanged = false;
+    
     private TextView mProviderName;
     private TextView mLoginName;
     private TextView mChatView;
@@ -50,6 +70,8 @@ public class ProviderListItem extends LinearLayout {
     private Drawable mBubbleDrawable;
     private Drawable mDefaultBackground;
 
+    private ImageView mBtnSettings;
+    
     private int mProviderIdColumn;
     private int mProviderFullnameColumn;
     private int mActiveAccountIdColumn;
@@ -63,18 +85,24 @@ public class ProviderListItem extends LinearLayout {
     
     private long mAccountId;
 
-    public ProviderListItem(Context context, Activity activity) {
+    private boolean mShowLongName = false;
+    
+    public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
         mActivity = activity;
+        mSignInManager = signInManager;
     }
 
-    public void init(Cursor c) {
+    public void init(Cursor c, boolean showLongName) {
 
-
+        
+        mShowLongName = showLongName;
+        
         mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
 
         //mProviderIcon = (ImageView) findViewById(R.id.providerIcon);
-        mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
+   //     mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
+        mSignInSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
         mChatView = (TextView) findViewById(R.id.conversations);
@@ -82,6 +110,8 @@ public class ProviderListItem extends LinearLayout {
         mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
         mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
 
+        mBtnSettings = (ImageView)findViewById(R.id.btnSettings);
+        
         mProviderFullnameColumn = c.getColumnIndexOrThrow(Imps.Provider.FULLNAME);
         mActiveAccountIdColumn = c.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
         mActiveAccountUserNameColumn = c
@@ -92,17 +122,83 @@ public class ProviderListItem extends LinearLayout {
                 .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_CONNECTION_STATUS);
 
         mProviderNameColors = mProviderName.getTextColors();
-        mLoginNameColors = mLoginName.getTextColors();
-        mChatViewColors = mChatView.getTextColors();
+        
+        if (mLoginName != null)
+            mLoginNameColors = mLoginName.getTextColors();
+        
+        if (mChatView != null)
+            mChatViewColors = mChatView.getTextColors();
+        
+        if (mSignInSwitch != null)
+        {
+            mProviderName.setOnClickListener(new OnClickListener ()
+            {
+
+                @Override
+                public void onClick(View v) {
+                   
+
+                    Intent intent = new Intent(getContext(), NewChatActivity.class);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                    getContext().startActivity(intent);
+                }
+                
+            });
+            
+            mLoginName.setOnClickListener(new OnClickListener ()
+            {
+
+                @Override
+                public void onClick(View v) {
+                   
+
+                    Intent intent = new Intent(getContext(), NewChatActivity.class);
+                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                    getContext().startActivity(intent);
+                }
+                
+            });
+            
+            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+         
+            
+            if (mBtnSettings != null)
+            {
+                mBtnSettings.setOnClickListener(new OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v) {
+                        
+                        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                                Imps.Account.CONTENT_URI, mAccountId));
+                        intent.addCategory(ImApp.IMPS_CATEGORY);
+                        mActivity.startActivity(intent);
+                    }
+                    
+                });
+            }
+        }
+      
+/* 
+        mStatusSwitch.setOnClickListener(new OnClickListener (){
+
+            @Override
+            public void onClick(View v) {
+               
+                if (mStatusSwitch.isChecked())
+                    mSignInManager.signIn(mAccountId);
+                else
+                    mSignInManager.signOut(mAccountId);
+                
+            }
+            
+        });*/
     }
 
     public void bindView(Cursor cursor) {
         Resources r = getResources();
        // ImageView providerIcon = mProviderIcon;
-        ImageView statusIcon = mStatusIcon;
-        TextView providerName = mProviderName;
-        TextView loginName = mLoginName;
-        TextView chatView = mChatView;
 
         int providerId = cursor.getInt(mProviderIdColumn);
         String providerDisplayName = cursor.getString(mProviderFullnameColumn);
@@ -114,67 +210,63 @@ public class ProviderListItem extends LinearLayout {
         
         
         mAccountId = cursor.getLong(mActiveAccountIdColumn);
+        setTag(mAccountId);
         
-       ImApp app = ImApp.getApplication(mActivity);
-        BrandingResources brandingRes = app.getBrandingResource(providerId);
-        //providerIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
+        ImApp app = (ImApp)mActivity.getApplication();
 
-        mUnderBubble.setBackgroundDrawable(mDefaultBackground);
-        statusIcon.setVisibility(View.GONE);
+        if (mUnderBubble != null)
+            mUnderBubble.setBackgroundDrawable(mDefaultBackground);
 
-        providerName.setTextColor(mProviderNameColors);
-       loginName.setTextColor(mLoginNameColors);
-       chatView.setTextColor(mChatViewColors);
+        mProviderName.setTextColor(mProviderNameColors);
+        
+        if (mLoginNameColors != null)
+       mLoginName.setTextColor(mLoginNameColors);
+        
+        if (mChatViewColors != null)
+       mChatView.setTextColor(mChatViewColors);
 
         if (!cursor.isNull(mActiveAccountIdColumn)) {
-            mLoginName.setVisibility(View.VISIBLE);
-            providerName.setVisibility(View.VISIBLE);
-            
-            mProviderName.setEnabled(false);
-            mLoginName.setEnabled(false);
             
             String activeUserName = cursor.getString(mActiveAccountUserNameColumn);
             
-            providerName.setText(activeUserName + '@' + userDomain);
+            if (mShowLongName)
+                mProviderName.setText(activeUserName + '@' + userDomain);
+            else
+                mProviderName.setText(activeUserName);
 
-            long accountId = cursor.getLong(mActiveAccountIdColumn);
+            
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
 
             StringBuffer secondRowText = new StringBuffer();
 
-            chatView.setVisibility(View.GONE);
+            mChatView.setVisibility(View.GONE);
 
             switch (connectionStatus) {
+            
             case Imps.ConnectionStatus.CONNECTING:
                 secondRowText.append(r.getString(R.string.signing_in_wait));
 
-                mProviderName.setEnabled(true);
-                mLoginName.setEnabled(true);
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(true);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
+                
                 break;
 
             case Imps.ConnectionStatus.ONLINE:
-
-                mProviderName.setEnabled(true);
-                mLoginName.setEnabled(true);
+            
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(true);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
                 
-                int presenceIconId = getPresenceIconId(cursor);
-                statusIcon.setImageDrawable(brandingRes.getDrawable(presenceIconId));
-                statusIcon.setVisibility(View.VISIBLE);
-                ContentResolver cr = mActivity.getContentResolver();
-
-                int count = getConversationCount(cr, accountId);
-
+             
                 secondRowText.append(getPresenceString(cursor, getContext()));
 
-                if (count > 0) {
-                    
-
-                    secondRowText.append(" - ");
-                    secondRowText.append(count);
-                    secondRowText.append(r.getString(R.string._open_conversations));
-                }
-                else
-                {
                     secondRowText.append(" - ");
                     
                     if (settings.getServer() != null && settings.getServer().length() > 0)
@@ -199,17 +291,18 @@ public class ProviderListItem extends LinearLayout {
                     }
                     
                     
-                }
-         //       chatView.setVisibility(View.GONE);
                 
                 break;
 
             default:
                 
 
-                secondRowText.append(providerDisplayName);
-
-                secondRowText.append(" - ");
+                if (mSignInSwitch != null && (!mUserChanged))
+                {
+                    mSignInSwitch.setOnCheckedChangeListener(null);
+                    mSignInSwitch.setChecked(false);
+                    mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+                }
                 
                 if (settings.getServer() != null && settings.getServer().length() > 0)
                 {
@@ -236,19 +329,9 @@ public class ProviderListItem extends LinearLayout {
                 break;
             }
 
-            loginName.setText(secondRowText);
-            
-            FontUtils.setRobotoFont(mActivity.getApplicationContext(), loginName);
-            FontUtils.setRobotoFont(mActivity.getApplicationContext(), mChatView);
-            FontUtils.setRobotoFont(mActivity.getApplicationContext(), mProviderName);
+            mLoginName.setText(secondRowText);
 
-
-        } else {
-            // No active account, show add account
-            mLoginName.setVisibility(View.GONE);
-            mChatView.setVisibility(View.GONE);
-            mProviderName.setText(providerDisplayName);
-        }
+        } 
         
         settings.close();
     }
@@ -258,27 +341,6 @@ public class ProviderListItem extends LinearLayout {
         return mAccountId;
     }
 
-    private int getConversationCount(ContentResolver cr, long accountId) {
-        
-        // TODO: this is code used to get Google Talk's chat count. Not sure if this will work
-        // for IMPS chat count.
-        
-        StringBuilder where = new StringBuilder();
-        where.append(Imps.Chats.CONTACT_ID);
-        where.append(" in (select _id from contacts where ");
-        where.append(Imps.Contacts.ACCOUNT);
-        where.append("=");
-        where.append(accountId);
-        where.append(")");        
-
-        Cursor cursor = cr.query(Imps.Chats.CONTENT_URI, null, where.toString(), null, null);
-
-        try {
-            return cursor.getCount();
-        } finally {
-            cursor.close();
-        }
-    }
     
     private String getPresenceString(Cursor cursor, Context context) {
         int presenceStatus = cursor.getInt(mAccountPresenceStatusColumn);
@@ -335,4 +397,12 @@ public class ProviderListItem extends LinearLayout {
     private void log(String msg) {
         Log.d(TAG, msg);
     }
+    
+    public interface SignInManager
+    {
+        public void signIn (long accountId);
+        public void signOut (long accountId);
+    };
+
 }
+

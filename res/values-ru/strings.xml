@@ -6,7 +6,6 @@
   <string name="wo_perm_desc">Позволяет приложениям для записи данных на контент-провайдер мгновенных сообщений.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
-  <string name="im_label">Gibberbot</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="landing_page_title">Чат - выберите учетную запись</string>
@@ -139,7 +138,6 @@
   <string name="sign_in">Вход</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Выполняется вход...</string>
   <!--Dialog title-->
@@ -207,17 +205,6 @@
     drop-down status menu on the Contact List screen-->
   <string name="presence_invisible">Невидимый</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <string name="data_channel_label">Данные канала</string>
-  <string name="data_encoding_label">Кодирование данных</string>
-  <string name="cir_channel_label">CIR канала</string>
-  <string name="host_label">Принимающей</string>
-  <string name="msisdn_label">MSISDN</string>
-  <string name="http">HTTP</string>
-  <string name="sms">SMS</string>
-  <string name="tcp">TCP</string>
-  <string name="xml">XML</string>
-  <string name="wbxml">WBXML</string>
-  <string name="save">Сохранить</string>
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
   <string name="chat_with"></string>
@@ -239,7 +226,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Отправить</string>
   <!--Error message when a chat failed to be sent.-->
@@ -286,6 +274,8 @@
     smaller text below this label-->
   <string name="foreground_service_title">Выполнять с активным приоритетом.</string>
   <string name="foreground_service_summary">Уменьшить вероятность того, что Android перезагрузит службу соединения нашей программы. В этом случае в области уведомлений появится сообщение.</string>
+  <string name="heartbeat_interval_title">Интервал сердцебиение</string>
+  <string name="heartbeat_interval_summary">Используйте более высокое значение (в минутах) для экономии заряда батареи. Высокое значение может привести к  тому что соединение  будет прервано провайдером из-за неактивности.</string>
   <string name="notification_vibrate_title">Вибрация</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Сигнал вибрации при получении сообщения чата</string>
@@ -422,25 +412,6 @@
     <item>Спутанный</item>
   </string-array>
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
-  <string-array name="default_smiley_texts">
-    <item>:-)</item>
-    <item>:-(</item>
-    <item>;-)</item>
-    <item>:-P</item>
-    <item>=-O</item>
-    <item>:-*</item>
-    <item>:O</item>
-    <item>B-)</item>
-    <item>:-$</item>
-    <item>:-!</item>
-    <item>:-[</item>
-    <item>O:-)</item>
-    <item>:-\\</item>
-    <item>:\'(</item>
-    <item>:-X</item>
-    <item>:-D</item>
-    <item>o_O</item>
-  </string-array>
   <string-array name="smiley_names">
     <item>Счастливы</item>
     <item>Печальный</item>
@@ -483,23 +454,17 @@
   <string name="menu_view_encrypt_chat">Шифрование Вкл/Выкл</string>
   <string name="use_tor">Подключение через Tor (требуется установленное приложение Orbot)</string>
   <!--Welcome Splash Screen-->
-  <string name="app_name">Gibberbot</string>
-  <string name="welcome_first">В первый раз пользуетесь Gibberbot?</string>
   <string name="welcome_skip">Can\'t ждать, чтобы начать?</string>
   <string name="welcome_about">О Gibberbot</string>
   <string name="welcome_account">Создание учетной записи</string>
   <!--About: Welcome-->
-  <string name="about_welcome_title">О Gibberbot</string>
-  <string name="about_welcome">Gibberbot - это программа обмена мгновенными сообщениями, которая обеспечивает повышенную безопасность переписки, скрывая ваше общение от постороннего доступа. Программа работает со всеми службами, использующими протокол Jabber или XMPP, в том числе Google Talk и Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Насколько это безопасно?</string>
   <string name="about_otr">Off-the-Record Messaging - протокол шифрования, который обеспечивает конфиденциальность в сетях обмена мгновенными сообщениями, заимствуя характеристики частных бесед в реальном мире. Он включает в себя шифрование, аутентификацию собеседников, отрицание и совершенную прямую секретность. Протокол OTR может использоваться в клиентах обмена мгновенными сообщениями для персональных компьютеров, таких как Adium и Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">Безопасны ли мои разговоры?</string>
-  <string name="about_security">Функция шифрования чатов в Gibberbot работает только, если у собеседника тоже установлена программа, которая ее поддерживает, поэтому убедитесь, что они используют Gibberbot на смартфоне и Adium или Pidgin на компьютере. В разделе Настройки можно выбрать, как и когда Gibberbot будет шифровать ваши беседы. Давайте начнем! </string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Ключевая фраза установки</string>
-  <string name="setup_passphrase">Перед началом работы выберите безопасный пароль для защиты ваших данных от Gibberbot несправедливо доступа.</string>
   <string name="setup_passphrase_label1">Ключевая фраза:</string>
   <string name="setup_passphrase_label2">Ключевая фраза (еще раз) :</string>
   <!--Account Setup: Account-->
@@ -513,8 +478,6 @@
   <string name="account_setup_pers_pw_on">Пароль сохранен в кэше</string>
   <string name="account_setup_pers_pw_off">Пароль не сохранен в кэше</string>
   <string name="account_setup_pers_auto_title">Автоматический вход в систему,</string>
-  <string name="account_setup_pers_auto_on">Автоматически подключаться при запуске Gibberbot</string>
-  <string name="account_setup_pers_auto_off">Не подключаться автоматически при запуске Gibberbot</string>
   <string name="account_setup_pers_now_title">Войдите в систему</string>
   <string name="account_setup_pers_now_on">Подключите следующие настройки учетной записи</string>
   <string name="account_setup_pers_now_off">Don\'t связаться следующие настройки учетной записи</string>
@@ -534,16 +497,10 @@
   <string name="account_setup_signin_b">Создание пары ключей ...</string>
   <string name="account_setup_signin_c">Подписание дюйма ..</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot произошла ошибка при проверке ваше имя пользователя или пароль - проверьте их и попробуйте снова.</string>
-  <string name="account_setup_error_keypair">Gibberbot произошла ошибка при генерации ключей.</string>
-  <string name="account_setup_error_server">Gibberbot произошла ошибка при подключении к чат-сервера - Пожалуйста, проверьте настройки и попробуйте еще раз.</string>
-  <string name="account_setup_error_connectivity">Gibberbot произошла ошибка при подключении - пожалуйста, перепроверить вашего подключения к сети и повторите попытку.</string>
   <string name="label_fingerprint_remote">Их отпечатков пальцев</string>
   <string name="label_fingerprint_local">Отпечатки пальцев</string>
   <string name="menu_sign_in">Войдите в систему,</string>
   <string name="menu_gen_key">Дождь Ключевые</string>
-  <string name="error_suspended_connection">Gibberbot потерял соединение с сетью</string>
-  <string name="error_reestablish_connection">Gibberbot пытается restablish связи</string>
   <string name="otr_session_status_plaintext">Warning: Этот чат не шифруется</string>
   <string name="otr_session_status_encrypted">Этот чат является безопасным, но личности участников не были проверены</string>
   <string name="otr_session_status_finished">Warning: чат шифрования была остановлена.</string>
@@ -552,15 +509,14 @@
   <string name="account_wizard_account_title">Ваш аккаунт ID</string>
   <string name="account_wizard_host_title">Настройка сервера</string>
   <string name="account_wizard_ready_title">Готовы ли вы?</string>
-  <string name="account_wizard_setup_body">Введите идентификатор учетной записи для автоматической настройки Gibberbot для вас чат service.\n\nIt, вероятно, выглядит как адрес электронной почты - так yourname@gmail.com, или someone@jabber.org, например.</string>
   <string name="account_wizard_account_body">Пожалуйста, введите Ваш идентификатор учетной записи (пользователь @ имя хоста) :</string>
   <string name="account_wizard_host_body">Пожалуйста, введите или измените jabber/xmpp чат имя сервера и номер порта (5222 по умолчанию).</string>
-  <string name="account_wizard_ready_body">Gibberbot была настроена, и теперь пришло время для подключения к вашим услугам, и начинайте общаться безопасно, надежно и конфиденциально!</string>
   <string name="account_wizard_no_domain_warning">В имени пользователя не хватает части типа @hostname.com. Попробуйте еще раз!</string>
   <string name="account_wizard_no_root_domain_warning">В имени сервера нет части типа .com, .net или другого окончания. Попробуйте еще раз!</string>
   <string name="signin_password_prompt">Введите пароль:</string>
-   <string name="account_settings_title">Настройки учетной записи</string>
-  <string name="warning_alpha">ВНИМАНИЕ: Это - ранний релиз программы Gibberbot и все еще может содержать ошибки или иметь проблемы безопасности.</string>
+  <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">Настройки учетной записи</string>
+  <string name="pref_default_locale">defLoc</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Группы</string>
   <string name="otr_gen_key">Генерируем новую пару ключей OTR</string>
@@ -569,6 +525,7 @@
   <string name="search_button_text">Вперед</string>
   <string name="menu_locale">Язык</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Языки</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Какой язык должен быть отображен?</string>
   <string name="do_srv_lookup">Поиск SRV записи</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Использовать DNS SRV для определения XMPP из доменного имени</string>
   <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Разрешать передачу имени пользователя и пароля открытым текстом, если не используется протокол защиты транспортного уровня</string>
@@ -594,4 +551,26 @@
   <string name="smp_question_summary">Введите вопрос, на который нужно будет ответить вашему собеседнику, а также правильный ответ на этот вопрос, для подтверждения их личности.</string>
   <string name="smp_question_hint">контрольный вопрос</string>
   <string name="qmp_answer_hint">правильный ответ</string>
+  <string name="remote_verified_us">Ваш контакт успешно прошел аутентификацию вас. Теперь проверьте подлинности контакт, задавая свой ​​вопрос.</string>
+  <string name="no_messages">Нет разговоров.\n\nНажмите здесь, чтобы начать один!</string>
+  <string name="pref_theme_dark">Используйте темные темы</string>
+  <string name="warning_tor_connect">Так как вы используете Tor, вы должны ввести имя XMPP хоста \'Connect Server\' непосредственно в Расширенные настройки учетной записи.</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot_summary">Всегда начинайте и автоматически войдите в ранее зарегистрированные счета</string>
+  <string name="empty_account_message">У вас нет аккаунт настроен.\n\nНажмите здесь, чтобы добавить!</string>
+  <string name="google_account">аккаунт Google</string>
+  <string name="pref_in_memory_db_title">Хранение Сообщений Только В Памяти</string>
+  <string name="pref_in_memory_db_summary">Храните сообщения только в памяти, а не на флэш-памяти, чтобы защититься от того чтобы ваши сообщения не были извлечены. (Может привести к потере сообщений)</string>
+  <string name="pref_background_title">Фоновое изображение</string>
+  <string name="pref_background_summary">Установитe путь (\"/sdcard/foo.jpg\"), к фоновому изображению для приложения</string>
+  <string name="pref_group_security_title">Безопасность и Конфиденциальность</string>
+  <string name="pref_group_looknfeel_title">Интерфейс Пользователя</string>
+  <string name="pref_group_tuning_title">Другие Hастройки</string>
+  <string name="_open_conversations">открытый разговор (ы)</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Выходите</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Вы хотите выйти из всех служб и убить все процессы (жесткий выход)?</string>
 </resources>

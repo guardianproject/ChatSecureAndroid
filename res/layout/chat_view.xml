@@ -22,7 +22,10 @@
     android:id="@+id/chatView"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+        android:background="@drawable/bgcolor2"
+    
+    >
 
 
     <LinearLayout android:id="@+id/warning"
@@ -30,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:background="#ffeeeeee"
         android:visibility="gone">
 
         <ImageView android:id="@+id/warningIcon"
@@ -48,13 +50,24 @@
             android:text="@string/disconnected_warning"
             android:fontFamily="sans-serif-light"
              />
-
+        
+         <CheckBox
+            android:id="@+id/otrSwitch"
+            android:paddingRight="6dip"
+            android:paddingLeft="6dip"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+ 
         <ImageView android:id="@+id/deliveryIcon"            
             android:layout_width="16dip"
             android:layout_height="16dip"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat_msg_status_ok"
              />
+        
+        
     </LinearLayout>
 
 
@@ -134,46 +147,93 @@
         </LinearLayout>
     </LinearLayout>
 
-
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-        <!-- 
-        //NF removed 13/06/2012
-        <ImageView android:id="@+id/composeSecureIcon"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:src="@drawable/ic_menu_unencrypt"
-            android:padding="0dip"
-             />
-              -->
+  <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	     android:layout_gravity="fill_vertical"
+	             android:gravity="bottom"
+	     
+	     >
+	
+       
+        <ImageButton
+        android:id="@+id/btnActionBox"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:background="@drawable/ad_selectable_background"
+        android:fontFamily="sans-serif-light"
+      
+        android:paddingBottom="5sp"
+        android:src="@drawable/ic_btn_round_more_normal" />
+      
+    <ImageButton
+        android:id="@+id/btnEmoji"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
+        android:background="@drawable/ad_selectable_background"
+        android:scaleType="centerInside"
         
-
-        <EditText android:id="@+id/composeMessage"
+        android:paddingBottom="5sp"
+        android:src="@drawable/smiley_smile" />
+      
+      <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
+           
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine|textImeMultiLine"
             android:imeOptions="actionSend|flagNoEnterAction"
             android:maxLines="4"
-            android:maxLength="2000"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
+             
             />
-        
-         <ImageButton android:id="@+id/btnSend"
-        android:paddingLeft="20sp"
-	    android:paddingRight="20sp"
-        android:paddingTop="3sp"
-        android:paddingBottom="3sp"
-   		android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-        android:src="@drawable/ic_send_holo_light"
+           
+    <ImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/ad_selectable_background"
-         android:fontFamily="sans-serif-light"
-        />
+        android:fontFamily="sans-serif-light"
+        android:paddingBottom="3sp"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"
+        android:paddingTop="3sp"
+        android:src="@drawable/ic_send_holo_light" />
 
+      </LinearLayout>
+  
+  <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	     android:layout_gravity="fill_vertical"
+	             android:gravity="bottom"
+	     android:visibility="gone"
+	     android:id="@+id/actionBox"
+	     >
+     
+      <ImageButton
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_info" />
+     <ImageButton
+        android:id="@+id/btnEndChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/ic_menu_close" />
+     
+      </LinearLayout>
+  
+   <android.support.v4.view.ViewPager
+               android:id="@+id/emojiPager"
+        android:layout_width="match_parent"
+        android:layout_height="140dip"
+        android:visibility="gone"
+       />
       
-    </LinearLayout>
 </info.guardianproject.otr.app.im.app.ChatView>

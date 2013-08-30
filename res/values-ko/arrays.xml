@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string-array name="otr_options">
-        <item>포스가 필요 /</item>
-        <item>자동으로 시도</item>
-        <item>요청한대로</item>
-        <item>불가 / 절대</item>
-    </string-array>
+  <string-array name="otr_options">
+    <item>포스가 필요 /</item>
+    <item>자동으로 시도</item>
+    <item>요청한대로</item>
+    <item>불가 / 절대</item>
+  </string-array>
 </resources>

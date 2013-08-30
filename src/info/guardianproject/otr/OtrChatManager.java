@@ -10,13 +10,13 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
+import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.OtrSm;
@@ -42,9 +42,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
     private ImService mContext;
 
-    private OtrChatManager(int otrPolicy, ImService context) throws Exception {
+    private OtrChatManager(int otrPolicy, ImService context, OtrKeyManager otrKeyManager) throws Exception {
+        
         mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy),
-                context);
+                context, otrKeyManager);
 
         mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
         mOtrEngine.addOtrEngineListener(this);
@@ -55,10 +56,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mContext = context;
     }
 
-    public static synchronized OtrChatManager getInstance(int otrPolicy, ImService context)
+    public static synchronized OtrChatManager getInstance(int otrPolicy, ImService context, OtrKeyManager otrKeyManager)
             throws Exception {
         if (mInstance == null) {
-            mInstance = new OtrChatManager(otrPolicy, context);
+            mInstance = new OtrChatManager(otrPolicy, context,otrKeyManager);
         }
 
         return mInstance;
@@ -80,7 +81,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrEngineHost.setSessionPolicy(new OtrPolicyImpl(otrPolicy));
     }
 
-    public OtrAndroidKeyManagerImpl getKeyManager() {
+    public OtrKeyManager getKeyManager() {
         return mOtrEngineHost.getKeyManager();
     }
 
@@ -103,13 +104,15 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         String sessionIdKey = processUserId(localUserId) + "+" + processUserId(remoteUserId);
 
         SessionID sessionId = mSessions.get(sessionIdKey);
-
-        if (sessionId == null) {
-            sessionId = new SessionID(processUserId(localUserId), processUserId(remoteUserId),
-                    "XMPP");
+        if (sessionId == null ||
+                (!sessionId.getFullUserID().equals(remoteUserId) &&
+                        remoteUserId.contains("/"))) {
+            // Remote has changed (either different presence, or from generic JID to specific presence),
+            // or we didn't have a session yet.
+            // Create or replace sessionId with one that is specific to the new presence.
+            sessionId = new SessionID(processUserId(localUserId), remoteUserId, "XMPP");
             mSessions.put(sessionIdKey, sessionId);
         }
-
         return sessionId;
     }
 
@@ -123,6 +126,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      */
     public SessionStatus getSessionStatus(String localUserId, String remoteUserId) {
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
+        if (sessionId == null)
+            return null;
+        
 
         return mOtrEngine.getSessionStatus(sessionId);
 
@@ -212,8 +218,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
     
     public void transformSending(Message message, boolean isResponse, byte[] data) {
-        String localUserId = message.getFrom().getFullName();
-        String remoteUserId = message.getTo().getFullName();
+        String localUserId = message.getFrom().getAddress();
+        String remoteUserId = message.getTo().getAddress();
         String body = message.getBody();
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
@@ -281,19 +287,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
     public String getLocalKeyFingerprint(String localUserId, String remoteUserId) {
         return mOtrEngineHost.getLocalKeyFingerprint(getSessionId(localUserId, remoteUserId));
-    }
-
-    public String getRemoteKeyFingerprint(String localUserId, String remoteUserId) {
-        SessionID sessionID = getSessionId(localUserId, remoteUserId);
-        String rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
-
-        if (rkFingerprint == null) {
-            PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);
-            mOtrEngineHost.storeRemoteKey(sessionID, remoteKey);
-            rkFingerprint = mOtrEngineHost.getRemoteKeyFingerprint(sessionID);
-            OtrDebugLogger.log("remote key fingerprint: " + rkFingerprint);
-        }
-        return rkFingerprint;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class BlockedContactView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAvatar = (ImageView) findViewById(R.id.avatar);
+        mAvatar = (ImageView) findViewById(R.id.expandable_toggle_button);
         mBlockedIcon = (ImageView) findViewById(R.id.blocked);
         mLine1 = (TextView) findViewById(R.id.line1);
         mLine2 = (TextView) findViewById(R.id.line2);
@@ -57,16 +57,20 @@ public class BlockedContactView extends LinearLayout {
         String nickname = cursor.getString(BlockedContactsActivity.NICKNAME_COLUMN);
 
         Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor,
-                BlockedContactsActivity.AVATAR_COLUMN);
+                BlockedContactsActivity.AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
 
         if (avatar != null) {
             mAvatar.setImageDrawable(avatar);
         } else {
             mAvatar.setImageResource(R.drawable.avatar_unknown);
         }
+        
+        /*
         ImApp app = ImApp.getApplication((Activity) mContext);
+        
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         mBlockedIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_BLOCK));
+        */
         mLine1.setText(nickname);
         mLine2.setText(ImpsAddressUtils.getDisplayableAddress(username));
     }

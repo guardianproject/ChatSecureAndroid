@@ -46,7 +46,7 @@ public class SignoutActivity extends ThemeableActivity {
         Uri data = intent.getData();
         if (data == null) {
             Log.e(ImApp.LOG_TAG, "Need account data to sign in");
-            finish();
+            //finish();
             return;
         }
 
@@ -60,7 +60,7 @@ public class SignoutActivity extends ThemeableActivity {
         try {
             if (!c.moveToFirst()) {
                 LogCleaner.warn(ImApp.LOG_TAG, "[SignoutActivity] No data for " + data);
-                finish();
+             //   finish();
                 return;
             }
 
@@ -70,7 +70,8 @@ public class SignoutActivity extends ThemeableActivity {
             c.close();
         }
 
-        mApp = ImApp.getApplication(this);
+
+        mApp = (ImApp)getApplication();
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {
                 signOut(providerId, accountId);
@@ -99,7 +100,7 @@ public class SignoutActivity extends ThemeableActivity {
         } catch (RemoteException ex) {
             Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
         } finally {
-            finish();
+            //finish();
 
             Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
         }

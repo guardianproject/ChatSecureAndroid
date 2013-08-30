@@ -54,7 +54,7 @@ interface IChatSession {
     /**
      * Gets the participants of this ChatSession.
      */
-    String[] getPariticipants();
+    String[] getParticipants();
 
     /**
      * Convert a single chat to a group chat. If the chat session is already a

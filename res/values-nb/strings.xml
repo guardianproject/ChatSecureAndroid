@@ -1,16 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
+  <string name="ro_perm_label">les meldinger</string>
+  <string name="ro_perm_desc">\n        Gir applikasjoner lov til å lese data fra meldingsleverandøren.\n    </string>
+  <string name="wo_perm_label">skriv meldinger</string>
+  <string name="wo_perm_desc">\n        Gir applikasjoner lov til å skrive til meldingsleverandøren.\n    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Velg en konto</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">Om</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Legg til konto</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">Endre konto</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Fjern konto</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Logg av alle</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Velg en konto</string>
   <!--Displays the number of ongoing chats on the landing page.-->
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
@@ -34,10 +46,13 @@
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Kontoliste</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Ny Chat</string>
   <!--Screen menu item on accounts list to create new account-->
+  <string name="menu_new_account">Ny konto</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
   <string name="menu_settings">Innstillinger</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Søk Kontakter</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -52,7 +67,11 @@
     displayed when the user long clicks on a conversation in the contact list. It lets the
     user to end a chat with a contact. May be overrided by the plugin.-->
   <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">Start Kryptering</string>
+  <string name="menu_otr_stop">Stopp Kryptering</string>
+  <string name="menu_clear_chat">Tøm Chat</string>
   <string name="menu_end_conversation">Avslutt samtale</string>
+  <string name="menu_voip_title">Sikker samtale</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
@@ -65,7 +84,12 @@
   <string name="menu_switch_chats">Bytt mellom samtaler</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Sett inn smilefjes</string>
+  <string name="menu_resend">Send igjen</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Scan Fingeravtrykk</string>
+  <string name="menu_fingerprint">Ditt Fingeravtrykk</string>
+  <string name="menu_verify_fingerprint">Verifiser fingeravtrykk</string>
+  <string name="menu_verify_secret">Verifiser hemmelighet</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -76,8 +100,8 @@
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
   <string name="confirm">Bekreft</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">Vil du logge av alle tjenestene?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
   <string name="confirm_block_contact"></string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
@@ -109,12 +133,13 @@
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Mangler du konto?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">For din sikkerhet, hvis telefonen din mistes eller stjeles, oppsøk nettsiden på datamaskinen din  og forandre passordet ditt.</string>
   <string name="check_auto_sign_in">Dette valget logger deg automatisk på hver gang du åpner applikasjonen. For å avmerke valget, logg av og fjern så haken ved «Logg på automatisk».</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Logg på</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to"></string>
+  <string name="signing_in_to">starter opp ChatSecure...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Logger på…</string>
   <!--Dialog title-->
@@ -184,14 +209,13 @@
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Meg</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
   <string name="compose_hint">Skriv her</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
+  <string name="contact_online">\n\n</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
   <string name="contact_away"></string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
@@ -203,7 +227,8 @@
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <string name="contact_left"></string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp"></string>
+  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">Send</string>
   <!--Error message when a chat failed to be sent.-->
@@ -219,6 +244,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Ingen aktive samtaler.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
+  <string name="starting_otr_chat">Starter kryptert chat...</string>
+  <string name="stopping_otr_chat">Stopper kryptert chat...</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Legg til kontakt</string>
@@ -231,7 +258,11 @@
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
   <string name="invite_label">Send invitasjon</string>
   <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Lokal nettverkschat (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">Kontoinnstilling</string>
+  <string name="encryption_and_anonymity_title">Kryptering og anonymitet</string>
   <string name="hide_offline_contacts">Skjul avloggede kontakter</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">Varslingsinnstillinger</string>
@@ -242,6 +273,10 @@
   <string name="notification_enabled_summary">Varsle i statusveltet når det kommer lynmeldinger</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="foreground_service_title">Bruk forgrunnsprioritet</string>
+  <string name="foreground_service_summary">Reduser sjansen for at Android starter tilkoblingstjenesten vår på nytt. Dette vil gi deg et varsel i varslingsvinduet.</string>
+  <string name="heartbeat_interval_title">Pulsintervall</string>
+  <string name="heartbeat_interval_summary">Bruk en høyere verdi (i minutter) for å spare strøm. En høyere verdi kan gjøre at leverandøren avslutter tilkoblingen din grunnet inaktivitet.</string>
   <string name="notification_vibrate_title">Vibrer</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Vibrer når det kommer lynmeldinger</string>
@@ -298,7 +333,6 @@
   <!--The title of the error dialog-->
   <string name="error">NB</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">Listen ble ikke lagt til.</string>
   <!--Error message for blocking contact failed.-->
@@ -323,6 +357,7 @@
   <string name="contact_not_loaded">Vent mens kontaktlisten lastes.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Det oppsto en nettfeil.</string>
+  <string name="wifi_not_connected_error">WiFi kreves for denne tilkoblingen.</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Tjeneren støtter ikke denne funksjonen.</string>
   <!--Erorr message for bad password error.-->
@@ -396,17 +431,190 @@
     <item>Ler</item>
     <item>Forvirret</item>
   </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="menu_contact_list">Kontaktliste</string>
+  <string name="menu_view_encrypt_chat">Krypering På/Av</string>
+  <string name="use_tor">Tilkobling via Tor (Krever programmet Orbot)</string>
   <!--Welcome Splash Screen-->
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Førstegangsbruker av ChatSecure?</string>
+  <string name="welcome_skip">Kan du ikke vente med å starte?</string>
+  <string name="welcome_about">Start</string>
+  <string name="welcome_account">Kontoinnstillinger</string>
   <!--About: Welcome-->
+  <string name="about_welcome_title">Om ChatSecure</string>
+  <string name="about_welcome">ChatSecure er en mobil chat-app som tilbyr ekstra sikkerhetsfunksjoner som forhindrer andre i å spionere på kommunikasjonen og samtalene dine.\n\nAppen støtter alle chat-tjenester som bruker Jabber- eller XMPP-protokollen, som f.eks Google GTalk eller Jabber.org.</string>
   <!--About: OTR-->
+  <string name="about_otr_title">Hvordan er det sikkert?</string>
+  <string name="about_otr">\'Off-the-Record chat\' er et sikkert system designet for å fremme personvern ved å imitere karakteristikkene til en privat samtale i den virkelige verden, inkludert kryptering, autentisering, benektelse og Perfect Forward Secrecy.\n\nOTR-protokollen er kompatibel med chatklienter til datamaskiner som f.eks Adium eller Pidgin.</string>
   <!--About: Security-->
+  <string name="about_security_title">Er samtalene mine sikre?</string>
+  <string name="about_security">ChatSecures krypterte chatfunksjon fungerer kun når du sender meldinger til andre som bruker en kompatibel app eller program, så du bør sørge for at kontaktene dine bruker mobilversjonen av ChatSecure og Adium eller Pidgin på datamaskinen. Du kan finjustere nøyaktig når og hvordan ChatSecure forsøker å kryptere samtalene dine i Kontoinnstillinger.\n\nLa oss begynne!</string>
   <!--Setup: Passphrase-->
+  <string name="setup_passphrase_title">Passordinnstillinger</string>
+  <string name="setup_passphrase">Før du begynner, vennligst velg et sikkert passord for å beskytte ChatSecure data mot uønsket tilgang.</string>
+  <string name="setup_passphrase_label1">Passord.</string>
+  <string name="setup_passphrase_label2">Passord (igjen):</string>
   <!--Account Setup: Account-->
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">nytt brukernavn</string>
+  <string name="account_setup_service_provider">tjenestetilbyder (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">passord</string>
+  <string name="account_setup_password_confirm">bekreft passord</string>
+  <string name="account_setup_advanced_button">Avanserte kontoinnstillinger</string>
+  <string name="account_select_type">Kontotype</string>
+  <string name="btn_create_new_account">Registrer konto</string>
   <!--Account Setup: Persistence-->
+  <string name="account_setup_pers_sub">Vedvarende lagring</string>
+  <string name="account_setup_pers_pw_title">Husk Passord</string>
+  <string name="account_setup_pers_pw_on">Passord lagret</string>
+  <string name="account_setup_pers_pw_off">Passord ikke lagret</string>
+  <string name="account_setup_pers_auto_title">Logg inn automatisk</string>
+  <string name="account_setup_pers_auto_on">Koble til ChatSecure ved oppstart</string>
+  <string name="account_setup_pers_auto_off">Ikke koble til ChatSecure ved oppstart</string>
+  <string name="account_setup_pers_now_title">Logg inn nå</string>
+  <string name="account_setup_pers_now_on">Koble til følgende konto-oppsett</string>
+  <string name="account_setup_pers_now_off">Ikke koble til følgende konto-oppsett</string>
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_sub">Personlig data (frivillig)</string>
+  <string name="account_setup_personal_alias_title">Kontoalias (navnet ditt)</string>
+  <string name="account_setup_personal_alias_sub">Hvordan kontoen min fremstår på nett</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Kortfattet om deg selv</string>
   <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">Krev kryptering / avvis klartekst</string>
+  <string name="account_setup_advanced_enc_auto">Om mulig, kryptér chat automatisk</string>
+  <string name="account_setup_advanced_enc_req">Krypter chatten som forespurt</string>
+  <string name="account_setup_advanced_enc_off">Deaktiver chatkryptering</string>
   <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">Validerer legitimasjon...</string>
+  <string name="account_setup_signin_b">Genererer nøkkelpar...</string>
+  <string name="account_setup_signin_c">Logger inn...</string>
   <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">ChatSecure støtte på en feil under verifisering av brukernavnet og passordet ditt - vennligst sjekk dem og prøv igjen.</string>
+  <string name="account_setup_error_keypair">ChatSecure støtte på en feil under opprettelse av et nøkkelpar.</string>
+  <string name="account_setup_error_server">ChatSecure støtte på en feil under tilkobling til chatserveren - vennligst sjekk konfigurasjonen og prøv igjen.</string>
+  <string name="account_setup_error_connectivity">ChatSecure støtte på en feil under tilkobling - vennligst dobbeltsjekk nettverksforbindelsen din og prøv igjen.</string>
+  <string name="label_fingerprint_remote">Deres fingeravtrykk</string>
+  <string name="label_fingerprint_local">Ditt fingeravtrykk</string>
+  <string name="menu_sign_in">Logg inn</string>
+  <string name="menu_gen_key">Lag ny nøkkel</string>
+  <string name="error_suspended_connection">ChatSecure har mistet forbindelsen til nettverket</string>
+  <string name="error_reestablish_connection">ChatSecure prøver å gjenopprette en tilkobling</string>
+  <string name="otr_session_status_plaintext">Advarsel: Denne chatten er IKKE kryptert</string>
+  <string name="otr_session_status_encrypted">Denne chatten er sikker, men identiteten til brukerne har IKKE blitt verifisert.</string>
+  <string name="otr_session_status_finished">Advarsel: chattkrypteringen er stoppet.</string>
+  <string name="otr_session_status_verified">Denne chatten er sikret og verifisert</string>
+  <string name="account_wizard_setup_title">Kontoveiviser</string>
+  <string name="account_wizard_account_title">Din Konto-ID</string>
+  <string name="account_wizard_host_title">Konfigurér Server</string>
+  <string name="account_wizard_ready_title">Er du klar?</string>
+  <string name="account_wizard_setup_body">Oppgi konto-IDen din for å konfigurere ChatSecure med din XMPP chat-tjeneste. Den ser ut som en e-postadresse:</string>
+  <string name="account_wizard_account_body">Vennligst skriv inn din konto-ID (bruker@vertsnavn):</string>
+  <string name="account_wizard_host_body">Vennligst skriv inn eller rediger JABBER-/XMPPchatserver vertsnavnet ditt og portnummer (5222 er standard).</string>
+  <string name="account_wizard_ready_body">ChatSecure ble konfigurert og det er nå tid for å koble til tjenesten og begynne å chatte trygt, sikkert og privat!</string>
+  <string name="account_wizard_no_domain_warning">Du har ikke skrevet inn @vertsnavn.com delen av konto-ID\'en din. Prøv igjen!</string>
+  <string name="account_wizard_no_root_domain_warning">Din servers vertsnavn hadde ikke en .com, .net eller lignende endelse. Prøv igjen!</string>
+  <string name="signin_password_prompt">Skriv inn passordet ditt:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
+  <string name="account_settings_title">Kontoinnstillinger</string>
+  <string name="pref_default_locale">defLoc</string>
+  <string name="warning_alpha">ADVARSEL: Dette er en tidlig utgave av ChatSecure som fortsatt kan inneholde sikkerhetshull og feil.</string>
   <!--added 2011/09/01-->
+  <string name="menu_view_groups">Grupper</string>
+  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar...</string>
+  <string name="search_label">Kontakt</string>
+  <string name="search_hint">oppgi navnet på kontakten du ønsker å chatte med</string>
+  <string name="search_button_text">Gå</string>
+  <string name="menu_locale">Språk</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Hvilket språk skal InTheClear vise?</string>
+  <string name="do_srv_lookup">Utfør SRV-sjekk</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Bruk DNS SRV for å finne aktuell XMPP-serveren for domenenavnet</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Tillat at brukernavnet og passordet blir sendt som klartekst under bruk av ukryptert transport</string>
+  <string name="allow_plain_text_auth">Tillat autentisering i klartekst</string>
+  <string name="verify_that_the_certificate_is_trusted">Verifiser at sertifikatet er til å stole på</string>
+  <string name="tls_verification">TLS verifisering</string>
+  <string name="require_tls_ssl_connection">Krev TLS/SSL tilkobling</string>
+  <string name="transport_encryption">Transport-kryptering</string>
+  <string name="how_encrypted_chats_are_started">hvordan krypterte chatter startes</string>
+  <string name="the_server_to_connect_to_if_needed">Serveren som skal tilkobles, etter behov</string>
+  <string name="connect_server">Tilkoblingsserver</string>
+  <string name="tcp_port_for_xmpp_server">XMPP-servers TCP-port</string>
+  <string name="server_port">Serverport</string>
+  <string name="xmpp_resource">XMPP-ressurs</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">for å skille denne tilkoblingen fra andre klienter som også er logget inn</string>
+  <string name="xmpp_resource_prio_title">XMPP-ressursprioritering</string>
+  <string name="xmpp_resource_prio_summary">Meldinger til klienter med flere aktive resursser vil bli sendt til den resurssen med høyest prioritet</string>
+  <string name="btn_next">Neste</string>
+  <string name="btn_back">Tilbake</string>
+  <string name="title_chats">Samtaler</string>
+  <string name="new_messages_notify">Ny melding(er) fra</string>
+  <string name="smp_question_title">Autentisering</string>
+  <string name="smp_question_summary">Angi et spørsmål som sendes kontakten din, og svaret du forventer at de oppgir, for å verifisere at du faktisk snakker med den de gir seg ut for være.</string>
+  <string name="smp_question_hint">spørsmålet som skal stilles</string>
+  <string name="qmp_answer_hint">svaret som forventes</string>
+  <string name="remote_verified_us">Kontakten din har verifisert deg. Verifiser nå din kontakt ved å stille ditt eget spørsmål.</string>
+  <string name="no_messages">Ingen samtaler.\n\nKlikk her for å starte en!</string>
+  <string name="pref_theme_dark">Bruk mørkt tema</string>
+  <string name="warning_tor_connect">Siden du bruker Tor, må du angi vertsnavnet til XMPP-\'Tilkoblingsserver\' direkte i Avanserte kontoinnstilinger</string>
+  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
+  <string name="start_on_boot">Start ChatSecure automatisk</string>
+  <string name="start_on_boot_summary">Alltid start og automatisk logg inn på sist innloggede kontoer.</string>
+  <string name="empty_account_message">Du har ingen konfigurerte kontoer.\n\nKlikk her for å opprette en!</string>
+  <string name="google_account">Google-konto</string>
+  <string name="pref_in_memory_db_title">Kun lagre meldinger i minnet</string>
+  <string name="pref_in_memory_db_summary">Kun lagre meldinger i minnet, ikke flashlagring, for å beskytte mot at noen får tilgang til eller kan hente ut meldingene. (Kan forårsake tapte meldinger)</string>
+  <string name="pref_background_title">Bakgrunnsbilde</string>
+  <string name="pref_background_summary">Angi plasseringen (\"/sdcard/foo.jpg\") til et bakgrunnsbilde til appen</string>
+  <string name="pref_group_security_title">Sikkerhet og Personvern</string>
+  <string name="pref_group_looknfeel_title">Brukergrensesnitt</string>
+  <string name="pref_group_tuning_title">Andre justeringer</string>
+  <string name="_open_conversations">åpne samtale(r)</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="menu_exit">Avslutt</string>
+  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_kill_confirm_message">Vil du logge ut av alle tjenester OG avslutte alle prosessene (hard exit)?</string>
+  <string name="rekey_message">Opprett et *nytt* passord. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
+  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig...)</string>
+  <string name="enter_pass">Oppgi passord ditt:</string>
+  <string name="new_pass">Velkommen! Opprett et sterkt passord for å sikre notatene dine. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
+  <string name="pass_err_length">Passordet ditt var ikke langt nok</string>
+  <string name="pass_err_upper">Passordet ditt inneholdt ingen store bokstaver</string>
+  <string name="pass_err_lower">Passordet ditt inneholdt ingen små bokstaver</string>
+  <string name="pass_err_num">Passordet ditt inneholdt ingen tall</string>
+  <string name="lock_screen_open">Åpne</string>
+  <string name="title_activity_lock_screen">ChatSecure låst</string>
+  <string name="lock_screen_create_passphrase">Opprett passord</string>
+  <string name="lock_screen_passphrase_hint">Oppgi passord</string>
+  <string name="lock_screen_passphrase_not_set_enter">Oppgi nytt passord</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Bekreft nytt passord</string>
+  <string name="lock_screen_passphrases_not_matching">Passordene samsvarer ikke, vennligst prøv igjen</string>
+  <string name="pref_sip_account_title">Secure Voice</string>
+  <string name="pref_sip_account_summary">Oppgi kontoinformasjon for OStel.co eller en annen sikker SIP-tjeneste for samtaleintegrering</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">Vi har oppdaget lagrede OTR-nøkler som kan importeres. Vil du scanne QR-passordet nå?</string>
+  <string name="menu_import_keys">Importer lagrede OTR-nøkler</string>
+  <string name="successfully_imported_otr_keyring">Import av OTR-nøkkelring fullført</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøkkelring ble ikke importert; Vennligst sjekk at filen har riktig format og plassering</string>
 </resources>

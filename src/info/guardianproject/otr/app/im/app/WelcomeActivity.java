@@ -16,19 +16,20 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.io.File;
-import java.io.IOException;
-
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.AboutActivity;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,20 +38,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class WelcomeActivity extends ThemeableActivity {
+public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
     
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
@@ -83,52 +83,82 @@ public class WelcomeActivity extends ThemeableActivity {
     static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
+    
+    private SharedPreferences mPrefs = null;
+    
+    private CacheWordActivityHandler mCacheWord = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SQLiteDatabase.loadLibs(this);
+        
         mSignInHelper = new SignInHelper(this);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mDefaultLocale = prefs.getString(getString(R.string.pref_default_locale), null);
-        setContentView(R.layout.welcome_activity);
+       
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mDefaultLocale = mPrefs.getString(getString(R.string.pref_default_locale), null);
         
         this.getSupportActionBar().hide();
         
-        Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
-
-        getStarted.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Intent intent = new Intent(getBaseContext(), AboutActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
       
+        mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
+        
+        connectToCacheWord ();
+        
+        checkForCrashes();
+        
+        checkForUpdates();
+        
+     
+    }
+    
+    private void connectToCacheWord ()
+    {
+        
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        
+        ((ImApp)getApplication()).setCacheWord(mCacheWord);
+        
+        mCacheWord.connectToService();
+        
     }
     
 
    
     @SuppressWarnings("deprecation")
-    private boolean cursorUnlocked() {
+    private boolean cursorUnlocked(String pKey) {
         try {
-            mApp = ImApp.getApplication(this);
+            mApp = (ImApp)getApplication();
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
-            mProviderCursor = managedQuery(Imps.Provider.CONTENT_URI_WITH_ACCOUNT,
+            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+            
+            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).build();
+            
+            mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                     Imps.Provider.DEFAULT_SORT_ORDER);
-
-            mProviderCursor.moveToFirst();
-
-            return true;
-
+ 
+            if (mProviderCursor != null)
+            {
+                mProviderCursor.moveToFirst();
+            
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         } catch (Exception e) {
             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+            
+            Toast.makeText(this, "MAJOR ERROR: Unable to unlock or load app database. Please re-install the app or clear data.",Toast.LENGTH_LONG).show();
+            finish();
+            
             // needs to be unlocked
             return false;
         }
@@ -148,36 +178,34 @@ public class WelcomeActivity extends ThemeableActivity {
             mHandler.unregisterForBroadcastEvents();
 
         super.onPause();
+        mCacheWord.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        mSignInHelper.stop();
 
-        super.onDestroy();
-    }
-    
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mDefaultLocale == null)
-            showLocaleDialog();
-        else {
-            cursorUnlocked();
-            doOnResume();
-        }
+        mCacheWord.onResume();
+        
+        
+       
     }
 
     private void doOnResume() {
 
+        
         if (mApp == null) {
-            mApp = ImApp.getApplication(this);
+
+            mApp = (ImApp)getApplication();
             mHandler = new MyHandler(this);
             ImPluginHelper.getInstance(this).loadAvailablePlugins();
         }
 
+       
         mApp.setAppTheme(this);
         mHandler.registerForBroadcastEvents();
 
@@ -185,93 +213,70 @@ public class WelcomeActivity extends ThemeableActivity {
         int countAvailable = accountsAvailable();
         int countConfigured = accountsConfigured();
         
-        boolean doKeyStoreImport = false;
-        
-        if (getIntent().getData() != null)
-        {
-            Uri uriData = getIntent().getData();
-            String path = null;
-            
-            if(uriData.getScheme() != null && uriData.getScheme().equals("file"))
-            {
-                path = uriData.toString().replace("file://", "");
-            
-                File file = new File(path);
-                
-                doKeyStoreImport = true;
-                
-                importOtrKeyStore(file);
-            }
-        }
-        
-        if (!doKeyStoreImport)
-        {
-            if (countAvailable == 1) {
-                // If just one account is available for auto-signin, go there immediately after service starts trying
-                // to connect.
-                mSignInHelper.setSignInListener(new SignInHelper.Listener() {
-                    public void connectedToService() {
-                    }
-                    public void stateChanged(int state, long accountId) {
-                        if (state == ImConnection.LOGGING_IN) {
-                            mSignInHelper.goToAccount(accountId);
-                        }
-                    }
-                });
-            } else {
-                mSignInHelper.setSignInListener(null);
-            }
-            
-            
-            if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
-                mDidAutoLaunch = true;
-                signInAll();
-                showAccounts();
-            } else if (countSignedIn == 1) {
-                showActiveAccount();
-            } else if (countConfigured > 0) {
-                showAccounts();
-            }
-            // Otherwise, stay on Getting Started view
-        }
-    }
-    
-    
-    private void importOtrKeyStore (File file)
-    {
-        //ask user if they want to overwrite existing entries or just add
-        try {
-            OtrAndroidKeyManagerImpl oakm = OtrAndroidKeyManagerImpl.getInstance(null);
-            boolean overWriteExisting = true;
-            oakm.importKeyStore(file, overWriteExisting);
-        } catch (IOException e) {
-          Log.e(TAG,"error opening keystore",e);
-        }
-    }
 
+        if (countAvailable == 1) {
+            // If just one account is available for auto-signin, go there immediately after service starts trying
+            // to connect.
+            mSignInHelper.setSignInListener(new SignInHelper.Listener() {
+                public void connectedToService() {
+                }
+                public void stateChanged(int state, long accountId) {
+                    if (state == ImConnection.LOGGING_IN) {
+                        mSignInHelper.goToAccount(accountId);
+                    }
+                }
+            });
+        } else {
+            mSignInHelper.setSignInListener(null);
+        }
+            
+        
+        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
+            mDidAutoLaunch = true;
+            signInAll();
+            showAccounts();
+        } else if (countSignedIn >= 1) {
+            showActiveAccount();
+        } else {
+            showAccounts();
+        }/*
+        else
+        {
+            setContentView(R.layout.welcome_activity);
+            
+            Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
+
+            getStarted.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            
+        }*/
+    
+    }
+    
+   
     // Show signed in account
+    
     protected boolean showActiveAccount() {
         if (!mProviderCursor.moveToFirst())
             return false;
         do {
             if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) && isSignedIn(mProviderCursor)) {
-                gotoAccount();
+                showAccounts();
                 return true;
             }
         } while (mProviderCursor.moveToNext());
         return false;
     }
 
-    protected void gotoAccount() {
-        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-        Intent intent = new Intent(this, ChatListActivity.class);
-        // clear the back stack of the account setup
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
-        startActivity(intent);
-        finish();
-    }
+    
+   
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -431,55 +436,12 @@ public class WelcomeActivity extends ThemeableActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    //    private void signOutAll() {
-    //        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-    //            public void onClick(DialogInterface dialog, int whichButton) {
-    //                do {
-    //                    long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-    //                    signOut(accountId);
-    //                } while (mProviderCursor.moveToNext());
-    //            }
-    //        };
-    //
-    //        new AlertDialog.Builder(this).setTitle(R.string.confirm)
-    //                .setMessage(R.string.signout_all_confirm_message)
-    //                .setPositiveButton(R.string.yes, confirmListener) // default button
-    //                .setNegativeButton(R.string.no, null).setCancelable(true).show();
-    //    }
-
-    //    private void signOut(long accountId) {
-    //        if (accountId == 0) {
-    //            Log.w(TAG, "signOut: account id is 0, bail");
-    //            return;
-    //        }
-    //
-    //        try {
-    //            IImConnection conn = mApp.getConnectionByAccount(accountId);
-    //            if (conn != null) {
-    //                conn.logout();
-    //            }
-    //        } catch (RemoteException ex) {
-    //            Log.e(TAG, "signOut failed", ex);
-    //        }
-    //    }
+   
 
     void showAccounts() {
         startActivity(new Intent(getBaseContext(), AccountListActivity.class));
         finish();
     }
-    
-    /*
-    Intent getCreateAccountIntent() {
-        Intent intent = new Intent(getBaseContext(), AccountActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-
-        // TODO fix for multiple account support
-        long providerId = 1; // XMPP
-        intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-        //TODO we probably need the ProviderCategory in the createAccountIntent, but currently it FC's on account creation
-        return intent;
-    }
-    */
     
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
@@ -541,4 +503,58 @@ public class WelcomeActivity extends ThemeableActivity {
         ad.show();
     }
 
+    @Override
+    public void onCacheWordUninitialized() {
+        Log.d(ImApp.LOG_TAG,"cache word uninit");
+        
+        showLockScreen();
+    }
+
+    void showLockScreen() {
+        Intent intent = new Intent(this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("originalIntent", getIntent());
+        startActivity(intent);
+       
+    }
+    
+    @Override
+    public void onCacheWordLocked() {
+     
+        showLockScreen();
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+       Log.d(ImApp.LOG_TAG,"cache word opened");
+       
+
+       String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+       
+       if (pkey != null)
+       {
+            
+           cursorUnlocked(pkey);
+           
+           ((ImApp)getApplication()).initOtrStoreKey();
+           
+       
+           int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
+           mCacheWord.setTimeoutMinutes(defaultTimeout);
+           
+           doOnResume();
+       }
+       
+        
+    }
+    
+
+    private void checkForCrashes() {
+        CrashManager.register(this, ImApp.HOCKEY_APP_ID);
+      }
+
+      private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
+      }
 }

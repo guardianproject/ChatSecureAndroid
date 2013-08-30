@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionListener;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IInvitationListener;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ConnectionListener;
 import info.guardianproject.otr.app.im.engine.Contact;
@@ -43,6 +44,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConnection.Stub {
 
@@ -137,10 +139,33 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     public void login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
+        
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
 
         mConnection.loginAsync(mAccountId, passwordTemp, mProviderId, retry);
+        
+      
+    }
+    
+    private void loadSavedPresence ()
+    {
+        ContentResolver cr =  mService.getContentResolver();
+        // Imps.ProviderSettings.setPresence(cr, mProviderId, status, statusText);
+         int presenceState = Imps.ProviderSettings.getIntValue(cr, mProviderId, Imps.ProviderSettings.PRESENCE_STATE);
+         String presenceStatusMessage = Imps.ProviderSettings.getStringValue(cr, mProviderId, Imps.ProviderSettings.PRESENCE_STATUS_MESSAGE);
+
+         if (presenceState != -1)
+         {
+             Presence presence = new Presence();
+             presence.setStatus(presenceState);
+             presence.setStatusText(presenceStatusMessage);
+             try {
+                 mConnection.updateUserPresenceAsync(presence);
+             } catch (ImException e) {
+                 Log.e(ImApp.LOG_TAG,"unable able to update presence",e);
+             }
+         }
     }
 
     @Override
@@ -209,6 +234,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         }
     }
 
+    
+    
     public IChatSessionManager getChatSessionManager() {
         return mChatSessionManager;
     }
@@ -234,7 +261,11 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     public int updateUserPresence(Presence newPresence) {
         try {
+            
+            
             mConnection.updateUserPresenceAsync(newPresence);
+            
+            
         } catch (ImException e) {
             return e.getImError().getCode();
         }
@@ -379,6 +410,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
 
                 //                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
+                
+                loadSavedPresence();
 
             } else if (state == ImConnection.LOGGING_OUT) {
                 // The engine has started to logout the connection, remove it

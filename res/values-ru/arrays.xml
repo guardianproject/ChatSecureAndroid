@@ -1,9 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string-array name="otr_options">
-        <item>Принудительно</item>
-        <item>Автопопытка</item>
-        <item>По запросу</item>
-        <item>Отключить</item>
-    </string-array>
+  <string-array name="otr_options">
+    <item>Группа / Требовать</item>
+    <item>Автоматически пытается</item>
+    <item>В соответствии с просьбой</item>
+    <item>Инвалидов / Никогда</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>усилие</item>
+    <item>авто</item>
+    <item>запрошенный</item>
+    <item>бездействующий</item>
+  </string-array>
 </resources>

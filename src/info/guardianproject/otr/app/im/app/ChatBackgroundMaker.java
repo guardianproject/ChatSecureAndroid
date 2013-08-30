@@ -40,22 +40,6 @@ public class ChatBackgroundMaker {
     }
 
     public void setBackground(MessageView view, String contact, int type) {
-        View msgText = view.findViewById(R.id.message);
-
-        switch (type) {
-        case Imps.MessageType.INCOMING:
-            // TODO: set color according different contact
-            msgText.setBackgroundDrawable(mIncomingBg);
-            break;
-
-        case Imps.MessageType.OUTGOING:
-        case Imps.MessageType.POSTPONED:
-            msgText.setBackgroundDrawable(null);
-            msgText.setPadding(mPadding.left, mPadding.top, mPadding.right, mPadding.bottom);
-            break;
-
-        default:
-            msgText.setBackgroundDrawable(mDivider);
-        }
+        
     }
 }

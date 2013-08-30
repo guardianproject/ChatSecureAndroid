@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ChatListActivity;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -51,7 +50,7 @@ public class StatusBarNotifier {
 
     private Imps.ProviderSettings.QueryMap mGlobalSettings;
     private Handler mHandler;
-    private HashMap<Long, NotificationInfo> mNotificationInfos;
+    private HashMap<String, NotificationInfo> mNotificationInfos;
     private long mLastSoundPlayedMs;
 
     public StatusBarNotifier(Context context) {
@@ -59,7 +58,7 @@ public class StatusBarNotifier {
         mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         mHandler = new Handler();
-        mNotificationInfos = new HashMap<Long, NotificationInfo>();
+        mNotificationInfos = new HashMap<String, NotificationInfo>();
     }
 
     public void onServiceStop() {
@@ -114,7 +113,7 @@ public class StatusBarNotifier {
 
     public void notifyLoggedIn(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ChatListActivity.class);
+        Intent intent = new Intent(mContext, NewChatActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);
@@ -124,7 +123,7 @@ public class StatusBarNotifier {
 
     public void notifyDisconnected(long providerId, long accountId) {
 
-        Intent intent = new Intent(mContext, ChatListActivity.class);
+        Intent intent = new Intent(mContext, NewChatActivity.class);
         ;
 
         String title = mContext.getString(R.string.app_name);
@@ -132,21 +131,23 @@ public class StatusBarNotifier {
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
 
+   
     public void dismissNotifications(long providerId) {
+        /*
         synchronized (mNotificationInfos) {
             NotificationInfo info = mNotificationInfos.get(providerId);
             if (info != null) {
                 mNotificationManager.cancel(info.computeNotificationId());
                 mNotificationInfos.remove(providerId);
             }
-        }
+        }*/
     }
 
     public void dismissChatNotification(long providerId, String username) {
         NotificationInfo info;
         boolean removed;
         synchronized (mNotificationInfos) {
-            info = mNotificationInfos.get(providerId);
+            info = mNotificationInfos.get(username);
             if (info == null) {
                 return;
             }
@@ -184,15 +185,15 @@ public class StatusBarNotifier {
     private void notify(String sender, String title, String tickerText, String message,
             long providerId, long accountId, Intent intent, boolean lightWeightNotify) {
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+       // intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         NotificationInfo info;
 
         synchronized (mNotificationInfos) {
-            info = mNotificationInfos.get(providerId);
+            info = mNotificationInfos.get(sender);
             if (info == null) {
                 info = new NotificationInfo(providerId, accountId);
-                mNotificationInfos.put(providerId, info);
+                mNotificationInfos.put(sender, info);
             }
             info.addItem(sender, title, message, intent);
         }
@@ -226,7 +227,7 @@ public class StatusBarNotifier {
             String mTitle;
             String mMessage;
             Intent mIntent;
-
+            
             public Item(String title, String message, Intent intent) {
                 mTitle = title;
                 mMessage = message;
@@ -234,22 +235,24 @@ public class StatusBarNotifier {
             }
         }
 
-        private HashMap<String, Item> mItems;
+      // private HashMap<String, Item> mItems;
 
+        private Item lastItem;
         private long mProviderId;
         private long mAccountId;
 
         public NotificationInfo(long providerId, long accountId) {
             mProviderId = providerId;
             mAccountId = accountId;
-            mItems = new HashMap<String, Item>();
+           // mItems = new HashMap<String, Item>();
         }
 
         public int computeNotificationId() {
-            return (int) mProviderId;
+            return lastItem.mTitle.hashCode();
         }
 
         public synchronized void addItem(String sender, String title, String message, Intent intent) {
+            /*
             Item item = mItems.get(sender);
             if (item == null) {
                 item = new Item(title, message, intent);
@@ -258,15 +261,17 @@ public class StatusBarNotifier {
                 item.mTitle = title;
                 item.mMessage = message;
                 item.mIntent = intent;
-            }
+            }*/
+            lastItem = new Item(title, message, intent);
         }
 
         public synchronized boolean removeItem(String sender) {
+            /*
             Item item = mItems.remove(sender);
             if (item != null) {
                 return true;
-            }
-            return false;
+            }*/
+            return true;
         }
 
         public Notification createNotification(String tickerText, boolean lightWeightNotify) {
@@ -312,6 +317,7 @@ public class StatusBarNotifier {
         }
 
         public String getTitle() {
+            /*
             int count = mItems.size();
             if (count == 0) {
                 return null;
@@ -321,10 +327,12 @@ public class StatusBarNotifier {
             } else {
                 return mContext.getString(R.string.newMessages_label, Imps.Provider
                         .getProviderNameForId(mContext.getContentResolver(), mProviderId));
-            }
+            }*/
+            return lastItem.mTitle;
         }
 
         public String getMessage() {
+            /*
             int count = mItems.size();
             if (count == 0) {
                 return null;
@@ -333,10 +341,13 @@ public class StatusBarNotifier {
                 return item.mMessage;
             } else {
                 return mContext.getString(R.string.num_unread_chats, count);
-            }
+            }*/
+
+            return lastItem.mMessage;
         }
 
         public Intent getIntent() {
+            /*
             int count = mItems.size();
             if (count == 0) {
                 return getDefaultIntent();
@@ -345,7 +356,9 @@ public class StatusBarNotifier {
                 return item.mIntent;
             } else {
                 return getMultipleNotificationIntent();
-            }
+            }*/
+
+            return lastItem.mIntent;
         }
     }
 

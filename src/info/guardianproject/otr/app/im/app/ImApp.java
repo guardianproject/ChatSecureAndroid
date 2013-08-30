@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -33,6 +35,8 @@ import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
+import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.PRNGFixes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +73,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class ImApp extends Application {
+    
     public static final String LOG_TAG = "GB.ImApp";
 
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
@@ -81,7 +86,15 @@ public class ImApp extends Application {
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
     public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
+    public static final int DEFAULT_AVATAR_WIDTH = 64;
+    public static final int DEFAULT_AVATAR_HEIGHT = 64;
 
+    public static final String HOCKEY_APP_ID = "2fa3b9252319e47367f1f125bb3adcd1";
+
+    public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
+    
+    public static final String CACHEWORD_PASSWORD_KEY = "pkey";
+    
     private Locale locale = null;
 
     private static ImApp sImApp;
@@ -100,8 +113,8 @@ public class ImApp extends Application {
      */
     ArrayList<Message> mQueue = new ArrayList<Message>();
 
-    /** A flag indicates that we have called to start the service. */
-    private boolean mServiceStarted;
+    /** A flag indicates that we have called tomServiceStarted start the service. */
+//    private boolean mServiceStarted;
     private Context mApplicationContext;
     private Resources mPrivateResources;
 
@@ -130,6 +143,7 @@ public class ImApp extends Application {
         Log.d(LOG_TAG, log);
     }
 
+    /*
     public static ImApp getApplication(Activity activity) {
         // TODO should this be synchronized?
         if (sImApp == null) {
@@ -146,7 +160,7 @@ public class ImApp extends Application {
         }
 
         return sImApp;
-    }
+    }*/
 
     /**
      * Initialize performs the manual ImApp instantiation and initialization.
@@ -157,14 +171,16 @@ public class ImApp extends Application {
      * object won't be instantiated, and we need to call initialize() manually
      * to instantiate and initialize it.
      */
-    private static void initialize(Activity activity) {
+    /*
+    public void initialize(Activity activity) {
         // construct the TalkApp manually and call onCreate().
         sImApp = new ImApp();
         sImApp.mApplicationContext = activity.getApplication();
         sImApp.mPrivateResources = activity.getResources();
         sImApp.onCreate();
     }
-
+*/
+    
     @Override
     public Resources getResources() {
         if (mApplicationContext == this) {
@@ -208,6 +224,9 @@ public class ImApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
+        PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+        
         mBroadcaster = new Broadcaster();
 
         setAppTheme(null);
@@ -217,6 +236,7 @@ public class ImApp extends Application {
     
     public void setAppTheme (Activity activity)
     {
+        /*
         
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
@@ -224,19 +244,23 @@ public class ImApp extends Application {
         
         if (themeDark)
         {            
-            setTheme(R.style.Theme_Gibberbot);
+            setTheme(R.style.Theme_Sherlock);
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot);
+                activity.setTheme(R.style.Theme_Sherlock);
         }
         else
         {
-            setTheme(R.style.Theme_Gibberbot_Light);
+            setTheme(R.style.Theme_Chatsecure);
             
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Gibberbot_Light);
+                activity.setTheme(R.style.Theme_Chatsecure);
         }
+        
+        Configuration config = getResources().getConfiguration();
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        */
         
     }
     
@@ -247,6 +271,7 @@ public class ImApp extends Application {
         Configuration config = getResources().getConfiguration();
 
         String lang = settings.getString(getString(R.string.pref_default_locale), "");
+        
         
         if ("".equals(lang)) {
             Properties props = AssetUtil.getProperties("gibberbot.properties", this);
@@ -323,20 +348,24 @@ public class ImApp extends Application {
     }
 
     public synchronized void startImServiceIfNeed(boolean auto) {
-        if (!mServiceStarted) {
-            if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                log("start ImService");
+        if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+            log("start ImService");
 
-            Intent serviceIntent = new Intent();
-            serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
-            serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        Intent serviceIntent = new Intent();
+        serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
+        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        
+        if (mImService == null)
+        {
             mApplicationContext.startService(serviceIntent);
-            mApplicationContext
-                    .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
-            mServiceStarted = true;
-
             mConnectionListener = new MyConnListener(new Handler());
         }
+        
+        if (mImServiceConn != null)
+            mApplicationContext
+                .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
+
+                   
     }
 
     public boolean hasActiveConnections ()
@@ -351,7 +380,7 @@ public class ImApp extends Application {
             hasActiveConnection = !mConnections.isEmpty();
         }
 
-        if (!hasActiveConnection && mServiceStarted) {
+        if (!hasActiveConnection) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("stop ImService because there's no active connections");
 
@@ -362,49 +391,51 @@ public class ImApp extends Application {
             Intent intent = new Intent();
             intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             mApplicationContext.stopService(intent);
-            mServiceStarted = false;
+         
         }
     }
     
-    private boolean mKillServerOnStart = false;
+    
+    //private boolean mKillServerOnStart = false;
     
     public synchronized void forceStopImService() 
     {
-        if (mServiceStarted && mImService != null) {
+        if (mImService != null) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                log("force stop ImService");
+                log("stop ImService");
 
-            try
-            {
-                mImService.setKillProcessOnStop(true);
-            }
-            catch (RemoteException re)
-            {
-                if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-                    log("unable to set kill process");
-
-            }
-            
             mApplicationContext.unbindService(mImServiceConn);
             mImService = null;
-            
 
             Intent intent = new Intent();
             intent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
             mApplicationContext.stopService(intent);
-            mServiceStarted = false;
-        }
-        else
-        {
-            
-            mKillServerOnStart = true;
-            startImServiceIfNeed(true);
-            
-        }
          
+        }
     }
     
   
+    private CacheWordActivityHandler mCacheWord;
+
+    public void setCacheWord ( CacheWordActivityHandler cacheWord)
+    {
+        mCacheWord = cacheWord;
+    }
+    
+    public void initOtrStoreKey ()
+    {
+        if ( getRemoteImService() != null)
+        {
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+    
+            try {
+               getRemoteImService().unlockOtrStore(pkey);
+             } catch (RemoteException e) {
+               
+                 LogCleaner.error(ImApp.LOG_TAG, "eror initializing otr key", e);
+             }
+        }
+    }
 
     private ServiceConnection mImServiceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -413,6 +444,9 @@ public class ImApp extends Application {
 
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
+            
+            if (mCacheWord != null && mCacheWord.getEncryptionKey() != null)
+                initOtrStoreKey();
 
             synchronized (mQueue) {
                 for (Message msg : mQueue) {
@@ -423,17 +457,18 @@ public class ImApp extends Application {
             Message msg = Message.obtain(null, EVENT_SERVICE_CONNECTED);
             mBroadcaster.broadcast(msg);
             
+            /*
             if (mKillServerOnStart)
             {
                 forceStopImService();
-            }
+            }*/
         }
 
         public void onServiceDisconnected(ComponentName className) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("service disconnected");
 
-            mConnections.clear();
+            //mConnections.clear();
             mImService = null;
         }
     };
@@ -609,9 +644,10 @@ public class ImApp extends Application {
                 Resources packageRes = pm.getResourcesForApplication(pluginInfo.mPackageName);
 
                 Map<Integer, Integer> resMap = plugin.getResourceMap();
-                int[] smileyIcons = plugin.getSmileyIconIds();
+                //int[] smileyIcons = plugin.getSmileyIconIds();
 
-                BrandingResources res = new BrandingResources(packageRes, resMap, smileyIcons,
+                
+                BrandingResources res = new BrandingResources(packageRes, resMap,
                         mDefaultBrandingResources);
                 mBrandingResources.put(pluginInfo.mProviderName, res);
             } catch (NameNotFoundException e) {
@@ -656,10 +692,12 @@ public class ImApp extends Application {
     }
 
     public IImConnection createConnection(long providerId, long accountId) throws RemoteException {
+        
         if (mImService == null) {
             // Service hasn't been connected or has died.
             return null;
         }
+        
         IImConnection conn = getConnection(providerId);
         if (conn == null) {
             conn = mImService.createConnection(providerId, accountId);
@@ -667,8 +705,13 @@ public class ImApp extends Application {
         return conn;
     }
 
-    IImConnection getConnection(long providerId) {
+    public IImConnection getConnection(long providerId) {
         synchronized (mConnections) {
+            
+            if (mConnections.size() == 0)
+                fetchActiveConnections();
+        
+            
             return mConnections.get(providerId);
         }
     }
@@ -708,6 +751,25 @@ public class ImApp extends Application {
         }
     }
 
+    public void deleteAccount (long accountId, long providerId)
+    {
+        ContentResolver resolver = getContentResolver();
+        
+        Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+        resolver.delete(accountUri, null, null);
+        
+        Uri providerUri = ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId);
+        resolver.delete(providerUri, null, null);
+      
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, providerId);
+        ContentUris.appendId(builder, accountId);        
+        resolver.delete(builder.build(), null, null);
+        
+        
+        
+    }
+    
     public void removePendingCall(Handler target) {
         synchronized (mQueue) {
             Iterator<Message> iter = mQueue.iterator();
@@ -784,21 +846,25 @@ public class ImApp extends Application {
     }
 
     private void fetchActiveConnections() {
-        try {
-            // register the listener before fetch so that we won't miss any connection.
-            mImService.addConnectionCreatedListener(mConnCreationListener);
-            synchronized (mConnections) {
-                for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
-                    IImConnection conn = IImConnection.Stub.asInterface(binder);
-                    long providerId = conn.getProviderId();
-                    if (!mConnections.containsKey(providerId)) {
-                        mConnections.put(providerId, conn);
-                        conn.registerConnectionListener(mConnectionListener);
+        if (mImService != null)
+        {
+            try {
+                // register the listener before fetch so that we won't miss any connection.
+                mImService.addConnectionCreatedListener(mConnCreationListener);
+                synchronized (mConnections) {
+                    
+                    for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
+                        IImConnection conn = IImConnection.Stub.asInterface(binder);
+                        long providerId = conn.getProviderId();
+                        if (!mConnections.containsKey(providerId)) {
+                            mConnections.put(providerId, conn);
+                            conn.registerConnectionListener(mConnectionListener);
+                        }
                     }
                 }
+            } catch (RemoteException e) {
+                Log.e(LOG_TAG, "fetching active connections", e);
             }
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "fetching active connections", e);
         }
     }
 
@@ -852,7 +918,7 @@ public class ImApp extends Application {
                         mConnections.remove(providerId);
                     }
                     // stop the service if there isn't an active connection anymore.
-                    stopImServiceIfInactive();
+                  //  stopImServiceIfInactive();
                     break;
 
                 case ImConnection.SUSPENDED:
@@ -921,4 +987,6 @@ public class ImApp extends Application {
 
         return null;
     }
+
+   
 }

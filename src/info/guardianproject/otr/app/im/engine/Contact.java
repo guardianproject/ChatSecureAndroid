@@ -51,7 +51,8 @@ public class Contact extends ImEntity implements Parcelable {
     }
 
     public boolean equals(Object other) {
-        return other instanceof Contact && mAddress.equals(((Contact) other).mAddress);
+        
+        return other instanceof Contact && mAddress.getAddress().equals(((Contact) other).mAddress.getAddress());
     }
 
     public int hashCode() {

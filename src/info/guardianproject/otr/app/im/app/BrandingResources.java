@@ -38,8 +38,7 @@ public class BrandingResources {
 
     private Map<Integer, Integer> mResMapping;
     private Resources mPackageRes;
-    private int[] mSmileyIcons;
-
+  
     private BrandingResources mDefaultRes;
 
     /**
@@ -69,7 +68,7 @@ public class BrandingResources {
             Method m = cls.getMethod("onBind", Intent.class);
             ImPlugin plugin = (ImPlugin) m.invoke(cls.newInstance(), new Object[] { null });
             mResMapping = plugin.getResourceMap();
-            mSmileyIcons = plugin.getSmileyIconIds();
+            
         } catch (ClassNotFoundException e) {
             Log.e(TAG, "Failed load the plugin resource map", e);
         } catch (IllegalAccessException e) {
@@ -97,14 +96,13 @@ public class BrandingResources {
      */
     public BrandingResources(Context context, Map<Integer, Integer> resMapping,
             BrandingResources defaultRes) {
-        this(context.getResources(), resMapping, null, defaultRes);
+        this(context.getResources(), resMapping, defaultRes);
     }
 
     public BrandingResources(Resources packageRes, Map<Integer, Integer> resMapping,
-            int[] smileyIcons, BrandingResources defaultRes) {
+           BrandingResources defaultRes) {
         mPackageRes = packageRes;
         mResMapping = resMapping;
-        mSmileyIcons = smileyIcons;
         mDefaultRes = defaultRes;
     }
 
@@ -127,29 +125,7 @@ public class BrandingResources {
         }
     }
 
-    /**
-     * Gets an array of the IDs of the supported smiley of the provider. Use
-     * {@link #getSmileyIcon(int)} to get the drawable object of the smiley.
-     * 
-     * @return An array of the IDs of the supported smileys.
-     */
-    public int[] getSmileyIcons() {
-        return mSmileyIcons;
-    }
 
-    /**
-     * Gets the drawable associated with particular smiley ID.
-     * 
-     * @param smileyId The ID of the smiley returned in
-     *            {@link #getSmileyIcons()}
-     * @return Drawable An object that can be used to draw this smiley.
-     */
-    public Drawable getSmileyIcon(int smileyId) {
-        if (mPackageRes == null) {
-            return null;
-        }
-        return mPackageRes.getDrawable(smileyId);
-    }
 
     /**
      * Gets the string value associated with a particular resource ID defined in
