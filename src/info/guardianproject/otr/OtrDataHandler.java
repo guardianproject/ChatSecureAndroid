@@ -56,7 +56,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 public class OtrDataHandler implements DataHandler {
-    private static final String URI_PREFIX_OTR_IN_BAND = "otr-in-band:/storage/";
+    public static final String URI_PREFIX_OTR_IN_BAND = "otr-in-band:/storage/";
     private static final int MAX_OUTSTANDING = 3;
     private static final int MAX_CHUNK_LENGTH = 32768;
 

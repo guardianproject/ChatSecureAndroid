@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactListManager;
@@ -28,7 +29,11 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -366,9 +371,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                            
                         }
                     }
-                }
-                else
-                {
+                } else {
                     String type = getContentResolver().getType(data);
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
@@ -653,38 +656,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
     }
     
-    public String getRealPathFromURI(Context aContext, Uri uri) {
-        if (uri.getScheme().equals("file")) {
-            return uri.getPath();
-        }
-        
-        if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
-            // Work around URI escaping brokenness
-            return uri.toString().replaceFirst("content://org.openintents.filemanager", "");
-        }
-        
-        Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-    
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE) {
-                Uri uri = data.getData() ;
+                Uri uri = resultIntent.getData() ;
                 if( uri == null ) {
                     return ;
                 }
-                try {
-                    String localUri = getRealPathFromURI(this, uri);
-                    getCurrentChatView().getCurrentChatSession().offerData( localUri );
-                } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                handleSend(uri);
             }
 /*            if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
@@ -702,6 +683,27 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             }
 */        }
+    }
+    
+    private void testSendIntent(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        try {
+            String url = OtrDataHandler.URI_PREFIX_OTR_IN_BAND + URLEncoder.encode(uri.toString(), "UTF-8");
+            intent.setData(Uri.parse(url));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        startActivity(intent);
+    }
+
+    private void handleSend(Uri uri) {
+        try {
+            String localUri = SystemServices.getRealPathFromURI(this, uri);
+            getCurrentChatView().getCurrentChatSession().offerData( localUri );
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     void showInvitationHasSent(String contact) {

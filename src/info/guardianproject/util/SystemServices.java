@@ -15,7 +15,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 /**
  * 
@@ -90,5 +92,21 @@ public class SystemServices {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getRealPathFromURI(Context aContext, Uri uri) {
+        if (uri.getScheme().equals("file")) {
+            return uri.getPath();
+        }
+        
+        if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
+            // Work around URI escaping brokenness
+            return uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+        }
+        
+        Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 }

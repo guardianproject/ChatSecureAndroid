@@ -18,7 +18,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -27,7 +27,10 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -44,18 +47,22 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TextView;
 
 public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PW_COLUMN = 1;
+    private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
 
     private String mProviderName;
     private String mToAddress;
 
     private ImApp mApp;
     private IImConnection mConn;
+    private long mProviderId;
+    private long mAccountId;
+    private IChatSessionManager mChatSessionManager;
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,12 +212,17 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         Uri data = intent.getData();
         String host = data.getHost();
         
-        if (data.getScheme().equals("immu"))
-        {
+        if (data.getScheme().equals("immu")) {
             this.openMultiUserChat(data);
          
             return true;
-        }        
+        }
+
+        if (data.getScheme().equals("otr-in-band")) {
+            this.openOtrInBand(data, intent.getType());
+         
+            return true;
+        }
 
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
             log("resolveIntent: host=" + host);
@@ -311,7 +323,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 Intent intent = new Intent(ImUrlActivity.this, NewChatActivity.class);        
                 intent.setData(data);
                 startActivity(intent);
-                
+                finish();
             }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -324,6 +336,79 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         .create().show();
         
        
+    }
+
+    void openOtrInBand(final Uri data, final String type) {
+        String url = data.toString();
+        if (url.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND)) {
+            String localUrl;
+            try {
+                localUrl = URLDecoder.decode(url.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, ""), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            mUrl = SystemServices.getRealPathFromURI(ImUrlActivity.this, Uri.parse(localUrl));
+        }
+
+        startContactPicker();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_PICK_CONTACTS) {
+                String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
+                sendOtrInBand(username);
+            }
+            finish();
+        } else {
+            finish();
+        }
+    }
+    
+    private void sendOtrInBand(String username) {
+        IChatSession session = getChatSession(username);
+        try {
+            session.offerData( mUrl );
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private IChatSession getChatSession(String username) {
+        IChatSessionManager sessionMgr = mChatSessionManager;
+        if (sessionMgr != null) {
+            try {
+                IChatSession session = sessionMgr.getChatSession(username);
+                
+                if (session == null)
+                    session = sessionMgr.createChatSession(username);
+              
+                return session;
+            } catch (RemoteException e) {
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e);
+            }
+        }
+        return null;
+    }
+
+    private void startContactPicker() {
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
+        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
+        IImConnection conn = listConns.get(0); // FIXME
+        try {
+            mChatSessionManager = conn.getChatSessionManager();
+            mProviderId = conn.getProviderId();
+            mAccountId = conn.getAccountId();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        ContentUris.appendId(builder,  mProviderId);
+        ContentUris.appendId(builder,  mAccountId);
+        Uri data = builder.build();
+
+        Intent i = new Intent(Intent.ACTION_PICK, data);
+        startActivityForResult(i, REQUEST_PICK_CONTACTS);
     }
 
     void showLockScreen() {

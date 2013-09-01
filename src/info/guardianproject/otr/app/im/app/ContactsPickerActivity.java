@@ -95,6 +95,9 @@ public class ContactsPickerActivity extends ListActivity {
         clause.append(" NOT IN (");
         
         String[] excluded = intent.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS);
+        if (excluded == null)
+            excluded = new String[0];
+        
         String[] excludedVals = new String[excluded.length];
         
         int len = excluded.length;
@@ -127,7 +130,7 @@ public class ContactsPickerActivity extends ListActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
         setResult(RESULT_OK, data);
-     //   finish();
+        finish();
     }
     
     Cursor runQuery(CharSequence constraint) {
