@@ -29,8 +29,8 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
-import android.app.AlertDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -52,6 +52,9 @@ import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -62,10 +65,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 public class AccountActivity extends Activity {
 
@@ -215,15 +214,21 @@ public class AccountActivity extends Activity {
             String pass = user_pass[1];
             mDomain = userpass_host[1];
             mPort = 0;
-            mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0));//xmpp
-            final long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
-            mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            Cursor cursor = openAccountByUsernameAndDomain(cr);
+            boolean exists = cursor.moveToFirst();
+            long accountId;
+            if (exists) {
+                accountId = cursor.getLong(0);
+                mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+            } else {
+                mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
+                accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
+                mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
 
-            // TODO check if the account exists on our side
-            createNewAccount(mUserName, pass);
-            ContentValues values = new ContentValues();
-            values.put(AccountColumns.KEEP_SIGNED_IN, 1);
-            getContentResolver().update(mAccountUri, values, null, null);
+                createNewAccount(mUserName, pass);
+            }
+            cursor.close();
+            setAccountKeepSignedIn(true);
             mSignInHelper.activateAccount(mProviderId, accountId);
             finish();
         } else if (Intent.ACTION_INSERT.equals(action)) {
@@ -383,9 +388,7 @@ public class AccountActivity extends Activity {
                     if (pass.equals(passConf))
                     {
                         createNewAccount(mUserName, pass);
-                        ContentValues values = new ContentValues();
-                        values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
-                        getContentResolver().update(mAccountUri, values, null, null);
+                        setAccountKeepSignedIn(rememberPass);
                         mSignInHelper.activateAccount(mProviderId, accountId);
                         //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                         //isSignedIn = true;
@@ -403,9 +406,7 @@ public class AccountActivity extends Activity {
                         signOut();
                         isSignedIn = false;
                     } else {
-                        ContentValues values = new ContentValues();
-                        values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
-                        getContentResolver().update(mAccountUri, values, null, null);
+                        setAccountKeepSignedIn(rememberPass);
                         
                         if (!mOriginalUserAccount.equals(mUserName + '@' + mDomain)
                             && shouldShowTermOfUse(brandingRes)) {
@@ -452,6 +453,17 @@ public class AccountActivity extends Activity {
         }
 
 
+    }
+
+    private Cursor openAccountByUsernameAndDomain(ContentResolver cr) {
+        String clauses = Imps.Account.USERNAME + " = ? AND " + Imps.ProviderSettings.VALUE + " = ?";
+        String args[] = new String[2];
+        args[0] = mUserName;
+        args[1] = mDomain;
+
+        String[] projection = { Imps.Account._ID };
+        Cursor cursor = cr.query(Imps.Account.BY_DOMAIN_URI, projection, clauses, args, null);
+        return cursor;
     }
     
     @Override
@@ -1008,4 +1020,9 @@ public class AccountActivity extends Activity {
     }
    
 
+    private void setAccountKeepSignedIn(final boolean rememberPass) {
+        ContentValues values = new ContentValues();
+        values.put(AccountColumns.KEEP_SIGNED_IN, rememberPass ? 1 : 0);
+        getContentResolver().update(mAccountUri, values, null, null);
+    }
 }
