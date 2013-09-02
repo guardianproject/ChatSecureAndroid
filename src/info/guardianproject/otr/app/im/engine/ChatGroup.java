@@ -132,4 +132,9 @@ public class ChatGroup extends ImEntity {
             listener.onError(this, error);
         }
     }
+    
+    @Override
+    public boolean isGroup() {
+        return true;
+    }
 }

@@ -31,7 +31,10 @@ public class OtrChatListener implements MessageListener {
         OtrDebugLogger.log("session status: " + otrStatus.name());
 
         try {
-            body = mOtrChatManager.decryptMessage(to, from, body);
+            // No OTR for groups (yet)
+            if (!session.getParticipant().isGroup()) {
+                body = mOtrChatManager.decryptMessage(to, from, body);
+            }
 
             if (body != null) {
                 msg.setBody(body);                 
