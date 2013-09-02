@@ -90,6 +90,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     protected static final int MATCH_PROVIDERS_WITH_ACCOUNT = 3;
     protected static final int MATCH_ACCOUNTS = 10;
     protected static final int MATCH_ACCOUNTS_BY_ID = 11;
+    protected static final int MATCH_ACCOUNTS_WITH_DOMAIN = 12;
     protected static final int MATCH_CONTACTS = 18;
     protected static final int MATCH_CONTACTS_JOIN_PRESENCE = 19;
     protected static final int MATCH_CONTACTS_BAREBONE = 20;
@@ -160,6 +161,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     private final String mTransientDbName;
 
     private static final HashMap<String, String> sProviderAccountsProjectionMap;
+    private static final HashMap<String, String> sAccountsByDomainProjectionMap;
     private static final HashMap<String, String> sContactsProjectionMap;
     private static final HashMap<String, String> sContactListProjectionMap;
     private static final HashMap<String, String> sBlockedListProjectionMap;
@@ -169,6 +171,11 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     private static final String PROVIDER_JOIN_ACCOUNT_TABLE = "providers LEFT OUTER JOIN accounts ON "
                                                               + "(providers._id = accounts.provider AND accounts.active = 1) "
                                                               + "LEFT OUTER JOIN accountStatus ON (accounts._id = accountStatus.account)";
+
+    private static final String DOMAIN_JOIN_ACCOUNT_TABLE = "providerSettings JOIN accounts ON "
+            + "(providerSettings.provider = accounts.provider AND providerSettings.name = '" + Imps.ProviderSettings.DOMAIN + "' AND accounts.active = 1) "
+            + "LEFT OUTER JOIN accountStatus ON (accounts._id = accountStatus.account)";
+
 
     private static final String CONTACT_JOIN_PRESENCE_TABLE = "contacts LEFT OUTER JOIN presence ON (contacts._id = presence.contact_id)";
 
@@ -794,6 +801,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         sProviderAccountsProjectionMap.put(Imps.Provider.ACCOUNT_CONNECTION_STATUS,
                 "accountStatus.connStatus AS account_connStatus");
 
+        sAccountsByDomainProjectionMap = new HashMap<String, String>();
+        sAccountsByDomainProjectionMap.put(Imps.Account._ID, "accounts._id AS _id");
+
         // contacts projection map
         sContactsProjectionMap = new HashMap<String, String>();
 
@@ -931,6 +941,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         mUrlMatcher.addURI(authority, "providers/account", MATCH_PROVIDERS_WITH_ACCOUNT);
 
         mUrlMatcher.addURI(authority, "accounts", MATCH_ACCOUNTS);
+        mUrlMatcher.addURI(authority, "domainAccounts", MATCH_ACCOUNTS_WITH_DOMAIN);
         mUrlMatcher.addURI(authority, "accounts/#", MATCH_ACCOUNTS_BY_ID);
 
         mUrlMatcher.addURI(authority, "contacts", MATCH_CONTACTS);
@@ -1221,6 +1232,11 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         case MATCH_PROVIDERS_WITH_ACCOUNT:
             qb.setTables(PROVIDER_JOIN_ACCOUNT_TABLE);
             qb.setProjectionMap(sProviderAccountsProjectionMap);
+            break;
+
+        case MATCH_ACCOUNTS_WITH_DOMAIN:
+            qb.setTables(DOMAIN_JOIN_ACCOUNT_TABLE);
+            qb.setProjectionMap(sAccountsByDomainProjectionMap);
             break;
 
         case MATCH_ACCOUNTS_BY_ID:

@@ -99,7 +99,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
@@ -508,7 +507,6 @@ public class ChatView extends LinearLayout {
                 sendMessage();
             }
         });
-        
 
         mActionBox = (View)findViewById(R.id.actionBox);
         ImageButton btnActionBox = (ImageButton)findViewById(R.id.btnActionBox);

@@ -930,8 +930,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         String server = requestedServer;
 
-        providerSettings.close(); // close this, which was opened in do_login()
-
         debug(TAG, "TLS required? " + requireTls);
         debug(TAG, "cert verification? " + tlsCertVerify);
 
@@ -944,6 +942,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             setProxy(null, null, -1);
         }
         
+        providerSettings.close(); // close this, which was opened in do_login()
+
         if (mProxyInfo == null)
             mProxyInfo = ProxyInfo.forNoProxy();
 
