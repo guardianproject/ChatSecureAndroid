@@ -70,4 +70,8 @@ public interface MessageListener {
 
     /** Called when OTR status changes */
     public void onStatusChanged(ChatSession session);
+
+    public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value);
+
+    public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value);
 }

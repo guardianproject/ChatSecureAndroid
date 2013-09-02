@@ -226,6 +226,18 @@
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
         android:src="@drawable/ic_menu_close" />
+     <ImageButton
+        android:id="@+id/btnSendFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/content_attachment" />
+     <ImageButton
+        android:id="@+id/btnSendPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/picture_frame_background" />
      
       </LinearLayout>
   

@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactListManager;
@@ -28,8 +29,13 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.SystemServices.FileInfo;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,6 +80,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.Maps;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -81,6 +88,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
+    private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
+    private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
 
     private ImApp mApp;
     private ViewPager mChatPager;
@@ -361,9 +370,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                            
                         }
                     }
-                }
-                else
-                {
+                } else {
                     String type = getContentResolver().getType(data);
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
@@ -480,6 +487,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+        case R.id.menu_send_image:
+            startImagePicker();
+            return true;
+
+        case R.id.menu_send_file:
+            startFilePicker();
+            return true;
 
         case R.id.menu_secure_call:
             sendCallInvite ();
@@ -627,13 +642,31 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             mHandler.showServiceErrorAlert();
         }
     }*/
+    
+    void startImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_SEND_IMAGE);
+    }
+    
+    void startFilePicker() {
+        Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
+        selectFile.setType("file/*");
+        startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
+    }
+    
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      
-        /*
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_PICK_CONTACTS) {
+            if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE) {
+                Uri uri = resultIntent.getData() ;
+                if( uri == null ) {
+                    return ;
+                }
+                handleSend(uri);
+            }
+/*            if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {
                     IChatSession chatSession =  getChatView().getCurrentChatSession();
@@ -648,7 +681,28 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     mHandler.showServiceErrorAlert();
                 }
             }
-        }*/
+*/        }
+    }
+    
+    private void testSendIntent(Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        try {
+            String url = OtrDataHandler.URI_PREFIX_OTR_IN_BAND + URLEncoder.encode(uri.toString(), "UTF-8");
+            intent.setData(Uri.parse(url));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        startActivity(intent);
+    }
+
+    private void handleSend(Uri uri) {
+        try {
+            FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
+            getCurrentChatView().getCurrentChatSession().offerData( info.path, info.type );
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     void showInvitationHasSent(String contact) {
@@ -747,11 +801,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
 
     public class ChatViewPagerAdapter extends FragmentStatePagerAdapter {
-        
+        Map<Integer, ChatViewFragment> fragmentList;
         
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            
+            fragmentList = Maps.newHashMap();
             if (mCursorChats == null)
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
@@ -892,7 +946,25 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         }
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int pos) {
+            Object item = super.instantiateItem(container, pos);
+            if (pos > 0) {
+                ChatViewFragment frag = (ChatViewFragment)item;
+                fragmentList.put(pos, frag);
+            }
+            return item;
+        }
         
+        @Override
+        public void destroyItem(ViewGroup container, int pos, Object object) {
+            fragmentList.remove(pos);
+            super.destroyItem(container, pos, object);
+        }
+        
+        public ChatView getChatViewAt(int pos) {
+            return fragmentList.get(pos).getChatView();
+        }
     }
     
     
@@ -1397,7 +1469,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 mChatView.startListening();
         }
         
-
+        public ChatView getChatView() {
+            return mChatView;
+        }
     }
     
     public ChatView getCurrentChatView ()
@@ -1406,7 +1480,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         if ((cItemIdx = mChatPager.getCurrentItem()) > 0)
         {
-            return (ChatView)((ChatViewFragment)mChatPagerAdapter.getItem(cItemIdx)).getView();            
+            return mChatPagerAdapter.getChatViewAt(cItemIdx);            
         }
         else
             return null;
