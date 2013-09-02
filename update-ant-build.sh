@@ -1,15 +1,17 @@
 #!/bin/sh
 
+target="android-17"
+
 # make sure your Android SDK tools path is set in SDK_BASE
-android update lib-project --path external/ActionBarSherlock/actionbarsherlock
-android update lib-project --path external/MemorizingTrustManager
-android update lib-project --path external/OnionKit/libonionkit
-android update lib-project --path external/AndroidPinning
-android update lib-project --path external/cacheword/cachewordlib
-android update lib-project --path external/SlidingMenu/library
-android update lib-project --path external/SlideListView/library
-android update lib-project --path external/MessageBar/library
-android update lib-project --path external/AndroidEmojiInput/library
+android update lib-project --path external/ActionBarSherlock/actionbarsherlock --target $target
+android update lib-project --path external/MemorizingTrustManager --target $target
+android update lib-project --path external/OnionKit/libonionkit --target $target
+android update lib-project --path external/AndroidPinning --target $target
+android update lib-project --path external/cacheword/cachewordlib --target $target
+android update lib-project --path external/SlidingMenu/library --target $target
+android update lib-project --path external/SlideListView/library --target $target
+android update lib-project --path external/MessageBar/library --target $target
+android update lib-project --path external/AndroidEmojiInput/library --target $target
 
 android update project --path . --name Gibberbot --target android-17 --subprojects
 
