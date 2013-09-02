@@ -78,10 +78,10 @@ public class SystemServices {
             aContext.startActivity(intent);
         }
 
-        public static Intent getViewImageIntent(Uri uri) {
+        public static Intent getViewImageIntent(Uri uri, String type) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "image/*");
+            intent.setDataAndType(uri, type);
             return intent;
         }
     }
@@ -94,19 +94,28 @@ public class SystemServices {
         }
     }
 
-    public static String getRealPathFromURI(Context aContext, Uri uri) {
+    public static class FileInfo {
+        public String path;
+        public String type;
+    };
+    
+    public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) {
+        FileInfo info = new FileInfo();
         if (uri.getScheme().equals("file")) {
-            return uri.getPath();
+            info.path = uri.getPath();
+            return info;
         }
         
         if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
             // Work around URI escaping brokenness
-            return uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+            info.path = uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+            return info;
         }
         
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
-        return cursor.getString(column_index);
+        info.path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+        info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+        return info;
     }
 }

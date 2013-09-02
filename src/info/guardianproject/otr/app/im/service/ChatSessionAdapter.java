@@ -53,6 +53,8 @@ import java.util.List;
 
 import org.jivesoftware.smack.packet.Packet;
 
+import com.google.common.collect.Maps;
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -295,13 +297,19 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
-    public void offerData(String url) {
+    public void offerData(String url, String type) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // TODO send later
             return;
         }
+        
+        HashMap<String, String> headers = null;
+        if (type != null) {
+            headers = Maps.newHashMap();
+            headers.put("Mime-Type", type);
+        }
 
-        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, null);
+        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, headers);
     }
 
     /**
@@ -582,7 +590,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     class DataAdapter implements DataListener {
         @Override
-        public void onTransferComplete(Address from, String url, byte[] data) {
+        public void onTransferComplete(Address from, String url, String type, byte[] data) {
             // TODO have a specific notifier for files / data
             String username = from.getScreenName();
             String nickname = getNickName(username);
@@ -602,7 +610,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             Uri uri = SystemServices.Scanner.scan(service, file.getPath());
             mStatusBarNotifier.notifyFile(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, sanitizedPath, uri, false);
+                    getId(), username, nickname, sanitizedPath, uri, type, false);
         }
 
         @Override

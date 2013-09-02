@@ -30,9 +30,9 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -698,8 +697,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private void handleSend(Uri uri) {
         try {
-            String localUri = SystemServices.getRealPathFromURI(this, uri);
-            getCurrentChatView().getCurrentChatSession().offerData( localUri );
+            FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
+            getCurrentChatView().getCurrentChatSession().offerData( info.path, info.type );
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

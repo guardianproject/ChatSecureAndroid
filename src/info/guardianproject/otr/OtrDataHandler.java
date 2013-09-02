@@ -162,8 +162,12 @@ public class OtrDataHandler implements DataHandler {
                 return;
             }
             String sum = req.getFirstHeader("File-Hash-SHA1").getValue();
+            String type = null;
+            if (req.containsHeader("Mime-Type")) {
+                type = req.getFirstHeader("Mime-Type").getValue();
+            }
             Log.i(TAG, "Incoming sha1sum " + sum);
-            Transfer transfer = new Transfer(url, length, us, sum);
+            Transfer transfer = new Transfer(url, type, length, us, sum);
             transferCache.put(url, transfer);
             // Handle offer
             // TODO ask user to confirm we want this
@@ -327,6 +331,7 @@ public class OtrDataHandler implements DataHandler {
                         mDataListener.onTransferComplete(
                                 mChatSession.getParticipant().getAddress(),
                                 transfer.url,
+                                transfer.type,
                                 data);
                     } else {
                         mDataListener.onTransferFailed(
@@ -427,6 +432,7 @@ public class OtrDataHandler implements DataHandler {
     
     class Transfer {
         public String url;
+        public String type;
         public int chunks = 0;
         public int chunksReceived = 0;
         private int length = 0;
@@ -436,8 +442,9 @@ public class OtrDataHandler implements DataHandler {
         private byte[] buffer;
         private String sum;
         
-        public Transfer(String url, int length, Address us, String sum) {
+        public Transfer(String url, String type, int length, Address us, String sum) {
             this.url = url;
+            this.type = type;
             this.length = length;
             this.us = us;
             this.sum = sum;

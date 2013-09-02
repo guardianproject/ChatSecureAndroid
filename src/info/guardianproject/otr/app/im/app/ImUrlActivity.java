@@ -28,6 +28,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -63,6 +64,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private long mAccountId;
     private IChatSessionManager mChatSessionManager;
     private String mUrl;
+    private String mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,7 +349,9 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
-            mUrl = SystemServices.getRealPathFromURI(ImUrlActivity.this, Uri.parse(localUrl));
+            FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
+            mUrl = info.path;
+            mType = type != null ? type : info.type;
         }
 
         startContactPicker();
@@ -369,7 +373,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private void sendOtrInBand(String username) {
         IChatSession session = getChatSession(username);
         try {
-            session.offerData( mUrl );
+            session.offerData( mUrl, mType );
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
