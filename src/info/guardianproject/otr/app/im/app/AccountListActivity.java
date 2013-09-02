@@ -383,7 +383,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             showExistingAccountListDialog();
             return true;
         case R.id.menu_create_account:
-            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true);
+            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null);
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -437,7 +437,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 else
                 {
                     //otherwise support the actual plugin-type
-                    showSetupAccountForm(mAccountList[pos],null, null, false);
+                    showSetupAccountForm(mAccountList[pos],null, null, false,mAccountList[pos]);
                 }
             }
         });
@@ -487,7 +487,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
                            String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
                    
                            //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false);
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account));
                         }
                     };
                     thread.start();
@@ -499,7 +499,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
     }
     
-    public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount)
+    public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
         ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
@@ -515,6 +515,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
         if (token != null)
             intent.putExtra("newpass", token);
+        
+        if (formTitle != null)
+            intent.putExtra("title", formTitle);
         
         intent.putExtra("register", createAccount);
         
