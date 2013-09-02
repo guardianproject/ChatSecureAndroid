@@ -236,17 +236,15 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         mHost = data.getHost();
         
         if (data.getScheme().equals("immu")) {
-            this.openMultiUserChat(data);
-         
-//            mFromAddress = data.getUserInfo();
-//            String chatRoom = null;
-//            
-//            if (data.getPathSegments().size() > 0)
-//                chatRoom = data.getPathSegments().get(0);
-//           
-//            mToAddress = chatRoom + '@' + mHost;
-//            
-//            mProviderName = Imps.ProviderNames.XMPP;
+            mFromAddress = data.getUserInfo();
+            String chatRoom = null;
+            
+            if (data.getPathSegments().size() > 0)
+                chatRoom = data.getPathSegments().get(0);
+           
+            mToAddress = chatRoom + '@' + mHost;
+            
+            mProviderName = Imps.ProviderNames.XMPP;
             
             return true;
         }
