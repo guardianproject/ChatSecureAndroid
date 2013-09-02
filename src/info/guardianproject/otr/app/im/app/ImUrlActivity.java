@@ -57,7 +57,9 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
 
     private String mProviderName;
     private String mToAddress;
-
+    private String mFromAddress;
+    private String mHost;
+    
     private ImApp mApp;
     private IImConnection mConn;
     private long mProviderId;
@@ -87,14 +89,19 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
               //  finish();
                 return;
             }
+            
             mApp = (ImApp)getApplication();
             
-            mApp.callWhenServiceConnected(new Handler(), new Runnable() {
-                public void run() {
-                    handleIntent();
-                }
-            });
-
+            if (mApp.serviceConnected())
+                handleIntent();
+            else
+            {
+                mApp.callWhenServiceConnected(new Handler(), new Runnable() {
+                    public void run() {
+                       handleIntent();
+                    }
+                });
+            }
         } else {
             finish();
         }
@@ -104,7 +111,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         ContentResolver cr = getContentResolver();
         
         
-        long providerId = -1;// = Imps.Provider.getProviderIdForName(cr, mProviderName);
+        long providerId = Imps.Provider.getProviderIdForName(cr, mProviderName);
         long accountId;
         
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
@@ -121,7 +128,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             }
         }
 
-//        mConn = mApp.getConnection(providerId);
 
         if (mConn == null) {
             Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
@@ -136,6 +142,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 }
             }
         } else {
+            
+            
             try {
                 int state = mConn.getState();
                 accountId = mConn.getAccountId();
@@ -143,26 +151,39 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 if (state < ImConnection.LOGGED_IN) {
                     signInAccount(accountId);
                 } else if (state == ImConnection.LOGGED_IN || state == ImConnection.SUSPENDED) {
-                    if (!isValidToAddress()) {
+                    
+                    Uri data = getIntent().getData();
+                    
+                    if (data.getScheme().equals("immu"))
+                    {
+                        this.openMultiUserChat(data);
+                     
+                    }  
+                    else if (!isValidToAddress()) {
                         showContactList(accountId);
                     } else {
                         openChat(providerId, accountId);
                     }
+                    
+
+                    finish();
                 }
             } catch (RemoteException e) {
                 // Ouch!  Service died!  We'll just disappear.
                 Log.w("ImUrlActivity", "Connection disappeared!");
             }
         }
-        finish();
     }
 
     private void addAccount(long providerId) {
         Intent intent = new Intent(this, AccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
         intent.setData(ContentUris.withAppendedId(Imps.Provider.CONTENT_URI, providerId));
-        intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
+//        intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
 
+        if (mFromAddress != null)
+            intent.putExtra("newuser", mFromAddress + '@' + mHost);
+        
         startActivity(intent);
     }
 
@@ -212,11 +233,21 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
 
     private boolean resolveIntent(Intent intent) {
         Uri data = intent.getData();
-        String host = data.getHost();
+        mHost = data.getHost();
         
         if (data.getScheme().equals("immu")) {
             this.openMultiUserChat(data);
          
+//            mFromAddress = data.getUserInfo();
+//            String chatRoom = null;
+//            
+//            if (data.getPathSegments().size() > 0)
+//                chatRoom = data.getPathSegments().get(0);
+//           
+//            mToAddress = chatRoom + '@' + mHost;
+//            
+//            mProviderName = Imps.ProviderNames.XMPP;
+            
             return true;
         }
 
@@ -227,10 +258,10 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         }
 
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-            log("resolveIntent: host=" + host);
+            log("resolveIntent: host=" + mHost);
         }
 
-        if (TextUtils.isEmpty(host)) {
+        if (TextUtils.isEmpty(mHost)) {
             Set<String> categories = intent.getCategories();
             if (categories != null) {
                 Iterator<String> iter = categories.iterator();
@@ -248,10 +279,10 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             
             mToAddress = data.getSchemeSpecificPart();
         } else {
-            mProviderName = findMatchingProvider(host);
+            mProviderName = findMatchingProvider(mHost);
 
             if (mProviderName == null) {
-                Log.w(ImApp.LOG_TAG, "resolveIntent: IM provider " + host + " not supported");
+                Log.w(ImApp.LOG_TAG, "resolveIntent: IM provider " + mHost + " not supported");
                 return false;
             }
 

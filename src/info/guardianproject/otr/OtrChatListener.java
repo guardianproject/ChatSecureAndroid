@@ -40,7 +40,10 @@ public class OtrChatListener implements MessageListener {
         List<TLV> tlvs = new ArrayList<TLV>();
 
         try {
-            body = mOtrChatManager.decryptMessage(to, from, body, tlvs);
+            // No OTR for groups (yet)
+            if (!session.getParticipant().isGroup()) {
+                body = mOtrChatManager.decryptMessage(to, from, body, tlvs);
+            }
 
             if (body != null) {
                 msg.setBody(body);                 

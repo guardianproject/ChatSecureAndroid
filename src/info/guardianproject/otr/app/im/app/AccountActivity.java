@@ -415,6 +415,12 @@ public class AccountActivity extends Activity {
 
         updateWidgetState();
         
+        if (i.hasExtra("title"))
+        {
+            String title = i.getExtras().getString("title");
+            setTitle(title);
+        }
+        
         if (i.hasExtra("newuser"))
         {
             String newuser = i.getExtras().getString("newuser");
@@ -428,6 +434,7 @@ public class AccountActivity extends Activity {
         if (i.hasExtra("newpass"))
         {
             mEditPass.setText(i.getExtras().getString("newpass"));
+            mEditPass.setVisibility(View.GONE);
             mRememberPass.setChecked(true);
         }
 

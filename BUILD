@@ -2,6 +2,9 @@
 
     git submodule update --init
     ./update-ant-build.sh
+    
+    * Ensure that external/MessageBar/library/project.properties has:
+      android.library=true
     * setup external/asmack/local.properties to point to your android sdk *
     (cd external/asmack && ./build.bash && cp build/asmack-android-4.jar ../../libs)
 
