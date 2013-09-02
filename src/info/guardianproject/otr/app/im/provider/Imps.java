@@ -246,6 +246,10 @@ public class Imps {
         public static final Uri CONTENT_URI = Uri
                 .parse("content://info.guardianproject.otr.app.im.provider.Imps/accounts");
 
+        /** The content:// style URL for looking up by domain */
+        public static final Uri BY_DOMAIN_URI = Uri
+                .parse("content://info.guardianproject.otr.app.im.provider.Imps/domainAccounts");
+
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
          * account.

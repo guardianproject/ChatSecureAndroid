@@ -44,7 +44,6 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TextView;
 
 public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
@@ -69,7 +68,12 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         
         
         Intent intent = getIntent();
-        if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
+        if (Intent.ACTION_INSERT.equals(intent.getAction())) {
+            if (!resolveInsertIntent(intent)) {
+                finish();
+                return;
+            }
+        } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
             if (!resolveIntent(intent)) {
                 finish();
                 return;
@@ -222,6 +226,18 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         }
     }
 
+    private boolean resolveInsertIntent(Intent intent) {
+        Uri data = intent.getData();
+        
+        if (data.getScheme().equals("ima"))
+        {
+            this.createNewAccount(data);
+         
+            return true;
+        }
+        return false;
+    }
+    
     private boolean resolveIntent(Intent intent) {
         Uri data = intent.getData();
         mHost = data.getHost();
@@ -354,6 +370,27 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         .create().show();
         
        
+    }
+
+    void createNewAccount(final Uri data) {
+        new AlertDialog.Builder(this)            
+        .setTitle("Create account?")
+        .setMessage("An external app is attempting to create a new IM account. Allow?")
+        .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Intent intent = new Intent(ImUrlActivity.this, AccountActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+                intent.setData(data);
+                startActivity(intent);
+                finish();
+            }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                finish();
+            }
+        })
+        .create().show();
     }
 
     void showLockScreen() {

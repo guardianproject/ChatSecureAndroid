@@ -194,6 +194,11 @@ android:anyDensity="true"
                 <data android:scheme="immu"/>
                 
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="ima"/>
+            </intent-filter>
         </activity>
 
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
