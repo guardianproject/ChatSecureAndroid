@@ -94,7 +94,9 @@ public class Imps {
                     retVal = cursor.getLong(cursor.getColumnIndexOrThrow(_ID));
                 }
             } finally {
-                cursor.close();
+                if (cursor != null)
+                    cursor.close();
+                
             }
 
             return retVal;

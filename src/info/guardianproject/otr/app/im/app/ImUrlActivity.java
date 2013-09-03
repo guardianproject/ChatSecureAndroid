@@ -41,6 +41,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
@@ -58,48 +59,18 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private ImApp mApp;
     private IImConnection mConn;
 
+    private CacheWordActivityHandler mCacheWord;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
 
-        CacheWordActivityHandler cacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);        
-        cacheWord.connectToService();
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);        
+        mCacheWord.connectToService();
         
         
-        Intent intent = getIntent();
-        if (Intent.ACTION_INSERT.equals(intent.getAction())) {
-            if (!resolveInsertIntent(intent)) {
-                finish();
-                return;
-            }
-        } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
-            if (!resolveIntent(intent)) {
-                finish();
-                return;
-            }
-
-            if (TextUtils.isEmpty(mToAddress)) {
-                LogCleaner.warn(ImApp.LOG_TAG, "<ImUrlActivity>Invalid to address");
-              //  finish();
-                return;
-            }
-            
-            mApp = (ImApp)getApplication();
-            
-            if (mApp.serviceConnected())
-                handleIntent();
-            else
-            {
-                mApp.callWhenServiceConnected(new Handler(), new Runnable() {
-                    public void run() {
-                       handleIntent();
-                    }
-                });
-            }
-        } else {
-            finish();
-        }
+       
     }
 
     void handleIntent() {
@@ -161,7 +132,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                     }
                     
 
-                    finish();
+                  //  finish();
                 }
             } catch (RemoteException e) {
                 // Ouch!  Service died!  We'll just disappear.
@@ -378,11 +349,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         .setMessage("An external app is attempting to create a new IM account. Allow?")
         .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Intent intent = new Intent(ImUrlActivity.this, AccountActivity.class);
-                intent.setAction(Intent.ACTION_INSERT);
-                intent.setData(data);
-                startActivity(intent);
-                finish();
+             
+                mHandlerRouter.sendEmptyMessage(1);
             }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -393,12 +361,38 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         .create().show();
     }
 
+    Handler mHandlerRouter = new Handler ()
+    {
+
+        @Override
+        public void handleMessage(Message msg) {
+            
+            if (msg.what == 1)
+            {
+                showAccountSetup();
+            }
+            else if (msg.what == 2)
+            {
+                doOnCreate();
+            }
+        }
+        
+    };
+    
+    void showAccountSetup () {
+        Intent intent = new Intent(this, AccountActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        intent.setData(getIntent().getData());
+        startActivity(intent);
+      
+    }
+    
     void showLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+      //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("originalIntent", getIntent());
         startActivity(intent);
-       
+      
     }
     
     @Override
@@ -411,5 +405,63 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     @Override
     public void onCacheWordOpened() {
      
+
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+        initProviderCursor (pkey);
+        
+        this.mHandlerRouter.sendEmptyMessage(2);
+    }
+    
+    private void doOnCreate ()
+    {
+        Intent intent = getIntent();
+        if (Intent.ACTION_INSERT.equals(intent.getAction())) {
+            if (!resolveInsertIntent(intent)) {
+                finish();
+                return;
+            }
+        } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
+            if (!resolveIntent(intent)) {
+                finish();
+                return;
+            }
+
+            if (TextUtils.isEmpty(mToAddress)) {
+                LogCleaner.warn(ImApp.LOG_TAG, "<ImUrlActivity>Invalid to address");
+              //  finish();
+                return;
+            }
+            
+            mApp = (ImApp)getApplication();
+            
+            if (mApp.serviceConnected())
+                handleIntent();
+            else
+            {
+                mApp.callWhenServiceConnected(new Handler(), new Runnable() {
+                    public void run() {
+                       handleIntent();
+                    }
+                });
+            }
+        } else {
+            finish();
+        }
+    }
+    
+
+    private void initProviderCursor (String pkey)
+    {
+        Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+
+        uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
+      
+        //just init the contentprovider db
+        managedQuery(uri, null,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+        
+        
     }
 }

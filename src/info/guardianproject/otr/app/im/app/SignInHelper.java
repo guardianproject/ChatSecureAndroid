@@ -1,6 +1,5 @@
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
@@ -21,6 +20,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
@@ -178,9 +178,10 @@ public class SignInHelper {
     private void signInAccount(String password, long providerId, String providerName, long accountId) {
         boolean autoLoadContacts = true;
         boolean autoRetryLogin = true;
-
+        IImConnection conn = null;
+        
         try {
-            IImConnection conn = mApp.getConnection(providerId);
+            conn = mApp.getConnection(providerId);
             if (conn != null) {
                 connections.add(conn);
                 conn.registerConnectionListener(mListener);
@@ -214,6 +215,28 @@ public class SignInHelper {
                 promptForBackgroundDataSetting(providerName);
                 return;
             }
+        } catch (DeadObjectException e) {
+           
+            try
+            {
+                conn = mApp.createConnection(providerId, accountId);
+                if (conn == null) {
+                    // This can happen when service did not come up for any reason
+                    return;
+                }
+    
+                connections.add(conn);
+                conn.registerConnectionListener(mListener);
+                if (mApp.isNetworkAvailableAndConnected()) {
+                    
+                    conn.login(password, autoLoadContacts, autoRetryLogin);
+                }
+            } catch (RemoteException e2) {
+
+                mHandler.showServiceErrorAlert(e2.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "sign in account",e2);
+            }
+
         } catch (RemoteException e) {
 
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
