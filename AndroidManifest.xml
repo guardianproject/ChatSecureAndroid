@@ -199,6 +199,7 @@ android:anyDensity="true"
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="ima"/>
+            </intent-filter>
              <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
