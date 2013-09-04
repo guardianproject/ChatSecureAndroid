@@ -21,10 +21,6 @@
     
     <style name="AppTheme" parent="Theme.Sherlock.Light" >
     
-         <item name="messageBarContainerStyle">@style/MessageBar.Container</item>
-		<item name="messageBarTextStyle">@style/MessageBar.Message</item>
-		<item name="messageBarButtonStyle">@style/MessageBar.Button</item>
-        
         </style>
     
         <style name="AppThemeDark" parent="Theme.Sherlock" >
