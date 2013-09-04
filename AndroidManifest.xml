@@ -21,6 +21,7 @@ android:anyDensity="true"
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />  
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />  
        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -198,6 +199,10 @@ android:anyDensity="true"
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="ima"/>
+             <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="otr-in-band"/>
             </intent-filter>
         </activity>
 

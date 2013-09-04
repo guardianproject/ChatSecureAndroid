@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.SystemServices;
 
 import java.util.HashMap;
 
@@ -131,7 +132,15 @@ public class StatusBarNotifier {
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
 
-   
+
+    public void notifyFile(long providerId, long accountId, long id, String username,
+            String nickname, String path, Uri uri, String type, boolean b) {
+        String title = nickname;
+        String message = mContext.getString(R.string.file_notify_text, path, nickname);
+        Intent intent = SystemServices.Viewer.getViewImageIntent(uri, type);
+        notify(message, title, message, message, providerId, accountId, intent, false);
+    }
+
     public void dismissNotifications(long providerId) {
         /*
         synchronized (mNotificationInfos) {

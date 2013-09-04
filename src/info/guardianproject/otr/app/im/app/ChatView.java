@@ -45,6 +45,7 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -319,14 +320,25 @@ public class ChatView extends LinearLayout {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
+        @Override
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
+        @Override
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
          
             
+        };
+        
+        @Override
+        public void onIncomingData(IChatSession ses, byte[] data) {
+            try {
+                Log.i("OTR_DATA", "incoming data " + new String(data, "UTF8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
     };
 
@@ -549,6 +561,27 @@ public class ChatView extends LinearLayout {
             
         });
         
+        ImageButton btnSharePicture = (ImageButton)findViewById(R.id.btnSendPicture);
+        btnSharePicture.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startImagePicker();
+            }
+            
+        });
+        
+        ImageButton btnShareFile = (ImageButton)findViewById(R.id.btnSendFile);
+        btnShareFile.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startFilePicker();
+            }
+            
+        });
         
         
         initEmoji();
@@ -1126,6 +1159,10 @@ public class ChatView extends LinearLayout {
                 LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             return -1;
         }
+    }
+
+    public IChatSession getCurrentChatSession() {
+        return mCurrentChatSession;
     }
 
     private IChatSessionManager getChatSessionManager(long providerId) {

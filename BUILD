@@ -16,8 +16,8 @@ Follow the steps from the prep section, then:
 
 == Eclipse
 
-First, follow the above instructions in the Preparation section.  Then, import
-the following as existing Android projects
+Add the following as Android projects (File->New->Project..., Android project from existing code), 
+after following the steps in the prep section:
 
 1. File --> Import... --> Android --> Existing Android Code Into Workspace
     * external/OnionKit/library
