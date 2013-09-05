@@ -205,6 +205,15 @@ android:anyDensity="true"
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="otr-in-band"/>
             </intent-filter>
+             <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.ALTERNATIVE" /> 
+                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" /> 
+                 
+                 <data android:mimeType="*/*" />
+                
+            </intent-filter>
         </activity>
 
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"

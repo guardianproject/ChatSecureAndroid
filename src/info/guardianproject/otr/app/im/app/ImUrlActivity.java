@@ -403,20 +403,34 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     }
     
     void openOtrInBand(final Uri data, final String type) {
+        
         String url = data.toString();
+        String localUrl;
         if (url.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND)) {
-            String localUrl;
+
             try {
                 localUrl = URLDecoder.decode(url.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, ""), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
+        }
+        else
+        {
+            try {
+                localUrl = URLDecoder.decode(url, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+            
+        if (localUrl != null)
+        {         
             FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
             mUrl = info.path;
             mType = type != null ? type : info.type;
-        }
 
-        startContactPicker();
+            startContactPicker();
+        }
     }
 
     @Override
@@ -510,6 +524,14 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 finish();
                 return;
             }
+        } else if (Intent.ACTION_SEND.equals(intent.getAction())) {
+        
+            Uri streamUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            String mimeType = intent.getType();
+            
+            if (streamUri != null)
+                openOtrInBand(streamUri, mimeType);
+        
         } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
             if (!resolveIntent(intent)) {
                 finish();
