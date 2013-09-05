@@ -189,8 +189,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
 
     LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
-
-
+      
+    
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
 
@@ -1269,17 +1269,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void initSSLContext(String domain, String requestedServer,
             ConnectionConfiguration config) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException  {
 
+        if (sslContext == null)
+        {
+            sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
+            
+            mTrustManager = getTrustManager ();
+    
+            SecureRandom mSecureRandom = new java.security.SecureRandom();
+            
+            sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
+                    mSecureRandom);
+          
+            sslContext.getSupportedSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
+        }
         
-        sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-        
-        mTrustManager = getTrustManager ();
-
-        SecureRandom mSecureRandom = new java.security.SecureRandom();
-        
-        sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
-                mSecureRandom);
-       
         config.setCustomSSLContext(sslContext);
+    //    config.setSocketFactory(new CustomCipherSocketFactory(sslContext.getSocketFactory()));
+             
         config.setCallbackHandler(this);
 
     }
@@ -1288,10 +1294,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     {
         if (mTrustManager == null)
         {
-            String[] PINLIST = {XMPPCertPins.TALKGOOGLE, XMPPCertPins.DUKGO, XMPPCertPins.CHATFACEBOOK, XMPPCertPins.JABBERCCCDE, XMPPCertPins.BINARYPARADOX};
-            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),PINLIST, 0);
+            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.PINLIST, 0);
         
             mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
+            
+           
+           
         }
             
         return mTrustManager;
