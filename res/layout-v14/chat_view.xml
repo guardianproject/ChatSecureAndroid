@@ -204,7 +204,7 @@
 
       </LinearLayout>
       
-    <LinearLayout 
+   <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
@@ -212,6 +212,8 @@
 	             android:gravity="bottom"
 	     android:visibility="gone"
 	     android:id="@+id/actionBox"
+	     android:background="#777777"
+	     
 	     >
      
       <ImageButton
@@ -219,25 +221,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/ic_menu_info" />
-     <ImageButton
-        android:id="@+id/btnEndChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/ic_menu_close" />
+        android:src="@drawable/avatar_unknown" />
      <ImageButton
         android:id="@+id/btnSendFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_attachment" />
+        android:src="@drawable/content_new_attachment" />
      <ImageButton
         android:id="@+id/btnSendPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/picture_frame_background" />
+        android:src="@drawable/content_new_picture" />
+     
+     
+     <ImageButton
+        android:id="@+id/btnEndChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:fontFamily="sans-serif-light"      
+        android:src="@drawable/content_discard"
+        
+         />
      
       </LinearLayout>
    <android.support.v4.view.ViewPager
@@ -245,6 +251,8 @@
         android:layout_width="match_parent"
         android:layout_height="140dip"
         android:visibility="gone"
+                android:padding="3dp"
+        
        />
       
 </info.guardianproject.otr.app.im.app.ChatView>

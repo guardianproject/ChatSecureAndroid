@@ -112,7 +112,8 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:id="@+id/expandable"
-			android:background="#dddddd"
+			android:background="#777777"
+			android:visibility="gone"
 			>
 
 		<ImageView
@@ -128,7 +129,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/menu_new_chat"
                     android:gravity="center"
-                
+                android:textColor="#dddddd"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 		
 		<ImageView
@@ -142,6 +143,7 @@
                 android:layout_height="fill_parent"
                 android:fontFamily="sans-serif-light"
                                     android:gravity="center"
+                 android:textColor="#dddddd"
                 
                 android:text="@string/account_setup_personal_profile_title"
                 android:textAppearance="?android:attr/textAppearanceSmall" />

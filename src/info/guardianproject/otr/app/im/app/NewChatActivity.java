@@ -698,10 +698,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private void handleSend(Uri uri) {
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
-            getCurrentChatView().getCurrentChatSession().offerData( info.path, info.type );
+            
+           IChatSession session = getCurrentChatView().getCurrentChatSession();
+           
+           if (session != null)
+               session.offerData( info.path, info.type );
+           
         } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           Log.e(ImApp.LOG_TAG,"error sending file",e);
         }
     }
 

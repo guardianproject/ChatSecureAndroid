@@ -24,7 +24,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
-import info.guardianproject.util.LogCleaner;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -1695,8 +1694,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-
-                LogCleaner.debug(ImApp.LOG_TAG, "presence changed: " + presence.getFrom());
                 handlePresenceChanged(presence);
 
             }
@@ -1742,7 +1739,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 mConMgr.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
 
-                LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " +contacts.size());
+              // LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " +contacts.size());
                
             }
 

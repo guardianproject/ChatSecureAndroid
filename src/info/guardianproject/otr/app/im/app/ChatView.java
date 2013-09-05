@@ -527,6 +527,9 @@ public class ChatView extends LinearLayout {
 
             @Override
             public void onClick(View v) {
+                
+                mEmojiPager.setVisibility(View.GONE);
+                
                  
                 if (mActionBox.getVisibility() == View.GONE)
                     mActionBox.setVisibility(View.VISIBLE);
@@ -635,6 +638,9 @@ public class ChatView extends LinearLayout {
             @Override
             public void onClick(View v) {
                  
+
+                mActionBox.setVisibility(View.GONE);
+                
                 if (mEmojiPager.getVisibility() == View.GONE)
                     mEmojiPager.setVisibility(View.VISIBLE);
                 else
@@ -1236,6 +1242,10 @@ public class ChatView extends LinearLayout {
     }
 
     void sendMessage() {
+        
+        mEmojiPager.setVisibility(View.GONE);
+        mActionBox.setVisibility(View.GONE);
+        
         String msg = mComposeMessage.getText().toString();
 
         if (TextUtils.isEmpty(msg.trim())) {
