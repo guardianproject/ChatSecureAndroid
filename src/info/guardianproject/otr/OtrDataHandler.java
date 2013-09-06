@@ -1,10 +1,12 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
 import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.Message;
+import info.guardianproject.util.Debug;
 import info.guardianproject.util.SystemServices;
 
 import java.io.ByteArrayInputStream;
@@ -143,9 +145,9 @@ public class OtrDataHandler implements DataHandler {
         String url = req.getRequestLine().getUri();
 
         if (requestMethod.equals("OFFER")) {
-            Log.i(TAG, "incoming OFFER " + url);
+            debug("incoming OFFER " + url);
             if (!url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
-                Log.w(TAG, "Unknown url scheme " + url);
+                debug("Unknown url scheme " + url);
                 sendResponse(us, 400, "Unknown scheme", uid, EMPTY_BODY);
                 return;
             }
@@ -166,14 +168,14 @@ public class OtrDataHandler implements DataHandler {
             if (req.containsHeader("Mime-Type")) {
                 type = req.getFirstHeader("Mime-Type").getValue();
             }
-            Log.i(TAG, "Incoming sha1sum " + sum);
+            debug("Incoming sha1sum " + sum);
             Transfer transfer = new Transfer(url, type, length, us, sum);
             transferCache.put(url, transfer);
             // Handle offer
             // TODO ask user to confirm we want this
             transfer.perform();
         } else if (requestMethod.equals("GET") && url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
-            Log.i(TAG, "incoming GET " + url);
+            debug("incoming GET " + url);
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             try {
                 Offer offer = offerCache.getIfPresent(url);
@@ -218,10 +220,10 @@ public class OtrDataHandler implements DataHandler {
                 return;
             }
             byte[] body = byteBuffer.toByteArray();
-            Log.i(TAG, "Sent sha1 is " + sha1sum(body));
+            debug("Sent sha1 is " + sha1sum(body));
             sendResponse(us, 200, "OK", uid, body);
         } else {
-            Log.w(TAG, "Unknown method / url " + requestMethod + " " + url);
+            debug("Unknown method / url " + requestMethod + " " + url);
             sendResponse(us, 400, "OK", uid, EMPTY_BODY);
         }
     }
@@ -273,7 +275,7 @@ public class OtrDataHandler implements DataHandler {
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
         message.setFrom(us);
-        Log.i(TAG, "send response");
+        debug("send response");
         mChatSession.sendDataAsync(message, true, data);
     }
 
@@ -293,19 +295,19 @@ public class OtrDataHandler implements DataHandler {
         String uid = res.getFirstHeader("Request-Id").getValue();
         Request request = requestCache.getIfPresent(uid);
         if (request == null) {
-            Log.w(TAG, "Unknown request ID " + uid);
+            debug("Unknown request ID " + uid);
             return;
         }
 
         if (request.isSeen()) {
-            Log.w(TAG, "Already seen request ID " + uid);
+            debug("Already seen request ID " + uid);
             return;
         }
         
         request.seen();
         int statusCode = res.getStatusLine().getStatusCode();
         if (statusCode != 200) {
-            Log.w(TAG, "got status " + statusCode + ": " + res.getStatusLine().getReasonPhrase());
+            debug("got status " + statusCode + ": " + res.getStatusLine().getReasonPhrase());
             // TODO handle error
             return;
         }
@@ -314,19 +316,19 @@ public class OtrDataHandler implements DataHandler {
         try {
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
             readIntoByteBuffer(byteBuffer, buffer);
-            Log.i(TAG, "Received sha1 @" + request.start + " is " + sha1sum(byteBuffer.toByteArray()));
+            debug("Received sha1 @" + request.start + " is " + sha1sum(byteBuffer.toByteArray()));
             if (request.method.equals("GET")) {
                 Transfer transfer = transferCache.getIfPresent(request.url);
                 if (transfer == null) {
-                    Log.w(TAG, "Transfer expired for url " + request.url);
+                    debug("Transfer expired for url " + request.url);
                     return;
                 }
                 transfer.chunkReceived(request, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
                     byte[] data = transfer.getData();
-                    Log.i(TAG, "Transfer complete for " + request.url);
+                    debug("Transfer complete for " + request.url);
                     if (transfer.checkSum()) {
-                        Log.i(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
+                        debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
                         mDataListener.onTransferComplete(
                                 mChatSession.getParticipant().getAddress(),
@@ -344,11 +346,11 @@ public class OtrDataHandler implements DataHandler {
                     mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress(), transfer.url, 
                             ((float)transfer.chunksReceived) / transfer.chunks);
                     transfer.perform();
-                    Log.i(TAG, "Progress " + transfer.chunksReceived + " / " + transfer.chunks);
+                    debug("Progress " + transfer.chunksReceived + " / " + transfer.chunks);
                 }
             }
         } catch (IOException e) {
-            Log.w(TAG, "Could not read line from response");
+            debug("Could not read line from response");
         }
     }
 
@@ -382,7 +384,7 @@ public class OtrDataHandler implements DataHandler {
 
     public Request performGetData(Address us, String url, Map<String, String> headers, int start, int end) {
         String rangeSpec = "bytes=" + start + "-" + end;
-        Log.i(TAG, "Getting range " + rangeSpec);
+        debug("Getting range " + rangeSpec);
         headers.put("Range", rangeSpec);
         Request requestMemo = new Request("GET", url, start, end);
 
@@ -526,7 +528,7 @@ public class OtrDataHandler implements DataHandler {
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
         message.setFrom(us);
-        Log.i(TAG, "send request " + method + " " + url);
+        debug("send request " + method + " " + url);
         requestCache.put(uid, requestMemo);
         mChatSession.sendDataAsync(message, false, data);
     }
@@ -554,4 +556,9 @@ public class OtrDataHandler implements DataHandler {
         return display;
     }
 
+    private void debug (String msg)
+    {
+        if (Debug.DEBUG_ENABLED)
+            Log.d(ImApp.LOG_TAG,msg);
+    }
 }

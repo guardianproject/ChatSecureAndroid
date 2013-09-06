@@ -616,13 +616,28 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         @Override
         public void onTransferFailed(Address from, String url, String reason) {
-            // TODO Auto-generated method stub
+            
+            String username = from.getScreenName();
+            String nickname = getNickName(username);
+            
+            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                    getId(), username, nickname, "file transfer failed: " + reason, true);
             
         }
 
         @Override
-        public void onTransferProgress(Address from, String url, float f) {
-            // TODO Auto-generated method stub
+        public void onTransferProgress(Address from, String url, float percentF) {
+            
+            String username = from.getScreenName();
+            String nickname = getNickName(username);
+            
+            long percent = (long)(100.00*percentF);
+            
+            String[] path = url.split("/"); 
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+            
+            mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                    getId(), username, nickname, "file transfer: " + sanitizedPath + ' ' + percent + '%', true);
             
         }
     }

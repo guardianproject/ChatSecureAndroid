@@ -251,7 +251,6 @@
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"
         android:layout_height="140dip"
-        android:padding="3dp"
         android:visibility="gone"
        />
       

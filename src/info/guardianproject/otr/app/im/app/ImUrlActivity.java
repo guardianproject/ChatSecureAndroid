@@ -531,6 +531,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             
             if (streamUri != null)
                 openOtrInBand(streamUri, mimeType);
+            else if (intent.getData() != null)
+                openOtrInBand(intent.getData(), mimeType);
         
         } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
             if (!resolveIntent(intent)) {

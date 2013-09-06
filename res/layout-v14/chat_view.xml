@@ -251,7 +251,6 @@
         android:layout_width="match_parent"
         android:layout_height="140dip"
         android:visibility="gone"
-                android:padding="3dp"
         
        />
       
