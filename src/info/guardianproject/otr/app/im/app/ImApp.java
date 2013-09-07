@@ -710,7 +710,6 @@ public class ImApp extends Application {
             
             if (mConnections.size() == 0)
                 fetchActiveConnections();
-        
             
             return mConnections.get(providerId);
         }
@@ -733,6 +732,10 @@ public class ImApp extends Application {
 
     public List<IImConnection> getActiveConnections() {
         synchronized (mConnections) {
+
+            if (mConnections.size() == 0)
+                fetchActiveConnections();
+            
             ArrayList<IImConnection> result = new ArrayList<IImConnection>();
             result.addAll(mConnections.values());
             return result;

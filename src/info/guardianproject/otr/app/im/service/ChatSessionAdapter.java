@@ -118,13 +118,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mStatusBarNotifier = service.getStatusBarNotifier();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
-        String localUserId = mConnection.getLoginUser().getAddress().getAddress();
-        String remoteUserId = mAdaptee.getParticipant().getAddress().getAddress();
-
         mOtrChatManager = service.getOtrChatManager();
-        mOtrChatSession = new OtrChatSessionAdapter(localUserId, remoteUserId, mOtrChatManager);
-
-        mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager, localUserId, remoteUserId);
+        mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mAdaptee.getParticipant().getAddress().getAddress(), mOtrChatManager);
 
         mListenerAdapter = new ListenerAdapter();
 
@@ -141,8 +136,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
     }
 
-    public IOtrKeyManager getOtrKeyManager() {
+    public synchronized IOtrKeyManager getOtrKeyManager() {
 
+        if (mOtrKeyManager == null)
+        {
+            if (mOtrChatManager == null)
+                mOtrChatManager = service.getOtrChatManager();
+
+            mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager, mConnection.getLoginUser().getAddress().getAddress(), mAdaptee.getParticipant().getAddress().getAddress());
+        }
+        
         return mOtrKeyManager;
     }
 

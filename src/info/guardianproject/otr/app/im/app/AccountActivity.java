@@ -220,6 +220,7 @@ public class AccountActivity extends Activity {
             if (exists) {
                 accountId = cursor.getLong(0);
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+                pass = cursor.getString(ACCOUNT_PASSWORD_COLUMN);
             } else {
                 mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
                 accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
@@ -230,6 +231,8 @@ public class AccountActivity extends Activity {
             cursor.close();
             setAccountKeepSignedIn(true);
             mSignInHelper.activateAccount(mProviderId, accountId);
+            mSignInHelper.signIn(pass, mProviderId, accountId, true);
+            setResult(RESULT_OK);
             finish();
         } else if (Intent.ACTION_INSERT.equals(action)) {
             mOriginalUserAccount = "";
@@ -390,6 +393,7 @@ public class AccountActivity extends Activity {
                         createNewAccount(mUserName, pass);
                         setAccountKeepSignedIn(rememberPass);
                         mSignInHelper.activateAccount(mProviderId, accountId);
+                        setResult(RESULT_OK);
                         //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                         //isSignedIn = true;
                         //updateWidgetState();
@@ -419,9 +423,12 @@ public class AccountActivity extends Activity {
                         } else {
                             mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                         }
+                      
                         isSignedIn = true;
                     }
                     updateWidgetState();
+                    setResult(RESULT_OK);
+                    finish();
                 }
                 
             }
