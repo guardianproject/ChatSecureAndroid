@@ -36,8 +36,10 @@ import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
@@ -52,10 +54,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
-    private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PASSWORD, };
-    private static final int ACCOUNT_ID_COLUMN = 0;
-    private static final int ACCOUNT_PW_COLUMN = 1;
+    
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
+    private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
+    private static final int REQUEST_SIGNIN_ACCOUNT = RESULT_FIRST_USER + 3;
 
     private String mProviderName;
     private String mToAddress;
@@ -67,10 +69,15 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private long mProviderId;
     private long mAccountId;
     private IChatSessionManager mChatSessionManager;
-    private String mUrl;
-    private String mType;
-
+    
+    private String mSendUrl;
+    private String mSendType;
+    private String mSendText;
+    
     private CacheWordActivityHandler mCacheWord;
+    
+
+    private Cursor mProviderCursor;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +101,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
         if (!listConns.isEmpty())
-        {
-            
+        {            
             mConn = listConns.get(0);
             try {
                 providerId = mConn.getProviderId();
@@ -105,29 +111,67 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             }
         }
 
-
         if (mConn == null) {
-            Cursor c = DatabaseUtils.queryAccountsForProvider(cr, ACCOUNT_PROJECTION, providerId);
-            if (c == null) {
-                addAccount(providerId);
+            
+            if (mProviderCursor == null || mProviderCursor.getCount() == 0) {                                
+
+                createNewAccount();
+                
             } else {
-                accountId = c.getLong(ACCOUNT_ID_COLUMN);
-                if (c.isNull(ACCOUNT_PW_COLUMN)) {
-                    editAccount(accountId);
-                } else {
-                    signInAccount(accountId);
+                
+                
+                while (mProviderCursor.moveToNext())
+                {                
+                    if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
+                        accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);    
+                        providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+                        signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
+                        break;
+                    }
                 }
+                
+                
             }
-        } else {
             
+            try {
+                Thread.sleep (500);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }//wait here for three seconds
+            mConn = ((ImApp)getApplication()).getConnection(providerId);
             
+        }
+            
+        if (mConn != null)
+        {
             try {
                 int state = mConn.getState();
                 accountId = mConn.getAccountId();
+                providerId = mConn.getProviderId();
+                
+                if (state < ImConnection.LOGGED_IN) {                
+                    
+                    initProviderCursor(null); //reinit the provider cursor
+                    
+                    while(mProviderCursor.moveToNext())
+                    {
+                        if (mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN) == accountId)
+                        {
+                            signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
 
-                if (state < ImConnection.LOGGED_IN) {
-                    signInAccount(accountId);
-                } else if (state == ImConnection.LOGGED_IN || state == ImConnection.SUSPENDED) {
+                            try {
+                                Thread.sleep (500);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }//wait here for three seconds
+                            mConn = ((ImApp)getApplication()).getConnection(providerId);
+
+                            break;
+                        }
+                    }
+                } 
+                
+                if (state == ImConnection.LOGGED_IN || state == ImConnection.SUSPENDED) {
                     
                     Uri data = getIntent().getData();
                     
@@ -142,16 +186,18 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                         openChat(providerId, accountId);
                     }
                     
-
-                  //  finish();
+    
+    
                 }
             } catch (RemoteException e) {
                 // Ouch!  Service died!  We'll just disappear.
                 Log.w("ImUrlActivity", "Connection disappeared!");
+                finish();
             }
         }
     }
 
+    /*
     private void addAccount(long providerId) {
         Intent intent = new Intent(this, AccountActivity.class);
         intent.setAction(Intent.ACTION_INSERT);
@@ -162,7 +208,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             intent.putExtra("newuser", mFromAddress + '@' + mHost);
         
         startActivity(intent);
-    }
+    }*/
 
     private void editAccount(long accountId) {
         Uri accountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
@@ -170,12 +216,13 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         intent.setAction(Intent.ACTION_EDIT);
         intent.setData(accountUri);
         intent.putExtra(ImApp.EXTRA_INTENT_SEND_TO_USER, mToAddress);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_SIGNIN_ACCOUNT);
     }
 
-    private void signInAccount(long accountId) {
-        editAccount(accountId);
-        // TODO sign in?  security implications?
+    private void signInAccount(long accountId, long providerId, String password) {
+        //editAccount(accountId);        
+        // TODO sign in?  security implications?        
+        new SignInHelper(this).signIn(password, providerId, accountId, false);
     }
 
     private void showContactList(long accountId) {
@@ -213,7 +260,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         
         if (data.getScheme().equals("ima"))
         {
-            this.createNewAccount(data);
+            createNewAccount();
          
             return true;
         }
@@ -233,7 +280,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
            
             mToAddress = chatRoom + '@' + mHost;
             
-            mProviderName = Imps.ProviderNames.XMPP;
+            mProviderName = findMatchingProvider(mHost);
             
             return true;
         }
@@ -302,10 +349,12 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             return null;
         }
 
-        if (provider.equalsIgnoreCase("xmpp"))
-            return Imps.ProviderNames.XMPP;
+//        if (provider.equalsIgnoreCase("xmpp"))
+  //          return Imps.ProviderNames.XMPP;
+    
         
-        return null;
+        return "Jabber (XMPP)";
+        //return Imps.ProviderNames.XMPP;
     }
 
     private boolean isValidToAddress() {
@@ -342,8 +391,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
 
                 Intent intent = new Intent(ImUrlActivity.this, NewChatActivity.class);        
                 intent.setData(data);
-                startActivity(intent);
-                finish();
+                ImUrlActivity.this.startActivityForResult(intent, REQUEST_CREATE_ACCOUNT);
+                
             }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -358,17 +407,18 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
        
     }
 
-    void createNewAccount(final Uri data) {
+    void createNewAccount() {
         new AlertDialog.Builder(this)            
         .setTitle("Create account?")
-        .setMessage("An external app is attempting to create a new IM account. Allow?")
-        .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
+        .setMessage("You seem to not have an account for chat. Create one now?")
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
              
+              
                 mHandlerRouter.sendEmptyMessage(1);
             }
         })
-        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 finish();
             }
@@ -384,7 +434,21 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             
             if (msg.what == 1)
             {
-                showAccountSetup();
+                Uri uriAccountData = getIntent().getData();
+                
+                if (uriAccountData.getScheme().equals("immu"))
+                {
+                    //need to generate proper IMA url for account setup
+                    String regUser = mFromAddress;
+                    String regPass =  UUID.randomUUID().toString().substring(0,16);
+                    String regDomain = mHost.replace("conference.", "");                
+                    uriAccountData = Uri.parse("ima://" + regUser + ':' + regPass + '@' + regDomain);
+                }
+                    
+                Intent intent = new Intent(ImUrlActivity.this, AccountActivity.class);
+                intent.setAction(Intent.ACTION_INSERT);
+                intent.setData(uriAccountData);
+                startActivityForResult(intent,REQUEST_CREATE_ACCOUNT);
             }
             else if (msg.what == 2)
             {
@@ -393,14 +457,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         }
         
     };
-    
-    void showAccountSetup () {
-        Intent intent = new Intent(this, AccountActivity.class);
-        intent.setAction(Intent.ACTION_INSERT);
-        intent.setData(getIntent().getData());
-        startActivity(intent);
-      
-    }
     
     void openOtrInBand(final Uri data, final String type) {
         
@@ -426,8 +482,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         if (localUrl != null)
         {         
             FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
-            mUrl = info.path;
-            mType = type != null ? type : info.type;
+            mSendUrl = info.path;
+            mSendType = type != null ? type : info.type;
 
             startContactPicker();
         }
@@ -440,6 +496,12 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 sendOtrInBand(username);
             }
+            else if (requestCode == REQUEST_CREATE_ACCOUNT || requestCode == REQUEST_SIGNIN_ACCOUNT) 
+            {
+                //okay we have an account, signed in, now open the chat
+                doOnCreate();
+            }
+            
             finish();
         } else {
             finish();
@@ -447,9 +509,16 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     }
     
     private void sendOtrInBand(String username) {
+        
         IChatSession session = getChatSession(username);
+        
         try {
-            session.offerData( mUrl, mType );
+        
+            if (mSendUrl != null)
+                session.offerData( mSendUrl, mSendType );
+            else if (mSendText != null)
+                session.sendMessage(mSendText);
+            
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -528,11 +597,18 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         
             Uri streamUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
             String mimeType = intent.getType();
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
             
             if (streamUri != null)
                 openOtrInBand(streamUri, mimeType);
             else if (intent.getData() != null)
                 openOtrInBand(intent.getData(), mimeType);
+            else if (sharedText != null)
+            {
+                //do nothing for now :(
+            }
+            else
+                finish();
         
         } else if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
             if (!resolveIntent(intent)) {
@@ -557,6 +633,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                        handleIntent();
                     }
                 });
+                
             }
         } else {
             finish();
@@ -567,15 +644,50 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private void initProviderCursor (String pkey)
     {
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-
         uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
       
         //just init the contentprovider db
-        managedQuery(uri, null,
+        mProviderCursor = managedQuery(uri, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         
         
     }
+    
+    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        mCacheWord.disconnect();
+    }
+    
+    private static final String[] PROVIDER_PROJECTION = {
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                        };
+    
+
+    static final int PROVIDER_ID_COLUMN = 0;
+    static final int PROVIDER_NAME_COLUMN = 1;
+    static final int PROVIDER_FULLNAME_COLUMN = 2;
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
+    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
+    static final int ACTIVE_ACCOUNT_LOCKED = 7;
+    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
+    static final int ACCOUNT_PRESENCE_STATUS = 9;
+    static final int ACCOUNT_CONNECTION_STATUS = 10;
 }

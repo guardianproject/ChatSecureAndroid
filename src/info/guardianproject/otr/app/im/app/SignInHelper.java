@@ -161,18 +161,29 @@ public class SignInHelper {
         final ProviderDef provider = mApp.getProvider(providerId);
         final String providerName = provider.mName;
 
-        mApp.callWhenServiceConnected(mHandler, new Runnable() {
-            public void run() {
-                if (mApp.serviceConnected()) {
-                    if (mSignInListener != null)
-                        mSignInListener.connectedToService();
-                    if (!isActive) {
-                        activateAccount(providerId, accountId);
-                    }
-                    signInAccount(password, providerId, providerName, accountId);
-                }
+        if (mApp.serviceConnected()) {
+            if (mSignInListener != null)
+                mSignInListener.connectedToService();
+            if (!isActive) {
+                activateAccount(providerId, accountId);
             }
-        });
+            signInAccount(password, providerId, providerName, accountId);
+        }
+        else
+        {
+            mApp.callWhenServiceConnected(mHandler, new Runnable() {
+                public void run() {
+                    if (mApp.serviceConnected()) {
+                        if (mSignInListener != null)
+                            mSignInListener.connectedToService();
+                        if (!isActive) {
+                            activateAccount(providerId, accountId);
+                        }
+                        signInAccount(password, providerId, providerName, accountId);
+                    }
+                }
+            });
+        }
     }
 
     private void signInAccount(String password, long providerId, String providerName, long accountId) {
