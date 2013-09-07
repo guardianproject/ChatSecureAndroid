@@ -69,11 +69,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private final static String KEY_ALG = "DSA";
     private final static int KEY_SIZE = 1024;
-    private final static Version CURRENT_VERSION = new Version("1.0.0");
+    private final static Version CURRENT_VERSION = new Version("2.0.0");
 
     private static OtrAndroidKeyManagerImpl _instance;
 
-    private static final String FILENAME = "otr_keystore.ofc";
+    private static final String FILE_KEYSTORE_ENCRYPTED = "otr_keystore.ofc";
+    private static final String FILE_KEYSTORE_UNENCRYPTED = "otr_keystore";
+    
     
     private final static String STORE_ALGORITHM = "PBEWITHMD5AND256BITAES-CBC-OPENSSL";
     
@@ -88,7 +90,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             throws IOException {
         
         if (_instance == null && mKeyStorePassword != null) {
-            File f = new File(context.getApplicationContext().getFilesDir(), FILENAME);
+            File f = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_ENCRYPTED);
             _instance = new OtrAndroidKeyManagerImpl(f,mKeyStorePassword);
         }
 
@@ -120,6 +122,32 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                     }
                 }
             }
+            
+            File fileOldKeystore = new File(FILE_KEYSTORE_UNENCRYPTED);
+            if (fileOldKeystore.exists())
+            {
+                try {
+                    SimplePropertiesStore storeOldKeystore = new SimplePropertiesStore(fileOldKeystore);
+                    
+                    Enumeration<Object> enumKeys = storeOldKeystore.getKeys();
+                    
+                    while(enumKeys.hasMoreElements())
+                    {
+                        String key = (String)enumKeys.nextElement();
+                        store.setProperty(key, storeOldKeystore.getPropertyString(key));
+                        
+                    }
+                    
+                    store.save();
+                    
+                    fileOldKeystore.delete();
+                    
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            
             // This will save
             store.setProperty("version", CURRENT_VERSION.toString());
         }
@@ -131,13 +159,14 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         private File mStoreFile;
         private String mPassword;
 
-        /*
-        public SimplePropertiesStore(File storeFile) {
+        
+        public SimplePropertiesStore(File storeFile) throws IOException {
             mStoreFile = storeFile;
             mProperties.clear();
 
-            load();
-        }*/
+            mProperties.load(new FileInputStream(mStoreFile));
+            
+        }
 
         public SimplePropertiesStore(File storeFile, final String password, boolean isImportFromKeySync) throws IOException {
             
@@ -156,21 +185,12 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 loadOpenSSL(password);
         }
 
-        private void loadAES(final String password) {
+        private void loadAES(final String password) throws IOException 
+        {
             String decoded;
-            try {
                 decoded = AES_256_CBC.decrypt(mStoreFile, password);
                 mProperties.load(new ByteArrayInputStream(decoded.getBytes()));
-            } catch (IOException ioe) {
-                OtrDebugLogger.log("Properties store error", ioe);
-            }
         }
-        
-        /*
-        public Properties getProperties ()
-        {
-            return mProperties;
-        }*/
 
         public void setProperty(String id, String value) {
             mProperties.setProperty(id, value);
@@ -213,7 +233,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         }
         
-        private void loadOpenSSL(String password) {
+        private void loadOpenSSL(String password) throws IOException
+        {
             
             if (!mStoreFile.exists())
                 return;
@@ -234,22 +255,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 mStoreFile.getParentFile().mkdirs();
 
 
-            } catch (Exception ioe) {
-                OtrDebugLogger.log("Properties store error", ioe);
-            }
-            finally
-            {
-               try
-               {
-                   if (fis != null)
-                       fis.close();
-               }
-               catch (IOException ioe)
-               {
-                   OtrDebugLogger.log("Properties store error", ioe);
-
-               }
-            }
+            } 
         }
         
         public void setProperty(String id, byte[] value) {
