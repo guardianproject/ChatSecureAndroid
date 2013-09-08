@@ -310,7 +310,9 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                 signOut(accountId);
             }
-                    
+            
+            ((ImApp)getApplication()).stopImServiceIfInactive();
+            
             if (mCacheWord != null)
                 mCacheWord.manuallyLock();
             
@@ -410,6 +412,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
 
     }
+    
+    private void exportKeyStore ()
+    {
+        //boolean doKeyStoreExport = OtrAndroidKeyManagerImpl.getInstance(this).doKeyStoreExport(password);
+
+    }
+    
     private void showExistingAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
