@@ -492,7 +492,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     void removeConnection(ImConnectionAdapter connection) {
-        mOtrChatManager.removeConnection(connection);
+        
+        if (mOtrChatManager != null)
+            mOtrChatManager.removeConnection(connection);
+        
         mConnections.remove(connection);
     }
 
