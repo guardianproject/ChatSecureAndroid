@@ -51,6 +51,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.FileObserver;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -102,6 +103,22 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         upgradeStore();
 
         cryptoEngine = new OtrCryptoEngineImpl();
+        
+        FileObserver observer = new FileObserver(filepath.getCanonicalPath()) { // set up a file observer to watch this keystore
+            @Override
+            public void onEvent(int event, String file) {
+                
+                try
+                {
+                    OtrDebugLogger.log("reloading key store from disk b/c it changed");
+                    store.reload();
+                }
+                catch (Exception e){} 
+                
+            }
+        };
+        observer.startWatching(); // start the observer
+    
     }
     
     private void upgradeStore() {
@@ -185,6 +202,11 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                 loadOpenSSL(password);
         }
 
+        public void reload () throws IOException
+        {
+            loadOpenSSL(mPassword);
+        }
+        
         private void loadAES(final String password) throws IOException 
         {
             String decoded;
@@ -210,7 +232,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         public boolean save ()
         {
             try {
-                saveOpenSSL (mPassword);
+                saveOpenSSL (mPassword, mStoreFile);
                 return true;
             } catch (IOException e) {
                 LogCleaner.error(ImApp.LOG_TAG, "error saving keystore", e);
@@ -218,7 +240,18 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             }
         }
         
-        private void saveOpenSSL (String password) throws IOException
+        public boolean export (String password, File storeFile)
+        {
+            try {
+                saveOpenSSL (password, storeFile);
+                return true;
+            } catch (IOException e) {
+                LogCleaner.error(ImApp.LOG_TAG, "error saving keystore", e);
+                return false;
+            }
+        }
+        
+        private void saveOpenSSL (String password, File fileStore) throws IOException
         {
             // Encrypt these bytes
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -226,7 +259,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             mProperties.store(encOS, null);
             encOS.flush();
             
-            FileOutputStream fos = new FileOutputStream(mStoreFile);
+            FileOutputStream fos = new FileOutputStream(fileStore);
             fos.write(baos.toByteArray());
             fos.flush();
             fos.close();
@@ -239,12 +272,16 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             if (!mStoreFile.exists())
                 return;
             
+            if (mStoreFile.length() == 0)
+                return;
+            
             FileInputStream fis = null;
             
             try {
 
                 fis = new FileInputStream(mStoreFile);
 
+                
                 // Decrypt the bytes
                 OpenSSLPBEInputStream encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
                 
@@ -701,6 +738,17 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     }
 
+    public boolean doKeyStoreExport (String password)
+    {
+        
+
+        // if otr_keystore.ofcaes is in the SDCard root, import it
+        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
+                "otr_keystore.ofcaes");
+        
+        
+        return store.export(password, otrKeystoreAES);
+    }
     public static boolean checkForKeyImport (Intent intent, Activity activity)
     {
         boolean doKeyStoreImport = false;
