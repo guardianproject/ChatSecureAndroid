@@ -25,12 +25,18 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -49,8 +55,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
+import javax.security.auth.callback.PasswordCallback;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -81,6 +90,7 @@ import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
+import org.jivesoftware.smack.util.Base64.InputStream;
 import org.jivesoftware.smackx.Form;
 import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
@@ -999,6 +1009,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
+        
 
         if (requireTls) { 
             
@@ -1279,11 +1290,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
                     mSecureRandom);
           
-            sslContext.getSupportedSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
+          //  sslContext.getSupportedSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
+            
         }
         
         config.setCustomSSLContext(sslContext);
-    //    config.setSocketFactory(new CustomCipherSocketFactory(sslContext.getSocketFactory()));
+        config.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
              
         config.setCallbackHandler(this);
 
@@ -2034,6 +2046,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             //this.getConfiguration().setSocketFactory(arg0)
 
         }
+       
 
         public void shutdown() {
 
