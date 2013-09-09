@@ -44,6 +44,7 @@ import net.java.otr4j.io.messages.QueryMessage;
 /** @author George Politis */
 public class SessionImpl implements Session {
 
+    private static final int MIN_SESSION_START_INTERVAL = 5000;
     private SessionID sessionID;
     private OtrEngineHost host;
     private SessionStatus sessionStatus;
@@ -57,6 +58,7 @@ public class SessionImpl implements Session {
     private boolean doTransmitLastMessage = false;
     private boolean isLastMessageRetransmit = false;
     private byte[] extraKey;
+    private long lastStart;
 
     public SessionImpl(SessionID sessionID, OtrEngineHost listener) {
 
@@ -681,6 +683,13 @@ public class SessionImpl implements Session {
      * @see net.java.otr4j.session.ISession#startSession()
      */
     public synchronized void startSession() throws OtrException {
+        // Throttle session starts
+        long now = System.currentTimeMillis();
+        if (now - lastStart < MIN_SESSION_START_INTERVAL) {
+            return;
+        }
+        lastStart = now;
+        
         if (this.getSessionStatus() == SessionStatus.ENCRYPTED)
             return;
 

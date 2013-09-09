@@ -69,8 +69,9 @@ public class OtrChatListener implements MessageListener {
             }
         }
 
-        if (mOtrChatManager.getSessionStatus(to, from) != otrStatus) {
-            mMessageListener.onStatusChanged(session);
+        SessionStatus newStatus = mOtrChatManager.getSessionStatus(to, from);
+        if (newStatus != otrStatus) {
+            mMessageListener.onStatusChanged(session, newStatus);
         }
         
         return true;
@@ -109,8 +110,8 @@ public class OtrChatListener implements MessageListener {
     }
 
     @Override
-    public void onStatusChanged(ChatSession session) {
-        mMessageListener.onStatusChanged(session);
+    public void onStatusChanged(ChatSession session, SessionStatus status) {
+        mMessageListener.onStatusChanged(session, status);
     }
     
     @Override

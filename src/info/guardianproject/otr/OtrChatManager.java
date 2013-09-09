@@ -160,7 +160,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      * @param remoteUserId i.e. the account that this user is talking to
      */
     public SessionID startSession(String localUserId, String remoteUserId) {
-
         try {
             SessionID sessionId = getSessionId(localUserId, remoteUserId);
             mOtrEngine.startSession(sessionId);
@@ -230,6 +229,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         if (mOtrEngine != null && sessionId != null) {
             SessionStatus sessionStatus = mOtrEngine.getSessionStatus(sessionId);
+            if (data != null && sessionStatus != SessionStatus.ENCRYPTED) {
+                // Cannot send data without OTR, so start a session and drop message.
+                // Message will be resent by caller when session is encrypted.
+                startSession(localUserId, remoteUserId);
+                OtrDebugLogger.log("auto-start OTR on data send request");
+                return;
+            }
             OtrDebugLogger.log("session status: " + sessionStatus);
 
             try {
