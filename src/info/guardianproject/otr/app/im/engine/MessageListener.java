@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.OtrDataHandler.Transfer;
+
 /**
  * Interface that allows for implementing classes to listen for new message.
  * Listeners are registered with ChatSession objects.
@@ -74,4 +76,6 @@ public interface MessageListener {
     public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value);
 
     public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value);
+    
+    public void onIncomingTransferRequest (Transfer transfer);
 }

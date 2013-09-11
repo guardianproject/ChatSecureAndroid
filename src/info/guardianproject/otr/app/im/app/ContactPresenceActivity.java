@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -166,24 +165,26 @@ public class ContactPresenceActivity extends ThemeableActivity {
         
         try {
             
-            IOtrKeyManager keyManager = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
+            IOtrChatSession otrChatSession = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
 
-                remoteFingerprint = keyManager.getRemoteFingerprint();
+            if (otrChatSession != null)
+            {
+                remoteFingerprint = otrChatSession.getRemoteFingerprint();
 
                 if (remoteFingerprint != null) {
                     remoteFingerprint = remoteFingerprint.toUpperCase(Locale.ENGLISH);
 
-                   remoteFingerprintVerified = keyManager.isKeyVerified(remoteAddress);
+                   remoteFingerprintVerified = otrChatSession.isKeyVerified(remoteAddress);
                             
                     
                 }
                 
-               localFingerprint = keyManager.getLocalFingerprint();
+               localFingerprint = otrChatSession.getLocalFingerprint();
                 
                 if (localFingerprint != null)
                     localFingerprint = localFingerprint.toUpperCase(Locale.ENGLISH);
 
-            
+            }
             
         } catch (Exception e) {
            Log.e(TAG,"error reading key data",e);
@@ -269,9 +270,8 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
             IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
 
-            IOtrKeyManager keyManager = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrKeyManager();
-
-            keyManager.verifyKey(remoteAddress);
+            IOtrChatSession otrChatSession = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
+            otrChatSession.verifyKey(remoteAddress);
 
             updateUI();
             

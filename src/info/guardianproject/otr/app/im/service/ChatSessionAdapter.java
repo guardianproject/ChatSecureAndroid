@@ -18,12 +18,11 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrChatListener;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrChatSessionAdapter;
 import info.guardianproject.otr.OtrDataHandler;
-import info.guardianproject.otr.OtrKeyManagerAdapter;
+import info.guardianproject.otr.OtrDataHandler.Transfer;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
@@ -80,7 +79,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     //all the otr bits that work per session
     OtrChatManager mOtrChatManager;
-    OtrKeyManagerAdapter mOtrKeyManager;
     OtrChatSessionAdapter mOtrChatSession;
 
     ChatSession mAdaptee;
@@ -134,19 +132,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         } else {
             init((Contact) participant);
         }
-    }
-
-    public synchronized IOtrKeyManager getOtrKeyManager() {
-
-        if (mOtrKeyManager == null)
-        {
-            if (mOtrChatManager == null)
-                mOtrChatManager = service.getOtrChatManager();
-
-            mOtrKeyManager = new OtrKeyManagerAdapter(mOtrChatManager, mConnection.getLoginUser().getAddress().getAddress(), mAdaptee.getParticipant().getAddress().getAddress());
-        }
-        
-        return mOtrKeyManager;
     }
 
     public IOtrChatSession getOtrChatSession() {
@@ -613,6 +598,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 throw new RuntimeException(e);
             }
             Uri uri = SystemServices.Scanner.scan(service, file.getPath());
+            
             mStatusBarNotifier.notifyFile(mConnection.getProviderId(), mConnection.getAccountId(),
                     getId(), username, nickname, sanitizedPath, uri, type, false);
         }
@@ -624,7 +610,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String nickname = getNickName(username);
             
             mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, "file transfer failed: " + reason, true);
+                    getId(), username, nickname, "Failed: " + reason, true);
             
         }
 
@@ -640,7 +626,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             
             mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
-                    getId(), username, nickname, "file transfer: " + sanitizedPath + ' ' + percent + '%', true);
+                    getId(), username, nickname, sanitizedPath + ' ' + percent + '%', true);
+            
+        }
+
+        @Override
+        public void onTransferRequested(Transfer transfer) {
+           
+            transfer.perform();
             
         }
     }
@@ -795,7 +788,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                     listener.onStatusChanged(ChatSessionAdapter.this);
                 } catch (RemoteException e) {
                     // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
+                    // dead listeners.   // TODO Auto-generated method stub
                 }
             }
             mRemoteListeners.finishBroadcast();
@@ -809,6 +802,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         @Override
         public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value) {
             mDataHandler.onIncomingResponse(msg.getTo(), value);
+        }
+
+        @Override
+        public void onIncomingTransferRequest(final Transfer transfer) {
+            
         }
     }
 

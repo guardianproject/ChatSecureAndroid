@@ -1,7 +1,6 @@
 package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -17,14 +16,9 @@ public class OtrChatView {
     private final static String TAG = "OtrChatView";
 
     private static IOtrChatSession mOtrChatSession = null;
-    private static IOtrKeyManager mOtrKeyManager = null;
 
     public static IOtrChatSession getOtrChatSession() {
         return mOtrChatSession;
-    }
-
-    public static IOtrKeyManager getOtrKeyManager() {
-        return mOtrKeyManager;
     }
 
     /** Class for interacting with the main interface of the service. */

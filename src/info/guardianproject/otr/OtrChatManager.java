@@ -41,6 +41,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     private Hashtable<SessionID, OtrSm> mOtrSms;
 
     private ImService mContext;
+    
+    private OtrKeyManager mOtrKeyManager;
 
     private OtrChatManager(int otrPolicy, ImService context, OtrKeyManager otrKeyManager) throws Exception {
         
@@ -54,6 +56,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrSms = new Hashtable<SessionID, OtrSm>();
 
         mContext = context;
+        
+        mOtrKeyManager = otrKeyManager;
     }
 
     public static synchronized OtrChatManager getInstance(int otrPolicy, ImService context, OtrKeyManager otrKeyManager)
@@ -377,6 +381,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         List<TLV> tlvs = otrSm.abortSmp();
         String encrypted = mOtrEngine.transformSending(sessionID, "", tlvs);
         mOtrEngineHost.injectMessage(sessionID, encrypted);
+    }
+    
+    public OtrKeyManager getOtrKeyManager ()
+    {
+        return mOtrKeyManager;
     }
 
 }

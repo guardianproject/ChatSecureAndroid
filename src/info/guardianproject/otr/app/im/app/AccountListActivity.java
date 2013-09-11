@@ -20,14 +20,13 @@ import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.util.LogCleaner;
 
-import java.io.IOException;
 import java.util.List;
 
 import net.hockeyapp.android.CrashManager;
@@ -65,6 +64,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
 
@@ -87,8 +87,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private CacheWordActivityHandler mCacheWord;
 
-    private final static int SCAN_REQUEST_CODE = 7171; //otr key import scanning
-    
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -762,28 +760,30 @@ private Handler mHandlerGoogleAuth = new Handler ()
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
-        if (requestCode == SCAN_REQUEST_CODE)
+        if (requestCode == IntentIntegrator.REQUEST_CODE)
         {
-            try
-            {
-                boolean success = OtrAndroidKeyManagerImpl.getInstance(this).handleKeyScanResult(requestCode, resultCode, data, this, null);
+            
+          Object keyMan = null;
+          boolean keyStoreImported = false;
+            
+            try {
+         
+                keyStoreImported = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
                 
-                if (success)
-                {
-                    Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
-        
-                }
+            } catch (Exception e) {
+                OtrDebugLogger.log("error importing keystore",e);
             }
-            catch (IOException ioe)
+            
+            if (keyStoreImported)
+            {
+                Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+            }
+            else
             {
                 Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
-
-                LogCleaner.error(ImApp.LOG_TAG, "problem importing key",ioe);
+    
             }
+            
         }
     }
 

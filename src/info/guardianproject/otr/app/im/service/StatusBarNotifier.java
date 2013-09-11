@@ -137,19 +137,19 @@ public class StatusBarNotifier {
             String nickname, String path, Uri uri, String type, boolean b) {
         String title = nickname;
         String message = mContext.getString(R.string.file_notify_text, path, nickname);
-        Intent intent = SystemServices.Viewer.getViewImageIntent(uri, type);
+        Intent intent = SystemServices.Viewer.getViewIntent(uri, type);
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
 
     public void dismissNotifications(long providerId) {
-        /*
+      
         synchronized (mNotificationInfos) {
             NotificationInfo info = mNotificationInfos.get(providerId);
             if (info != null) {
                 mNotificationManager.cancel(info.computeNotificationId());
                 mNotificationInfos.remove(providerId);
             }
-        }*/
+        }
     }
 
     public void dismissChatNotification(long providerId, String username) {
@@ -209,6 +209,7 @@ public class StatusBarNotifier {
 
         mNotificationManager.notify(info.computeNotificationId(),
                 info.createNotification(tickerText, lightWeightNotify));
+        
     }
 
     private void setRinger(long providerId, NotificationCompat.Builder builder) {

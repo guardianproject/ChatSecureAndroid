@@ -61,11 +61,6 @@ interface IRemoteImService {
     void dismissChatNotification(long providerId, String username);
     
     
-     /**
-    * Get OTR Key Manager
-    */
-    IOtrKeyManager getOtrKeyManager(String accountId);
-    
     /**
     * do it
     */
@@ -75,4 +70,9 @@ interface IRemoteImService {
     * cleaning up rpocess
     **/
     void setKillProcessOnStop (boolean killProcess);
+    
+    /**
+    * get interface to keymanager/store singleton
+    **/
+    IOtrKeyManager getOtrKeyManager ();
 }

@@ -169,11 +169,15 @@ public class OtrDataHandler implements DataHandler {
                 type = req.getFirstHeader("Mime-Type").getValue();
             }
             debug("Incoming sha1sum " + sum);
+            
             Transfer transfer = new Transfer(url, type, length, us, sum);
             transferCache.put(url, transfer);
+            
             // Handle offer
+            
             // TODO ask user to confirm we want this
-            transfer.perform();
+            mDataListener.onTransferRequested(transfer);
+            
         } else if (requestMethod.equals("GET") && url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
             debug("incoming GET " + url);
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
@@ -432,7 +436,7 @@ public class OtrDataHandler implements DataHandler {
         }
     }
     
-    class Transfer {
+    public class Transfer {
         public String url;
         public String type;
         public int chunks = 0;

@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.Collections;
@@ -266,4 +267,6 @@ public class ChatSession {
     public List<Message> getHistoryMessages() {
         return Collections.unmodifiableList(mHistoryMessages);
     }
+    
+   
 }

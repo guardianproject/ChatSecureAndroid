@@ -16,7 +16,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.onionkit.ui.OrbotHelper;
-import info.guardianproject.otr.IOtrKeyManager;
+import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -116,7 +116,7 @@ public class AccountActivity extends Activity {
 
     private final static int DEFAULT_PORT = 5222;
 
-    IOtrKeyManager otrKeyManager;
+    IOtrChatSession mOtrChatSession;
     private SignInHelper mSignInHelper;
 
     private boolean mIsNewAccount = false;
@@ -941,8 +941,8 @@ public class AccountActivity extends Activity {
         public void run() {
 
             try {
-                if (otrKeyManager != null) {
-                    otrKeyManager.generateLocalKeyPair();
+                if (mOtrChatSession != null) {
+                    mOtrChatSession.generateLocalKeyPair();
 
                 } else {
                     Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
@@ -964,8 +964,8 @@ public class AccountActivity extends Activity {
                 pbarDialog.dismiss();
 
                 try {
-                    if (otrKeyManager != null) {
-                        String lFingerprint = otrKeyManager.getLocalFingerprint();
+                    if (mOtrChatSession != null) {
+                        String lFingerprint = mOtrChatSession.getLocalFingerprint();
                         mTxtFingerprint.setText(processFingerprint(lFingerprint));
                     }
 

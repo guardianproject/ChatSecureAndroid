@@ -78,7 +78,7 @@ public class SystemServices {
             aContext.startActivity(intent);
         }
 
-        public static Intent getViewImageIntent(Uri uri, String type) {
+        public static Intent getViewIntent(Uri uri, String type) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setDataAndType(uri, type);

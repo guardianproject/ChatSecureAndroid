@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.OtrDataHandler.Transfer;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
@@ -107,5 +108,10 @@ public class OtrChatListener implements MessageListener {
     @Override
     public void onStatusChanged(ChatSession session) {
         mMessageListener.onStatusChanged(session);
+    }
+    
+    @Override
+    public void onIncomingTransferRequest(Transfer transfer) {
+        mMessageListener.onIncomingTransferRequest(transfer);
     }
 }

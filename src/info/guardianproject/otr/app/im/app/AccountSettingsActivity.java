@@ -134,7 +134,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         }
         
         settings.setShowMobileIndicator(true);
-        
+        settings.close();
     }
 
     @Override

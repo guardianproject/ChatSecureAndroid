@@ -21,7 +21,6 @@ import info.guardianproject.emoji.EmojiGroup;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.emoji.EmojiPagerAdapter;
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
@@ -183,7 +182,6 @@ public class ChatView extends LinearLayout {
     private IChatSessionListener mChatSessionListener;
 
     private IChatSession mCurrentChatSession;
-    private IOtrKeyManager mOtrKeyManager;
     private IOtrChatSession mOtrChatSession;
 
     long mLastChatId=-1;
@@ -890,19 +888,10 @@ public class ChatView extends LinearLayout {
         {
             try
             {
-                //if (mOtrChatSession == null && getChatSession () != null) {
                 
                 if (getChatSession() != null)
                     mOtrChatSession = getChatSession ().getOtrChatSession();
-                else
-                    mOtrChatSession = null;
-        
-                if (mOtrChatSession != null) {
-        
-                        mOtrKeyManager = getChatSession ().getOtrKeyManager();
-        
-                    
-                 }
+             
             }
             catch (Exception e)
             {
@@ -1091,16 +1080,16 @@ public class ChatView extends LinearLayout {
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
 
-        if (mOtrKeyManager != null) {
+        if (mOtrChatSession != null) {
             try {
 
                 
-                localFingerprint = mOtrKeyManager.getLocalFingerprint();
+                localFingerprint = mOtrChatSession.getLocalFingerprint();
                 
-                remoteFingerprint = mOtrKeyManager.getRemoteFingerprint();
+                remoteFingerprint = mOtrChatSession.getRemoteFingerprint();
                 
                 if (remoteFingerprint != null)
-                    isVerified = mOtrKeyManager.isKeyVerified(mUserName);
+                    isVerified = mOtrChatSession.isKeyVerified(mUserName);
                 else
                     isVerified = false;
                 
@@ -1190,11 +1179,6 @@ public class ChatView extends LinearLayout {
         return mChatSessionManager;
     }
 
-    public IOtrKeyManager getOtrKeyManager() {
-        initOtr();
-
-        return mOtrKeyManager;
-    }
 
     public IOtrChatSession getOtrChatSession() {
         initOtr();
@@ -1437,7 +1421,7 @@ public class ChatView extends LinearLayout {
             else if (sessionStatus == SessionStatus.ENCRYPTED) {
                 try {
 
-                    if (mOtrKeyManager == null)
+                    if (mOtrChatSession == null)
                         initOtr();
 
                     if (!mOtrSwitchTouched)
@@ -1447,8 +1431,8 @@ public class ChatView extends LinearLayout {
                         mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
                     }
                     
-                    String rFingerprint = mOtrKeyManager.getRemoteFingerprint();
-                    boolean rVerified = mOtrKeyManager.isKeyVerified(mUserName);
+                    String rFingerprint = mOtrChatSession.getRemoteFingerprint();
+                    boolean rVerified = mOtrChatSession.isKeyVerified(mUserName);
 
                     if (rFingerprint != null) {
                         if (!rVerified) {
@@ -1469,9 +1453,7 @@ public class ChatView extends LinearLayout {
                     }
 
                   //  ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
-//                    imgSec.setImageResource(R.drawable.ic_menu_encrypt);
-
-                    
+//                    imgSec.setImageResource(R.drawable.ic_menu_encrypt);             
                  //   mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_encrypt ), null, null, null );
                 } catch (RemoteException e) {
                     e.printStackTrace();

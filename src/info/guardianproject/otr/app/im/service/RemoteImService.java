@@ -20,7 +20,7 @@ package info.guardianproject.otr.app.im.service;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
-import info.guardianproject.otr.OtrKeyManagerAdapter;
+import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IConnectionCreationListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
@@ -40,6 +40,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -619,11 +620,21 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             OtrAndroidKeyManagerImpl.setKeyStorePassword(password);
             return true;
         }
-
+        
         @Override
-        public IOtrKeyManager getOtrKeyManager(String accountId) throws RemoteException {
-            return new OtrKeyManagerAdapter(mOtrChatManager, null, accountId);
+        public IOtrKeyManager getOtrKeyManager ()
+        {
+            try {
+                return OtrAndroidKeyManagerImpl.getInstance(RemoteImService.this);
+            } catch (IOException e) {
+                
+                OtrDebugLogger.log("unable to get keymanager instance", e);
+
+                return null;
+            }
+            
         }
+        
         
         @Override
         public void setKillProcessOnStop (boolean killProcessOnStop)

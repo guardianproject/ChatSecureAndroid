@@ -1023,8 +1023,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
             // can enable MITM.
-            initSSLContext(domain, requestedServer, mConfig);
-
+            if (sslContext == null)
+            {
+                sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
+                
+                mTrustManager = getTrustManager ();
+        
+                SecureRandom mSecureRandom = new java.security.SecureRandom();
+                
+                sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
+                        mSecureRandom);
+              
+                
+            }
+            
+            mConfig.setCustomSSLContext(sslContext);
+            mConfig.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);                
+            mConfig.setCallbackHandler(this);
 
         } else {
             // if it finds a cert, still use it, but don't check anything since 
@@ -1276,30 +1291,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConnection.sendPacket(ack);
     }
 
-    private void initSSLContext(String domain, String requestedServer,
-            ConnectionConfiguration config) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException  {
-
-        if (sslContext == null)
-        {
-            sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-            
-            mTrustManager = getTrustManager ();
-    
-            SecureRandom mSecureRandom = new java.security.SecureRandom();
-            
-            sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
-                    mSecureRandom);
-          
-          //  sslContext.getSupportedSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
-            
-        }
-        
-        config.setCustomSSLContext(sslContext);
-        config.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
-             
-        config.setCallbackHandler(this);
-
-    }
     
     public synchronized X509TrustManager getTrustManager ()
     {

@@ -146,6 +146,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privKey.getEncoded());
 
         this.store.setProperty(accountID + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
+        
     }
 
     public String getLocalFingerprint(SessionID sessionID) {
@@ -258,6 +259,8 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         this.store.setProperty(userID + ".publicKey", x509EncodedKeySpec.getEncoded());
 
         this.store.removeProperty(userID + ".publicKey.verified");
+        
+
     }
 
     public void unverify(SessionID sessionID) {
@@ -281,8 +284,8 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (this.isVerified(sessionID))
             return;
 
-        this.store.setProperty(sessionID.getUserID() + ".publicKey.verified", true);
-
+        store.setProperty(sessionID.getUserID() + ".publicKey.verified", true);
+        
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
     }
