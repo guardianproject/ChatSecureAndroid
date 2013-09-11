@@ -584,11 +584,17 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String username = from.getScreenName();
             String nickname = getNickName(username);
             File sdCard = Environment.getExternalStorageDirectory();
+            
             String[] path = url.split("/"); 
-            String sanitizedPeer = SystemServices.sanitize(username);
+            //String sanitizedPeer = SystemServices.sanitize(username);
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-            File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
+            
+            File dir = new File (sdCard, "Downloads"); //just put output into the Downloads folder for now
             dir.mkdirs();
+            
+            //File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
+            //dir.mkdirs();*/
+            
             File file = new File(dir, sanitizedPath);
             try {
                 OutputStream output = new FileOutputStream(file);
