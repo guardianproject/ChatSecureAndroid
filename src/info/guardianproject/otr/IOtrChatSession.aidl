@@ -63,4 +63,6 @@ interface IOtrChatSession {
      * generate a new local private/public key pair.
      */
     void generateLocalKeyPair();   
+    
+   
 }

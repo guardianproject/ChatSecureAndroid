@@ -1,5 +1,7 @@
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.IDataListener;
+
 import java.util.Map;
 
 public interface DataHandler {
@@ -18,4 +20,6 @@ public interface DataHandler {
     void onIncomingResponse(Address us, byte[] value);
 
     void offerData(Address us, String localUri, Map<String, String> headers);
+    
+    void setDataListener(IDataListener dataListener);
 }

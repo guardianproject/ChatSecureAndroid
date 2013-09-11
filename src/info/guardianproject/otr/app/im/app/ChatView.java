@@ -21,6 +21,7 @@ import info.guardianproject.emoji.EmojiGroup;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.emoji.EmojiPagerAdapter;
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
@@ -28,6 +29,7 @@ import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
+import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
@@ -41,8 +43,11 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -53,6 +58,8 @@ import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AsyncQueryHandler;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -75,9 +82,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.Browser;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -107,6 +117,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -184,6 +195,10 @@ public class ChatView extends LinearLayout {
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
+    
+    private DataAdapter mDataListenerAdapter;
+    
+    
     long mLastChatId=-1;
     int mType;
     String mNickName;
@@ -851,7 +866,8 @@ public class ChatView extends LinearLayout {
         } else {
             
             mCurrentChatSession = getChatSession(mCursor);
-
+            
+           
             
             updateChat();
             
@@ -861,6 +877,19 @@ public class ChatView extends LinearLayout {
                 // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
                 
                 registerChatListener();
+                
+                try
+                {
+                    if (mDataListenerAdapter == null)
+                        mDataListenerAdapter = new DataAdapter();
+                   
+                    mCurrentChatSession.setDataListener(mDataListenerAdapter);
+                }
+                catch (RemoteException re)
+                {
+                    if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
+                        log("error setting remote data listener: " + re.getLocalizedMessage());
+                }
             }
         }
         
@@ -1939,6 +1968,10 @@ public class ChatView extends LinearLayout {
 
         @Override
         public void changeCursor(Cursor cursor) {
+            
+            if (getCursor() != null && (!getCursor().isClosed()))
+                getCursor().close();
+            
             super.changeCursor(cursor);
             if (cursor != null) {
                 resolveColumnIndex(cursor);
@@ -2090,5 +2123,210 @@ public class ChatView extends LinearLayout {
     EditText getComposedMessage() {
         return mComposeMessage;
     }
+  
+    class DataAdapter extends IDataListener.Stub {
+        
+        @Override
+        public void onTransferComplete(String from, String url, String type, byte[] data) {
+            // TODO have a specific notifier for files / data
+            //String username = from.getScreenName();
+            //String nickname = getNickName(username);
+            File sdCard = Environment.getExternalStorageDirectory();
+            
+            String[] path = url.split("/"); 
+            //String sanitizedPeer = SystemServices.sanitize(username);
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+            
+            File dir = new File (sdCard, "Downloads"); //just put output into the Downloads folder for now
+            dir.mkdirs();
+            
+            //File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
+            //dir.mkdirs();*/
+            
+            File file = new File(dir, sanitizedPath);
+            try {
+                BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
+                output.write(data);
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                mHandler.showAlert("Transfer Error", "Unable to write file to storage");
+                OtrDebugLogger.log("error writing file", e);
+            }
+        
+            
+            try {
+                Message msg = Message.obtain(mTransferHandler, 3);            
+                msg.getData().putString("path", file.getCanonicalPath());
+                mTransferHandler.sendMessage(msg);
+            } catch (IOException e) {
+                mHandler.showAlert("Transfer Error", "Unable to read file to storage");
+                OtrDebugLogger.log("error reading file", e);
+            }
+            
+
+        }
+
+        @Override
+        public void onTransferFailed(String from, String url, String reason) {
+            
+
+            String[] path = url.split("/"); 
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+         
+
+            Message msg = Message.obtain(mTransferHandler, 2);
+            msg.getData().putInt("progress", (int)0);
+            msg.getData().putString("status", sanitizedPath + " transfer failed: " + reason);
+            
+            mTransferHandler.sendMessage(msg);
+        }
+
+        @Override
+        public void onTransferProgress(String from, String url, float percentF) {
+            
+            long percent = (long)(100.00*percentF);
+            
+            String[] path = url.split("/"); 
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+            
+
+            Message msg = Message.obtain(mTransferHandler, 2);
+            msg.getData().putInt("progress", (int)percent);
+            msg.getData().putString("status", sanitizedPath);
+            
+            mTransferHandler.sendMessage(msg);
+        }
+
+        private boolean mAcceptTransfer = false;
+        private boolean mWaitingForResponse = false;
+        
+        @Override
+        public boolean onTransferRequested(String from, String transferUrl) {
+            
+            mAcceptTransfer = false;            
+            mWaitingForResponse = true;
+            
+            Message msg = Message.obtain(mTransferHandler, 1);
+            msg.getData().putString("from", from);
+            msg.getData().putString("url", transferUrl);
+            
+            mTransferHandler.sendMessage(msg);
+            
+            while (mWaitingForResponse)
+            {
+                try { Thread.sleep(500);} catch (Exception e){}
+            }
+            
+            return mAcceptTransfer;
+            
+        }
+        
+        private Handler mTransferHandler = new Handler ()
+        {
+
+            @Override
+            public void handleMessage(Message msg) {
+            
+                if (msg.what == 1)
+                {
+                    String transferUrl = msg.getData().getString("url");
+                    String transferFrom = msg.getData().getString("from");
+    
+                    String[] path = transferUrl.split("/"); 
+                    String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+                    
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+    
+                    builder.setTitle("Incoming File");
+                    builder.setMessage(transferFrom + " wants to send you the file '" + sanitizedPath + "'. Accept transfer?");
+    
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+    
+                        public void onClick(DialogInterface dialog, int which) {
+                            mAcceptTransfer = true;
+                            mWaitingForResponse = false;
+                            
+                            dialog.dismiss();
+                        }
+    
+                    });
+    
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+    
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mAcceptTransfer = false;
+                            mWaitingForResponse = false;
+    
+                            
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+    
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else if (msg.what == 2) //progress update
+                {
+                    if (mNotifyManager == null)
+                    {
+                        mNotifyManager =
+                                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        mBuilder = new NotificationCompat.Builder(mContext);
+                        
+                    }
+                    
+                    int progressValue = msg.getData().getInt("progress");
+                    String progressText = msg.getData().getString("status");
+                    
+                    mBuilder.setContentTitle("Secure Transfer")
+                    .setContentText("Transfer in progress: " + progressText)
+                    .setSmallIcon(R.drawable.ic_stat_status)
+                    .setLights(0xff00ff00, 300, 1000);
+                    mBuilder.setProgress(100, progressValue, false);
+                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
+                    
+                }
+                else if (msg.what == 3)
+                {
+                    String filePath = msg.getData().getString("path");
+
+                    mBuilder.setContentText("Transfer complete")
+                    // Removes the progress bar
+                            .setProgress(0,0,false);
+                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
+
+                    
+                    PendingIntent contentIntent = 
+                            PendingIntent.getActivity(mActivity, 0,   new Intent(Intent.ACTION_VIEW, Uri.parse(filePath)), 0);
+                  
+                    
+                    mBuilder.setContentIntent(contentIntent);
+                    
+                    
+                    
+                }
+                
+                super.handleMessage(msg);
+            }
+            
+        };
+        
+        NotificationManager mNotifyManager;
+        NotificationCompat.Builder mBuilder;
+        int NOTIFY_DOWNLOAD_ID;
+        
+        private void notificationProgress ()
+        {
+            
+            
+        }
+        
+        
+    }
+    
+   
 
 }

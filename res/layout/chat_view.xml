@@ -85,6 +85,7 @@
   		  	
          />
 
+    
     <LinearLayout android:id="@+id/invitationPanel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -159,8 +160,8 @@
        
         <ImageButton
         android:id="@+id/btnActionBox"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
+        android:layout_width="42dip"
+        android:layout_height="42dip"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
       
@@ -169,8 +170,8 @@
       
     <ImageButton
         android:id="@+id/btnEmoji"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
+        android:layout_width="42dip"
+        android:layout_height="42dip"
         android:background="@drawable/ad_selectable_background"
         android:scaleType="centerInside"
         
@@ -203,6 +204,7 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
+  
   
   <LinearLayout 
 	    android:layout_width="fill_parent"

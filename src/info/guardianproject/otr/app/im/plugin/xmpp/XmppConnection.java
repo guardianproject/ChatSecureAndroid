@@ -997,7 +997,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         
-        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+       // mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
         // Android has no support for Kerberos or GSSAPI, so disable completely
