@@ -537,7 +537,7 @@ public class ChatView extends LinearLayout {
             
         });
         
-        ImageButton btnEndChat = (ImageButton)findViewById(R.id.btnEndChat);
+        View btnEndChat = findViewById(R.id.btnEndChat);
         btnEndChat.setOnClickListener(new OnClickListener ()
         {
 
@@ -550,7 +550,7 @@ public class ChatView extends LinearLayout {
             
         });
         
-        ImageButton btnProfile = (ImageButton)findViewById(R.id.btnProfile);
+        View btnProfile = findViewById(R.id.btnProfile);
         btnProfile.setOnClickListener(new OnClickListener ()
         {
 
@@ -562,10 +562,10 @@ public class ChatView extends LinearLayout {
             
         });
         
-        ImageButton btnSharePicture = (ImageButton)findViewById(R.id.btnSendPicture);
+        View btnSharePicture = findViewById(R.id.btnSendPicture);
         btnSharePicture.setOnClickListener(new OnClickListener ()
         {
-
+            
             @Override
             public void onClick(View v) {
                 mActivity.startImagePicker();
@@ -573,7 +573,7 @@ public class ChatView extends LinearLayout {
             
         });
         
-        ImageButton btnShareFile = (ImageButton)findViewById(R.id.btnSendFile);
+        View btnShareFile = findViewById(R.id.btnSendFile);
         btnShareFile.setOnClickListener(new OnClickListener ()
         {
 

@@ -1160,6 +1160,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          public void setSpinnerState (Activity activity)
          {
 
+             if (mAccountIds == null)
+                 return;
+             
              if (mAccountIds.length == 1) //only one account, hide the spinner
              {
                  mSpinnerAccounts.setVisibility(View.GONE);

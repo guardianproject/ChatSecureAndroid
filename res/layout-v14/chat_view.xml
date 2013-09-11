@@ -209,39 +209,49 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
 	     android:layout_gravity="fill_vertical"
-	             android:gravity="bottom"
+	     android:gravity="center"
 	     android:visibility="gone"
 	     android:id="@+id/actionBox"
-	     android:background="#777777"
+	     android:background="#aaaaaa"
 	     
 	     >
      
-      <ImageButton
+      <ImageView
         android:id="@+id/btnProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/avatar_unknown" />
-     <ImageButton
+        android:src="@drawable/avatar_unknown"
+        android:padding="8dip"
+        
+         />
+     <ImageView
         android:id="@+id/btnSendFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_new_attachment" />
-     <ImageButton
+        android:src="@drawable/content_new_attachment"
+        android:padding="8dip"
+        
+         />
+     <ImageView
         android:id="@+id/btnSendPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_new_picture" />
+        android:src="@drawable/content_new_picture"
+        android:padding="8dip"
+        
+         />
      
      
-     <ImageButton
+     <ImageView
         android:id="@+id/btnEndChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
         android:src="@drawable/content_discard"
+        android:padding="8dip"
         
          />
      
