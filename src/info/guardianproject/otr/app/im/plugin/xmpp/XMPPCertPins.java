@@ -5,9 +5,7 @@ public class XMPPCertPins
     
 
     public final static String[] SSL_IDEAL_CIPHER_SUITES = { 
-    "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
-    
-    /*,
+    "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
     "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
     "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
     
@@ -30,7 +28,7 @@ public class XMPPCertPins
     "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
     
     "TLS_RSA_WITH_AES_256_CBC_SHA",
-    "TLS_RSA_WITH_AES_128_CBC_SHA"*/
+    "TLS_RSA_WITH_AES_128_CBC_SHA"
     
     };
 

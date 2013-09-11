@@ -1034,7 +1034,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
                         mSecureRandom);
               
-                
+                sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
             }
             
             mConfig.setCustomSSLContext(sslContext);
