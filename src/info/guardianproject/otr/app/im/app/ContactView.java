@@ -257,7 +257,10 @@ public class ContactView extends LinearLayout {
             status = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
         }
 
-        mHolder.mLine2.setText(status);
+        if (Imps.Contacts.TYPE_GROUP == type)
+            mHolder.mLine2.setText("");
+        else
+            mHolder.mLine2.setText(status);
        // mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
         View contactInfoPanel = findViewById(R.id.contactInfo);

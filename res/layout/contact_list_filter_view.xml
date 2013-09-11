@@ -102,7 +102,7 @@
             android:singleLine="true"
              android:fontFamily="sans-serif-light" />
 
-        <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
+        <ListView
             
         android:id="@+id/filteredList"
         android:layout_width="fill_parent"

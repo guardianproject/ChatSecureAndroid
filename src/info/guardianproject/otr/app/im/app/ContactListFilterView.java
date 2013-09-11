@@ -40,11 +40,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
-import com.tjerkw.slideexpandable.library.ActionSlideExpandableListView;
-
 public class ContactListFilterView extends LinearLayout {
 
-    private ActionSlideExpandableListView mFilterList;
+    private ListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -91,7 +89,7 @@ public class ContactListFilterView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (ActionSlideExpandableListView) findViewById(R.id.filteredList);
+        mFilterList = (ListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
         
@@ -105,8 +103,8 @@ public class ContactListFilterView extends LinearLayout {
 
             }
         });
-        
-        mFilterList.setItemActionListener(new ActionSlideExpandableListView.OnActionClickListener() {
+        /*
+        mFilterList.setItemActionListener(new ListView.OnActionClickListener() {
 
             @Override
             public void onClick(View listView, View buttonview, int position) {
@@ -120,7 +118,8 @@ public class ContactListFilterView extends LinearLayout {
                 
             }
     }, R.id.btnExListChat, R.id.btnExListProfile);
-
+    */
+        
        // 
         
         //if (!isInEditMode())
