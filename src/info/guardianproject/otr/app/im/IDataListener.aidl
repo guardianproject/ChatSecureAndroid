@@ -6,7 +6,7 @@ package info.guardianproject.otr.app.im;
 
 interface IDataListener {
 
-    void onTransferComplete(String from, String url, String type, in byte[] data);
+    void onTransferComplete(String from, String url, String type, String fileLocalPath);
 
     void onTransferFailed(String from, String url, String reason);
 

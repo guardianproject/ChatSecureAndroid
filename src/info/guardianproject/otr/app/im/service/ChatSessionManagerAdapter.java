@@ -73,6 +73,7 @@ public class ChatSessionManagerAdapter extends
     public IChatSession createChatSession(String contactAddress) {
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
+        
         Contact contact = listManager.getContactByAddress(contactAddress);
         if (contact == null) {
             try {

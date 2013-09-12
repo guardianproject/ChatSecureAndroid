@@ -44,10 +44,9 @@ import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.SystemServices.Scanner;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -82,7 +81,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -103,6 +101,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -117,7 +116,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -2127,37 +2125,18 @@ public class ChatView extends LinearLayout {
     class DataAdapter extends IDataListener.Stub {
         
         @Override
-        public void onTransferComplete(String from, String url, String type, byte[] data) {
+        public void onTransferComplete(String from, String url, String type, String filePath) {
             // TODO have a specific notifier for files / data
             //String username = from.getScreenName();
-            //String nickname = getNickName(username);
-            File sdCard = Environment.getExternalStorageDirectory();
+           
             
-            String[] path = url.split("/"); 
-            //String sanitizedPeer = SystemServices.sanitize(username);
-            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-            
-            File dir = new File (sdCard, "Downloads"); //just put output into the Downloads folder for now
-            dir.mkdirs();
-            
-            //File dir = new File (sdCard.getAbsolutePath() + "/ChatSecure/peerdata/" + sanitizedPeer);
-            //dir.mkdirs();*/
-            
-            File file = new File(dir, sanitizedPath);
-            try {
-                BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
-                output.write(data);
-                output.flush();
-                output.close();
-            } catch (IOException e) {
-                mHandler.showAlert("Transfer Error", "Unable to write file to storage");
-                OtrDebugLogger.log("error writing file", e);
-            }
-        
+            File file = new File(filePath);
             
             try {
                 Message msg = Message.obtain(mTransferHandler, 3);            
                 msg.getData().putString("path", file.getCanonicalPath());
+                msg.getData().putString("type", type);
+                
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
                 mHandler.showAlert("Transfer Error", "Unable to read file to storage");
@@ -2270,42 +2249,80 @@ public class ChatView extends LinearLayout {
                 }
                 else if (msg.what == 2) //progress update
                 {
+                    int progressValue = msg.getData().getInt("progress");
+                    String progressText = msg.getData().getString("status");
+                    
                     if (mNotifyManager == null)
                     {
                         mNotifyManager =
                                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder = new NotificationCompat.Builder(mContext);
-                        
+                    
+                        mBuilder.setTicker("Transfer in progress: " + progressText);
                     }
                     
-                    int progressValue = msg.getData().getInt("progress");
-                    String progressText = msg.getData().getString("status");
                     
-                    mBuilder.setContentTitle("Secure Transfer")
+                    mBuilder.setContentTitle("ChatSecure Transfer")
                     .setContentText("Transfer in progress: " + progressText)
-                    .setSmallIcon(R.drawable.ic_stat_status)
-                    .setLights(0xff00ff00, 300, 1000);
+                    .setSmallIcon(R.drawable.ic_secure_xfer);                    
                     mBuilder.setProgress(100, progressValue, false);
+                    
+                    
                     mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
                     
                 }
                 else if (msg.what == 3)
                 {
                     String filePath = msg.getData().getString("path");
+                    String fileType = msg.getData().getString("type");
 
-                    mBuilder.setContentText("Transfer complete")
-                    // Removes the progress bar
-                            .setProgress(0,0,false);
-                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
+                    String[] path = filePath.split("/"); 
+                    String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+                   
+                    Uri fileUri = Scanner.scan(mContext, filePath);
+                    
+                    if (fileType == null)
+                    {
+                        String fileExt = null;
+                        String[] fileParts = filePath.split("\\.");
+                        
+                        if (fileParts.length > 0)
+                        {
+                        
+                            fileExt = fileParts[fileParts.length-1];
+                            
+                            MimeTypeMap mimeTypeMap =
+                                MimeTypeMap.getSingleton();
 
+                            fileType = mimeTypeMap.getMimeTypeFromExtension(fileExt);
+                        }
+                    }
+                    
+                    Intent intentView = new Intent(Intent.ACTION_VIEW);                    
+                    
+                    if (fileType != null)
+                    {
+                        String generalType = fileType.split("/")[0] + "/*";                        
+                        intentView.setDataAndType(fileUri,generalType);                        
+                    }
+                    else
+                        intentView.setDataAndType(fileUri,"*/*");
                     
                     PendingIntent contentIntent = 
-                            PendingIntent.getActivity(mActivity, 0,   new Intent(Intent.ACTION_VIEW, Uri.parse(filePath)), 0);
+                            PendingIntent.getActivity(mActivity, 0, intentView, 0);
                   
-                    
                     mBuilder.setContentIntent(contentIntent);
+                    mBuilder.setLights(0xff00ff00, 300, 1000);
                     
+                    String status = "Transfer Complete: " + sanitizedPath;
                     
+                    mBuilder.setContentText(status)                    
+                    // Removes the progress bar
+                            .setProgress(0,0,false)
+                            .setTicker(status)
+                              .setWhen(System.currentTimeMillis());                              
+             
+                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
                     
                 }
                 
@@ -2318,11 +2335,6 @@ public class ChatView extends LinearLayout {
         NotificationCompat.Builder mBuilder;
         int NOTIFY_DOWNLOAD_ID;
         
-        private void notificationProgress ()
-        {
-            
-            
-        }
         
         
     }

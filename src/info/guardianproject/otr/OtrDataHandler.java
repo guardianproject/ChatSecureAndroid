@@ -13,7 +13,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +52,7 @@ import org.apache.http.message.LineParser;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
+import android.os.Environment;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -352,11 +355,13 @@ public class OtrDataHandler implements DataHandler {
                     if (transfer.checkSum()) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
+                        File fileShare = writeDataToStorage(transfer.url, data);
+                        
                         mDataListener.onTransferComplete(
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
-                                data);
+                                fileShare.getCanonicalPath());
                     } else {
                         mDataListener.onTransferFailed(
                                 mChatSession.getParticipant().getAddress().getAddress(),
@@ -377,6 +382,32 @@ public class OtrDataHandler implements DataHandler {
             debug("Could not read remote exception");
         }
         
+    }
+    
+    private File writeDataToStorage (String url, byte[] data)
+    {
+        //String nickname = getNickName(username);
+        File sdCard = Environment.getExternalStorageDirectory();
+        
+        String[] path = url.split("/"); 
+        //String sanitizedPeer = SystemServices.sanitize(username);
+        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+        
+        File fileDownloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        fileDownloadsDir.mkdirs();
+        
+        File file = new File(fileDownloadsDir, sanitizedPath);
+        
+        try {
+            OutputStream output = (new FileOutputStream(file));
+            output.write(data);
+            output.close();
+            return file;
+        } catch (IOException e) {
+            OtrDebugLogger.log("error writing file", e);
+            return null;
+        }
+    
     }
 
     /**
