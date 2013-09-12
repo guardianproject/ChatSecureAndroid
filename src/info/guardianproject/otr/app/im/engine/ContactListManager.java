@@ -163,7 +163,7 @@ public abstract class ContactListManager {
 
     public Contact getContact(String address) {
         for (ContactList list : mContactLists) {
-            Contact c = list.getContact(address);
+            Contact c = list.getContact(normalizeAddress(address));
             if (c != null) {
                 return c;
             }

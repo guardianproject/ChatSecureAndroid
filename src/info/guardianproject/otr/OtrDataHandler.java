@@ -1,10 +1,10 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
-import info.guardianproject.otr.app.im.engine.DataListener;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.SystemServices;
@@ -13,7 +13,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +52,8 @@ import org.apache.http.message.LineParser;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
+import android.os.Environment;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.google.common.cache.Cache;
@@ -77,13 +81,17 @@ public class OtrDataHandler implements DataHandler {
     private LineFormatter lineFormatter = new BasicLineFormatter();
     private ChatSession mChatSession;
 
-    private DataListener mDataListener;
+    private IDataListener mDataListener;
 
-    public OtrDataHandler(ChatSession chatSession, DataListener dataListener) {
+    public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
-        this.mDataListener = dataListener;
     }
 
+    public void setDataListener (IDataListener dataListener)
+    {
+        mDataListener = dataListener;
+    }
+    
     public static class MyHttpRequestFactory implements HttpRequestFactory {
         public MyHttpRequestFactory() {
             super();
@@ -176,7 +184,20 @@ public class OtrDataHandler implements DataHandler {
             // Handle offer
             
             // TODO ask user to confirm we want this
-            mDataListener.onTransferRequested(transfer);
+            boolean accept = false;
+            
+            try {
+                accept = mDataListener.onTransferRequested(transfer.us.getAddress(),transfer.url);
+                
+                if (accept)
+                    transfer.perform();
+                
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            
             
         } else if (requestMethod.equals("GET") && url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
             debug("incoming GET " + url);
@@ -334,28 +355,59 @@ public class OtrDataHandler implements DataHandler {
                     if (transfer.checkSum()) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
+                        File fileShare = writeDataToStorage(transfer.url, data);
+                        
                         mDataListener.onTransferComplete(
-                                mChatSession.getParticipant().getAddress(),
+                                mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
-                                data);
+                                fileShare.getCanonicalPath());
                     } else {
                         mDataListener.onTransferFailed(
-                                mChatSession.getParticipant().getAddress(),
+                                mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 "checksum");
                         Log.e(TAG, "Wrong checksum for file len= " + data.length + " sha1=" + sha1sum(data));
                     }
                 } else {
-                    mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress(), transfer.url, 
+                    mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getAddress(), transfer.url, 
                             ((float)transfer.chunksReceived) / transfer.chunks);
                     transfer.perform();
                     debug("Progress " + transfer.chunksReceived + " / " + transfer.chunks);
                 }
             }
         } catch (IOException e) {
-            debug("Could not read line from response");
+            debug("Could not read line from response");        
+        } catch (RemoteException e) {
+            debug("Could not read remote exception");
         }
+        
+    }
+    
+    private File writeDataToStorage (String url, byte[] data)
+    {
+        //String nickname = getNickName(username);
+        File sdCard = Environment.getExternalStorageDirectory();
+        
+        String[] path = url.split("/"); 
+        //String sanitizedPeer = SystemServices.sanitize(username);
+        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+        
+        File fileDownloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        fileDownloadsDir.mkdirs();
+        
+        File file = new File(fileDownloadsDir, sanitizedPath);
+        
+        try {
+            OutputStream output = (new FileOutputStream(file));
+            output.write(data);
+            output.close();
+            return file;
+        } catch (IOException e) {
+            OtrDebugLogger.log("error writing file", e);
+            return null;
+        }
+    
     }
 
     /**
