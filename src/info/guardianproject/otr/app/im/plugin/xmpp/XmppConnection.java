@@ -25,19 +25,11 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.Socket;
-import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
 import java.security.SecureRandom;
-import java.security.Security;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,11 +47,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
-import javax.security.auth.callback.PasswordCallback;
 
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
@@ -90,7 +79,6 @@ import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
 import org.jivesoftware.smack.proxy.ProxyInfo.ProxyType;
-import org.jivesoftware.smack.util.Base64.InputStream;
 import org.jivesoftware.smackx.Form;
 import org.jivesoftware.smackx.FormField;
 import org.jivesoftware.smackx.GroupChatInvitation;
@@ -882,21 +870,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             password = mPasswordTemp;
         
         mIsGoogleAuth = password.startsWith(GTalkOAuth2.NAME);
-
+        String domain = providerSettings.getDomain();
+        String server = providerSettings.getServer();
+        
         if (mIsGoogleAuth)
         {            
-            String domain = providerSettings.getDomain();
+            
             password = refreshGoogleToken(userName, password, domain);
             password = password.split(":")[1];            
-            mUsername = userName + '@' + domain;
+     //       mUsername = userName + '@' + domain;
                        
         }
-        else
-        {
-            mUsername = userName;
-        }
         
-        initConnection(providerSettings);
+        initConnection(providerSettings, userName);
 
         mPassword = password;
         mResource = providerSettings.getXmppResource();
@@ -917,7 +903,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
+    private void initConnection(Imps.ProviderSettings.QueryMap providerSettings, String userName) throws Exception {
         
      
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
@@ -941,7 +927,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         debug(TAG, "cert verification? " + tlsCertVerify);
 
         if (providerSettings.getUseTor()) {
-            setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST,
+            setProxy(TorProxyInfo.PROXY_TYPE, TorProxyInfo.PROXY_HOST, 
                     TorProxyInfo.PROXY_PORT);
         }
         else
@@ -968,8 +954,28 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 serverPort = srvHost.getPort();
             }
             debug(TAG, "(DNS SRV) resolved: " + domain + "=" + server + ":" + serverPort);
+            
+         
 
         }
+        
+        if (server != null && server.contains("google.com"))
+        {
+            mUsername = userName + '@' + domain;
+        }
+        else if (domain.contains("gmail.com"))
+        {
+            mUsername = userName + '@' + domain;
+        }
+        else if (mIsGoogleAuth)
+        {
+            mUsername = userName + '@' + domain;
+        }
+        else
+        {
+            mUsername = userName;
+        }
+        
         
         if (serverPort == 0)
             serverPort = 5222;
@@ -997,7 +1003,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         
-        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+       // mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
         // Android has no support for Kerberos or GSSAPI, so disable completely
@@ -1718,7 +1724,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 
              //   LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
-             
+                execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
+
             }
         };
         
@@ -1788,10 +1795,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             if (contact == null) {
                 
-                contact = new Contact(xaddress, xaddress.getScreenName());      
+                try
+                {
+                    debug(TAG, "got presence updated for NEW user: "
+                            + contact.getAddress().getAddress() + " presence:" + type);
+                 
                 
-                debug(TAG, "got presence updated for NEW user: "
-                           + contact.getAddress().getAddress() + " presence:" + type);
+                    mContactListManager.getDefaultContactList().addContact(xaddress.getAddress());
+                
+                    debug(TAG, "added user to default list: " + mContactListManager.getDefaultContactList().getName());
+                
+                }
+                catch (Exception ioe)
+                {
+                    debug(TAG,"error adding new user to list");
+                }
+                
+                
                 //store the latest presence notification for this user in this queue
                 //unprocdPresence.put(user, presence);
 
@@ -1805,6 +1825,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             Contact[] contacts = new Contact[] { contact };
 
+            mContactListManager.notifyContactsPresenceUpdated(contacts);
             notifyContactsPresenceUpdated(contacts);
             
             PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
@@ -2455,7 +2476,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     public boolean registerAccount (Imps.ProviderSettings.QueryMap providerSettings, String username, String password) throws Exception
     {
      
-        initConnection(providerSettings);
+        initConnection(providerSettings, username);
         
         if (mConnection.getAccountManager().supportsAccountCreation())
         {

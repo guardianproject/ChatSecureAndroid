@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im;
 
 import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.IOtrChatSession;
 
@@ -98,4 +99,8 @@ interface IChatSession {
     */
     IOtrChatSession getOtrChatSession();
     
+     /**
+    * set class for handling incoming data transfers
+    */
+    void setDataListener (IDataListener dataListener);
 }
