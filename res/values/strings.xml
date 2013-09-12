@@ -790,9 +790,9 @@
 	
 	<string name="default_service_provider">dukgo.com</string>
 	
-	<string name="detected_Otr_keystore_import">We have detected an OTR key store to import. Would you like to scan the QR password now?</string>
+	<string name="detected_Otr_keystore_import">We have detected an OTR keystore to import. Would you like to scan the QR password now?</string>
     
-	<string name="menu_import_keys">Import OTR Keystore</string>
+	<string name="menu_import_keys">Activate KeySync</string>
     
 	<string name="successfully_imported_otr_keyring">Successfully imported OTR keyring</string>
     

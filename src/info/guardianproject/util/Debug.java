@@ -1,7 +1,7 @@
 package info.guardianproject.util;
 
 public class Debug {
-    public static final boolean DEBUG_ENABLED = false;
+    public static final boolean DEBUG_ENABLED = true;
 
     public static void onConnectionStart() {
         if (DEBUG_ENABLED)
