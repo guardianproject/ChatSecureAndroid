@@ -99,7 +99,7 @@ public class SystemServices {
         public String type;
     };
     
-    public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) {
+    public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
         if (uri.getScheme().equals("file")) {
             info.path = uri.getPath();
@@ -114,8 +114,18 @@ public class SystemServices {
         
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
-        info.path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-        info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
-        return info;
+        
+        int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+        
+        if (dataIdx != -1)
+        {
+            info.path = cursor.getString(dataIdx);
+            info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+        
+        
+            return info;
+        }
+        else
+            return null;
     }
 }
