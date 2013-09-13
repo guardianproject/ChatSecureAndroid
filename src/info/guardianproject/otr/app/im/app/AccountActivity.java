@@ -464,6 +464,7 @@ public class AccountActivity extends Activity {
             mEditPass.setText(i.getExtras().getString("newpass"));
             mEditPass.setVisibility(View.GONE);
             mRememberPass.setChecked(true);
+            mRememberPass.setVisibility(View.GONE);
         }
 
 
