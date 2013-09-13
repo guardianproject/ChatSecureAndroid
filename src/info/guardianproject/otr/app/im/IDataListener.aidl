@@ -12,6 +12,6 @@ interface IDataListener {
 
     void onTransferProgress(String from, String url, float f);
     
-    boolean onTransferRequested(String from, String transferUrl);  
+    boolean onTransferRequested(String from, String to, String transferUrl);  
   
 }

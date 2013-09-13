@@ -10,14 +10,14 @@ public interface DataHandler {
      * @param session the chat session
      * @param value the serialized request
      */
-    void onIncomingRequest(Address us, byte[] value);
+    void onIncomingRequest(Address from, Address to, byte[] value);
 
     /**
      * @param from this is OUR address
      * @param session the chat session
      * @param value the serialized response
      */
-    void onIncomingResponse(Address us, byte[] value);
+    void onIncomingResponse(Address from, Address to, byte[] value);
 
     void offerData(Address us, String localUri, Map<String, String> headers);
     

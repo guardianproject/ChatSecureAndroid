@@ -126,12 +126,14 @@ public class ContactPresenceActivity extends ThemeableActivity {
             imgAvatar.setImageDrawable(avatar);
 
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
-            String displayName = nickname;
             
-            if (!nickname.equals(address))
-                displayName = nickname + "\n" + address;
+            if (nickname == null)
+                nickname = address;
+            else if (!nickname.equals(address))
+                nickname += "\n" + address;
              
-            txtName.setText(displayName);
+            if (nickname != null)
+                txtName.setText(nickname);
 
             String statusString = brandingRes.getString(PresenceUtils.getStatusStringRes(status));
             SpannableString s = new SpannableString("+ " + statusString);

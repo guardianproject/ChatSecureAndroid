@@ -2181,7 +2181,7 @@ public class ChatView extends LinearLayout {
         private boolean mWaitingForResponse = false;
         
         @Override
-        public boolean onTransferRequested(String from, String transferUrl) {
+        public boolean onTransferRequested(String from, String to, String transferUrl) {
             
             mAcceptTransfer = false;            
             mWaitingForResponse = true;
@@ -2225,6 +2225,7 @@ public class ChatView extends LinearLayout {
                         public void onClick(DialogInterface dialog, int which) {
                             mAcceptTransfer = true;
                             mWaitingForResponse = false;
+                            NOTIFY_DOWNLOAD_ID++;
                             
                             dialog.dismiss();
                         }
@@ -2258,13 +2259,16 @@ public class ChatView extends LinearLayout {
                                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder = new NotificationCompat.Builder(mContext);
                     
+                        mBuilder.setContentTitle("ChatSecure Transfer");
                         mBuilder.setTicker("Transfer in progress: " + progressText);
+                   
+                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);                    
+                        
                     }
                     
                     
-                    mBuilder.setContentTitle("ChatSecure Transfer")
-                    .setContentText("Transfer in progress: " + progressText)
-                    .setSmallIcon(R.drawable.ic_secure_xfer);                    
+                   
+                    mBuilder.setContentText("Transfer in progress: " + progressText);
                     mBuilder.setProgress(100, progressValue, false);
                     
                     
@@ -2275,6 +2279,17 @@ public class ChatView extends LinearLayout {
                 {
                     String filePath = msg.getData().getString("path");
                     String fileType = msg.getData().getString("type");
+                    
+                    if (mNotifyManager == null)
+                    {
+                        mNotifyManager =
+                                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        mBuilder = new NotificationCompat.Builder(mContext);
+                        mBuilder.setContentTitle("ChatSecure Transfer");
+                   
+                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);  
+                        
+                    }
 
                     String[] path = filePath.split("/"); 
                     String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
@@ -2302,8 +2317,8 @@ public class ChatView extends LinearLayout {
                     
                     if (fileType != null)
                     {
-                        String generalType = fileType.split("/")[0] + "/*";                        
-                        intentView.setDataAndType(fileUri,generalType);                        
+                       // String generalType = fileType.split("/")[0] + "/*";                        
+                        intentView.setDataAndType(fileUri,fileType);                        
                     }
                     else
                         intentView.setDataAndType(fileUri,"*/*");
@@ -2333,7 +2348,7 @@ public class ChatView extends LinearLayout {
         
         NotificationManager mNotifyManager;
         NotificationCompat.Builder mBuilder;
-        int NOTIFY_DOWNLOAD_ID;
+        int NOTIFY_DOWNLOAD_ID = 898989;
         
         
         

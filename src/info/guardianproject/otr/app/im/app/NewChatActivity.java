@@ -696,14 +696,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
     private void handleSend(Uri uri) {
+        
+        
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
-           IChatSession session = getCurrentChatView().getCurrentChatSession();
+            if (info != null)
+            {
+                IChatSession session = getCurrentChatView().getCurrentChatSession();
            
-           if (session != null)
-               session.offerData( info.path, info.type );
-           
+                if (session != null)
+                    session.offerData( info.path, info.type );
+            }
+            else
+            {
+                Toast.makeText(this, R.string.sorry_we_cannot_share_that_file_type, Toast.LENGTH_LONG).show();
+            }
         } catch (RemoteException e) {
            Log.e(ImApp.LOG_TAG,"error sending file",e);
         }
@@ -823,7 +831,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
 
-            
             mCursorChats.requery();
             
             super.notifyDataSetChanged();
@@ -880,26 +887,30 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 ChatViewFragment cvFrag = (ChatViewFragment)object;
                 int position = -1;
                 
-                mCursorChats.moveToFirst();
                 
-                int posIdx = 1;
-                
-                do {
-                    long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                if (mCursorChats.getCount() > 0)
+                {
+                    mCursorChats.moveToFirst();
                     
-                    View view = cvFrag.getView();
+                    int posIdx = 1;
                     
-                    if (view instanceof ChatView && chatId == ((ChatView)view).mLastChatId)                        
-                    {
-                        position = posIdx;
+                    do {
+                        long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
                         
-                        break;
+                        View view = cvFrag.getView();
+                        
+                        if (view instanceof ChatView && chatId == ((ChatView)view).mLastChatId)                        
+                        {
+                            position = posIdx;
+                            
+                            break;
+                        }
+                        
+                        posIdx++;
                     }
+                    while (mCursorChats.moveToNext());
                     
-                    posIdx++;
                 }
-                while (mCursorChats.moveToNext());
-                
                 
                 return position;
                 

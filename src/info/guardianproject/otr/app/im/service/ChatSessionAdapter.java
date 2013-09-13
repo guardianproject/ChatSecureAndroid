@@ -108,16 +108,18 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mStatusBarNotifier = service.getStatusBarNotifier();
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
-        mOtrChatManager = service.getOtrChatManager();
-        mDataHandler = new OtrDataHandler(mChatSession);
-        
-        mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), mOtrChatManager);
-
         mListenerAdapter = new ListenerAdapter();
 
-        // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
-        mChatSession.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
-        mChatSession.setOtrChatManager(mOtrChatManager);
+        mOtrChatManager = service.getOtrChatManager();
+        
+        if (mOtrChatManager != null)
+        {
+            mDataHandler = new OtrDataHandler(mChatSession);
+            mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), mOtrChatManager);
+            // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
+            mChatSession.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
+            mChatSession.setOtrChatManager(mOtrChatManager);
+        }
 
         ImEntity participant = mChatSession.getParticipant();
 
@@ -731,12 +733,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         @Override
         public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value) {
-            mDataHandler.onIncomingRequest(msg.getTo(), value);
+            mDataHandler.onIncomingRequest(msg.getFrom(),msg.getTo(), value);
         }
 
         @Override
         public void onIncomingDataResponse(ChatSession session, Message msg, byte[] value) {
-            mDataHandler.onIncomingResponse(msg.getTo(), value);
+            mDataHandler.onIncomingResponse(msg.getFrom(),msg.getTo(), value);
         }
 
         @Override
