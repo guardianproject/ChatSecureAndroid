@@ -58,7 +58,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
     private static final int REQUEST_SIGNIN_ACCOUNT = RESULT_FIRST_USER + 3;
-
+    private static final int REQUEST_START_MUC =  RESULT_FIRST_USER + 4;
+    
     private String mProviderName;
     private String mToAddress;
     private String mFromAddress;
@@ -391,7 +392,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
 
                 Intent intent = new Intent(ImUrlActivity.this, NewChatActivity.class);        
                 intent.setData(data);
-                ImUrlActivity.this.startActivityForResult(intent, REQUEST_CREATE_ACCOUNT);
+                ImUrlActivity.this.startActivityForResult(intent, REQUEST_START_MUC);
                 
             }
         })
@@ -642,6 +643,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             {
                 mApp.callWhenServiceConnected(new Handler(), new Runnable() {
                     public void run() {
+                        
                        handleIntent();
                     }
                 });
@@ -652,8 +654,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         }
     }
     
-
-    private void initProviderCursor (String pkey)
+    private void initProviderCursor (final String pkey)
     {
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
         uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
@@ -664,6 +665,22 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         
+
+        if (pkey != null)
+            mApp = (ImApp)getApplication();
+
+            mApp.callWhenServiceConnected(new Handler(), new Runnable() {
+                public void run() {
+                    
+                   try {
+                       mApp.getRemoteImService().unlockOtrStore(pkey);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            });
+          
         
     }
     
