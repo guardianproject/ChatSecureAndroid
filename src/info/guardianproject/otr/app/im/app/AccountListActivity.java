@@ -156,8 +156,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-        checkForUpdates();
-        
         getWindow().setBackgroundDrawableResource(R.drawable.bgcolor2);
     }
     
