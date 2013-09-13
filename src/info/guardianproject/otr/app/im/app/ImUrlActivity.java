@@ -134,7 +134,7 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             }
             
             try {
-                Thread.sleep (500);
+                Thread.sleep (2000);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }//wait here for three seconds
@@ -439,7 +439,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 if (uriAccountData.getScheme().equals("immu"))
                 {
                     //need to generate proper IMA url for account setup
-                    String regUser = mFromAddress;
+                    String randomJid = ((int)(Math.random()*10000))+"";
+                    String regUser = mFromAddress + randomJid;
                     String regPass =  UUID.randomUUID().toString().substring(0,16);
                     String regDomain = mHost.replace("conference.", "");                
                     uriAccountData = Uri.parse("ima://" + regUser + ':' + regPass + '@' + regDomain);
@@ -496,8 +497,15 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 sendOtrInBand(username);
             }
-            else if (requestCode == REQUEST_CREATE_ACCOUNT || requestCode == REQUEST_SIGNIN_ACCOUNT) 
+            else if (requestCode == REQUEST_SIGNIN_ACCOUNT)
             {
+                //okay we have an account, signed in, now open the chat
+                doOnCreate();
+            }
+            else if (requestCode == REQUEST_CREATE_ACCOUNT)  
+            {
+                try { Thread.sleep(2000);}
+                catch (Exception e){};//wait 2 seconds while the account is provisioned
                 //okay we have an account, signed in, now open the chat
                 doOnCreate();
             }
@@ -606,6 +614,10 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             else if (sharedText != null)
             {
                 //do nothing for now :(
+                mSendText = sharedText;
+
+                startContactPicker();
+                
             }
             else
                 finish();
