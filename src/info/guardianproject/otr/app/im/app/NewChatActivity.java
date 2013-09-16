@@ -98,14 +98,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private Cursor mCursorChats;
     
     private SimpleAlertHandler mHandler;
-    private MenuItem menuOtr, menuCall;
     
-    private LayoutInflater mInflater;
-
     private static long mAccountId = -1;
     private static long mLastProviderId = -1;
-    
-    private String mSipAccount = null;
     
     private MessageContextMenuHandler mMessageContextMenuHandler;
     
@@ -145,7 +140,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 });
         
         mApp = (ImApp)getApplication();
-        mInflater = LayoutInflater.from(this);
     
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
@@ -367,9 +361,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             
                              startGroupChat(path, host, listConns.get(0));
                             
-                           
+                             setResult(RESULT_OK);
                         }
                     }
+                    
+                    
                 } else {
                     String type = getContentResolver().getType(data);
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
@@ -470,10 +466,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
-        menuOtr = menu.findItem(R.id.menu_view_otr);
-        menuCall = menu.findItem(R.id.menu_secure_call);
-        
-        
         return true;
     }
 
@@ -1617,12 +1609,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             if (session != null)
             {
                 long id = session.getId();
-            
-                Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
-                Intent i = new Intent(Intent.ACTION_VIEW, data);
-                i.addCategory(ImApp.IMPS_CATEGORY);
-            
-                startActivity(i);
+                showChat(id);
+                //Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);                
+                //Intent i = new Intent(Intent.ACTION_VIEW, data);
+                //i.addCategory(ImApp.IMPS_CATEGORY);            
+                //startActivity(i);
             }
             else
             {

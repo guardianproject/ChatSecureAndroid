@@ -124,7 +124,7 @@ public class CreateAccountActivity extends ThemeableActivity {
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSignInHelper = new SignInHelper(this);
-        SignInHelper.Listener signInListener = new SignInHelper.Listener() {
+        SignInHelper.SignInListener signInListener = new SignInHelper.SignInListener() {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {

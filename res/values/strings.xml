@@ -823,5 +823,9 @@
     <string name="mtm_accept_cert">Accept Server Certificate?</string>
 
     <string name="sorry_we_cannot_share_that_file_type">Sorry we cannot share that file type</string>
+
+    <string name="err_otr_share_no_encryption">You must enable encryption to share files</string>
+
+    <string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
 </resources>
 

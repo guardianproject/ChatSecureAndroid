@@ -38,8 +38,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import net.java.otr4j.session.SessionStatus;
+
 import android.app.AlertDialog;
-import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
@@ -52,6 +53,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
     
@@ -95,21 +97,35 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     void handleIntent() {
         ContentResolver cr = getContentResolver();
         
-        
-        long providerId = Imps.Provider.getProviderIdForName(cr, mProviderName);
-        long accountId;
+        long providerId = -1;
+        long accountId = -1;
         
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
-        if (!listConns.isEmpty())
+        for (IImConnection conn : listConns)
         {            
-            mConn = listConns.get(0);
+   
+            
             try {
-                providerId = mConn.getProviderId();
-                accountId = mConn.getAccountId();
+                long connProviderId = conn.getProviderId();
+
+                Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                
+                if (mHost.contains(settings.getDomain()))
+                {
+                    mConn = conn;
+                    providerId = connProviderId;
+                    accountId = conn.getAccountId();
+                    
+                    break;
+                }
+                
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+            
+            
         }
 
         if (mConn == null) {
@@ -117,29 +133,35 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             if (mProviderCursor == null || mProviderCursor.getCount() == 0) {                                
 
                 createNewAccount();
-                
+                return;
             } else {
                 
                 
                 while (mProviderCursor.moveToNext())
                 {                
                     if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
-                        accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);    
-                        providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-                        signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
-                        break;
+                            
+                        long cProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+                        
+                        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                                cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                        
+                        if (mHost.contains(settings.getDomain()))
+                        {
+                            providerId = cProviderId;
+                            accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+
+                            if (providerId != -1)            
+                                mConn = ((ImApp)getApplication()).getConnection(providerId);
+                            
+                            signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
+                            return;
+                        }
                     }
                 }
                 
                 
             }
-            
-            try {
-                Thread.sleep (2000);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }//wait here for three seconds
-            mConn = ((ImApp)getApplication()).getConnection(providerId);
             
         }
             
@@ -196,6 +218,10 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 finish();
             }
         }
+        else
+        {
+            finish();
+        }
     }
 
     /*
@@ -223,7 +249,28 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private void signInAccount(long accountId, long providerId, String password) {
         //editAccount(accountId);        
         // TODO sign in?  security implications?        
-        new SignInHelper(this).signIn(password, providerId, accountId, false);
+        SignInHelper signInHelper = new SignInHelper(this);
+        signInHelper.setSignInListener(new SignInHelper.SignInListener() {
+            public void connectedToService() {
+            }
+            public void stateChanged(int state, long accountId) {
+                if (state == ImConnection.LOGGED_IN) {
+                    handleIntent();
+                }
+                else if (state == ImConnection.LOGGING_IN)
+                {
+                    Toast.makeText(ImUrlActivity.this, R.string.signing_in_wait, Toast.LENGTH_LONG).show();
+                }
+                else if (state == ImConnection.DISCONNECTED)
+                {
+                    //finish();
+                }
+            }
+        });
+        
+        
+        
+        signInHelper.signIn(password, providerId, accountId, false);
     }
 
     private void showContactList(long accountId) {
@@ -505,7 +552,9 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
             }
             else if (requestCode == REQUEST_CREATE_ACCOUNT)  
             {
-                try { Thread.sleep(2000);}
+                Toast.makeText(this, "Your account has been created. However, we must wait a few seconds before it is ready for you to login.", Toast.LENGTH_LONG).show();
+                
+                try { Thread.sleep(5000);}
                 catch (Exception e){};//wait 2 seconds while the account is provisioned
                 //okay we have an account, signed in, now open the chat
                 doOnCreate();
@@ -521,15 +570,34 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
         
         IChatSession session = getChatSession(username);
         
-        try {
-        
-            if (mSendUrl != null)
-                session.offerData( mSendUrl, mSendType );
-            else if (mSendText != null)
-                session.sendMessage(mSendText);
+        try
+        {
+            if (session.getOtrChatSession() != null)
+            {
             
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+                if (session.getOtrChatSession().getChatStatus() != SessionStatus.ENCRYPTED.ordinal())
+                {
+                    //can't do OTR transfer
+                    Toast.makeText(this, R.string.err_otr_share_no_encryption, Toast.LENGTH_LONG).show();
+                }
+                else 
+                {
+                    try {
+                    
+                        if (mSendUrl != null)
+                            session.offerData( mSendUrl, mSendType );
+                        else if (mSendText != null)
+                            session.sendMessage(mSendText);
+                        
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
         }
     }
     
@@ -647,7 +715,8 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                        handleIntent();
                     }
                 });
-                
+                Toast.makeText(ImUrlActivity.this, R.string.starting_the_chatsecure_service_, Toast.LENGTH_LONG).show();
+
             }
         } else {
             finish();

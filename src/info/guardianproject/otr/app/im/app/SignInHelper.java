@@ -43,15 +43,15 @@ public class SignInHelper {
     private ImApp mApp;
     private MyConnectionListener mListener;
     private Collection<IImConnection> connections;
-    private Listener mSignInListener;
+    private SignInListener mSignInListener;
 
     // This can be used to be informed of signin events
-    public interface Listener {
+    public interface SignInListener {
         void connectedToService();
         void stateChanged(int state, long accountId);
     }
     
-    public SignInHelper(Activity context, Listener listener) {
+    public SignInHelper(Activity context, SignInListener listener) {
         this.mContext = context;
         mHandler = new SimpleAlertHandler(context);
         mListener = new MyConnectionListener(mHandler);
@@ -68,7 +68,7 @@ public class SignInHelper {
         this(context, null);
     }
     
-    public void setSignInListener(Listener listener) {
+    public void setSignInListener(SignInListener listener) {
         mSignInListener = listener;
     }
     

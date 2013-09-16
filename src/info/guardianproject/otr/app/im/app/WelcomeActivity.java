@@ -217,7 +217,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (countAvailable == 1) {
             // If just one account is available for auto-signin, go there immediately after service starts trying
             // to connect.
-            mSignInHelper.setSignInListener(new SignInHelper.Listener() {
+            mSignInHelper.setSignInListener(new SignInHelper.SignInListener() {
                 public void connectedToService() {
                 }
                 public void stateChanged(int state, long accountId) {

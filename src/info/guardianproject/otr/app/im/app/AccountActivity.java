@@ -131,7 +131,7 @@ public class AccountActivity extends Activity {
         mIsNewAccount = getIntent().getBooleanExtra("register", false);
         
         mSignInHelper = new SignInHelper(this);
-        SignInHelper.Listener signInListener = new SignInHelper.Listener() {
+        SignInHelper.SignInListener signInListener = new SignInHelper.SignInListener() {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {
