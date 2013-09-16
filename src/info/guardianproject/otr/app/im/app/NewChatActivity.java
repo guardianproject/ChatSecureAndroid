@@ -695,6 +695,47 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         startActivity(intent);
     }
 
+    IChatSession getCurrentChatSession() {
+        int currentPos = mChatPager.getCurrentItem();
+        if (currentPos == 0)
+            return null;
+        mCursorChats.moveToPosition(currentPos - 1);
+        long providerId = mCursorChats.getLong(ChatView.PROVIDER_COLUMN);
+        String username = mCursorChats.getString(ChatView.USERNAME_COLUMN);
+        IChatSessionManager sessionMgr = getChatSessionManager(providerId);
+        if (sessionMgr != null) {
+            try {
+                IChatSession session = sessionMgr.getChatSession(username);
+                
+                if (session == null)
+                    session = sessionMgr.createChatSession(username);
+              
+                return session;
+            } catch (RemoteException e) {
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+            }
+        }
+
+        return null;
+    }
+    
+    private IChatSessionManager getChatSessionManager(long providerId) {
+        IImConnection conn = mApp.getConnection(providerId);
+
+        if (conn != null) {
+            try {
+                return conn.getChatSessionManager();
+            } catch (RemoteException e) {
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e);
+            }
+        }
+        return null;
+    }
+
+
     private void handleSend(Uri uri) {
         
         
@@ -703,7 +744,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (info != null)
             {
-                IChatSession session = getCurrentChatView().getCurrentChatSession();
+                IChatSession session = getCurrentChatSession();
            
                 if (session != null)
                     session.offerData( info.path, info.type );
