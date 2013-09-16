@@ -512,7 +512,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     void showLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    //    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("originalIntent", getIntent());
         startActivity(intent);
        

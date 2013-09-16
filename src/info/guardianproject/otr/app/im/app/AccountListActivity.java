@@ -182,7 +182,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onResume() {
 
         super.onResume();
-        
+
         mApp = (ImApp)getApplication();
         mApp.startImServiceIfNeed();
         mApp.setAppTheme(this);

@@ -294,7 +294,7 @@ public class StatusBarNotifier {
                 .setLights(0xff00ff00, 300, 1000)
                 .setContentTitle(getTitle())
                 .setContentText(getMessage())
-                .setContentIntent(PendingIntent.getActivity(mContext, 0, intent, 0))
+                .setContentIntent(PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .setAutoCancel(true)
                 ;
 
@@ -310,7 +310,7 @@ public class StatusBarNotifier {
             intent.setType(Imps.Contacts.CONTENT_TYPE);
             intent.setClass(mContext, ContactListActivity.class);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+       //     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             return intent;
         }
@@ -321,7 +321,7 @@ public class StatusBarNotifier {
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, true);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+         //   intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
             return intent;
         }

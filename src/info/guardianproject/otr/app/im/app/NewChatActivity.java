@@ -111,6 +111,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         super.onCreate(icicle);
 
+       
+        
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
@@ -148,6 +150,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
         
+        /*
         new java.util.Timer().schedule( 
                 new java.util.TimerTask() {
                     @Override
@@ -156,12 +159,23 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     }
                 }, 
                 1000 
-        );
+        );*/
         
      
        
     }
     
+    
+    @Override
+    protected void onResume() {     
+        super.onResume();
+        
+
+        resolveIntent(getIntent());
+        
+    }
+
+    /*
     private Handler handlerIntent = new Handler ()
     {
 
@@ -170,11 +184,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
            super.handleMessage(msg);
            
            if (msg.what == 0)
-               resolveIntent(getIntent());
+               resolveIntent(mLastIntent);
             
         }
         
-    };
+    };*/
     
 
     private SlidingMenu menu = null;
@@ -295,19 +309,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
                 
-        new java.util.Timer().schedule( 
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        handlerIntent.sendEmptyMessage(0);
-                    }
-                }, 
-                1000 
-        );
+        resolveIntent(intent);
         
     }
 
@@ -326,10 +331,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
 
         if (ImServiceConstants.ACTION_MANAGE_SUBSCRIPTION.equals(intent.getAction())) {
+            
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
             mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,
                     -1L);
             String from = intent.getStringExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS);
+            
             if ((providerId == -1) || (from == null)) {
                 finish();
             } else {
