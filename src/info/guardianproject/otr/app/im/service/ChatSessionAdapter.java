@@ -293,7 +293,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             headers = Maps.newHashMap();
             headers.put("Mime-Type", type);
         }
-
+        
         mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, headers);
     }
 

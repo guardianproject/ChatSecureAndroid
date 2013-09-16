@@ -136,13 +136,11 @@ public class OtrDataHandler implements DataHandler {
         }
     }
     
-    public void onIncomingRequest(Address requestFrom, Address requestTo, byte[] value) {
+    public void onIncomingRequest(Address requestThem, Address requestUs, byte[] value) {
         
         SessionInputBuffer inBuf = new MemorySessionInputBuffer(value); 
         HttpRequestParser parser = new HttpRequestParser(inBuf, lineParser, requestFactory, params);
         HttpRequest req;
-        
-        Address us = requestTo;
         
         try {
             req = (HttpRequest)parser.parse();
@@ -161,19 +159,19 @@ public class OtrDataHandler implements DataHandler {
             debug("incoming OFFER " + url);
             if (!url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
                 debug("Unknown url scheme " + url);
-                sendResponse(requestTo, 400, "Unknown scheme", uid, EMPTY_BODY);
+                sendResponse(requestUs, 400, "Unknown scheme", uid, EMPTY_BODY);
                 return;
             }
-            sendResponse(requestFrom, 200, "OK", uid, EMPTY_BODY);
+            sendResponse(requestUs, 200, "OK", uid, EMPTY_BODY);
             if (!req.containsHeader("File-Length"))
             {
-                sendResponse(requestTo, 400, "File-Length must be supplied", uid, EMPTY_BODY);
+                sendResponse(requestUs, 400, "File-Length must be supplied", uid, EMPTY_BODY);
                 return;
             }
             int length = Integer.parseInt(req.getFirstHeader("File-Length").getValue());
             if (!req.containsHeader("File-Hash-SHA1"))
             {
-                sendResponse(requestTo, 400, "File-Hash-SHA1 must be supplied", uid, EMPTY_BODY);
+                sendResponse(requestUs, 400, "File-Hash-SHA1 must be supplied", uid, EMPTY_BODY);
                 return;
             }
             String sum = req.getFirstHeader("File-Hash-SHA1").getValue();
@@ -183,7 +181,7 @@ public class OtrDataHandler implements DataHandler {
             }
             debug("Incoming sha1sum " + sum);
             
-            Transfer transfer = new Transfer(url, type, length, requestTo, sum);
+            Transfer transfer = new Transfer(url, type, length, requestUs, sum);
             transferCache.put(url, transfer);
             
             // Handle offer
@@ -192,7 +190,7 @@ public class OtrDataHandler implements DataHandler {
             boolean accept = false;
             
             try {
-                accept = mDataListener.onTransferRequested(requestFrom.getAddress(),requestTo.getAddress(),transfer.url);
+                accept = mDataListener.onTransferRequested(requestThem.getAddress(),requestUs.getAddress(),transfer.url);
                 
                 if (accept)
                     transfer.perform();
@@ -212,74 +210,81 @@ public class OtrDataHandler implements DataHandler {
             try {
                 Offer offer = offerCache.getIfPresent(url);
                 if (offer == null) {
-                    sendResponse(us, 400, "No such offer made", uid, EMPTY_BODY);
+                    sendResponse(requestUs, 400, "No such offer made", uid, EMPTY_BODY);
                     return;
                 }
                 
                 if (!req.containsHeader("Range"))
                 {
-                    sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
+                    sendResponse(requestUs, 400, "Range must start with bytes=", uid, EMPTY_BODY);
                     return;
                 }
                 String rangeHeader = req.getFirstHeader("Range").getValue();
                 String[] spec = rangeHeader.split("=");
                 if (spec.length != 2 || !spec[0].equals("bytes"))
                 {
-                    sendResponse(us, 400, "Range must start with bytes=", uid, EMPTY_BODY);
+                    sendResponse(requestUs, 400, "Range must start with bytes=", uid, EMPTY_BODY);
                     return;
                 }
                 String[] startEnd = spec[1].split("-");
                 if (startEnd.length != 2)
                 {
-                    sendResponse(us, 400, "Range must be START-END", uid, EMPTY_BODY);
+                    sendResponse(requestUs, 400, "Range must be START-END", uid, EMPTY_BODY);
                     return;
                 }
 
                 int start = Integer.parseInt(startEnd[0]);
                 int end = Integer.parseInt(startEnd[1]);
                 if (end - start + 1 > MAX_CHUNK_LENGTH) {
-                    sendResponse(us, 400, "Range must be at most " + MAX_CHUNK_LENGTH, uid, EMPTY_BODY);
+                    sendResponse(requestUs, 400, "Range must be at most " + MAX_CHUNK_LENGTH, uid, EMPTY_BODY);
                     return;
                 }
                 
+                
                 File fileGet = new File(offer.getUri());
-                FileInputStream is = new FileInputStream(fileGet);
+                FileInputStream is = new FileInputStream(fileGet);                
                 readIntoByteBuffer(byteBuffer, is, start, end);
                 
-
                 float percent = ((float)end) / ((float)fileGet.length());
                 
                 if (percent < .98f)
                 {
-                    mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getAddress(), url, 
+                    mDataListener.onTransferProgress(requestThem.getAddress(), offer.getUri(), 
                         percent);
                 }
                 else
                 {
-                    mDataListener.onTransferComplete(mChatSession.getParticipant().getAddress().getAddress(), url, req.getFirstHeader("Mime-Type").getValue(), fileGet.getCanonicalPath());
+                    String mimeType = null;
+                    if (req.getFirstHeader("Mime-Type") != null)
+                        mimeType = req.getFirstHeader("Mime-Type").getValue();                    
+                    mDataListener.onTransferComplete(requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
                 }
                 
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-                
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NumberFormatException e) {
-                sendResponse(us, 400, "Range is not numeric", uid, EMPTY_BODY);
+            //    throw new RuntimeException(e);
+                sendResponse(requestUs, 400, "Unsupported encoding", uid, EMPTY_BODY);
                 return;
-            } catch (RemoteException e) {
-               //do nothing
-            }
+            } catch (IOException e) {
+                //throw new RuntimeException(e);
+                sendResponse(requestUs, 400, "IOException", uid, EMPTY_BODY);
+                return;
+            } catch (NumberFormatException e) {
+                sendResponse(requestUs, 400, "Range is not numeric", uid, EMPTY_BODY);
+                return;
+            } catch (Exception e) {
+                sendResponse(requestUs, 500, "Unknown error", uid, EMPTY_BODY);
+                return;
+            } 
             
             
             byte[] body = byteBuffer.toByteArray();
             debug("Sent sha1 is " + sha1sum(body));
-            sendResponse(us, 200, "OK", uid, body);
+            sendResponse(requestUs, 200, "OK", uid, body);
             
             
         } else {
             debug("Unknown method / url " + requestMethod + " " + url);
-            sendResponse(us, 400, "OK", uid, EMPTY_BODY);
+            sendResponse(requestUs, 400, "OK", uid, EMPTY_BODY);
         }
     }
 
@@ -330,7 +335,7 @@ public class OtrDataHandler implements DataHandler {
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
         message.setFrom(us);
-        debug("send response");
+        debug("send response");        
         mChatSession.sendDataAsync(message, true, data);
     }
 
