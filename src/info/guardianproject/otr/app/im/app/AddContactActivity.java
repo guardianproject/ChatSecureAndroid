@@ -106,7 +106,7 @@ public class AddContactActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mListSpinner.setAdapter(adapter);
         mListSpinner.setSelection(initSelection);
-
+        
         mInviteButton = (Button) findViewById(R.id.invite);
         mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
         mInviteButton.setOnClickListener(mButtonHandler);
@@ -137,8 +137,13 @@ public class AddContactActivity extends Activity {
     private void resolveIntent(Intent intent) {
         mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
-        mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
-                ImpsConfigNames.DEFAULT_DOMAIN);
+        //mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
+          //      ImpsConfigNames.DEFAULT_DOMAIN);
+        
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+        
+        mDefaultDomain = settings.getDomain();//get domain of current user
     }
 
     void inviteBuddies() {
