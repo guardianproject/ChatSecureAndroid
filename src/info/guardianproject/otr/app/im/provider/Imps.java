@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Handler;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -1885,6 +1886,7 @@ public class Imps {
         public static class QueryMap extends ContentQueryMap {
             private ContentResolver mContentResolver;
             private long mProviderId;
+            private Exception mStacktrace;
 
             public QueryMap(ContentResolver contentResolver, boolean keepUpdated,
                     Handler handlerForUpdateNotifications) {
@@ -1902,8 +1904,21 @@ public class Imps {
                
                 mContentResolver = contentResolver;
                 mProviderId = providerId;
+                mStacktrace = new Exception();
             }
-
+            @Override
+            public synchronized void close() {
+                mStacktrace = null;
+                super.close();
+            }
+            
+            @Override
+            protected void finalize() throws Throwable {
+                if (mStacktrace != null) {
+                    Log.w("GB.Imps", "QueryMap cursor not closed before finalize", mStacktrace);
+                }
+                super.finalize();
+            }
             /**
              * Set if the GTalk service should automatically connect to server.
              * 

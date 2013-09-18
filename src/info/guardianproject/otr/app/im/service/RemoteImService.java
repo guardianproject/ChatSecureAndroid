@@ -236,6 +236,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         @SuppressWarnings("finally")
         @Override
         public long sendHeartbeat() {
+            Debug.onHeartbeat();
             try {
                 if (mNeedCheckAutoLogin
                     && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
