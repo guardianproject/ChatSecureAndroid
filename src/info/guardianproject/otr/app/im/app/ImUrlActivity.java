@@ -112,13 +112,17 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                         cr, mProviderId, false /* don't keep updated */, null /* no handler */);
                 
-                if (mHost.contains(settings.getDomain()))
-                {
-                    mConn = conn;
-                    providerId = connProviderId;
-                    accountId = conn.getAccountId();
-                    
-                    break;
+                try {
+                    if (mHost.contains(settings.getDomain()))
+                    {
+                        mConn = conn;
+                        providerId = connProviderId;
+                        accountId = conn.getAccountId();
+                        
+                        break;
+                    }
+                } finally {
+                    settings.close();
                 }
                 
             } catch (RemoteException e) {
