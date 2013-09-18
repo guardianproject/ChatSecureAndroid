@@ -257,23 +257,24 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 return;
             
             FileInputStream fis = null;
-            
+            OpenSSLPBEInputStream encIS = null;
             try {
 
                 fis = new FileInputStream(mStoreFile);
 
                 
                 // Decrypt the bytes
-                OpenSSLPBEInputStream encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
                 
                     mProperties.load(encIS);
                 
             } catch (FileNotFoundException fnfe) {
                 OtrDebugLogger.log("Properties store file not found: First time?");
                 mStoreFile.getParentFile().mkdirs();
-
-
-            } 
+            } finally {
+                encIS.close();
+                fis.close();
+            }
         }
         
         public void setProperty(String id, byte[] value) {
