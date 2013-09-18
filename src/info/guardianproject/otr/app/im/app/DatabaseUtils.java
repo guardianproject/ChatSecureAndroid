@@ -131,7 +131,7 @@ public class DatabaseUtils {
         
     }
     
-    public static boolean doesHashExist(ContentResolver resolver, Uri queryUri, 
+    public static boolean doesAvatarHashExist(ContentResolver resolver, Uri queryUri, 
             String jid, String hash) {
 
         StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
@@ -144,7 +144,14 @@ public class DatabaseUtils {
 
         //return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
         
-        return resolver.query(queryUri, null, buf.toString(), selectionArgs, null).getCount() > 0;
+        Cursor cursor = resolver.query(queryUri, null, buf.toString(), selectionArgs, null);
+        if (cursor == null)
+            return false;
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
     }
     
     public static void insertAvatarBlob(ContentResolver resolver, Uri updateUri, long providerId, long accountId, byte[] data, String hash,

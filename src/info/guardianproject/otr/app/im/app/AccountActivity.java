@@ -282,19 +282,18 @@ public class AccountActivity extends Activity {
             Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                     cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
-            mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
-                                   + settings.getDomain();
-            mEditUserAccount.setText(mOriginalUserAccount);
-            mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
-
-            mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
-
-            mUseTor.setChecked(settings.getUseTor());
-            
-            mBtnDelete.setVisibility(View.VISIBLE);
-            
-            cursor.close();
-            settings.close();
+            try {
+                mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
+                                       + settings.getDomain();
+                mEditUserAccount.setText(mOriginalUserAccount);
+                mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
+                mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
+                mUseTor.setChecked(settings.getUseTor());
+                mBtnDelete.setVisibility(View.VISIBLE);
+            } finally {
+                settings.close();
+                cursor.close();
+            }
 
 
         } else {
@@ -505,24 +504,25 @@ public class AccountActivity extends Activity {
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
-        if (useTor && (!orbotHelper.isOrbotInstalled()))
-        {
-            //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
-            
-            orbotHelper.promptToInstall(this);
-            
-            mUseTor.setChecked(false);
-            settings.setUseTor(false);
-        }
-        else
-        {
-            settings.setUseTor(useTor);
-        }
+        try {
+            if (useTor && (!orbotHelper.isOrbotInstalled()))
+            {
+                //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
                 
-        settingsForDomain(settings.getDomain(),settings.getPort());
-             
-        settings.close();
-      
+                orbotHelper.promptToInstall(this);
+                
+                mUseTor.setChecked(false);
+                settings.setUseTor(false);
+            }
+            else
+            {
+                settings.setUseTor(useTor);
+            }
+            
+            settingsForDomain(settings.getDomain(),settings.getPort());
+        } finally {
+            settings.close();
+        }
     }
 /*
     private void getOTRKeyInfo() {
@@ -621,6 +621,14 @@ public class AccountActivity extends Activity {
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
+        try {
+            settingsForDomain(domain, port, settings);
+        } finally {
+            settings.close();
+        }
+    }
+
+    private void settingsForDomain(String domain, int port, Imps.ProviderSettings.QueryMap settings) {
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
             // http://code.google.com/apis/talk/open_communications.html
@@ -705,8 +713,6 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         }
-        
-        
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -999,22 +1005,23 @@ public class AccountActivity extends Activity {
             
             @Override
             protected String doInBackground(String... params) {
+                Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+
                 try {
                                         
                     settingsForDomain(mDomain, mPort);
                     
-                    Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                            getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
-
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
                     xmppConn.registerAccount(settings, params[0], params[1]);
                     // settings closed in registerAccount
                 } catch (Exception e) {
-                   LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
+                    LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
                    
                     return e.getLocalizedMessage();
-                    
+                } finally {
+                    settings.close();
                 }
                 return null;
               }

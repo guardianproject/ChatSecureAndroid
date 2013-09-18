@@ -350,7 +350,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     {
         try {
             
-            if ((!DatabaseUtils.doesHashExist(resolver,  Imps.Avatars.CONTENT_URI, jid, hash)))
+            if ((!DatabaseUtils.doesAvatarHashExist(resolver,  Imps.Avatars.CONTENT_URI, jid, hash)))
             {
                 debug(ImApp.LOG_TAG, "loading vcard for: " + jid);
                 
