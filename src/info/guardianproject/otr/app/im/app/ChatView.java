@@ -674,7 +674,26 @@ public class ChatView extends LinearLayout {
            
         
     }
+    
   
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+       
+        
+        if (event.getPointerCount() > 1 && event.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            
+
+            ChatView.this.closeChatSession();
+            mActivity.refreshChatViews();
+            
+            return true;
+        }
+        
+        return false;
+        
+    }
+
     public void startListening() {
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
@@ -691,10 +710,11 @@ public class ChatView extends LinearLayout {
     }
 
     public void stopListening() {
-        Cursor cursor = getMessageCursor();
-        if (cursor != null && (!cursor.isClosed())) {
-            cursor.close();
-        }
+        //Cursor cursor = getMessageCursor();
+        //if (cursor != null && (!cursor.isClosed())) {
+         //   cursor.close();
+       // }
+        
         cancelRequery();
         if (mViewType == VIEW_TYPE_CHAT && mCurrentChatSession != null) {
             try {
@@ -862,8 +882,8 @@ public class ChatView extends LinearLayout {
         
         mLastChatId = contactId;
         
-        if (mCursor != null) {
-            mCursor.deactivate();
+        if (mCursor != null && (!mCursor.isClosed())) {
+            mCursor.close();
         }
         
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, contactId);

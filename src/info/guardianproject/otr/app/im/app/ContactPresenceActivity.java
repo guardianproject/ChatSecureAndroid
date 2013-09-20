@@ -19,17 +19,16 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
-import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,10 +36,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -51,18 +48,16 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ContactPresenceActivity extends ThemeableActivity {
+public class ContactPresenceActivity extends Activity {
 
     private String remoteFingerprint;
     private boolean remoteFingerprintVerified = false;
@@ -93,6 +88,8 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         setContentView(R.layout.contact_presence_activity);
 
+        enableButtons ();
+        
         Intent i = getIntent();
         mUri = i.getData();
         if (mUri == null) {
@@ -175,11 +172,11 @@ public class ContactPresenceActivity extends ThemeableActivity {
         
         
 
-
-        ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
+        
         TextView txtName = (TextView) findViewById(R.id.txtName);
+        TextView txtAddress = (TextView) findViewById(R.id.txtAddress);
+        
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
-        TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
 
         ContentResolver cr = getContentResolver();
         Cursor c = cr.query(mUri, null, null, null, null);
@@ -210,7 +207,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
             
             if (avatar != null)
             {                
-                imgAvatar.setVisibility(View.GONE);
                 
                 getWindow().setBackgroundDrawable(avatar);
                 
@@ -218,22 +214,23 @@ public class ContactPresenceActivity extends ThemeableActivity {
                
                 
             }
-            else
-            {
-                imgAvatar.setVisibility(View.GONE);
-            }
 
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             
             if (nickname == null)
                 nickname = address;
-            else if (!nickname.equals(address))
-                nickname += "\n" + address;
-             
+            
             if (nickname != null)
                 txtName.setText(nickname);
 
+            if (address != null)
+                txtAddress.setText(address);
+            
             String statusString = brandingRes.getString(PresenceUtils.getStatusStringRes(status));
+            if (!TextUtils.isEmpty(customStatus)) {
+                statusString = "\"" + customStatus + "\"";
+            } 
+            
             SpannableString s = new SpannableString("+ " + statusString);
             Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(status));
             statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
@@ -241,12 +238,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
             s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             txtStatus.setText(s);
 
-            if (!TextUtils.isEmpty(customStatus)) {
-                txtCustomStatus.setVisibility(View.VISIBLE);
-                txtCustomStatus.setText("\"" + customStatus + "\"");
-            } else {
-                txtCustomStatus.setVisibility(View.GONE);
-            }
             
            
         }
@@ -262,7 +253,15 @@ public class ContactPresenceActivity extends ThemeableActivity {
             txtFingerprintRemote.setVisibility(View.VISIBLE);
             lblFingerprintRemote.setVisibility(View.VISIBLE);
             
-            txtFingerprintRemote.setText(remoteFingerprint);
+            StringBuffer spacedFingerprint = new StringBuffer();
+            
+            for (int i = 0; i + 8 <= remoteFingerprint.length(); i+=8)
+            {
+                spacedFingerprint.append(remoteFingerprint.subSequence(i,i+8));
+                spacedFingerprint.append(' ');
+            }
+            
+            txtFingerprintRemote.setText(spacedFingerprint.toString());
             
             if (remoteFingerprintVerified) {
                 lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
@@ -270,13 +269,14 @@ public class ContactPresenceActivity extends ThemeableActivity {
             } else
                 txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_yellow));
 
-            txtFingerprintRemote.setTextColor(Color.BLACK);
 
             
         } else {
             txtFingerprintRemote.setVisibility(View.GONE);
             lblFingerprintRemote.setVisibility(View.GONE);
         }
+        
+        enableButtons();
 
     }
 
@@ -314,10 +314,8 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         try {
 
-            IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
-
-            IOtrChatSession otrChatSession = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
-            otrChatSession.verifyKey(remoteAddress);
+            IOtrKeyManager otrKeyMgr = ((ImApp)getApplication()).getRemoteImService().getOtrKeyManager();
+            otrKeyMgr.verifyUser(remoteAddress);
 
             updateUI();
             
@@ -332,11 +330,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
     }
 
-    public void displayQRCode(String text) {
-        IntentIntegrator.shareText(this, text);
-        
-        
-    }
+    
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
@@ -354,41 +348,63 @@ public class ContactPresenceActivity extends ThemeableActivity {
         }
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (remoteFingerprint != null) {
-            MenuInflater inflater = getSupportMenuInflater();
-            inflater.inflate(R.menu.contact_info_menu, menu);
+    private void enableButtons ()
+    {
+        Button btnVerifyManual = (Button)findViewById(R.id.btnVerifyManual);
+        Button btnVerifyScan = (Button)findViewById(R.id.btnVerifyScan);
+        Button btnVerifyQuestion = (Button)findViewById(R.id.btnVerifyQuestion);
+        
+        if (remoteFingerprint == null)
+        {
+            btnVerifyManual.setVisibility(View.GONE);
+            btnVerifyScan.setVisibility(View.GONE);
+            btnVerifyQuestion.setVisibility(View.GONE);
+            
         }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_scan:
-            startScan();
-            return true;
-
-        case R.id.menu_fingerprint:
-            if (remoteFingerprint != null)
-                displayQRCode(localFingerprint);
-            return true;
-
-        case R.id.menu_verify_fingerprint:
-            if (remoteFingerprint != null)
-                confirmVerify();
-            return true;
-
-        case R.id.menu_verify_secret:
-            if (remoteFingerprint != null)
-                initSmpUI();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+        else
+        {
+            btnVerifyManual.setVisibility(View.VISIBLE);
+            btnVerifyScan.setVisibility(View.VISIBLE);
+            btnVerifyQuestion.setVisibility(View.VISIBLE);
+            
+            btnVerifyManual.setOnClickListener(new OnClickListener (){
+    
+                @Override
+                public void onClick(View v) {
+                    if (remoteFingerprint != null)
+                        confirmVerify();
+                    
+                    
+                }
+                
+                
+            });
+            
+            
+            btnVerifyScan.setOnClickListener(new OnClickListener (){
+    
+                @Override
+                public void onClick(View v) {
+                    startScan();
+                }
+                
+                
+            });
+            
+            btnVerifyQuestion.setOnClickListener(new OnClickListener (){
+    
+                @Override
+                public void onClick(View v) {
+                    if (remoteFingerprint != null)
+                        initSmpUI();
+                }
+                
+                
+            });
+        } 
+     }
+        
     private void initSmpUI() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
@@ -416,9 +432,14 @@ public class ContactPresenceActivity extends ThemeableActivity {
     private void initSmp(String question, String answer) {
         IOtrChatSession iOtrSession;
         try {
-            iOtrSession = mApp.getChatSession(providerId, remoteAddress).getOtrChatSession();
-            iOtrSession.initSmpVerification(question, answer);
-
+            IChatSession session = mApp.getChatSession(providerId, remoteAddress);
+            
+            if (session != null)
+            {
+                iOtrSession = session.getOtrChatSession();
+                iOtrSession.initSmpVerification(question, answer);
+            }
+            
         } catch (RemoteException e) {
             Log.e(TAG, "error init SMP", e);
 

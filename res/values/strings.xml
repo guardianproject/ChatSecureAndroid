@@ -126,10 +126,10 @@
     <string name="menu_resend">Resend</string>
 
 	<!-- Strings for the contact info screen -->
-	<string name="menu_scan">Scan Fingerprint</string>
+	<string name="menu_scan">Scan QR</string>
 	<string name="menu_fingerprint">Your Fingerprint</string>
-	<string name="menu_verify_fingerprint">Verify Fingerprint</string>
-	<string name="menu_verify_secret">Verify Secret</string>	
+	<string name="menu_verify_fingerprint">Manual</string>
+	<string name="menu_verify_secret">Question</string>	
 
     <!-- This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
@@ -648,9 +648,8 @@
 	<string name="account_setup_error_connectivity">ChatSecure encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
     
     
-        <string name="label_fingerprint_remote">Their Fingerprint</string>
+        <string name="label_fingerprint_remote">Security Fingerprint</string>
     
-    <string name="label_fingerprint_local">Your Fingerprint</string>
     <string name="menu_sign_in">Sign In</string>
     <string name="menu_gen_key">Regen Key</string>
     
@@ -806,10 +805,10 @@
     <string name="menu_new_group_chat">Group Chat</string>
     <string name="create_or_join_group_chat">Create or Join Group Chat</string>
     <string name="connect">Connect</string>
-    <string name="their_fingerprint_verified_">Their Fingerprint (Verified)</string>
-    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this key?</string>
-    <string name="verify_key_">Verify key?</string>
-    <string name="the_remote_key_fingerprint_has_been_verified_">The remote key fingerprint has been verified!</string>
+    <string name="their_fingerprint_verified_">Security Fingerprint (Verified)</string>
+    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this fingerprint?</string>
+    <string name="verify_key_">Verify Fingerprint?</string>
+    <string name="the_remote_key_fingerprint_has_been_verified_">The remote fingerprint has been verified!</string>
     
     <string name="menu_panic">Panic</string>
     
@@ -828,5 +827,7 @@
     <string name="err_otr_share_no_encryption">You must enable encryption to share files</string>
 
     <string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
+    
+    <string name="menu_sidebar_qr">Fingerprint</string>
 </resources>
 

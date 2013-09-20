@@ -81,6 +81,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.collect.Maps;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -213,6 +214,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         Button btnDrawerPanic = (Button) findViewById(R.id.btnDrawerPanic);
         Button btnDrawerGroupChat = (Button) findViewById(R.id.btnDrawerGroupChat);
         Button btnDrawerAddContact = (Button) findViewById(R.id.btnDrawerAddContact);
+        Button btnDrawerFingerprint = (Button) findViewById(R.id.btnDrawerQRCode);
          
         
         btnDrawerAccount.setOnClickListener(new OnClickListener ()
@@ -295,7 +297,17 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         
         
-       
+        btnDrawerFingerprint.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+               
+                
+                displayQRCode ();
+            }
+            
+        });
     }
     
     private void showInviteContactDialog ()
@@ -310,6 +322,34 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             startActivity(i);
         }
     }
+    
+    private void displayQRCode ()
+    {
+        
+        try
+        {
+            if ( getCurrentChatSession() != null
+                    &&  getCurrentChatSession().getOtrChatSession() != null)
+            {
+                
+            
+                String localFingerprint = getCurrentChatSession().getOtrChatSession().getLocalFingerprint();
+                
+                if (localFingerprint != null)
+                 {
+                    IntentIntegrator.shareText(this, localFingerprint);
+                    return;
+                 }
+                
+            }
+            
+        }
+        catch (RemoteException re)
+        {}
+        
+        //did not work
+        Toast.makeText(this, "Please start a secure conversation before scanning codes", Toast.LENGTH_LONG).show();
+     }
 
     @Override
     protected void onNewIntent(Intent intent) {
