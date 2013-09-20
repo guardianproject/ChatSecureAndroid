@@ -27,6 +27,7 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -51,12 +52,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.FileObserver;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.common.collect.Sets;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -360,7 +359,11 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         generateLocalKeyPair(accountID);
     }
 
-    public void regenerateLocalPublicKey(KeyFactory factory, String accountID, DSAPrivateKey privKey) {
+    public void regenerateLocalPublicKey(KeyFactory factory, String fullUserId, DSAPrivateKey privKey) {
+        
+        String userId = Address.stripResource(fullUserId);
+
+        
         BigInteger x = privKey.getX();
         DSAParams params = privKey.getParams();
         BigInteger y = params.getG().modPow(x, params.getP());
@@ -371,12 +374,14 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
-        storeLocalPublicKey(accountID, pubKey);
+        storeLocalPublicKey(userId, pubKey);
     }
     
-    public void generateLocalKeyPair(String accountID) {
+    public void generateLocalKeyPair(String fullUserId) {
 
-        OtrDebugLogger.log("generating local key pair for: " + accountID);
+        String userId = Address.stripResource(fullUserId);
+
+        OtrDebugLogger.log("generating local key pair for: " + userId);
 
         KeyPair keyPair;
         try {
@@ -390,31 +395,34 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             return;
         }
 
-        OtrDebugLogger.log("SUCCESS! generating local key pair for: " + accountID);
+        OtrDebugLogger.log("SUCCESS! generating local key pair for: " + userId);
 
         // Store Private Key.
         PrivateKey privKey = keyPair.getPrivate();
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privKey.getEncoded());
 
-        this.store.setProperty(accountID + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
+        this.store.setProperty(userId + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
 
         // Store Public Key.
         PublicKey pubKey = keyPair.getPublic();
-        storeLocalPublicKey(accountID, pubKey);
+        storeLocalPublicKey(userId, pubKey);
         
 
         store.save();
     }
 
-    private void storeLocalPublicKey(String accountID, PublicKey pubKey) {
+    private void storeLocalPublicKey(String fullUserId, PublicKey pubKey) {
+        
+        String userId = Address.stripResource(fullUserId);
+
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
-        this.store.setProperty(accountID + ".publicKey", x509EncodedKeySpec.getEncoded());
+        this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
 
         // Stash fingerprint for consistency.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            this.store.setPropertyHex(accountID + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
         } catch (OtrCryptoException e) {
             e.printStackTrace();
         }
@@ -467,7 +475,10 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         return getLocalFingerprint(sessionID.getAccountID());
     }
 
-    public String getLocalFingerprint(String userId) {
+    public String getLocalFingerprint(String fullUserId) {
+        
+        String userId = Address.stripResource(fullUserId);
+
         KeyPair keyPair = loadLocalKeyPair(userId);
 
         if (keyPair == null)
@@ -492,21 +503,24 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         return getRemoteFingerprint(sessionID.getFullUserID());
     }
 
-    public String getRemoteFingerprint(String userId) {
-        if (!Address.hasResource(userId))
+    public String getRemoteFingerprint(String fullUserId) {
+
+        if (!Address.hasResource(fullUserId))
             return null;
-        byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
+        
+        byte[] fingerprint = this.store.getPropertyHexBytes(fullUserId + ".fingerprint");
         if (fingerprint != null) {
             // If we have a fingerprint stashed, assume it is correct.
             return new String(Hex.encode(fingerprint, 0, fingerprint.length));
         }
-        PublicKey remotePublicKey = loadRemotePublicKeyFromStore(userId);
+        
+        PublicKey remotePublicKey = loadRemotePublicKeyFromStore(fullUserId);
         if (remotePublicKey == null)
             return null;
         try {
             // Store the fingerprint, for posterity.
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
-            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setPropertyHex(fullUserId + ".fingerprint", Hex.decode(fingerprintString));
 
             store.save();
             return fingerprintString;
@@ -516,18 +530,39 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         }
     }
 
+    public String[] getRemoteFingerprints(String userId) {
+
+        Enumeration<Object> keys = store.getKeys();
+        
+        ArrayList<String> results = new ArrayList<String>();
+        
+        while (keys.hasMoreElements())
+        {
+            String key = (String)keys.nextElement();
+            
+            if (key.startsWith(userId + '/') && key.endsWith(".fingerprint"))
+            {
+            
+                byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
+                if (fingerprint != null) {
+                    // If we have a fingerprint stashed, assume it is correct.
+                    results.add(new String(Hex.encode(fingerprint, 0, fingerprint.length)));
+                }
+                
+            }
+             
+        }
+        
+        String[] resultsString = new String[results.size()];
+        return results.toArray(resultsString);
+    }
+    
     public boolean isVerified(SessionID sessionID) {
         if (sessionID == null)
             return false;
         
         String userId = sessionID.getUserID();
         String fullUserID = sessionID.getFullUserID();
-        
-        if (Address.hasResource(userId))
-            return false;
-
-        if (!Address.hasResource(fullUserID))
-            return false;
         
         String remoteFingerprint =getRemoteFingerprint(fullUserID);
         
@@ -542,14 +577,19 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         }
     }
 
-    public boolean isVerifiedUser(String fullUserId) {
-        if (fullUserId == null)
-            return false;
+    public boolean isVerifiedUser(String fullUserId) {        
 
         String userId = Address.stripResource(fullUserId);
-        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(fullUserId));
+        String remoteFingerprint = getRemoteFingerprint(fullUserId);
+        
+        if (remoteFingerprint != null)
+        {
+            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, remoteFingerprint);
 
-        return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+            return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+        }
+        else
+            return false;
     }
 
     public KeyPair loadLocalKeyPair(SessionID sessionID) {
@@ -560,15 +600,17 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         return loadLocalKeyPair(accountID);
     }
 
-    private KeyPair loadLocalKeyPair(String accountID) {
+    private KeyPair loadLocalKeyPair(String fullUserId) {
         PublicKey publicKey;
         PrivateKey privateKey;
+
+        String userId = Address.stripResource(fullUserId);
 
 
         try {
             // Load Private Key.
 
-            byte[] b64PrivKey = this.store.getPropertyBytes(accountID + ".privateKey");
+            byte[] b64PrivKey = this.store.getPropertyBytes(userId + ".privateKey");
             if (b64PrivKey == null)
                 return null;
 
@@ -580,11 +622,11 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             privateKey = keyFactory.generatePrivate(privateKeySpec);
 
             if (REGENERATE_LOCAL_PUBLIC_KEY) {
-                regenerateLocalPublicKey(keyFactory, accountID, (DSAPrivateKey)privateKey);
+                regenerateLocalPublicKey(keyFactory, userId, (DSAPrivateKey)privateKey);
             }
             
             // Load Public Key.
-            byte[] b64PubKey = this.store.getPropertyBytes(accountID + ".publicKey");
+            byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
             if (b64PubKey == null)
                 return null;
 
@@ -606,11 +648,12 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         return loadRemotePublicKeyFromStore(sessionID.getFullUserID());
     }
 
-    private PublicKey loadRemotePublicKeyFromStore(String userId) {
-        if (!Address.hasResource(userId))
-           return null;
+    private PublicKey loadRemotePublicKeyFromStore(String fullUserId) {
+
+        if (!Address.hasResource(fullUserId))
+            return null;
         
-        byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
+        byte[] b64PubKey = this.store.getPropertyBytes(fullUserId + ".publicKey");
         if (b64PubKey == null) {
             return null;
 
@@ -639,20 +682,20 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
-        String userId = sessionID.getFullUserID();
-        if (!Address.hasResource(userId))
+        String fullUserId = sessionID.getFullUserID();
+        if (!Address.hasResource(fullUserId))
             return;
         
-        this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
+        this.store.setProperty(fullUserId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
         // and is useful for transferring rosters to other apps.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            String verifiedToken = buildPublicKeyVerifiedId(userId, fingerprintString.toLowerCase());
+            String verifiedToken = buildPublicKeyVerifiedId(fullUserId, fingerprintString.toLowerCase());
             if (!this.store.hasProperty(verifiedToken))
                 this.store.setProperty(verifiedToken, false);
             
-            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setPropertyHex(fullUserId + ".fingerprint", Hex.decode(fingerprintString));
             store.save();
         } catch (OtrCryptoException e) {
             e.printStackTrace();
@@ -666,28 +709,21 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         if (!isVerified(sessionID))
             return;
 
-        String userId = sessionID.getUserID();
-
-        store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)), false);
-        store.save();
+        unverifyUser(sessionID.getFullUserID());
         
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
 
     }
 
-    public void unverifyUser(String userId) {
-        if (userId == null)
+    public void unverifyUser(String fullUserId) {
+        
+        if (!isVerifiedUser(fullUserId))
             return;
 
-        if (!isVerifiedUser(userId))
-            return;
-
-        store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), false);
+        store.setProperty(buildPublicKeyVerifiedId(fullUserId, getRemoteFingerprint(fullUserId)), false);
         store.save();
         
-        //	for (OtrKeyManagerListener l : listeners)
-        //	l.verificationStatusChanged(sessionID);
 
     }
 
@@ -697,15 +733,9 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         if (this.isVerified(sessionID))
             return;
-
-        String userId = sessionID.getUserID();
-
-        this.store
-                .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)), true);
-        store.save();
         
-        for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID);
+        verifyUser(sessionID.getFullUserID());
+
     }
 
     public void remoteVerifiedUs(SessionID sessionID) {
