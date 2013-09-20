@@ -23,6 +23,7 @@ import java.util.Map;
 
 import android.content.ContentResolver;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 public class LoopbackConnection extends ImConnection {
 
@@ -273,6 +274,7 @@ public class LoopbackConnection extends ImConnection {
             dest.writeString(address);
             dest.writeString(resource);
         }
+
 
     }
 

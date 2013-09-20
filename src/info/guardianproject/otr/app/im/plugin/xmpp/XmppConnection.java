@@ -1513,7 +1513,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public String normalizeAddress(String address) {
-            return address.split("/")[0].toLowerCase();
+            return address.split("/")[0];
         }
 
         @Override
@@ -1799,11 +1799,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     debug(TAG, "got presence updated for NEW user: "
                             + contact.getAddress().getAddress() + " presence:" + type);
-                 
                 
-                    mContactListManager.getDefaultContactList().addContact(xaddress.getAddress());
+                    
+                //    mContactListManager.getDefaultContactList().addContact(xaddress.getAddress());
                 
-                    debug(TAG, "added user to default list: " + mContactListManager.getDefaultContactList().getName());
+                  //  debug(TAG, "added user to default list: " + mContactListManager.getDefaultContactList().getName());
                 
                 }
                 catch (Exception ioe)

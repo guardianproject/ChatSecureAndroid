@@ -25,6 +25,7 @@ import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrDataHandler.Transfer;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IDataListener;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -109,17 +110,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mChatSessionManager = (ChatSessionManagerAdapter) connection.getChatSessionManager();
 
         mListenerAdapter = new ListenerAdapter();
-
-        mOtrChatManager = service.getOtrChatManager();
         
-        if (mOtrChatManager != null)
-        {
-            mDataHandler = new OtrDataHandler(mChatSession);
-            mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), mOtrChatManager);
-            // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
-            mChatSession.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
-            mChatSession.setOtrChatManager(mOtrChatManager);
-        }
+        getOtrChatSession();//setup first time
 
         ImEntity participant = mChatSession.getParticipant();
 
@@ -130,8 +122,23 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
     }
 
+    
     public IOtrChatSession getOtrChatSession() {
 
+        if (mOtrChatManager == null)
+        {
+            mOtrChatManager = service.getOtrChatManager();
+            
+            if (mOtrChatManager != null)
+            {
+                mDataHandler = new OtrDataHandler(mChatSession);
+                mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), mOtrChatManager);
+                // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
+                mChatSession.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
+                mChatSession.setOtrChatManager(mOtrChatManager);
+            }
+        }
+        
         return mOtrChatSession;
     }
 
@@ -192,6 +199,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             return result;
         } else {
+            
             return new String[] { mChatSession.getParticipant().getAddress().getAddress() };
         }
     }
@@ -585,7 +593,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             insertOrUpdateChat(body);
             
-            insertMessageInDb(nickname, body, time, msg.getType());
+            insertMessageInDb(username, body, time, msg.getType());
 
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {

@@ -602,8 +602,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 do_loadContactLists();
             }
 
-            String name = presence.getFirstName();
-            String address = presence.getServiceName();
+            String name = presence.getNick();
+            String address = presence.getJID();
 
             mContactListManager.doAddContact(name, address);
 

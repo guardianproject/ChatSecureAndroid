@@ -2,6 +2,7 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import info.guardianproject.otr.app.im.engine.Address;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 public class XmppAddress extends Address {
 
@@ -9,14 +10,7 @@ public class XmppAddress extends Address {
     private String mScreenName;
     private String mResource;
     
-    public XmppAddress() {
-        
-    }
-    public XmppAddress(String name, String address, String resource) {
-        mScreenName = name;
-        mAddress = address;
-        mResource = resource;
-    }
+    public XmppAddress() {}
     
     public XmppAddress(String name, String address) {
         mScreenName = name;

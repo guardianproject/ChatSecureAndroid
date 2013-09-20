@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * An abstract representation of the address to any addressable entities such as
