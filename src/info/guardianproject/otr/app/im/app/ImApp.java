@@ -207,6 +207,13 @@ public class ImApp extends Application {
         sImApp = this;
     }
 
+    public ImApp(Context context) {
+        super();
+        mConnections = new HashMap<Long, IImConnection>();
+        mApplicationContext = context;
+        sImApp = this;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -348,21 +355,23 @@ public class ImApp extends Application {
         startImServiceIfNeed(false);
     }
 
-    public synchronized void startImServiceIfNeed(boolean auto) {
+    public synchronized void startImServiceIfNeed(boolean isBoot) {
         if (Log.isLoggable(LOG_TAG, Log.DEBUG))
             log("start ImService");
 
         Intent serviceIntent = new Intent();
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
-        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, isBoot);
         
         if (mImService == null)
         {
             mApplicationContext.startService(serviceIntent);
-            mConnectionListener = new MyConnListener(new Handler());
+            if (!isBoot) {
+                mConnectionListener = new MyConnListener(new Handler());
+            }
         }
         
-        if (mImServiceConn != null)
+        if (mImServiceConn != null && !isBoot)
             mApplicationContext
                 .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
 

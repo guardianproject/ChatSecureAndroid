@@ -3,15 +3,12 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.security.GeneralSecurityException;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -136,17 +133,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         try {
             String passphrase = mNewPassphrase.getText().toString();
             if (passphrase.isEmpty()) {
-                // Simulate cacheword opening.  The null password will be tried.
-                String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
-    
-                Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-    
-                uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
-    
-                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null) {
-                    cursor.close();
-    
+                // Create DB with empty passphrase
+                if (Imps.setEmptyPassphrase(this, false)) {
+                    // Simulate cacheword opening
                     onCacheWordOpened();
                 }  else {
                     // TODO failed
