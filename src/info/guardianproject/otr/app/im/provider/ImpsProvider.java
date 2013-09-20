@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -1032,12 +1033,13 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         return true;
     }
 
-    private synchronized DatabaseHelper initDBHelper(String pkey) throws Exception {
-
-
-        
+    private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
         if (mDbHelper == null && pkey != null) {
             Context ctx = getContext();
+            String path = ctx.getDatabasePath(mDatabaseName).getPath();
+            if (noCreate && !new File(path).exists()) {
+                return null;
+            }
 
             boolean inMemoryDb = false;
             
@@ -1162,11 +1164,17 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         String limit = null;
 
         String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
+        boolean noCreate = "1".equals(url.getQueryParameter(ImApp.NO_CREATE_KEY));
         
         try {
-            initDBHelper(pkey);
+            initDBHelper(pkey, noCreate);
         } catch (Exception e) {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
+            return null;
+        }
+        
+        if (mDbHelper == null) {
+            // Failed to open
             return null;
         }
         
@@ -1532,7 +1540,14 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             return null;
 
         // run the query
-        final SQLiteDatabase db = getDBHelper().getReadableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = getDBHelper().getReadableDatabase();
+        } catch (net.sqlcipher.database.SQLiteException e) {
+            // Failed to actually open - the passphrase must have been wrong - reset the helper
+            mDbHelper = null;
+            throw e;
+        }
         Cursor c = null;
 
         try {
@@ -3577,7 +3592,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         {
            
             try {
-                this.initDBHelper(pkey);
+                this.initDBHelper(pkey, false);
             } catch (Exception e) {
                Log.e(ImApp.LOG_TAG,"unable to init cacheword in IMPSprovider",e);
             }

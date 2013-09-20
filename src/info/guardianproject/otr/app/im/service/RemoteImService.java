@@ -315,7 +315,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
 
     private void autoLogin() {
-        
+        // Try empty passphrase.  We can't autologin if this fails.
+        if (!Imps.setEmptyPassphrase(this, true)) {
+            debug("Cannot autologin with non-empty passphrase");
+            return;
+        }
         
         if (!mConnections.isEmpty()) {
             // This can happen because the UI process may be restarted and may think that we need

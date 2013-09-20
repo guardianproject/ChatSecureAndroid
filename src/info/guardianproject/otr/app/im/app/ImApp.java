@@ -94,6 +94,7 @@ public class ImApp extends Application {
     public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
     
     public static final String CACHEWORD_PASSWORD_KEY = "pkey";
+    public static final String NO_CREATE_KEY = "nocreate";
     
     private Locale locale = null;
 
@@ -203,6 +204,13 @@ public class ImApp extends Application {
         super();
         mConnections = new HashMap<Long, IImConnection>();
         mApplicationContext = this;
+        sImApp = this;
+    }
+
+    public ImApp(Context context) {
+        super();
+        mConnections = new HashMap<Long, IImConnection>();
+        mApplicationContext = context;
         sImApp = this;
     }
 
@@ -347,21 +355,23 @@ public class ImApp extends Application {
         startImServiceIfNeed(false);
     }
 
-    public synchronized void startImServiceIfNeed(boolean auto) {
+    public synchronized void startImServiceIfNeed(boolean isBoot) {
         if (Log.isLoggable(LOG_TAG, Log.DEBUG))
             log("start ImService");
 
         Intent serviceIntent = new Intent();
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
-        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, auto);
+        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, isBoot);
         
         if (mImService == null)
         {
             mApplicationContext.startService(serviceIntent);
-            mConnectionListener = new MyConnListener(new Handler());
+            if (!isBoot) {
+                mConnectionListener = new MyConnListener(new Handler());
+            }
         }
         
-        if (mImServiceConn != null)
+        if (mImServiceConn != null && !isBoot)
             mApplicationContext
                 .bindService(serviceIntent, mImServiceConn, Context.BIND_AUTO_CREATE);
 
@@ -416,17 +426,32 @@ public class ImApp extends Application {
     
   
     private CacheWordActivityHandler mCacheWord;
+    private boolean mNoCacheWord;
 
-    public void setCacheWord ( CacheWordActivityHandler cacheWord)
+    public boolean isCacheWord() {
+        return mCacheWord != null;
+    }
+    
+    public void setCacheWord(CacheWordActivityHandler cacheWord)
     {
+        if (mNoCacheWord) {
+            throw new IllegalStateException("CacheWord state conflict");
+        }
         mCacheWord = cacheWord;
+    }
+    
+    public void setNoCacheWord() {
+        if (mCacheWord != null) {
+            throw new IllegalStateException("CacheWord state conflict");
+        }
+        mNoCacheWord = true;
     }
     
     public void initOtrStoreKey ()
     {
         if ( getRemoteImService() != null)
         {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mNoCacheWord ? new byte[32] : mCacheWord.getEncryptionKey());
     
             try {
                getRemoteImService().unlockOtrStore(pkey);
@@ -445,7 +470,7 @@ public class ImApp extends Application {
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
             
-            if (mCacheWord != null && mCacheWord.getEncryptionKey() != null)
+            if (mNoCacheWord || (mCacheWord != null && mCacheWord.getEncryptionKey() != null))
                 initOtrStoreKey();
 
             synchronized (mQueue) {

@@ -19,11 +19,9 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.AboutActivity;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -38,12 +36,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -57,7 +51,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private Cursor mProviderCursor;
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
-    private String mDefaultLocale;
     private SignInHelper mSignInHelper;
 
     private boolean mDoSignIn = true;
@@ -92,19 +85,24 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        mApp = (ImApp)getApplication();
+        
         SQLiteDatabase.loadLibs(this);
         
         mSignInHelper = new SignInHelper(this);
        
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mDefaultLocale = mPrefs.getString(getString(R.string.pref_default_locale), null);
         
         this.getSupportActionBar().hide();
         
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
-        connectToCacheWord ();
+        // Try to open with empty password
+        if (!mApp.isCacheWord() && openEncryptedStores(new byte[32], false))
+            mApp.setNoCacheWord();
+        else
+            connectToCacheWord ();
         
         checkForCrashes();
         
@@ -118,7 +116,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
         
-        ((ImApp)getApplication()).setCacheWord(mCacheWord);
+        mApp.setCacheWord(mCacheWord);
         
         mCacheWord.connectToService();
         
@@ -127,15 +125,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
    
     @SuppressWarnings("deprecation")
-    private boolean cursorUnlocked(String pKey) {
+    private boolean cursorUnlocked(String pKey, boolean allowCreate) {
         try {
-            mApp = (ImApp)getApplication();
             mHandler = new MyHandler(this);
-            ImPluginHelper.getInstance(this).loadAvailablePlugins();
-
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).build();
+            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).appendQueryParameter(ImApp.NO_CREATE_KEY, "1").build();
             
             mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
@@ -144,6 +139,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
  
             if (mProviderCursor != null)
             {
+                ImPluginHelper.getInstance(this).loadAvailablePlugins();
+
                 mProviderCursor.moveToFirst();
             
                 return true;
@@ -154,10 +151,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             }
             
         } catch (Exception e) {
-            Log.e(ImApp.LOG_TAG, e.getMessage(), e);
-            
-            Toast.makeText(this, "MAJOR ERROR: Unable to unlock or load app database. Please re-install the app or clear data.",Toast.LENGTH_LONG).show();
-            finish();
+            // Only complain if we thought this password should succeed
+            if (allowCreate) {
+                Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+
+                Toast.makeText(this, "MAJOR ERROR: Unable to unlock or load app database. Please re-install the app or clear data.",Toast.LENGTH_LONG).show();
+                finish();
+            }
             
             // needs to be unlocked
             return false;
@@ -178,7 +178,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             mHandler.unregisterForBroadcastEvents();
 
         super.onPause();
-        mCacheWord.onPause();
+        if (mCacheWord != null)
+            mCacheWord.onPause();
     }
 
 
@@ -189,10 +190,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onResume() {
         super.onResume();
 
-        mCacheWord.onResume();
-        
-        
-       
+        if (mCacheWord != null)
+            mCacheWord.onResume();
     }
 
     private void doOnResume() {
@@ -528,24 +527,24 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordOpened() {
        Log.d(ImApp.LOG_TAG,"cache word opened");
        
+       openEncryptedStores(mCacheWord.getEncryptionKey(), true);
 
-       String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-       
-       if (pkey != null)
-       {
-            
-           cursorUnlocked(pkey);
-           
-           ((ImApp)getApplication()).initOtrStoreKey();
-           
-       
-           int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
-           mCacheWord.setTimeoutMinutes(defaultTimeout);
-           
-           doOnResume();
-       }
-       
+       int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
+
+       mCacheWord.setTimeoutMinutes(defaultTimeout);
+    }
+
+    private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
+        String pkey = SQLCipherOpenHelper.encodeRawKey(key);
         
+        if (cursorUnlocked(pkey, allowCreate)) {
+            ((ImApp)getApplication()).initOtrStoreKey();
+
+            doOnResume();
+            return true;
+        } else {
+            return false;
+        }
     }
     
 
