@@ -126,7 +126,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     }
 
     private boolean isPasswordFieldEmpty() {
-        return mConfirmNewPassphrase.getText().toString().length() == 0;
+        return mNewPassphrase.getText().toString().length() == 0;
     }
 
     private boolean isConfirmationFieldEmpty() {
