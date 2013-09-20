@@ -94,6 +94,7 @@ public class ImApp extends Application {
     public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
     
     public static final String CACHEWORD_PASSWORD_KEY = "pkey";
+    public static final String NO_CREATE_KEY = "nocreate";
     
     private Locale locale = null;
 
@@ -416,17 +417,32 @@ public class ImApp extends Application {
     
   
     private CacheWordActivityHandler mCacheWord;
+    private boolean mNoCacheWord;
 
-    public void setCacheWord ( CacheWordActivityHandler cacheWord)
+    public boolean isCacheWord() {
+        return mCacheWord != null;
+    }
+    
+    public void setCacheWord(CacheWordActivityHandler cacheWord)
     {
+        if (mNoCacheWord) {
+            throw new IllegalStateException("CacheWord state conflict");
+        }
         mCacheWord = cacheWord;
+    }
+    
+    public void setNoCacheWord() {
+        if (mCacheWord != null) {
+            throw new IllegalStateException("CacheWord state conflict");
+        }
+        mNoCacheWord = true;
     }
     
     public void initOtrStoreKey ()
     {
         if ( getRemoteImService() != null)
         {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mNoCacheWord ? new byte[32] : mCacheWord.getEncryptionKey());
     
             try {
                getRemoteImService().unlockOtrStore(pkey);
@@ -445,7 +461,7 @@ public class ImApp extends Application {
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
             
-            if (mCacheWord != null && mCacheWord.getEncryptionKey() != null)
+            if (mNoCacheWord || (mCacheWord != null && mCacheWord.getEncryptionKey() != null))
                 initOtrStoreKey();
 
             synchronized (mQueue) {

@@ -3,11 +3,15 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.security.GeneralSecurityException;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -68,7 +72,6 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         LinearLayout flipView2 = (LinearLayout) findViewById(R.id.flipView2);
 
         mSlider = new TwoViewSlider(vf, flipView1, flipView2, mNewPassphrase, mConfirmNewPassphrase);
-
     }
 
     @Override
@@ -121,8 +124,40 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         return validatePassword(mNewPassphrase.getText().toString().toCharArray());
     }
 
+    private boolean isPasswordFieldEmpty() {
+        return mConfirmNewPassphrase.getText().toString().length() == 0;
+    }
+
     private boolean isConfirmationFieldEmpty() {
         return mConfirmNewPassphrase.getText().toString().length() == 0;
+    }
+
+    private void initializeWithPassphrase() {
+        try {
+            String passphrase = mNewPassphrase.getText().toString();
+            if (passphrase.isEmpty()) {
+                // Simulate cacheword opening.  The null password will be tried.
+                String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
+    
+                Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+    
+                uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
+    
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null) {
+                    cursor.close();
+    
+                    onCacheWordOpened();
+                }  else {
+                    // TODO failed
+                }
+            } else {
+                mCacheWord.setPassphrase(passphrase.toCharArray());
+            }
+        } catch (GeneralSecurityException e) {
+            // TODO initialization failed
+            Log.e(TAG, "Cacheword pass initialization failed: " + e.getMessage());
+        }
     }
 
     private void initializePassphrase() {
@@ -141,7 +176,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                 {
                     if (!isPasswordValid())
                         showValidationError();
-                    else
+                    else if (isPasswordFieldEmpty()) {
+                        initializeWithPassphrase();
+                    } else
                         mSlider.showConfirmationField();
                 }
                 return false;
@@ -173,18 +210,13 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                 if (!isPasswordValid()) {
                     showValidationError();
                     mSlider.showNewPasswordField();
-                } else if (isConfirmationFieldEmpty()) {
+                } else if (isConfirmationFieldEmpty() && !isPasswordFieldEmpty()) {
                     mSlider.showConfirmationField();
                 } else if (!newEqualsConfirmation()) {
                     showInequalityError();
                     mSlider.showNewPasswordField();
                 } else {
-                    try {
-                        mCacheWord.setPassphrase(mNewPassphrase.getText().toString().toCharArray());
-                    } catch (GeneralSecurityException e) {
-                        // TODO initialization failed
-                        Log.e(TAG, "Cacheword pass initialization failed: " + e.getMessage());
-                    }
+                    initializeWithPassphrase();
                 }
             }
         });
@@ -253,7 +285,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             }
         }
 
-        if (pass.length < MIN_PASS_LENGTH)
+        if (pass.length < MIN_PASS_LENGTH && pass.length != 0)
         {
             // should we support some user string message here?
             mPasswordError = getString(R.string.pass_err_length);
@@ -350,7 +382,6 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     @Override
     public void onCacheWordLocked() {
         promptPassphrase();
-        
     }
 
     @Override
