@@ -99,7 +99,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
         // Try to open with empty password
-        if (!mApp.isCacheWord() && openEncryptedStores(new byte[32], false))
+        if (!mApp.isCacheWord() && openEncryptedStores(null, false))
             mApp.setNoCacheWord();
         else
             connectToCacheWord ();
@@ -507,12 +507,15 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         Log.d(ImApp.LOG_TAG,"cache word uninit");
         
         showLockScreen();
+        finish();
     }
 
     void showLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);
     //    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("originalIntent", getIntent());
+        Intent returnIntent = new Intent(this, WelcomeActivity.class);
+        returnIntent.putExtra("doSignIn", mDoSignIn);
+        intent.putExtra("originalIntent", returnIntent);
         startActivity(intent);
        
     }
@@ -535,7 +538,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     }
 
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
-        String pkey = SQLCipherOpenHelper.encodeRawKey(key);
+        String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
             ((ImApp)getApplication()).initOtrStoreKey();

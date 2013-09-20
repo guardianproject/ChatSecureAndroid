@@ -16,6 +16,10 @@
 
 package info.guardianproject.otr.app.im.provider;
 
+import info.guardianproject.otr.app.im.app.ImApp;
+
+import java.util.HashMap;
+
 import android.content.ContentQueryMap;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -27,11 +31,6 @@ import android.net.Uri.Builder;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.util.Log;
-
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
-import info.guardianproject.otr.app.im.app.ImApp;
-
-import java.util.HashMap;
 
 /**
  * The IM provider stores all information about roster contacts, chat messages,
@@ -2435,7 +2434,7 @@ public class Imps {
     }
 
     public static boolean setEmptyPassphrase(Context ctx, boolean noCreate) {
-        String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
+        String pkey = "";
     
         Uri uri = Provider.CONTENT_URI_WITH_ACCOUNT;
     
