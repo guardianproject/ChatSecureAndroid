@@ -133,8 +133,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
      
-      //  registerForContextMenu(getListView());
-        
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
         emptyView.setVisibility(View.GONE);
         ((ViewGroup)getListView().getParent()).addView(emptyView);
@@ -156,7 +154,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-        getWindow().setBackgroundDrawableResource(R.drawable.bgcolor2);
+        
     }
     
     
@@ -181,11 +179,14 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onResume() {
 
+        ((ImApp)getApplication()).setAppTheme(this);
+        
         super.onResume();
 
         mApp = (ImApp)getApplication();
-        mApp.startImServiceIfNeed();
-        mApp.setAppTheme(this);
+        mApp.startImServiceIfNeed();        
+
+        ThemeableActivity.setBackgroundImage(this);
         
         mHandler.registerForBroadcastEvents();
         mCacheWord.onResume();
