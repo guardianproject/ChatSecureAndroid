@@ -86,8 +86,8 @@ public class ImApp extends Application {
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
     public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
-    public static final int DEFAULT_AVATAR_WIDTH = 64;
-    public static final int DEFAULT_AVATAR_HEIGHT = 64;
+    public static final int DEFAULT_AVATAR_WIDTH = 120;
+    public static final int DEFAULT_AVATAR_HEIGHT = 120;
 
     public static final String HOCKEY_APP_ID = "2fa3b9252319e47367f1f125bb3adcd1";
 
@@ -236,10 +236,9 @@ public class ImApp extends Application {
     
     public void setAppTheme (Activity activity)
     {
-        /*
-        
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
+        
+        
         boolean themeDark = settings.getBoolean("themeDark", false);
         
         if (themeDark)
@@ -251,16 +250,16 @@ public class ImApp extends Application {
         }
         else
         {
-            setTheme(R.style.Theme_Chatsecure);
+            setTheme(R.style.Theme_Sherlock_Light);
             
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Chatsecure);
+                activity.setTheme(R.style.Theme_Sherlock_Light);
         }
         
         Configuration config = getResources().getConfiguration();
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        */
+     
         
     }
     

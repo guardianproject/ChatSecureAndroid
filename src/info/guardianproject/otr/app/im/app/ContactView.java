@@ -19,17 +19,13 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
-
-import java.text.DateFormat;
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.util.LruCache;
@@ -95,8 +91,8 @@ public class ContactView extends LinearLayout {
     {
         //ImageView mPresence;
         TextView mLine1;
-        TextView mLine2;
-        TextView mTimeStamp;
+       // TextView mLine2;
+       // TextView mTimeStamp;
         ImageView mAvatar;
         
     }
@@ -112,11 +108,11 @@ public class ContactView extends LinearLayout {
             mHolder = new ViewHolder();
             
             //mPresence = (ImageView) findViewById(R.id.presence);
-            mHolder.mLine1 = (TextView) findViewById(R.id.line1);
-            mHolder.mLine2 = (TextView) findViewById(R.id.line2);
+            mHolder.mLine1 = (TextView) findViewById(R.id.contactStatus);
+         //   mHolder.mLine2 = (TextView) findViewById(R.id.line2);
            
-            mHolder.mTimeStamp = (TextView) findViewById(R.id.timestamp);
-            mHolder.mAvatar = (ImageView)findViewById(R.id.expandable_toggle_button);
+          //  mHolder.mTimeStamp = (TextView) findViewById(R.id.timestamp);
+            mHolder.mAvatar = (ImageView)findViewById(R.id.contactAvatar);
             
             setTag(mHolder);
         }
@@ -133,7 +129,7 @@ public class ContactView extends LinearLayout {
         Resources r = getResources();
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         
-        mHolder.mLine2.setCompoundDrawablePadding(5);
+      //  mHolder.mLine2.setCompoundDrawablePadding(5);
         
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
@@ -213,31 +209,52 @@ public class ContactView extends LinearLayout {
             mHolder.mLine1.setText(contact);
 
         // time stamp
+         
+            /*
         if (showChatMsg && hasChat) {
             mHolder.mTimeStamp.setVisibility(VISIBLE);
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(cursor.getLong(COLUMN_LAST_MESSAGE_DATE));
             DateFormat formatter = DateFormat.getTimeInstance(DateFormat.SHORT);
             mHolder. mTimeStamp.setText(formatter.format(cal.getTime()));
-        } else {
-            mHolder.mTimeStamp.setVisibility(GONE);
         }
-
+    */
+            
         // line2
         String status = null;
         if (showChatMsg && lastMsg != null) {
 
             //remove HTML tags since we can't display HTML
             status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
-            setBackgroundResource(R.color.incoming_message_bg_plaintext);
-            
-            
+            setBackgroundResource(R.color.holo_blue_bright);
+            mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
+            mHolder.mLine1.setTextColor(Color.WHITE);
+            mHolder.mLine1.setText(lastMsg);
+                        
         }
-        else
+        else 
         {
-            mHolder.mLine2.setVisibility(View.VISIBLE);
-            mHolder.mLine2.setTextAppearance(mContext, Typeface.NORMAL);
-            setBackgroundResource(android.R.color.transparent);
+            if (presence == Imps.Presence.AVAILABLE)
+            {
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.android_green_light));
+            }
+            else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
+            {
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+            }
+            else if (presence == Imps.Presence.DO_NOT_DISTURB)
+            {
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+            }            
+            else
+            {
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.contact_status_bg));
+            }
+            
+            mHolder.mLine1.setTextColor(Color.DKGRAY);
+     //       mHolder.mLine2.setVisibility(View.VISIBLE);
+       //     mHolder.mLine2.setTextAppearance(mContext, Typeface.NORMAL);
+      //      setBackgroundResource(android.R.color.transparent);
         }
         
         if (TextUtils.isEmpty(status)) {
@@ -257,10 +274,12 @@ public class ContactView extends LinearLayout {
             status = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
         }
 
+        /*
         if (Imps.Contacts.TYPE_GROUP == type)
             mHolder.mLine2.setText("");
         else
             mHolder.mLine2.setText(status);
+        */
        // mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
 
         View contactInfoPanel = findViewById(R.id.contactInfo);

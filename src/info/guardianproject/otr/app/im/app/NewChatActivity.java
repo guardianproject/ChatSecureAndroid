@@ -75,7 +75,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -109,13 +109,15 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     @Override
     protected void onCreate(Bundle icicle) {
         
+        ((ImApp)getApplication()).setAppTheme(this);
+      
         super.onCreate(icicle);
 
-       
-        
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
+        ThemeableActivity.setBackgroundImage(this);
+
         mHandler = new SimpleAlertHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
@@ -1115,7 +1117,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
              });
              
-             ((ListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
+             ((GridView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
              
              
              ((ImApp)getActivity().getApplication()).registerForConnEvents(mPresenceHandler);

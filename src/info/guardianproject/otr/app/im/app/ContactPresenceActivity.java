@@ -18,17 +18,18 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
-import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 
-import java.io.IOException;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -39,7 +40,10 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -47,10 +51,10 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -63,67 +67,161 @@ public class ContactPresenceActivity extends ThemeableActivity {
     private String remoteFingerprint;
     private boolean remoteFingerprintVerified = false;
     private String remoteAddress;
-
     private String localFingerprint;
+    
     private long providerId;
     private ImApp mApp;
 
     private final static String TAG = ImApp.LOG_TAG;
 
-    public ContactPresenceActivity() {
-    }
+    private Timer timer;
 
-    @Override
+    int DELAY_INTERVAL = 500;
+    int UPDATE_INTERVAL = 1000;
+    
+    Uri mUri = null;
+    
+	@Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);   
+        
+        timer = new Timer();
 
         mApp = (ImApp)getApplication();
 
         setContentView(R.layout.contact_presence_activity);
+
+        Intent i = getIntent();
+        mUri = i.getData();
+        if (mUri == null) {
+            warning("No data to show");
+            finish();
+            return;
+        }
+
+        remoteAddress = i.getStringExtra("jid");
+        
+
+
+        updateUI();
+        
+        timer.scheduleAtFixedRate(
+                new TimerTask() {
+                    public void run() {
+                        mHandlerUI.sendEmptyMessage(0);
+                    }
+                },
+                DELAY_INTERVAL,
+                UPDATE_INTERVAL
+        );
+
+    }
+    
+    Handler mHandlerUI = new Handler ()
+    {
+
+        @Override
+        public void handleMessage(Message msg) {
+            updateUI();
+        }
+        
+    };
+
+    @Override
+    protected void onDestroy() { 
+        super.onDestroy();
+        
+        timer.cancel();
+    }
+
+    private void updateOtrStatus ()
+    {
+
+        
+        try {
+            
+            IOtrKeyManager otrKeyMgr = ((ImApp)getApplication()).getRemoteImService().getOtrKeyManager();
+            
+            remoteFingerprint = otrKeyMgr.getRemoteFingerprint(remoteAddress);
+            remoteFingerprintVerified = otrKeyMgr.isVerifiedUser(remoteAddress);
+            
+            if (remoteFingerprint == null)
+            {
+                String[] rfs = otrKeyMgr.getRemoteFingerprints(remoteAddress);
+                
+                if (rfs != null && rfs.length > 0)
+                {
+                    remoteFingerprint = rfs[0];
+                }
+            }
+            
+        } catch (Exception e) {
+           Log.e(TAG,"error reading key data",e);
+        }
+        
+        
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        
+        super.onConfigurationChanged(newConfig);
+    }
+
+    private void updateUI() {
+
+        
+        
+
 
         ImageView imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
         TextView txtCustomStatus = (TextView) findViewById(R.id.txtStatusText);
 
-        Intent i = getIntent();
-        Uri uri = i.getData();
-        if (uri == null) {
-            warning("No data to show");
-            finish();
-            return;
-        }
-
-       
-      
-
-
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(uri, null, null, null, null);
+        Cursor c = cr.query(mUri, null, null, null, null);
         if (c == null) {
-            warning("Database error when query " + uri);
+            warning("Database error when query " + mUri);
             finish();
             return;
         }
 
         if (c.moveToFirst()) {
+            
             providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
-            remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            
+            if (remoteAddress == null)
+                remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
             int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
 //            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
             
-            
-
             BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
+                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*4,ImApp.DEFAULT_AVATAR_HEIGHT*4);
             
-            imgAvatar.setImageDrawable(avatar);
+            if (avatar != null)
+            {                
+                imgAvatar.setVisibility(View.GONE);
+                
+                getWindow().setBackgroundDrawable(avatar);
+                
+                findViewById(R.id.helpscrollview).setBackgroundColor(getResources().getColor(R.color.contact_status_avatar_overlay));
+               
+                
+            }
+            else
+            {
+                imgAvatar.setVisibility(View.GONE);
+            }
 
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             
@@ -150,72 +248,22 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 txtCustomStatus.setVisibility(View.GONE);
             }
             
-            updateOtrStatus();
+           
         }
         c.close();
         
-
-        updateUI();
-    }
-
-    private void updateOtrStatus ()
-    {
-
-        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
-        
-        
-        
-        try {
-            
-            IOtrChatSession otrChatSession = conn.getChatSessionManager().getChatSession(remoteAddress).getOtrChatSession();
-
-            if (otrChatSession != null)
-            {
-                remoteFingerprint = otrChatSession.getRemoteFingerprint();
-
-                if (remoteFingerprint != null) {
-                    remoteFingerprint = remoteFingerprint.toUpperCase(Locale.ENGLISH);
-
-                   remoteFingerprintVerified = otrChatSession.isKeyVerified(remoteAddress);
-                            
-                    
-                }
-                
-               localFingerprint = otrChatSession.getLocalFingerprint();
-                
-                if (localFingerprint != null)
-                    localFingerprint = localFingerprint.toUpperCase(Locale.ENGLISH);
-
-            }
-            
-        } catch (Exception e) {
-           Log.e(TAG,"error reading key data",e);
-        }
-        
-        
-    }
-    
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        
-        super.onConfigurationChanged(newConfig);
-    }
-
-    private void updateUI() {
-
-        TextView lblFingerprintLocal = (TextView) findViewById(R.id.labelFingerprintLocal);
         TextView lblFingerprintRemote = (TextView) findViewById(R.id.labelFingerprintRemote);
         TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
-        TextView txtFingerprintLocal = (TextView) findViewById(R.id.txtFingerprintLocal);
 
         updateOtrStatus ();
         
         if (remoteFingerprint != null) {
             
+            txtFingerprintRemote.setVisibility(View.VISIBLE);
+            lblFingerprintRemote.setVisibility(View.VISIBLE);
             
             txtFingerprintRemote.setText(remoteFingerprint);
             
-
             if (remoteFingerprintVerified) {
                 lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
                 txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_green));
@@ -224,14 +272,10 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
             txtFingerprintRemote.setTextColor(Color.BLACK);
 
-            if (localFingerprint != null)
-                txtFingerprintLocal.setText(localFingerprint);
             
         } else {
             txtFingerprintRemote.setVisibility(View.GONE);
-            txtFingerprintLocal.setVisibility(View.GONE);
             lblFingerprintRemote.setVisibility(View.GONE);
-            lblFingerprintLocal.setVisibility(View.GONE);
         }
 
     }

@@ -36,6 +36,7 @@ import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
 import info.guardianproject.otr.app.im.app.MessageView.EncryptionState;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
@@ -193,14 +194,15 @@ public class ChatView extends LinearLayout {
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
-    
     private DataAdapter mDataListenerAdapter;
     
     
     long mLastChatId=-1;
     int mType;
-    String mNickName;
-    String mUserName;
+    String mRemoteNickname;
+    String mRemoteAddressString;
+    Address mRemoteAddress;
+    
     long mProviderId;
     long mAccountId;
     long mInvitationId;
@@ -313,6 +315,8 @@ public class ChatView extends LinearLayout {
                 info.guardianproject.otr.app.im.engine.Message msg) {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
 
+            mRemoteAddress = msg.getFrom();
+          //  mRemoteAddressString = msg.getFrom().getAddress();
         }
 
         @Override
@@ -340,6 +344,7 @@ public class ChatView extends LinearLayout {
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
          
+            
             
         };
         
@@ -379,7 +384,7 @@ public class ChatView extends LinearLayout {
                 log("onContactsPresenceUpdate()");
             }
             for (Contact c : contacts) {
-                if (c.getAddress().getAddress().equals(mUserName)) {
+                if (Address.stripResource(c.getAddress().getAddress()).equals(Address.stripResource(mRemoteAddressString))) {
                     mHandler.post(mUpdateChatCallback);
                     scheduleRequery(DEFAULT_QUERY_INTERVAL);
                     break;
@@ -399,6 +404,12 @@ public class ChatView extends LinearLayout {
         mHandler = new ChatViewHandler(mActivity);
         mContext = context;
 
+        setCustomBackground();
+    }
+    
+    private void setCustomBackground ()
+    {
+        
     }
 
     void registerForConnEvents() {
@@ -681,8 +692,8 @@ public class ChatView extends LinearLayout {
 
     public void stopListening() {
         Cursor cursor = getMessageCursor();
-        if (cursor != null) {
-            cursor.deactivate();
+        if (cursor != null && (!cursor.isClosed())) {
+            cursor.close();
         }
         cancelRequery();
         if (mViewType == VIEW_TYPE_CHAT && mCurrentChatSession != null) {
@@ -734,8 +745,10 @@ public class ChatView extends LinearLayout {
         mAccountId = mCursor.getLong(ACCOUNT_COLUMN);
         mPresenceStatus = mCursor.getInt(PRESENCE_STATUS_COLUMN);
         mType = mCursor.getInt(TYPE_COLUMN);
-        mUserName = mCursor.getString(USERNAME_COLUMN);
-        mNickName = mCursor.getString(NICKNAME_COLUMN);
+        mRemoteAddressString = mCursor.getString(USERNAME_COLUMN);
+        mRemoteNickname = mCursor.getString(NICKNAME_COLUMN);
+        
+        
     }
 
     /*
@@ -865,8 +878,6 @@ public class ChatView extends LinearLayout {
             
             mCurrentChatSession = getChatSession(mCursor);
             
-           
-            
             updateChat();
             
             if (mCurrentChatSession != null)
@@ -881,6 +892,7 @@ public class ChatView extends LinearLayout {
                     if (mDataListenerAdapter == null)
                         mDataListenerAdapter = new DataAdapter();
                    
+                    if (mCurrentChatSession != null)
                     mCurrentChatSession.setDataListener(mDataListenerAdapter);
                 }
                 catch (RemoteException re)
@@ -952,9 +964,11 @@ public class ChatView extends LinearLayout {
        
     }
 
+    /*
     public void bindSubscription(long providerId, String from) {
         mProviderId = providerId;
-        mUserName = from;
+        
+        mRemoteAddressString = from;
 
         setViewType(VIEW_TYPE_SUBSCRIPTION);
 
@@ -964,7 +978,7 @@ public class ChatView extends LinearLayout {
         mActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
-    }
+    }*/
 
     
 
@@ -1094,10 +1108,6 @@ public class ChatView extends LinearLayout {
     }
 
     public void viewProfile() {
-        String remoteFingerprint = null;
-        String localFingerprint = null;
-        boolean isVerified = false;
-
         if (getChatId() == -1)
             return;
         
@@ -1106,29 +1116,10 @@ public class ChatView extends LinearLayout {
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-
-        if (mOtrChatSession != null) {
-            try {
-
-                
-                localFingerprint = mOtrChatSession.getLocalFingerprint();
-                
-                remoteFingerprint = mOtrChatSession.getRemoteFingerprint();
-                
-                if (remoteFingerprint != null)
-                    isVerified = mOtrChatSession.isKeyVerified(mUserName);
-                else
-                    isVerified = false;
-                
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            // TODO define these in ImServiceConstants
-            intent.putExtra("remoteFingerprint", remoteFingerprint);
-            intent.putExtra("localFingerprint", localFingerprint);
-            intent.putExtra("remoteVerified", isVerified);
-        }
-
+        
+            if (mRemoteAddress != null)
+                intent.putExtra("jid", mRemoteAddress.getAddress());
+        
         mActivity.startActivity(intent);
 
     }
@@ -1140,7 +1131,7 @@ public class ChatView extends LinearLayout {
                 try {
                     IImConnection conn = mApp.getConnection(mProviderId);
                     IContactListManager manager = conn.getContactListManager();
-                    manager.blockContact(mUserName);
+                    manager.blockContact(mRemoteAddressString);
                   //  mActivity.finish();
                 } catch (RemoteException e) {
 
@@ -1155,7 +1146,7 @@ public class ChatView extends LinearLayout {
         // The positive button is deliberately set as no so that
         // the no is the default value
         new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
-                .setMessage(r.getString(R.string.confirm_block_contact, mNickName))
+                .setMessage(r.getString(R.string.confirm_block_contact, mRemoteNickname))
                 .setPositiveButton(R.string.yes, confirmListener) // default button
                 .setNegativeButton(R.string.no, null).setCancelable(false).show();
     }
@@ -1169,7 +1160,7 @@ public class ChatView extends LinearLayout {
     }
 
     public String getUserName() {
-        return mUserName;
+        return mRemoteAddressString;
     }
 
     public long getChatId() {
@@ -1313,7 +1304,7 @@ public class ChatView extends LinearLayout {
                 IContactListManager listMgr = conn.getContactListManager();
                 listMgr.registerContactListListener(mContactListListener);
             }
-            mApp.dismissChatNotification(mProviderId, mUserName);
+            mApp.dismissChatNotification(mProviderId, mRemoteAddressString);
         } catch (RemoteException e) {
             Log.w(ImApp.LOG_TAG, "<ChatView> registerChatListener fail:" + e.getMessage());
         }
@@ -1419,10 +1410,10 @@ public class ChatView extends LinearLayout {
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_not_in_list_warning, mNickName);
+                message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
             } else if (mPresenceStatus == Imps.Presence.OFFLINE) {
                 visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_offline_warning, mNickName);
+                message = mContext.getString(R.string.contact_offline_warning, mRemoteNickname);
             } else {
 
                 visibility = View.VISIBLE;
@@ -1459,7 +1450,7 @@ public class ChatView extends LinearLayout {
                     }
                     
                     String rFingerprint = mOtrChatSession.getRemoteFingerprint();
-                    boolean rVerified = mOtrChatSession.isKeyVerified(mUserName);
+                    boolean rVerified = mOtrChatSession.isKeyVerified(mRemoteAddressString);
 
                     if (rFingerprint != null) {
                         if (!rVerified) {
@@ -1986,8 +1977,8 @@ public class ChatView extends LinearLayout {
             MessageView messageView = (MessageView) view;
 
             mType = cursor.getInt(mTypeColumn);
-            String address = mUserName;
-            String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mNickName;
+            
+            String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
@@ -2028,7 +2019,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(address, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(mRemoteAddressString, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
@@ -2047,7 +2038,7 @@ public class ChatView extends LinearLayout {
                 break;
 
             default:
-                messageView.bindPresenceMessage(address, mType, isGroupChat(), isScrolling());
+                messageView.bindPresenceMessage(mRemoteAddressString, mType, isGroupChat(), isScrolling());
             }
 
            // updateWarningView();

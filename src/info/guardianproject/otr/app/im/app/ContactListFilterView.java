@@ -35,14 +35,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Filter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
 public class ContactListFilterView extends LinearLayout {
 
-    private ListView mFilterList;
+    private GridView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -89,7 +91,7 @@ public class ContactListFilterView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (ListView) findViewById(R.id.filteredList);
+        mFilterList = (GridView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
         
@@ -102,6 +104,21 @@ public class ContactListFilterView extends LinearLayout {
                     mListener.startChat(c);
 
             }
+        });
+        
+        mFilterList.setOnItemLongClickListener(new OnItemLongClickListener()
+        {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                
+                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+
+                mListener.showProfile(c);
+                
+                return false;
+            }
+            
         });
         /*
         mFilterList.setItemActionListener(new ListView.OnActionClickListener() {
@@ -127,7 +144,7 @@ public class ContactListFilterView extends LinearLayout {
 
     }
 
-    public ListView getListView() {
+    public GridView getListView() {
         return mFilterList;
     }
 
@@ -232,7 +249,7 @@ public class ContactListFilterView extends LinearLayout {
 
         @SuppressWarnings("deprecation")
         public ContactAdapter(Context context, Cursor cursor) {
-            super(context, R.layout.contact_view, cursor);
+            super(context, R.layout.contact_view_grid_layout, cursor);
         }
 
         @Override

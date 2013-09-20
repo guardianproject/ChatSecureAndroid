@@ -67,8 +67,8 @@ public class ProviderListItem extends LinearLayout {
     private TextView mLoginName;
     private TextView mChatView;
     private View mUnderBubble;
-    private Drawable mBubbleDrawable;
-    private Drawable mDefaultBackground;
+ //   private Drawable mBubbleDrawable;
+  //  private Drawable mDefaultBackground;
 
     private ImageView mBtnSettings;
     
@@ -107,8 +107,8 @@ public class ProviderListItem extends LinearLayout {
         mLoginName = (TextView) findViewById(R.id.loginName);
         mChatView = (TextView) findViewById(R.id.conversations);
         mUnderBubble = findViewById(R.id.underBubble);
-        mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
-        mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
+     //   mBubbleDrawable = getResources().getDrawable(R.drawable.bubble);
+    //    mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
 
         mBtnSettings = (ImageView)findViewById(R.id.btnSettings);
         
@@ -214,9 +214,10 @@ public class ProviderListItem extends LinearLayout {
         
         ImApp app = (ImApp)mActivity.getApplication();
 
-        if (mUnderBubble != null)
-            mUnderBubble.setBackgroundDrawable(mDefaultBackground);
+        //if (mUnderBubble != null)
+         //   mUnderBubble.setBackgroundDrawable(mDefaultBackground);
 
+        /*
         mProviderName.setTextColor(mProviderNameColors);
         
         if (mLoginNameColors != null)
@@ -224,6 +225,7 @@ public class ProviderListItem extends LinearLayout {
         
         if (mChatViewColors != null)
        mChatView.setTextColor(mChatViewColors);
+       */
 
         if (!cursor.isNull(mActiveAccountIdColumn)) {
             
