@@ -62,7 +62,6 @@ public class ContactPresenceActivity extends Activity {
     private String remoteFingerprint;
     private boolean remoteFingerprintVerified = false;
     private String remoteAddress;
-    private String localFingerprint;
     
     private long providerId;
     private ImApp mApp;
@@ -98,8 +97,8 @@ public class ContactPresenceActivity extends Activity {
             return;
         }
 
-        remoteAddress = i.getStringExtra("jid");
-        
+         //forget this for now
+        //remoteAddress = i.getStringExtra("jid");
 
 
         updateUI();
@@ -136,26 +135,30 @@ public class ContactPresenceActivity extends Activity {
     private void updateOtrStatus ()
     {
 
-        
-        try {
-            
-            IOtrKeyManager otrKeyMgr = ((ImApp)getApplication()).getRemoteImService().getOtrKeyManager();
-            
-            remoteFingerprint = otrKeyMgr.getRemoteFingerprint(remoteAddress);
-            remoteFingerprintVerified = otrKeyMgr.isVerifiedUser(remoteAddress);
-            
-            if (remoteFingerprint == null)
-            {
-                String[] rfs = otrKeyMgr.getRemoteFingerprints(remoteAddress);
+        if (remoteAddress != null)
+        {
+            try {
                 
-                if (rfs != null && rfs.length > 0)
-                {
-                    remoteFingerprint = rfs[0];
+                try {
+                    IChatSession session = mApp.getChatSession(providerId, remoteAddress);
+                    
+                    if (session != null)
+                    {
+                        IOtrChatSession iOtrSession = session.getOtrChatSession();
+                        remoteFingerprint = iOtrSession.getRemoteFingerprint();
+                        remoteFingerprintVerified = iOtrSession.isKeyVerified(remoteAddress);
+
+                    }
+                    
+                } catch (RemoteException e) {
+                    Log.e(TAG, "error init otr", e);
+
                 }
+                
+                
+            } catch (Exception e) {
+               Log.e(TAG,"error reading key data",e);
             }
-            
-        } catch (Exception e) {
-           Log.e(TAG,"error reading key data",e);
         }
         
         
@@ -312,16 +315,25 @@ public class ContactPresenceActivity extends Activity {
 
     private void verifyRemoteFingerprint() {
 
+
         try {
+            IChatSession session = mApp.getChatSession(providerId, remoteAddress);
+            
+            if (session != null)
+            {
+                IOtrChatSession iOtrSession = session.getOtrChatSession();                    
+                iOtrSession.verifyKey(remoteAddress);
 
-            IOtrKeyManager otrKeyMgr = ((ImApp)getApplication()).getRemoteImService().getOtrKeyManager();
-            otrKeyMgr.verifyUser(remoteAddress);
-
-            updateUI();
+            }
             
         } catch (RemoteException e) {
-            Log.e(TAG, "error verifying remote fingerprint", e);
+            Log.e(TAG, "error init otr", e);
+
         }
+        
+        
+        updateUI();
+            
 
     }
 
@@ -433,13 +445,12 @@ public class ContactPresenceActivity extends Activity {
     }
 
     private void initSmp(String question, String answer) {
-        IOtrChatSession iOtrSession;
         try {
             IChatSession session = mApp.getChatSession(providerId, remoteAddress);
             
             if (session != null)
             {
-                iOtrSession = session.getOtrChatSession();
+                IOtrChatSession iOtrSession = session.getOtrChatSession();
                 iOtrSession.initSmpVerification(question, answer);
             }
             
