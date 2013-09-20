@@ -354,12 +354,14 @@ public class ContactPresenceActivity extends Activity {
         Button btnVerifyManual = (Button)findViewById(R.id.btnVerifyManual);
         Button btnVerifyScan = (Button)findViewById(R.id.btnVerifyScan);
         Button btnVerifyQuestion = (Button)findViewById(R.id.btnVerifyQuestion);
+        View viewVerifyLabel = findViewById(R.id.labelFingerprintActions);
         
         if (remoteFingerprint == null)
         {
             btnVerifyManual.setVisibility(View.GONE);
             btnVerifyScan.setVisibility(View.GONE);
             btnVerifyQuestion.setVisibility(View.GONE);
+            viewVerifyLabel.setVisibility(View.GONE);
             
         }
         else
@@ -367,6 +369,7 @@ public class ContactPresenceActivity extends Activity {
             btnVerifyManual.setVisibility(View.VISIBLE);
             btnVerifyScan.setVisibility(View.VISIBLE);
             btnVerifyQuestion.setVisibility(View.VISIBLE);
+            viewVerifyLabel.setVisibility(View.VISIBLE);
             
             btnVerifyManual.setOnClickListener(new OnClickListener (){
     

@@ -404,14 +404,9 @@ public class ChatView extends LinearLayout {
         mHandler = new ChatViewHandler(mActivity);
         mContext = context;
 
-        setCustomBackground();
+        ThemeableActivity.setBackgroundImage(this, mActivity);
     }
     
-    private void setCustomBackground ()
-    {
-        
-    }
-
     void registerForConnEvents() {
         mApp.registerForConnEvents(mHandler);
     }
