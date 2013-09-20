@@ -54,7 +54,7 @@ public class OtrChatListener implements MessageListener {
         } catch (OtrException e) {
             
             OtrDebugLogger.log("error decrypting message");                
-            msg.setBody("error decryption message body");
+            msg.setBody("error decrypting [" + body + "]");
             mMessageListener.onIncomingMessage(session, msg);
         }
         

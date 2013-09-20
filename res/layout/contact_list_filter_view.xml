@@ -75,7 +75,9 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"            
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="3dp"
+             />
 
         <TextView
             android:id="@+id/statusView"
@@ -86,7 +88,9 @@
             android:singleLine="true"
                 android:fontFamily="sans-serif-light"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_marginTop="3dp"
+             />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
     
    

@@ -1351,6 +1351,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              
              if (conn != null)
              {
+                 mFilterView.setConnection(conn);
                  mPresenceView.setConnection(conn);
 
                  try {

@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
@@ -24,8 +25,11 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -36,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -64,6 +69,7 @@ public class ContactListFilterView extends LinearLayout {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
+                
                 
             }
 
@@ -110,13 +116,30 @@ public class ContactListFilterView extends LinearLayout {
         {
 
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 
-                Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
+                String[] contactOptions = {mContext.getString(R.string.contact_profile_title),mContext.getString(R.string.menu_remove_contact),mContext.getString(R.string.menu_block_contact)};
+                
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setItems(contactOptions, new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int which) {
+                           // The 'which' argument contains the index position
+                           // of the selected item
+                               
+                               if (which == 0)
+                                   mListener.showProfile((Cursor)mFilterList.getItemAtPosition(position));
+                               else if (which == 1)
+                                   removeContactAtPosition(position);
+                               else if (which == 2)
+                                   blockContactAtPosition(position);
+                       }
+                });
 
-                mListener.showProfile(c);
+                builder.create().show();
                 
-                return false;
+                return true;
+
+
             }
             
         });
@@ -153,6 +176,7 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     public void setConnection(IImConnection conn) {
+       
         if (mConn != conn) {
             if (mConn != null) {
                 unregisterListeners();
@@ -305,5 +329,91 @@ public class ContactListFilterView extends LinearLayout {
             mContactAdapter = null;
         }
         
+    }
+
+    public void removeContactAtPosition(int packedPosition) {
+        removeContact((Cursor)mFilterList.getItemAtPosition(packedPosition));
+    }
+
+    void removeContact(Cursor c) {
+        if (c == null || mConn == null) {
+            mHandler.showAlert(R.string.error, R.string.select_contact);
+        } else {
+            
+            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+            final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    try {
+                        IContactListManager manager = mConn.getContactListManager();
+                        int res = manager.removeContact(address);
+                        if (res != ImErrorInfo.NO_ERROR) {
+                            mHandler.showAlert(R.string.error,
+                                    ErrorResUtils.getErrorRes(getResources(), res, address));
+                        }
+                    } catch (RemoteException e) {
+                        
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
+                    }
+                }
+            };
+            Resources r = getResources();
+
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
+
+
+        }
+    }
+
+    
+
+    public void blockContactAtPosition(int packedPosition) {
+        blockContact((Cursor)mFilterList.getItemAtPosition(packedPosition));
+    }
+
+    void blockContact(Cursor c) {
+        if (c == null || mConn == null) {
+            mHandler.showAlert(R.string.error, R.string.select_contact);
+        } else {
+            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+            final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    try {
+                        IContactListManager manager = mConn.getContactListManager();
+                        
+                        int res = -1;
+                        
+                        if (manager.isBlocked(address))
+                            res = manager.unBlockContact(address);
+                        else
+                        {
+                            res = manager.blockContact(address);
+                            
+                            if (res != ImErrorInfo.NO_ERROR) {
+                                mHandler.showAlert(R.string.error,
+                                        ErrorResUtils.getErrorRes(getResources(), res, address));
+                            }
+                        }
+                    } catch (RemoteException e) {
+                        
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
+                    }
+                }
+            };
+
+            Resources r = getResources();
+
+            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                    .setMessage(r.getString(R.string.confirm_block_contact, nickname))
+                    .setPositiveButton(R.string.yes, confirmListener) // default button
+                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
+            
+        }
     }
 }

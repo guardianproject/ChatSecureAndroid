@@ -907,7 +907,6 @@ public class ChatView extends LinearLayout {
                     if (mDataListenerAdapter == null)
                         mDataListenerAdapter = new DataAdapter();
                    
-                    if (mCurrentChatSession != null)
                     mCurrentChatSession.setDataListener(mDataListenerAdapter);
                 }
                 catch (RemoteException re)

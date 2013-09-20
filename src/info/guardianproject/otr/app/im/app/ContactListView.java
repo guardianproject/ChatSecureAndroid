@@ -335,6 +335,7 @@ public class ContactListView extends LinearLayout {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
                         int res = manager.blockContact(address);
+                        
                         if (res != ImErrorInfo.NO_ERROR) {
                             mHandler.showAlert(R.string.error,
                                     ErrorResUtils.getErrorRes(getResources(), res, address));
