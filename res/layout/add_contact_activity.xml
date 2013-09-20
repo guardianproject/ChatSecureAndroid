@@ -28,9 +28,11 @@
         android:layout_height="wrap_content"
         android:text="@string/input_contact_label" />
 
-    <MultiAutoCompleteTextView android:id="@+id/email"
+    <MultiAutoCompleteTextView
+        android:id="@+id/email"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress" />
 
     <TextView android:id="@+id/choose_list_label"
         android:layout_marginTop="10dip"

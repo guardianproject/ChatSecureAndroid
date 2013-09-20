@@ -19,7 +19,7 @@
 
 <resources>
     
-    <style name="AppTheme" parent="Theme.Sherlock.Light" >
+    <style name="AppTheme" parent="Theme.Sherlock" >
     
         </style>
     

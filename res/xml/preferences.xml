@@ -69,6 +69,14 @@
   
  </ListPreference>
 
+ 
+  <CheckBoxPreference
+          android:key="themeDark"
+          android:title="@string/pref_theme_dark"
+          android:summary="@string/pref_theme_dark_summary"
+          android:defaultValue="false" />
+  
+ 
    <EditTextPreference 
           android:key="pref_background"
           android:title="@string/pref_background_title"

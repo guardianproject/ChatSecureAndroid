@@ -27,15 +27,36 @@
     
         <color name="android_green">#FFA4C639</color>
             <color name="android_green_light">#aaA4C639</color>
-    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="honeycombish_blue">#aa58BAED</color>
     <color name="soft_grey">#FF777777</color>
     <color name="background_light">#FFEFEFEF</color>
     <color name="background_med">#FFdddddd</color>
     <color name="background_dark">#FF343434</color>
     
-    <color name="otr_red">#ffcaca</color>
-    <color name="otr_yellow">#ffecc0</color>
-    <color name="otr_green">#e2f0b6</color>
+     <!-- A light Holo shade of blue -->
+    <color name="holo_blue_light">#aa33b5e5</color>
+    <!-- A light Holo shade of green -->
+    <color name="holo_green_light">#aa99cc00</color>
+    <!-- A light Holo shade of red -->
+    <color name="holo_red_light">#aaff4444</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#aa0099cc</color>
+    <!-- A dark Holo shade of green -->
+    <color name="holo_green_dark">#aa669900</color>
+    <!-- A dark Holo shade of red -->
+    <color name="holo_red_dark">#aacc0000</color>
+    <!-- A Holo shade of purple -->
+    <color name="holo_purple">#aaaa66cc</color>
+    <!-- A light Holo shade of orange -->
+    <color name="holo_orange_light">#aaffbb33</color>
+    <!-- A dark Holo shade of orange -->
+    <color name="holo_orange_dark">#aaff8800</color>
+    <!-- A really bright Holo shade of blue -->
+    <color name="holo_blue_bright">#aa00ddff</color>
+    
+    <color name="otr_red">#aaffcaca</color>
+    <color name="otr_yellow">#aaffecc0</color>
+    <color name="otr_green">#aae2f0b6</color>
     
     <!-- 
     <color name="otr_red">#FF4444</color>
@@ -51,5 +72,8 @@
     
     <color name="outgoing_message_bg">#AAEAF7FB</color>
     <color name="outgoing_message_fg">#333333</color>
+    
+    <color name="contact_status_bg">#aaffffff</color>
+    <color name="contact_status_avatar_overlay">#aaffffff</color>
     
 </resources>

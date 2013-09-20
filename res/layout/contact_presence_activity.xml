@@ -18,22 +18,19 @@
  */
 -->
 
-        	<ScrollView 
+        	<LinearLayout 
           xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/helpscrollview" 
 		android:orientation="vertical"
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"> 
-    <LinearLayout
-      
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:padding="10dip"
-        android:orientation="vertical" >   
+		android:layout_width="300dp" 
+		android:layout_height="300dp"
 
+         android:padding="10dip"
+		> 
+		
         <ImageView android:id="@+id/imgAvatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:padding="2dip"
             android:background="@drawable/avatar_unknown" />
             <!-- 
@@ -59,10 +56,10 @@
          
             android:layout_marginTop="8dip"
         android:orientation="horizontal" >   
+        
         <TextView android:id="@+id/labelStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/label_status" />
 
@@ -70,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              android:textAppearance="?android:attr/textAppearanceMedium"
-             android:textSize="10pt"
              />
 
         </LinearLayout>
@@ -111,25 +107,6 @@
             android:textSize="10pt"
             android:text="" />
         
-       <TextView android:id="@+id/labelFingerprintLocal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="8dip"                
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_fingerprint_local" />
-
-        <TextView android:id="@+id/txtFingerprintLocal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            
-            android:textSize="10pt"
-            android:text="" />
-        
         
 
     </LinearLayout>
-
-   </ScrollView>
