@@ -20,12 +20,16 @@ import android.content.ContentQueryMap;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.app.im.app.ImApp;
 
 import java.util.HashMap;
 
@@ -2428,6 +2432,25 @@ public class Imps {
         /** The content:// style URL for this table. */
         public static final Uri CONTENT_URI = Uri
                 .parse("content://info.guardianproject.otr.app.im.provider.Imps/s2dids");
+    }
+
+    public static boolean setEmptyPassphrase(Context ctx, boolean noCreate) {
+        String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
+    
+        Uri uri = Provider.CONTENT_URI_WITH_ACCOUNT;
+    
+        Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey);
+        if (noCreate) {
+            builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+        }
+        uri = builder.build();
+    
+        Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null);
+        if (cursor != null) {
+            cursor.close();
+            return true;
+        }
+        return false;
     }
 
 }
