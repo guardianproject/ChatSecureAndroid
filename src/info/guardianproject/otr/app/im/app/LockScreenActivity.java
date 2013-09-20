@@ -47,10 +47,14 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     private String mPasswordError;
     private TwoViewSlider mSlider;
 
+    private ImApp mApp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+        mApp = (ImApp)getApplication();
         
         getSherlock().getActionBar().hide();
         
@@ -135,6 +139,8 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
+                    // We are not using cacheword, so clear it for WelcomeActivity
+                    mApp.setCacheWord(null);
                     // Simulate cacheword opening
                     onCacheWordOpened();
                 }  else {

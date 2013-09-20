@@ -83,7 +83,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     private static final String TABLE_LAST_RMQ_ID = "lastrmqid";
     private static final String TABLE_S2D_RMQ_IDS = "s2dRmqIds";
 
-    private static final String DATABASE_NAME = "impsenc.db";
+    private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
+    private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
     private static final int DATABASE_VERSION = 102;
 
     protected static final int MATCH_PROVIDERS = 1;
@@ -159,7 +160,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     protected static final int MATCH_S2D_RMQ_IDS = 204;
 
     protected final UriMatcher mUrlMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    private final String mTransientDbName;
+    private String mTransientDbName;
 
     private static final HashMap<String, String> sProviderAccountsProjectionMap;
     private static final HashMap<String, String> sAccountsByDomainProjectionMap;
@@ -213,7 +214,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                                                       + Imps.Presence.CONTACT_ID;
 
     protected static DatabaseHelper mDbHelper;
-    private final String mDatabaseName;
+    private String mDatabaseName;
     private final int mDatabaseVersion;
     
 
@@ -923,17 +924,15 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     public ImpsProvider() {
-        this(DATABASE_NAME, DATABASE_VERSION);
+        this(DATABASE_VERSION);
 
     
         setupImUrlMatchers(AUTHORITY);
         setupMcsUrlMatchers(AUTHORITY);
     }
 
-    protected ImpsProvider(String dbName, int dbVersion) {
-        mDatabaseName = dbName;
+    protected ImpsProvider(int dbVersion) {
         mDatabaseVersion = dbVersion;
-        mTransientDbName = "transient_" + dbName.replace(".", "_");
     }
 
     private void setupImUrlMatchers(String authority) {
@@ -1033,8 +1032,14 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         return true;
     }
 
+    private void setDatabaseName(boolean isEncrypted) {
+        mDatabaseName = isEncrypted ? ENCRYPTED_DATABASE_NAME : UNENCRYPTED_DATABASE_NAME;
+        mTransientDbName = "transient_" + mDatabaseName.replace(".", "_");
+    }
+    
     private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
         if (mDbHelper == null && pkey != null) {
+            setDatabaseName(!pkey.isEmpty());
             Context ctx = getContext();
             String path = ctx.getDatabasePath(mDatabaseName).getPath();
             if (noCreate && !new File(path).exists()) {
