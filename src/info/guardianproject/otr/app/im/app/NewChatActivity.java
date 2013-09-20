@@ -424,7 +424,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         if (mCursorChats != null)
                         {
                             mCursorChats.moveToPosition(0);
-                            int posIdx = 0;
+                            int posIdx = 2; //second position is the first chat view
                             boolean foundChatView = false;
                             
                             while (mCursorChats.moveToNext())
@@ -433,7 +433,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 
                                 if (chatId == requestedChatId)
                                 {
-                                    mChatPager.setCurrentItem(posIdx+2);
+                                   
+                                    final int newChatPagerPosition = posIdx;
+                                    
+                                    mHandler.post(new Runnable() {
+                                        public void run() {
+                                            
+                                            mChatPager.setCurrentItem(newChatPagerPosition);
+                                        }
+                                    });
+                                    
                                     foundChatView = true;
                                     break;
                                 }
