@@ -120,21 +120,24 @@ public class AccountListActivity extends SherlockListActivity implements View.On
       
         super.onCreate(icicle);
         
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-        ((ImApp)getApplication()).setCacheWord(mCacheWord);
-        
         ThemeableActivity.setBackgroundImage(this);
         
         mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
+        String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
+        if (!mApp.isCacheWord() && initProviderCursor(pkey)) {
+            mApp.setNoCacheWord();
+        } else {
+            mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+            mApp.setCacheWord(mCacheWord);
+        }
+        
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
      
-      //  registerForContextMenu(getListView());
-        
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
         emptyView.setVisibility(View.GONE);
         ((ViewGroup)getListView().getParent()).addView(emptyView);
@@ -156,7 +159,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             
         });
         
-        getWindow().setBackgroundDrawableResource(R.drawable.bgcolor2);
+        
     }
     
     
@@ -164,7 +167,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
         
-        mCacheWord.onPause();
+        if (mCacheWord != null)
+            mCacheWord.onPause();
         super.onPause();
     }
 
@@ -181,19 +185,24 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onResume() {
 
+        ((ImApp)getApplication()).setAppTheme(this);
+        
         super.onResume();
 
         mApp = (ImApp)getApplication();
-        mApp.startImServiceIfNeed();
-        mApp.setAppTheme(this);
+        mApp.startImServiceIfNeed();        
+
+        ThemeableActivity.setBackgroundImage(this);
         
         mHandler.registerForBroadcastEvents();
-        mCacheWord.onResume();
+        if (mCacheWord != null) {
+            mCacheWord.onResume();
         
-        if (!mCacheWord.isLocked())
-        {
-           onCacheWordOpened();
-           
+            if (!mCacheWord.isLocked())
+            {
+                onCacheWordOpened();
+
+            }
         }
         
         checkForCrashes();
@@ -821,7 +830,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
     }
     
     
-    private void initProviderCursor (String pkey)
+    private boolean initProviderCursor (String pkey)
     {
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
 
@@ -831,11 +840,14 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
+        if (mProviderCursor == null)
+            return false;
         
         mAdapter = new ProviderAdapter(this, mProviderCursor, true);
         setListAdapter(mAdapter);
         
         refreshAccountState();
+        return true;
     }
     
     private void checkForCrashes() {

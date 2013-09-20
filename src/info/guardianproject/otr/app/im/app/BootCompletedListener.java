@@ -1,10 +1,14 @@
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.Debug;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -26,9 +30,12 @@ public class BootCompletedListener extends BroadcastReceiver {
         
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
         {
+            Debug.onServiceStart();
             if (prefStartOnBoot)
             {
-              //  ImApp.getApplication().startImServiceIfNeed(true);
+                Log.d(ImApp.LOG_TAG, "autostart");
+                new ImApp(context).startImServiceIfNeed(true);
+                Log.d(ImApp.LOG_TAG, "autostart done");
             }
             else
             {
