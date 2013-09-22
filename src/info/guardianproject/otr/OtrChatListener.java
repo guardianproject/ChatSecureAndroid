@@ -5,6 +5,7 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.MessageListener;
+import info.guardianproject.util.Debug;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class OtrChatListener implements MessageListener {
         String body = msg.getBody();
         String from = msg.getFrom().getAddress();
         String to = msg.getTo().getAddress();
+        
+        body = Debug.injectErrors(body);
 
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
 
@@ -53,7 +56,7 @@ public class OtrChatListener implements MessageListener {
         
         } catch (OtrException e) {
             
-            OtrDebugLogger.log("error decrypting message");                
+            OtrDebugLogger.log("error decrypting message", e);                
             msg.setBody("error decrypting [" + body + "]");
             mMessageListener.onIncomingMessage(session, msg);
         }
