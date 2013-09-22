@@ -193,6 +193,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     };*/
     
+    @Override
+    public void onBackPressed() {
+        int currentPos = mChatPager.getCurrentItem();
+        if (currentPos > 0)
+            mChatPager.setCurrentItem(0);
+        else
+            super.onBackPressed();
+    }
 
     private SlidingMenu menu = null;
     
