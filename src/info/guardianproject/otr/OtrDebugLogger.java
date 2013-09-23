@@ -14,7 +14,6 @@ public class OtrDebugLogger {
     }
 
     public static void log(String msg, Exception e) {
-        if (Debug.DEBUG_ENABLED)
-            Log.e(TAG, LogCleaner.clean(msg), e);
+        Log.e(TAG, LogCleaner.clean(msg), e);
     }
 }
