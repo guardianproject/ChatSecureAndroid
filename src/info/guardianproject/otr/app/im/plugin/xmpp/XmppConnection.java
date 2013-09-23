@@ -1777,14 +1777,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 return;
             
             // Get presence from the Roster to handle priorities and such
-            /*
             final Roster roster = mConnection.getRoster();
             if (roster != null) {
-                presence = roster.getPresence(address);
+                presence = roster.getPresence(xaddress.getBareAddress());
             }
-            int type = parsePresence(presence);
-               */
-            
             int type = parsePresence(presence);
             
             Contact contact = getContact(xaddress.getAddress());
