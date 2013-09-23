@@ -173,8 +173,7 @@ public class StatusBarNotifier {
                     log("cancelNotify: new notification" + " mTitle=" + info.getTitle()
                         + " mMessage=" + info.getMessage() + " mIntent=" + info.getIntent());
                 }
-                mNotificationManager.notify(info.computeNotificationId(),
-                        info.createNotification("", true));
+                mNotificationManager.cancel(info.computeNotificationId());
             }
         }
     }
@@ -258,6 +257,8 @@ public class StatusBarNotifier {
         }
 
         public int computeNotificationId() {
+            if (lastItem == null)
+                return (int)mProviderId;
             return lastItem.mTitle.hashCode();
         }
 

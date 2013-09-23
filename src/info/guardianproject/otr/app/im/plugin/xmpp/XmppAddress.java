@@ -22,6 +22,15 @@ public class XmppAddress extends Address {
                 mResource = mAddress.substring(resIdx+1);
      
     }
+    
+    @Override
+    public String getBareAddress() {
+        int resIdx;
+        if ((resIdx = mAddress.indexOf("/"))!=-1)
+            return mAddress.substring(0, resIdx);
+        else
+            return mAddress;
+    }
 
     public XmppAddress(String fullJid) {
         

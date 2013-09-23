@@ -247,6 +247,11 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
+        public String getBareAddress() {
+            return name;
+        }
+        
+        @Override
         public String getAddress() {
             return name;
         }
