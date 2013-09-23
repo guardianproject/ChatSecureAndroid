@@ -419,30 +419,21 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     String type = getContentResolver().getType(data);
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
-                        long requestedChatId = ContentUris.parseId(data);
+                        long requestedContactId = ContentUris.parseId(data);
                                            
                         if (mCursorChats != null)
                         {
-                            mCursorChats.moveToPosition(0);
-                            int posIdx = 2; //second position is the first chat view
+                            mCursorChats.moveToPosition(-1);
+                            int posIdx = 1;
                             boolean foundChatView = false;
                             
                             while (mCursorChats.moveToNext())
                             {
-                                long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                                long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
                                 
-                                if (chatId == requestedChatId)
+                                if (chatId == requestedContactId)
                                 {
-                                   
-                                    final int newChatPagerPosition = posIdx;
-                                    
-                                    mHandler.post(new Runnable() {
-                                        public void run() {
-                                            
-                                            mChatPager.setCurrentItem(newChatPagerPosition);
-                                        }
-                                    });
-                                    
+                                    mChatPager.setCurrentItem(posIdx);
                                     foundChatView = true;
                                     break;
                                 }
@@ -453,13 +444,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             if (!foundChatView)
                             {
                                 
-                                Uri.Builder builder = Imps.Chats.CONTENT_URI.buildUpon();
-                                ContentUris.appendId(builder, requestedChatId);
+                                Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
+                                ContentUris.appendId(builder, requestedContactId);
                                 Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
+                                cursor.moveToFirst();
                                 
-                                mContactList.startChat(cursor);
-                                
-                                
+                                startChat(cursor);
                             }
                         }
                         
@@ -1388,40 +1378,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             NewChatActivity activity = (NewChatActivity)getActivity();
             
-            if (c != null && activity != null) {
-                long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
-                String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-                
-                long providerId = mLastProviderId;//c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
-                IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
-                
-                if (conn != null)
-                {
-                    try {
-                        IChatSessionManager manager = conn.getChatSessionManager();
-                        IChatSession session = manager.getChatSession(username);
-                        if (session == null) {
-                            manager.createChatSession(username);
-                        }
-    
-                        activity.refreshChatViews();
-                        
-                        activity.showChat(chatContactId);
-                        
-                      
-                        
-                    } catch (RemoteException e) {
-                      //  mHandler.showServiceErrorAlert(e.getMessage());
-                        LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
-
-                    }
-               
-                }
-                else
-                {
-                    LogCleaner.debug(ImApp.LOG_TAG, "could not start chat as connection was null");
-                }
-            }
+            activity.startChat(c);
             
         }
         
@@ -1517,6 +1474,43 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
    
     
     
+    private void startChat(Cursor c) {
+        if (c != null) {
+            long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
+            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            
+            long providerId = mLastProviderId;//FIXME c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
+            IImConnection conn = mApp.getConnection(providerId);
+            
+            if (conn != null)
+            {
+                try {
+                    IChatSessionManager manager = conn.getChatSessionManager();
+                    IChatSession session = manager.getChatSession(username);
+                    if (session == null) {
+                        manager.createChatSession(username);
+                    }
+    
+                    refreshChatViews();
+                    
+                    showChat(chatContactId);
+                    
+                  
+                    
+                } catch (RemoteException e) {
+                  //  mHandler.showServiceErrorAlert(e.getMessage());
+                    LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
+    
+                }
+           
+            }
+            else
+            {
+                LogCleaner.debug(ImApp.LOG_TAG, "could not start chat as connection was null");
+            }
+        }
+    }
+
     public static class ChatViewFragment extends Fragment {
         
          ChatView mChatView;
