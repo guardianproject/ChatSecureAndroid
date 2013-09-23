@@ -747,7 +747,9 @@ public class ChatView extends LinearLayout {
         mHistory.invalidate();
         
         startQuery(getChatId());
-        mComposeMessage.setText("");
+        // This is not needed, now that there is a ChatView per fragment.  It also causes a spurious detection of user action
+        // on fragments adjacent to the current one, when they get initialized.
+        //mComposeMessage.setText("");
         mOtrChatSession = null;
     
         updateWarningView();
@@ -1318,7 +1320,6 @@ public class ChatView extends LinearLayout {
                 IContactListManager listMgr = conn.getContactListManager();
                 listMgr.registerContactListListener(mContactListListener);
             }
-            mApp.dismissChatNotification(mProviderId, mRemoteAddressString);
         } catch (RemoteException e) {
             Log.w(ImApp.LOG_TAG, "<ChatView> registerChatListener fail:" + e.getMessage());
         }
@@ -2358,7 +2359,5 @@ public class ChatView extends LinearLayout {
         
         
     }
-    
-   
 
 }
