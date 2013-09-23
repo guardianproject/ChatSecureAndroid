@@ -444,7 +444,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public int getCapability() {
         
-        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT & ImConnection.CAPABILITY_GROUP_CHAT;
+        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT | ImConnection.CAPABILITY_GROUP_CHAT;
     }
 
     private XmppChatGroupManager mChatGroupManager = null;
