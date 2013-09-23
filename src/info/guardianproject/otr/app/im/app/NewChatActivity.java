@@ -122,6 +122,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mHandler = new SimpleAlertHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
+        mChatPager.setSaveEnabled(false);
         mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
                 {
 
@@ -138,8 +139,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     }
 
                     @Override
-                    public void onPageSelected(int arg0) {
-                       
+                    public void onPageSelected(int pos) {
+                        if (pos > 0) {
+                            ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItem(pos);
+                            frag.onSelected(mApp);
+                        }
                     }
             
                 });
@@ -193,6 +197,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     };*/
     
+    @Override
+    public void onBackPressed() {
+        int currentPos = mChatPager.getCurrentItem();
+        if (currentPos > 0)
+            mChatPager.setCurrentItem(0);
+        else
+            super.onBackPressed();
+    }
 
     private SlidingMenu menu = null;
     
@@ -951,12 +963,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             {
                 int positionMod = position - 1;
                 
-                long contactChatId = -1;
-                
                 mCursorChats.moveToPosition(positionMod);            
-                contactChatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+                long contactChatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+                String contactName = mCursorChats.getString(ChatView.USERNAME_COLUMN); 
+                long providerId = mCursorChats.getLong(ChatView.PROVIDER_COLUMN); 
                 
-                return ChatViewFragment.newInstance(contactChatId);
+                return ChatViewFragment.newInstance(contactChatId, contactName, providerId);
             }
         }
 
@@ -1518,17 +1530,25 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         /**
          * Create a new instance of CountingFragment, providing "num"
          * as an argument.
+         * @param providerId 
+         * @param contactName 
          */
-        static ChatViewFragment newInstance(long chatContactId) {
+        static ChatViewFragment newInstance(long chatContactId, String contactName, long providerId) {
             
             ChatViewFragment f = new ChatViewFragment();
 
             // Supply num input as an argument.
             Bundle args = new Bundle();
             args.putLong("contactChatId", chatContactId);
+            args.putString("contactName", contactName);
+            args.putLong("providerId", providerId);
             f.setArguments(args);
 
             return f;
+        }
+
+        public void onSelected(ImApp app) {
+            app.dismissChatNotification(getArguments().getLong("providerId"), getArguments().getString("contactName"));
         }
 
         /**

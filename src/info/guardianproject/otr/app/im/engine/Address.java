@@ -46,6 +46,12 @@ public abstract class Address {
      * @return the resource name.
      */
     public abstract String getResource();
+    
+    /**
+     * Gets the bare address without any resource
+     * @return the bare address
+     */
+    public abstract String getBareAddress();
 
     
     public abstract void writeToParcel(Parcel dest);
