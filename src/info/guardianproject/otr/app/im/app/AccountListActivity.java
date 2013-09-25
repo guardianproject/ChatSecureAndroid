@@ -46,7 +46,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -115,14 +114,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     @Override
     protected void onCreate(Bundle icicle) {
-
-        ((ImApp)getApplication()).setAppTheme(this);
-      
         super.onCreate(icicle);
         
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+
         ThemeableActivity.setBackgroundImage(this);
         
-        mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
@@ -134,8 +132,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             mApp.setCacheWord(mCacheWord);
         }
         
-        ImPluginHelper.getInstance(this).loadAvailablePlugins();
-
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
      
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
@@ -185,12 +181,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onResume() {
 
-        ((ImApp)getApplication()).setAppTheme(this);
-        
         super.onResume();
-
-        mApp = (ImApp)getApplication();
-        mApp.startImServiceIfNeed();        
 
         ThemeableActivity.setBackgroundImage(this);
         
@@ -300,7 +291,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     private void handlePanic() {
         
         signOutAll ();
-        ((ImApp)getApplication()).forceStopImService();
+        mApp.forceStopImService();
         
     }
  
@@ -316,7 +307,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 signOut(accountId);
             }
             
-            ((ImApp)getApplication()).stopImServiceIfInactive();
+            mApp.stopImServiceIfInactive();
             
             if (mCacheWord != null)
                 mCacheWord.manuallyLock();
@@ -516,7 +507,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
     public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
-        ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
+        mApp.resetProviderSettings(); //clear cached provider list
         
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_INSERT);

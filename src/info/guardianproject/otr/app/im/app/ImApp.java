@@ -1015,5 +1015,11 @@ public class ImApp extends Application {
         return null;
     }
 
+    public void maybeInit(Activity activity) {
+        startImServiceIfNeed();
+        setAppTheme(activity);
+        ImPluginHelper.getInstance(this).loadAvailablePlugins();
+    }
+
    
 }

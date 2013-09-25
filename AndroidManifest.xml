@@ -157,15 +157,14 @@ android:anyDensity="true"
             </intent-filter>
         </service>
 
-        <provider android:name=".provider.ImpsProvider"
-        	
+        <provider
+            android:name=".provider.ImpsProvider"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
-            android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
-            android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY"
+            android:exported="false"
             android:grantUriPermissions="true"
-                          android:exported="false"
-            
-             />
+            android:process=":remote"
+            android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
+            android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
 
         <activity android:name=".app.ChooseAccountActivity"
                           android:exported="false"
