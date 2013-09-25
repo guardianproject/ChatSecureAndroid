@@ -693,7 +693,9 @@ public class ChatView extends LinearLayout {
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
             if (cursor == null) {
-                startQuery(getChatId());
+                long chatId = getChatId();
+                if (chatId != -1)
+                    startQuery(chatId);
             } else {
                 requeryCursor();
             }
