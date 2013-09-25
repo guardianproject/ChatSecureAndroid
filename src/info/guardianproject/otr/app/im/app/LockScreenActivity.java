@@ -387,7 +387,6 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         {
 //            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            mCacheWord.disconnect();
             getIntent().removeExtra("originalIntent");
             startActivity(intent);
             finish();

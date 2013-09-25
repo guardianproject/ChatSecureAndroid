@@ -34,6 +34,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -112,7 +113,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
      
     }
-    
+
     private void connectToCacheWord ()
     {
         
@@ -131,7 +132,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         try {
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).appendQueryParameter(ImApp.NO_CREATE_KEY, "1").build();
+            Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            if (!allowCreate)
+                builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+            uri = builder.build();
             
             mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
@@ -514,6 +518,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordLocked() {
      
         showLockScreen();
+        finish();
     }
 
     @Override
