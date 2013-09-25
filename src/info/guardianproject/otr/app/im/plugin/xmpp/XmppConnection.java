@@ -444,7 +444,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public int getCapability() {
         
-        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT & ImConnection.CAPABILITY_GROUP_CHAT;
+        return ImConnection.CAPABILITY_SESSION_REESTABLISHMENT | ImConnection.CAPABILITY_GROUP_CHAT;
     }
 
     private XmppChatGroupManager mChatGroupManager = null;
@@ -1777,14 +1777,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 return;
             
             // Get presence from the Roster to handle priorities and such
-            /*
             final Roster roster = mConnection.getRoster();
             if (roster != null) {
-                presence = roster.getPresence(address);
+                presence = roster.getPresence(xaddress.getBareAddress());
             }
-            int type = parsePresence(presence);
-               */
-            
             int type = parsePresence(presence);
             
             Contact contact = getContact(xaddress.getAddress());
