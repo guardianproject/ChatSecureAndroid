@@ -70,12 +70,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1115,6 +1115,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         SignInHelper mSignInHelper = null;
         Spinner mSpinnerAccounts;
 
+        boolean showGrid = true;
+        
         private Handler mPresenceHandler = new Handler()
         {
             
@@ -1147,7 +1149,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          public View onCreateView(LayoutInflater inflater, ViewGroup container,
                  Bundle savedInstanceState) {
              
-
+             if (showGrid)
+                 mFilterView = (ContactListFilterView) inflater.inflate(
+                         R.layout.contact_grid_filter_view, null);
+             else
               mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
               
@@ -1168,7 +1173,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
              });
              
-             ((GridView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
+             ((AbsListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
              
              
              ((ImApp)getActivity().getApplication()).registerForConnEvents(mPresenceHandler);

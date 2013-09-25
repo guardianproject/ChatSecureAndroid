@@ -43,11 +43,12 @@
         android:paddingTop="0dip" >
 
         <ImageView
-            android:id="@+id/expandable_toggle_button"
+            android:id="@+id/contactAvatar"
             android:layout_width="64sp"
             android:layout_height="64sp"
             android:scaleType="centerCrop" 
 				android:layout_alignParentLeft="true"
+				android:visibility="gone"
             />
 
         <LinearLayout
@@ -57,25 +58,26 @@
             android:orientation="vertical"
             android:paddingLeft="3dip"
             android:paddingTop="3dip"
-             android:layout_toRightOf="@+id/expandable_toggle_button"
+             android:layout_toRightOf="@+id/contactAvatar"
              >
 
             <RelativeLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/line1"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/contactStatus"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-light"
                     android:maxLines="1"
                     android:text=""
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="14pt"
+                    android:fontFamily="sans-serif-light"
+                     />
 
+                <!-- 
                 <TextView
                     android:id="@+id/timestamp"
                     android:layout_width="wrap_content"
@@ -83,10 +85,9 @@
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
                     android:paddingRight="8dip"
-                    android:text="5:55pm"
                     	android:layout_alignParentRight="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                     android:layout_toRightOf="@+id/line1"
+                     android:layout_toRightOf="@+id/contactStatus"
                      />
                 
                   <TextView
@@ -96,9 +97,9 @@
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-light"
                 android:text=""
-                android:layout_below="@+id/line1"
+                android:layout_below="@+id/contactStatus"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-                
+                 -->
              
           	</RelativeLayout>
 
@@ -126,11 +127,12 @@
                   <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="sans-serif-light" 
                 android:text="@string/menu_new_chat"
                     android:gravity="center"
                 android:textColor="#dddddd"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
+                
 		
 		<ImageView
 				android:id="@+id/btnExListProfile"

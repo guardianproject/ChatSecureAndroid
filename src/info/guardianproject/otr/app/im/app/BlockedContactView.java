@@ -45,9 +45,9 @@ public class BlockedContactView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAvatar = (ImageView) findViewById(R.id.expandable_toggle_button);
+        mAvatar = (ImageView) findViewById(R.id.contactAvatar);
         mBlockedIcon = (ImageView) findViewById(R.id.blocked);
-        mLine1 = (TextView) findViewById(R.id.line1);
+        mLine1 = (TextView) findViewById(R.id.contactStatus);
         mLine2 = (TextView) findViewById(R.id.line2);
     }
 

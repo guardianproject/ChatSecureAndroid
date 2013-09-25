@@ -93,11 +93,13 @@
              />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
     
+   
    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
 	
+       
           <EditText
             android:id="@+id/contactSearch"
             android:layout_width="match_parent"
@@ -110,17 +112,24 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
               />
           
-          
-   <ListView
+        <GridView
             
         android:id="@+id/filteredList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:columnWidth="120dp"        
+    android:numColumns="auto_fit"
+    android:verticalSpacing="0dp"
+    android:horizontalSpacing="0dp"    
+    android:scrollingCache="true" android:smoothScrollbar="true"
+    android:clipChildren="true" android:alwaysDrawnWithCache="true"
+    android:stretchMode="columnWidth"
     android:gravity="top"
     android:padding="0dp"
     android:layout_above="@+id/contactSearch"
         />
-   <TextView
+         
+	<TextView
 	    android:id="@+id/empty"
 	    android:text="@string/empty_contact_list"
 	    android:layout_width="fill_parent"
@@ -131,7 +140,7 @@
 	    		            android:fontFamily="sans-serif-light"
 
 	    />
-             
+	
           </RelativeLayout>
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>

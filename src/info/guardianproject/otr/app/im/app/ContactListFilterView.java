@@ -34,13 +34,17 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ExpandableListView;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -49,7 +53,7 @@ import android.widget.ResourceCursorAdapter;
 
 public class ContactListFilterView extends LinearLayout {
 
-    private GridView mFilterList;
+    private AbsListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
 
@@ -59,7 +63,8 @@ public class ContactListFilterView extends LinearLayout {
     private final ConnectionListenerAdapter mConnectionListener;
 
     private IImConnection mConn;
-
+    private EditText mEtSearch;
+    
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -97,7 +102,7 @@ public class ContactListFilterView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
 
-        mFilterList = (GridView) findViewById(R.id.filteredList);
+        mFilterList = (AbsListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
 
         
@@ -143,6 +148,42 @@ public class ContactListFilterView extends LinearLayout {
             }
             
         });
+        
+        mEtSearch = (EditText)findViewById(R.id.contactSearch);
+        
+        mEtSearch.addTextChangedListener(new TextWatcher()
+        {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                
+                ContactListFilterView.this.doFilter(mEtSearch.getText().toString());
+
+            }
+            
+        });
+        
+        mEtSearch.setOnKeyListener(new OnKeyListener ()
+        {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+               
+                ContactListFilterView.this.doFilter(mEtSearch.getText().toString());
+                return false;
+            }
+            
+        });
         /*
         mFilterList.setItemActionListener(new ListView.OnActionClickListener() {
 
@@ -167,7 +208,7 @@ public class ContactListFilterView extends LinearLayout {
 
     }
 
-    public GridView getListView() {
+    public AbsListView getListView() {
         return mFilterList;
     }
 
@@ -230,9 +271,24 @@ public class ContactListFilterView extends LinearLayout {
             Cursor contactCursor = runQuery(filterString);
             
             if (mContactAdapter == null) {
-                mContactAdapter = new ContactAdapter(mContext, contactCursor);
-                mFilter = mContactAdapter.getFilter();
-                mFilterList.setAdapter(mContactAdapter);
+                
+                if (mFilterList instanceof ListView)
+                {
+                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view, contactCursor);
+                    mFilter = mContactAdapter.getFilter();
+
+                    ((ListView)mFilterList).setAdapter(mContactAdapter);
+                }
+                else if (mFilterList instanceof GridView)
+                {
+
+                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view_grid_layout, contactCursor);
+                    mFilter = mContactAdapter.getFilter();
+                        
+                    ((GridView)mFilterList).setAdapter(mContactAdapter);
+                }
+                    
+                
             } else {
                 mContactAdapter.changeCursor(contactCursor);
             }
@@ -244,6 +300,8 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     public void doFilter(String filterString) {
+        
+        if (mFilter != null && filterString != null)
         mFilter.filter(filterString);
 
     }
@@ -272,8 +330,8 @@ public class ContactListFilterView extends LinearLayout {
         private String mSearchString;
 
         @SuppressWarnings("deprecation")
-        public ContactAdapter(Context context, Cursor cursor) {
-            super(context, R.layout.contact_view_grid_layout, cursor);
+        public ContactAdapter(Context context, int view, Cursor cursor) {
+            super(context, view, cursor);
         }
 
         @Override
