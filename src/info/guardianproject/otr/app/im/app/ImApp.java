@@ -450,7 +450,7 @@ public class ImApp extends Application {
     {
         if ( getRemoteImService() != null)
         {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mNoCacheWord ? new byte[32] : mCacheWord.getEncryptionKey());
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord == null ? new byte[32] : mCacheWord.getEncryptionKey());
     
             try {
                getRemoteImService().unlockOtrStore(pkey);
