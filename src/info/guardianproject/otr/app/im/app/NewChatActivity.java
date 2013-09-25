@@ -16,7 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.bouncycastle.bcpg.MPInteger;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
@@ -48,7 +47,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -197,11 +195,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     public void onBackPressed() {
+        if (menu.isMenuShowing()) {
+            menu.showContent();
+            return;
+        }
         int currentPos = mChatPager.getCurrentItem();
-        if (currentPos > 0)
+        if (currentPos > 0) {
             mChatPager.setCurrentItem(0);
-        else
-            super.onBackPressed();
+            return;
+        }
+        super.onBackPressed();
     }
 
     private SlidingMenu menu = null;
