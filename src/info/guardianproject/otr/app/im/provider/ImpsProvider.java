@@ -21,6 +21,7 @@ import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.ByteArrayInputStream;
@@ -468,6 +469,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     db.endTransaction();
                 }
 
+                return;
+            case 101:
+                // This was a no-op upgrade when we added the encrypted DB option
                 return;
             case 1:
                 if (newVersion <= 100) {
@@ -1152,7 +1156,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
         
-      
+        Debug.onServiceStart();
         
         if (!mLoadedLibs)
         {
