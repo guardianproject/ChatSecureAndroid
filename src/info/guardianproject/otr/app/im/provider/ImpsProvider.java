@@ -18,6 +18,7 @@ package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.ByteArrayInputStream;
@@ -42,6 +43,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -1130,7 +1132,7 @@ public class ImpsProvider extends ContentProvider {
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
         
-      
+        Debug.onServiceStart();
         
         if (!mLoadedLibs)
         {
@@ -1531,7 +1533,7 @@ public class ImpsProvider extends ContentProvider {
             mDbHelper = null;
             throw e;
         }
-        Cursor c = null;
+        net.sqlcipher.Cursor c = null;
 
         try {
             c = qb.query(db, projectionIn, whereClause.toString(), selectionArgs, groupBy, null,
@@ -1563,7 +1565,54 @@ public class ImpsProvider extends ContentProvider {
         }
         
 
+        c = new MyCrossProcessCursorWrapper(c);
         return c;
+    }
+    
+    static class MyCrossProcessCursorWrapper extends net.sqlcipher.CrossProcessCursorWrapper {
+        public MyCrossProcessCursorWrapper(net.sqlcipher.Cursor cursor) {
+            super(cursor);
+        }
+        
+        @Override
+        public void fillWindow(int position, CursorWindow window) {
+            if (position < 0 || position > getCount()) {
+                return;
+            }
+            window.acquireReference();
+            try {
+                moveToPosition(position - 1);
+                window.clear();
+                window.setStartPosition(position);
+                int columnNum = getColumnCount();
+                window.setNumColumns(columnNum);
+                boolean isFull = false;
+                int numRows = 10;
+                
+                while (!isFull && --numRows > 0 && moveToNext() && window.allocRow()) {
+                    for (int i = 0; i < columnNum; i++) {
+                        String field = getString(i);
+                        if (field != null) {
+                            if (!window.putString(field, getPosition(), i)) {
+                                window.freeLastRow();
+                                isFull = true;
+                                break;
+                            }
+                        } else {
+                            if (!window.putNull(getPosition(), i)) {
+                                window.freeLastRow();
+                                isFull = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (IllegalStateException e) {
+                // simply ignore it
+            } finally {
+                window.releaseReference();
+            }
+        }
     }
 
     private void buildQueryContactsByProvider(SQLiteQueryBuilder qb, StringBuilder whereClause,
