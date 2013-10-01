@@ -70,15 +70,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
 
     private static final String TAG = ImApp.LOG_TAG;
-
-    private static final int ID_SIGN_IN = Menu.FIRST + 1;
-    private static final int ID_SIGN_OUT = Menu.FIRST + 2;
-    private static final int ID_EDIT_ACCOUNT = Menu.FIRST + 3;
-    private static final int ID_REMOVE_ACCOUNT = Menu.FIRST + 4;
-//    private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
-    private static final int ID_ADD_ACCOUNT = Menu.FIRST + 6;
-    private static final int ID_VIEW_CONTACT_LIST = Menu.FIRST + 7;
-
+    
     private ProviderAdapter mAdapter;
     private Cursor mProviderCursor;
     private ImApp mApp;
@@ -188,15 +180,11 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         ThemeableActivity.setBackgroundImage(this);
         
         mHandler.registerForBroadcastEvents();
+        
         if (mCacheWord != null) {
             mCacheWord.onResume();
-        
-            if (!mCacheWord.isLocked())
-            {
-                onCacheWordOpened();
-
-            }
         }
+
         
         checkForCrashes();
         
@@ -821,13 +809,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
-        
         mCacheWord.setTimeoutMinutes(defaultTimeout);  
         
-        
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-
-            
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());            
         initProviderCursor (pkey);
         
     }
@@ -843,11 +827,19 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
-        if (mProviderCursor == null)
+        if (mProviderCursor == null || mProviderCursor.isClosed())
             return false;
         
-        mAdapter = new ProviderAdapter(this, mProviderCursor, true);
-        setListAdapter(mAdapter);
+        if (this.getListAdapter() == null)
+        {
+            mAdapter = new ProviderAdapter(this, mProviderCursor, true);
+            setListAdapter(mAdapter);
+        }
+        else
+        {
+            mAdapter.changeCursor(mProviderCursor);
+        }
+        
         
         refreshAccountState();
         return true;

@@ -2006,25 +2006,26 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (mConnection == null)
                 return;
             
-
-            String address = contact.getAddress().getAddress();
+            String address = contact.getAddress().getBareAddress();
             try {
                 RosterGroup group = mRoster.getGroup(list.getName());
                 if (group == null) {
                     debug(TAG, "could not find group " + list.getName() + " in roster");
                     return;
                 }
+                
                 RosterEntry entry = mRoster.getEntry(address);
                 if (entry == null) {
                     debug(TAG, "could not find entry " + address + " in group " + list.getName());
                     return;
                 }
 
+                group.removeEntry(entry);
+                
                 // Remove from Roster if this is the last group
-                if (entry.getGroups().size() <= 1)
+                //if (entry.getGroups().size() <= 1)
                     mRoster.removeEntry(entry);
 
-                group.removeEntry(entry);
             } catch (XMPPException e) {
                 debug(TAG, "remove entry failed: " + e.getMessage());
                 throw new RuntimeException(e);

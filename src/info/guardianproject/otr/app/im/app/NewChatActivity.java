@@ -914,7 +914,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
             fragmentList = Maps.newHashMap();
-            if (mCursorChats == null)
+            if (mCursorChats == null || mCursorChats.isClosed())
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
                 mCursorChats.requery();
@@ -927,7 +927,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
 
-            mCursorChats.requery();
+            if (mCursorChats != null && !mCursorChats.isClosed())
+                mCursorChats.requery();
             
             super.notifyDataSetChanged();
 
@@ -1371,7 +1372,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          {
              IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
            
-             if (conn == null)
+             if (conn == null && getActivity() != null && getActivity().getApplication() != null)
              {
                  try {
                   conn =  ((ImApp)getActivity().getApplication()).createConnection(providerId, accountId);

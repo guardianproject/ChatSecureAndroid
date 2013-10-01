@@ -364,7 +364,7 @@ public class ChatView extends LinearLayout {
 
     private Runnable mUpdateChatCallback = new Runnable() {
         public void run() {
-            if (mCursor.requery() && mCursor.moveToFirst()) {
+            if ((!mCursor.isClosed()) && mCursor.requery() && mCursor.moveToFirst()) {
                 updateChat();
             }
         }
@@ -1101,7 +1101,7 @@ public class ChatView extends LinearLayout {
 
         // TODO: async query?
         Cursor cursor = getMessageCursor();
-        if (cursor != null) {
+        if (cursor != null && (!cursor.isClosed())) {
             cursor.requery();
         }
     }
@@ -1777,7 +1777,10 @@ public class ChatView extends LinearLayout {
         }
 
         public boolean requery() {
-            return mInnerCursor.requery();
+            if (!mInnerCursor.isClosed())
+                return mInnerCursor.requery();
+            else
+                return false;
         }
 
         public void close() {
