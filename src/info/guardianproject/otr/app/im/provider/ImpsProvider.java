@@ -1031,13 +1031,6 @@ public class ImpsProvider extends ContentProvider {
         
         if (pkey != null)
         {
-                
-            if (mDbHelper != null)
-            {
-                mDbHelper.close(); //close existing instance first
-                mDbHelper = null;
-            }
-            
             if (mDbHelper == null) {
                 setDatabaseName(!pkey.isEmpty());
                 Context ctx = getContext();

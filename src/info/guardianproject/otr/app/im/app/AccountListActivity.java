@@ -181,13 +181,14 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         mHandler.registerForBroadcastEvents();
         
-        if (mCacheWord != null) {
+        if (mCacheWord != null)       
+        {
             mCacheWord.onResume();
         }
-
         
         checkForCrashes();
-        
+
+
     }
     
     
@@ -827,19 +828,10 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
-        if (mProviderCursor == null || mProviderCursor.isClosed())
-            return false;
         
-        if (this.getListAdapter() == null)
-        {
-            mAdapter = new ProviderAdapter(this, mProviderCursor, true);
-            setListAdapter(mAdapter);
-        }
-        else
-        {
-            mAdapter.changeCursor(mProviderCursor);
-        }
         
+        mAdapter = new ProviderAdapter(this, mProviderCursor, true);
+        setListAdapter(mAdapter);
         
         refreshAccountState();
         return true;
