@@ -98,9 +98,10 @@ public class ChatSessionManagerAdapter extends
         
         try
         {
+            Address address = new XmppAddress(roomAddress);
+            
             groupMan.createChatGroupAsync(roomAddress);
     
-            Address address = new XmppAddress(roomAddress.split("/")[1],roomAddress); //TODO hard coding XMPP for now
             
             ChatGroup chatGroup = groupMan.getChatGroup(address);
             
