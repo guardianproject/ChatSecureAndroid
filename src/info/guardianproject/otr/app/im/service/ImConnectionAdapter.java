@@ -399,8 +399,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     saveSessionCookie(cr);
                 }
 
-                if (mAutoLoadContacts
-                    && mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
+                if (mAutoLoadContacts) {
+                 //   && mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
+                        
                     mContactListManager.loadContactLists();
                 }
 
