@@ -482,7 +482,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
            
             RoomInfo roomInfo = null;
             
-            Address address = new XmppAddress (chatRoomJid.split("/")[1],chatRoomJid);
+            Address address = new XmppAddress (chatRoomJid);
             
             try
             {
@@ -1105,7 +1105,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String body = smackMessage.getBody();
             
                 Contact contact = mContactListManager.getContact(Address.stripResource(smackMessage.getFrom()));
-                                
+                     
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
                 
@@ -1130,8 +1130,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     if (contact == null)
                     {
-                        XmppAddress xAddr = new XmppAddress(Address.stripResource(packet.getFrom()));
-                        contact = new Contact(xAddr, xAddr.getScreenName()); //make temporary contact?
+                        
+                        if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat)
+                        {
+                            XmppAddress xAddr = new XmppAddress(packet.getFrom());                      
+                            contact = new Contact(xAddr, xAddr.getScreenName()); //make temporary contact?
+                        }
+                        else
+                        {
+                            XmppAddress xAddr = new XmppAddress(Address.stripResource(packet.getFrom()));                      
+                            contact = new Contact(xAddr, xAddr.getScreenName()); //make temporary contact?
+                        }
+                        
                     }
                     else if (contact.getPresence() != null && contact.getPresence().getStatus() == Presence.OFFLINE)
                     {
@@ -1150,10 +1160,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     rec.setType(Imps.MessageType.INCOMING);
                     
                     // Detect if this was said by us, and mark message as outgoing
+                    /*
                     if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
                             rec.getFrom().getResource().equals(rec.getTo().getScreenName())) {
                         rec.setType(Imps.MessageType.OUTGOING);
-                    }
+                    }*/
                     
                     boolean good = session.onReceiveMessage(rec);
 
@@ -1619,6 +1630,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             
             String chatRoomJid = message.getTo().getAddress();
+            
             MultiUserChat muc = ((XmppChatGroupManager)getChatGroupManager()).getMultiUserChat(chatRoomJid);
             
             if (muc != null)
@@ -2048,7 +2060,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                    org.jivesoftware.smack.packet.Presence.Type.subscribed);
+                    org.jivesoftware.smack.packet.Presence.Type.subscribe);
             response.setTo(address);
 
             sendPacket(response);
@@ -2091,6 +2103,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void approveSubscriptionRequest(String contact) {
             debug(TAG, "approve subscription");
+            
+            org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
+                    org.jivesoftware.smack.packet.Presence.Type.subscribed);
+            response.setTo(contact);
+            sendPacket(response);
+            
             try {
                 mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
             } catch (ImException e) {
