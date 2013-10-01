@@ -70,6 +70,7 @@
  </ListPreference>
 
  
+ 
   <CheckBoxPreference
           android:key="themeDark"
           android:title="@string/pref_theme_dark"
@@ -82,6 +83,13 @@
           android:title="@string/pref_background_title"
           android:summary="@string/pref_background_summary"
            />
+   
+   
+  <CheckBoxPreference
+          android:key="pref_show_grid"
+          android:title="@string/pref_show_grid"
+          android:summary="@string/pref_show_grid_summary"
+          android:defaultValue="true" />
  </PreferenceCategory>
   
    
