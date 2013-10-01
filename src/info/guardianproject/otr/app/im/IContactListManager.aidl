@@ -111,4 +111,6 @@ interface IContactListManager {
      * @return the state of the manager.
      */
     int getState();
+    
+    byte[] getAvatar (String address);
 }

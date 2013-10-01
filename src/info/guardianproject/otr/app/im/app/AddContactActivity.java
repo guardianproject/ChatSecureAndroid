@@ -144,6 +144,8 @@ public class AddContactActivity extends Activity {
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
         
         mDefaultDomain = settings.getDomain();//get domain of current user
+        
+        settings.close();
     }
 
     void inviteBuddies() {
@@ -165,7 +167,7 @@ public class AddContactActivity extends Activity {
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("addContact:" + username);
                     }
-                    int res = list.addContact(username);
+                    int res = list.addNewContact(username);
                     if (res != ImErrorInfo.NO_ERROR) {
                         fail = true;
                         mHandler.showAlert(R.string.error,

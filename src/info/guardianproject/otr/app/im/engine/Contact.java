@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -39,6 +40,7 @@ public class Contact extends ImEntity implements Parcelable {
     }
 
     public Address getAddress() {
+        
         return mAddress;
     }
 
@@ -46,6 +48,12 @@ public class Contact extends ImEntity implements Parcelable {
         return mName;
     }
 
+    public void setName (String name) //may change with new presence info
+    {
+        mName = name;
+        
+    }
+    
     public Presence getPresence() {
         return mPresence;
     }
@@ -66,6 +74,7 @@ public class Contact extends ImEntity implements Parcelable {
      */
     public void setPresence(Presence presence) {
         mPresence = presence;
+
     }
 
     public void writeToParcel(Parcel dest, int flags) {

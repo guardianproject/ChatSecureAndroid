@@ -162,6 +162,7 @@ public abstract class ContactListManager {
     }
 
     public Contact getContact(String address) {
+        
         for (ContactList list : mContactLists) {
             Contact c = list.getContact(normalizeAddress(address));
             if (c != null) {
@@ -180,7 +181,7 @@ public abstract class ContactListManager {
      * @param address the address of the temporary contact.
      * @return the created temporary contact
      */
-    public abstract Contact createTemporaryContact(String address);
+    public abstract Contact createTemporaryContact(String name, String address);
 
     /**
      * Tell whether the manager contains the specified contact
@@ -490,7 +491,9 @@ public abstract class ContactListManager {
             listener.onContactsPresenceUpdate(contacts);
         }
     }
+    
 
+   
     /**
      * Notify that a contact list related error has been raised.
      * 
@@ -537,7 +540,7 @@ public abstract class ContactListManager {
      * @param type the type of the update
      * @param contact the involved contact, null if no contact involved.
      */
-    protected void notifyContactListUpdated(ContactList list, int type, Contact contact) {
+    public void notifyContactListUpdated(ContactList list, int type, Contact contact) {
         synchronized (this) {
             if (type == ContactListListener.LIST_CONTACT_ADDED) {
                 list.insertToCache(contact);

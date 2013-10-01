@@ -34,6 +34,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -86,8 +87,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         super.onCreate(savedInstanceState);
         
         mApp = (ImApp)getApplication();
-        
-        SQLiteDatabase.loadLibs(this);
+        mHandler = new MyHandler(this);
+
         
         mSignInHelper = new SignInHelper(this);
        
@@ -103,6 +104,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             mApp.setNoCacheWord();
         else
             connectToCacheWord ();
+
+        mApp.maybeInit(this);
         
         checkForCrashes();
         
@@ -110,7 +113,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
      
     }
-    
+
     private void connectToCacheWord ()
     {
         
@@ -127,10 +130,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @SuppressWarnings("deprecation")
     private boolean cursorUnlocked(String pKey, boolean allowCreate) {
         try {
-            mHandler = new MyHandler(this);
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey).appendQueryParameter(ImApp.NO_CREATE_KEY, "1").build();
+            Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            if (!allowCreate)
+                builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+            uri = builder.build();
             
             mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
@@ -195,17 +200,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     }
 
     private void doOnResume() {
-
-        
-        if (mApp == null) {
-
-            mApp = (ImApp)getApplication();
-            mHandler = new MyHandler(this);
-            ImPluginHelper.getInstance(this).loadAvailablePlugins();
-        }
-
-       
-        mApp.setAppTheme(this);
         mHandler.registerForBroadcastEvents();
 
         int countSignedIn = accountsSignedIn();
@@ -524,6 +518,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordLocked() {
      
         showLockScreen();
+        finish();
     }
 
     @Override
@@ -541,7 +536,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
-            ((ImApp)getApplication()).initOtrStoreKey();
+            mApp.initOtrStoreKey();
 
             doOnResume();
             return true;

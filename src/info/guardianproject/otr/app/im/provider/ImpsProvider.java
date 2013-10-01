@@ -16,9 +16,6 @@
 
 package info.guardianproject.otr.app.im.provider;
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.util.LogCleaner;
@@ -49,10 +46,9 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
-import android.util.Log;
 
 /** A content provider for IM */
-public class ImpsProvider extends ContentProvider implements ICacheWordSubscriber {
+public class ImpsProvider extends ContentProvider {
     private static final String LOG_TAG = "imProvider";
     private static final boolean DBG = false;
 
@@ -250,8 +246,6 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     // contact id query selection args 2
     private String[] mQueryContactIdSelectionArgs2 = new String[2];
-    
-    private CacheWordActivityHandler mCacheWord;
     
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -1025,10 +1019,6 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     @Override
     public boolean onCreate() {
 
-        mCacheWord = new CacheWordActivityHandler(getContext(), (ICacheWordSubscriber)this);        
-        mCacheWord.connectToService();
-
-
         return true;
     }
 
@@ -1038,37 +1028,30 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
     
     private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
-        if (mDbHelper == null && pkey != null) {
-            setDatabaseName(!pkey.isEmpty());
-            Context ctx = getContext();
-            String path = ctx.getDatabasePath(mDatabaseName).getPath();
-            if (noCreate && !new File(path).exists()) {
-                return null;
+        
+        if (pkey != null)
+        {
+            if (mDbHelper == null) {
+                setDatabaseName(!pkey.isEmpty());
+                Context ctx = getContext();
+                String path = ctx.getDatabasePath(mDatabaseName).getPath();
+                if (noCreate && !new File(path).exists()) {
+                    return null;
+                }
+    
+                boolean inMemoryDb = false;
+                
+                mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
             }
 
-            boolean inMemoryDb = false;
-            
-            mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
         }
-
+        
         return mDbHelper;
 
     }
 
     private DatabaseHelper getDBHelper() {
         
-        if (mDbHelper == null)
-        {
-            //check if cacheword is open, and then init the mDbHelper
-            if (!mCacheWord.isLocked())
-            {
-                onCacheWordOpened();
-            }
-            else
-            {
-                //we need to exit somehow
-            }
-        }
         return mDbHelper;
     }
 
@@ -3576,34 +3559,4 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
            LogCleaner.debug(LOG_TAG, message);
     }
 
-    @Override
-    public void onCacheWordUninitialized() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onCacheWordLocked() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onCacheWordOpened() {
-
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-        
-        if (pkey != null)
-        {
-           
-            try {
-                this.initDBHelper(pkey, false);
-            } catch (Exception e) {
-               Log.e(ImApp.LOG_TAG,"unable to init cacheword in IMPSprovider",e);
-            }
-        
-           
-        }
-        
-    }
 }

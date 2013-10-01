@@ -17,7 +17,9 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -28,6 +30,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -40,7 +43,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ContactView extends LinearLayout {
-    static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+    
+    public static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
                                                 Imps.Contacts.SUBSCRIPTION_TYPE,
@@ -48,11 +52,26 @@ public class ContactView extends LinearLayout {
                                                 Imps.Presence.PRESENCE_STATUS,
                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
                                                 Imps.Chats.LAST_MESSAGE_DATE,
-                                                Imps.Chats.LAST_UNREAD_MESSAGE,
-                                                Imps.Contacts.AVATAR_DATA
+                                                Imps.Chats.LAST_UNREAD_MESSAGE                                                
+                                                
                                                 
     };
 
+    public static final String[] CONTACT_PROJECTION_AVATAR = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+                                                        Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
+                                                        Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
+                                                        Imps.Contacts.SUBSCRIPTION_TYPE,
+                                                        Imps.Contacts.SUBSCRIPTION_STATUS,
+                                                        Imps.Presence.PRESENCE_STATUS,
+                                                        Imps.Presence.PRESENCE_CUSTOM_STATUS,
+                                                        Imps.Chats.LAST_MESSAGE_DATE,
+                                                        Imps.Chats.LAST_UNREAD_MESSAGE,
+                                                        Imps.Contacts.AVATAR_DATA
+                                                        
+                                                        
+            };
+
+    
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
     static final int COLUMN_CONTACT_ACCOUNT = 2;
@@ -72,15 +91,15 @@ public class ContactView extends LinearLayout {
    
     private Context mContext; 
     
+    private static final int cacheSize = 300; // 4MiB
+    private static LruCache<String, Drawable> bitmapCache = new LruCache<String, Drawable>(cacheSize);
     
-    private static final int cacheSize = 100; // 4MiB
-    private static LruCache bitmapCache = new LruCache(cacheSize);
+    private IContactListManager mContactListManager;
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
-        mContext = context;
-        
+        mContext = context;       
         mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
         
     }
@@ -119,12 +138,17 @@ public class ContactView extends LinearLayout {
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
-        bind(cursor, underLineText, true, scrolling);
+        bind(cursor, underLineText, true, scrolling, null);
+    }
+        
+    public void bind(Cursor cursor, String underLineText, boolean scrolling, IContactListManager contactListManager) {
+        bind(cursor, underLineText, true, scrolling, contactListManager);
     }
 
-    public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
+    public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling, IContactListManager contactListManager) {
         
         mHolder = (ViewHolder)getTag();
+        mContactListManager = contactListManager;
         
         Resources r = getResources();
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
@@ -167,6 +191,7 @@ public class ContactView extends LinearLayout {
              if (address.indexOf('/')!=-1)
              {
                  contact = nickname + " (" + address.substring(address.indexOf('/')+1) + ")";
+                 
              }
              
             if (!TextUtils.isEmpty(underLineText)) {
@@ -181,31 +206,37 @@ public class ContactView extends LinearLayout {
                 }
             }
             
-            if (Imps.Contacts.TYPE_GROUP == type) {
-                mHolder.mAvatar.setImageResource(R.drawable.group_chat);
-                
-            }
-            else
+            if ( mHolder.mAvatar != null)
             {
-            
-                Drawable avatar = (Drawable)bitmapCache.get(address);
-                
-                if (avatar == null)
-                {
-                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-                    
-                    if (avatar != null)
-                        bitmapCache.put(address, avatar);
+                if (Imps.Contacts.TYPE_GROUP == type) {
+                    mHolder.mAvatar.setImageResource(R.drawable.group_chat);
                     
                 }
-                
-                if (avatar != null)
-                    mHolder.mAvatar.setImageDrawable(avatar);
-                else
-                    mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
-            }
+                else 
+                {
+                    Drawable avatar = (Drawable)bitmapCache.get(Address.stripResource(address));
+                    
+                    if (avatar == null)
+                    {
+                        
+                        mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
+                        avatar = loadAvatar (address, cursor);
+                        
+                        if (avatar != null)
+                            mHolder.mAvatar.setImageDrawable(avatar);
+                    }
+                    else
+                    {   
+                        mHolder.mAvatar.setImageDrawable(avatar);
+                        
+                    }
+                    
+                    
+                   
+                }
 
-     //   }
+            }
+            
             mHolder.mLine1.setText(contact);
 
         // time stamp
@@ -222,14 +253,15 @@ public class ContactView extends LinearLayout {
             
         // line2
         String status = null;
-        if (showChatMsg && lastMsg != null) {
+        if (showChatMsg && lastMsg != null && lastMsg.length() > 0) {
 
             //remove HTML tags since we can't display HTML
             status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
-            setBackgroundResource(R.color.holo_blue_bright);
+            //setBackgroundResource(R.color.holo_blue_bright);
+          
             mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
             mHolder.mLine1.setTextColor(Color.WHITE);
-            mHolder.mLine1.setText(lastMsg);
+          //  mHolder.mLine1.setText(lastMsg);
                         
         }
         else 
@@ -292,6 +324,35 @@ public class ContactView extends LinearLayout {
          //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
         }
     }
+    
+    private Drawable loadAvatar (final String address, Cursor cursor)
+    {
+     
+        try {
+            if (mContactListManager != null)
+            {
+                byte[] data = mContactListManager.getAvatar(address);
+                if (data != null && data.length > 1)
+                {
+                    Drawable avatar = DatabaseUtils.decodeAvatar(data, ImApp.DEFAULT_AVATAR_WIDTH, ImApp.DEFAULT_AVATAR_HEIGHT);
+                      if (avatar != null)
+                      {
+                          bitmapCache.put(Address.stripResource(address), avatar);           
+
+                          return avatar;    
+                      }
+                      
+                }
+            }
+            
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+             
+        return null;
+    }
+        
     
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };

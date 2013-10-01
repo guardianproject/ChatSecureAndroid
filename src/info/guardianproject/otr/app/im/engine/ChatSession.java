@@ -192,7 +192,7 @@ public class ChatSession {
 
         SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());            
 
-        if (otrStatus == SessionStatus.ENCRYPTED)
+        if (otrStatus == SessionStatus.ENCRYPTED && message.getType() == Imps.MessageType.INCOMING)
         {
             boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
             

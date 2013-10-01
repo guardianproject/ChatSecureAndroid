@@ -241,7 +241,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 } else if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getAllowV2()
                            && sessionPolicy.getSendWhitespaceTag()) {
                     // Work around asmack not sending whitespace tag for auto discovery
-                    body += " \t  \t\t\t\t \t \t \t   \t \t  \t   \t\t  \t ";
+                    body += OtrConstants.WHITESPACE;
 
                 }
             } catch (OtrException e) {

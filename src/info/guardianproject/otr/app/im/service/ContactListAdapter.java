@@ -42,14 +42,14 @@ public class ContactListAdapter extends info.guardianproject.otr.app.im.IContact
         return mAdaptee.getAddress();
     }
 
-    public int addContact(String address) {
+    public int addNewContact(String address) {
         if (address == null) {
             RemoteImService.debug("Address can't be null!");
             return ImErrorInfo.ILLEGAL_CONTACT_ADDRESS;
         }
 
         try {
-            mAdaptee.addContact(address);
+            mAdaptee.addNewContact(address);
         } catch (IllegalArgumentException e) {
             return ImErrorInfo.ILLEGAL_CONTACT_ADDRESS;
         } catch (ImException e) {

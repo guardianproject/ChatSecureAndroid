@@ -221,7 +221,9 @@ public class SignInHelper {
 
             if (mApp.isNetworkAvailableAndConnected()) {
                
-                conn.login(password, autoLoadContacts, autoRetryLogin);
+                if (conn != null)
+                    conn.login(password, autoLoadContacts, autoRetryLogin);
+                
             } else {
                 promptForBackgroundDataSetting(providerName);
                 return;

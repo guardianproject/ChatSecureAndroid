@@ -1912,7 +1912,9 @@ public class Imps {
             @Override
             public synchronized void close() {
                 mStacktrace = null;
+           
                 super.close();
+                
             }
             
             @Override

@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -52,12 +53,29 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
-        byte[] rawData = cursor.getBlob(dataColumn);
-        if (rawData == null) {
+  public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
+        
+        byte[] data = cursor.getBlob(dataColumn);
+;        
+        //byte[] data = cursor.getBlob(dataColumn);
+        if (data != null)
+        return decodeAvatar(data, width, height);
+        else
+            return null;
+    }
+    
+  public static Drawable getAvatarFromCursor(String hexData, int dataColumn, int width, int height) {
+        
+        if (hexData.equals("NULL")) {
             return null;
         }
-        return decodeAvatar(rawData, width, height);
+        byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
+        
+        //byte[] data = cursor.getBlob(dataColumn);
+        if (data != null)
+        return decodeAvatar(data, width, height);
+        else
+            return null;
     }
 
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
@@ -65,42 +83,6 @@ public class DatabaseUtils {
         ContentUris.appendId(builder, providerId);
         ContentUris.appendId(builder, accountId);
         return builder.build();
-    }
-
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn,
-            int encodedDataColumn, String username, boolean updateBlobUseCursor,
-            ContentResolver resolver, Uri updateBlobUri, int width, int height) {
-        /**
-         * Optimization: the avatar table in IM content provider have two
-         * columns, one for the raw blob data, another for the base64 encoded
-         * data. The reason for this is when the avatars are initially
-         * downloaded, they are in the base64 encoded form, and instead of
-         * base64 decode the avatars for all the buddies up front, we can just
-         * simply store the encoded data in the table, and decode them on demand
-         * when displaying them. Once we decode the avatar, we store the decoded
-         * data as a blob, and null out the encoded column in the avatars table.
-         * query the raw blob data first, if present, great; if not, query the
-         * encoded data, decode it and store as the blob, and null out the
-         * encoded column.
-         */
-        byte[] rawData = cursor.getBlob(dataColumn);
-
-        if (rawData == null) {
-            String encodedData = cursor.getString(encodedDataColumn);
-            if (encodedData == null) {
-                // Log.e(LogTag.LOG_TAG, "getAvatarFromCursor for " + username +
-                // ", no raw or encoded data!");
-                return null;
-            }
-
-            if (updateBlobUseCursor) {
-            } 
-            else {
-                updateAvatarBlob(resolver, updateBlobUri, rawData, username);
-            }
-        }
-
-        return decodeAvatar(rawData, width, height);
     }
 
     public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data, 
@@ -164,11 +146,13 @@ public class DatabaseUtils {
         values.put(Imps.Avatars.ACCOUNT, accountId);
         values.put(Imps.Avatars.HASH, hash);
         resolver.insert(updateUri, values);
-        
+     
     }
     
+    
+    
 
-    private static Drawable decodeAvatar(byte[] data, int width, int height) {
+    public static Drawable decodeAvatar(byte[] data, int width, int height) {
         
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

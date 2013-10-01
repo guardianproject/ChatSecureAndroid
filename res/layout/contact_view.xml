@@ -42,14 +42,6 @@
         android:paddingLeft="0dip"
         android:paddingTop="0dip" >
 
-        <ImageView
-            android:id="@+id/contactAvatar"
-            android:layout_width="64sp"
-            android:layout_height="64sp"
-            android:scaleType="centerCrop" 
-				android:layout_alignParentLeft="true"
-				android:visibility="gone"
-            />
 
         <LinearLayout
             android:id="@+id/contactrow"	

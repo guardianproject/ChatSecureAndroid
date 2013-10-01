@@ -609,7 +609,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             XmppAddress xaddress = new XmppAddress(name, address);
 
-            Contact contact = getContact(xaddress.getAddress());
+            Contact contact = getContact(xaddress.getBareAddress());
 
             int type = parsePresence(presence, offline);
 
@@ -694,9 +694,9 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public Contact createTemporaryContact(String address) {
+        public Contact createTemporaryContact(String name, String address) {
             debug(TAG, "create temporary " + address);
-            return makeContact(parseAddressName(address), address);
+            return makeContact(name, address);
         }
     }
 

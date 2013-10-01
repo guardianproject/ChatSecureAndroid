@@ -21,6 +21,7 @@ import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactView;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactList;
@@ -49,6 +50,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.RemoteCallbackList;
@@ -134,13 +136,16 @@ public class ContactListManagerAdapter extends
     }
     
     private void loadOfflineContacts() {
-        Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
+        Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME, Imps.Contacts.NICKNAME },
                 null, null, null);
        
         while (contactCursor.moveToNext())
         {
             String address = contactCursor.getString(0);
-            mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
+            String nickname = contactCursor.getString(1);
+            Contact contact = mAdaptee.createTemporaryContact(nickname, address);
+            
+            mOfflineContacts.put(address, contact);
         }
        
     
@@ -272,7 +277,7 @@ public class ContactListManagerAdapter extends
 
     public void loadContactLists() {
         if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
-            clearValidatedContactsAndLists();
+           // clearValidatedContactsAndLists();
             mAdaptee.loadContactListsAsync();
         }
     }
@@ -286,7 +291,9 @@ public class ContactListManagerAdapter extends
             return mOfflineContacts.get(address);
         }
         
+        
         Contact c = mAdaptee.getContact(address);
+        
         if (c == null) {
             synchronized (mTemporaryContacts) {
                 return mTemporaryContacts.get(address);
@@ -296,8 +303,11 @@ public class ContactListManagerAdapter extends
         }
     }
 
-    public Contact createTemporaryContact(String address) {
-        Contact c = mAdaptee.createTemporaryContact(address);
+    
+    
+    public Contact createTemporaryContact(String address, String nickname) {
+        Contact c = mAdaptee.createTemporaryContact(nickname, address);
+        c.setName(nickname);
         insertTemporary(c);
         return c;
     }
@@ -815,18 +825,22 @@ public class ContactListManagerAdapter extends
 
     void updatePresenceContent(Contact[] contacts) {
         ArrayList<String> usernames = new ArrayList<String>();
+        ArrayList<String> nicknames = new ArrayList<String>();
+        
         ArrayList<String> statusArray = new ArrayList<String>();
         ArrayList<String> customStatusArray = new ArrayList<String>();
         ArrayList<String> clientTypeArray = new ArrayList<String>();
 
         for (Contact c : contacts) {
-            String username = c.getAddress().getAddress();
+            String username = c.getAddress().getBareAddress();
+            String nickname = c.getName();
             Presence p = c.getPresence();
             int status = convertPresenceStatus(p);
             String customStatus = p.getStatusText();
             int clientType = translateClientType(p);
 
             usernames.add(username);
+            nicknames.add(nickname);
             statusArray.add(String.valueOf(status));
             customStatusArray.add(customStatus);
             clientTypeArray.add(String.valueOf(clientType));
@@ -835,10 +849,11 @@ public class ContactListManagerAdapter extends
         ContentValues values = new ContentValues();
         values.put(Imps.Contacts.ACCOUNT, mAccountId);
         putStringArrayList(values, Imps.Contacts.USERNAME, usernames);
+        putStringArrayList(values, Imps.Contacts.NICKNAME, nicknames);
         putStringArrayList(values, Imps.Presence.PRESENCE_STATUS, statusArray);
         putStringArrayList(values, Imps.Presence.PRESENCE_CUSTOM_STATUS, customStatusArray);
-        putStringArrayList(values, Imps.Presence.CONTENT_TYPE, clientTypeArray);
-
+        putStringArrayList(values, Imps.Presence.CONTENT_TYPE, clientTypeArray);        
+        
         mResolver.update(Imps.Presence.BULK_CONTENT_URI, values, null, null);
     }
 
@@ -961,6 +976,7 @@ public class ContactListManagerAdapter extends
             
             if (existingUsernames.contains(username))
                 continue; // FIXME update instead of skipping
+            
             int type = Imps.Contacts.TYPE_NORMAL;
             if (isTemporary(username)) {
                 type = Imps.Contacts.TYPE_TEMPORARY;
@@ -1181,5 +1197,43 @@ public class ContactListManagerAdapter extends
         Builder builder = Imps.Presence.SEED_PRESENCE_BY_ACCOUNT_CONTENT_URI.buildUpon();
         ContentUris.appendId(builder, mAccountId);
         mResolver.insert(builder.build(), new ContentValues(0));
+    }
+    
+    
+    private static final int COLUMN_AVATAR_DATA = 12;
+
+    public byte[] getAvatar (String address)
+    {
+        StringBuilder buf = new StringBuilder();
+
+        if (address != null) {
+
+            buf.append(Imps.Contacts.USERNAME);
+            buf.append(" LIKE ");
+            DatabaseUtils.appendValueToSql(buf, "%" + address + "%");
+        }
+
+        ContentResolver cr = mContext.getContentResolver();
+        
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+        ContentUris.appendId(builder, mProviderId);
+        ContentUris.appendId(builder, mAccountId);
+
+        Cursor cursor = cr.query(builder.build(), ContactView.CONTACT_PROJECTION_AVATAR,
+                buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        
+        byte[] data = null;
+        
+        if (cursor != null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            data = cursor.getBlob(COLUMN_AVATAR_DATA);
+        }
+        
+        if (cursor != null)
+            cursor.close();
+        
+        return data;
+        
     }
 }

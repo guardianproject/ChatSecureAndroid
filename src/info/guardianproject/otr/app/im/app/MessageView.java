@@ -28,6 +28,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
@@ -272,11 +273,26 @@ public class MessageView extends LinearLayout {
             }
         }    
     }
-    public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
+    public void bindPresenceMessage(String contact, Date date, int type, boolean isGroupChat, boolean scrolling) {
+        
+        ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        setGravity(Gravity.LEFT);
+        setLayoutParams(lp);     
+        setPadding(3,0,100,3);
+        
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mTextViewForMessages.setText(message);
-        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
+        mTextViewForMessages.setTextColor(Color.LTGRAY);
         mDeliveryIcon.setVisibility(INVISIBLE);
+
+        if (date != null)
+        {
+            mTextViewForTimestamp.setText(formatTimeStamp(date));
+            mTextViewForTimestamp.setGravity(Gravity.CENTER);
+            mTextViewForTimestamp.setVisibility(View.VISIBLE);
+            mTextViewForTimestamp.setPadding(0,0,0,12);
+        }
+
     }
 
     public void bindErrorMessage(int errCode) {

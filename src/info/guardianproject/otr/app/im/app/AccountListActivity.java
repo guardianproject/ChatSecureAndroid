@@ -28,6 +28,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -46,7 +48,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,15 +70,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
 
     private static final String TAG = ImApp.LOG_TAG;
-
-    private static final int ID_SIGN_IN = Menu.FIRST + 1;
-    private static final int ID_SIGN_OUT = Menu.FIRST + 2;
-    private static final int ID_EDIT_ACCOUNT = Menu.FIRST + 3;
-    private static final int ID_REMOVE_ACCOUNT = Menu.FIRST + 4;
-//    private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
-    private static final int ID_ADD_ACCOUNT = Menu.FIRST + 6;
-    private static final int ID_VIEW_CONTACT_LIST = Menu.FIRST + 7;
-
+    
     private ProviderAdapter mAdapter;
     private Cursor mProviderCursor;
     private ImApp mApp;
@@ -115,14 +108,13 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     @Override
     protected void onCreate(Bundle icicle) {
-
-        ((ImApp)getApplication()).setAppTheme(this);
-      
         super.onCreate(icicle);
         
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+
         ThemeableActivity.setBackgroundImage(this);
         
-        mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
@@ -134,8 +126,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             mApp.setCacheWord(mCacheWord);
         }
         
-        ImPluginHelper.getInstance(this).loadAvailablePlugins();
-
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
      
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
@@ -185,28 +175,20 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     @Override
     protected void onResume() {
 
-        ((ImApp)getApplication()).setAppTheme(this);
-        
         super.onResume();
-
-        mApp = (ImApp)getApplication();
-        mApp.startImServiceIfNeed();        
 
         ThemeableActivity.setBackgroundImage(this);
         
         mHandler.registerForBroadcastEvents();
-        if (mCacheWord != null) {
-            mCacheWord.onResume();
         
-            if (!mCacheWord.isLocked())
-            {
-                onCacheWordOpened();
-
-            }
+        if (mCacheWord != null)       
+        {
+            mCacheWord.onResume();
         }
         
         checkForCrashes();
-        
+
+
     }
     
     
@@ -300,7 +282,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     private void handlePanic() {
         
         signOutAll ();
-        ((ImApp)getApplication()).forceStopImService();
+        mApp.forceStopImService();
         
     }
  
@@ -316,13 +298,22 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 signOut(accountId);
             }
             
-            ((ImApp)getApplication()).stopImServiceIfInactive();
-            
-            if (mCacheWord != null)
-                mCacheWord.manuallyLock();
-            
-            finish();
         }
+
+        if (mCacheWord != null)
+            mCacheWord.manuallyLock();
+        
+        
+        new Timer ().schedule(new TimerTask() {
+            
+            public void run ()
+            {
+
+                mApp.forceStopImService();
+                AccountListActivity.this.finish();
+            }
+        }, 3000l);
+        
         
     }
 
@@ -353,6 +344,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         try {
             IImConnection conn = mApp.getConnectionByAccount(accountId);
             if (conn != null) {
+                
                 conn.logout();
             }
         } catch (Exception ex) {
@@ -516,7 +508,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
     public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
-        ((ImApp)getApplication()).resetProviderSettings(); //clear cached provider list
+        mApp.resetProviderSettings(); //clear cached provider list
         
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_INSERT);
@@ -818,13 +810,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
-        
         mCacheWord.setTimeoutMinutes(defaultTimeout);  
         
-        
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-
-            
+        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());            
         initProviderCursor (pkey);
         
     }
@@ -840,8 +828,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
-        if (mProviderCursor == null)
-            return false;
+        
         
         mAdapter = new ProviderAdapter(this, mProviderCursor, true);
         setListAdapter(mAdapter);

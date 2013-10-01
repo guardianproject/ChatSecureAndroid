@@ -829,5 +829,8 @@
     <string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
     
     <string name="menu_sidebar_qr">Fingerprint</string>
+    
+    <string name="pref_show_grid">Show Avatars</string>
+    <string name="pref_show_grid_summary">Show the grid avatar view for the contact list</string>
 </resources>
 

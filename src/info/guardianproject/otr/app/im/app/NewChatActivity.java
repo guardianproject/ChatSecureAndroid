@@ -44,12 +44,14 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -87,6 +89,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
+    private static final String ICICLE_POSITION = "position";
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
@@ -109,11 +112,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     @Override
     protected void onCreate(Bundle icicle) {
-        
-        ((ImApp)getApplication()).setAppTheme(this);
-      
         super.onCreate(icicle);
 
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+    
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
@@ -148,8 +151,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
                 });
         
-        mApp = (ImApp)getApplication();
-    
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
         initSideBar ();
@@ -157,21 +158,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
         
-        /*
-        new java.util.Timer().schedule( 
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        handlerIntent.sendEmptyMessage(0);
-                    }
-                }, 
-                1000 
-        );*/
-        
-     
-       
+        if (icicle != null && icicle.containsKey(ICICLE_POSITION)) {
+            int position = icicle.getInt(ICICLE_POSITION);
+            if (position < mChatPagerAdapter.getCount())
+                mChatPager.setCurrentItem(position);
+        }
     }
     
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ICICLE_POSITION, mChatPager.getCurrentItem());
+    }
     
     @Override
     protected void onResume() {     
@@ -199,11 +197,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     public void onBackPressed() {
+        if (menu.isMenuShowing()) {
+            menu.showContent();
+            return;
+        }
         int currentPos = mChatPager.getCurrentItem();
-        if (currentPos > 0)
+        if (currentPos > 0) {
             mChatPager.setCurrentItem(0);
-        else
-            super.onBackPressed();
+            return;
+        }
+        super.onBackPressed();
     }
 
     private SlidingMenu menu = null;
@@ -911,7 +914,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
             fragmentList = Maps.newHashMap();
-            if (mCursorChats == null)
+            if (mCursorChats == null || mCursorChats.isClosed())
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
                 mCursorChats.requery();
@@ -924,7 +927,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
 
-            mCursorChats.requery();
+            if (mCursorChats != null && !mCursorChats.isClosed())
+                mCursorChats.requery();
             
             super.notifyDataSetChanged();
 
@@ -957,7 +961,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (position == 0)
             {
-                return (mContactList = new ContactListFragment());
+                mContactList = new ContactListFragment();
+                Bundle args = new Bundle();
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(NewChatActivity.this);
+                boolean showGrid = settings.getBoolean("pref_show_grid", true);
+
+                args.putBoolean("showGrid",showGrid);
+                mContactList.setArguments(args);
+                return mContactList;
             }
             else
             {
@@ -1138,6 +1149,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              super.onCreate(savedInstanceState);
              
              mSignInHelper = new SignInHelper(getActivity());
+             
+             Bundle args = getArguments();
+             
+             if (args != null)
+             showGrid = args.getBoolean("showGrid",true);
              
          }
 
@@ -1356,7 +1372,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          {
              IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
            
-             if (conn == null)
+             if (conn == null && getActivity() != null && getActivity().getApplication() != null)
              {
                  try {
                   conn =  ((ImApp)getActivity().getApplication()).createConnection(providerId, accountId);
@@ -1385,6 +1401,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  mFilterView.doFilter(builder.build(), null);
 
                  mChatPagerAdapter.notifyDataSetChanged();
+                 
                 
              }        
              
@@ -1493,6 +1510,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     private void startChat(Cursor c) {
         if (c != null) {
+            
+            if (c.getCount() == 0)
+                return;
+            
             long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             

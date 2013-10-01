@@ -123,7 +123,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     
-    public IOtrChatSession getOtrChatSession() {
+    public synchronized IOtrChatSession getOtrChatSession() {
 
         if (mOtrChatManager == null)
         {
@@ -614,6 +614,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 //            if (N == 0)
 //            {
                 //reinstated body display here in the notification; perhaps add preferences to turn that off
+            
+            if (msg.getType() == Imps.MessageType.INCOMING || msg.getType() == Imps.MessageType.INCOMING_ENCRYPTED || msg.getType() == Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED)            
                 mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
                         getId(), bareUsername, nickname, body, false);
 //            }

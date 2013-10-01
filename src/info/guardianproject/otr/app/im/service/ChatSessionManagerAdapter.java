@@ -77,7 +77,7 @@ public class ChatSessionManagerAdapter extends
         Contact contact = listManager.getContactByAddress(contactAddress);
         if (contact == null) {
             try {
-                contact = listManager.createTemporaryContact(contactAddress);
+                contact = listManager.createTemporaryContact(contactAddress,contactAddress.split("@")[0]);
             } catch (IllegalArgumentException e) {
                 mSessionListenerAdapter.notifyChatSessionCreateFailed(contactAddress,
                         new ImErrorInfo(ImErrorInfo.ILLEGAL_CONTACT_ADDRESS,
@@ -98,9 +98,10 @@ public class ChatSessionManagerAdapter extends
         
         try
         {
+            Address address = new XmppAddress(roomAddress);
+            
             groupMan.createChatGroupAsync(roomAddress);
     
-            Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
             
             ChatGroup chatGroup = groupMan.getChatGroup(address);
             

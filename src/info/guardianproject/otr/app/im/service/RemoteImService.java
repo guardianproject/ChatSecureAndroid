@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactView;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
@@ -56,10 +57,13 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -707,4 +711,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         //showToast(msg, Toast.LENGTH_SHORT);
 
     }
+    
+
 }
