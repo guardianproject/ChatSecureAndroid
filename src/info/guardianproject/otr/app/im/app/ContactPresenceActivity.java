@@ -21,6 +21,7 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
@@ -182,7 +183,7 @@ public class ContactPresenceActivity extends Activity {
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
 
         ContentResolver cr = getContentResolver();
-        Cursor c = cr.query(mUri, null, null, null, null);
+        Cursor c = cr.query(mUri, ContactView.CONTACT_PROJECTION, null, null, null);
         if (c == null) {
             warning("Database error when query " + mUri);
             finish();
@@ -205,18 +206,29 @@ public class ContactPresenceActivity extends Activity {
             BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
-            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*4,ImApp.DEFAULT_AVATAR_HEIGHT*4);
-            
-            if (avatar != null)
-            {                
+            try {
+                Drawable avatar = null;
+                byte[] avatarData = mApp.getConnection(providerId).getContactListManager().getAvatar(Address.stripResource(remoteAddress));
                 
-                getWindow().setBackgroundDrawable(avatar);
+
+                if (avatarData != null)
+                {                
+                    
+                    avatar = DatabaseUtils.decodeAvatar(avatarData,ImApp.DEFAULT_AVATAR_WIDTH*4,ImApp.DEFAULT_AVATAR_HEIGHT*4);
+                    
+                    getWindow().setBackgroundDrawable(avatar);
+                    
+                    findViewById(R.id.helpscrollview).setBackgroundColor(getResources().getColor(R.color.contact_status_avatar_overlay));
+                   
+                    
+                }
                 
-                findViewById(R.id.helpscrollview).setBackgroundColor(getResources().getColor(R.color.contact_status_avatar_overlay));
-               
-                
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
+            
+            
 
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             

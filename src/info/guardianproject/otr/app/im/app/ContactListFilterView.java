@@ -24,6 +24,11 @@ import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -39,7 +44,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -318,33 +322,45 @@ public class ContactListFilterView extends LinearLayout {
 
         ContentResolver cr = mContext.getContentResolver();
         
+        String limit = "";
         Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
-                buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
-        
-        
+                buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER + limit);
         
         return cursor;
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
-        private String mSearchString;
+       
+        private String mSearchString = "";
 
-        @SuppressWarnings("deprecation")
+        private long lastChangeTime;
+        private final static long MIN_CHANGE_WINDOW = 2000;
+        
+        private IContactListManager mContactListManager;
+
+        private Timer mTimerRefresh = null;
+        
         public ContactAdapter(Context context, int view, Cursor cursor) {
-            super(context, view, cursor);
+            super(context, view, cursor, false);
+            
+            lastChangeTime = new Date().getTime();
+            mTimerRefresh = new Timer();
+            
+            try
+            {
+                if (mConn != null)
+                    mContactListManager =mConn.getContactListManager();
+            }
+            catch (Exception e){}
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-           
-
-            return super.getView(position, convertView, parent);
-        }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-            v.bind(cursor, mSearchString, false);
+            v.bind(cursor, mSearchString, false, mContactListManager);
+            
+            
         }
 
         @Override
@@ -353,6 +369,51 @@ public class ContactListFilterView extends LinearLayout {
                 mSearchString = constraint.toString();
             }
             return ContactListFilterView.this.runQuery(constraint);
+        }
+
+
+        @Override
+        protected void onContentChanged() {
+            
+            long nowChangeTime = new Date().getTime();
+            long changeDiff = nowChangeTime - lastChangeTime;
+
+            if (changeDiff > MIN_CHANGE_WINDOW)
+            {
+                mTimerRefresh.schedule(new TimerTask()
+                {
+    
+                    @Override
+                    public void run() {
+    
+                        if (mContactListManager == null)
+                        {
+                            try
+                            {
+                                if (mConn != null)
+                                    mContactListManager =mConn.getContactListManager();
+                            }
+                            catch (Exception e){}
+                        }
+                        
+                       mHandler.post(new Runnable ()
+                       {
+                           public void run ()
+                           {
+                              Cursor cursor = ContactListFilterView.this.runQuery(mSearchString);
+                                changeCursor(cursor);
+                           
+                           }
+                       });
+                        
+                    }
+                    
+                }, MIN_CHANGE_WINDOW);
+            
+                lastChangeTime = nowChangeTime;
+                
+            }
+            
         }
     }
 
