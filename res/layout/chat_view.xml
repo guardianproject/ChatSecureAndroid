@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:visibility="gone">
+        >
 
         <ImageView android:id="@+id/warningIcon"
             android:layout_width="16dip"
@@ -69,6 +69,10 @@
         
     </LinearLayout>
 
+<View
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="@android:color/darker_gray"/>
 
     <ListView android:id="@+id/history"
         android:layout_width="fill_parent"
