@@ -43,12 +43,13 @@ public final class Presence implements Parcelable {
     public static final int CLIENT_TYPE_DEFAULT = 0;
     public static final int CLIENT_TYPE_MOBILE = 1;
 
-    private int mStatus;
+    private int mStatus = 0;
     private String mStatusText;
     private byte[] mAvatarData;
     private String mAvatarType;
     private int mClientType;
     private String mResource;
+    private int mPriority = -1; //default to lowest
     
     private Map<String, String> mExtendedInfo;
 
@@ -200,5 +201,15 @@ public final class Presence implements Parcelable {
     public void setResource (String resource)
     {
         mResource = resource;
+    }
+    
+    public int getPriority ()
+    {
+        return mPriority;
+    }
+    
+    public void setPriority (int priority)
+    {
+        mPriority = priority;
     }
 }

@@ -846,7 +846,7 @@ public class ImpsProvider extends ContentProvider {
 
         // Avatars columns
         sContactsProjectionMap.put(Imps.Contacts.AVATAR_HASH, "avatars.hash AS avatars_hash");
-        sContactsProjectionMap.put(Imps.Contacts.AVATAR_DATA, "quote(avatars.data) AS avatars_data");
+        sContactsProjectionMap.put(Imps.Contacts.AVATAR_DATA, "avatars.data AS avatars_data");
 
         // contactList projection map
         sContactListProjectionMap = new HashMap<String, String>();
@@ -864,7 +864,7 @@ public class ImpsProvider extends ContentProvider {
         sBlockedListProjectionMap.put(Imps.BlockedList.NICKNAME, "nickname");
         sBlockedListProjectionMap.put(Imps.BlockedList.PROVIDER, "provider");
         sBlockedListProjectionMap.put(Imps.BlockedList.ACCOUNT, "account");
-        sBlockedListProjectionMap.put(Imps.BlockedList.AVATAR_DATA, "quote(avatars.data) AS avatars_data");
+        sBlockedListProjectionMap.put(Imps.BlockedList.AVATAR_DATA, "avatars.data AS avatars_data");
 
         // messages projection map
         sMessagesProjectionMap = new HashMap<String, String>();
@@ -1028,19 +1028,31 @@ public class ImpsProvider extends ContentProvider {
     }
     
     private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
-        if (mDbHelper == null && pkey != null) {
-            setDatabaseName(!pkey.isEmpty());
-            Context ctx = getContext();
-            String path = ctx.getDatabasePath(mDatabaseName).getPath();
-            if (noCreate && !new File(path).exists()) {
-                return null;
+        
+        if (pkey != null)
+        {
+                
+            if (mDbHelper != null)
+            {
+                mDbHelper.close(); //close existing instance first
+                mDbHelper = null;
+            }
+            
+            if (mDbHelper == null) {
+                setDatabaseName(!pkey.isEmpty());
+                Context ctx = getContext();
+                String path = ctx.getDatabasePath(mDatabaseName).getPath();
+                if (noCreate && !new File(path).exists()) {
+                    return null;
+                }
+    
+                boolean inMemoryDb = false;
+                
+                mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
             }
 
-            boolean inMemoryDb = false;
-            
-            mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
         }
-
+        
         return mDbHelper;
 
     }

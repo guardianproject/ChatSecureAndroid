@@ -226,7 +226,7 @@ public class AccountActivity extends Activity {
                 accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
 
-                createNewAccount(mUserName, pass);
+                createNewAccount(mDomain, mPort+"",mUserName, pass);
             }
             cursor.close();
             setAccountKeepSignedIn(true);
@@ -352,7 +352,7 @@ public class AccountActivity extends Activity {
 
                 final String pass = mEditPass.getText().toString();
                 final String passConf = mEditPassConfirm.getText().toString();
-                final boolean rememberPass = mRememberPass.isChecked();
+                final boolean rememberPass = true;//mRememberPass.isChecked();
                 final boolean isActive = false; // TODO(miron) does this ever need to be true?
                 ContentResolver cr = getContentResolver();
 
@@ -389,14 +389,11 @@ public class AccountActivity extends Activity {
                 {
                     if (pass.equals(passConf))
                     {
-                        createNewAccount(mUserName, pass);
-                        setAccountKeepSignedIn(rememberPass);
+                        createNewAccount(mDomain,mPort+"",mUserName, pass);
+                        setAccountKeepSignedIn(rememberPass); //always remember new account password
                         mSignInHelper.activateAccount(mProviderId, accountId);
                         setResult(RESULT_OK);
-                        //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
-                        //isSignedIn = true;
-                        //updateWidgetState();
-                        finish();
+                        
                     }
                     else
                     {
@@ -466,6 +463,11 @@ public class AccountActivity extends Activity {
             mRememberPass.setVisibility(View.GONE);
         }
 
+        if (mIsNewAccount)
+        {
+            mRememberPass.setChecked(true);
+            mRememberPass.setVisibility(View.GONE);
+        }
 
     }
 
@@ -713,6 +715,7 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         }
+        
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -998,7 +1001,7 @@ public class AccountActivity extends Activity {
         return out.toString();
     }
 
-    public void createNewAccount (String usernameNew, String passwordNew)
+    public void createNewAccount (String domain, String port, String usernameNew, String passwordNew)
     {
         
         new AsyncTask<String, Void, String>() {
@@ -1007,22 +1010,27 @@ public class AccountActivity extends Activity {
             protected String doInBackground(String... params) {
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                         getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
-
+                
+                settingsForDomain(params[2], Integer.parseInt(params[3]), settings);
+                
+                settings.requery();
+                
                 try {
-                                        
-                    settingsForDomain(mDomain, mPort);
-                    
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
-                    xmppConn.registerAccount(settings, params[0], params[1]);
+                    boolean success = xmppConn.registerAccount(settings, params[0], params[1]);
+                    
+                    if (!success)
+                    {
+                        return "The server does not support account creation";
+                    }
                     // settings closed in registerAccount
                 } catch (Exception e) {
                     LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
                    
                     return e.getLocalizedMessage();
-                } finally {
-                    settings.close();
-                }
+                } 
+                
                 return null;
               }
 
@@ -1034,9 +1042,15 @@ public class AccountActivity extends Activity {
                 {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
                 }
+                else
+                {
+                    AccountActivity.this.setResult(RESULT_OK);
+                    AccountActivity.this.finish();
+                    
+                }
                
             }
-        }.execute(usernameNew, passwordNew);
+        }.execute(usernameNew, passwordNew, domain, port);
         
         
     }

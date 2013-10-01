@@ -28,6 +28,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -307,13 +309,22 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 signOut(accountId);
             }
             
-            mApp.stopImServiceIfInactive();
-            
-            if (mCacheWord != null)
-                mCacheWord.manuallyLock();
-            
-            finish();
         }
+
+        if (mCacheWord != null)
+            mCacheWord.manuallyLock();
+        
+        
+        new Timer ().schedule(new TimerTask() {
+            
+            public void run ()
+            {
+
+                mApp.forceStopImService();
+                AccountListActivity.this.finish();
+            }
+        }, 3000l);
+        
         
     }
 
@@ -344,6 +355,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         try {
             IImConnection conn = mApp.getConnectionByAccount(accountId);
             if (conn != null) {
+                
                 conn.logout();
             }
         } catch (Exception ex) {

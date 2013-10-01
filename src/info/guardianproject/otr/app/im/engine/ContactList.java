@@ -69,6 +69,11 @@ public class ContactList extends ImEntity {
         return mDefault;
     }
 
+    public void addContactToList (Contact contact)
+    {
+        mContactsCache.put(contact.getAddress().getBareAddress(), contact);
+    }
+    
     /**
      * Add a contact to the list. The contact is specified by its address
      * string.
@@ -78,7 +83,7 @@ public class ContactList extends ImEntity {
      * @throws NullPointerException if the address string is null
      * @throws ImException if the contact is not allowed to be added
      */
-    public void addContact(String address) throws ImException {
+    public void addNewContact(String address) throws ImException {
         address = mManager.normalizeAddress(address);
 
         if (null == address) {

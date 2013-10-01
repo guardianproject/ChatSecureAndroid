@@ -180,9 +180,12 @@ public class ChatView extends LinearLayout {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            
+            mOtrSwitchTouched = true;
+            
             mActivity.setOTRState(ChatView.this, ChatView.this.getOtrChatSession(), isChecked);
          
-            mOtrSwitchTouched = true;
+            
         }
         
     };
@@ -367,6 +370,12 @@ public class ChatView extends LinearLayout {
         }
     };
     
+    private Runnable mUpdateHistoryCallback = new Runnable() {
+        public void run() {
+            updateWarningView();
+        }
+    };
+    
     private IContactListListener mContactListListener = new IContactListListener.Stub() {
         public void onAllContactListsLoaded() {
         }
@@ -380,13 +389,20 @@ public class ChatView extends LinearLayout {
 
         public void onContactsPresenceUpdate(Contact[] contacts) {
             
+            
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onContactsPresenceUpdate()");
             }
             for (Contact c : contacts) {
-                if (Address.stripResource(c.getAddress().getAddress()).equals(Address.stripResource(mRemoteAddressString))) {
-                    mHandler.post(mUpdateChatCallback);
-                    scheduleRequery(DEFAULT_QUERY_INTERVAL);
+                if (c.getAddress().getBareAddress().equals(mRemoteAddress.getBareAddress())) {
+                   
+                    mHandler.post(mUpdateHistoryCallback);
+                    
+                    //scheduleRequery(DEFAULT_QUERY_INTERVAL);
+                    
+                    //mHandler.
+                    
+                    
                     break;
                 }
             }
@@ -1081,7 +1097,7 @@ public class ChatView extends LinearLayout {
 
         // This is redundant if there are messages in view, because the cursor requery will update everything.
         // However, if there are no messages, no update will trigger below, and we still want this to update.
-        updateWarningView(true);
+        updateWarningView();
 
         // TODO: async query?
         Cursor cursor = getMessageCursor();
@@ -1377,27 +1393,24 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    void updateWarningView()
-    {
-        updateWarningView(false);
-    }
     
-    void updateWarningView(boolean overrideUserTouch) {
-        int visibility = View.GONE;
+    void updateWarningView() {
+        int visibility = View.VISIBLE;
         int iconVisibility = View.GONE;
         String message = null;
         boolean isConnected;
 
         SessionStatus sessionStatus = null;
-        
-        if (overrideUserTouch)
-            mOtrSwitchTouched = false;
 
         if (this.isGroupChat())
         {
             //no OTR in group chat
             mStatusWarningView.setVisibility(View.GONE);
             return;
+        }
+        else
+        {
+            mStatusWarningView.setVisibility(View.VISIBLE);
         }
         
         initOtr();
@@ -1421,7 +1434,7 @@ public class ChatView extends LinearLayout {
 
         if (isConnected) {
 
-            if (mType == Imps.Contacts.TYPE_GROUP) {
+            if (isGroupChat()) {
                 visibility = View.GONE;
                 message = "";
             }
@@ -1437,29 +1450,13 @@ public class ChatView extends LinearLayout {
 
             }
 
-            if (mPresenceStatus == Imps.Presence.OFFLINE)
-            {
-                mWarningText.setTextColor(Color.WHITE);
-                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-                message = mContext.getString(R.string.presence_offline);
-                
-                /*
-                if (!mOtrSwitchTouched)
-                {
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(false);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                }
-                */
-                
-            }
-            else if (sessionStatus == SessionStatus.ENCRYPTED) {
+          if (sessionStatus == SessionStatus.ENCRYPTED) {
                 try {
 
                     if (mOtrChatSession == null)
                         initOtr();
 
-                    if (!mOtrSwitchTouched)
+                    if (!mOtrSwitch.isChecked())
                     {                    
                         mOtrSwitch.setOnCheckedChangeListener(null);
                         mOtrSwitch.setChecked(true);
@@ -1524,19 +1521,44 @@ public class ChatView extends LinearLayout {
   //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
 
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
-                
-                mWarningText.setTextColor(Color.WHITE);
-                mStatusWarningView.setBackgroundResource(R.color.otr_red);
-                message = mContext.getString(R.string.otr_session_status_plaintext);
+         
+                if (mPresenceStatus == Imps.Presence.OFFLINE)
+                {
+                    mWarningText.setTextColor(Color.WHITE);
+                    mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+                    message = mContext.getString(R.string.presence_offline);
+                    
+                }
+                else if (mPresenceStatus == Imps.Presence.AWAY)
+                {
+                    mWarningText.setTextColor(Color.WHITE);
+                    mStatusWarningView.setBackgroundResource(R.color.holo_orange_light);
+                    message = mContext.getString(R.string.presence_away);
+                    
+                }   
+                else if (mPresenceStatus == Imps.Presence.DO_NOT_DISTURB)
+                {
+                    mWarningText.setTextColor(Color.WHITE);
+                    mStatusWarningView.setBackgroundResource(R.color.holo_red_light);
+                    message = mContext.getString(R.string.presence_busy);
+                    
+                }
+                else
+                {
+                    mWarningText.setTextColor(Color.WHITE);
+                    mStatusWarningView.setBackgroundResource(R.color.otr_red);
+                    message = mContext.getString(R.string.otr_session_status_plaintext);
+                }
             }
 
-        } else {
+        }
+         
+        else {
             
 
             mOtrSwitch.setOnCheckedChangeListener(null);
             mOtrSwitch.setChecked(false);
             mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-            
             
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
@@ -1547,6 +1569,7 @@ public class ChatView extends LinearLayout {
         }
         
         mStatusWarningView.setVisibility(visibility);
+        
         if (visibility == View.VISIBLE) {
             mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
@@ -2055,7 +2078,7 @@ public class ChatView extends LinearLayout {
                 break;
 
             default:
-                messageView.bindPresenceMessage(mRemoteAddressString, mType, isGroupChat(), isScrolling());
+                messageView.bindPresenceMessage(nickname, date, mType, isGroupChat(), isScrolling());
             }
 
            // updateWarningView();

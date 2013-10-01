@@ -53,13 +53,29 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
-        String hexData = cursor.getString(dataColumn);
+  public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
+        
+        byte[] data = cursor.getBlob(dataColumn);
+;        
+        //byte[] data = cursor.getBlob(dataColumn);
+        if (data != null)
+        return decodeAvatar(data, width, height);
+        else
+            return null;
+    }
+    
+  public static Drawable getAvatarFromCursor(String hexData, int dataColumn, int width, int height) {
+        
         if (hexData.equals("NULL")) {
             return null;
         }
         byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
+        
+        //byte[] data = cursor.getBlob(dataColumn);
+        if (data != null)
         return decodeAvatar(data, width, height);
+        else
+            return null;
     }
 
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
@@ -130,11 +146,13 @@ public class DatabaseUtils {
         values.put(Imps.Avatars.ACCOUNT, accountId);
         values.put(Imps.Avatars.HASH, hash);
         resolver.insert(updateUri, values);
-        
+     
     }
     
+    
+    
 
-    private static Drawable decodeAvatar(byte[] data, int width, int height) {
+    public static Drawable decodeAvatar(byte[] data, int width, int height) {
         
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

@@ -44,12 +44,14 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -958,7 +960,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (position == 0)
             {
-                return (mContactList = new ContactListFragment());
+                mContactList = new ContactListFragment();
+                Bundle args = new Bundle();
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(NewChatActivity.this);
+                boolean showGrid = settings.getBoolean("pref_show_grid", true);
+
+                args.putBoolean("showGrid",showGrid);
+                mContactList.setArguments(args);
+                return mContactList;
             }
             else
             {
@@ -1139,6 +1148,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              super.onCreate(savedInstanceState);
              
              mSignInHelper = new SignInHelper(getActivity());
+             
+             Bundle args = getArguments();
+             
+             if (args != null)
+             showGrid = args.getBoolean("showGrid",true);
              
          }
 
@@ -1386,6 +1400,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  mFilterView.doFilter(builder.build(), null);
 
                  mChatPagerAdapter.notifyDataSetChanged();
+                 
                 
              }        
              
@@ -1494,6 +1509,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     private void startChat(Cursor c) {
         if (c != null) {
+            
+            if (c.getCount() == 0)
+                return;
+            
             long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             
