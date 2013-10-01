@@ -12,26 +12,35 @@ public class XmppAddress extends Address {
     
     public XmppAddress() {}
     
-    public XmppAddress(String name, String address) {
-        mScreenName = name;
+    public XmppAddress(String address) {
+        mScreenName = address.split("@")[0];
+        
         mAddress = address;
         
         int resIdx;
         
         if ((resIdx = mAddress.indexOf("/"))!=-1)
-                mResource = mAddress.substring(resIdx+1);
+              mResource = mAddress.substring(resIdx+1);
+     
+    }
+    
+    public XmppAddress(String name, String address) {
+        mScreenName = name;
+        mAddress = address;
+        
+          int resIdx;
+        
+        if ((resIdx = mAddress.indexOf("/"))!=-1)
+              mResource = mAddress.substring(resIdx+1);
      
     }
     
     @Override
     public String getBareAddress() {
-        int resIdx;
-        if ((resIdx = mAddress.indexOf("/"))!=-1)
-            return mAddress.substring(0, resIdx);
-        else
-            return mAddress;
+        return mAddress.split("/")[0];
     }
 
+    /*
     public XmppAddress(String fullJid) {
         
         mScreenName = fullJid.replaceFirst("@.*", "");
@@ -41,7 +50,7 @@ public class XmppAddress extends Address {
         if ((resIdx = fullJid.indexOf("/"))!=-1)
             mResource = fullJid.substring(resIdx+1);
         
-    }
+    }*/
 
     @Override
     public String getAddress() {
