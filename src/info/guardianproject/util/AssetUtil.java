@@ -23,7 +23,7 @@ public class AssetUtil {
             properties.load(inputStream);
             return properties;
         } catch (IOException e) {
-            Log.e("Gibberbot", "exception reading properties", e);
+            Log.i("Gibberbot", "no gibberbot.properties available");
             return null;
         }
     }
