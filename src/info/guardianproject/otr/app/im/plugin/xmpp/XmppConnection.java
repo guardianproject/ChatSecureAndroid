@@ -1665,7 +1665,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 if (contact == null)
                 {
-                    contact = new Contact(new XmppAddress(address),name);
+                    XmppAddress xAddr = new XmppAddress(address);
+                    
+                    if (name == null || name.length() == 0)
+                        name = xAddr.getUser();
+                    
+                    contact = new Contact(xAddr,name);
                     
                 }
                 
@@ -2471,7 +2476,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Roster roster = mConnection.getRoster();
             RosterEntry rEntry = roster.getEntry(xAddr.getBareAddress());
             
-            contact = new Contact(xAddr, rEntry.getName());
+            String name = rEntry.getName();
+            
+            if (name == null || name.length() == 0)
+                name = xAddr.getUser();
+            
+            contact = new Contact(xAddr,name);
 
             try {
                 if (!mContactListManager.getDefaultContactList().containsContact(contact.getAddress()))
