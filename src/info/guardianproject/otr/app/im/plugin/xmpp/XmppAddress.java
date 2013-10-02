@@ -7,21 +7,10 @@ import android.os.Parcelable;
 public class XmppAddress extends Address {
 
     private String mAddress;
-    private String mScreenName;
+    private String mUser;
     private String mResource;
     
     public XmppAddress() {}
-    
-    public XmppAddress(String name, String address) {
-        mScreenName = name;
-        mAddress = address;
-        
-        int resIdx;
-        
-        if ((resIdx = mAddress.indexOf("/"))!=-1)
-                mResource = mAddress.substring(resIdx+1);
-     
-    }
     
     @Override
     public String getBareAddress() {
@@ -34,7 +23,7 @@ public class XmppAddress extends Address {
 
     public XmppAddress(String fullJid) {
         
-        mScreenName = fullJid.replaceFirst("@.*", "");
+        mUser = fullJid.replaceFirst("@.*", "");
         mAddress = fullJid;
         
         int resIdx;
@@ -49,20 +38,20 @@ public class XmppAddress extends Address {
     }
 
     @Override
-    public String getScreenName() {
-        return mScreenName;
+    public String getUser() {
+        return mUser;
     }
    
     @Override
     public void readFromParcel(Parcel source) {
-        mScreenName = source.readString();
+        mUser = source.readString();
         mAddress = source.readString();
         mResource = source.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest) {
-        dest.writeString(mScreenName);
+        dest.writeString(mUser);
         dest.writeString(mAddress);
         dest.writeString(mResource);
     }
