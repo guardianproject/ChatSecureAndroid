@@ -465,6 +465,9 @@ public class ImpsProvider extends ContentProvider {
                 }
 
                 return;
+            case 101:
+                // This was a no-op upgrade when we added the encrypted DB option
+                return;
             case 1:
                 if (newVersion <= 100) {
                     return;
