@@ -485,13 +485,13 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         IInvitationListener mRemoteListener;
 
         public void onGroupInvitation(Invitation invitation) {
-            String sender = invitation.getSender().getScreenName();
+            String sender = invitation.getSender().getUser();
             ContentValues values = new ContentValues(7);
             values.put(Imps.Invitation.PROVIDER, mProviderId);
             values.put(Imps.Invitation.ACCOUNT, mAccountId);
             values.put(Imps.Invitation.INVITE_ID, invitation.getInviteID());
             values.put(Imps.Invitation.SENDER, sender);
-            values.put(Imps.Invitation.GROUP_NAME, invitation.getGroupAddress().getScreenName());
+            values.put(Imps.Invitation.GROUP_NAME, invitation.getGroupAddress().getUser());
             values.put(Imps.Invitation.NOTE, invitation.getReason());
             values.put(Imps.Invitation.STATUS, Imps.Invitation.STATUS_PENDING);
             ContentResolver resolver = mService.getContentResolver();

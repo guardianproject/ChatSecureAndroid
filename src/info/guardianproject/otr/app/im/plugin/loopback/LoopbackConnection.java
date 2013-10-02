@@ -248,17 +248,17 @@ public class LoopbackConnection extends ImConnection {
 
         @Override
         public String getBareAddress() {
-            return name;
+            return address;
         }
         
         @Override
         public String getAddress() {
-            return name;
+            return address;
         }
 
         @Override
-        public String getScreenName() {
-            return address;
+        public String getUser() {
+            return name;
         }
         
         @Override
