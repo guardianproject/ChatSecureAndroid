@@ -38,7 +38,7 @@ public abstract class Address {
      * 
      * @return the screen name.
      */
-    public abstract String getScreenName();
+    public abstract String getUser();
 
     /**
      * Gets a resource value

@@ -226,7 +226,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     public String getName() {
-        return mChatSession.getParticipant().getAddress().getScreenName();
+        return mChatSession.getParticipant().getAddress().getUser();
     }
 
     public String getAddress() {
