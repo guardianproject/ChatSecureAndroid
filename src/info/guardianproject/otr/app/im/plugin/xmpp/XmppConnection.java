@@ -759,6 +759,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
             initConnectionAndLogin(providerSettings, userName, password);
+            
+
+            // TODO should we really be using the same name for both address and name?
+            setState(LOGGED_IN, null);
+            debug(TAG, "logged in");
+            
         } catch (Exception e) {
            debug(TAG, "login failed: " + e.getLocalizedMessage());
             mConnection = null;
@@ -803,13 +809,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         } finally {
             mNeedReconnect = false;
+            providerSettings.close();
         }
-
-        // TODO should we really be using the same name for both address and name?
-        setState(LOGGED_IN, null);
-        debug(TAG, "logged in");
-        
-      
 
     }
     
@@ -934,8 +935,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             setProxy(null, null, -1);
         }
-        
-        providerSettings.close(); // close this, which was opened in do_login()
 
         if (mProxyInfo == null)
             mProxyInfo = ProxyInfo.forNoProxy();
