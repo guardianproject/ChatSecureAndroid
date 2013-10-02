@@ -96,6 +96,11 @@ public class ImApp extends Application {
     public static final String CACHEWORD_PASSWORD_KEY = "pkey";
     public static final String NO_CREATE_KEY = "nocreate";
     
+    //ACCOUNT SETTINGS Imps defaults
+    public static final String DEFAULT_XMPP_RESOURCE = "ChatSecure";
+    public static final int DEFAULT_XMPP_PRIORITY = 20;
+    public static final String DEFAULT_XMPP_OTR_MODE = "auto";
+    
     private Locale locale = null;
 
     private static ImApp sImApp;
