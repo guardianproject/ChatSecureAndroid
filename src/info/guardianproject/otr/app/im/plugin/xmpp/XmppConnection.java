@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -39,7 +40,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -75,7 +75,6 @@ import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
-import org.jivesoftware.smack.packet.RosterPacket.ItemType;
 import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -115,6 +114,8 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -374,7 +375,25 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                       
                         debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);
                         
-                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, avatarHash, jid);
+                        debug(ImApp.LOG_TAG, "start avatar length: " + avatarBytes.length);
+                        
+                        int width = ImApp.DEFAULT_AVATAR_WIDTH;
+                        int height = ImApp.DEFAULT_AVATAR_HEIGHT;
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inJustDecodeBounds = true;
+                        BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);               
+                        options.inSampleSize = DatabaseUtils.calculateInSampleSize(options, width, height);
+                        options.inJustDecodeBounds = false;
+                        Bitmap b = BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);     
+                        
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        b.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                        byte[] avatarBytesCompressed = stream.toByteArray();
+                        
+                        debug(ImApp.LOG_TAG, "compressed avatar length: " + avatarBytesCompressed.length);
+                        
+                        
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, avatarHash, jid);
                         
                         // int providerId, int accountId, byte[] data, String hash,String contact
                         return true;
