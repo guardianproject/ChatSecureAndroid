@@ -133,7 +133,7 @@ public class Message implements Parcelable {
     }
 
     public String toString() {
-        return "From: " + mFrom.getScreenName() + " To: " + mTo.getScreenName() + " " + mBody;
+        return "From: " + mFrom.getAddress() + " To: " + mTo.getAddress() + " " + mBody;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

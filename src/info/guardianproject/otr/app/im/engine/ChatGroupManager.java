@@ -206,7 +206,7 @@ public abstract class ChatGroupManager {
             ArrayList<Contact> left) {
         ChatGroup group = mGroups.get(groupAddress.getAddress());
         if (group == null) {
-            group = new ChatGroup(groupAddress, groupAddress.getScreenName(), this);
+            group = new ChatGroup(groupAddress, groupAddress.getUser(), this);
             mGroups.put(groupAddress.getAddress(), group);
         }
         if (joined != null) {
