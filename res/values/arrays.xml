@@ -78,17 +78,10 @@
 	<string-array name="account_domains">
         <item>dukgo.com</item>
         <item>jabber.ccc.de</item>
-        <item>gabbler.de</item>
-        <item>blah.im</item>
-        <item>xmpp.kz</item>
-        <item>jabber.at</item>
-        <item>inbox.im</item>
-        <item>jabber.postel.org</item>
-        <item>chatme.im</item>
-        <item>jabb3r.net</item>
-        <item>jabber.belnet.be</item>
         <item>xmpp.jp</item>
-        <item>xmpp.ru.net</item>
+        <item>jabberpl.org</item>
+        <item>neko.im</item>
+        <item>rkquery.de</item>
     </string-array>
 	
 </resources>

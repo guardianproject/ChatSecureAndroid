@@ -713,6 +713,8 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         }
+        
+        settings.requery();
     }
 
     void confirmTermsOfUse(BrandingResources res, DialogInterface.OnClickListener accept) {
@@ -1010,8 +1012,7 @@ public class AccountActivity extends Activity {
 
                 try {
                                         
-                    settingsForDomain(mDomain, mPort);
-                    
+                    settingsForDomain(mDomain, mPort, settings);
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
                     xmppConn.registerAccount(settings, params[0], params[1]);
@@ -1021,8 +1022,10 @@ public class AccountActivity extends Activity {
                    
                     return e.getLocalizedMessage();
                 } finally {
+                    
                     settings.close();
                 }
+                
                 return null;
               }
 
@@ -1033,6 +1036,10 @@ public class AccountActivity extends Activity {
                 if (result != null)
                 {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    AccountActivity.this.finish();
                 }
                
             }
