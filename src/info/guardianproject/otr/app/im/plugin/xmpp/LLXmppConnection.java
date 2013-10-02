@@ -357,7 +357,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         });
 
         String xmppName = userName + '@' + domain;
-        mUser = new Contact(new XmppAddress(userName, xmppName), xmppName);
+        mUser = new Contact(new XmppAddress(xmppName), userName);
 
         // Initiate Link-local message session
         mService.init();
@@ -523,7 +523,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private static Contact makeContact(String name, String address) {
-        Contact contact = new Contact(new XmppAddress(name, address), address);
+        Contact contact = new Contact(new XmppAddress(address), name);
 
         return contact;
     }
@@ -604,10 +604,13 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             String name = presence.getNick();
             String address = presence.getJID();
+            
+            if (address == null) //sometimes with zeroconf/bonjour there may not be a JID
+                address = presence.getServiceName();
 
             mContactListManager.doAddContact(name, address);
 
-            XmppAddress xaddress = new XmppAddress(name, address);
+            XmppAddress xaddress = new XmppAddress(address);
 
             Contact contact = getContact(xaddress.getAddress());
 
