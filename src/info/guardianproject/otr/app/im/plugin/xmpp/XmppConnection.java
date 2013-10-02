@@ -225,7 +225,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         String xmppName = userName + '@' + domain;
         providerSettings.close();
         
-        return new Contact(new XmppAddress(userName, xmppName), xmppName);
+        return new Contact(new XmppAddress(xmppName), userName);
     }
 
     private void createExecutor() {
@@ -1120,7 +1120,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     // Detect if this was said by us, and mark message as outgoing
                     if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
-                            rec.getFrom().getResource().equals(rec.getTo().getScreenName())) {
+                            rec.getFrom().getResource().equals(rec.getTo().getUser())) {
                         rec.setType(Imps.MessageType.OUTGOING);
                     }
                     
@@ -1148,8 +1148,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void processPacket(Packet packet) {
 
-                org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence) packet;              
-                Contact contact = findOrCreateContact(presence.getFrom());
+                org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence) packet;
+                
+                //presence has resource on it; we want to make sure we use a bareJid to get the contact
+                String bareJid = Address.stripResource(presence.getFrom());
+                Contact contact = findOrCreateContact(bareJid);
 
                 if (presence.getType() == Type.subscribe) {                    
                     mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(
@@ -1424,12 +1427,33 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     
-    private static Contact makeContact(String address) {
+    private Contact makeContact(String address) {
+       
+        Contact contact = null;
         
-        XmppAddress xAddress = new XmppAddress(address);
+        //load from roster if we don't have the contact
+        RosterEntry rEntry = null;
         
-        Contact contact = new Contact(xAddress, xAddress.getScreenName());
-
+        if (mConnection != null)
+            rEntry = mConnection.getRoster().getEntry(address);
+        
+        if (rEntry != null)
+        {
+            XmppAddress xAddress = new XmppAddress(rEntry.getUser());
+       
+            String name = rEntry.getName();
+            if (name == null)
+                name = xAddress.getUser();
+            
+            contact = new Contact(xAddress, name);
+        }
+        else
+        {
+            XmppAddress xAddress = new XmppAddress(address);
+            
+            contact = new Contact(xAddress, xAddress.getUser());
+        }
+        
         return contact;
     }
 
@@ -1563,7 +1587,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (name == null)
                     name = address;
                 
-                XmppAddress xaddress = new XmppAddress(name, address);
+                XmppAddress xaddress = new XmppAddress(address);
 
                 org.jivesoftware.smack.packet.Presence presence = roster.getPresence(address);
                 
@@ -1583,10 +1607,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     p.setResource(resource);
                 }
             
-                Contact contact = mContactListManager.getContact(xaddress.getAddress());
+                Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
                 if (contact == null)
-                    contact = new Contact(xaddress, xaddress.getScreenName());
+                    contact = new Contact(xaddress, name);
 
                 contact.setPresence(p);
 
