@@ -1451,12 +1451,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ChatSession findSession(String address) {
             
-            String nAddress = address.split("/")[0];
+            String nAddress = Address.stripResource(address);
             
             for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
                 ChatSession session = iter.next();
                 
-                String tAddress = session.getParticipant().getAddress().getAddress().split("/")[0];
+                String tAddress = Address.stripResource(session.getParticipant().getAddress().getAddress());
                 
                 if (tAddress.equalsIgnoreCase(nAddress))
                     return session;
@@ -2459,10 +2459,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         Presence p = new Presence(parsePresence(presence), status, null, null,
                 Presence.CLIENT_TYPE_DEFAULT);
-        if (presence.getFrom().indexOf("/") != -1) {
-            resource = presence.getFrom().split("/")[1];
-            p.setResource(resource);
-        }
+        
+        
+        String[] presenceParts = presence.getFrom().split("/");
+        if (presenceParts.length > 1)
+            p.setResource(presenceParts[1]);
         
 
         if (contact == null) {
