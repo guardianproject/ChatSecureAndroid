@@ -74,7 +74,7 @@ public class ContactView extends LinearLayout {
     
     
     private static final int cacheSize = 100; // 4MiB
-    private static LruCache bitmapCache = new LruCache(cacheSize);
+    private static LruCache<String, Drawable> bitmapCache = new LruCache<String, Drawable>(cacheSize);
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -126,173 +126,110 @@ public class ContactView extends LinearLayout {
         
         mHolder = (ViewHolder)getTag();
         
-        Resources r = getResources();
-        long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
-        
-      //  mHolder.mLine2.setCompoundDrawablePadding(5);
-        
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
-        String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
+  //      String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
         String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
 
-        boolean hasChat = !cursor.isNull(COLUMN_LAST_MESSAGE);
-
-        ImApp app = (ImApp)((Activity)mContext).getApplication();
-                
-        BrandingResources brandingRes = app.getBrandingResource(providerId);
-
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
-        
-        
-        
-        //mPresence.setImageDrawable(brandingRes.getDrawable(iconId));
-       // Drawable presenceIcon = brandingRes.getDrawable(iconId);
 
-        // line1
-        CharSequence contact;
-        /*
-        if (Imps.Contacts.TYPE_GROUP == type) {
-            ContentResolver resolver = getContext().getContentResolver();
-            long id = cursor.getLong(ContactView.COLUMN_CONTACT_ID);
-            contact = queryGroupMembers(resolver, id);
-        } else {
-        */
+       
+         
+        if (!TextUtils.isEmpty(underLineText)) {
+            // highlight/underline the word being searched
+            String lowercase = nickname.toLowerCase();
+            int start = lowercase.indexOf(underLineText.toLowerCase());
+            if (start >= 0) {
+                int end = start + underLineText.length();
+                SpannableString str = new SpannableString(nickname);
+                str.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-            //contact = TextUtils.isEmpty(nickname) ? ImpsAddressUtils.getDisplayableAddress(username)
-            // String address = ImpsAddressUtils.getDisplayableAddress(username);
-             contact = nickname;
-             
-             if (address.indexOf('/')!=-1)
-             {
-                 contact = nickname + " (" + address.substring(address.indexOf('/')+1) + ")";
-             }
-             
-            if (!TextUtils.isEmpty(underLineText)) {
-                // highlight/underline the word being searched
-                String lowercase = contact.toString().toLowerCase();
-                int start = lowercase.indexOf(underLineText.toLowerCase());
-                if (start >= 0) {
-                    int end = start + underLineText.length();
-                    SpannableString str = new SpannableString(contact);
-                    str.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-                    contact = str;
-                }
-            }
-            
-            if (Imps.Contacts.TYPE_GROUP == type) {
-                mHolder.mAvatar.setImageResource(R.drawable.group_chat);
-                
+                mHolder.mLine1.setText(str);
+
             }
             else
-            {
+                mHolder.mLine1.setText(nickname);
+
+        }
+        else
+            mHolder.mLine1.setText(nickname);
+        
+        if (Imps.Contacts.TYPE_GROUP == type) {
+            mHolder.mAvatar.setImageResource(R.drawable.group_chat);
             
-                Drawable avatar = (Drawable)bitmapCache.get(address);
-                
-                if (avatar == null)
-                {
-                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-                    
-                    if (avatar != null)
-                        bitmapCache.put(address, avatar);
-                    
-                }
+        }
+        else
+        {
+        
+            Drawable avatar = (Drawable)bitmapCache.get(address);
+            
+            if (avatar == null)
+            {
+                avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                 
                 if (avatar != null)
-                    mHolder.mAvatar.setImageDrawable(avatar);
-                else
-                    mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
+                    bitmapCache.put(address, avatar);
+                
             }
-
-     //   }
-            mHolder.mLine1.setText(contact);
-
-        // time stamp
-         
-            /*
-        if (showChatMsg && hasChat) {
-            mHolder.mTimeStamp.setVisibility(VISIBLE);
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(cursor.getLong(COLUMN_LAST_MESSAGE_DATE));
-            DateFormat formatter = DateFormat.getTimeInstance(DateFormat.SHORT);
-            mHolder. mTimeStamp.setText(formatter.format(cal.getTime()));
-        }
-    */
             
-        // line2
-        String status = null;
+            if (avatar != null)
+                mHolder.mAvatar.setImageDrawable(avatar);
+            else
+                mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
+        }
+
         if (showChatMsg && lastMsg != null) {
 
             //remove HTML tags since we can't display HTML
-            status = lastMsg.replaceAll("\\<.*?\\>", "");                                                          
             setBackgroundResource(R.color.holo_blue_bright);
             mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
             mHolder.mLine1.setTextColor(Color.WHITE);
-            mHolder.mLine1.setText(lastMsg);
+           
+            //don't show message overriding name
+            //mHolder.mLine1.setText(lastMsg);
                         
         }
         else 
         {
             if (presence == Imps.Presence.AVAILABLE)
             {
-                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.android_green_light));
+                setBackgroundColor(getResources().getColor(R.color.holo_green_light));
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
+                
+                mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+                
             }
             else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
             {
-                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+                setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
+                mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+
+                
             }
             else if (presence == Imps.Presence.DO_NOT_DISTURB)
             {
-                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+                setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
+                mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+
             }            
             else
             {
+                setBackgroundColor(getResources().getColor(R.color.contact_status_bg));
                 mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.contact_status_bg));
+                mHolder.mLine1.setTextColor(Color.DKGRAY);
+                
             }
             
-            mHolder.mLine1.setTextColor(Color.DKGRAY);
-     //       mHolder.mLine2.setVisibility(View.VISIBLE);
-       //     mHolder.mLine2.setTextAppearance(mContext, Typeface.NORMAL);
-      //      setBackgroundResource(android.R.color.transparent);
+            
         }
         
-        if (TextUtils.isEmpty(status)) {
-            if (Imps.Contacts.TYPE_GROUP == type) {
-                // Show nothing in line2 if it's a group and don't
-                // have any unread message.
-                status = null;
-            } else {
-                // Show the custom status text if there's no new message.
-                status = statusText;
-            }
-        }
-
-        if (TextUtils.isEmpty(status)) {
-            // Show a string of presence if there is neither new message nor
-            // custom status text.
-            status = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
-        }
-
-        /*
-        if (Imps.Contacts.TYPE_GROUP == type)
-            mHolder.mLine2.setText("");
-        else
-            mHolder.mLine2.setText(status);
-        */
-       // mLine2.setCompoundDrawablesWithIntrinsicBounds(null, null, presenceIcon, null);
-
-        View contactInfoPanel = findViewById(R.id.contactInfo);
-        if (hasChat && showChatMsg) { // HERE the bubble is set
-        //    contactInfoPanel.setBackgroundResource(R.drawable.bubble);
-      //      mLine1.setTextColor(r.getColor(R.color.chat_contact));
-        } else {
-         //   contactInfoPanel.setBackgroundDrawable(null);
-          //  contactInfoPanel.setPadding(4, 0, 0, 0);
-         //   mLine1.setTextColor(r.getColor(R.color.nonchat_contact));
-        }
+       
     }
     
+    /*
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };
         Uri uri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, groupId);
@@ -309,7 +246,7 @@ public class ContactView extends LinearLayout {
         c.close();
         
         return buf.toString();
-    }
+    }*/
     
     public static Drawable getAvatar (String address)
     {

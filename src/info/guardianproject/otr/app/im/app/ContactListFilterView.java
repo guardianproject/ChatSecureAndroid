@@ -345,6 +345,7 @@ public class ContactListFilterView extends LinearLayout {
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
             v.bind(cursor, mSearchString, false);
+            
         }
 
         @Override
