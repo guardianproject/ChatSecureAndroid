@@ -87,6 +87,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
+    private static final String ICICLE_POSITION = "position";
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
@@ -109,11 +110,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     @Override
     protected void onCreate(Bundle icicle) {
-        
-        ((ImApp)getApplication()).setAppTheme(this);
-      
         super.onCreate(icicle);
 
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+    
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
@@ -148,8 +149,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
                 });
         
-        mApp = (ImApp)getApplication();
-    
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
         initSideBar ();
@@ -157,21 +156,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
         
-        /*
-        new java.util.Timer().schedule( 
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        handlerIntent.sendEmptyMessage(0);
-                    }
-                }, 
-                1000 
-        );*/
-        
-     
-       
+        if (icicle != null && icicle.containsKey(ICICLE_POSITION)) {
+            int position = icicle.getInt(ICICLE_POSITION);
+            if (position < mChatPagerAdapter.getCount())
+                mChatPager.setCurrentItem(position);
+        }
     }
     
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ICICLE_POSITION, mChatPager.getCurrentItem());
+    }
     
     @Override
     protected void onResume() {     
@@ -199,11 +195,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     public void onBackPressed() {
+        if (menu.isMenuShowing()) {
+            menu.showContent();
+            return;
+        }
         int currentPos = mChatPager.getCurrentItem();
-        if (currentPos > 0)
+        if (currentPos > 0) {
             mChatPager.setCurrentItem(0);
-        else
-            super.onBackPressed();
+            return;
+        }
+        super.onBackPressed();
     }
 
     private SlidingMenu menu = null;

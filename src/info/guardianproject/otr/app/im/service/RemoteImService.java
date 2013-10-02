@@ -139,10 +139,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 }
                 else
                 {
-                    debug("OtrKeyManager NOT INIT'd; is key null?");
+                    throw new RuntimeException("could not instantiate OTR manager");
                 }
             } catch (Exception e) {
-                debug("can't get otr manager", e);
+                throw new RuntimeException(e);
             }
         } else {
             mOtrChatManager.setPolicy(otrPolicy);
@@ -474,8 +474,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             mConnections.add(imConnectionAdapter);
 
             initOtr();
-            if (mOtrChatManager != null)
-                mOtrChatManager.addConnection(imConnectionAdapter);
+            mOtrChatManager.addConnection(imConnectionAdapter);
 
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
