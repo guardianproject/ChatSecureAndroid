@@ -2474,6 +2474,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         XmppAddress xaddress = new XmppAddress(presence.getFrom());
         
+     // Get presence from the Roster to handle priorities and such
+        final Roster roster = mConnection.getRoster();
+        if (roster != null)
+              presence = roster.getPresence(xaddress.getBareAddress());
+        
+        
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
         Presence p = new Presence(parsePresence(presence), status, null, null,
@@ -2493,10 +2499,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
-            Roster roster = mConnection.getRoster();
             RosterEntry rEntry = roster.getEntry(xAddr.getBareAddress());
             
-            String name = rEntry.getName();
+            String name = null;
+            
+            if (rEntry != null)
+                name = rEntry.getName();
             
             if (name == null || name.length() == 0)
                 name = xAddr.getUser();
