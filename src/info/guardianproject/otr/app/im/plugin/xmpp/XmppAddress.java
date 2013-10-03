@@ -26,9 +26,9 @@ public class XmppAddress extends Address {
         mUser = fullJid.replaceFirst("@.*", "");
         mAddress = fullJid;
         
-        int resIdx;
-        if ((resIdx = fullJid.indexOf("/"))!=-1)
-            mResource = fullJid.substring(resIdx+1);
+        String[] presenceParts = fullJid.split("/");
+        if (presenceParts.length > 1)
+            mResource = presenceParts[1];
         
     }
 

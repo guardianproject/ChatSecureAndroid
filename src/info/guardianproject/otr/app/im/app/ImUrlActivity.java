@@ -625,20 +625,31 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private void startContactPicker() {
         Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
-        IImConnection conn = listConns.get(0); // FIXME
-        try {
-            mChatSessionManager = conn.getChatSessionManager();
-            mProviderId = conn.getProviderId();
-            mAccountId = conn.getAccountId();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        
+        for (IImConnection conn : listConns)
+        {
+            try
+            {
+                if (conn.getState() == ImConnection.LOGGED_IN)
+                {
+                    try {
+                        mChatSessionManager = conn.getChatSessionManager();
+                        mProviderId = conn.getProviderId();
+                        mAccountId = conn.getAccountId();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ContentUris.appendId(builder,  mProviderId);
+                    ContentUris.appendId(builder,  mAccountId);
+                    Uri data = builder.build();
+            
+                    Intent i = new Intent(Intent.ACTION_PICK, data);
+                    startActivityForResult(i, REQUEST_PICK_CONTACTS);
+                    break;
+                }
+            }
+            catch (RemoteException re){}
         }
-        ContentUris.appendId(builder,  mProviderId);
-        ContentUris.appendId(builder,  mAccountId);
-        Uri data = builder.build();
-
-        Intent i = new Intent(Intent.ACTION_PICK, data);
-        startActivityForResult(i, REQUEST_PICK_CONTACTS);
     }
 
     void showLockScreen() {

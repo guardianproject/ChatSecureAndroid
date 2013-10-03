@@ -73,6 +73,8 @@
     <color name="outgoing_message_bg">#AAEAF7FB</color>
     <color name="outgoing_message_fg">#333333</color>
     
+    <color name="contact_status_fg_light">#aaffffff</color>
+    
     <color name="contact_status_bg">#aaffffff</color>
     <color name="contact_status_avatar_overlay">#aa555555</color>
     

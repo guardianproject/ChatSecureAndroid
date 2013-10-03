@@ -24,6 +24,10 @@ import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -327,11 +331,17 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
+        
         private String mSearchString;
 
+        private Timer timer = null;
+        private boolean isUpdating = false;
+        
         @SuppressWarnings("deprecation")
         public ContactAdapter(Context context, int view, Cursor cursor) {
             super(context, view, cursor);
+            
+            timer = new Timer();
         }
 
         @Override
@@ -345,6 +355,39 @@ public class ContactListFilterView extends LinearLayout {
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
             v.bind(cursor, mSearchString, false);
+            
+        }
+
+        @Override
+        protected void onContentChanged() {
+            
+            if (!isUpdating)
+            {
+
+                isUpdating = true;
+                
+                timer.schedule(new TimerTask(){
+    
+                    @Override
+                    public void run() {
+                       
+                        mHandler.post(new Runnable ()
+                        {
+                           public void run ()
+                           {    
+                               Cursor cursor = ContactListFilterView.this.runQuery(mSearchString);
+                           
+                               changeCursor(cursor);
+                           }
+                        });
+                        
+                        isUpdating = false;
+                    }
+                    
+                    
+                }, 1000l);
+            }
+                
         }
 
         @Override

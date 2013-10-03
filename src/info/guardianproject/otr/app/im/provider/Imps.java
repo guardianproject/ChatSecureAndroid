@@ -1957,7 +1957,7 @@ public class Imps {
             }
 
             public String getXmppResource() {
-                return getString(XMPP_RESOURCE, "Gibberbot");
+                return getString(XMPP_RESOURCE, ImApp.DEFAULT_XMPP_RESOURCE);
             }
 
             public void setXmppResourcePrio(int prio) {
@@ -1965,7 +1965,7 @@ public class Imps {
             }
 
             public int getXmppResourcePrio() {
-                return (int) getLong(XMPP_RESOURCE_PRIO, 20);
+                return (int) getLong(XMPP_RESOURCE_PRIO, ImApp.DEFAULT_XMPP_PRIORITY);
             }
 
             public void setPort(int port) {
@@ -2014,7 +2014,7 @@ public class Imps {
             }
 
             public String getOtrMode() {
-                return getString(OTR_MODE, "auto" /* by default, try to use OTR */);
+                return getString(OTR_MODE, ImApp.DEFAULT_XMPP_OTR_MODE /* by default, try to use OTR */);
             }
 
             public void setUseTor(boolean value) {
