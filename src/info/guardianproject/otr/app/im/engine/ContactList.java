@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class ContactList extends ImEntity {
+    
     protected Address mAddress;
     protected String mName;
     protected boolean mDefault;
@@ -79,7 +80,6 @@ public class ContactList extends ImEntity {
      * @throws ImException if the contact is not allowed to be added
      */
     public void addContact(String address) throws ImException {
-        address = mManager.normalizeAddress(address);
 
         if (null == address) {
             throw new NullPointerException();
@@ -92,12 +92,38 @@ public class ContactList extends ImEntity {
             }
         }
 
-        if (containsContact(address)) {
+        if (containsContact(mManager.normalizeAddress(address))) {
             throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
                     "Contact already exists in the list");
         }
 
-        mManager.addContactToListAsync(address, this);
+        mManager.addContactToListAsync(mManager.normalizeAddress(address), this);
+    }
+
+    /**
+     * Add a contact to the list. The contact is specified by its address
+     * string.
+     * 
+     * @param address the address string specifies the contact.
+     * @throws IllegalArgumentException if the address is invalid.
+     * @throws NullPointerException if the address string is null
+     * @throws ImException if the contact is not allowed to be added
+     */
+    public void addExistingContact(Contact contact) throws ImException {
+       
+        if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED) {
+            if (mManager.isBlocked(contact.getAddress().getBareAddress())) {
+                throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
+                        "Contact has been blocked");
+            }
+        }
+
+        if (containsContact(contact.getAddress().getBareAddress())) {
+            throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
+                    "Contact already exists in the list");
+        }
+
+        mContactsCache.put(contact.getAddress().getBareAddress(), contact);
     }
 
     /**
