@@ -564,7 +564,6 @@ public class ChatView extends LinearLayout {
             public void onClick(View v) {
                  
                 ChatView.this.closeChatSession();
-                mActivity.refreshChatViews();
             }
             
         });
@@ -680,7 +679,6 @@ public class ChatView extends LinearLayout {
             
 
             ChatView.this.closeChatSession();
-            mActivity.refreshChatViews();
             
             return true;
         }
