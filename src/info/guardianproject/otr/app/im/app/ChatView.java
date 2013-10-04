@@ -1021,7 +1021,8 @@ public class ChatView extends LinearLayout {
         mComposeMessage.setEnabled(enabled);
         mSendButton.setEnabled(enabled);
         if (enabled) {
-            mComposeMessage.requestFocus();
+            // This can steal focus from the fragment that's in front of the user
+            //mComposeMessage.requestFocus();
         } else {
             mHistory.setAdapter(null);
         }
