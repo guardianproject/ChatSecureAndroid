@@ -137,7 +137,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             public void onPageSelected(int pos) {
                 if (pos > 0) {
                     ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
-                    frag.onSelected(mApp);
+                    // Fragment isn't guaranteed to be initialized yet
+                    if (frag != null)
+                        frag.onSelected(mApp);
                 }
             }
 
