@@ -124,31 +124,25 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPager.setSaveEnabled(false);
-        mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
-                {
+        mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
 
-                    @Override
-                    public void onPageScrollStateChanged(int arg0) {
-                       
-                        
-                    }
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
 
-                    @Override
-                    public void onPageScrolled(int arg0, float arg1, int arg2) {
-                       
-                        
-                    }
+            @Override
+            public void onPageSelected(int pos) {
+                if (pos > 0) {
+                    ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
+                    frag.onSelected(mApp);
+                }
+            }
 
-                    @Override
-                    public void onPageSelected(int pos) {
-                        if (pos > 0) {
-                            ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
-                            frag.onSelected(mApp);
-                        }
-                    }
-            
-                });
-        
+        });
+
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
         initSideBar ();
@@ -1538,6 +1532,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
 //            Log.d(TAG, "CVF new " + contactName);
             return f;
+        }
+        
+        public String toString() {
+            return super.toString() + " -> " + getArguments().getString("contactName"); 
         }
 
         public void onSelected(ImApp app) {
