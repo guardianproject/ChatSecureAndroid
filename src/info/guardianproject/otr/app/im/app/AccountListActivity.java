@@ -306,10 +306,20 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 signOut(accountId);
             }
             
-            mApp.stopImServiceIfInactive();
             
             if (mCacheWord != null)
                 mCacheWord.manuallyLock();
+            
+
+            mHandler.postDelayed(new Runnable()
+            {
+                public void run ()
+                {
+                    mApp.forceStopImService();
+                    
+                }
+            }, 2000l);
+            
             
             finish();
         }
