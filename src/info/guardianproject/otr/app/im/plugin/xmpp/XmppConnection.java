@@ -1662,13 +1662,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             //since we don't show lists anymore, let's just load all entries together
             
-            String generalGroupName = mContext.getString(R.string.buddies);
-            ContactList cl = getContactList(generalGroupName);
+            
+            ContactList cl;
+            
+            try {
+                cl = mContactListManager.getDefaultContactList();
+            } catch (ImException e1) {
+               debug(TAG,"couldn't read default list");
+               cl = null;
+            }
             
             if (cl == null)
             {
+                String generalGroupName = mContext.getString(R.string.buddies);
+             
                 Collection<Contact> contacts = new ArrayList<Contact>();
                 XmppAddress groupAddress = new XmppAddress(generalGroupName); 
+           
                 cl = new ContactList(groupAddress,generalGroupName, true, contacts, this);
 
                 
