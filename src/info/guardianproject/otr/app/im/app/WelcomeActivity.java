@@ -100,7 +100,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
         // Try to open with empty password
         if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
-            mApp.setEmptyEncryptionKey();
+            ;
         else
             connectToCacheWord ();
 
@@ -535,6 +535,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
+            if (key == null)
+                mApp.setEmptyEncryptionKey();
             mApp.initOtrStoreKey();
 
             doOnResume();
