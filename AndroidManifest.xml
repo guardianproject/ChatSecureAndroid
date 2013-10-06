@@ -2,7 +2,7 @@
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
      android:versionName="12.5"
-     android:versionCode="83"
+     android:versionCode="84"
      android:installLocation="auto"     
      >     
     <supports-screens
