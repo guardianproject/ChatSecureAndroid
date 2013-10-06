@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
@@ -38,7 +37,6 @@ import info.guardianproject.util.AssetUtil;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.PRNGFixes;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

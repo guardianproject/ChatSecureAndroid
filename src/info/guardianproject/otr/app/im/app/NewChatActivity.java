@@ -161,10 +161,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     protected void onDestroy() {
-        if (mCursorChats != null) {
-            mChatPagerAdapter.onDestroy();
-            mCursorChats.close();
-        }
+        mChatPagerAdapter.onDestroy();
         super.onDestroy();
     }
     
@@ -439,36 +436,33 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         
                         long requestedContactId = ContentUris.parseId(data);
                                            
-                        if (mCursorChats != null)
+                        mCursorChats.moveToPosition(-1);
+                        int posIdx = 1;
+                        boolean foundChatView = false;
+
+                        while (mCursorChats.moveToNext())
                         {
-                            mCursorChats.moveToPosition(-1);
-                            int posIdx = 1;
-                            boolean foundChatView = false;
-                            
-                            while (mCursorChats.moveToNext())
+                            long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+
+                            if (chatId == requestedContactId)
                             {
-                                long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
-                                
-                                if (chatId == requestedContactId)
-                                {
-                                    mChatPager.setCurrentItem(posIdx);
-                                    foundChatView = true;
-                                    break;
-                                }
-                                
-                                posIdx++;
+                                mChatPager.setCurrentItem(posIdx);
+                                foundChatView = true;
+                                break;
                             }
-                            
-                            if (!foundChatView)
-                            {
-                                
-                                Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
-                                ContentUris.appendId(builder, requestedContactId);
-                                Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
-                                cursor.moveToFirst();
-                                
-                                startChat(cursor);
-                            }
+
+                            posIdx++;
+                        }
+
+                        if (!foundChatView)
+                        {
+
+                            Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
+                            ContentUris.appendId(builder, requestedContactId);
+                            Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
+                            cursor.moveToFirst();
+
+                            startChat(cursor);
                         }
                         
                    
@@ -922,18 +916,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
+            Log.d(TAG, "onCreate");
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             mCursorObserver = new MyContentObserver();
             mCursorChats.registerContentObserver(mCursorObserver);
         }
         
         public void onDestroy() {
+            Log.d(TAG, "onDestroy");
             mCursorChats.unregisterContentObserver(mCursorObserver);
+            mCursorChats.close();
+            mCursorChats = null;
         }
 
         @Override
         public void notifyDataSetChanged() {
-            
+            Log.d(TAG, "notifyDataSetChanged");
             mCursorChats.requery();
             
             super.notifyDataSetChanged();
@@ -942,10 +940,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public int getCount() {
-            if (mCursorChats != null && (!mCursorChats.isClosed()))
-                return mCursorChats.getCount() + 1;
-            else
-                return 1;
+            return mCursorChats.getCount() + 1;
         }
 
         @Override
