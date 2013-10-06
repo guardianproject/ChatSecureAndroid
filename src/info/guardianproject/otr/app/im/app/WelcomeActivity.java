@@ -24,7 +24,6 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
-import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -100,8 +99,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
         // Try to open with empty password
-        if (!mApp.isCacheWord() && openEncryptedStores(null, false))
-            mApp.setNoCacheWord();
+        if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
+            mApp.setEmptyEncryptionKey();
         else
             connectToCacheWord ();
 
@@ -118,8 +117,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     {
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-        
-        mApp.setCacheWord(mCacheWord);
         
         mCacheWord.connectToService();
         
@@ -525,7 +522,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordOpened() {
        Log.d(ImApp.LOG_TAG,"cache word opened");
        
-       openEncryptedStores(mCacheWord.getEncryptionKey(), true);
+       byte[] encryptionKey = mCacheWord.getEncryptionKey();
+       mApp.setEncryptionKey(encryptionKey);
+       openEncryptedStores(encryptionKey, true);
 
        int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
 

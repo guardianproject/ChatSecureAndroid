@@ -125,11 +125,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mSignInHelper = new SignInHelper(this);
 
         String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
-        if (!mApp.isCacheWord() && initProviderCursor(pkey)) {
-            mApp.setNoCacheWord();
+        if (!mApp.hasEncryptionKey() && initProviderCursor(pkey)) {
+            mApp.setEmptyEncryptionKey();
         } else {
             mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-            mApp.setCacheWord(mCacheWord);
         }
         
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
@@ -812,8 +811,9 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
         mCacheWord.setTimeoutMinutes(defaultTimeout);  
         
-        
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
+        byte[] encryptionKey = mCacheWord.getEncryptionKey();
+        mApp.setEncryptionKey(encryptionKey);
+        String pkey = SQLCipherOpenHelper.encodeRawKey(encryptionKey);
 
             
         initProviderCursor (pkey);

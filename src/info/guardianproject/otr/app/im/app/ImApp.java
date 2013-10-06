@@ -38,6 +38,7 @@ import info.guardianproject.util.AssetUtil;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.PRNGFixes;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,6 +46,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+
+import org.spongycastle.util.Arrays;
 
 import android.app.Activity;
 import android.app.Application;
@@ -362,7 +365,7 @@ public class ImApp extends Application {
     public synchronized void startImServiceIfNeed(boolean isBoot) {
         if (Log.isLoggable(LOG_TAG, Log.DEBUG))
             log("start ImService");
-
+        
         Intent serviceIntent = new Intent();
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
         serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, isBoot);
@@ -429,39 +432,47 @@ public class ImApp extends Application {
     }
     
   
-    private CacheWordActivityHandler mCacheWord;
-    private boolean mNoCacheWord;
+    private byte[] mEncryptionKey;
+    private boolean mEmptyEncryptionKey;
 
-    public boolean isCacheWord() {
-        return mCacheWord != null;
+    public boolean isEmptyEncryptionKey() {
+        return mEmptyEncryptionKey;
     }
     
-    public void setCacheWord(CacheWordActivityHandler cacheWord)
+    public boolean hasEncryptionKey() {
+        return mEncryptionKey != null;
+    }
+    
+    public void setEncryptionKey(byte[] encryptionKey)
     {
-        if (mNoCacheWord) {
-            throw new IllegalStateException("CacheWord state conflict");
-        }
-        mCacheWord = cacheWord;
+        if (mEncryptionKey != null && !Arrays.areEqual(encryptionKey, mEncryptionKey))
+            throw new RuntimeException("Trying to set encryption key to a new value");
+        mEncryptionKey = encryptionKey;
+        mEmptyEncryptionKey = false;
     }
     
-    public void setNoCacheWord() {
-        if (mCacheWord != null) {
-            throw new IllegalStateException("CacheWord state conflict");
-        }
-        mNoCacheWord = true;
+    public void setEmptyEncryptionKey() {
+        byte[] encryptionKey = new byte[32];
+        if (mEncryptionKey != null && !Arrays.areEqual(encryptionKey, mEncryptionKey))
+            throw new RuntimeException("Trying to set encryption key to a new empty value");
+        mEncryptionKey = encryptionKey;
+        mEmptyEncryptionKey = true;
     }
     
     public void initOtrStoreKey ()
     {
+        if (!hasEncryptionKey())
+            throw new RuntimeException("initOtrStoreKey but did not set key");
+        
         if ( getRemoteImService() != null)
         {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord == null ? new byte[32] : mCacheWord.getEncryptionKey());
+            String pkey = SQLCipherOpenHelper.encodeRawKey(mEncryptionKey);
     
             try {
                getRemoteImService().unlockOtrStore(pkey);
              } catch (RemoteException e) {
                
-                 LogCleaner.error(ImApp.LOG_TAG, "eror initializing otr key", e);
+                 LogCleaner.error(ImApp.LOG_TAG, "error initializing otr key", e);
              }
         }
     }
@@ -474,7 +485,7 @@ public class ImApp extends Application {
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
             
-            if (mNoCacheWord || (mCacheWord != null && mCacheWord.getEncryptionKey() != null))
+            if (hasEncryptionKey())
                 initOtrStoreKey();
 
             synchronized (mQueue) {
