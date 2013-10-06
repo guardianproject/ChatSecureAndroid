@@ -928,8 +928,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
             
-            if (!mCursorChats.isClosed())
-                mCursorChats.requery();
+            mCursorChats.requery();
             
             super.notifyDataSetChanged();
         }
