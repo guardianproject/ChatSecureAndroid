@@ -1020,26 +1020,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             {
                 int positionMod = position - 1;
 
-                try
-                {
-                           mCursorChats.moveToPosition(positionMod);
-                           return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
-                }
-                catch (Exception e)
-                {
-                    mChatPagerAdapter.notifyDataSetChanged();
-                    
-                    if (mCursorChats == null)
-                    {
-                        Log.e(ImApp.LOG_TAG,"error getting chat",e);
-                        return "";
-                    }
-                    else
-                    {
-                        mCursorChats.moveToPosition(positionMod);       
-                        return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
-                    }
-                }
+                mCursorChats.moveToPosition(positionMod);
+                return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
             }
         }
 
@@ -1372,9 +1354,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  ContentUris.appendId(builder, providerId);
                  ContentUris.appendId(builder, accountId);
                  mFilterView.doFilter(builder.build(), null);
-
-                 mChatPagerAdapter.notifyDataSetChanged();
-                
              }        
              
          }
