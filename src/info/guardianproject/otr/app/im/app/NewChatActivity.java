@@ -907,7 +907,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void onChange(boolean selfChange) {
-            refreshChatViews();
+            // Although we get this on our main thread, the dispatch is async and can happen after onDestroy
+            // Ensure we are still alive
+            if (mCursorChats != null)
+                refreshChatViews();
+            else
+                Log.w(TAG, "got onChange after onDestroy");
         }
     }
 
