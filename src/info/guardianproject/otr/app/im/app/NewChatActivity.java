@@ -162,6 +162,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     @Override
     protected void onDestroy() {
         if (mCursorChats != null) {
+            mChatPagerAdapter.onDestroy();
             mCursorChats.close();
         }
         super.onDestroy();
@@ -917,14 +918,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
     public class ChatViewPagerAdapter extends DynamicPagerAdapter {
+        private MyContentObserver mCursorObserver;
+
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            mCursorChats.registerContentObserver(new MyContentObserver());
+            mCursorObserver = new MyContentObserver();
+            mCursorChats.registerContentObserver(mCursorObserver);
         }
         
-        
-        
+        public void onDestroy() {
+            mCursorChats.unregisterContentObserver(mCursorObserver);
+        }
+
         @Override
         public void notifyDataSetChanged() {
             
@@ -1172,7 +1178,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super.onDestroy();
             
             if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                    mProviderCursor.close();
+                mProviderCursor.close();
         }
 
          private void setupSpinners (ContactListFilterView filterView)
