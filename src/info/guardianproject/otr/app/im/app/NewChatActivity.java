@@ -94,14 +94,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private ImApp mApp;
     private ViewPager mChatPager;
-    private static ChatViewPagerAdapter mChatPagerAdapter;
+    private ChatViewPagerAdapter mChatPagerAdapter;
     
     private Cursor mCursorChats;
     
     private SimpleAlertHandler mHandler;
     
-    private static long mAccountId = -1;
-    private static long mLastProviderId = -1;
+    private long mAccountId = -1;
+    private long mLastProviderId = -1;
     
     private MessageContextMenuHandler mMessageContextMenuHandler;
     
@@ -161,9 +161,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     protected void onDestroy() {
-        if (mCursorChats != null) {
-            mCursorChats.close();
-        }
+        mChatPagerAdapter.onDestroy();
         super.onDestroy();
     }
     
@@ -438,36 +436,33 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         
                         long requestedContactId = ContentUris.parseId(data);
                                            
-                        if (mCursorChats != null)
+                        mCursorChats.moveToPosition(-1);
+                        int posIdx = 1;
+                        boolean foundChatView = false;
+
+                        while (mCursorChats.moveToNext())
                         {
-                            mCursorChats.moveToPosition(-1);
-                            int posIdx = 1;
-                            boolean foundChatView = false;
-                            
-                            while (mCursorChats.moveToNext())
+                            long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+
+                            if (chatId == requestedContactId)
                             {
-                                long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
-                                
-                                if (chatId == requestedContactId)
-                                {
-                                    mChatPager.setCurrentItem(posIdx);
-                                    foundChatView = true;
-                                    break;
-                                }
-                                
-                                posIdx++;
+                                mChatPager.setCurrentItem(posIdx);
+                                foundChatView = true;
+                                break;
                             }
-                            
-                            if (!foundChatView)
-                            {
-                                
-                                Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
-                                ContentUris.appendId(builder, requestedContactId);
-                                Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
-                                cursor.moveToFirst();
-                                
-                                startChat(cursor);
-                            }
+
+                            posIdx++;
+                        }
+
+                        if (!foundChatView)
+                        {
+
+                            Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
+                            ContentUris.appendId(builder, requestedContactId);
+                            Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
+                            cursor.moveToFirst();
+
+                            startChat(cursor);
                         }
                         
                    
@@ -912,24 +907,37 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void onChange(boolean selfChange) {
-            refreshChatViews();
+            // Although we get this on our main thread, the dispatch is async and can happen after onDestroy
+            // Ensure we are still alive
+            if (mCursorChats != null)
+                refreshChatViews();
+            else
+                Log.w(TAG, "got onChange after onDestroy");
         }
     }
 
     public class ChatViewPagerAdapter extends DynamicPagerAdapter {
+        private MyContentObserver mCursorObserver;
+
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
+            Log.d(TAG, "onCreate");
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            mCursorChats.registerContentObserver(new MyContentObserver());
+            mCursorObserver = new MyContentObserver();
+            mCursorChats.registerContentObserver(mCursorObserver);
         }
         
-        
-        
+        public void onDestroy() {
+            Log.d(TAG, "onDestroy");
+            mCursorChats.unregisterContentObserver(mCursorObserver);
+            mCursorChats.close();
+            mCursorChats = null;
+        }
+
         @Override
         public void notifyDataSetChanged() {
-            
-            if (!mCursorChats.isClosed())
-                mCursorChats.requery();
+            Log.d(TAG, "notifyDataSetChanged");
+            mCursorChats.requery();
             
             super.notifyDataSetChanged();
         }
@@ -937,10 +945,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public int getCount() {
-            if (mCursorChats != null && (!mCursorChats.isClosed()))
-                return mCursorChats.getCount() + 1;
-            else
-                return 1;
+            return mCursorChats.getCount() + 1;
         }
 
         @Override
@@ -1020,26 +1025,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             {
                 int positionMod = position - 1;
 
-                try
-                {
-                           mCursorChats.moveToPosition(positionMod);
-                           return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
-                }
-                catch (Exception e)
-                {
-                    mChatPagerAdapter.notifyDataSetChanged();
-                    
-                    if (mCursorChats == null)
-                    {
-                        Log.e(ImApp.LOG_TAG,"error getting chat",e);
-                        return "";
-                    }
-                    else
-                    {
-                        mCursorChats.moveToPosition(positionMod);       
-                        return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
-                    }
-                }
+                mCursorChats.moveToPosition(positionMod);
+                return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
             }
         }
 
@@ -1106,6 +1093,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         boolean showGrid = true;
         
+        private NewChatActivity mChatActivity;
+
+
+
         private Handler mPresenceHandler = new Handler()
         {
             
@@ -1118,16 +1109,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 super.handleMessage(msg);
             } 
         };
-        
-         /**
+
+
+
+        public ContactListFragment() {
+        }
+
+        /**
           * When creating, retrieve this instance's number from its arguments.
           */
          @Override
          public void onCreate(Bundle savedInstanceState) {
+             this.mChatActivity = (NewChatActivity) getActivity();
+
              super.onCreate(savedInstanceState);
-             
-             mSignInHelper = new SignInHelper(getActivity());
-             
+
+             mSignInHelper = new SignInHelper(mChatActivity);
          }
 
          /**
@@ -1191,7 +1188,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super.onDestroy();
             
             if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                    mProviderCursor.close();
+                mProviderCursor.close();
         }
 
          private void setupSpinners (ContactListFilterView filterView)
@@ -1266,7 +1263,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  mSpinnerAccounts.setVisibility(View.GONE);
                  initAccount(activity,mAccountIds[0]);
              }
-             else if (mAccountId != -1) //multiple accounts, so select a spinner based on user input
+             else if (mChatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
              {
 
                  mSpinnerAccounts.setVisibility(View.VISIBLE);
@@ -1275,7 +1272,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
                  for (long accountId : mAccountIds)
                  {
-                     if (accountId == mAccountId)
+                     if (accountId == mChatActivity.getAccountId())
                      {
                          mSpinnerAccounts.setSelection(selIdx);   
                          break;
@@ -1334,9 +1331,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  return;
              }
 
-             mLastProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+             mChatActivity.setLastProviderId(providerId);
+             // FIXME doesn't mAccountId need to be set here?
              
-             initConnection (activity, accountId, mLastProviderId);
+             initConnection (activity, accountId, providerId);
              
              c.close();
          }
@@ -1372,9 +1371,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  ContentUris.appendId(builder, providerId);
                  ContentUris.appendId(builder, accountId);
                  mFilterView.doFilter(builder.build(), null);
-
-                 mChatPagerAdapter.notifyDataSetChanged();
-                
              }        
              
          }
@@ -1398,7 +1394,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, data);
                 intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, providerId);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatActivity.getAccountId());
 
                 startActivity(intent);
              
@@ -1456,7 +1452,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
             
             boolean isActive = false; // TODO(miron)
-            mSignInHelper.signIn(password, mLastProviderId, accountId, isActive);
+            mSignInHelper.signIn(password, mChatActivity.getLastProviderId(), accountId, isActive);
             
             
         }
@@ -1464,7 +1460,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void signOut(long accountId) {
          
-            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(mLastProviderId);
+            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(mChatActivity.getLastProviderId());
             try {
                 conn.logout();
             } catch (RemoteException e) {
@@ -1779,4 +1775,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
     
 
+    long getAccountId() {
+        return mAccountId;
+    }
+    
+    long getLastProviderId() {
+        return mLastProviderId;
+    }
+    
+    void setAccountId(long mAccountId) {
+        this.mAccountId = mAccountId;
+    }
+    
+    void setLastProviderId(long mLastProviderId) {
+        this.mLastProviderId = mLastProviderId;
+    }
 }

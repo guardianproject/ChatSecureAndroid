@@ -1033,17 +1033,23 @@ public class ImpsProvider extends ContentProvider {
     }
     
     private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
-        if (mDbHelper == null && pkey != null) {
-            setDatabaseName(!pkey.isEmpty());
-            Context ctx = getContext();
-            String path = ctx.getDatabasePath(mDatabaseName).getPath();
-            if (noCreate && !new File(path).exists()) {
-                return null;
-            }
+        if (mDbHelper == null) {
+            if (pkey != null) {
+                setDatabaseName(!pkey.isEmpty());
+                Context ctx = getContext();
+                String path = ctx.getDatabasePath(mDatabaseName).getPath();
+                if (noCreate && !new File(path).exists()) {
+                    LogCleaner.debug(ImApp.LOG_TAG, "no DB exists at " + path);
+                    return null;
+                }
 
-            boolean inMemoryDb = false;
-            
-            mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                boolean inMemoryDb = false;
+
+                mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
+            } else {
+                LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
+            }
         }
 
         return mDbHelper;
