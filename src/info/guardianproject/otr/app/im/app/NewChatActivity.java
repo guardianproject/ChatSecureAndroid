@@ -94,14 +94,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private ImApp mApp;
     private ViewPager mChatPager;
-    private static ChatViewPagerAdapter mChatPagerAdapter;
+    private ChatViewPagerAdapter mChatPagerAdapter;
     
     private Cursor mCursorChats;
     
     private SimpleAlertHandler mHandler;
     
-    private static long mAccountId = -1;
-    private static long mLastProviderId = -1;
+    private long mAccountId = -1;
+    private long mLastProviderId = -1;
     
     private MessageContextMenuHandler mMessageContextMenuHandler;
     
@@ -1093,6 +1093,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         boolean showGrid = true;
         
+        private NewChatActivity mChatActivity;
+
+
+
         private Handler mPresenceHandler = new Handler()
         {
             
@@ -1105,16 +1109,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 super.handleMessage(msg);
             } 
         };
-        
-         /**
+
+
+
+        public ContactListFragment() {
+        }
+
+        /**
           * When creating, retrieve this instance's number from its arguments.
           */
          @Override
          public void onCreate(Bundle savedInstanceState) {
+             this.mChatActivity = (NewChatActivity) getActivity();
+
              super.onCreate(savedInstanceState);
-             
-             mSignInHelper = new SignInHelper(getActivity());
-             
+
+             mSignInHelper = new SignInHelper(mChatActivity);
          }
 
          /**
@@ -1253,7 +1263,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  mSpinnerAccounts.setVisibility(View.GONE);
                  initAccount(activity,mAccountIds[0]);
              }
-             else if (mAccountId != -1) //multiple accounts, so select a spinner based on user input
+             else if (mChatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
              {
 
                  mSpinnerAccounts.setVisibility(View.VISIBLE);
@@ -1262,7 +1272,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
                  for (long accountId : mAccountIds)
                  {
-                     if (accountId == mAccountId)
+                     if (accountId == mChatActivity.getAccountId())
                      {
                          mSpinnerAccounts.setSelection(selIdx);   
                          break;
@@ -1321,9 +1331,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  return;
              }
 
-             mLastProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+             mChatActivity.setLastProviderId(providerId);
+             // FIXME doesn't mAccountId need to be set here?
              
-             initConnection (activity, accountId, mLastProviderId);
+             initConnection (activity, accountId, providerId);
              
              c.close();
          }
@@ -1382,7 +1394,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, data);
                 intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, providerId);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatActivity.getAccountId());
 
                 startActivity(intent);
              
@@ -1440,7 +1452,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
             
             boolean isActive = false; // TODO(miron)
-            mSignInHelper.signIn(password, mLastProviderId, accountId, isActive);
+            mSignInHelper.signIn(password, mChatActivity.getLastProviderId(), accountId, isActive);
             
             
         }
@@ -1448,7 +1460,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void signOut(long accountId) {
          
-            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(mLastProviderId);
+            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(mChatActivity.getLastProviderId());
             try {
                 conn.logout();
             } catch (RemoteException e) {
@@ -1763,4 +1775,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
     
 
+    long getAccountId() {
+        return mAccountId;
+    }
+    
+    long getLastProviderId() {
+        return mLastProviderId;
+    }
+    
+    void setAccountId(long mAccountId) {
+        this.mAccountId = mAccountId;
+    }
+    
+    void setLastProviderId(long mLastProviderId) {
+        this.mLastProviderId = mLastProviderId;
+    }
 }
