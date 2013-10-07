@@ -35,6 +35,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -84,7 +85,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
 
@@ -98,8 +99,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
-        // Try to open with empty password
-        if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
+        if (cursorUnlocked(null, false)) {
+            // DB alrady open in provider, but ask for password if we don't have it in the UI process
+            // Account list checks for that
+            connectToCacheWord();
+        }
+        else if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
+            // Opened with empty password
             ;
         else
             connectToCacheWord ();
@@ -129,7 +135,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         try {
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            Builder builder = uri.buildUpon();
+            if (pKey != null)
+                builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
             if (!allowCreate)
                 builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
             uri = builder.build();
