@@ -34,6 +34,7 @@ import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
+import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.PRNGFixes;
 
@@ -238,6 +239,7 @@ public class ImApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Debug.onAppStart();
         
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
         
