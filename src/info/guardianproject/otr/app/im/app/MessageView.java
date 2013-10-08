@@ -76,8 +76,6 @@ public class MessageView extends LinearLayout {
         ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
         ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
         
-        boolean mAvatarAvatarLoaded = false;
-        
     }
     
     @Override
@@ -257,33 +255,32 @@ public class MessageView extends LinearLayout {
         
         if (address != null)
         {
-            if (!mHolder.mAvatarAvatarLoaded)
+            
+            Drawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+    
+            if (avatar != null)
             {
-                Drawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-        
-                if (avatar != null)
+                if (isLeft)
                 {
-                    if (isLeft)
-                    {
-                        mHolder.mAvatarLeft.setVisibility(View.VISIBLE);
-                        mHolder.mAvatarLeft.setImageDrawable(avatar);
-                    }
-                    else
-                    {
-                        mHolder.mAvatarRight.setVisibility(View.VISIBLE);
-                        mHolder.mAvatarRight.setImageDrawable(avatar);
-                    }
+                    mHolder.mAvatarLeft.setVisibility(View.VISIBLE);
+                    mHolder.mAvatarLeft.setImageDrawable(avatar);
                 }
                 else
                 {
-                    mHolder.mAvatarLeft.setVisibility(View.GONE);
-                    mHolder.mAvatarRight.setVisibility(View.GONE);
+                    mHolder.mAvatarRight.setVisibility(View.VISIBLE);
+                    mHolder.mAvatarRight.setImageDrawable(avatar);
                 }
-                
-                mHolder.mAvatarAvatarLoaded = true;
             }
+            else
+            {
+                mHolder.mAvatarLeft.setVisibility(View.GONE);
+                mHolder.mAvatarRight.setVisibility(View.GONE);
+            }
+                
+            
         }    
     }
+
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mHolder.mTextViewForMessages.setText(message);
