@@ -26,13 +26,13 @@
 
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:padding="6dip"
+		android:padding="0dip"
 		android:id="@+id/message_container"
 		>
  <ImageView
             android:id="@+id/avatar_left"
-            android:layout_width="32sp"
-            android:layout_height="32sp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:scaleType="centerCrop" 
             android:src="@drawable/avatar_unknown"
             android:visibility="gone"
@@ -43,8 +43,9 @@
 	        android:layout_width="0dip"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	         android:autoLink="web|email|phone|map"
+	         android:autoLink="all"
 	          android:fontFamily="sans-serif-light"
+	          android:padding="3dp"
 	         />
 	    
 		<ImageView
@@ -57,18 +58,16 @@
 
 		 <ImageView
             android:id="@+id/avatar_right"
-            android:layout_width="32sp"
-            android:layout_height="32sp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:scaleType="centerCrop" 
             android:src="@drawable/avatar_unknown"
             android:visibility="gone"
             android:layout_marginLeft="3dip"
-        
-            
+                    
             />
    	</LinearLayout>
-   	
-	
+   		
 	    <TextView android:id="@+id/messagets"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:layout_width="wrap_content"
