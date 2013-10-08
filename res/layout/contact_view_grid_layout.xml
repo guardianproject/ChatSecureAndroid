@@ -20,8 +20,8 @@
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     class="info.guardianproject.otr.app.im.app.ContactView"
-    android:layout_width="128dp"
-    android:layout_height="128dp"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/contact_grid_height"
     android:padding="0dp"    
     android:background="#aa999999"
     android:layout_margin="0dp"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contactAvatar"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         />
     <TextView
                 android:id="@+id/contactStatus"        

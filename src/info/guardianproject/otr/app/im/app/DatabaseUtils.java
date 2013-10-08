@@ -62,6 +62,32 @@ public class DatabaseUtils {
         return decodeAvatar(data, width, height);
     }
 
+    public static Drawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) {
+        
+        String[] projection =  {Imps.Contacts.AVATAR_DATA};
+        String[] args = {address};
+        String query = "username LIKE ?";
+        Cursor cursor = cr.query(Imps.Contacts.CONTENT_URI,projection,
+             query, args, Imps.Contacts.DEFAULT_SORT_ORDER);
+        
+        if (cursor.moveToFirst())
+        {
+            String hexData = cursor.getString(0);
+            if (hexData.equals("NULL")) {
+                return null;
+            }
+            cursor.close();
+            byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
+            return decodeAvatar(data, width, height);
+        }
+        else
+        {
+            cursor.close();
+            return null;
+        }
+    }
+
+    
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
         Uri.Builder builder = baseUri.buildUpon();
         ContentUris.appendId(builder, providerId);

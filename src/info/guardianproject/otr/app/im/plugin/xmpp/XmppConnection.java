@@ -224,7 +224,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 contentResolver, mProviderId, false, null);
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
-        String xmppName = userName + '@' + domain;
+        String xmppName = userName + '@' + domain;// + '/' + providerSettings.getXmppResource();    
         providerSettings.close();
         
         return new Contact(new XmppAddress(xmppName), userName);
@@ -1662,13 +1662,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             //since we don't show lists anymore, let's just load all entries together
             
-            String generalGroupName = mContext.getString(R.string.buddies);
-            ContactList cl = getContactList(generalGroupName);
+            
+            ContactList cl;
+            
+            try {
+                cl = mContactListManager.getDefaultContactList();
+            } catch (ImException e1) {
+               debug(TAG,"couldn't read default list");
+               cl = null;
+            }
             
             if (cl == null)
             {
+                String generalGroupName = mContext.getString(R.string.buddies);
+             
                 Collection<Contact> contacts = new ArrayList<Contact>();
                 XmppAddress groupAddress = new XmppAddress(generalGroupName); 
+           
                 cl = new ContactList(groupAddress,generalGroupName, true, contacts, this);
 
                 
@@ -1679,6 +1689,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             {
                 String address = rEntry.getUser();
                 String name = rEntry.getName();
+                
+                if (mUser.getAddress().getBareAddress().equals(address)) //don't load a roster for yourself
+                    continue;
                 
                 Contact contact = mContactListManager.getContact(address);
 
@@ -1765,12 +1778,29 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                // execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
 
-                do_loadContactLists(); //reload the roster?
+                loadContactListsAsync(); 
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
                 //LogCleaner.debug(ImApp.LOG_TAG, "entries deleted notification: " + addresses.size());
+                
+                ContactList cl;
+                try {
+                    cl = mContactListManager.getDefaultContactList();
+               
+                    for (String address : addresses)
+                    {
+                        Contact contact = makeContact(address);
+                        mContactListManager.notifyContactListUpdated(cl, 1, contact);
+                    }
+                    
+                } catch (ImException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                //loadContactListsAsync();
+                
             }
 
             @Override
@@ -1780,7 +1810,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
              //   LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
                 //execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
 
-                do_loadContactLists();//reload the roster?
+                loadContactListsAsync();
             }
         };
         
@@ -1833,18 +1863,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 RosterEntry entry = roster.getEntry(address);
                 if (entry == null) {
                     debug(TAG, "could not find entry " + address + " in group " + list.getName());
-                    return;
+                    //just ignore it then
                 }
-
-                // Remove from Roster if this is the last group
-                if (entry.getGroups().size() <= 1)
-                    roster.removeEntry(entry);
-
-                group.removeEntry(entry);
+                else
+                {
+                    // Remove from Roster if this is the last group
+                    if (entry.getGroups().size() <= 1)
+                        roster.removeEntry(entry);
+    
+                    group.removeEntry(entry);
+                }
             } catch (XMPPException e) {
                 debug(TAG, "remove entry failed: " + e.getMessage());
                 throw new RuntimeException(e);
             }
+            
+            //otherwise, send unsub message and delete from local contact database
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(address);
@@ -2467,18 +2501,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
     private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
         
+
+        XmppAddress xaddress = new XmppAddress(presence.getFrom());
+
+        if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself
+            return;
         
         String status = presence.getStatus();
-        String resource = null;
-        
-        
-        XmppAddress xaddress = new XmppAddress(presence.getFrom());
         
      // Get presence from the Roster to handle priorities and such
         final Roster roster = mConnection.getRoster();
-        if (roster != null)
-              presence = roster.getPresence(xaddress.getBareAddress());
         
+        if (presence.getType() != Type.subscribe && presence.getType() != Type.unsubscribe)
+            if (roster != null)
+                presence = roster.getPresence(xaddress.getBareAddress());
         
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
@@ -2523,28 +2559,42 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
             }
             
-        
 
         } else {
+
             debug(TAG, "Got presence update for EXISTING user: "
                     + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
           
         }
 
-        contact.setPresence(p);
-
-        Contact[] contacts = new Contact[] { contact };
-
-        mContactListManager.notifyContactsPresenceUpdated(contacts);
+        if (presence.getType() == Type.subscribe || presence.getType() == Type.subscribed) {                    
+            debug(TAG,"got subscribe request: " + presence.getFrom());
+            
+            mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(
+                    contact);
+        } 
+        else if (presence.getType() == Type.unsubscribe) {
+            //what should we do here? remove them from our list?
+            debug(TAG,"got unsubscribe request: " + presence.getFrom());
+            
+        }
+        else {
         
-        PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
-        if (pe != null) {
-            DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
-            String hash = dpe.getValue("photo");
+            contact.setPresence(p);
+
+            Contact[] contacts = new Contact[] { contact };
+    
+            mContactListManager.notifyContactsPresenceUpdated(contacts);
             
-            if (hash != null)
-                loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
-            
+            PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
+            if (pe != null) {
+                DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
+                String hash = dpe.getValue("photo");
+                
+                if (hash != null)
+                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
+                
+            }
         }
         
     }
