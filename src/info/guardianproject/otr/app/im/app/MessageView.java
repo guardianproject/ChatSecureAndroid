@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactView.ViewHolder;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.IOException;
@@ -54,48 +55,50 @@ public class MessageView extends LinearLayout {
         NONE, ENCRYPTED, ENCRYPTED_AND_VERIFIED
         
     }
-    private View mMessageContainer;
-    private TextView mTextViewForMessages;
-    private TextView mTextViewForTimestamp;
-    
-    private ImageView mDeliveryIcon;
-    private Resources mResources;
-    private ImageView mAvatarLeft;
-    private ImageView mAvatarRight;
-    
     private CharSequence lastMessage = null;
-    
-    private static final int cacheSize = 10; // 4MiB
-    private static LruCache bitmapCache = new LruCache(cacheSize);
-
-    private static Drawable mAvatarUnknown;
     
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
-        if (mAvatarUnknown == null)
-            mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
-
     }
 
+    private ViewHolder mHolder = null;
+    private Resources mResources = null;
+    
+    class ViewHolder 
+    {
+
+        View mMessageContainer = findViewById (R.id.message_container);
+              
+        TextView mTextViewForMessages = (TextView) findViewById(R.id.message);
+        TextView mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
+        ImageView mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
+        ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
+        ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
+        
+        boolean mAvatarAvatarLoaded = false;
+        
+    }
+    
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mMessageContainer = findViewById (R.id.message_container);
-        mTextViewForMessages = (TextView) findViewById(R.id.message);
-        mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
-        mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
-        mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
-        mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
+        mHolder = (ViewHolder)getTag();
         
-        mResources = getResources();
+        if (mHolder == null)
+        {
+            mHolder = new ViewHolder();
+            
+            setTag(mHolder);
+        }
 
-       
+        mResources = getResources();
     }
+    
 
     public URLSpan[] getMessageLinks() {
-        return mTextViewForMessages.getUrls();
+        return mHolder.mTextViewForMessages.getUrls();
     }
     
 
@@ -105,6 +108,9 @@ public class MessageView extends LinearLayout {
     public void bindIncomingMessage(String address, String nickname, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
+
+        mHolder = (ViewHolder)getTag();
+        
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         setGravity(Gravity.LEFT);
         setLayoutParams(lp);     
@@ -130,7 +136,7 @@ public class MessageView extends LinearLayout {
                 SpannableString spannablecontent=new SpannableString(lastMessage);
                 EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
                 
-                mTextViewForMessages.setText(spannablecontent);
+                mHolder.mTextViewForMessages.setText(spannablecontent);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -138,37 +144,37 @@ public class MessageView extends LinearLayout {
         }
         else
         {
-            mTextViewForMessages.setText(lastMessage);
+            mHolder.mTextViewForMessages.setText(lastMessage);
         }
         
         
-       mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
         
         if (date != null)
         {
          CharSequence tsText = formatTimeStamp(date);
          
-         mTextViewForTimestamp.setText(tsText);
-         mTextViewForTimestamp.setGravity(Gravity.CENTER);
-         mTextViewForTimestamp.setVisibility(View.VISIBLE);
+         mHolder.mTextViewForTimestamp.setText(tsText);
+         mHolder.mTextViewForTimestamp.setGravity(Gravity.CENTER);
+         mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
         
         }
         else
         {
             
-            mTextViewForTimestamp.setText("");
-            mTextViewForTimestamp.setVisibility(View.GONE);
+            mHolder.mTextViewForTimestamp.setText("");
+            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
            
         }
         
         if (encryption == EncryptionState.NONE)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
         else if (encryption == EncryptionState.ENCRYPTED)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
         
-        mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
 
     }
@@ -200,89 +206,95 @@ public class MessageView extends LinearLayout {
 
              EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
              
-             mTextViewForMessages.setText(spannablecontent);
+             mHolder.mTextViewForMessages.setText(spannablecontent);
          } catch (IOException e) {
              // TODO Auto-generated catch block
              e.printStackTrace();
          }
          
         if (delivery == DeliveryState.DELIVERED) {
-            mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
-            mDeliveryIcon.setVisibility(VISIBLE);
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+            mHolder.mDeliveryIcon.setVisibility(VISIBLE);
         } else if (delivery == DeliveryState.UNDELIVERED) {
-            mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
-            mDeliveryIcon.setVisibility(VISIBLE);
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
+            mHolder.mDeliveryIcon.setVisibility(VISIBLE);
         } else {
-            mDeliveryIcon.setVisibility(GONE);
+            mHolder.mDeliveryIcon.setVisibility(GONE);
         }
         
 
         if (date != null)
         {
-            mTextViewForTimestamp.setText(formatTimeStamp(date));
-            mTextViewForTimestamp.setGravity(Gravity.CENTER);
-            mTextViewForTimestamp.setVisibility(View.VISIBLE);
-            mTextViewForTimestamp.setPadding(0,0,0,12);
+            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date));
+            mHolder.mTextViewForTimestamp.setGravity(Gravity.CENTER);
+            mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
+            mHolder.mTextViewForTimestamp.setPadding(0,0,0,12);
 
         }
         else
         {
-            mTextViewForTimestamp.setText("");
-            mTextViewForTimestamp.setVisibility(View.GONE);
-            mTextViewForTimestamp.setPadding(0,0,0,0);
+            mHolder.mTextViewForTimestamp.setText("");
+            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
+            mHolder.mTextViewForTimestamp.setPadding(0,0,0,0);
 
         }
         
         if (encryption == EncryptionState.NONE)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
         else if (encryption == EncryptionState.ENCRYPTED)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
-            mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
                   
-        mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
     }
 
     private void showAvatar (String address, boolean isLeft)
     {
 
-        mAvatarLeft.setVisibility(View.GONE);
-        mAvatarRight.setVisibility(View.GONE);
+        mHolder.mAvatarLeft.setVisibility(View.GONE);
+        mHolder.mAvatarRight.setVisibility(View.GONE);
         
         if (address != null)
         {
-            Drawable avatar = ContactView.getAvatar(address);
-            
-            if (avatar == null)
+            if (!mHolder.mAvatarAvatarLoaded)
             {
-                avatar = mAvatarUnknown;
-                
-            }
+                Drawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
         
-           
-            if (isLeft)
-            {
-                mAvatarLeft.setVisibility(View.VISIBLE);
-                mAvatarLeft.setImageDrawable(avatar);
-            }
-            else
-            {
-                mAvatarRight.setVisibility(View.VISIBLE);
-                mAvatarRight.setImageDrawable(avatar);
+                if (avatar != null)
+                {
+                    if (isLeft)
+                    {
+                        mHolder.mAvatarLeft.setVisibility(View.VISIBLE);
+                        mHolder.mAvatarLeft.setImageDrawable(avatar);
+                    }
+                    else
+                    {
+                        mHolder.mAvatarRight.setVisibility(View.VISIBLE);
+                        mHolder.mAvatarRight.setImageDrawable(avatar);
+                    }
+                }
+                else
+                {
+                    mHolder.mAvatarLeft.setVisibility(View.GONE);
+                    mHolder.mAvatarRight.setVisibility(View.GONE);
+                }
+                
+                mHolder.mAvatarAvatarLoaded = true;
             }
         }    
     }
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
-        mTextViewForMessages.setText(message);
-        mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
-        mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setText(message);
+        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
+        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
     public void bindErrorMessage(int errCode) {
-        mTextViewForMessages.setText(R.string.msg_sent_failed);
-        mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
-        mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setText(R.string.msg_sent_failed);
+        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
+        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
    

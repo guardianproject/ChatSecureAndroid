@@ -72,10 +72,6 @@ public class ContactView extends LinearLayout {
    
     private Context mContext; 
     
-    
-    private static final int cacheSize = 100; // 4MiB
-    private static LruCache<String, Drawable> bitmapCache = new LruCache<String, Drawable>(cacheSize);
-    
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
@@ -162,17 +158,9 @@ public class ContactView extends LinearLayout {
         else
         {
         
-            Drawable avatar = (Drawable)bitmapCache.get(address);
-            
-            if (avatar == null)
-            {
+            Drawable avatar = 
                 avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-                
-                if (avatar != null)
-                    bitmapCache.put(address, avatar);
-                
-            }
-            
+             
             if (avatar != null)
                 mHolder.mAvatar.setImageDrawable(avatar);
             else
@@ -217,7 +205,7 @@ public class ContactView extends LinearLayout {
             }            
             else
             {
-                setBackgroundColor(getResources().getColor(R.color.contact_status_bg));
+                setBackgroundColor(Color.GRAY);
                 mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.contact_status_bg));
                 mHolder.mLine1.setTextColor(Color.DKGRAY);
                 
@@ -248,9 +236,5 @@ public class ContactView extends LinearLayout {
         return buf.toString();
     }*/
     
-    public static Drawable getAvatar (String address)
-    {
-        return (Drawable) bitmapCache.get(address);
-    }
 
 }
