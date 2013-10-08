@@ -1352,6 +1352,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          
          private void initConnection (Activity activity, long accountId, long providerId)
          {
+             
+             if (activity == null)
+                 return;
+             
              IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
            
              if (conn == null)
@@ -1361,6 +1365,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  } catch (RemoteException e) {
                     Log.e(ImApp.LOG_TAG,"error creating connection",e);
                  }
+
              }
              
              if (conn != null)
