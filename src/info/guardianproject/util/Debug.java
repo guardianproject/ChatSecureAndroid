@@ -16,6 +16,11 @@ public class Debug {
             .build());
         }
     }
+    
+    public static void onAppStart() {
+        // Same StrictMode policy
+        onConnectionStart();
+    }
 
     public static void onServiceStart() {
         if (DEBUGGER_ATTACH_ENABLED)

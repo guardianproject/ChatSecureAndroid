@@ -24,7 +24,6 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
-import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -36,6 +35,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -85,7 +85,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
 
@@ -99,9 +99,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
-        // Try to open with empty password
-        if (!mApp.isCacheWord() && openEncryptedStores(null, false))
-            mApp.setNoCacheWord();
+        if (cursorUnlocked(null, false)) {
+            // DB alrady open in provider, but ask for password if we don't have it in the UI process
+            // Account list checks for that
+            connectToCacheWord();
+        }
+        else if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
+            // Opened with empty password
+            ;
         else
             connectToCacheWord ();
 
@@ -119,8 +124,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
         
-        mApp.setCacheWord(mCacheWord);
-        
         mCacheWord.connectToService();
         
     }
@@ -132,7 +135,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         try {
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
-            Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            Builder builder = uri.buildUpon();
+            if (pKey != null)
+                builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
             if (!allowCreate)
                 builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
             uri = builder.build();
@@ -525,7 +530,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordOpened() {
        Log.d(ImApp.LOG_TAG,"cache word opened");
        
-       openEncryptedStores(mCacheWord.getEncryptionKey(), true);
+       byte[] encryptionKey = mCacheWord.getEncryptionKey();
+       mApp.setEncryptionKey(encryptionKey);
+       openEncryptedStores(encryptionKey, true);
 
        int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
 
@@ -536,6 +543,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
+            if (key == null)
+                mApp.setEmptyEncryptionKey();
             mApp.initOtrStoreKey();
 
             doOnResume();

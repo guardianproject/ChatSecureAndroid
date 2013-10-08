@@ -218,6 +218,7 @@ public class ChatView extends LinearLayout {
     private static final long SHOW_TIME_STAMP_INTERVAL = 30 * 1000; // 1 minute
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 10 seconds
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
+    private static final long FAST_QUERY_INTERVAL = 100;
     private static final int QUERY_TOKEN = 10;
 
     // Async QueryHandler
@@ -313,7 +314,7 @@ public class ChatView extends LinearLayout {
         @Override
         public void onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
-            scheduleRequery(DEFAULT_QUERY_INTERVAL);
+            scheduleRequery(FAST_QUERY_INTERVAL);
 
             mRemoteAddress = msg.getFrom();
           //  mRemoteAddressString = msg.getFrom().getAddress();
@@ -332,20 +333,17 @@ public class ChatView extends LinearLayout {
         @Override
         public void onSendMessageError(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg, ImErrorInfo error) {
-            scheduleRequery(DEFAULT_QUERY_INTERVAL);
+            scheduleRequery(FAST_QUERY_INTERVAL);
         }
 
         @Override
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
-            scheduleRequery(DEFAULT_QUERY_INTERVAL);
+            scheduleRequery(FAST_QUERY_INTERVAL);
         }
 
         @Override
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
-         
-            
-            
         };
         
         @Override
