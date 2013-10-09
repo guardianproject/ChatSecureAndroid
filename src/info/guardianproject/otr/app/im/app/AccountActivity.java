@@ -598,10 +598,6 @@ public class AccountActivity extends Activity {
                 }
             }
         }
-        else
-        {
-            mDomain = "localhost"; //if no domain is specified, then use localhost for LAN stuff
-        }
 
         //its okay if domain is null;
         
