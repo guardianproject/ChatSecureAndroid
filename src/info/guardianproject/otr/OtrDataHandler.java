@@ -232,6 +232,8 @@ public class OtrDataHandler implements DataHandler {
                     return;
                 }
                 
+                offer.seen(); // in case we don't see a response to underlying request, but peer still proceeds
+                
                 if (!req.containsHeader("Range"))
                 {
                     sendResponse(requestUs, 400, "Range must start with bytes=", uid, EMPTY_BODY);
@@ -353,7 +355,7 @@ public class OtrDataHandler implements DataHandler {
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
         message.setFrom(us);
-        debug("send response");        
+        debug("send response " + statusString + " for " + uid);
         mChatSession.sendDataAsync(message, true, data);
     }
 
@@ -487,7 +489,7 @@ public class OtrDataHandler implements DataHandler {
         String[] paths = localUri.split("/");
         String url = URI_PREFIX_OTR_IN_BAND + SystemServices.sanitize(paths[paths.length - 1]);
         Request request = new Request("OFFER", us, url, headers);
-        offerCache.put(url, new Offer(localUri));
+        offerCache.put(url, new Offer(localUri, request));
         sendRequest(request);
     }
 
@@ -502,13 +504,23 @@ public class OtrDataHandler implements DataHandler {
 
     static class Offer {
         private String mUri;
+        private Request request;
 
-        public Offer(String uri) {
+        public Offer(String uri, Request request) {
             this.mUri = uri;
+            this.request = request;
         }
         
         public String getUri() {
             return mUri;
+        }
+
+        public Request getRequest() {
+            return request;
+        }
+        
+        public void seen() {
+            request.seen();
         }
     }
     
@@ -525,7 +537,7 @@ public class OtrDataHandler implements DataHandler {
         }
 
         public Request(String method, Address us, String url, Map<String, String> headers) {
-            this(method, us, url, -1, -1, null, null);
+            this(method, us, url, -1, -1, headers, null);
         }
         
         public String method;
