@@ -364,7 +364,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             showExistingAccountListDialog();
             return true;
         case R.id.menu_create_account:
-            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null);
+            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -422,10 +422,16 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 {           
                     showGoogleAccountListDialog();
                 }
-                else
+                else if (pos == 1) //xmpp
                 {
                     //otherwise support the actual plugin-type
-                    showSetupAccountForm(mAccountList[pos],null, null, false,mAccountList[pos]);
+                    showSetupAccountForm(mAccountList[pos],null, null, false,mAccountList[pos],false);
+                }
+                else if (pos == 2) //zeroconf
+                {
+                    String username = "";
+                    String passwordPlaceholder = "password";//zeroconf doesn't need a password
+                    showSetupAccountForm(mAccountList[pos],username,passwordPlaceholder, false,mAccountList[pos],true);
                 }
             }
         });
@@ -475,7 +481,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
                            String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
                    
                            //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account));
+                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
                         }
                     };
                     thread.start();
@@ -487,7 +493,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
     }
     
-    public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle)
+    public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle, boolean hideTor)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
         mApp.resetProviderSettings(); //clear cached provider list
@@ -506,6 +512,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
         if (formTitle != null)
             intent.putExtra("title", formTitle);
+        
+        intent.putExtra("hideTor", hideTor);
         
         intent.putExtra("register", createAccount);
         

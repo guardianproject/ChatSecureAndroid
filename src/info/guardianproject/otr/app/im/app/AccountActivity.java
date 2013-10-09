@@ -466,6 +466,10 @@ public class AccountActivity extends Activity {
             mRememberPass.setVisibility(View.GONE);
         }
 
+        if (i.getBooleanExtra("hideTor", false))
+        {
+            mUseTor.setVisibility(View.GONE);
+        }
 
     }
 
@@ -573,7 +577,7 @@ public class AccountActivity extends Activity {
         boolean isGood = true;
         String[] splitAt = userField.trim().split("@");
         mUserName = splitAt[0];
-        mDomain = null;
+        mDomain = "";
         mPort = 0;
 
         if (splitAt.length > 1) {
@@ -595,12 +599,14 @@ public class AccountActivity extends Activity {
             }
         }
 
-        if (mDomain == null) {
-            isGood = false;
+        //its okay if domain is null;
+        
+//        if (mDomain == null) {
+  //          isGood = false;
             //Toast.makeText(AccountActivity.this, 
             //	R.string.account_wizard_no_domain_warning,
             //	Toast.LENGTH_LONG).show();
-        } 
+    //    } 
         /*//removing requirement of a . in the domain
         else if (mDomain.indexOf(".") == -1) { 
             isGood = false;

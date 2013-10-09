@@ -506,8 +506,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
     public String getRemoteFingerprint(String fullUserId) {
 
-        if (!Address.hasResource(fullUserId))
-            return null;
+        //if (!Address.hasResource(fullUserId))
+          //  return null;
         
         byte[] fingerprint = this.store.getPropertyHexBytes(fullUserId + ".fingerprint");
         if (fingerprint != null) {
@@ -651,8 +651,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
     private PublicKey loadRemotePublicKeyFromStore(String fullUserId) {
 
-        if (!Address.hasResource(fullUserId))
-            return null;
+      //  if (!Address.hasResource(fullUserId))
+        //    return null;
         
         byte[] b64PubKey = this.store.getPropertyBytes(fullUserId + ".publicKey");
         if (b64PubKey == null) {
@@ -684,8 +684,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String fullUserId = sessionID.getFullUserID();
-        if (!Address.hasResource(fullUserId))
-            return;
+      //  if (!Address.hasResource(fullUserId))
+        //    return;
         
         this.store.setProperty(fullUserId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
