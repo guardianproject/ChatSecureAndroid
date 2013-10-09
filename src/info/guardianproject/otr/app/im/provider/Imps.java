@@ -2452,4 +2452,16 @@ public class Imps {
         return false;
     }
 
+    public static void clearPassphrase(Context ctx) {
+        Uri uri = Provider.CONTENT_URI_WITH_ACCOUNT;
+    
+        Builder builder = uri.buildUpon().appendQueryParameter(ImApp.CLEAR_PASSWORD_KEY, "1");
+        uri = builder.build();
+    
+        Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null);
+        if (cursor != null) {
+            throw new RuntimeException("Unexpected cursor returned");
+        }
+    }
+
 }

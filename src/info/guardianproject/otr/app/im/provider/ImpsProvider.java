@@ -1046,6 +1046,7 @@ public class ImpsProvider extends ContentProvider {
                 boolean inMemoryDb = false;
 
                 mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
                 LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
             } else {
                 LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
@@ -1159,6 +1160,15 @@ public class ImpsProvider extends ContentProvider {
 
         String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
         boolean noCreate = "1".equals(url.getQueryParameter(ImApp.NO_CREATE_KEY));
+        boolean clearKey = "1".equals(url.getQueryParameter(ImApp.CLEAR_PASSWORD_KEY));
+        
+        if (clearKey) {
+            if (mDbHelper != null) {
+                mDbHelper.close();
+                mDbHelper = null;
+            }
+            return null;
+        }
         
         try {
             initDBHelper(pkey, noCreate);

@@ -35,7 +35,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -81,6 +80,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private SharedPreferences mPrefs = null;
     
     private CacheWordActivityHandler mCacheWord = null;
+    private boolean mDoLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,20 +98,17 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
+        mDoLock = getIntent().getBooleanExtra("doLock", false);
         
-        if (cursorUnlocked(null, false)) {
-            // DB alrady open in provider, but ask for password if we don't have it in the UI process
-            // Account list checks for that
-            connectToCacheWord();
-        }
-        else if (!mApp.hasEncryptionKey() && openEncryptedStores(null, false))
-            // Opened with empty password
-            ;
+        mApp.maybeInit(this);
+        
+        if (!mDoLock && openEncryptedStores(null, false))
+            // DB already open, or unencrypted
+            // openEncryptedStores has finished()
+            return;
         else
             connectToCacheWord ();
 
-        mApp.maybeInit(this);
-        
         checkForCrashes();
         
         checkForUpdates();
@@ -505,7 +502,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordUninitialized() {
         Log.d(ImApp.LOG_TAG,"cache word uninit");
         
-        showLockScreen();
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock requested but already uninitialized");
+        } else {
+            showLockScreen();
+        }
         finish();
     }
 
@@ -521,17 +522,25 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     
     @Override
     public void onCacheWordLocked() {
-     
-        showLockScreen();
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock requested but already locked");
+        } else {
+            showLockScreen();
+        }
         finish();
     }
 
     @Override
     public void onCacheWordOpened() {
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock");
+            mCacheWord.manuallyLock();
+            finish();
+            return;
+        }
        Log.d(ImApp.LOG_TAG,"cache word opened");
        
        byte[] encryptionKey = mCacheWord.getEncryptionKey();
-       mApp.setEncryptionKey(encryptionKey);
        openEncryptedStores(encryptionKey, true);
 
        int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
@@ -543,10 +552,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
-            if (key == null)
-                mApp.setEmptyEncryptionKey();
-            mApp.initOtrStoreKey();
-
             doOnResume();
             return true;
         } else {
