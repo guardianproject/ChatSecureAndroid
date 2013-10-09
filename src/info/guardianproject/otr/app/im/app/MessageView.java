@@ -21,6 +21,7 @@ import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactView.ViewHolder;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -136,8 +137,7 @@ public class MessageView extends LinearLayout {
                 
                 mHolder.mTextViewForMessages.setText(spannablecontent);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LogCleaner.error(ImApp.LOG_TAG, "error processing message", e);
             }
         }
         else
