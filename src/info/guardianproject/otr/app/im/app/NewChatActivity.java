@@ -365,14 +365,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         //did not work
         Toast.makeText(this, "Please start a secure conversation before scanning codes", Toast.LENGTH_LONG).show();
      }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-                
-        resolveIntent(intent);
-        
-    }
-
+    
     void resolveIntent(Intent intent) {
         
         if (requireOpenDashboardOnStart(intent)) {
@@ -460,9 +453,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
                             ContentUris.appendId(builder, requestedContactId);
                             Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
-                            cursor.moveToFirst();
-
-                            startChat(cursor);
+                            
+                            if (cursor.getCount() > 0)
+                            { 
+                                cursor.moveToFirst();                            
+                                startChat(cursor);
+                            }
                         }
                         
                    
@@ -1036,7 +1032,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 int positionMod = position - 1;
 
                 mCursorChats.moveToPosition(positionMod);
-                return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
+                if (!mCursorChats.isAfterLast())
+                    return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
+                else
+                    return "";//unknown title
             }
         }
 
@@ -1098,14 +1097,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         UserPresenceView mPresenceView = null;
         
         Cursor mProviderCursor = null;
-        SignInHelper mSignInHelper = null;
+    
         Spinner mSpinnerAccounts;
 
         boolean showGrid = true;
         
-        private NewChatActivity mChatActivity;
-
-
+        ImApp mApp = null;
+        
 
         private Handler mPresenceHandler = new Handler()
         {
@@ -1130,14 +1128,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
           */
          @Override
          public void onCreate(Bundle savedInstanceState) {
-             this.mChatActivity = (NewChatActivity) getActivity();
+           
 
              super.onCreate(savedInstanceState);
 
-             mSignInHelper = new SignInHelper(mChatActivity);
+             
          }
 
-         /**
+         
+         
+
+
+        /**
           * The Fragment's UI is just a simple text view showing its
           * instance number.
           */
@@ -1172,7 +1174,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              ((AbsListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
              
              
-             ((ImApp)getActivity().getApplication()).registerForConnEvents(mPresenceHandler);
              
              
             //  QueryMap mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(), true, mHandler);
@@ -1194,6 +1195,24 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          
          
          @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            
+            mApp = ((ImApp)activity.getApplication()); 
+            mApp.registerForConnEvents(mPresenceHandler);
+
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            
+            mApp.unregisterForConnEvents(mPresenceHandler);
+            mApp = null;            
+            
+        }
+
+        @Override
         public void onDestroy() {           
             super.onDestroy();
             
@@ -1265,6 +1284,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          public void setSpinnerState (Activity activity)
          {
 
+             NewChatActivity chatActivity = (NewChatActivity)activity;
+             
              if (mAccountIds == null)
                  return;
              
@@ -1273,7 +1294,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  mSpinnerAccounts.setVisibility(View.GONE);
                  initAccount(activity,mAccountIds[0]);
              }
-             else if (mChatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
+             else if (chatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
              {
 
                  mSpinnerAccounts.setVisibility(View.VISIBLE);
@@ -1282,7 +1303,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  
                  for (long accountId : mAccountIds)
                  {
-                     if (accountId == mChatActivity.getAccountId())
+                     if (accountId == chatActivity.getAccountId())
                      {
                          mSpinnerAccounts.setSelection(selIdx);   
                          break;
@@ -1342,7 +1363,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
              }
 
              long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
-             mChatActivity.setLastProviderId(providerId);
+             ((NewChatActivity)activity).setLastProviderId(providerId);
              // FIXME doesn't mAccountId need to be set here?
              
              initConnection (activity, accountId, providerId);
@@ -1361,6 +1382,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  } catch (RemoteException e) {
                     Log.e(ImApp.LOG_TAG,"error creating connection",e);
                  }
+
              }
              
              if (conn != null)
@@ -1400,11 +1422,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
            
                 long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
+                long accountId = c.getLong(c.getColumnIndex(Imps.Contacts.ACCOUNT));
+                
                 Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatContactId);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, data);
                 intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, providerId);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mChatActivity.getAccountId());
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
 
                 startActivity(intent);
              
@@ -1456,27 +1480,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void signIn(long accountId) {
-           
-            
-            long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-            String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
-            
-            boolean isActive = false; // TODO(miron)
-            mSignInHelper.signIn(password, mChatActivity.getLastProviderId(), accountId, isActive);
-            
+           throw new UnsupportedOperationException("not implemented");
             
         }
 
         @Override
         public void signOut(long accountId) {
-         
-            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(mChatActivity.getLastProviderId());
-            try {
-                conn.logout();
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
+            throw new UnsupportedOperationException("not implemented");
         }
         
         
@@ -1487,7 +1498,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     
     private void startChat(Cursor c) {
-        if (c != null) {
+        if (c != null && (!  c.isAfterLast())) {
             long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             

@@ -103,6 +103,16 @@ public class ImPluginHelper {
         }
         return names;
     }
+    
+    public List<String> getProviderFullNames() {
+        List<ResolveInfo> plugins = getPlugins();
+        List<String> names = new ArrayList<String>();
+        for (ResolveInfo plugin : plugins) {
+            names.add(plugin.serviceInfo.metaData
+                    .getString(ImPluginConstants.METADATA_PROVIDER_FULL_NAME));
+        }
+        return names;
+    }
 
     public long createAdditionalProvider(String name) {
         List<ResolveInfo> plugins = getPlugins();
