@@ -1160,6 +1160,15 @@ public class ImpsProvider extends ContentProvider {
 
         String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
         boolean noCreate = "1".equals(url.getQueryParameter(ImApp.NO_CREATE_KEY));
+        boolean clearKey = "1".equals(url.getQueryParameter(ImApp.CLEAR_PASSWORD_KEY));
+        
+        if (clearKey) {
+            if (mDbHelper != null) {
+                mDbHelper.close();
+                mDbHelper = null;
+            }
+            return null;
+        }
         
         try {
             initDBHelper(pkey, noCreate);

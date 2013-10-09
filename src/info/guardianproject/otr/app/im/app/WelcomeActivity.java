@@ -80,6 +80,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private SharedPreferences mPrefs = null;
     
     private CacheWordActivityHandler mCacheWord = null;
+    private boolean mDoLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +98,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
+        mDoLock = getIntent().getBooleanExtra("doLock", false);
         
         mApp.maybeInit(this);
         
-        if (openEncryptedStores(null, false))
+        if (!mDoLock && openEncryptedStores(null, false))
             // DB already open, or unencrypted
             // openEncryptedStores has finished()
             return;
@@ -516,13 +518,22 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     
     @Override
     public void onCacheWordLocked() {
-     
-        showLockScreen();
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock requested but already locked");
+        } else {
+            showLockScreen();
+        }
         finish();
     }
 
     @Override
     public void onCacheWordOpened() {
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock");
+            mCacheWord.manuallyLock();
+            finish();
+            return;
+        }
        Log.d(ImApp.LOG_TAG,"cache word opened");
        
        byte[] encryptionKey = mCacheWord.getEncryptionKey();

@@ -262,10 +262,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     }
 
     private void handlePanic() {
-        
         signOutAll ();
-        mApp.forceStopImService();
-        // FIXME stop cacheword service
     }
  
     private void signOutAll() {
@@ -279,20 +276,28 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                 signOut(accountId);
             }
-            
-            mHandler.postDelayed(new Runnable()
-            {
-                public void run ()
-                {
-                    mApp.forceStopImService();
-                    
-                }
-            }, 2000l);
-            
-            
-            finish();
         }
         
+        goLock();
+   }
+
+    private void goLock() {
+        mHandler.postDelayed(new Runnable()
+        {
+            public void run ()
+            {
+                mApp.forceStopImService();
+                
+            }
+        }, 2000l);
+        
+        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        // Request lock
+        intent.putExtra("doLock", true);
+        // Clear the backstack
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     public void signOut(final long accountId) {
@@ -770,8 +775,6 @@ private Handler mHandlerGoogleAuth = new Handler ()
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
-
 
     private boolean initProviderCursor()
     {
