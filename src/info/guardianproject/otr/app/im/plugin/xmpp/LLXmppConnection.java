@@ -80,7 +80,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     private InetAddress ipAddress;
 
-    private String serviceName;
+    private String mServiceName;
+    private String mResource;
 
     static {
         LLServiceDiscoveryManager.addServiceListener();
@@ -237,8 +238,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         // providerSettings is closed in initConnection()
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
+        mResource = providerSettings.getXmppResource();
+        
         providerSettings.close(); // close this, which was opened in do_login()
-
+        
         try {
             initConnection(userName, domain);
         } catch (Exception e) {
@@ -255,22 +258,23 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     // Runs in executor thread
     private void initConnection(String userName, String domain) throws Exception {
+
         setState(LOGGING_IN, null);
-        mUserPresence = new Presence(Presence.AVAILABLE, "", null, null,
-                Presence.CLIENT_TYPE_DEFAULT);
-
-        domain = domain.replace('.', '_');
-        serviceName = userName + "@" + domain;
-        LLPresence presence = new LLPresence(serviceName);
-
-        ipAddress = getMyAddress(serviceName, true);
-
+        
+        ipAddress = getMyAddress(TAG, true);
         if (ipAddress == null) {
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR,
                     "network connection is required");
             setState(DISCONNECTED, info);
             return;
         }
+        
+        mUserPresence = new Presence(Presence.AVAILABLE, "", null, null,
+                Presence.CLIENT_TYPE_MOBILE);
+        
+        mServiceName = userName + '@' + ipAddress.getHostAddress();// + '/' + mResource;
+                
+        LLPresence presence = new LLPresence(mServiceName);
 
         mService = JmDNSService.create(presence, ipAddress);
         mService.addServiceStateListener(new LLServiceStateListener() {
@@ -360,7 +364,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        mUser = new Contact(new XmppAddress(serviceName), userName);
+        mUser = new Contact(new XmppAddress(mServiceName), userName);
 
         // Initiate Link-local message session
         mService.init();
@@ -611,7 +615,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         private void handlePresenceChanged(LLPresence presence, boolean offline) {
           
             
-            if (presence.getServiceName().equals(serviceName))
+            if (presence.getServiceName().equals(mServiceName))
                 return; //this is from us!
 
             
@@ -648,6 +652,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             Presence p = new Presence(parsePresence(presence, offline), presence.getMsg(), null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
+            
             contact.setPresence(p);
 
             Contact[] contacts = new Contact[] { contact };
@@ -759,7 +764,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void sendHeartbeat(long heartbeatInterval) {
-        InetAddress newAddress = getMyAddress(serviceName, false);
+        InetAddress newAddress = getMyAddress(mServiceName, false);
         if (!ipAddress.equals(newAddress)) {
             debug(TAG, "new address, reconnect");
             execute(new Runnable() {

@@ -74,7 +74,6 @@
 	android:checked="true"
 	android:paddingTop="3sp"
 	android:paddingBottom="3sp"
-	
 	android:textAppearance="?android:attr/textAppearanceSmall"
 	
 	 />
