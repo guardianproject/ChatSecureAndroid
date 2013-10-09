@@ -16,9 +16,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -40,13 +37,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -65,17 +60,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 
-public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ICacheWordSubscriber, ProviderListItem.SignInManager {
+public class AccountListActivity extends SherlockListActivity implements View.OnCreateContextMenuListener, ProviderListItem.SignInManager {
 
     private static final String TAG = ImApp.LOG_TAG;
-
-    private static final int ID_SIGN_IN = Menu.FIRST + 1;
-    private static final int ID_SIGN_OUT = Menu.FIRST + 2;
-    private static final int ID_EDIT_ACCOUNT = Menu.FIRST + 3;
-    private static final int ID_REMOVE_ACCOUNT = Menu.FIRST + 4;
-//    private static final int ID_SIGN_OUT_ALL = Menu.FIRST + 5;
-    private static final int ID_ADD_ACCOUNT = Menu.FIRST + 6;
-    private static final int ID_VIEW_CONTACT_LIST = Menu.FIRST + 7;
 
     private ProviderAdapter mAdapter;
     private Cursor mProviderCursor;
@@ -83,8 +70,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     private SimpleAlertHandler mHandler;
 
     private SignInHelper mSignInHelper;
-
-    private CacheWordActivityHandler mCacheWord;
 
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
@@ -124,11 +109,8 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
-        String pkey = SQLCipherOpenHelper.encodeRawKey(new byte[32]);
-        if (!mApp.hasEncryptionKey() && initProviderCursor(pkey)) {
-            mApp.setEmptyEncryptionKey();
-        } else {
-            mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        if (!initProviderCursor()) {
+            onDBLocked();
         }
         
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
@@ -162,8 +144,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onPause() {
         mHandler.unregisterForBroadcastEvents();
         
-        if (mCacheWord != null)
-            mCacheWord.onPause();
         super.onPause();
     }
 
@@ -185,15 +165,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         ThemeableActivity.setBackgroundImage(this);
         
         mHandler.registerForBroadcastEvents();
-        if (mCacheWord != null) {
-            mCacheWord.onResume();
-        
-            if (!mCacheWord.isLocked())
-            {
-                onCacheWordOpened();
-
-            }
-        }
         
         checkForCrashes();
         
@@ -236,7 +207,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mProviderCursor.moveToFirst();
         while (!mProviderCursor.isAfterLast())
         {
-            long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+            long cAccountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
             
             try
             {
@@ -257,7 +228,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mProviderCursor.moveToFirst();
         while (!mProviderCursor.isAfterLast())
         {
-            long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+            long cAccountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
             
             if (cAccountId == accountId)
                 break;
@@ -282,7 +253,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     {
 
         Intent intent = new Intent(this, NewChatActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
+        
         startActivity(intent);
     
     }
@@ -291,7 +265,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         signOutAll ();
         mApp.forceStopImService();
-        
+        // FIXME stop cacheword service
     }
  
     private void signOutAll() {
@@ -306,11 +280,6 @@ public class AccountListActivity extends SherlockListActivity implements View.On
                 signOut(accountId);
             }
             
-            
-            if (mCacheWord != null)
-                mCacheWord.manuallyLock();
-            
-
             mHandler.postDelayed(new Runnable()
             {
                 public void run ()
@@ -334,7 +303,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
             mProviderCursor.moveToFirst();
             while (!mProviderCursor.isAfterLast())
             {
-                long cAccountId = mProviderCursor.getLong(this.ACTIVE_ACCOUNT_ID_COLUMN);
+                long cAccountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                 
                 if (cAccountId == accountId)
                     break;
@@ -795,14 +764,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
     }
 
 
-    @Override
-    public void onCacheWordUninitialized() {
-       // this will never happen
-    }
-
-
-    @Override
-    public void onCacheWordLocked() {
+    public void onDBLocked() {
      
         Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -811,32 +773,10 @@ private Handler mHandlerGoogleAuth = new Handler ()
 
 
 
-    @Override
-    public void onCacheWordOpened() {
-       
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        int defaultTimeout = Integer.parseInt(prefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
-        
-        mCacheWord.setTimeoutMinutes(defaultTimeout);  
-        
-        byte[] encryptionKey = mCacheWord.getEncryptionKey();
-        mApp.setEncryptionKey(encryptionKey);
-        String pkey = SQLCipherOpenHelper.encodeRawKey(encryptionKey);
-
-            
-        initProviderCursor (pkey);
-        
-    }
-    
-    
-    private boolean initProviderCursor (String pkey)
+    private boolean initProviderCursor()
     {
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
 
-        uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
-      
         mProviderCursor = managedQuery(uri, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
@@ -853,11 +793,11 @@ private Handler mHandlerGoogleAuth = new Handler ()
     
     private void checkForCrashes() {
         CrashManager.register(this, ImApp.HOCKEY_APP_ID);
-      }
+    }
 
-      private void checkForUpdates() {
+    private void checkForUpdates() {
         // Remove this for store builds!
         UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
-      }
-      
+    }
+
 }

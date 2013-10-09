@@ -1046,6 +1046,7 @@ public class ImpsProvider extends ContentProvider {
                 boolean inMemoryDb = false;
 
                 mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
                 LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
             } else {
                 LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
