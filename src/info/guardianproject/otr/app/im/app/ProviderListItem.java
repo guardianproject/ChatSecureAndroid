@@ -201,18 +201,14 @@ public class ProviderListItem extends LinearLayout {
        // ImageView providerIcon = mProviderIcon;
 
         int providerId = cursor.getInt(mProviderIdColumn);
-        String providerDisplayName = cursor.getString(mProviderFullnameColumn);
-
+     
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(),
                 providerId, false , null);
       
         String userDomain = settings.getDomain();
         
-        
         mAccountId = cursor.getLong(mActiveAccountIdColumn);
         setTag(mAccountId);
-        
-        ImApp app = (ImApp)mActivity.getApplication();
 
         //if (mUnderBubble != null)
          //   mUnderBubble.setBackgroundDrawable(mDefaultBackground);
