@@ -502,7 +502,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordUninitialized() {
         Log.d(ImApp.LOG_TAG,"cache word uninit");
         
-        showLockScreen();
+        if (mDoLock) {
+            Log.d(ImApp.LOG_TAG, "cacheword lock requested but already uninitialized");
+        } else {
+            showLockScreen();
+        }
         finish();
     }
 
