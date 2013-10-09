@@ -1101,6 +1101,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         Spinner mSpinnerAccounts;
 
         boolean showGrid = true;
+        
+        ImApp mApp = null;
+        
 
         private Handler mPresenceHandler = new Handler()
         {
@@ -1195,14 +1198,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         public void onAttach(Activity activity) {
             super.onAttach(activity);
             
-            ((ImApp)activity.getApplication()).registerForConnEvents(mPresenceHandler);
+            mApp = ((ImApp)activity.getApplication()); 
+            mApp.registerForConnEvents(mPresenceHandler);
 
         }
 
         @Override
         public void onDetach() {
-            // TODO Auto-generated method stub
             super.onDetach();
+            
+            mApp.unregisterForConnEvents(mPresenceHandler);
+            mApp = null;            
+            
         }
 
         @Override
@@ -1366,10 +1373,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          
          private void initConnection (Activity activity, long accountId, long providerId)
          {
-             
-             if (activity == null)
-                 return;
-             
              IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
            
              if (conn == null)
@@ -1477,29 +1480,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void signIn(long accountId) {
-           
-            
-            long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-            String password = mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
-            
-            boolean isActive = false; // TODO(miron)
-            
-            new SignInHelper(getActivity()).signIn(password, providerId, accountId, isActive);
-            
+           throw new UnsupportedOperationException("not implemented");
             
         }
 
         @Override
         public void signOut(long accountId) {
 
-            long providerId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
-            IImConnection conn = ((ImApp)getActivity().getApplication()).getConnection(providerId);
-            try {
-                conn.logout();
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            throw new UnsupportedOperationException("not implemented");
         }
         
         
