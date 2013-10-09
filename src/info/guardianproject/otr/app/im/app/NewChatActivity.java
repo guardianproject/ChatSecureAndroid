@@ -171,6 +171,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         outState.putInt(ICICLE_POSITION, mChatPager.getCurrentItem());
     }
     
+    
+    
+    /*
     @Override
     protected void onResume() {     
         super.onResume();
@@ -178,7 +181,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         resolveIntent(getIntent());
         
-    }
+    }*/
+    
+    
 
     /*
     private Handler handlerIntent = new Handler ()
@@ -195,6 +200,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     };*/
     
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        
+        resolveIntent(intent);
+    }
+
     @Override
     public void onBackPressed() {
         if (menu.isMenuShowing()) {
