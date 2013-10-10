@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.service;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
+import info.guardianproject.otr.app.im.app.WelcomeActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.SystemServices;
 
@@ -122,6 +123,15 @@ public class StatusBarNotifier {
         notify(message, title, message, message, providerId, accountId, intent, false);
     }
 
+    public void notifyLocked() {
+
+        Intent intent = new Intent(mContext, WelcomeActivity.class);
+
+        String title = mContext.getString(R.string.app_name);
+        String message = mContext.getString(R.string.account_setup_pers_now_title);
+        notify(message, title, message, message, -1, -1, intent, true);
+    }
+    
     public void notifyDisconnected(long providerId, long accountId) {
 
         Intent intent = new Intent(mContext, NewChatActivity.class);
