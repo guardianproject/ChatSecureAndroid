@@ -139,8 +139,6 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
-                    // We are not using cacheword, so clear it for WelcomeActivity
-                    mApp.setEmptyEncryptionKey();
                     // Simulate cacheword opening
                     onCacheWordOpened();
                 }  else {

@@ -421,6 +421,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         if (mGlobalSettings != null)
             mGlobalSettings.close();
      
+        Imps.clearPassphrase(this);
+        
         /*
         if (mKillProcessOnStop)
         {

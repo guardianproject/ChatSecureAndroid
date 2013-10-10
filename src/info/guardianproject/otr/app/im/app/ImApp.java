@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -35,7 +34,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
 import info.guardianproject.util.Debug;
-import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.PRNGFixes;
 
 import java.util.ArrayList;
@@ -45,8 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-
-import org.spongycastle.util.Arrays;
 
 import android.app.Activity;
 import android.app.Application;
@@ -96,6 +92,8 @@ public class ImApp extends Application {
     public static final String DEFAULT_TIMEOUT_CACHEWORD = "-1"; //one day
     
     public static final String CACHEWORD_PASSWORD_KEY = "pkey";
+    public static final String CLEAR_PASSWORD_KEY = "clear_key";
+
     public static final String NO_CREATE_KEY = "nocreate";
     
     //ACCOUNT SETTINGS Imps defaults
@@ -431,52 +429,6 @@ public class ImApp extends Application {
         }
     }
     
-  
-    private byte[] mEncryptionKey;
-    private boolean mEmptyEncryptionKey;
-
-    public boolean isEmptyEncryptionKey() {
-        return mEmptyEncryptionKey;
-    }
-    
-    public boolean hasEncryptionKey() {
-        return mEncryptionKey != null;
-    }
-    
-    public void setEncryptionKey(byte[] encryptionKey)
-    {
-        if (mEncryptionKey != null && !Arrays.areEqual(encryptionKey, mEncryptionKey))
-            throw new RuntimeException("Trying to set encryption key to a new value");
-        mEncryptionKey = encryptionKey;
-        mEmptyEncryptionKey = false;
-    }
-    
-    public void setEmptyEncryptionKey() {
-        byte[] encryptionKey = new byte[32];
-        if (mEncryptionKey != null && !Arrays.areEqual(encryptionKey, mEncryptionKey))
-            throw new RuntimeException("Trying to set encryption key to a new empty value");
-        mEncryptionKey = encryptionKey;
-        mEmptyEncryptionKey = true;
-    }
-    
-    public void initOtrStoreKey ()
-    {
-        if (!hasEncryptionKey())
-            throw new RuntimeException("initOtrStoreKey but did not set key");
-        
-        if ( getRemoteImService() != null)
-        {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mEncryptionKey);
-    
-            try {
-               getRemoteImService().unlockOtrStore(pkey);
-             } catch (RemoteException e) {
-               
-                 LogCleaner.error(ImApp.LOG_TAG, "error initializing otr key", e);
-             }
-        }
-    }
-
     private ServiceConnection mImServiceConn = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
@@ -485,9 +437,6 @@ public class ImApp extends Application {
             mImService = IRemoteImService.Stub.asInterface(service);
             fetchActiveConnections();
             
-            if (hasEncryptionKey())
-                initOtrStoreKey();
-
             synchronized (mQueue) {
                 for (Message msg : mQueue) {
                     msg.sendToTarget();
