@@ -829,5 +829,9 @@
     <string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
     
     <string name="menu_sidebar_qr">Fingerprint</string>
+    
+    <string name="fingerprint_for_you">Fingerprint for you</string>
+    
+    <string name="fingerprint_for_">"Fingerprint for "</string>
 </resources>
 
