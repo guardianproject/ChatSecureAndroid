@@ -1033,7 +1033,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     
                 }
                 
-                Log.d(TAG, "position of " + cvFrag.getArguments().getString("contactName") + " = " + position);
+               //` Log.d(TAG, "position of " + cvFrag.getArguments().getString("contactName") + " = " + position);
                 return position;
                 
             }
