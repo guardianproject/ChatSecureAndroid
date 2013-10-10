@@ -604,7 +604,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 try {
                     boolean wasSeen = listener.onIncomingMessage(ChatSessionAdapter.this, msg);
                     
-                    if (!wasMessageSeen)
+                    if (wasSeen)
                         wasMessageSeen = wasSeen;
                     
                 } catch (RemoteException e) {
