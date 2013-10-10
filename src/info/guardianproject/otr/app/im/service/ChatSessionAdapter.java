@@ -611,12 +611,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             // Due to the move to fragments, we could have listeners for ChatViews that are not visible on the screen.
             // This is for fragments adjacent to the current one.  Therefore we can't use the existence of listeners
             // as a filter on notifications.
-//            if (N == 0)
-//            {
+            if (N == 0)
+            {
                 //reinstated body display here in the notification; perhaps add preferences to turn that off
                 mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
                         getId(), bareUsername, nickname, body, false);
-//            }
+            }
             
             mHasUnreadMessages = true;
             return true;
