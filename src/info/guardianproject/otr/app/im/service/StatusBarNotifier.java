@@ -83,7 +83,7 @@ public class StatusBarNotifier {
         Intent intent = new Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(
                 Imps.Chats.CONTENT_URI, chatId));
         intent.addCategory(info.guardianproject.otr.app.im.app.ImApp.IMPS_CATEGORY);
-        notify(username, title, snippet, msg, providerId, accountId, intent, lightWeightNotify);
+        notify(username, title, snippet, msg, providerId, accountId, intent, lightWeightNotify, R.drawable.ic_stat_status);
     }
 
     public void notifySubscriptionRequest(long providerId, long accountId, long contactId,
@@ -99,7 +99,7 @@ public class StatusBarNotifier {
                 ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, contactId));
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, providerId);
         intent.putExtra(ImServiceConstants.EXTRA_INTENT_FROM_ADDRESS, username);
-        notify(username, title, message, message, providerId, accountId, intent, false);
+        notify(username, title, message, message, providerId, accountId, intent, false, R.drawable.ic_stat_status);
     }
 
     public void notifyGroupInvitation(long providerId, long accountId, long invitationId,
@@ -110,7 +110,7 @@ public class StatusBarNotifier {
 
         String title = mContext.getString(R.string.notify_groupchat_label);
         String message = mContext.getString(R.string.group_chat_invite_notify_text, username);
-        notify(username, title, message, message, providerId, accountId, intent, false);
+        notify(username, title, message, message, providerId, accountId, intent, false, R.drawable.ic_stat_status);
     }
 
     public void notifyLoggedIn(long providerId, long accountId) {
@@ -120,7 +120,7 @@ public class StatusBarNotifier {
 
         String title = mContext.getString(R.string.app_name);
         String message = mContext.getString(R.string.presence_available);
-        notify(message, title, message, message, providerId, accountId, intent, false);
+        notify(message, title, message, message, providerId, accountId, intent, false, R.drawable.ic_stat_status);
     }
 
     public void notifyLocked() {
@@ -129,7 +129,9 @@ public class StatusBarNotifier {
 
         String title = mContext.getString(R.string.app_name);
         String message = mContext.getString(R.string.account_setup_pers_now_title);
-        notify(message, title, message, message, -1, -1, intent, true);
+        notify(message, title, message, message, -1, -1, intent, true, R.drawable.notify_chatsecure);
+
+        
     }
     
     public void notifyDisconnected(long providerId, long accountId) {
@@ -139,7 +141,7 @@ public class StatusBarNotifier {
 
         String title = mContext.getString(R.string.app_name);
         String message = mContext.getString(R.string.presence_offline);
-        notify(message, title, message, message, providerId, accountId, intent, false);
+        notify(message, title, message, message, providerId, accountId, intent, false, R.drawable.ic_stat_status);
     }
 
 
@@ -148,7 +150,7 @@ public class StatusBarNotifier {
         String title = nickname;
         String message = mContext.getString(R.string.file_notify_text, path, nickname);
         Intent intent = SystemServices.Viewer.getViewIntent(uri, type);
-        notify(message, title, message, message, providerId, accountId, intent, false);
+        notify(message, title, message, message, providerId, accountId, intent, false, R.drawable.ic_stat_status);
     }
 
     public void dismissNotifications(long providerId) {
@@ -201,7 +203,7 @@ public class StatusBarNotifier {
     }
 
     private void notify(String sender, String title, String tickerText, String message,
-            long providerId, long accountId, Intent intent, boolean lightWeightNotify) {
+            long providerId, long accountId, Intent intent, boolean lightWeightNotify, int icon) {
 
        // intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -217,7 +219,7 @@ public class StatusBarNotifier {
         }
 
         mNotificationManager.notify(info.computeNotificationId(),
-                info.createNotification(tickerText, lightWeightNotify));
+                info.createNotification(tickerText, lightWeightNotify, icon));
         
     }
 
@@ -295,11 +297,11 @@ public class StatusBarNotifier {
             return true;
         }
 
-        public Notification createNotification(String tickerText, boolean lightWeightNotify) {
+        public Notification createNotification(String tickerText, boolean lightWeightNotify, int icon) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
             Intent intent = getIntent();
             builder
-                .setSmallIcon(R.drawable.ic_stat_status)
+                .setSmallIcon(icon)
                 .setTicker(lightWeightNotify ? null : tickerText)
                 .setWhen(System.currentTimeMillis())
                 .setLights(0xff00ff00, 300, 1000)
