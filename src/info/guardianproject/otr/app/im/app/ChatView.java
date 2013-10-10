@@ -175,6 +175,14 @@ public class ChatView extends LinearLayout {
     
     private CompoundButton mOtrSwitch;
     private boolean mOtrSwitchTouched = false;
+    
+    private boolean mIsSelected = false;
+    
+    public void setSelected (boolean isSelected)
+    {
+        mIsSelected = isSelected;
+    }
+    
     private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()
     {
 
@@ -312,12 +320,14 @@ public class ChatView extends LinearLayout {
 
     private IChatListener mChatListener = new ChatListenerAdapter() {
         @Override
-        public void onIncomingMessage(IChatSession ses,
+        public boolean onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
             scheduleRequery(FAST_QUERY_INTERVAL);
 
             mRemoteAddress = msg.getFrom();
           //  mRemoteAddressString = msg.getFrom().getAddress();
+            
+            return mIsSelected;
         }
 
         @Override
@@ -812,29 +822,7 @@ public class ChatView extends LinearLayout {
        // }
     }*/
     
-    private Drawable loadAvatar (String jid)
-    {
-        try
-        {
-            //String filename = Base64.encodeBase64String(jid.getBytes()) + ".jpg";
-            String fileName = Base64.encodeToString(jid.getBytes(), Base64.NO_WRAP) + ".jpg";
-            File sdCard = new File(mActivity.getCacheDir(),"avatars");
-            File fileAvatar = new File(sdCard, fileName);
-            
-            if (fileAvatar.exists())
-            {
-                return new BitmapDrawable(BitmapFactory.decodeFile(fileAvatar.getCanonicalPath()));
-            }
-            else
-                return null;
-        }
-        catch (IOException ioe)
-        {
-            Log.e("Contacts","error loading avatar",ioe);
-            return null;
-        }
-    }
-
+    
     private void setStatusIcon() {
         if (mType == Imps.Contacts.TYPE_GROUP) {
             // hide the status icon for group chat.

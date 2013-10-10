@@ -125,6 +125,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPager.setSaveEnabled(false);
         mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
+            
+            private int lastPos = -1;
+            
             @Override
             public void onPageScrollStateChanged(int arg0) {
             }
@@ -136,13 +139,26 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             @Override
             public void onPageSelected(int pos) {
                 if (pos > 0) {
+                    
+                    if (lastPos != -1)
+                    {
+                        ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
+                        // Fragment isn't guaranteed to be initialized yet
+                        if (frag != null)
+                            frag.onDeselected(mApp);
+                    }
+                    
                     ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
                     // Fragment isn't guaranteed to be initialized yet
                     if (frag != null)
                         frag.onSelected(mApp);
+                    
+                    lastPos = pos;
                 }
             }
 
+            
+            
         });
 
         mMessageContextMenuHandler = new MessageContextMenuHandler();
@@ -1573,6 +1589,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         public void onSelected(ImApp app) {
             app.dismissChatNotification(getArguments().getLong("providerId"), getArguments().getString("contactName"));
+            if (mChatView != null)
+                mChatView.setSelected(true);
+        }
+        
+        public void onDeselected(ImApp app) {
+            if (mChatView != null)
+                mChatView.setSelected(false);
         }
 
         /**
