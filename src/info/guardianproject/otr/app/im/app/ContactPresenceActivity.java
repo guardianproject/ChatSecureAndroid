@@ -332,7 +332,7 @@ public class ContactPresenceActivity extends Activity {
                         }
                     }).show();
         }
-        catch (Exception e)
+        catch (RemoteException e)
         {
             LogCleaner.error(ImApp.LOG_TAG, "unable to perform manual key verification", e);
         }
