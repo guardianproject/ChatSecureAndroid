@@ -24,6 +24,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
+import info.guardianproject.util.LogCleaner;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,8 +60,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ContactPresenceActivity extends Activity {
 
-    private String remoteFingerprint;
-    private boolean remoteFingerprintVerified = false;
+    private IChatSession mChatSession;
+    private IOtrChatSession mOtrSession;
     private String remoteAddress;
     
     private long providerId;
@@ -87,7 +88,7 @@ public class ContactPresenceActivity extends Activity {
 
         setContentView(R.layout.contact_presence_activity);
 
-        enableButtons ();
+        enableButtons (false);
         
         Intent i = getIntent();
         mUri = i.getData();
@@ -96,10 +97,6 @@ public class ContactPresenceActivity extends Activity {
             finish();
             return;
         }
-
-         //forget this for now
-        //remoteAddress = i.getStringExtra("jid");
-
 
         updateUI();
         
@@ -140,14 +137,11 @@ public class ContactPresenceActivity extends Activity {
             try {
                 
                 try {
-                    IChatSession session = mApp.getChatSession(providerId, remoteAddress);
+                    mChatSession = mApp.getChatSession(providerId, remoteAddress);
                     
-                    if (session != null)
+                    if (mChatSession != null)
                     {
-                        IOtrChatSession iOtrSession = session.getOtrChatSession();
-                        remoteFingerprint = iOtrSession.getRemoteFingerprint();
-                        remoteFingerprintVerified = iOtrSession.isKeyVerified(remoteAddress);
-
+                        mOtrSession = mChatSession.getOtrChatSession();
                     }
                     
                 } catch (RemoteException e) {
@@ -251,36 +245,55 @@ public class ContactPresenceActivity extends Activity {
 
         updateOtrStatus ();
         
-        if (remoteFingerprint != null) {
-            
-            txtFingerprintRemote.setVisibility(View.VISIBLE);
-            lblFingerprintRemote.setVisibility(View.VISIBLE);
-            
-            StringBuffer spacedFingerprint = new StringBuffer();
-            
-            for (int i = 0; i + 8 <= remoteFingerprint.length(); i+=8)
-            {
-                spacedFingerprint.append(remoteFingerprint.subSequence(i,i+8));
-                spacedFingerprint.append(' ');
+        try
+        {
+            if (mOtrSession != null && mOtrSession.getRemoteFingerprint() != null) {
+                
+                txtFingerprintRemote.setVisibility(View.VISIBLE);
+                lblFingerprintRemote.setVisibility(View.VISIBLE);
+                
+                String remoteFingerprint = mOtrSession.getRemoteFingerprint();
+                boolean remoteFingerprintVerified = mOtrSession.isKeyVerified(remoteAddress);
+               
+                
+                txtFingerprintRemote.setText(prettyPrintFingerprint(remoteFingerprint));
+                
+                if (remoteFingerprintVerified) {
+                    lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
+                    txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_green));
+                } else
+                    txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_yellow));
+    
+
+                enableButtons(true);
+                
+            } else {
+                txtFingerprintRemote.setVisibility(View.GONE);
+                lblFingerprintRemote.setVisibility(View.GONE);
+                enableButtons(false);
             }
-            
-            txtFingerprintRemote.setText(spacedFingerprint.toString());
-            
-            if (remoteFingerprintVerified) {
-                lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
-                txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_green));
-            } else
-                txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_yellow));
-
-
-            
-        } else {
+        }
+        catch (RemoteException re)
+        {
             txtFingerprintRemote.setVisibility(View.GONE);
             lblFingerprintRemote.setVisibility(View.GONE);
+            enableButtons(false);
         }
         
-        enableButtons();
 
+    }
+    
+    private String prettyPrintFingerprint (String fingerprint)
+    {
+        StringBuffer spacedFingerprint = new StringBuffer();
+        
+        for (int i = 0; i + 8 <= fingerprint.length(); i+=8)
+        {
+            spacedFingerprint.append(fingerprint.subSequence(i,i+8));
+            spacedFingerprint.append(' ');
+        }
+        
+        return spacedFingerprint.toString();
     }
 
 //    private String getClientTypeString(int clientType) {
@@ -299,18 +312,30 @@ public class ContactPresenceActivity extends Activity {
     }
 
     private void confirmVerify() {
-        String message = getString(R.string.are_you_sure_you_want_to_confirm_this_key_);
 
-        new AlertDialog.Builder(this).setTitle(R.string.verify_key_).setMessage(message)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        verifyRemoteFingerprint();
-                    }
-                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
+        try
+        {
+            StringBuffer message = new StringBuffer();      
+            message.append(getString(R.string.fingerprint_for_you)).append("\n").append(prettyPrintFingerprint(mOtrSession.getLocalFingerprint())).append("\n\n");
+            message.append(getString(R.string.fingerprint_for_)).append(remoteAddress).append("\n").append(prettyPrintFingerprint(mOtrSession.getRemoteFingerprint())).append("\n\n");
+            
+            message.append(getString(R.string.are_you_sure_you_want_to_confirm_this_key_));
+            
+            new AlertDialog.Builder(this).setTitle(R.string.verify_key_).setMessage(message.toString())
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            verifyRemoteFingerprint();
+                        }
+                    }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Do nothing.
+                        }
+                    }).show();
+        }
+        catch (RemoteException e)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "unable to perform manual key verification", e);
+        }
     }
 
     private void verifyRemoteFingerprint() {
@@ -349,26 +374,32 @@ public class ContactPresenceActivity extends Activity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
                 intent);
 
-        if (scanResult != null) {
+        if (scanResult != null && mOtrSession != null) {
 
-            String otherFingerprint = scanResult.getContents();
-
-            if (otherFingerprint != null && otherFingerprint.equalsIgnoreCase(remoteFingerprint)) {
-                verifyRemoteFingerprint();
+            try
+            {
+                String otherFingerprint = scanResult.getContents();
+    
+                if (otherFingerprint != null && otherFingerprint.equalsIgnoreCase(mOtrSession.getRemoteFingerprint())) {
+                    verifyRemoteFingerprint();
+                }
             }
-
+            catch (RemoteException re)
+            {
+                LogCleaner.error(ImApp.LOG_TAG, "error validating QR code response", re);
+            }
         }
     }
 
 
-    private void enableButtons ()
+    private void enableButtons (boolean showOtrOptions)
     {
         Button btnVerifyManual = (Button)findViewById(R.id.btnVerifyManual);
         Button btnVerifyScan = (Button)findViewById(R.id.btnVerifyScan);
         Button btnVerifyQuestion = (Button)findViewById(R.id.btnVerifyQuestion);
         View viewVerifyLabel = findViewById(R.id.labelFingerprintActions);
         
-        if (remoteFingerprint == null)
+        if (!showOtrOptions)
         {
             btnVerifyManual.setVisibility(View.GONE);
             btnVerifyScan.setVisibility(View.GONE);
@@ -387,9 +418,8 @@ public class ContactPresenceActivity extends Activity {
     
                 @Override
                 public void onClick(View v) {
-                    if (remoteFingerprint != null)
+                  
                         confirmVerify();
-                    
                     
                 }
                 
@@ -411,7 +441,7 @@ public class ContactPresenceActivity extends Activity {
     
                 @Override
                 public void onClick(View v) {
-                    if (remoteFingerprint != null)
+                    if (mOtrSession != null)
                         initSmpUI();
                 }
                 
