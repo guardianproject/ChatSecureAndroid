@@ -2433,6 +2433,42 @@ public class Imps {
                 .parse("content://info.guardianproject.otr.app.im.provider.Imps/s2dids");
     }
 
+    public static boolean isUnencrypted(Context context) {
+        try {
+            Cursor cursor = null;
+            
+            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+            
+            Builder builder = uri.buildUpon();
+            builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, "");
+            builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+            
+            uri = builder.build();
+            
+            cursor = context.getContentResolver().query(
+                    uri, null, Imps.Provider.CATEGORY + "=?" /* selection */,
+                    new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                    null);
+ 
+            if (cursor != null)
+            {
+               cursor.close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        } catch (Exception e) {
+            // Only complain if we thought this password should succeed
+            
+             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+            
+            // needs to be unlocked
+            return false;
+        }
+    }
     public static boolean setEmptyPassphrase(Context ctx, boolean noCreate) {
         String pkey = "";
     
