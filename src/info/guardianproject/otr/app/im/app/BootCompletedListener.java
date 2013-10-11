@@ -34,7 +34,7 @@ public class BootCompletedListener extends BroadcastReceiver {
             Debug.onServiceStart();
             if (prefStartOnBoot)
             {
-                if (isUnencrypted(context))
+                if (Imps.isUnencrypted(context))
                 {
                     Log.d(ImApp.LOG_TAG, "autostart");
                     new ImApp(context).startImServiceIfNeed(true);
@@ -53,42 +53,7 @@ public class BootCompletedListener extends BroadcastReceiver {
         
     }
     
-    private boolean isUnencrypted(Context context) {
-        try {
-            String pKey = "";
-            Cursor cursor = null;
-            
-            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-            
-            Builder builder = uri.buildUpon();
-            builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
-            
-            uri = builder.build();
-            
-            cursor = context.getContentResolver().query(
-                    uri, null, Imps.Provider.CATEGORY + "=?" /* selection */,
-                    new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                    null);
- 
-            if (cursor != null)
-            {
-               cursor.close();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-        } catch (Exception e) {
-            // Only complain if we thought this password should succeed
-            
-             Log.e(ImApp.LOG_TAG, e.getMessage(), e);
-            
-            // needs to be unlocked
-            return false;
-        }
-    }
+    
     
    
 }
