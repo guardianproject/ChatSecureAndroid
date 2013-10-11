@@ -55,15 +55,14 @@ public class BootCompletedListener extends BroadcastReceiver {
     
     private boolean isUnencrypted(Context context) {
         try {
-            boolean allowCreate = false;
-            String pKey = null;
+            String pKey = "";
             Cursor cursor = null;
             
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
             
             Builder builder = uri.buildUpon();
-            if (!allowCreate)
-                builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+            builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            
             uri = builder.build();
             
             cursor = context.getContentResolver().query(
