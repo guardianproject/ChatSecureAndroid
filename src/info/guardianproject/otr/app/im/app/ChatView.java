@@ -35,7 +35,6 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
 import info.guardianproject.otr.app.im.app.MessageView.EncryptionState;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
-import info.guardianproject.otr.app.im.app.adapter.ChatSessionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -720,7 +719,6 @@ public class ChatView extends LinearLayout {
         cancelRequery();
         unregisterChatListener();
         unregisterForConnEvents();
-        unregisterChatSessionListener();
         mIsListening = false;
     }
 
@@ -1295,38 +1293,6 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    void registerChatSessionListener() {
-        IChatSessionManager sessionMgr = getChatSessionManager(mProviderId);
-        if (sessionMgr != null) {
-            mChatSessionListener = new ChatSessionListener();
-            try {
-                sessionMgr.registerChatSessionListener(mChatSessionListener);
-            } catch (RemoteException e) {
-                
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            }
-        }
-    }
-
-    void unregisterChatSessionListener() {
-        if (mChatSessionListener != null) {
-            try {
-                IChatSessionManager sessionMgr = getChatSessionManager(mProviderId);
-                sessionMgr.unregisterChatSessionListener(mChatSessionListener);
-                // We unregister the listener when the chat session we are
-                // waiting for has been created or the activity is stopped.
-                // Clear the listener so that we won't unregister the listener
-                // twice.
-                mChatSessionListener = null;
-            } catch (RemoteException e) {
-                
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            }
-        }
-    }
-
     void updateWarningView()
     {
         updateWarningView(false);
@@ -1566,31 +1532,6 @@ public class ChatView extends LinearLayout {
             }
 
             super.handleMessage(msg);
-        }
-    }
-
-    class ChatSessionListener extends ChatSessionListenerAdapter {
-        @Override
-        public void onChatSessionCreated(IChatSession session) {
-            try {
-
-                if (session.isGroupChatSession()) {
-                    final long id = session.getId();
-                    unregisterChatSessionListener();
-                    mHandler.post(new Runnable() {
-                        public void run() {
-                            bindChat(id);
-                        }
-                    });
-                }
-
-                updateWarningView();
-
-            } catch (RemoteException e) {
-
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "on chat session created error",e);    
-            }
         }
     }
 
