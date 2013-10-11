@@ -41,7 +41,6 @@ import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -74,11 +73,8 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -94,7 +90,6 @@ import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -369,7 +364,7 @@ public class ChatView extends LinearLayout {
 
     private Runnable mUpdateChatCallback = new Runnable() {
         public void run() {
-            if (mCursor.requery() && mCursor.moveToFirst()) {
+            if (mCursor != null && mCursor.requery() && mCursor.moveToFirst()) {
                 updateChat();
             }
         }
@@ -616,7 +611,8 @@ public class ChatView extends LinearLayout {
         initEmoji();
         
         
-        
+        mMessageAdapter = new MessageAdapter(mActivity, null);
+        mHistory.setAdapter(mMessageAdapter);
     }
 
     private static EmojiManager emojiManager = null;
@@ -728,6 +724,11 @@ public class ChatView extends LinearLayout {
         mIsListening = false;
     }
 
+    public void unbind() {
+        mCursor.close();
+        mCursor = null;
+        mMessageAdapter.changeCursor(null);
+    }
     
     
     void updateChat() {
@@ -745,8 +746,6 @@ public class ChatView extends LinearLayout {
             return;
         }
         
-        mMessageAdapter = new MessageAdapter(mActivity, null);
-        mHistory.setAdapter(mMessageAdapter);
         mHistory.invalidate();
         
         startQuery(getChatId());
@@ -844,30 +843,20 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    public void rebind ()
-    {
-        bindChat(mLastChatId);
-    }
-    
     private void deleteChat ()
     {
         Uri chatUri = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId);
         mActivity.getContentResolver().delete(chatUri,null,null);
     }
     
-   
     public void bindChat(long contactId) {
-        
+        log("bind " + this + " " + contactId);
         mLastChatId = contactId;
         
-        if (mCursor != null && (!mCursor.isClosed())) {
-            mCursor.close();
-        }
-        
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, contactId);
-        mCursor = mActivity.managedQuery(contactUri, CHAT_PROJECTION, null, null, null);
+        mCursor = mActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
         
-        if (mCursor == null || !mCursor.moveToFirst()) {
+        if (!mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + contactId);
             }
@@ -907,17 +896,9 @@ public class ChatView extends LinearLayout {
     
     private IChatSession getChatSession ()
     {
-        return getChatSession(false);
-    }
-    
-    private IChatSession getChatSession (boolean autoInit)
-    {
-        if (mCurrentChatSession == null && autoInit)
-            bindChat(mLastChatId);
-        
         return mCurrentChatSession;
     }
-
+    
     private void initOtr()  {
 
         if (mOtrChatSession == null)
@@ -941,21 +922,25 @@ public class ChatView extends LinearLayout {
         Uri uri = ContentUris.withAppendedId(Imps.Invitation.CONTENT_URI, invitationId);
         ContentResolver cr = mActivity.getContentResolver();
         Cursor cursor = cr.query(uri, INVITATION_PROJECT, null, null, null);
-        if (cursor == null || !cursor.moveToFirst()) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("Failed to query invitation: " + invitationId);
+        try {
+            if (!cursor.moveToFirst()) {
+                if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
+                    log("Failed to query invitation: " + invitationId);
+                }
+                //  mActivity.finish();
+            } else {
+                setViewType(VIEW_TYPE_INVITATION);
+
+                mInvitationId = cursor.getLong(INVITATION_ID_COLUMN);
+                mProviderId = cursor.getLong(INVITATION_PROVIDER_COLUMN);
+                String sender = cursor.getString(INVITATION_SENDER_COLUMN);
+
+                TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
+                mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
+                mActivity.setTitle(mContext.getString(R.string.chat_with, sender));
             }
-          //  mActivity.finish();
-        } else {
-            setViewType(VIEW_TYPE_INVITATION);
-
-            mInvitationId = cursor.getLong(INVITATION_ID_COLUMN);
-            mProviderId = cursor.getLong(INVITATION_PROVIDER_COLUMN);
-            String sender = cursor.getString(INVITATION_SENDER_COLUMN);
-
-            TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
-            mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
-            mActivity.setTitle(mContext.getString(R.string.chat_with, sender));
+        } finally {
+            cursor.close();
         }
 
        
@@ -1088,21 +1073,6 @@ public class ChatView extends LinearLayout {
         
         deleteChat();
                 
-    }
-
-    public void closeChatSessionIfInactive() {
-        if (getChatSession() != null) {
-            try {
-                getChatSession().leaveIfInactive();
-            } catch (RemoteException e) {
-                
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            }
-        }
-        
-        deleteChat();
-    
     }
 
     public void viewProfile() {
@@ -1252,7 +1222,7 @@ public class ChatView extends LinearLayout {
             return;
         }
         
-        IChatSession session = getChatSession(true);
+        IChatSession session = getChatSession();
         
         if (session != null) {
             try {

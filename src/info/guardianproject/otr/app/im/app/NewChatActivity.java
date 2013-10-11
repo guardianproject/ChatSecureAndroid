@@ -482,10 +482,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             ContentUris.appendId(builder, requestedContactId);
                             Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
                             
-                            if (cursor.getCount() > 0)
-                            { 
-                                cursor.moveToFirst();                            
-                                startChat(cursor);
+                            try {
+                                if (cursor.getCount() > 0)
+                                { 
+                                    cursor.moveToFirst();                            
+                                    startChat(cursor);
+                                }
+                            } finally {
+                                cursor.close();
                             }
                         }
                         
@@ -1624,26 +1628,24 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
 
         @Override
-        public void onPause() {
-            super.onPause();
-            
-            if (mChatView != null)
-                mChatView.stopListening();
-            
-//            Log.d(TAG, "CVF pause " + getArguments().getString("contactName"));
-        }
-
-        @Override
         public void onResume() {
             super.onResume();
             
-            if (mChatView != null)
-                mChatView.startListening();
+            mChatView.startListening();
 //            Log.d(TAG, "CVF resume " + getArguments().getString("contactName"));
         }
         
         @Override
+        public void onPause() {
+            super.onPause();
+            
+            mChatView.stopListening();
+//            Log.d(TAG, "CVF pause " + getArguments().getString("contactName"));
+        }
+
+        @Override
         public void onDestroy() {
+            mChatView.unbind();
             super.onDestroy();
 //            Log.d(TAG, "CVF destroy " + getArguments().getString("contactName"));
         }
