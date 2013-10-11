@@ -42,12 +42,15 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     private EditText mConfirmNewPassphrase;
     private View mViewCreatePassphrase;
     private View mViewEnterPassphrase;
-    private Button mBtnOpen;
+    
     private CacheWordActivityHandler mCacheWord;
     private String mPasswordError;
     private TwoViewSlider mSlider;
 
     private ImApp mApp;
+    private Button mBtnCreate;
+    private Button mBtnSkip;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,6 +69,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         mViewEnterPassphrase = findViewById(R.id.llEnterPassphrase);
 
         mEnterPassphrase = (EditText) findViewById(R.id.editEnterPassphrase);
+        
         mNewPassphrase = (EditText) findViewById(R.id.editNewPassphrase);
         mConfirmNewPassphrase = (EditText) findViewById(R.id.editConfirmNewPassphrase);
         ViewFlipper vf = (ViewFlipper) findViewById(R.id.viewFlipper1);
@@ -194,8 +198,8 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             }
         });
 
-        Button btnCreate = (Button) findViewById(R.id.btnCreate);
-        btnCreate.setOnClickListener(new OnClickListener()
+        mBtnCreate = (Button) findViewById(R.id.btnCreate);
+        mBtnCreate.setOnClickListener(new OnClickListener()
         {
             public void onClick(View v)
             {
@@ -204,40 +208,59 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                     showValidationError();
                     mSlider.showNewPasswordField();
                 } else if (isConfirmationFieldEmpty() && !isPasswordFieldEmpty()) {
+                    mBtnSkip.setVisibility(View.GONE);
                     mSlider.showConfirmationField();
-                } else if (!newEqualsConfirmation()) {
+                }
+                else if (!newEqualsConfirmation()) {
                     showInequalityError();
-                    mSlider.showNewPasswordField();
                 } else {
                     initializeWithPassphrase();
                 }
             }
         });
+        
+       
+        
+        mBtnSkip = (Button)findViewById(R.id.btnSkip);
+        mBtnSkip.setOnClickListener(new OnClickListener(){
+            
+            public void onClick(View v)
+            {
+                if (isPasswordFieldEmpty())
+                    initializeWithPassphrase();
+                
+            }
+        });
     }
 
+    Button mBtnSignIn;
+    
     private void promptPassphrase() {
         mViewCreatePassphrase.setVisibility(View.GONE);
         mViewEnterPassphrase.setVisibility(View.VISIBLE);
 
-        mBtnOpen = (Button) findViewById(R.id.btnOpen);
-        mBtnOpen.setOnClickListener(new OnClickListener()
+        mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
+        if (mBtnSignIn != null)
         {
-            public void onClick(View v)
+            mBtnSignIn.setOnClickListener(new OnClickListener()
             {
-                if (mEnterPassphrase.getText().toString().length() == 0)
-                    return;
-                // Check passphrase
-                try {
-                    mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
-                } catch (GeneralSecurityException e) {
-                    mEnterPassphrase.setText("");
-                    // TODO implement try again and wipe if fail
-                    Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
-                    return;
+                public void onClick(View v)
+                {
+                    if (mEnterPassphrase.getText().toString().length() == 0)
+                        return;
+                    // Check passphrase
+                    try {
+                        mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
+                    } catch (GeneralSecurityException e) {
+                        mEnterPassphrase.setText("");
+                        // TODO implement try again and wipe if fail
+                        Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
+                        return;
+                    }
                 }
-            }
-        });
-
+            });
+        }
+        
         mEnterPassphrase.setOnEditorActionListener(new OnEditorActionListener()
         {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
@@ -253,7 +276,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                         protected void onReceiveResult(int resultCode, Bundle resultData)
                         {
                             super.onReceiveResult(resultCode, resultData);
-                            mBtnOpen.performClick();
+                            mBtnSignIn.performClick();
                         }
                     });
                     return true;
@@ -265,18 +288,6 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
     private boolean validatePassword(char[] pass)
     {
-        boolean upper = false;
-        boolean lower = false;
-        boolean number = false;
-        for (char c : pass) {
-            if (Character.isUpperCase(c)) {
-                upper = true;
-            } else if (Character.isLowerCase(c)) {
-                lower = true;
-            } else if (Character.isDigit(c)) {
-                number = true;
-            }
-        }
 
         if (pass.length < MIN_PASS_LENGTH && pass.length != 0)
         {
@@ -284,25 +295,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             mPasswordError = getString(R.string.pass_err_length);
             return false;
         }
-        //only enforce password length
-        /*
-        else if (!upper)
-        {
-            mPasswordError = getString(R.string.pass_err_upper);
-            return false;
-        }
-        else if (!lower)
-        {
-            mPasswordError = getString(R.string.pass_err_lower);
-            return false;
-        }
-        else if (!number)
-        {
-            mPasswordError = getString(R.string.pass_err_num);
-            return false;
-        }*/
-        // if it got here, then must be okay
-        // hopefully the user can remember it
+      
         return true;
     }
 
