@@ -73,10 +73,10 @@ public class DatabaseUtils {
         if (cursor.moveToFirst())
         {
             String hexData = cursor.getString(0);
+            cursor.close();
             if (hexData.equals("NULL")) {
                 return null;
             }
-            cursor.close();
             byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
             return decodeAvatar(data, width, height);
         }
