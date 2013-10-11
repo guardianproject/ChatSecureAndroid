@@ -22,11 +22,13 @@ import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
 
-oneway interface IChatListener {
+interface IChatListener {
     /**
      * This method is called when a new message of the ChatSession has arrived.
+     *
+     * response indicates whether the user is focused on this message stream or not (for notifications)
      */
-    void onIncomingMessage(IChatSession ses, in Message msg);
+    boolean onIncomingMessage(IChatSession ses, in Message msg);
 
     /**
      * This method is called when a new message of the ChatSession has arrived.

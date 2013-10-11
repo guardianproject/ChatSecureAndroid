@@ -45,10 +45,12 @@ public class ChatListenerAdapter extends IChatListener.Stub {
         }
     }
 
-    public void onIncomingMessage(IChatSession ses, Message msg) {
+    public boolean onIncomingMessage(IChatSession ses, Message msg) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             LogCleaner.debug(TAG, "onIncomingMessage(" + ses + ", " + msg + ")");
         }
+        
+        return true;
     }
 
     public void onIncomingData(IChatSession ses, byte[] data) {

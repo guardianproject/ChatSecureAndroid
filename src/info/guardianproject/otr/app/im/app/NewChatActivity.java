@@ -125,6 +125,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPager.setSaveEnabled(false);
         mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
+            
+            private int lastPos = -1;
+            
             @Override
             public void onPageScrollStateChanged(int arg0) {
             }
@@ -136,13 +139,26 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             @Override
             public void onPageSelected(int pos) {
                 if (pos > 0) {
+                    
+                    if (lastPos != -1)
+                    {
+                        ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
+                        // Fragment isn't guaranteed to be initialized yet
+                        if (frag != null)
+                            frag.onDeselected(mApp);
+                    }
+                    
                     ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
                     // Fragment isn't guaranteed to be initialized yet
                     if (frag != null)
                         frag.onSelected(mApp);
+                    
+                    lastPos = pos;
                 }
             }
 
+            
+            
         });
 
         mMessageContextMenuHandler = new MessageContextMenuHandler();
@@ -171,6 +187,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         outState.putInt(ICICLE_POSITION, mChatPager.getCurrentItem());
     }
     
+    
+    
+    /*
     @Override
     protected void onResume() {     
         super.onResume();
@@ -178,7 +197,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         resolveIntent(getIntent());
         
-    }
+    }*/
+    
+    
 
     /*
     private Handler handlerIntent = new Handler ()
@@ -195,6 +216,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     };*/
     
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        
+        resolveIntent(intent);
+    }
+
     @Override
     public void onBackPressed() {
         if (menu.isMenuShowing()) {
@@ -1005,7 +1033,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     
                 }
                 
-                Log.d(TAG, "position of " + cvFrag.getArguments().getString("contactName") + " = " + position);
+               //` Log.d(TAG, "position of " + cvFrag.getArguments().getString("contactName") + " = " + position);
                 return position;
                 
             }
@@ -1561,6 +1589,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         public void onSelected(ImApp app) {
             app.dismissChatNotification(getArguments().getLong("providerId"), getArguments().getString("contactName"));
+            if (mChatView != null)
+                mChatView.setSelected(true);
+        }
+        
+        public void onDeselected(ImApp app) {
+            if (mChatView != null)
+                mChatView.setSelected(false);
         }
 
         /**
