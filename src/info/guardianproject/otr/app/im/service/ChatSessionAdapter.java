@@ -596,11 +596,17 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             insertMessageInDb(username, body, time, msg.getType());
 
+            boolean wasMessageSeen = false;
+            
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IChatListener listener = mRemoteListeners.getBroadcastItem(i);
                 try {
-                    listener.onIncomingMessage(ChatSessionAdapter.this, msg);
+                    boolean wasSeen = listener.onIncomingMessage(ChatSessionAdapter.this, msg);
+                    
+                    if (wasSeen)
+                        wasMessageSeen = wasSeen;
+                    
                 } catch (RemoteException e) {
                     // The RemoteCallbackList will take care of removing the
                     // dead listeners.
@@ -611,12 +617,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             // Due to the move to fragments, we could have listeners for ChatViews that are not visible on the screen.
             // This is for fragments adjacent to the current one.  Therefore we can't use the existence of listeners
             // as a filter on notifications.
-//            if (N == 0)
-//            {
+            if (!wasMessageSeen)
+            {
                 //reinstated body display here in the notification; perhaps add preferences to turn that off
                 mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
                         getId(), bareUsername, nickname, body, false);
-//            }
+            }
             
             mHasUnreadMessages = true;
             return true;

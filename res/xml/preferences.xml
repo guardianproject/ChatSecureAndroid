@@ -47,12 +47,12 @@
           android:defaultValue="true" />
           -->
          
-         
-         <EditTextPreference 
+         <!--          <EditTextPreference 
           android:key="pref_cacheword_timeout"
           android:title="@string/pref_cacheword_timeout_title"
           android:summary="@string/pref_cacheword_timeout_summary"
            /> 
+           -->
     
 
   </PreferenceCategory>
