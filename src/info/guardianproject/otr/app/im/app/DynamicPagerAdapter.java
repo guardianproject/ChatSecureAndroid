@@ -208,12 +208,13 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
     @Override
     public Parcelable saveState() {
         Bundle state = null;
-        if (mSavedState.size() > 0) {
-            state = new Bundle();
-            Fragment.SavedState[] fss = new Fragment.SavedState[mSavedState.size()];
-            mSavedState.toArray(fss);
-            state.putParcelableArray("states", fss);
-        }
+// FIXME don't save internal fragment state for now, until we figure out classloader issue
+//        if (mSavedState.size() > 0) {
+//            state = new Bundle();
+//            Fragment.SavedState[] fss = new Fragment.SavedState[mSavedState.size()];
+//            mSavedState.toArray(fss);
+//            state.putParcelableArray("states", fss);
+//        }
         for (int i=0; i<mFragments.size(); i++) {
             Fragment f = mFragments.get(i);
             if (f != null) {
