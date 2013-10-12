@@ -86,6 +86,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
+    private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
@@ -168,10 +169,15 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
         
-        if (icicle != null && icicle.containsKey(ICICLE_POSITION)) {
-            int position = icicle.getInt(ICICLE_POSITION);
-            if (position < mChatPagerAdapter.getCount())
-                mChatPager.setCurrentItem(position);
+        if (icicle != null) { 
+            if (icicle.containsKey(ICICLE_CHAT_PAGER_ADAPTER)) {
+                mChatPagerAdapter.restoreState(icicle.getParcelable(ICICLE_CHAT_PAGER_ADAPTER), getClassLoader());
+            }
+            if (icicle.containsKey(ICICLE_POSITION)) {
+                int position = icicle.getInt(ICICLE_POSITION);
+                if (position < mChatPagerAdapter.getCount())
+                    mChatPager.setCurrentItem(position);
+            }
         }
     }
     
@@ -185,6 +191,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(ICICLE_POSITION, mChatPager.getCurrentItem());
+        outState.putParcelable(ICICLE_CHAT_PAGER_ADAPTER, mChatPagerAdapter.saveState());
     }
     
     
@@ -1587,6 +1594,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             return f;
         }
         
+        public ChatViewFragment() {
+//            Log.d(TAG, "CVF construct " + super.toString());
+        }
+        
         public String toString() {
             return super.toString() + " -> " + getArguments().getString("contactName"); 
         }
@@ -1632,7 +1643,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super.onResume();
             
             mChatView.startListening();
-//            Log.d(TAG, "CVF resume " + getArguments().getString("contactName"));
+//            Log.d(TAG, "CVF resume " + getArguments().getString("contactName") + " " + this);
         }
         
         @Override
@@ -1640,14 +1651,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super.onPause();
             
             mChatView.stopListening();
-//            Log.d(TAG, "CVF pause " + getArguments().getString("contactName"));
+//            Log.d(TAG, "CVF pause " + getArguments().getString("contactName") + " " + this);
         }
 
         @Override
         public void onDestroy() {
             mChatView.unbind();
             super.onDestroy();
-//            Log.d(TAG, "CVF destroy " + getArguments().getString("contactName"));
+//            Log.d(TAG, "CVF destroy " + getArguments().getString("contactName") + " " + this);
         }
         
         public ChatView getChatView() {
