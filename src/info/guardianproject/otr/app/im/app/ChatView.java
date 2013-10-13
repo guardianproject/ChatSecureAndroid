@@ -196,7 +196,8 @@ public class ChatView extends LinearLayout {
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
-    private DataAdapter mDataListenerAdapter;
+    private DataAdapter mDataListenerAdapter = new DataAdapter();
+;
     
     
     long mLastChatId=-1;
@@ -864,27 +865,6 @@ public class ChatView extends LinearLayout {
             mCurrentChatSession = getChatSession(mCursor);
             
             updateChat();
-            
-            if (mCurrentChatSession != null)
-            {
-                // This will save the current chatId and providerId in the relevant fields.
-                // getChatSessionManager depends on mProviderId getting the cursor value of providerId.
-                
-                registerChatListener();
-                
-                try
-                {
-                    if (mDataListenerAdapter == null)
-                        mDataListenerAdapter = new DataAdapter();
-                   
-                    mCurrentChatSession.setDataListener(mDataListenerAdapter);
-                }
-                catch (RemoteException re)
-                {
-                    if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
-                        log("error setting remote data listener: " + re.getLocalizedMessage());
-                }
-            }
         }
         
         updateWarningView();
@@ -1259,11 +1239,12 @@ public class ChatView extends LinearLayout {
 
     void registerChatListener() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-            log("registerChatListener");
+            log("registerChatListener " + mLastChatId);
         }
         try {
             if (getChatSession() != null) {
                 getChatSession().registerChatListener(mChatListener);
+                getChatSession().setDataListener(mDataListenerAdapter);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
             if (conn != null) {
@@ -1277,10 +1258,11 @@ public class ChatView extends LinearLayout {
 
     void unregisterChatListener() {
         if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-            log("unregisterChatListener");
+            log("unregisterChatListener " + mLastChatId);
         }
         try {
             if (getChatSession() != null) {
+                getChatSession().setDataListener(null);
                 getChatSession().unregisterChatListener(mChatListener);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
