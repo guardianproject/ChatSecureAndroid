@@ -1252,11 +1252,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
 
         @Override
-        public void onDestroy() {           
-            super.onDestroy();
-            
+        public void onDestroyView() {
             if (mProviderCursor != null && (!mProviderCursor.isClosed()))
                 mProviderCursor.close();
+            mFilterView.setConnection(null);
+
+            super.onDestroyView();
         }
 
          private void setupSpinners (ContactListFilterView filterView)
