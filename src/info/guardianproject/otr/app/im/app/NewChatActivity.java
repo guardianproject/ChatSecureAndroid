@@ -194,40 +194,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         outState.putParcelable(ICICLE_CHAT_PAGER_ADAPTER, mChatPagerAdapter.saveState());
     }
     
-    
-    
-    /*
     @Override
     protected void onResume() {     
         super.onResume();
         
-
         resolveIntent(getIntent());
-        
-    }*/
-    
-    
 
-    /*
-    private Handler handlerIntent = new Handler ()
-    {
-
-        @Override
-        public void handleMessage(Message msg) {
-           super.handleMessage(msg);
-           
-           if (msg.what == 0)
-               resolveIntent(mLastIntent);
-            
-        }
+        if (menu.isMenuShowing())
+            menu.toggle();
         
-    };*/
-    
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         
-        resolveIntent(intent);
+        setIntent(intent);
     }
 
     @Override

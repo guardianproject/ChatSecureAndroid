@@ -172,6 +172,11 @@ public class ChatView extends LinearLayout {
     
     private boolean mIsSelected = false;
     
+
+    SessionStatus mLastSessionStatus = null;
+    
+    
+    
     public void setSelected (boolean isSelected)
     {
         mIsSelected = isSelected;
@@ -191,15 +196,12 @@ public class ChatView extends LinearLayout {
     
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
-    private IChatSessionListener mChatSessionListener;
 
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
     private DataAdapter mDataListenerAdapter = new DataAdapter();
-;
-    
-    
+   
     long mLastChatId=-1;
     int mType;
     String mRemoteNickname;
@@ -591,7 +593,15 @@ public class ChatView extends LinearLayout {
             
             @Override
             public void onClick(View v) {
-                mActivity.startImagePicker();
+                
+                if (mLastSessionStatus != null && mLastSessionStatus == SessionStatus.ENCRYPTED)
+                {
+                    mActivity.startImagePicker();
+                }
+                else
+                {
+                    mHandler.showServiceErrorAlert(getContext().getString(R.string.please_enable_chat_encryption_to_share_files));
+                }
             }
             
         });
@@ -602,7 +612,16 @@ public class ChatView extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-                mActivity.startFilePicker();
+                
+                if (mLastSessionStatus != null && mLastSessionStatus == SessionStatus.ENCRYPTED)
+                {
+                    mActivity.startFilePicker();
+                }
+                else
+                {
+                    mHandler.showServiceErrorAlert(getContext().getString(R.string.please_enable_chat_encryption_to_share_files));
+
+                }
             }
             
         });
@@ -1280,14 +1299,13 @@ public class ChatView extends LinearLayout {
         updateWarningView(false);
     }
     
+
     void updateWarningView(boolean overrideUserTouch) {
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
         boolean isConnected;
 
-        SessionStatus sessionStatus = null;
-        
         if (overrideUserTouch)
             mOtrSwitchTouched = false;
 
@@ -1295,6 +1313,7 @@ public class ChatView extends LinearLayout {
         {
             //no OTR in group chat
             mStatusWarningView.setVisibility(View.GONE);
+            
             return;
         }
         
@@ -1303,7 +1322,7 @@ public class ChatView extends LinearLayout {
         //check if the chat is otr or not
         if (mOtrChatSession != null) {
             try {
-                sessionStatus = SessionStatus.values()[mOtrChatSession.getChatStatus()];
+                mLastSessionStatus = SessionStatus.values()[mOtrChatSession.getChatStatus()];
             } catch (RemoteException e) {
                 Log.w("Gibber", "Unable to call remote OtrChatSession from ChatView", e);
             }
@@ -1351,11 +1370,14 @@ public class ChatView extends LinearLayout {
                 */
                 
             }
-            else if (sessionStatus == SessionStatus.ENCRYPTED) {
+            else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
                 try {
 
                     if (mOtrChatSession == null)
                         initOtr();
+                    
+                    mSendButton.setImageResource(R.drawable.ic_send_secure);
+                    mComposeMessage.setHint(R.string.compose_hint_secure);
 
                     if (!mOtrSwitchTouched)
                     {                    
@@ -1391,9 +1413,13 @@ public class ChatView extends LinearLayout {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            } else if (sessionStatus == SessionStatus.FINISHED) {
+            } else if (mLastSessionStatus == SessionStatus.FINISHED) {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
 
+
+                mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+                mComposeMessage.setHint(R.string.compose_hint);
+                
                 if (!mOtrSwitchTouched)
                 { 
                     mOtrSwitch.setOnCheckedChangeListener(null);
@@ -1407,10 +1433,13 @@ public class ChatView extends LinearLayout {
                 
                 mOtrChatSession = null;
             }  
-            else if (sessionStatus == SessionStatus.PLAINTEXT) {
+            else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
             //    mOtrSwitch.setChecked(false);
 
+                mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+                mComposeMessage.setHint(R.string.compose_hint);
+                
                 if (!mOtrSwitchTouched)
                 { 
                     mOtrSwitch.setOnCheckedChangeListener(null);
@@ -1431,6 +1460,9 @@ public class ChatView extends LinearLayout {
         } else {
             
 
+            mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+            mComposeMessage.setHint(R.string.compose_hint);
+            
             mOtrSwitch.setOnCheckedChangeListener(null);
             mOtrSwitch.setChecked(false);
             mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
