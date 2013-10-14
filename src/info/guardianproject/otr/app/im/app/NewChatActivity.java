@@ -195,18 +195,21 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
     
     
+    private Intent mLastIntent = null;
     
-    /*
     @Override
     protected void onResume() {     
         super.onResume();
         
-
-        resolveIntent(getIntent());
+        if (mLastIntent == null)
+            mLastIntent = getIntent();
         
-    }*/
-    
-    
+        resolveIntent(mLastIntent);
+
+        if (menu.isMenuShowing())
+            menu.toggle();
+        
+    }
 
     /*
     private Handler handlerIntent = new Handler ()
@@ -227,7 +230,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         
-        resolveIntent(intent);
+        mLastIntent = intent;
+        
     }
 
     @Override
