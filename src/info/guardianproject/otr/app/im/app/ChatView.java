@@ -197,6 +197,7 @@ public class ChatView extends LinearLayout {
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
 
+    private boolean isServiceUp;
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
@@ -713,6 +714,8 @@ public class ChatView extends LinearLayout {
     }
 
     public void startListening() {
+        if (!isServiceUp)
+            return;
         mIsListening = true;
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
@@ -755,6 +758,9 @@ public class ChatView extends LinearLayout {
         updateContactInfo();
 
         setStatusIcon();
+        
+        if (!isServiceUp)
+            return;
         
         IImConnection conn = mApp.getConnection(mProviderId);
         if (conn == null) {
@@ -882,6 +888,9 @@ public class ChatView extends LinearLayout {
         } else {
             
             mCurrentChatSession = getChatSession(mCursor);
+            if (mCurrentChatSession != null) {
+                isServiceUp = true;
+            }
             
             updateChat();
         }
@@ -1301,6 +1310,9 @@ public class ChatView extends LinearLayout {
     
 
     void updateWarningView(boolean overrideUserTouch) {
+        if (!isServiceUp)
+            return;
+        
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
@@ -2267,6 +2279,13 @@ public class ChatView extends LinearLayout {
         
         
         
+    }
+
+    public void onServiceConnected() {
+        if (!isServiceUp) {
+            bindChat(mLastChatId);
+            startListening();
+        }
     }
 
 }
