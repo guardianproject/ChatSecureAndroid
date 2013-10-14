@@ -1295,6 +1295,7 @@ public class ChatView extends LinearLayout {
         {
             //no OTR in group chat
             mStatusWarningView.setVisibility(View.GONE);
+            
             return;
         }
         
@@ -1356,6 +1357,9 @@ public class ChatView extends LinearLayout {
 
                     if (mOtrChatSession == null)
                         initOtr();
+                    
+                    mSendButton.setImageResource(R.drawable.ic_send_secure);
+                    mComposeMessage.setHint(R.string.compose_hint_secure);
 
                     if (!mOtrSwitchTouched)
                     {                    
@@ -1394,6 +1398,10 @@ public class ChatView extends LinearLayout {
             } else if (sessionStatus == SessionStatus.FINISHED) {
             //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
 
+
+                mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+                mComposeMessage.setHint(R.string.compose_hint);
+                
                 if (!mOtrSwitchTouched)
                 { 
                     mOtrSwitch.setOnCheckedChangeListener(null);
@@ -1411,6 +1419,9 @@ public class ChatView extends LinearLayout {
 
             //    mOtrSwitch.setChecked(false);
 
+                mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+                mComposeMessage.setHint(R.string.compose_hint);
+                
                 if (!mOtrSwitchTouched)
                 { 
                     mOtrSwitch.setOnCheckedChangeListener(null);
@@ -1431,6 +1442,9 @@ public class ChatView extends LinearLayout {
         } else {
             
 
+            mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+            mComposeMessage.setHint(R.string.compose_hint);
+            
             mOtrSwitch.setOnCheckedChangeListener(null);
             mOtrSwitch.setChecked(false);
             mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
