@@ -67,6 +67,14 @@
         
     </LinearLayout>
 
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaaaaa"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:orientation="horizontal"></LinearLayout>
+    
 
     <ListView android:id="@+id/history"
         android:layout_width="fill_parent"
@@ -143,6 +151,16 @@
                 android:text="@string/decline_subscription" />
         </LinearLayout>
     </LinearLayout>
+    
+    
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaaaaa"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:orientation="horizontal"></LinearLayout>
 
     
   <LinearLayout 
