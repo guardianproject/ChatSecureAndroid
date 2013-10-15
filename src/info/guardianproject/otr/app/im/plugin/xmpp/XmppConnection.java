@@ -2506,7 +2506,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
     private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
         
-
+        if (mConnection == null)
+            return; //sometimes presence changes are queued, and get called after we sign off
+        
         XmppAddress xaddress = new XmppAddress(presence.getFrom());
 
         if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself
