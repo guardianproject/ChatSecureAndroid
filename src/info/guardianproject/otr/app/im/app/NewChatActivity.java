@@ -109,6 +109,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
 
+    final static class MyHandler extends SimpleAlertHandler {
+        public MyHandler(NewChatActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == ImApp.EVENT_SERVICE_CONNECTED) {
+                ((NewChatActivity)mActivity).onServiceConnected();
+                return;
+            }
+            super.handleMessage(msg);
+        }
+    }
+    
+
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -121,7 +137,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         ThemeableActivity.setBackgroundImage(this);
 
-        mHandler = new SimpleAlertHandler(this);
+        mHandler = new MyHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPager.setSaveEnabled(false);
@@ -179,11 +195,31 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     mChatPager.setCurrentItem(position);
             }
         }
+        
+        mApp.registerForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
     }
     
+    /*
+     * We must have been thawed and the service was not previously connected, so our ChatViews are showing nothing.
+     * Refresh them.
+     */
+    void onServiceConnected() {
+        if (mChatPagerAdapter != null) {
+            int size = mChatPagerAdapter.getCount();
+            for (int i = 1; i < size ; i++) {
+                ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(i);
+                if (frag != null) {
+                    frag.onServiceConnected();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
+        mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.onDestroy();
+        mChatPagerAdapter = null;
         super.onDestroy();
     }
     
@@ -1619,6 +1655,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             mChatView.bindChat(chatContactId);                       
             
             return mChatView;
+        }
+
+        public void onServiceConnected() {
+            if (isResumed()) {
+                mChatView.onServiceConnected();
+            }
         }
 
         @Override

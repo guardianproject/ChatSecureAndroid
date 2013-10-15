@@ -24,7 +24,6 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionListener;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListListener;
@@ -197,6 +196,7 @@ public class ChatView extends LinearLayout {
     private MessageAdapter mMessageAdapter;
     private IChatSessionManager mChatSessionManager;
 
+    private boolean isServiceUp;
     private IChatSession mCurrentChatSession;
     private IOtrChatSession mOtrChatSession;
 
@@ -713,6 +713,8 @@ public class ChatView extends LinearLayout {
     }
 
     public void startListening() {
+        if (!isServiceUp)
+            return;
         mIsListening = true;
         if (mViewType == VIEW_TYPE_CHAT) {
             Cursor cursor = getMessageCursor();
@@ -755,14 +757,6 @@ public class ChatView extends LinearLayout {
         updateContactInfo();
 
         setStatusIcon();
-        
-        IImConnection conn = mApp.getConnection(mProviderId);
-        if (conn == null) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
-                log("Connection has been signed out");
-          
-            return;
-        }
         
         mHistory.invalidate();
         
@@ -882,13 +876,12 @@ public class ChatView extends LinearLayout {
         } else {
             
             mCurrentChatSession = getChatSession(mCursor);
+            if (mCurrentChatSession != null) {
+                isServiceUp = true;
+            }
             
             updateChat();
         }
-        
-        updateWarningView();
-        
-        
     }
     
     private IChatSession getChatSession ()
@@ -1129,14 +1122,7 @@ public class ChatView extends LinearLayout {
     }
 
     public long getChatId() {
-        try {
-            return getChatSession() == null ? -1 : getChatSession().getId();
-        } catch (RemoteException e) {
-            
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            return -1;
-        }
+        return mLastChatId;
     }
 
     public IChatSession getCurrentChatSession() {
@@ -2267,6 +2253,13 @@ public class ChatView extends LinearLayout {
         
         
         
+    }
+
+    public void onServiceConnected() {
+        if (!isServiceUp) {
+            bindChat(mLastChatId);
+            startListening();
+        }
     }
 
 }
