@@ -139,16 +139,26 @@
                 android:summary="@string/notification_sound_summary"
                 android:defaultValue="false"
                  />
+        
+         <CheckBoxPreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="pref_enable_notification"
+                android:key="pref_enable_custom_notification"
+                android:title="@string/notification_ringtone_title"
+                android:defaultValue="false"
+                 />
 
+         
+         
 <!-- 
         <info.guardianproject.otr.app.im.app.ImRingtonePreference
                 android:layout="?android:attr/preferenceLayoutChild"
-                android:dependency="@string/pref_notification_sound"
+                android:dependency="pref_notification_sound"
                 android:key="pref_notification_ringtone"
                 android:persistent="false"
                 android:title="@string/notification_ringtone_title"
                 android:ringtoneType="notification" />
- -->
+  -->
     </PreferenceCategory>
 
 </PreferenceScreen>
