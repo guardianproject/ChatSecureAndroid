@@ -85,12 +85,19 @@ public class SettingActivity extends SherlockPreferenceActivity implements
             settings.setVibrate(prefs.getBoolean(key, true));
         } else if (key.equals("pref_notification_sound")) {
             // TODO sort out notification sound pref
-            if (prefs.getBoolean(key, false)) {
-                settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
+            if (prefs.getBoolean(key, true)) {
+                settings.setRingtoneURI("android.resource://" + getPackageName() + "/" + R.raw.notify);
             } else {
                 settings.setRingtoneURI(null);
             }
-        } else if (key.equals("pref_foreground_service")) {
+        } else if (key.equals("pref_enable_custom_notification")) {
+            if (prefs.getBoolean(key, false)) {
+                settings.setRingtoneURI("android.resource://" + getPackageName() + "/" + R.raw.notify);
+            } else {
+                settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
+            }
+        }
+        else if (key.equals("pref_foreground_service")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
         } else if (key.equals("pref_heartbeat_interval")) {
             try
