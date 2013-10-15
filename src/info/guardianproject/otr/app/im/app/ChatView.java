@@ -24,7 +24,6 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionListener;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListListener;
@@ -769,7 +768,7 @@ public class ChatView extends LinearLayout {
           
             return;
         }
-        
+
         mHistory.invalidate();
         
         startQuery(getChatId());
@@ -894,10 +893,6 @@ public class ChatView extends LinearLayout {
             
             updateChat();
         }
-        
-        updateWarningView();
-        
-        
     }
     
     private IChatSession getChatSession ()
@@ -1138,14 +1133,7 @@ public class ChatView extends LinearLayout {
     }
 
     public long getChatId() {
-        try {
-            return getChatSession() == null ? -1 : getChatSession().getId();
-        } catch (RemoteException e) {
-            
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            return -1;
-        }
+        return mLastChatId;
     }
 
     public IChatSession getCurrentChatSession() {

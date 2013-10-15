@@ -56,7 +56,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.common.collect.Sets;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -214,11 +213,6 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 loadOpenSSL(password);
         }
 
-        public void reload () throws IOException
-        {
-            loadOpenSSL(mPassword);
-        }
-        
         private void loadAES(final String password) throws IOException 
         {
             String decoded;
@@ -239,7 +233,10 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         public boolean save ()
         {
             try {
-                saveOpenSSL (mPassword, mStoreFile);
+                if (mPassword != null)
+                    saveOpenSSL(mPassword, mStoreFile);
+                else
+                    savePlain(mStoreFile);
                 return true;
             } catch (IOException e) {
                 LogCleaner.error(ImApp.LOG_TAG, "error saving keystore", e);
@@ -265,6 +262,20 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, password.toCharArray());
             mProperties.store(encOS, null);
             encOS.flush();
+            
+            FileOutputStream fos = new FileOutputStream(fileStore);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+
+        }
+        
+        private void savePlain(File fileStore) throws IOException
+        {
+            // Encrypt these bytes
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mProperties.store(baos, null);
+            baos.flush();
             
             FileOutputStream fos = new FileOutputStream(fileStore);
             fos.write(baos.toByteArray());
