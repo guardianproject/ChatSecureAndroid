@@ -2094,7 +2094,7 @@ public class Imps {
              * @return Whether or not to vibrate.
              */
             public boolean getVibrate() {
-                return getBoolean(NOTIFICATION_VIBRATE, false /* by default disable vibrate */);
+                return getBoolean(NOTIFICATION_VIBRATE, true /* by default enable vibrate */);
             }
 
             /**

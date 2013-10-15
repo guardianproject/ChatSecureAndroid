@@ -366,7 +366,7 @@
     <string name="notification_sound_summary">Also play ringtone when IM arrives</string>
     <!-- This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker -->
-    <string name="notification_ringtone_title">Select ringtone</string>
+    <string name="notification_ringtone_title">Use ChatSecure custom ringtone</string>
 
     <!-- Group chat invitation screen (Currently not used.) -->
     <!-- The prompt message displayed on the group chat invitation screen.-->

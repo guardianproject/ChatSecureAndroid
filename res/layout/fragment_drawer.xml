@@ -11,7 +11,7 @@
     android:background="#33999999"/>
     <Button
         android:id="@+id/btnDrawerAccount"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         
             android:background="@android:color/transparent"
@@ -33,7 +33,7 @@
     
     <Button
         android:id="@+id/btnDrawerAddContact"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/social_add_person"
@@ -54,7 +54,7 @@
     
     <Button
         android:id="@+id/btnDrawerGroupChat"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/social_add_group"
@@ -74,7 +74,7 @@
     
     <Button
         android:id="@+id/btnDrawerQRCode"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/sidebar_key"
@@ -94,7 +94,7 @@
     
     <Button
         android:id="@+id/btnDrawerSettings"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/sidebar_settings"
@@ -114,7 +114,7 @@
 
 <Button
         android:id="@+id/btnDrawerPanic"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/ic_context_panic"
