@@ -759,17 +759,6 @@ public class ChatView extends LinearLayout {
 
         setStatusIcon();
         
-        if (!isServiceUp)
-            return;
-        
-        IImConnection conn = mApp.getConnection(mProviderId);
-        if (conn == null) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG))
-                log("Connection has been signed out");
-          
-            return;
-        }
-        
         mHistory.invalidate();
         
         startQuery(getChatId());
@@ -894,10 +883,6 @@ public class ChatView extends LinearLayout {
             
             updateChat();
         }
-        
-        updateWarningView();
-        
-        
     }
     
     private IChatSession getChatSession ()
@@ -1138,14 +1123,7 @@ public class ChatView extends LinearLayout {
     }
 
     public long getChatId() {
-        try {
-            return getChatSession() == null ? -1 : getChatSession().getId();
-        } catch (RemoteException e) {
-            
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-            return -1;
-        }
+        return mLastChatId;
     }
 
     public IChatSession getCurrentChatSession() {
@@ -1310,9 +1288,6 @@ public class ChatView extends LinearLayout {
     
 
     void updateWarningView(boolean overrideUserTouch) {
-        if (!isServiceUp)
-            return;
-        
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
