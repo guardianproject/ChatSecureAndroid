@@ -1333,7 +1333,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
              for (int i = 0; i < mAccountIds.length; i++)
              {
-                 mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);              
+                 mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);     
                  mProviderCursor.moveToNext();
                  
              }

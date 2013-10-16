@@ -1140,19 +1140,24 @@ public class ChatView extends LinearLayout {
         return mCurrentChatSession;
     }
 
-    private IChatSessionManager getChatSessionManager(long providerId) {
+    private IChatSessionManager getChatSessionManager(long providerId, long accountId) {
         if (mChatSessionManager == null || mProviderId != providerId) {
 
-            IImConnection conn = mApp.getConnection(providerId);
-
-            if (conn != null) {
-                try {
-                    mChatSessionManager = conn.getChatSessionManager();
-                } catch (RemoteException e) {
-                    
+            try {
+                IImConnection conn = mApp.getConnection(providerId);
+                if (conn == null)
+                    conn = mApp.createConnection(providerId, accountId);
+                
+                if (conn != null) {
+                
+                        mChatSessionManager = conn.getChatSessionManager();
+                
+                }
+                
+            } catch (RemoteException e) {
+                
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
-                }
             }
         }
 
@@ -1168,9 +1173,10 @@ public class ChatView extends LinearLayout {
 
     private IChatSession getChatSession(Cursor cursor) {
         long providerId = cursor.getLong(PROVIDER_COLUMN);
+        long accountId = cursor.getLong(ACCOUNT_COLUMN);
         String username = cursor.getString(USERNAME_COLUMN);
 
-        IChatSessionManager sessionMgr = getChatSessionManager(providerId);
+        IChatSessionManager sessionMgr = getChatSessionManager(providerId, accountId);
         if (sessionMgr != null) {
             try {
                 IChatSession session = sessionMgr.getChatSession(username);
