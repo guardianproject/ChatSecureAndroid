@@ -16,9 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -39,7 +36,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.java.otr4j.session.SessionStatus;
-
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -55,7 +51,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscriber {
+public class ImUrlActivity extends ThemeableActivity {
     
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
@@ -77,21 +73,29 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     private String mSendType;
     private String mSendText;
     
-    private CacheWordActivityHandler mCacheWord;
-    
 
     private Cursor mProviderCursor;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);        
-        mCacheWord.connectToService();
-        
-        
        
+        
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+
+        if (!Imps.isUnlocked(this)) {
+            onDBLocked();
+        }
+        
+        doOnCreate();
+    }
+
+    public void onDBLocked() {
+        
+        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     void handleIntent() {
@@ -426,13 +430,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     }
     
 
-    @Override
-    public void onCacheWordUninitialized() {
-        Log.d(ImApp.LOG_TAG,"cache word uninit");
-        
-        showLockScreen();
-    }
-    
     void openMultiUserChat(final Uri data) {
         
         new AlertDialog.Builder(this)            
@@ -660,23 +657,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
       
     }
     
-    @Override
-    public void onCacheWordLocked() {
-     
-
-        showLockScreen();
-    }
-
-    @Override
-    public void onCacheWordOpened() {
-     
-
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-        initProviderCursor (pkey);
-        
-        this.mHandlerRouter.sendEmptyMessage(2);
-    }
-    
     private void doOnCreate ()
     {
         Intent intent = getIntent();
@@ -749,23 +729,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
         
-
-        if (pkey != null)
-            mApp = (ImApp)getApplication();
-
-            mApp.callWhenServiceConnected(new Handler(), new Runnable() {
-                public void run() {
-                    
-                   try {
-                       mApp.getRemoteImService().unlockOtrStore(pkey);
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            });
-          
-        
     }
     
     
@@ -773,8 +736,6 @@ public class ImUrlActivity extends ThemeableActivity implements ICacheWordSubscr
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
-        mCacheWord.disconnect();
     }
     
     private static final String[] PROVIDER_PROJECTION = {
