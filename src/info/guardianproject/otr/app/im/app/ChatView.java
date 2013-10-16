@@ -758,6 +758,10 @@ public class ChatView extends LinearLayout {
 
         setStatusIcon();
         
+        //n8fr8 + devrandom: commented out on 15 Oct 2013: we really do want the chat to update w/o a connection
+        //so we can show message history in offline mode
+        /*
+        *
         if (!isServiceUp)
             return;
         
@@ -767,7 +771,7 @@ public class ChatView extends LinearLayout {
                 log("Connection has been signed out");
           
             return;
-        }
+        }*/
 
         mHistory.invalidate();
         
