@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.DummyActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
@@ -707,5 +708,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         //showToast(msg, Toast.LENGTH_SHORT);
 
+    }
+    
+    public void onTaskRemoved(Intent rootIntent) {
+        Intent intent = new Intent(this, DummyActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
