@@ -1302,9 +1302,7 @@ public class ChatView extends LinearLayout {
     
 
     void updateWarningView(boolean overrideUserTouch) {
-        if (!isServiceUp)
-            return;
-        
+                
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
