@@ -6,6 +6,7 @@ import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
@@ -85,7 +86,10 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public Address appendSessionResource(SessionID session, Address to) {
         String resource = mSessionResources.get(session);
-        return to;//.appendResource(resource);
+        if (resource != null)
+            return new XmppAddress(to.getBareAddress() + '/' + resource);
+        else
+            return to;
     }
 
     public ImConnectionAdapter findConnection(String localAddress) {
@@ -147,12 +151,12 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
 
         Message msg = new Message(body);
-
+        
         msg.setFrom(connection.getLoginUser().getAddress());sessionID.getFullUserID();
         final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
         msg.setTo(appendSessionResource(sessionID, to));
         msg.setDateTime(new Date());
-        msg.setID(msg.getFrom() + ":" + msg.getDateTime().getTime());
+        msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
         chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
         
     }
