@@ -1,5 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp;
 
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
@@ -140,7 +141,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             public void run() {
                 LLChat chat;
                 try {
-                    chat = mService.getChat(message.getTo());
+                    chat = mService.getChat(Address.stripResource(message.getTo()));
                     chat.sendMessage(message);
                 } catch (XMPPException e) {
                     Log.e(TAG, "Could not send message", e);
