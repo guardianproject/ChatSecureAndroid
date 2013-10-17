@@ -71,8 +71,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     ImConnectionAdapter mConnection;
     ChatSessionManagerAdapter mChatSessionManager;
 
-    //all the otr bits that work per session
-    OtrChatManager mOtrChatManager;
     OtrChatSessionAdapter mOtrChatSession;
 
     ChatSession mChatSession;
@@ -111,7 +109,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         mListenerAdapter = new ListenerAdapter();
         
-        getOtrChatSession();//setup first time
+        initOtrChatSession();//setup first time
 
         ImEntity participant = mChatSession.getParticipant();
 
@@ -122,22 +120,20 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
     }
 
-    
+    public void initOtrChatSession ()
+    {
+
+        mDataHandler = new OtrDataHandler(mChatSession);
+        mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), service.getOtrChatManager());
+        // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
+        mChatSession.addMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
+        mChatSession.setOtrChatManager(service.getOtrChatManager());
+    }
+
     public IOtrChatSession getOtrChatSession() {
 
-        if (mOtrChatManager == null)
-        {
-            mOtrChatManager = service.getOtrChatManager();
-            
-            if (mOtrChatManager != null)
-            {
-                mDataHandler = new OtrDataHandler(mChatSession);
-                mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), mOtrChatManager);
-                // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
-                mChatSession.addMessageListener(new OtrChatListener(mOtrChatManager, mListenerAdapter));
-                mChatSession.setOtrChatManager(mOtrChatManager);
-            }
-        }
+        if (mOtrChatSession == null)
+            initOtrChatSession();
         
         return mOtrChatSession;
     }

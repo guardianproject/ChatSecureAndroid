@@ -655,32 +655,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
     }
     
-    public void setOTRState(ChatView chatView, IOtrChatSession otrChatSession, boolean otrEnabled) {
-
-                
-        if (otrChatSession != null)
-        {
-            try {
-                
-                if (otrEnabled) {
-                    otrChatSession.startChatEncryption();
-                }
-                else
-                {
-                    otrChatSession.stopChatEncryption();    
-                }                 
-                
-             
-            } catch (NullPointerException e) {
-                Log.d(ImApp.LOG_TAG, "error starting or stopping chat", e);
-            }
-             catch (RemoteException e) {
-                Log.d(ImApp.LOG_TAG, "error getting remote activity", e);
-            }
-            
-            chatView.updateWarningView();
-        }
-    }
+   
 
     /*
     public void updateOtrMenuState() {
@@ -976,8 +951,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super(fm);
             Log.d(TAG, "onCreate");
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            mCursorObserver = new MyContentObserver();
-            mCursorChats.registerContentObserver(mCursorObserver);
+         
+            if (mCursorChats != null)
+            {
+                mCursorObserver = new MyContentObserver();
+                mCursorChats.registerContentObserver(mCursorObserver);
+            }
         }
         
         public void onDestroy() {
@@ -1008,7 +987,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public int getCount() {
-            return mCursorChats.getCount() + 1;
+            if (mCursorChats != null)
+                return mCursorChats.getCount() + 1;
+            else
+                return 0;
         }
 
         @Override
