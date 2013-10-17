@@ -165,6 +165,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
         mService.getLocalPresence().setStatus(mode);
         mService.getLocalPresence().setMsg(statusText);
+        
         try {
             mService.updatePresence(mService.getLocalPresence());
         } catch (XMPPException e) {
@@ -261,7 +262,9 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         setState(LOGGING_IN, null);
         
-        ipAddress = getMyAddress(TAG, true);
+        mServiceName = userName + '@' + domain;// + '/' + mResource;
+        
+        ipAddress = getMyAddress(mServiceName, true);
         if (ipAddress == null) {
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.WIFI_NOT_CONNECTED_ERROR,
                     "network connection is required");
@@ -271,10 +274,11 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         
         mUserPresence = new Presence(Presence.AVAILABLE, "", null, null,
                 Presence.CLIENT_TYPE_MOBILE);
-        
-        mServiceName = userName + '@' + ipAddress.getHostAddress();// + '/' + mResource;
                 
         LLPresence presence = new LLPresence(mServiceName);
+        presence.setNick(userName);
+        presence.setJID(mServiceName);
+        presence.setServiceName(mServiceName);
 
         mService = JmDNSService.create(presence, ipAddress);
         mService.addServiceStateListener(new LLServiceStateListener() {
@@ -347,6 +351,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                         rec.setTo(mUser.getAddress());
                         rec.setFrom(session.getParticipant().getAddress());
                         rec.setDateTime(new Date());
+
+                        rec.setType(Imps.MessageType.INCOMING);
                         session.onReceiveMessage(rec);
 
                         if (message.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
@@ -640,10 +646,11 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
             try {
                 
+               
                 if (!mContactListManager.getDefaultContactList().containsContact(contact))
-                {                   
-                     mContactListManager.addContactToListAsync(xaddress.getAddress(), mContactListManager.getDefaultContactList());                     
-                     notifyContactListUpdated(mContactListManager.getDefaultContactList(), ContactListListener.LIST_CONTACT_ADDED, contact);
+                {                                        
+                    mContactListManager.getDefaultContactList().addExistingContact(contact);
+                    notifyContactListUpdated(mContactListManager.getDefaultContactList(), ContactListListener.LIST_CONTACT_ADDED, contact);
                 }
                 
             } catch (ImException e) {
