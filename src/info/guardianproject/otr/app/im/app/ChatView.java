@@ -1358,20 +1358,9 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
-                
-                /*
-                if (!mOtrSwitchTouched)
-                {
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(false);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                }
-                */
-                
+                                
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
-
-                //    mOtrSwitch.setChecked(false);
 
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                     mComposeMessage.setHint(R.string.compose_hint);
@@ -1383,11 +1372,6 @@ public class ChatView extends LinearLayout {
                         mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
                     }
                     
-//                    ImageView imgSec = (ImageView) findViewById(R.id.composeSecureIcon);
-      //              imgSec.setImageResource(R.drawable.ic_menu_unencrypt);
-
-                //    mSendButton.setCompoundDrawablesWithIntrinsicBounds( getContext().getResources().getDrawable(R.drawable.ic_menu_unencrypt ), null, null, null );
-                    
                     mWarningText.setTextColor(Color.WHITE);
                     mStatusWarningView.setBackgroundResource(R.color.otr_red);
                     message = mContext.getString(R.string.otr_session_status_plaintext);
@@ -1398,12 +1382,9 @@ public class ChatView extends LinearLayout {
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
                     mComposeMessage.setHint(R.string.compose_hint_secure);
 
-                    if (!mOtrSwitchTouched)
-                    {                    
-                        mOtrSwitch.setOnCheckedChangeListener(null);
-                        mOtrSwitch.setChecked(true);
-                        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                    }
+                    mOtrSwitch.setOnCheckedChangeListener(null);
+                    mOtrSwitch.setChecked(true);
+                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
                     
                     try {
                         IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
