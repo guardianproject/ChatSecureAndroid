@@ -494,7 +494,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Force immediate logout
-    public synchronized void logout() {
+    public void logout() {
         if (mService != null) {
             mService.close();
             mService = null;
@@ -749,7 +749,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     public static void debug(String tag, String msg) {
-        Log.d(tag, msg);
+        LogCleaner.debug(tag, msg);
     }
 
     @Override
