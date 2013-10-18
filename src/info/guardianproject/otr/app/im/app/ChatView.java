@@ -1270,7 +1270,7 @@ public class ChatView extends LinearLayout {
         }
         try {
             if (getChatSession() != null) {
-                //getChatSession().setDataListener(null); //leave this un NULL'd so we can support background data transfers
+                getChatSession().setDataListener(null);
                 getChatSession().unregisterChatListener(mChatListener);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
