@@ -99,7 +99,9 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
     public void notifyDataSetChanged() {
         // Fragments may have moved.  Regenerate the fragment list.
         ArrayList<Fragment> old = mFragments;
+        ArrayList<Fragment.SavedState> oldState = mSavedState;
         mFragments = new ArrayList<Fragment>();
+        mSavedState = new ArrayList<Fragment.SavedState>();
         for (int i = 0 ; i < old.size() ; i++) {
             Fragment frag = old.get(i);
             if (frag != null) {
@@ -110,14 +112,19 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
                     position = i;
                 while (mFragments.size() <= position) {
                     mFragments.add(null);
+                    mSavedState.add(null);
                 }
                 mFragments.set(position, frag);
+                if (oldState.size() > i)
+                    mSavedState.set(position, oldState.get(i));
             }
         }
         
         // The list must never shrink because other methods depend on it
-        while (mFragments.size() < old.size())
+        while (mFragments.size() < old.size()) {
             mFragments.add(null);
+            mSavedState.add(null);
+        }
         super.notifyDataSetChanged();
     }
     
