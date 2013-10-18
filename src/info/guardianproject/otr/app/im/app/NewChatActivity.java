@@ -605,16 +605,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             startFilePicker();
             return true;
 
-        case R.id.menu_secure_call:
-            sendCallInvite ();
-            return true;
-
         case R.id.menu_view_profile:
-            //getChatView().viewProfile();
+            if (getCurrentChatView() != null)
+                getCurrentChatView().viewProfile();
             return true;
 
         case R.id.menu_end_conversation:
-            //getChatView().closeChatSession();
+            if (getCurrentChatView() != null)
+                getCurrentChatView().closeChatSession();
             return true;
          
       
@@ -1100,7 +1098,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         public ChatView getChatViewAt(int pos) {
             if (pos > 0)
-                return ((ChatViewFragment)getItem(pos)).getChatView();
+                return ((ChatViewFragment)getItemAt(pos)).getChatView();
+            
             throw new RuntimeException("could not get chat view at " + pos);
         }
     }
