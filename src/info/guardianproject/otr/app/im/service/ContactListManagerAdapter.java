@@ -587,7 +587,7 @@ public class ContactListManagerAdapter extends
             mRemoteContactListeners.finishBroadcast();
 
             if (mAllContactsLoaded && notificationText != null) {
-                mContext.showToast(notificationText, Toast.LENGTH_SHORT);
+           //     mContext.showToast(notificationText, Toast.LENGTH_SHORT);
             }
         }
 
