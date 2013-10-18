@@ -210,6 +210,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                 } else if (isConfirmationFieldEmpty() && !isPasswordFieldEmpty()) {
                     mBtnSkip.setVisibility(View.GONE);
                     mSlider.showConfirmationField();
+                    mBtnCreate.setText(R.string.lock_screen_confirm_passphrase);
                 }
                 else if (!newEqualsConfirmation()) {
                     showInequalityError();
