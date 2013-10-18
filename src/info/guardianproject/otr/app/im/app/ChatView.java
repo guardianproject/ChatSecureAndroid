@@ -910,6 +910,7 @@ public class ChatView extends LinearLayout {
     {
         Uri chatUri = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId);
         mActivity.getContentResolver().delete(chatUri,null,null);
+        
     }
     
     public void bindChat(long chatId) {
@@ -918,7 +919,6 @@ public class ChatView extends LinearLayout {
         
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         mCursor = mActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
-        
         
         if (!mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
@@ -1378,8 +1378,7 @@ public class ChatView extends LinearLayout {
                
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
-                    mComposeMessage.setHint(R.string.compose_hint_secure);
-
+               
                     mOtrSwitch.setOnCheckedChangeListener(null);
                     mOtrSwitch.setChecked(true);
                     mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
