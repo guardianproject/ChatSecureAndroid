@@ -680,10 +680,8 @@ public class ChatView extends LinearLayout {
 
             try
             {
-                emojiManager.addJsonDefinitions("emoji/luvo.json", "emoji/luvo", "png");
-                
                 emojiManager.addJsonDefinitions("emoji/phantom.json", "emoji/phantom", "png");
-             
+         
                 emojiManager.addJsonPlugins();
                 
             }
