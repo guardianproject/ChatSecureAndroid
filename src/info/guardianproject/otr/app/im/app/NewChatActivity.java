@@ -234,8 +234,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     protected void onResume() {     
         super.onResume();
         
-        resolveIntent(getIntent());
-
+        if (getIntent() != null)
+        {
+            resolveIntent(getIntent());
+            setIntent(null);
+        }
+        
         if (menu.isMenuShowing())
             menu.toggle();
         
@@ -533,7 +537,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,-1L);
                 
                 if (mContactList != null)
+                {
+                    mChatPager.setCurrentItem(0);
+                    mContactList.refreshSpinners();
                     mContactList.initAccount(this, mAccountId);
+                }
 
                
             }
@@ -949,9 +957,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            Log.d(TAG, "onCreate");
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-         
+            
             if (mCursorChats != null)
             {
                 mCursorObserver = new MyContentObserver();
@@ -960,7 +967,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
         
         public void onDestroy() {
-            Log.d(TAG, "onDestroy");
             mCursorChats.unregisterContentObserver(mCursorObserver);
             mCursorChats.close();
             mCursorChats = null;
@@ -968,6 +974,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void notifyDataSetChanged() {
+            
             
             if (mCursorChats != null)
             {
@@ -979,7 +986,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             mCursorChats.registerContentObserver(mCursorObserver);
-            
             
             super.notifyDataSetChanged();
         }
@@ -1232,6 +1238,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
          }
 
          
+        public void refreshSpinners ()
+        {
+            if (mProviderCursor != null && (!mProviderCursor.isClosed()))
+                mProviderCursor.close();
+            setupSpinners(mFilterView);
+        }
          
          @Override
         public void onAttach(Activity activity) {
