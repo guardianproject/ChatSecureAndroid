@@ -37,11 +37,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -104,6 +106,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
+        mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
         
         mHandler = new MyHandler(this);
@@ -111,6 +114,15 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
         if (!initProviderCursor()) {
             onDBLocked();
+        }
+        
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean themeDark = settings.getBoolean("themeDark", false);
+        String themebg = settings.getString("pref_background", null);
+        
+        if (themebg == null && (!themeDark))
+        {
+            getListView().setBackgroundColor(getResources().getColor(android.R.color.white));
         }
         
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
