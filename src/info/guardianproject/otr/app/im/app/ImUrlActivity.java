@@ -47,6 +47,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -508,29 +510,40 @@ public class ImUrlActivity extends ThemeableActivity {
         
     };
     
+    public String getRealPathFromURI(Uri contentUri, String type) {
+        
+        String[] proj = { MediaColumns.DATA };
+        
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
+    }
+    
     void openOtrInBand(final Uri data, final String type) {
         
-        String url = data.toString();
-        String localUrl;
-        if (url.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND)) {
-
-            try {
-                localUrl = URLDecoder.decode(url.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, ""), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        else
+        String localUrl = null;
+        
+        try
         {
-            try {
-                localUrl = URLDecoder.decode(url, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            localUrl = getRealPathFromURI(data, type);
         }
+        catch (Exception e)
+        {
+            LogCleaner.warn(ImApp.LOG_TAG, "unable to get path from URI");
+        }
+        
+        if (localUrl == null)
+            localUrl = data.toString();
+        
+        if (localUrl != null ) {
             
-        if (localUrl != null)
-        {         
+            if (localUrl.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND))
+                localUrl = localUrl.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, "");
+       
+          
             FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
             mSendUrl = info.path;
             mSendType = type != null ? type : info.type;
