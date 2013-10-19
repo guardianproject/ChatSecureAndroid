@@ -973,16 +973,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void notifyDataSetChanged() {
             
-            
             if (mCursorChats != null)
             {
                 mCursorChats.unregisterContentObserver(mCursorObserver);
                 if (!mCursorChats.isClosed())
                     mCursorChats.close();
                 
+                mCursorObserver = null;
+                
             }
             
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
+            mCursorObserver = new MyContentObserver();
             mCursorChats.registerContentObserver(mCursorObserver);
             
             super.notifyDataSetChanged();
