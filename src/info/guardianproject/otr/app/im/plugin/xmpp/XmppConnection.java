@@ -1684,7 +1684,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 XmppAddress groupAddress = new XmppAddress(generalGroupName); 
            
                 cl = new ContactList(groupAddress,generalGroupName, true, contacts, this);
-
                 
                 notifyContactListCreated(cl);
             }
@@ -1931,7 +1930,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 // If contact exists locally, don't create another copy
                 
-                if (!containsContact(contact))
+                if (!list.containsContact(contact))
                     notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
                 else
                     debug(TAG, "skip adding existing contact locally " + contact.getName());
