@@ -1100,7 +1100,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         public ChatView getChatViewAt(int pos) {
             if (pos > 0)
-                return ((ChatViewFragment)getItemAt(pos)).getChatView();
+            {
+                ChatViewFragment frag = ((ChatViewFragment)getItemAt(pos));
+            
+                if (frag != null)
+                    return frag.getChatView();
+            }
             
             throw new RuntimeException("could not get chat view at " + pos);
         }
