@@ -1677,7 +1677,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             
             if (cl == null)
-            {
+            {    
                 String generalGroupName = mContext.getString(R.string.buddies);
              
                 Collection<Contact> contacts = new ArrayList<Contact>();

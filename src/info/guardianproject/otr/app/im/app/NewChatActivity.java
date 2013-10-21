@@ -16,7 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -27,6 +26,7 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -1452,9 +1452,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                  //    mHandler.showServiceErrorAlert();
                  }
 
-                 //mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                   //                                                  : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-                 Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+                 QueryMap settingMap = new Imps.ProviderSettings.QueryMap(activity.getContentResolver(), false, null);
+                 
+                 Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                                     : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                                                                
+                 settingMap.close();
+                 
+                 Uri.Builder builder = baseUri.buildUpon();
                  ContentUris.appendId(builder, providerId);
                  ContentUris.appendId(builder, accountId);
                  mFilterView.doFilter(builder.build(), null);
