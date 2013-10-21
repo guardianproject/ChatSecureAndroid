@@ -2145,8 +2145,9 @@ public class ChatView extends LinearLayout {
                     
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
     
-                    builder.setTitle("Incoming File");
-                    builder.setMessage(transferFrom + " wants to send you the file '" + sanitizedPath + "'. Accept transfer?");
+                    builder.setTitle(mContext.getString(R.string.file_transfer));
+                    builder.setMessage(transferFrom + ' ' + mContext.getString(R.string.wants_to_send_you_the_file) 
+                    + " '" + sanitizedPath + "'. " + mContext.getString(R.string.accept_transfer_));
     
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
     
@@ -2187,16 +2188,18 @@ public class ChatView extends LinearLayout {
                                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder = new NotificationCompat.Builder(mContext);
                     
-                        mBuilder.setContentTitle("ChatSecure Transfer");
-                        mBuilder.setTicker("Transfer in progress: " + progressText);
+                        mBuilder.setContentTitle(mContext.getString(R.string.file_transfer));
+                        mBuilder.setTicker(mContext.getString(R.string.transfer_in_progress) + ": " + progressText);
                    
-                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);                    
+                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);                   
+                        
+                        mBuilder.setContentIntent(PendingIntent.getActivity(mActivity,0,new Intent(mContext,NewChatActivity.class),0));
                         
                     }
                     
                     
                    
-                    mBuilder.setContentText("Transfer in progress: " + progressText);
+                    mBuilder.setContentText(mContext.getString(R.string.transfer_in_progress) + ": " + progressText);
                     mBuilder.setProgress(100, progressValue, false);
                     
                     
@@ -2213,7 +2216,7 @@ public class ChatView extends LinearLayout {
                         mNotifyManager =
                                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder = new NotificationCompat.Builder(mContext);
-                        mBuilder.setContentTitle("ChatSecure Transfer");
+                        mBuilder.setContentTitle(mContext.getString(R.string.file_transfer));
                    
                         mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);  
                         
@@ -2257,7 +2260,7 @@ public class ChatView extends LinearLayout {
                     mBuilder.setContentIntent(contentIntent);
                     mBuilder.setLights(0xff00ff00, 300, 1000);
                     
-                    String status = "Transfer Complete: " + sanitizedPath;
+                    String status = mContext.getString(R.string.transfer_complete) + ": " + sanitizedPath;
                     
                     mBuilder.setContentText(status)                    
                     // Removes the progress bar
