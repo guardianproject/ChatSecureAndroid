@@ -120,18 +120,20 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         boolean themeDark = settings.getBoolean("themeDark", false);
         String themebg = settings.getString("pref_background", null);
         
-        if (themebg == null && (!themeDark))
-        {
-            getListView().setBackgroundColor(getResources().getColor(android.R.color.white));
-        }
-        
         ViewGroup godfatherView = (ViewGroup) this.getWindow().getDecorView();
      
         View emptyView = getLayoutInflater().inflate(R.layout.empty_account_view, godfatherView, false);
-        emptyView.setVisibility(View.GONE);
+   //     emptyView.setVisibility(View.GONE);
         ((ViewGroup)getListView().getParent()).addView(emptyView);
         
         getListView().setEmptyView(emptyView);
+        
+        if (themebg == null && (!themeDark))
+        {
+            getListView().setBackgroundColor(getResources().getColor(android.R.color.white));
+            emptyView.setBackgroundColor(getResources().getColor(android.R.color.white));
+        }
+        
         emptyView.setOnClickListener(new OnClickListener()
         {
 

@@ -840,5 +840,15 @@
     <string name="fingerprint_for_">"Fingerprint for "</string>
     
     <string name="please_enable_chat_encryption_to_share_files">Please enable chat encryption to share files</string>
+    
+    <string name="file_transfer">File Transfer</string>
+    
+    <string name="transfer_complete">Transfer Complete</string>
+    
+    <string name="transfer_in_progress">Transfer in progress</string>
+    
+    <string name="accept_transfer_">Accept transfer?</string>
+    
+    <string name="wants_to_send_you_the_file">wants to send you the file</string>
 </resources>
 
