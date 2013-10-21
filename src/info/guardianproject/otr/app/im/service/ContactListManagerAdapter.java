@@ -1021,13 +1021,26 @@ public class ContactListManagerAdapter extends
     }
 
     void deleteContactFromDataBase(Contact contact, ContactList list) {
-        String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
-        long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-        String username = contact.getAddress().getAddress();
-        String[] selectionArgs = { username, Long.toString(listId) };
 
-        mResolver.delete(mContactUrl, selection, selectionArgs);
+        String username = contact.getAddress().getBareAddress();
 
+        //if list is provided, then delete from one list
+        if (list != null)
+        {
+            String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
+            long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
+            String[] selectionArgs = { username, Long.toString(listId) };
+            mResolver.delete(mContactUrl, selection, selectionArgs);
+
+        }
+        else //if it is null, delete from all
+        {
+            String selection = Imps.Contacts.USERNAME + "=?";
+            String[] selectionArgs = { username };
+            mResolver.delete(mContactUrl, selection, selectionArgs);
+            
+        }
+        
         // clear the history message if the contact doesn't exist in any list
         // anymore.
         if (mAdaptee.getContact(contact.getAddress()) == null) {
