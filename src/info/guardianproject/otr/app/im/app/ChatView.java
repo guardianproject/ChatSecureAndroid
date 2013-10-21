@@ -910,6 +910,7 @@ public class ChatView extends LinearLayout {
     {
         Uri chatUri = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId);
         mActivity.getContentResolver().delete(chatUri,null,null);
+        
     }
     
     public void bindChat(long chatId) {
@@ -918,7 +919,6 @@ public class ChatView extends LinearLayout {
         
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         mCursor = mActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
-        
         
         if (!mCursor.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
@@ -930,6 +930,10 @@ public class ChatView extends LinearLayout {
             updateContactInfo();
             
             mCurrentChatSession = getChatSession();
+            
+            if (mCurrentChatSession == null)
+                mCurrentChatSession = createChatSession();
+            
             if (mCurrentChatSession != null) {
                 isServiceUp = true;
                 
@@ -1153,7 +1157,30 @@ public class ChatView extends LinearLayout {
         return mLastChatId;
     }
 
+    private IChatSession createChatSession() {
+        
+        IImConnection conn = mApp.getConnection(mProviderId);
 
+        if (conn != null) {
+            try {
+                IChatSessionManager sessionMgr = conn.getChatSessionManager();
+                if (sessionMgr != null) {
+                   
+                    IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
+                  
+                    return session;
+                    
+                }
+            } catch (RemoteException e) {
+                
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+            }
+        }
+        
+        return null;
+    }
+ 
     private IChatSession getChatSession() {
         
         IImConnection conn = mApp.getConnection(mProviderId);
@@ -1165,8 +1192,8 @@ public class ChatView extends LinearLayout {
                    
                         IChatSession session = sessionMgr.getChatSession(Address.stripResource(mRemoteAddress));
                         
-                        if (session == null)
-                            session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
+                     //   if (session == null)
+                       //     session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
                       
                         return session;
                     
@@ -1309,13 +1336,14 @@ public class ChatView extends LinearLayout {
 
         try {
             IImConnection conn = mApp.getConnection(mProviderId);
-            isConnected = (conn == null) ? false : conn.getState() != ImConnection.SUSPENDED;
+            isConnected = (conn == null) ? false : conn.getState() == ImConnection.LOGGED_IN;
            
         } catch (RemoteException e) {
            
             isConnected = false;
         }
 
+        
         if (isConnected && mCurrentChatSession != null) {
 
             try {
@@ -1378,8 +1406,7 @@ public class ChatView extends LinearLayout {
                
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
-                    mComposeMessage.setHint(R.string.compose_hint_secure);
-
+               
                     mOtrSwitch.setOnCheckedChangeListener(null);
                     mOtrSwitch.setChecked(true);
                     mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
@@ -1457,7 +1484,7 @@ public class ChatView extends LinearLayout {
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
-            mWarningText.setBackgroundColor(Color.DKGRAY);
+            mStatusWarningView.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
             
         }
@@ -2260,6 +2287,7 @@ public class ChatView extends LinearLayout {
             bindChat(mLastChatId);
             startListening();
         }
+        
     }
 
 }
