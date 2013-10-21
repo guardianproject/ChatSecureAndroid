@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="12.6.4"
-     android:versionCode="89"
+     android:versionName="12.6.5"
+     android:versionCode="90"
      android:installLocation="auto"     
      >     
     <supports-screens
