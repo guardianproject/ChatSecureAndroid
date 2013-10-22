@@ -1065,7 +1065,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             
             mConfig.setCustomSSLContext(sslContext);
-            mConfig.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);                
+            
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+                mConfig.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);   
+            }              
             mConfig.setCallbackHandler(this);
 
         } else {

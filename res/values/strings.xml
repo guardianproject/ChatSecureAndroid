@@ -781,10 +781,12 @@
     
     <string name="lock_screen_open">Open</string>
     <string name="title_activity_lock_screen">ChatSecure Locked</string>
-    <string name="lock_screen_create_passphrase">Set New Password</string>
-	<string name="lock_screen_passphrase_hint">Enter passphrase</string>
-	<string name="lock_screen_passphrase_not_set_enter">Enter new password for app encryption</string>
-	<string name="lock_screen_passphrase_not_set_confirm">Confirm new password</string>
+    <string name="lock_screen_create_passphrase">Set Password</string>
+    <string name="lock_screen_confirm_passphrase">Confirm Password</string>
+    
+	<string name="lock_screen_passphrase_hint">Password</string>
+	<string name="lock_screen_passphrase_not_set_enter">New Password</string>
+	<string name="lock_screen_passphrase_not_set_confirm">Confirm New Password</string>
 	<string name="lock_screen_passphrases_not_matching">Password did not match, please try again</string>
 	
 	<string name="lock_screen_skip">I\'m Feeling Lazy (No Password!)</string>
