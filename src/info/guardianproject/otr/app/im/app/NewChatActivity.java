@@ -457,7 +457,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (data != null)
             {
-                if (data.getScheme().equals("immu"))
+                if (data.getScheme() != null && data.getScheme().equals("immu"))
                 {
                     String user = data.getUserInfo();
                     String host = data.getHost();
