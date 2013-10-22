@@ -285,7 +285,6 @@
     <!-- On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode -->
     <string name="compose_hint">Send a message</string> 
-    <string name="compose_hint_secure">Send a secure message</string> 
        
     <!-- Inline status message in the chat history list, when receiving a "online" status update. -->
     <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> is online</string>
@@ -841,5 +840,15 @@
     <string name="fingerprint_for_">"Fingerprint for "</string>
     
     <string name="please_enable_chat_encryption_to_share_files">Please enable chat encryption to share files</string>
+    
+    <string name="file_transfer">File Transfer</string>
+    
+    <string name="transfer_complete">Transfer Complete</string>
+    
+    <string name="transfer_in_progress">Transfer in progress</string>
+    
+    <string name="accept_transfer_">Accept transfer?</string>
+    
+    <string name="wants_to_send_you_the_file">wants to send you the file</string>
 </resources>
 

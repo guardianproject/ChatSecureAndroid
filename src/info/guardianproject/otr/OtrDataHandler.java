@@ -7,6 +7,7 @@ import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.util.Debug;
+import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 
 import java.io.ByteArrayInputStream;
@@ -189,18 +190,19 @@ public class OtrDataHandler implements DataHandler {
             // TODO ask user to confirm we want this
             boolean accept = false;
             
-            try {
-                accept = mDataListener.onTransferRequested(requestThem.getAddress(),requestUs.getAddress(),transfer.url);
+            if (mDataListener != null)
+            {
+                try {
+                    accept = mDataListener.onTransferRequested(requestThem.getAddress(),requestUs.getAddress(),transfer.url);
+                    
+                    if (accept)
+                        transfer.perform();
+                    
+                } catch (RemoteException e) {
+                    LogCleaner.error(ImApp.LOG_TAG, "error approving OTRDATA transfer request", e);
+                }
                 
-                if (accept)
-                    transfer.perform();
-                
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-            
-            
             
         } else if (requestMethod.equals("GET") && url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
             debug("incoming GET " + url);
@@ -245,19 +247,22 @@ public class OtrDataHandler implements DataHandler {
                 FileInputStream is = new FileInputStream(fileGet);                
                 readIntoByteBuffer(byteBuffer, is, start, end);
                 
-                float percent = ((float)end) / ((float)fileGet.length());
-                
-                if (percent < .98f)
+                if (mDataListener != null)
                 {
-                    mDataListener.onTransferProgress(requestThem.getAddress(), offer.getUri(), 
-                        percent);
-                }
-                else
-                {
-                    String mimeType = null;
-                    if (req.getFirstHeader("Mime-Type") != null)
-                        mimeType = req.getFirstHeader("Mime-Type").getValue();                    
-                    mDataListener.onTransferComplete(requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
+                    float percent = ((float)end) / ((float)fileGet.length());
+                    
+                    if (percent < .98f)
+                    {
+                        mDataListener.onTransferProgress(requestThem.getAddress(), offer.getUri(), 
+                            percent);
+                    }
+                    else
+                    {
+                        String mimeType = null;
+                        if (req.getFirstHeader("Mime-Type") != null)
+                            mimeType = req.getFirstHeader("Mime-Type").getValue();                    
+                        mDataListener.onTransferComplete(requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
+                    }
                 }
                 
             } catch (UnsupportedEncodingException e) {
@@ -392,20 +397,23 @@ public class OtrDataHandler implements DataHandler {
 
                         File fileShare = writeDataToStorage(transfer.url, data);
                         
-                        mDataListener.onTransferComplete(
+                        if (mDataListener != null)
+                            mDataListener.onTransferComplete(
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
                                 fileShare.getCanonicalPath());
                     } else {
-                        mDataListener.onTransferFailed(
+                        if (mDataListener != null)
+                            mDataListener.onTransferFailed(
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 "checksum");
                         Log.e(TAG, "Wrong checksum for file len= " + data.length + " sha1=" + sha1sum(data));
                     }
                 } else {
-                    mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getAddress(), transfer.url, 
+                    if (mDataListener != null)
+                        mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getAddress(), transfer.url, 
                             ((float)transfer.chunksReceived) / transfer.chunks);
                     transfer.perform();
                     debug("Progress " + transfer.chunksReceived + " / " + transfer.chunks);
