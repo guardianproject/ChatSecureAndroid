@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -314,7 +315,7 @@ public class ContactListFilterView extends LinearLayout {
         StringBuilder buf = new StringBuilder();
 
         if (constraint != null) {
-
+            
             buf.append(Imps.Contacts.NICKNAME);
             buf.append(" LIKE ");
             DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");

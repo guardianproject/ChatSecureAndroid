@@ -326,7 +326,7 @@ public class ContactListManagerAdapter extends
 
     private long insertTemporary(Contact c) {
         synchronized (mTemporaryContacts) {
-            mTemporaryContacts.put(c.getAddress().getAddress(), c);
+            mTemporaryContacts.put(c.getAddress().getBareAddress(), c);
         }
         Uri uri = insertContactContent(c, FAKE_TEMPORARY_LIST_ID);
         return ContentUris.parseId(uri);
@@ -487,11 +487,14 @@ public class ContactListManagerAdapter extends
 
             case LIST_CONTACT_ADDED:
                 long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-                String contactAddress = contact.getAddress().getAddress();
-                if (isTemporary(contactAddress)) {
-                    moveTemporaryContactToList(contactAddress, listId);
+                if (isTemporary(contact.getAddress().getBareAddress())) {
+                    moveTemporaryContactToList(contact.getAddress().getBareAddress(), listId);
                 } else {
-                    insertContactContent(contact, listId);
+                    
+                    boolean exists = updateContact(contact, listId);
+                    
+                    if (!exists)
+                           insertContactContent(contact, listId);
                 }
                 notificationText = mContext.getResources().getString(R.string.add_contact_success,
                         contact.getName());
@@ -807,10 +810,16 @@ public class ContactListManagerAdapter extends
         return uri;
     }
 
-    void updateContact(String username, ContentValues values) {
+    boolean updateContact(Contact contact, long listId)
+    {
+        ContentValues values = getContactContentValues(contact, listId);
+        return updateContact(contact.getAddress().getBareAddress(),values);
+        
+    }
+    boolean updateContact(String username, ContentValues values) {
         String selection = Imps.Contacts.USERNAME + "=?";
         String[] selectionArgs = { username };
-        mResolver.update(mContactUrl, values, selection, selectionArgs);
+        return (mResolver.update(mContactUrl, values, selection, selectionArgs)) > 0;
     }
 
     void updatePresenceContent(Contact[] contacts) {
@@ -956,11 +965,13 @@ public class ContactListManagerAdapter extends
         ArrayList<String> nicknames = new ArrayList<String>();
         ArrayList<String> contactTypeArray = new ArrayList<String>();
         for (Contact c : contacts) {
+            
+            if (updateContact(c,listId))
+                continue; //contact existed and was updated to this list
+                
             String username = c.getAddress().getAddress();
             String nickname = c.getName();
             
-            if (existingUsernames.contains(username))
-                continue; // FIXME update instead of skipping
             int type = Imps.Contacts.TYPE_NORMAL;
             if (isTemporary(username)) {
                 type = Imps.Contacts.TYPE_TEMPORARY;
@@ -1010,13 +1021,26 @@ public class ContactListManagerAdapter extends
     }
 
     void deleteContactFromDataBase(Contact contact, ContactList list) {
-        String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
-        long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-        String username = contact.getAddress().getAddress();
-        String[] selectionArgs = { username, Long.toString(listId) };
 
-        mResolver.delete(mContactUrl, selection, selectionArgs);
+        String username = contact.getAddress().getBareAddress();
 
+        //if list is provided, then delete from one list
+        if (list != null)
+        {
+            String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
+            long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
+            String[] selectionArgs = { username, Long.toString(listId) };
+            mResolver.delete(mContactUrl, selection, selectionArgs);
+
+        }
+        else //if it is null, delete from all
+        {
+            String selection = Imps.Contacts.USERNAME + "=?";
+            String[] selectionArgs = { username };
+            mResolver.delete(mContactUrl, selection, selectionArgs);
+            
+        }
+        
         // clear the history message if the contact doesn't exist in any list
         // anymore.
         if (mAdaptee.getContact(contact.getAddress()) == null) {
@@ -1033,12 +1057,13 @@ public class ContactListManagerAdapter extends
                 contact.getPresence());
 
         mResolver.insert(Imps.Presence.CONTENT_URI, presenceValues);
-
+   
+        
         return uri;
     }
 
     private ContentValues getContactContentValues(Contact contact, long listId) {
-        final String username = contact.getAddress().getAddress();
+        final String username = contact.getAddress().getBareAddress();
         final String nickname = contact.getName();
         int type = Imps.Contacts.TYPE_NORMAL;
         if (isTemporary(username)) {
