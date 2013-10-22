@@ -297,7 +297,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
                 startActivity(intent);
-                
+                finish();//we should clsoe this activity when we go to AccountList, in case we sign out
             }
             
             
