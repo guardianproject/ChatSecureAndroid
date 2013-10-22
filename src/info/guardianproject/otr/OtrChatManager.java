@@ -160,7 +160,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      * @param remoteUserId i.e. the account that this user is talking to
      */
     public SessionID startSession(String localUserId, String remoteUserId) {
-
         try {
             SessionID sessionId = getSessionId(localUserId, remoteUserId);
             mOtrEngine.startSession(sessionId);
