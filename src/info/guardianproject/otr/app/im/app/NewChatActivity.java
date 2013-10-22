@@ -965,9 +965,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
         
         public void onDestroy() {
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-            mCursorChats = null;
+            if (mCursorChats != null)
+            {
+                mCursorChats.unregisterContentObserver(mCursorObserver);
+                mCursorChats.close();
+                mCursorChats = null;
+            }
         }
 
         @Override
