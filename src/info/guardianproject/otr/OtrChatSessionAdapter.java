@@ -1,6 +1,8 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.IOtrChatSession.Stub;
+import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.util.LogCleaner;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
@@ -24,14 +26,37 @@ public class OtrChatSessionAdapter extends Stub {
 
     public void startChatEncryption() throws RemoteException {
 
-        _chatManager.startSession(_localUser, _remoteUser);
+        try
+        {
+            if (_chatManager != null)
+                _chatManager.startSession(_localUser, _remoteUser);
+        }
+        catch (OtrException oe)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "otr error starting chat encryption", oe);
+        }
+        catch (NullPointerException npe)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "NPE starting chat encryption", npe);
+        }
     }
 
     @Override
     public void stopChatEncryption() throws RemoteException {
 
-        _chatManager.endSession(_localUser, _remoteUser);
-
+        try
+        {
+            if (_chatManager != null)
+                _chatManager.endSession(_localUser, _remoteUser);
+        }
+        catch (OtrException oe)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "otr error stopping chat encryption", oe);
+        }
+        catch (NullPointerException npe)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "NPE stopping chat encryption", npe);
+        }
     }
 
     @Override

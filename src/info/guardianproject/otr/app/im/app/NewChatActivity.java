@@ -297,7 +297,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
                 startActivity(intent);
-                
+                finish();//we should clsoe this activity when we go to AccountList, in case we sign out
             }
             
             
@@ -457,7 +457,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (data != null)
             {
-                if (data.getScheme().equals("immu"))
+                if (data.getScheme() != null && data.getScheme().equals("immu"))
                 {
                     String user = data.getUserInfo();
                     String host = data.getHost();
@@ -606,8 +606,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             return true;
 
         case R.id.menu_view_profile:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().viewProfile();
+            ChatView view = getCurrentChatView();
+            if (view != null)
+                view.viewProfile();
             return true;
 
         case R.id.menu_end_conversation:
@@ -965,9 +966,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
         
         public void onDestroy() {
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-            mCursorChats = null;
+            if (mCursorChats != null)
+            {
+                mCursorChats.unregisterContentObserver(mCursorObserver);
+                mCursorChats.close();
+                mCursorChats = null;
+            }
         }
 
         @Override
@@ -1104,7 +1108,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return frag.getChatView();
             }
             
-            throw new RuntimeException("could not get chat view at " + pos);
+            return null; //let's just return null here, and not do anything, instead of crashing the app
+          //  throw new RuntimeException("could not get chat view at " + pos);
         }
     }
     

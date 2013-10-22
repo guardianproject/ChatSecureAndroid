@@ -159,32 +159,21 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      * @param localUserId i.e. the account of the user of this phone
      * @param remoteUserId i.e. the account that this user is talking to
      */
-    public SessionID startSession(String localUserId, String remoteUserId) {
+    public SessionID startSession(String localUserId, String remoteUserId) throws OtrException {
 
-        try {
-            SessionID sessionId = getSessionId(localUserId, remoteUserId);
-            mOtrEngine.startSession(sessionId);
+        SessionID sessionId = getSessionId(localUserId, remoteUserId);
+        mOtrEngine.startSession(sessionId);
 
-            return sessionId;
+        return sessionId;
 
-        } catch (OtrException e) {
-            OtrDebugLogger.log("startSession", e);
-
-        }
-
-        return null;
     }
 
-    public void endSession(String localUserId, String remoteUserId) {
+    public void endSession(String localUserId, String remoteUserId) throws OtrException {
 
-        try {
-            SessionID sessionId = getSessionId(localUserId, remoteUserId);
+        SessionID sessionId = getSessionId(localUserId, remoteUserId);
 
-            mOtrEngine.endSession(sessionId);
+        mOtrEngine.endSession(sessionId);
 
-        } catch (OtrException e) {
-            OtrDebugLogger.log("endSession", e);
-        }
     }
 
     public void status(String localUserId, String remoteUserId) {

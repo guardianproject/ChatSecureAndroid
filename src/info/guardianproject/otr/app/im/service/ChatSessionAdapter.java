@@ -821,6 +821,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     public void setDataListener(IDataListener dataListener) throws RemoteException {
         
         mDataListener = dataListener;
-        mDataHandler.setDataListener(mDataListener);
+        
+        if (mDataHandler != null) //could be not init or set yet
+            mDataHandler.setDataListener(mDataListener);
     }
 }
