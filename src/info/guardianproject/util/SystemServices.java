@@ -101,7 +101,7 @@ public class SystemServices {
     
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
-        if (uri.getScheme().equals("file")) {
+        if (uri.getScheme() != null && uri.getScheme().equals("file")) {
             info.path = uri.getPath();
             return info;
         }
