@@ -606,8 +606,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             return true;
 
         case R.id.menu_view_profile:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().viewProfile();
+            ChatView view = getCurrentChatView();
+            if (view != null)
+                view.viewProfile();
             return true;
 
         case R.id.menu_end_conversation:
@@ -1107,7 +1108,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return frag.getChatView();
             }
             
-            throw new RuntimeException("could not get chat view at " + pos);
+            return null; //let's just return null here, and not do anything, instead of crashing the app
+          //  throw new RuntimeException("could not get chat view at " + pos);
         }
     }
     
