@@ -43,6 +43,7 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -711,8 +712,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
     
     public void onTaskRemoved(Intent rootIntent) {
+        Debug.recordTrail(this, "lastSwipe", new Date());
         Intent intent = new Intent(this, DummyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

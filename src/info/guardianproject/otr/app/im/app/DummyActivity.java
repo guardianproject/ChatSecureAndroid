@@ -16,16 +16,34 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Debug;
+import android.util.Log;
 
 public class DummyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Debug.waitForDebugger();
+        Log.w(ImApp.LOG_TAG, "DummyActivity launched by swipe");
         super.onCreate(savedInstanceState);
         ((ImApp)getApplication()).maybeInit(this);
-        finish();
+
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(R.string.im_label).setMessage(R.string.swipe_alert)
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        })
+        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
+            }
+        })
+        .show();
     }
 }
