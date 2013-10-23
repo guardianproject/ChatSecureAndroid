@@ -19,6 +19,22 @@
 
 <resources>
 
+    
+    
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" >
+    
+         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+         <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
+         
+        </style>
+    
+        <style name="AppThemeDark" parent="Theme.Sherlock" >
+             <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+        
+             <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
+             </style>
+    
+    
     <style name="Theme.Chatsecure" parent="@style/Theme.Sherlock.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_chatsecure</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Chatsecure</item>

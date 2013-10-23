@@ -270,6 +270,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void initSideBar ()
     {
+        
         menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);        
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
@@ -280,6 +281,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
      
         menu.setMenu(R.layout.fragment_drawer);
+        
+        this.getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         
         Button btnDrawerAccount = (Button) findViewById(R.id.btnDrawerAccount);
         Button btnDrawerSettings = (Button) findViewById(R.id.btnDrawerSettings);
@@ -349,6 +352,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                 if (menu.isMenuShowing())
                     menu.toggle();
+                
             }
             
         });
@@ -658,7 +662,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
       
 
         case android.R.id.home:
-            finish();// close this view and return to account list
+            menu.toggle();
             return true;
             
         case R.id.menu_view_accounts:
