@@ -53,7 +53,6 @@ import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -70,7 +69,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -88,10 +86,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private static final int EVENT_SHOW_TOAST = 100;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
     
-    // Our heartbeat interval in seconds.
-    // The user controlled preference heartbeat interval is in these units (i.e. minutes).
-    private static final long HEARTBEAT_INTERVAL = 1000 * 60;
-
     private StatusBarNotifier mStatusBarNotifier;
     private Handler mServiceHandler;
     NetworkConnectivityListener mNetworkConnectivityListener;
@@ -109,12 +103,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     public long mHeartbeatInterval;
-    private PendingIntent pendingIntent;
     private WakeLock mWakeLock;
 
-    private static final String TAG = "Gibberbot.ImService";
-    private static final String HEARTBEAT_EVENT = "info.guardianproject.otr.app.im.SERVICE.HEARTBEAT";
-;
+    private static final String TAG = "GB.ImService";
 
     public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
@@ -192,8 +183,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "IM_WAKELOCK");
-        this.pendingIntent = PendingIntent.getService(this, 0, new Intent(HEARTBEAT_EVENT, null,
-                this, RemoteImService.class), 0);
 
         // Clear all account statii to logged-out, since we just got started and we don't want
         // leftovers from any previous crash.
@@ -223,15 +212,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mNeedCheckAutoLogin = true;
 
         startForegroundCompat();
-        startHeartbeat(HEARTBEAT_INTERVAL);
+        HeartbeatService.startBeating(getApplicationContext());
     }
     
-    void startHeartbeat(long interval) {
-        AlarmManager alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, pendingIntent);
-    }
-
     private void startForegroundCompat() {
         Notification notification = new Notification(R.drawable.notify_chatsecure, getString(R.string.app_name),
                 System.currentTimeMillis());
@@ -247,7 +230,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         startForeground(1000, notification);
     }
 
-    public long sendHeartbeat() {
+    public void sendHeartbeat() {
         Debug.onHeartbeat();
         try {
             if (mNeedCheckAutoLogin
@@ -264,7 +247,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 conn.sendHeartbeat();
             }
         } finally {
-            return HEARTBEAT_INTERVAL;
+            return;
         }
     }
 
@@ -285,13 +268,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        if (intent != null && HEARTBEAT_EVENT.equals(intent.getAction())) {
+        if (intent != null && HeartbeatService.HEARTBEAT_ACTION.equals(intent.getAction())) {
             Log.d(TAG, "HEARTBEAT");
             try {
                 mWakeLock.acquire();
-                long interval = sendHeartbeat();
-                if (interval > 0)
-                    startHeartbeat(interval);
+                sendHeartbeat();
             } finally {
                 mWakeLock.release();
             }
@@ -422,6 +403,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public void onDestroy() {
+        HeartbeatService.stopBeating(getApplicationContext());
         
         Log.w(TAG, "ImService stopped.");
         for (ImConnectionAdapter conn : mConnections) {

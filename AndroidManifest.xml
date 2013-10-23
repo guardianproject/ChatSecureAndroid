@@ -156,7 +156,8 @@ android:anyDensity="true"
                 <action android:name="info.guardianproject.otr.app.im.SERVICE" />
             </intent-filter>
         </service>
-
+        <service android:name=".service.HeartbeatService" android:exported="false" />
+        
         <provider
             android:name=".provider.ImpsProvider"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
