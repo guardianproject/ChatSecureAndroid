@@ -283,6 +283,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             Log.d(TAG, "HEARTBEAT");
             long interval = sendHeartbeat();
             startHeartbeat(interval);
+            return;
         }
 
         if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
