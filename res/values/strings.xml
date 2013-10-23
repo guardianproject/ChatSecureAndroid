@@ -821,6 +821,8 @@
     
     <string name="buddies">Buddies</string>
     
+    <string name="contacts">Contacts</string>
+    
     <string name="select_domain_new_account">Choose a domain</string>
     
     <string name="otr_keysync_warning_message">Please copy the \'otr_keystore.ofcaes\' file from the desktop OtrFileConverter tool to the root directory of your device storage</string>

@@ -1122,7 +1122,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
            
             if (position == 0)
             {
-                return "Contacts";
+                return getString(R.string.contacts);
             }
             else
             {
