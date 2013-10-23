@@ -271,7 +271,7 @@ public class ContactListFilterView extends LinearLayout {
 
     
     public void doFilter(Uri uri, String filterString) {
-        if (!uri.equals(mUri)) {
+        if (uri != null && !uri.equals(mUri)) {
             mUri = uri;
 
             if (mContactAdapter != null && mContactAdapter.getCursor() != null)

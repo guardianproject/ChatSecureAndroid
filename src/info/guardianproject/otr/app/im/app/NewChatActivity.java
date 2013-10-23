@@ -36,9 +36,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -47,7 +47,6 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -80,7 +79,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.actionbarsherlock.widget.SearchView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -581,9 +580,43 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        
+        
         MenuInflater inflater = this.getSherlock().getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        if (null != searchView )
+        {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);   
+        }
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() 
+        {
+            public boolean onQueryTextChange(String newText) 
+            {
+                mContactList.filterContacts(newText);
+                
+                if (mChatPager.getCurrentItem() != 0)
+                    mChatPager.setCurrentItem(0);
+                
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) 
+            {
+                mContactList.filterContacts(query);
+                
+                if (mChatPager.getCurrentItem() != 0)
+                    mChatPager.setCurrentItem(0);
+                
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(queryTextListener);
+        
         return true;
     }
 
@@ -1472,6 +1505,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                  mFilterView.doFilter(builder.build(), null);
              }        
              
+             
          }
 
         @Override
@@ -1481,6 +1515,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             activity.startChat(c);
             
+        }
+        
+        public void filterContacts (String query)
+        {
+            mFilterView.doFilter(query);
         }
         
         public void showProfile (Cursor c)

@@ -51,10 +51,15 @@
      <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
         android:icon="@drawable/ic_menu_settings"
-         android:showAsAction="always"
+         android:showAsAction="never"
          />
-        
 
+     <item
+    android:id="@+id/menu_search"
+    android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+    android:icon="@drawable/ic_menu_search"
+    android:showAsAction="ifRoom|collapseActionView"
+    android:title="Search"/>
 <!--
 
     <item android:id="@+id/menu_block_contact"
@@ -63,76 +68,5 @@
     <item android:id="@+id/menu_invite_contact"
         android:title="@string/menu_invite_contact" />
  -->
-    <item
-        android:id="@+id/menu_prev_chat"
-        android:alphabeticShortcut="j"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_next_chat"
-        android:alphabeticShortcut="k"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_0"
-        android:alphabeticShortcut="0"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_1"
-        android:alphabeticShortcut="1"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_2"
-        android:alphabeticShortcut="2"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_3"
-        android:alphabeticShortcut="3"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_4"
-        android:alphabeticShortcut="4"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_5"
-        android:alphabeticShortcut="5"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_6"
-        android:alphabeticShortcut="6"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_7"
-        android:alphabeticShortcut="7"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_8"
-        android:alphabeticShortcut="8"
-        android:visible="false"
-        android:enabled="true" />
-
-    <item
-        android:id="@+id/menu_quick_switch_9"
-        android:alphabeticShortcut="9"
-        android:visible="false"
-        android:enabled="true" />
-
+  
 </menu>
