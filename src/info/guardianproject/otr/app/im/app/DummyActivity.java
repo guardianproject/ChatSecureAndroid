@@ -35,7 +35,6 @@ public class DummyActivity extends Activity {
         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
             }
         })
         .setOnDismissListener(new DialogInterface.OnDismissListener() {
