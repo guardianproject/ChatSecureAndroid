@@ -22,7 +22,6 @@ import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -109,7 +108,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         else
             connectToCacheWord ();
 
-        checkForCrashes();
+        mApp.checkForCrashes(this);
         
         checkForUpdates();
         
@@ -560,12 +559,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     }
     
 
-    private void checkForCrashes() {
-        CrashManager.register(this, ImApp.HOCKEY_APP_ID);
-      }
-
-      private void checkForUpdates() {
+    private void checkForUpdates() {
         // Remove this for store builds!
         UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
-      }
+    }
 }

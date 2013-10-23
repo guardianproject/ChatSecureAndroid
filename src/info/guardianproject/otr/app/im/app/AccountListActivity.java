@@ -26,8 +26,6 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.List;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -180,7 +178,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
         
         mHandler.registerForBroadcastEvents();
         
-        checkForCrashes();
+        mApp.checkForCrashes(this);
         
     }
     
@@ -815,14 +813,4 @@ private Handler mHandlerGoogleAuth = new Handler ()
         refreshAccountState();
         return true;
     }
-    
-    private void checkForCrashes() {
-        CrashManager.register(this, ImApp.HOCKEY_APP_ID);
-    }
-
-    private void checkForUpdates() {
-        // Remove this for store builds!
-        UpdateManager.register(this, ImApp.HOCKEY_APP_ID);
-    }
-
 }

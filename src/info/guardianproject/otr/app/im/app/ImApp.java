@@ -44,6 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.CrashManagerListener;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -986,5 +988,12 @@ public class ImApp extends Application {
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
     }
 
-   
+    public void checkForCrashes(final Activity activity) {
+        CrashManager.register(activity, ImApp.HOCKEY_APP_ID, new CrashManagerListener() {
+            @Override
+            public String getDescription() {
+                return Debug.getTrail(activity);
+            }
+        });
+    }
 }

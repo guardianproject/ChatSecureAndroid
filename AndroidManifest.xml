@@ -156,7 +156,8 @@ android:anyDensity="true"
                 <action android:name="info.guardianproject.otr.app.im.SERVICE" />
             </intent-filter>
         </service>
-
+        <service android:name=".service.HeartbeatService" android:exported="false" />
+        
         <provider
             android:name=".provider.ImpsProvider"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
@@ -417,7 +418,16 @@ android:anyDensity="true"
              />
           
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
-        
-        
-    </application>
+        <activity
+             android:name=".app.DummyActivity"
+             android:allowTaskReparenting="true"
+             android:alwaysRetainTaskState="false"
+             android:clearTaskOnLaunch="true"
+             android:enabled="true"
+             android:excludeFromRecents="true"
+             android:finishOnTaskLaunch="true"
+             android:noHistory="true"
+             android:stateNotNeeded="true"
+             android:theme="@android:style/Theme.NoDisplay" />
+</application>
 </manifest>

@@ -840,6 +840,7 @@
     <string name="fingerprint_for_">"Fingerprint for "</string>
     
     <string name="please_enable_chat_encryption_to_share_files">Please enable chat encryption to share files</string>
+    <string name="swipe_alert">ChatSecure detected that a request was made to remove its task.  ChatSecure will likely crash.  Please use the Sign out all menu item from the account list screen instead.</string>
     
     <string name="file_transfer">File Transfer</string>
     
