@@ -68,7 +68,7 @@ public class ContactListFilterView extends LinearLayout {
     private final ConnectionListenerAdapter mConnectionListener;
 
     private IImConnection mConn;
-    private EditText mEtSearch;
+  //  private EditText mEtSearch;
     
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -154,6 +154,7 @@ public class ContactListFilterView extends LinearLayout {
             
         });
         
+        /**
         mEtSearch = (EditText)findViewById(R.id.contactSearch);
         
         mEtSearch.addTextChangedListener(new TextWatcher()
@@ -177,6 +178,7 @@ public class ContactListFilterView extends LinearLayout {
             }
             
         });
+      
         
         mEtSearch.setOnKeyListener(new OnKeyListener ()
         {
@@ -189,6 +191,8 @@ public class ContactListFilterView extends LinearLayout {
             }
             
         });
+          */
+         
         /*
         mFilterList.setItemActionListener(new ListView.OnActionClickListener() {
 

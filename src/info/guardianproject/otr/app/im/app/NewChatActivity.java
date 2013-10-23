@@ -36,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -46,12 +47,12 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -62,14 +63,9 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -80,11 +76,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
-public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
@@ -132,7 +133,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
     
-        requestWindowFeature(Window.FEATURE_NO_TITLE);        
+     //  requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
         ThemeableActivity.setBackgroundImage(this);
@@ -580,7 +581,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = this.getSherlock().getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         return true;
@@ -613,6 +614,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         case R.id.menu_end_conversation:
             if (getCurrentChatView() != null)
                 getCurrentChatView().closeChatSession();
+            return true;
+            
+        case R.id.menu_settings:
+            Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
+            startActivity(sintent);
+            
             return true;
          
       
@@ -897,15 +904,20 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             Cursor cursor =  chatView.getMessageAtPosition(info.position);
             int type = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Messages.TYPE));
             if (type == Imps.MessageType.OUTGOING) {
-                menu.add(0, MENU_RESEND, 0, R.string.menu_resend).setOnMenuItemClickListener(
+                android.view.MenuItem mi = menu.add(0, MENU_RESEND, 0, R.string.menu_resend);
+                
+                mi.setOnMenuItemClickListener(
                         mMessageContextMenuHandler);
+                
+                
+                
             }
             
            
         }
     }
 
-    final class MessageContextMenuHandler implements OnMenuItemClickListener {
+    final class MessageContextMenuHandler implements android.view.MenuItem.OnMenuItemClickListener {
         int mPosition;
 
      
@@ -1062,7 +1074,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
            
             if (position == 0)
             {
-                return getString(R.string.app_name);
+                return "Contacts";
             }
             else
             {
