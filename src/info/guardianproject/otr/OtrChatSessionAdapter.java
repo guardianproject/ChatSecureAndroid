@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.IOtrChatSession.Stub;
+import info.guardianproject.util.Debug;
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
@@ -23,15 +24,22 @@ public class OtrChatSessionAdapter extends Stub {
     }
 
     public void startChatEncryption() throws RemoteException {
-
-        _chatManager.startSession(_localUser, _remoteUser);
+        Debug.wrapExceptions(new Runnable() {
+            @Override
+            public void run() {
+                _chatManager.startSession(_localUser, _remoteUser);
+            }
+        });
     }
-
+    
     @Override
     public void stopChatEncryption() throws RemoteException {
-
-        _chatManager.endSession(_localUser, _remoteUser);
-
+        Debug.wrapExceptions(new Runnable() {
+            @Override
+            public void run() {
+                _chatManager.endSession(_localUser, _remoteUser);
+            }
+        });
     }
 
     @Override

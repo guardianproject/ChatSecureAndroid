@@ -465,8 +465,19 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         }, delay);
     }
 
-    IImConnection createConnection(long providerId, long accountId) {
-        
+    IImConnection createConnection(final long providerId, final long accountId) {
+        final IImConnection[] results = new IImConnection[1];
+        Debug.wrapExceptions(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                results[0] = do_createConnection(providerId, accountId);
+            }
+        });
+        return results[0];
+    }
+
+    IImConnection do_createConnection(long providerId, long accountId) {
         Map<String, String> settings = loadProviderSettings(providerId);
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {

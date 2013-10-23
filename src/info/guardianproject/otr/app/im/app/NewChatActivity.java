@@ -957,11 +957,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             super(fm);
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             
-            if (mCursorChats != null)
-            {
-                mCursorObserver = new MyContentObserver();
-                mCursorChats.registerContentObserver(mCursorObserver);
-            }
+            mCursorObserver = new MyContentObserver();
+            mCursorChats.registerContentObserver(mCursorObserver);
         }
         
         public void onDestroy() {
@@ -972,15 +969,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void notifyDataSetChanged() {
-            
-            if (mCursorChats != null)
-            {
-                mCursorChats.unregisterContentObserver(mCursorObserver);
-                if (!mCursorChats.isClosed())
-                    mCursorChats.close();
-                
-            }
-            
+            // In case that onDestroy was called first
+            // FIXME check if this can actually happen
+            if (mCursorChats == null)
+                return;
+            mCursorChats.unregisterContentObserver(mCursorObserver);
+            mCursorChats.close();
+
             mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             mCursorChats.registerContentObserver(mCursorObserver);
             
