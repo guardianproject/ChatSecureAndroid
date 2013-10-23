@@ -12,6 +12,10 @@ import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import java.io.PrintWriter;
+
+import org.apache.commons.io.output.StringBuilderWriter;
+
 import android.os.StrictMode;
 
 public class Debug {
@@ -96,5 +100,17 @@ public class Debug {
         if (++injectCount % 5 == 0 && body.length() > 5)
             body = body.substring(0, 5) + 'X' + body.substring(6);
         return body;
+    }
+
+    static public void wrapExceptions(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Throwable t) {
+            StringBuilderWriter writer = new StringBuilderWriter();
+            PrintWriter pw = new PrintWriter(writer, true);
+            t.printStackTrace(pw);
+            writer.flush();
+            throw new IllegalStateException("service throwable: " + writer.getBuilder().toString());
+        }
     }
 }
