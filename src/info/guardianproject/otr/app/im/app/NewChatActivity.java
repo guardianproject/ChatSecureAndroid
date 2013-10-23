@@ -171,6 +171,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         frag.onSelected(mApp);
                     
                     lastPos = pos;
+                    
+                    mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                    
+                }
+                else
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                    
                 }
             }
 
@@ -582,9 +590,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mChatPagerAdapter.notifyDataSetChanged();
     }
     
+    private Menu mMenu;
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
+        mMenu = menu;
         
         MenuInflater inflater = this.getSherlock().getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
