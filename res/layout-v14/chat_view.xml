@@ -239,7 +239,7 @@
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"  
         android:padding="8dip"
-        android:src="@drawable/ic_menu_info"
+        android:src="@drawable/ic_menu_view_profile"
         
          />
      <ImageView
