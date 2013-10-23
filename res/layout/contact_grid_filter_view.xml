@@ -94,24 +94,6 @@
     </info.guardianproject.otr.app.im.app.UserPresenceView>
     
    
-   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
-	
-       
-          <EditText
-            android:id="@+id/contactSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:hint="type to filter"
-             android:fontFamily="sans-serif-light"
-             android:layout_alignParentBottom="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-              />
-          
         <GridView
             
         android:id="@+id/filteredList"
@@ -126,7 +108,6 @@
     android:stretchMode="columnWidth"
     android:gravity="top"
     android:padding="0dp"
-    android:layout_above="@+id/contactSearch"
         />
          
 	<TextView
@@ -141,6 +122,5 @@
 
 	    />
 	
-          </RelativeLayout>
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>
