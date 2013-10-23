@@ -297,7 +297,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
                 startActivity(intent);
-                
+                finish();//we should clsoe this activity when we go to AccountList, in case we sign out
             }
             
             
@@ -457,7 +457,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
             if (data != null)
             {
-                if (data.getScheme().equals("immu"))
+                if (data.getScheme() != null && data.getScheme().equals("immu"))
                 {
                     String user = data.getUserInfo();
                     String host = data.getHost();
