@@ -59,12 +59,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.os.SystemClock;
@@ -107,6 +110,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     public long mHeartbeatInterval;
     private PendingIntent pendingIntent;
+    private WakeLock mWakeLock;
 
     private static final String TAG = "Gibberbot.ImService";
     private static final String HEARTBEAT_EVENT = "info.guardianproject.otr.app.im.SERVICE.HEARTBEAT";
@@ -186,6 +190,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         debug("ImService started");
         Debug.onServiceStart();
 
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "IM_WAKELOCK");
         this.pendingIntent = PendingIntent.getService(this, 0, new Intent(HEARTBEAT_EVENT, null,
                 this, RemoteImService.class), 0);
 
@@ -281,8 +287,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (intent != null && HEARTBEAT_EVENT.equals(intent.getAction())) {
             Log.d(TAG, "HEARTBEAT");
-            long interval = sendHeartbeat();
-            startHeartbeat(interval);
+            try {
+                mWakeLock.acquire();
+                long interval = sendHeartbeat();
+                if (interval > 0)
+                    startHeartbeat(interval);
+            } finally {
+                mWakeLock.release();
+            }
             return;
         }
 
