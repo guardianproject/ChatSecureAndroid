@@ -229,7 +229,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     void startHeartbeat(long interval) {
         AlarmManager alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + interval, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, pendingIntent);
     }
 
     private void startForegroundCompat() {
