@@ -241,7 +241,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
-        android:src="@drawable/avatar_unknown"
+        android:src="@drawable/ic_menu_info"
         android:padding="8dip"
         
          />

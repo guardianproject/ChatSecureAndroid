@@ -237,9 +237,9 @@
         android:id="@+id/btnProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/avatar_unknown"
+        android:fontFamily="sans-serif-light"  
         android:padding="8dip"
+        android:src="@drawable/ic_menu_info"
         
          />
      <ImageView
