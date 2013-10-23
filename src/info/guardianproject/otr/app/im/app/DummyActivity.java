@@ -29,7 +29,11 @@ public class DummyActivity extends Activity {
         Log.w(ImApp.LOG_TAG, "DummyActivity launched by swipe");
         super.onCreate(savedInstanceState);
         ((ImApp)getApplication()).maybeInit(this);
+        finish();
+    }
 
+    // Unused for now
+    void showDialog() {
         new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle(R.string.im_label).setMessage(R.string.swipe_alert)
         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

@@ -33,7 +33,6 @@ import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
-import info.guardianproject.otr.app.im.engine.HeartbeatService.Callback;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
@@ -54,6 +53,7 @@ import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -67,6 +67,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -104,10 +105,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private Handler mHandler;
 
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
-    private ForegroundStarter mForegroundStarter;
     public long mHeartbeatInterval;
+    private PendingIntent pendingIntent;
 
     private static final String TAG = "Gibberbot.ImService";
+    private static final String HEARTBEAT_EVENT = "info.guardianproject.otr.app.im.SERVICE.HEARTBEAT";
+;
 
     public RemoteImService() {
         mConnections = new Vector<ImConnectionAdapter>();
@@ -183,6 +186,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         debug("ImService started");
         Debug.onServiceStart();
 
+        this.pendingIntent = PendingIntent.getService(this, 0, new Intent(HEARTBEAT_EVENT, null,
+                this, RemoteImService.class), 0);
+
         // Clear all account statii to logged-out, since we just got started and we don't want
         // leftovers from any previous crash.
         clearConnectionStatii();
@@ -206,63 +212,58 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
        
         mPluginHelper = ImPluginHelper.getInstance(this);
         mPluginHelper.loadAvailablePlugins();
-        AndroidSystemService.getInstance().initialize(this);
-        AndroidSystemService.getInstance().getHeartbeatService()
-                .startHeartbeat(new HeartbeatHandler(), HEARTBEAT_INTERVAL);
 
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
 
-      //  if (getGlobalSettings().getUseForegroundPriority())
-            startForegroundCompat();
-
-
+        startForegroundCompat();
+        startHeartbeat(HEARTBEAT_INTERVAL);
+    }
+    
+    void startHeartbeat(long interval) {
+        AlarmManager alarmManager = (AlarmManager)this.getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + interval, pendingIntent);
     }
 
     private void startForegroundCompat() {
         Notification notification = new Notification(R.drawable.notify_chatsecure, getString(R.string.app_name),
                 System.currentTimeMillis());
-        notification.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
         Intent notificationIntent = new Intent(this, NewChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        notification.contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setLatestEventInfo(this, getString(R.string.app_name), getString(R.string.presence_available), notification.contentIntent);
+        PendingIntent launchIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+        notification.setLatestEventInfo(getApplicationContext(),
+                getString(R.string.app_name),
+                getString(R.string.presence_available),
+                launchIntent);
         
-        mForegroundStarter = new ForegroundStarter(this);
-        mForegroundStarter.startForegroundCompat(1000, notification);
+        stopForeground(true);
+        startForeground(1000, notification);
     }
 
-    class HeartbeatHandler implements Callback {
-
-        @SuppressWarnings("finally")
-        @Override
-        public long sendHeartbeat() {
-            Debug.onHeartbeat();
-            try {
-                if (mNeedCheckAutoLogin
+    public long sendHeartbeat() {
+        Debug.onHeartbeat();
+        try {
+            if (mNeedCheckAutoLogin
                     && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
-                    debug("autoLogin from heartbeat");
-                    mNeedCheckAutoLogin = false;
-                    autoLogin();
-                }
-                
-                mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
-                
-                for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter.hasNext();) {
-                    ImConnectionAdapter conn = iter.next();
-                    conn.sendHeartbeat();
-                }
-            } finally {
-                return HEARTBEAT_INTERVAL;
+                debug("autoLogin from heartbeat");
+                mNeedCheckAutoLogin = false;
+                autoLogin();
             }
-        }
 
+            mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
+
+            for (Iterator<ImConnectionAdapter> iter = mConnections.iterator(); iter.hasNext();) {
+                ImConnectionAdapter conn = iter.next();
+                conn.sendHeartbeat();
+            }
+        } finally {
+            return HEARTBEAT_INTERVAL;
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        
         return super.onStartCommand(intent, flags, startId);
     }
     
@@ -277,6 +278,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
+
+        if (intent != null && HEARTBEAT_EVENT.equals(intent.getAction())) {
+            Log.d(TAG, "HEARTBEAT");
+            long interval = sendHeartbeat();
+            startHeartbeat(interval);
+        }
 
         if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
             mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
@@ -403,17 +410,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onDestroy() {
         
-        if (mForegroundStarter != null)
-            mForegroundStarter.stopForegroundCompat();
-
         Log.w(TAG, "ImService stopped.");
         for (ImConnectionAdapter conn : mConnections) {
             conn.logout();
         }
         
         
-        AndroidSystemService.getInstance().shutdown();
-
         mNetworkConnectivityListener.unregisterHandler(mServiceHandler);
         mNetworkConnectivityListener.stopListening();
         mNetworkConnectivityListener = null;
