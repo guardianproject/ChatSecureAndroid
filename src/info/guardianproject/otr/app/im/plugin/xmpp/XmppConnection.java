@@ -1289,10 +1289,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     {
         if (mTrustManager == null)
         {
-            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.PINLIST, 0);
+            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
         
             mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
-            
            
            
         }
