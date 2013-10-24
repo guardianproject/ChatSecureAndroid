@@ -172,12 +172,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     lastPos = pos;
                     
-                    mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                    if (mMenu != null)
+                        mMenu.setGroupVisible(R.id.menu_group_chats, true);
                     
                 }
                 else
                 {
-                    mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                    if (mMenu != null)
+                        mMenu.setGroupVisible(R.id.menu_group_chats, false);
                     
                 }
             }
@@ -307,8 +309,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void onClick(View v) {
                 
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                finish();//we should clsoe this activity when we go to AccountList, in case we sign out
             }
             
             
@@ -631,6 +633,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         };
         searchView.setOnQueryTextListener(queryTextListener);
+        
+        if (mChatPager != null && mChatPager.getCurrentItem() > 0)
+            mMenu.setGroupVisible(R.id.menu_group_chats, true);
+        else
+            mMenu.setGroupVisible(R.id.menu_group_chats, false);
         
         return true;
     }
