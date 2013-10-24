@@ -54,7 +54,7 @@
            
           <item android:id="@+id/menu_sign_out_all"
      
-        android:title="@string/menu_sign_out_all"
+        android:title="@string/menu_exit"
                 android:icon="@drawable/ic_menu_sign_out"
         
                  android:showAsAction="never|withText"

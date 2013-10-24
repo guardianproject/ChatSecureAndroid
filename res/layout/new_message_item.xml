@@ -34,7 +34,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="centerCrop" 
-            android:src="@drawable/avatar_unknown"
             android:visibility="gone"
             android:layout_marginRight="3dip"
             />
@@ -61,7 +60,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="centerCrop" 
-            android:src="@drawable/avatar_unknown"
             android:visibility="gone"
             android:layout_marginLeft="3dip"
                     

@@ -259,18 +259,18 @@ public class ImApp extends Application {
         
         if (themeDark)
         {            
-            setTheme(R.style.Theme_Sherlock);
+            setTheme(R.style.AppThemeDark);
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Sherlock);
+                activity.setTheme(R.style.AppThemeDark);
         }
         else
         {
-            setTheme(R.style.Theme_Sherlock_Light);
+            setTheme(R.style.AppTheme);
             
             
             if (activity != null)
-                activity.setTheme(R.style.Theme_Sherlock_Light);
+                activity.setTheme(R.style.AppTheme);
         }
         
         Configuration config = getResources().getConfiguration();
