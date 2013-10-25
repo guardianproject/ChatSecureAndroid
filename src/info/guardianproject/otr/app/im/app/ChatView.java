@@ -179,6 +179,7 @@ public class ChatView extends LinearLayout {
     public void setSelected (boolean isSelected)
     {
         mIsSelected = isSelected;
+        updateWarningView();
     }
     
     private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()
@@ -216,10 +217,14 @@ public class ChatView extends LinearLayout {
                             
                         if (otrEnabled) {
                             otrChatSession.startChatEncryption();
+                            mActivity.setSupportProgressBarIndeterminateVisibility(true);
+                            
+
                         }
                         else
                         {
                             otrChatSession.stopChatEncryption();    
+                            mActivity.setSupportProgressBarIndeterminateVisibility(false);
                         }                 
                     
                      
@@ -1367,10 +1372,14 @@ public class ChatView extends LinearLayout {
             if (mType == Imps.Contacts.TYPE_GROUP) {
                 visibility = View.GONE;
                 message = "";
+
+                mActivity.updateEncryptionMenuState(false, false);
+                
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
+
             } else if (mPresenceStatus == Imps.Presence.OFFLINE) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_offline_warning, mRemoteNickname);
@@ -1385,11 +1394,14 @@ public class ChatView extends LinearLayout {
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
-                                
+
+                mActivity.updateEncryptionMenuState(false, false);
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
 
+                mActivity.updateEncryptionMenuState(false, false);
+                
                 visibility = View.GONE;
                 
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
@@ -1409,6 +1421,8 @@ public class ChatView extends LinearLayout {
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
 
                 visibility = View.GONE;
+                
+                mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
                
@@ -1437,16 +1451,25 @@ public class ChatView extends LinearLayout {
     
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
+                                
+                                mActivity.updateEncryptionMenuState(true, false);
+                                
+                                
                             } else {
                                 message = mContext.getString(R.string.otr_session_status_verified);
     
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
+                                
+                                mActivity.updateEncryptionMenuState(true, true);
+                                
                             }
                         } else {
                             mWarningText.setTextColor(Color.WHITE);
                             mStatusWarningView.setBackgroundResource(R.color.otr_red);
                             message = mContext.getString(R.string.otr_session_status_plaintext);
+                            
+                            mActivity.updateEncryptionMenuState(false, false);
                         }
                         
 
@@ -1471,6 +1494,7 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
+                mActivity.updateEncryptionMenuState(true, false);
 
                 visibility = View.VISIBLE;
             }  
@@ -1494,6 +1518,8 @@ public class ChatView extends LinearLayout {
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
             
+
+            mActivity.updateEncryptionMenuState(false, false);
         }
         
         mStatusWarningView.setVisibility(visibility);
