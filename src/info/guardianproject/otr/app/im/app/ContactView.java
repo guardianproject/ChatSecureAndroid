@@ -125,6 +125,7 @@ public class ContactView extends LinearLayout {
         
         mHolder = (ViewHolder)getTag();
         
+        long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
@@ -195,8 +196,18 @@ public class ContactView extends LinearLayout {
         }
         else 
         {
-            if (mHolder.mLine2 != null)
+            if (mHolder.mLine2 != null)                
+            {
+                if (statusText == null || statusText.length() == 0)
+                {
+                    ImApp app = ((ImApp)((Activity) mContext).getApplication());
+                    BrandingResources brandingRes = app.getBrandingResource(providerId);
+                    statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
+                }
+                
                 mHolder.mLine2.setText(statusText);
+                
+            }
             
             
             if (presence == Imps.Presence.AVAILABLE)
