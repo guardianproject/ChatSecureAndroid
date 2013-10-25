@@ -30,6 +30,11 @@
     <group android:enabled="true" android:id="@+id/menu_group_chats" android:visible="false">
         
  
+         <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_white_unencrypted"
+          android:showAsAction="always"
+        />
     
     <item 
         android:title="@string/menu_send_file"
@@ -75,7 +80,13 @@
     android:icon="@drawable/ic_menu_search"
     android:showAsAction="ifRoom|collapseActionView"
     android:title="@string/menu_search_contacts"/>
-     
+    
+     <item android:id="@+id/menu_grid"
+        android:title="@string/menu_show_grid" 
+        android:icon="@drawable/ic_menu_grid"
+         android:showAsAction="always"/>
+    
+    
      </group>
 <!--
 

@@ -853,5 +853,11 @@
     <string name="accept_transfer_">Accept transfer?</string>
     
     <string name="wants_to_send_you_the_file">wants to send you the file</string>
+    
+    <string name="menu_show_grid">Show Grid</string>
+    
+    <string name="pref_show_grid">Show Contact Grid</string>
+    <string name="pref_show_grid_summary">Display contact list as avatar grid</string>
+    
 </resources>
 

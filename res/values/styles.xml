@@ -27,7 +27,6 @@
     
         <style name="AppThemeDark" parent="Theme.Sherlock" >
              <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
-        
              </style>
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">

@@ -23,7 +23,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:background="#aa666666"
             >
 
             <LinearLayout
@@ -54,8 +53,6 @@
                             android:ems="10"
                             android:hint="@string/lock_screen_passphrase_not_set_enter"
                             android:inputType="textPassword" 
-                            android:background="#ffffff"
-                            android:textColor="#333333"
                             />
                         
                         

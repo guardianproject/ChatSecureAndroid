@@ -26,12 +26,6 @@
             android:padding="0dp"
         
      >
-    
-     <Spinner
-        android:id="@+id/spinnerAccounts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
    
    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
@@ -75,8 +69,8 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"            
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginTop="3dp"
+            
              />
 
         <TextView
@@ -93,24 +87,6 @@
              />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
     
-   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
-	
-          <EditText
-            android:id="@+id/contactSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:hint="type to filter"
-             android:fontFamily="sans-serif-light"
-             android:layout_alignParentBottom="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-              />
-          
-          
    <ListView
             
         android:id="@+id/filteredList"
@@ -118,7 +94,6 @@
         android:layout_height="match_parent"
     android:gravity="top"
     android:padding="0dp"
-    android:layout_above="@+id/contactSearch"
         />
    <TextView
 	    android:id="@+id/empty"
@@ -132,6 +107,5 @@
 
 	    />
              
-          </RelativeLayout>
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>
