@@ -615,11 +615,12 @@ public class ContactListManagerAdapter extends
             }
         }
 
-        public void onAllContactListsLoaded() {
+        public synchronized void onAllContactListsLoaded() {
             mAllContactsLoaded = true;
             
             handleDelayedContactChanges();
             removeObsoleteContactsAndLists();
+            
             final int N = mRemoteContactListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
