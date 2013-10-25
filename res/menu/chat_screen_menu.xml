@@ -27,15 +27,70 @@
          android:showAsAction="never"
          />
      
-    <group android:enabled="true" android:id="@+id/menu_group_chats" android:visible="false">
+     <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
         
- 
          <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_start"
-         android:icon="@drawable/ic_white_unencrypted"
+         android:icon="@drawable/ic_menu_unencrypted"
           android:showAsAction="always"
         />
+         </group>
+  
+  <group android:enabled="true" android:id="@+id/menu_group_otr_unverified" android:visible="false">
+        
+         <item 
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_menu_encrypted"
+          android:showAsAction="always"
+        > <menu>
+         <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"
+        android:icon="@drawable/ic_menu_view_profile"
+         android:showAsAction="always"
+         />
     
+        <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        />
+        
+            </menu>
+             
+             
+         </item>
+         </group>
+         
+    <group android:enabled="true" android:id="@+id/menu_group_otr_verified" android:visible="false">
+        
+         <item 
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_verified"
+          android:showAsAction="always"
+        >
+              <menu>
+         <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"
+        android:icon="@drawable/ic_menu_view_profile"
+         android:showAsAction="always"
+         />
+    
+        <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        />
+        
+            </menu>
+             
+         </item>
+         </group>
+     
+    <group android:enabled="true" android:id="@+id/menu_group_chats" android:visible="false">
+        
+        
+        
+  
     <item 
         android:title="@string/menu_send_file"
          android:showAsAction="always"
