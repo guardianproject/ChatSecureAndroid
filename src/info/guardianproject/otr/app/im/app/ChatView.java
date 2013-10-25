@@ -1376,7 +1376,7 @@ public class ChatView extends LinearLayout {
                 message = mContext.getString(R.string.contact_offline_warning, mRemoteNickname);
             } else {
 
-                visibility = View.VISIBLE;
+                visibility = View.GONE;
 
             }
 
@@ -1389,6 +1389,9 @@ public class ChatView extends LinearLayout {
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
+
+                visibility = View.GONE;
+                
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                     mComposeMessage.setHint(R.string.compose_hint);
                     
@@ -1404,7 +1407,8 @@ public class ChatView extends LinearLayout {
                     message = mContext.getString(R.string.otr_session_status_plaintext);
             }
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
-               
+
+                visibility = View.GONE;
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
                
@@ -1467,6 +1471,8 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
+
+                visibility = View.VISIBLE;
             }  
 
         } else {
@@ -1482,7 +1488,7 @@ public class ChatView extends LinearLayout {
                 mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
             }
             
-            visibility = View.VISIBLE;
+            visibility = View.GONE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
@@ -1491,6 +1497,7 @@ public class ChatView extends LinearLayout {
         }
         
         mStatusWarningView.setVisibility(visibility);
+        
         if (visibility == View.VISIBLE) {
             mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
@@ -1929,6 +1936,10 @@ public class ChatView extends LinearLayout {
             DeliveryState deliveryState = DeliveryState.NEUTRAL;
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
+            }
+            else if (isDelivered)
+            {
+                deliveryState = DeliveryState.DELIVERED;
             }
             
             EncryptionState encState = EncryptionState.NONE;

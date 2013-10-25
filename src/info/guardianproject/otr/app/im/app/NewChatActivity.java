@@ -45,6 +45,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,6 +53,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -76,6 +78,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -135,6 +139,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
      //  requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
+        
+        this.getSherlock().getActionBar().setTitle("");
         
         ThemeableActivity.setBackgroundImage(this);
 
@@ -215,6 +221,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
         
         mApp.registerForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
+        
     }
     
     /*
@@ -602,6 +609,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private Menu mMenu;
     
+    public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
+    {
+        
+        View view = findViewById(R.id.menu_otr);
+        
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -709,7 +723,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             startActivity(sintent);
             
             return true;
+            
+        case R.id.menu_otr:
+            
+            if (getCurrentChatView() != null)
+            {
+                boolean isEnc = (getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED);
+                
+                getCurrentChatView().setOTRState(!isEnc);
+            
+            }
+            
+            return true;
 
+        case R.id.menu_grid:
+            
+            if (mContactList != null)
+                mContactList.toggleGrid();
+            
+            return true;
         case android.R.id.home:
             menu.toggle();
             return true;
@@ -1197,7 +1229,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     return frag.getChatView();
             }
             
-            throw new RuntimeException("could not get chat view at " + pos);
+            return null; //this can happen if the user is quickly closing chats; just return null and swallow the event
+            //throw new RuntimeException("could not get chat view at " + pos);
         }
     }
     
@@ -1238,8 +1271,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         UserPresenceView mPresenceView = null;
         
         Cursor mProviderCursor = null;
-    
-        Spinner mSpinnerAccounts;
 
         boolean showGrid = true;
         
@@ -1278,7 +1309,27 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
          
          
-
+         public void toggleGrid ()
+         {
+             showGrid = !showGrid;
+          
+             
+             if (getActivity () != null) 
+             {
+                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                 settings.edit().putBoolean("showGrid", showGrid).commit();
+                 
+             }
+             
+             
+          // The reload fragment code here !
+             
+                 getFragmentManager().beginTransaction()
+                    .detach(this)
+                    .attach(this)
+                    .commit();
+             
+         }
 
         /**
           * The Fragment's UI is just a simple text view showing its
@@ -1287,7 +1338,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
          @Override
          public View onCreateView(LayoutInflater inflater, ViewGroup container,
                  Bundle savedInstanceState) {
-             
+            
              if (showGrid)
                  mFilterView = (ContactListFilterView) inflater.inflate(
                          R.layout.contact_grid_filter_view, null);
@@ -1325,9 +1376,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             //  uri = ContentUris.withAppendedId(uri, accountId);
          //     mFilterView.doFilter( Imps.Contacts.CONTENT_URI_CONTACTS_BY, null);
               
-              setupSpinners(mFilterView);
+              setupSpinners((NewChatActivity)getActivity(), mFilterView);
               
-              setSpinnerState(getActivity());
+              setSpinnerState((NewChatActivity)getActivity());
               
               return mFilterView;
            
@@ -1338,7 +1389,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             if (mProviderCursor != null && (!mProviderCursor.isClosed()))
                 mProviderCursor.close();
-            setupSpinners(mFilterView);
+            setupSpinners((NewChatActivity)getActivity(),mFilterView);
         }
          
          @Override
@@ -1348,6 +1399,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mApp = ((ImApp)activity.getApplication()); 
             mApp.registerForConnEvents(mPresenceHandler);
 
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            showGrid = settings.getBoolean("showGrid", false);
+            
         }
 
         @Override
@@ -1368,7 +1422,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             super.onDestroyView();
         }
 
-         private void setupSpinners (ContactListFilterView filterView)
+         private void setupSpinners (NewChatActivity activity, ContactListFilterView filterView)
          {
              
              mProviderCursor = getActivity().getContentResolver().query(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
@@ -1394,27 +1448,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
              ProviderAdapter pAdapter = new ProviderAdapter(getActivity(), mProviderCursor);
              
-             mSpinnerAccounts = (Spinner)filterView.findViewById(R.id.spinnerAccounts);
+             ActionBar ab = activity.getSherlock().getActionBar();
              
-             mSpinnerAccounts.setAdapter(pAdapter);
-             mSpinnerAccounts.setOnItemSelectedListener(new OnItemSelectedListener ()
-             {
+             ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+             ab.setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
 
-                 @Override
-                 public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
-                    
-                 //    mAccountId = mAccountIds[itemPosition];
-                     //update account list
-                     initAccount(getActivity(),mAccountIds[itemPosition]);
-                   
-                     
-                 }
-
-                 @Override
-                 public void onNothingSelected(AdapterView<?> arg0) {
-                     // TODO Auto-generated method stub
-                     
-                 }
+                @Override
+                public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                    initAccount(getActivity(),mAccountIds[itemPosition]);
+                    return true;
+                }
                  
              });
              
@@ -1429,7 +1472,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              }
          }
          
-         public void setSpinnerState (Activity activity)
+         public void setSpinnerState (NewChatActivity activity)
          {
 
              NewChatActivity chatActivity = (NewChatActivity)activity;
@@ -1439,13 +1482,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              
              if (mAccountIds.length == 1) //only one account, hide the spinner
              {
-                 mSpinnerAccounts.setVisibility(View.GONE);
                  initAccount(activity,mAccountIds[0]);
              }
              else if (chatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
              {
 
-                 mSpinnerAccounts.setVisibility(View.VISIBLE);
                  
                  int selIdx = 0;
                  
@@ -1453,7 +1494,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                  {
                      if (accountId == chatActivity.getAccountId())
                      {
-                         mSpinnerAccounts.setSelection(selIdx);   
+                         activity.getSherlock().getActionBar().setSelectedNavigationItem(selIdx);
+                         
                          break;
                      }
                      
@@ -1477,7 +1519,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                              
                              if (accountId == activeAccountId)
                              {
-                                 mSpinnerAccounts.setSelection(spinnerIdx);
+                                 activity.getSherlock().getActionBar().setSelectedNavigationItem(spinnerIdx);
+                                 
                                  break;
                              }
                          }
@@ -1609,7 +1652,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 // create a custom view, so we can manage it ourselves. Mainly, we want to
                 // initialize the widget views (by calling getViewById()) in newView() instead of in
                 // bindView(), which can be called more often.
-                ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
+                ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_actionbar,
                         parent, false);
                 view.init(cursor, true);
                 return view;
