@@ -68,13 +68,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,6 +132,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
@@ -193,6 +194,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     {
                         mMenu.setGroupVisible(R.id.menu_group_chats, false);
                         mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+
+                        mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                        mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                        mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                        
                     }
                     
                 }
@@ -612,8 +618,32 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
         
-        View view = findViewById(R.id.menu_otr);
-        
+        if (mChatPager != null && mChatPager.getCurrentItem() > 0 && mMenu != null)
+        {                                        
+                if (isVerified)
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                        
+                }
+                else if (isEncrypted)
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,true);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+   
+                }
+                else
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,true);
+                
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+
+                }
+          
+         }
     }
     
     @Override
@@ -662,11 +692,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 mMenu.setGroupVisible(R.id.menu_group_chats, true);
                 mMenu.setGroupVisible(R.id.menu_group_contacts, false);
+                
             }
             else
             {
                 mMenu.setGroupVisible(R.id.menu_group_chats, false);
                 mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+                
+                mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                                        
             }
         }
         
