@@ -36,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -173,13 +174,20 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     lastPos = pos;
                     
                     if (mMenu != null)
+                    {
                         mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                        mMenu.setGroupVisible(R.id.menu_group_contacts, false);
+                           
+                    }
                     
                 }
                 else
                 {
                     if (mMenu != null)
+                    {
                         mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                        mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+                    }
                     
                 }
             }
@@ -634,10 +642,19 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         };
         searchView.setOnQueryTextListener(queryTextListener);
         
-        if (mChatPager != null && mChatPager.getCurrentItem() > 0)
-            mMenu.setGroupVisible(R.id.menu_group_chats, true);
-        else
-            mMenu.setGroupVisible(R.id.menu_group_chats, false);
+        if (mMenu != null)
+        {
+            if (mChatPager != null && mChatPager.getCurrentItem() > 0)
+            {
+                mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                mMenu.setGroupVisible(R.id.menu_group_contacts, false);
+            }
+            else
+            {
+                mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+            }
+        }
         
         return true;
     }
@@ -654,11 +671,27 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         switch (item.getItemId()) {
 
         case R.id.menu_send_image:
-            startImagePicker();
+            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            {
+               startImagePicker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
             return true;
 
         case R.id.menu_send_file:
-            startFilePicker();
+            
+            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            {
+               startFilePicker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
+            
             return true;
 
         case R.id.menu_view_profile:
@@ -676,8 +709,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             startActivity(sintent);
             
             return true;
-         
-      
 
         case android.R.id.home:
             menu.toggle();

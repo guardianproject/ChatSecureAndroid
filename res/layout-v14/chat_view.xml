@@ -169,9 +169,9 @@
 	    android:orientation="horizontal"
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
-	     
+	     android:padding="3sp"
 	     >
-	
+	<!-- 
         <ImageButton
         android:id="@+id/btnActionBox"
         android:layout_width="32dip"
@@ -181,7 +181,7 @@
       
         android:paddingBottom="5sp"
         android:src="@drawable/ic_btn_round_more_normal" />
-      
+       -->
     <ImageButton
         android:id="@+id/btnEmoji"
         android:layout_width="32dip"
@@ -221,6 +221,7 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
+      <!-- 
    <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -273,12 +274,25 @@
          />
      
       </LinearLayout>
+       -->
+       
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"
         android:layout_height="140dip"
         android:visibility="gone"
         
-       />
+       >
+     <android.support.v4.view.PagerTabStrip
+        android:id="@+id/emoji_title_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp" 
+       android:background="#565552"
+        android:textColor="#dddddd"
+        />
+    </android.support.v4.view.ViewPager>
       
 </info.guardianproject.otr.app.im.app.ChatView>

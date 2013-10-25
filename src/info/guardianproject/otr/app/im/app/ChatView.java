@@ -161,7 +161,7 @@ public class ChatView extends LinearLayout {
     private TextView mWarningText;
     
     private ViewPager mEmojiPager;
-    private View mActionBox;
+   // private View mActionBox;
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
@@ -580,6 +580,7 @@ public class ChatView extends LinearLayout {
             }
         });
 
+        /*
         mActionBox = (View)findViewById(R.id.actionBox);
         ImageButton btnActionBox = (ImageButton)findViewById(R.id.btnActionBox);
         btnActionBox.setOnClickListener(new OnClickListener ()
@@ -661,7 +662,7 @@ public class ChatView extends LinearLayout {
             }
             
         });
-        
+        */
         
         initEmoji();
         
@@ -716,7 +717,7 @@ public class ChatView extends LinearLayout {
             public void onClick(View v) {
                  
 
-                mActionBox.setVisibility(View.GONE);
+          //     mActionBox.setVisibility(View.GONE);
                 
                 if (mEmojiPager.getVisibility() == View.GONE)
                     mEmojiPager.setVisibility(View.VISIBLE);
@@ -1227,7 +1228,7 @@ public class ChatView extends LinearLayout {
     void sendMessage() {
         
         mEmojiPager.setVisibility(View.GONE);
-        mActionBox.setVisibility(View.GONE);
+        //mActionBox.setVisibility(View.GONE);
         
         String msg = mComposeMessage.getText().toString();
 
