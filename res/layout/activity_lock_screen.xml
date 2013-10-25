@@ -2,7 +2,6 @@
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgcolor1"
     android:gravity="top"
     android:orientation="vertical" >
 
@@ -55,7 +54,8 @@
                             android:ems="10"
                             android:hint="@string/lock_screen_passphrase_not_set_enter"
                             android:inputType="textPassword" 
-                            
+                            android:background="#ffffff"
+                            android:textColor="#333333"
                             />
                         
                         
