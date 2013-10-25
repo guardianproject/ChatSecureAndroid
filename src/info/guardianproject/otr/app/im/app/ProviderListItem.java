@@ -237,7 +237,8 @@ public class ProviderListItem extends LinearLayout {
 
             StringBuffer secondRowText = new StringBuffer();
 
-            mChatView.setVisibility(View.GONE);
+            if (mChatView != null)
+              mChatView.setVisibility(View.GONE);
 
             switch (connectionStatus) {
             
@@ -327,7 +328,8 @@ public class ProviderListItem extends LinearLayout {
                 break;
             }
 
-            mLoginName.setText(secondRowText);
+            if (mLoginName != null)
+                mLoginName.setText(secondRowText);
 
         } 
         
