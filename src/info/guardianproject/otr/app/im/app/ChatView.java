@@ -1470,7 +1470,7 @@ public class ChatView extends LinearLayout {
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
             mComposeMessage.setHint(R.string.compose_hint);
             
-            visibility = View.GONE;
+            visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);

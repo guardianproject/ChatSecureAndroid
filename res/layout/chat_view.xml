@@ -30,14 +30,16 @@
     <LinearLayout android:id="@+id/warning"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        >
 
         <ImageView android:id="@+id/warningIcon"
             android:layout_width="16dip"
             android:layout_height="16dip"
             android:scaleType="fitCenter"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_im_message_not_sent" />
 
         <TextView android:id="@+id/warningText"
@@ -191,7 +193,7 @@
         android:paddingBottom="5sp"
         android:src="@drawable/smiley_smile" />
       
-      <EditText android:id="@+id/composeMessage"
+      <EditText android:id="@+id/composeMessage"  
             android:layout_width="0dip"
            
             android:layout_height="wrap_content"
