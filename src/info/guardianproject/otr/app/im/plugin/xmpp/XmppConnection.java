@@ -1049,8 +1049,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setNotMatchingDomainCheckEnabled(true);
             mConfig.setSelfSignedCertificateEnabled(false);
             
-            // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
-            // can enable MITM.
             if (sslContext == null)
             {
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
@@ -1077,8 +1075,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // if it finds a cert, still use it, but don't check anything since 
             // TLS errors are not expected by the user
             mConfig.setSecurityMode(SecurityMode.enabled);
-            // Per XMPP specs, cert must match domain, not SRV lookup result.  Otherwise, DNS spoofing
-            // can enable MITM.
+
             if (sslContext == null)
             {
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
@@ -1092,6 +1089,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
               
                 sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
             }
+            mConfig.setCustomSSLContext(sslContext);
 
             if (!allowPlainAuth)
                 SASLAuthentication.unsupportSASLMechanism("PLAIN");
