@@ -205,6 +205,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
+                    
+                    refreshLastConnection();
                 }
             }
 
@@ -235,7 +237,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         setupSpinners();
         
-        setSpinnerState();
        
         
     }
@@ -585,7 +586,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 {
                     mChatPager.setCurrentItem(0);
                     refreshSpinners();
-                    initAccount(this, mAccountId);
+                    initAccount(mAccountId);
                 }
 
                
@@ -785,7 +786,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         case R.id.menu_grid:
             
             if (mContactList != null)
-                mContactList.toggleGrid();
+            {
+                boolean gridState = mContactList.toggleGrid();
+                
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+                settings.edit().putBoolean("showGrid", gridState).commit();
+                 
+                
+            }
             
             return true;
         case android.R.id.home:
@@ -1315,7 +1323,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
            @Override
            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-               initAccount(NewChatActivity.this,mAccountIds[itemPosition]);
+               initAccount(mAccountIds[itemPosition]);
                return true;
            }
             
@@ -1330,6 +1338,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mProviderCursor.moveToNext();
             
         }
+        
+
+        setSpinnerState();
     }
     
     public void setSpinnerState ()
@@ -1340,7 +1351,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         if (mAccountIds.length == 1) //only one account, hide the spinner
         {
-            initAccount(this,mAccountIds[0]);
+            initAccount(mAccountIds[0]);
         }
         else if (getAccountId() != -1) //multiple accounts, so select a spinner based on user input
         {
@@ -1391,13 +1402,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
        
     }
     
-    public void initAccount (Activity activity, long accountId)
+    public void initAccount (long accountId)
     {
 
         if (accountId == -1)
             return;
         
-        ContentResolver cr = activity.getContentResolver();
+        ContentResolver cr = getContentResolver();
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), null,
                 null, null, null);
       
@@ -1412,7 +1423,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
 
         long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
-        ((NewChatActivity)activity).setLastProviderId(providerId);
+        setLastProviderId(providerId);
         // FIXME doesn't mAccountId need to be set here?
         
         initConnection (accountId, providerId);
@@ -1420,7 +1431,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         c.close();
     }
     
-    private void initConnection (long accountId, long providerId)
+    public void refreshLastConnection ()
+    {
+        if (mAccountId != -1 && mLastProviderId != -1)
+            initConnection(mAccountId, mLastProviderId);
+        
+    }
+    
+    public void initConnection (long accountId, long providerId)
     {
         IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
       
@@ -1436,16 +1454,18 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         if (conn != null && mContactList != null)
         {
-            mContactList.mFilterView.setConnection(conn);
-            mContactList.mPresenceView.setConnection(conn);
+            mContactList.setConnection(conn);
 
-            try {
-                mContactList.mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
-            } catch (RemoteException e) {        
-                mContactList.mPresenceView.loggingIn(false);
-            //    mHandler.showServiceErrorAlert();
+            if (mContactList.mPresenceView != null)
+            {
+                try {
+                    mContactList.mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
+                } catch (RemoteException e) {        
+                    mContactList.mPresenceView.loggingIn(false);
+                //    mHandler.showServiceErrorAlert();
+                }
             }
-
+            
             QueryMap settingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), false, null);
             
             Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
@@ -1456,7 +1476,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             Uri.Builder builder = baseUri.buildUpon();
             ContentUris.appendId(builder, providerId);
             ContentUris.appendId(builder, accountId);
-            mContactList.mFilterView.doFilter(builder.build(), null);
+            
+            if (mContactList.mFilterView != null)
+                mContactList.mFilterView.doFilter(builder.build(), null);
+            
         }        
         
         
@@ -1501,7 +1524,18 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         boolean showGrid = true;
         
         ImApp mApp = null;
+        IImConnection mConn = null;
         
+        public void setConnection (IImConnection conn)
+        {
+            mConn = conn;
+            
+            if (mFilterView != null)
+                mFilterView.setConnection(mConn);
+            
+            if (mPresenceView != null)
+                mPresenceView.setConnection(mConn);
+        }
 
         private Handler mPresenceHandler = new Handler()
         {
@@ -1534,17 +1568,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
          
          
-         public void toggleGrid ()
+         public boolean toggleGrid ()
          {
              showGrid = !showGrid;
           
-             
-             if (getActivity () != null) 
-             {
-                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                 settings.edit().putBoolean("showGrid", showGrid).commit();
-                 
-             }
              
              
           // The reload fragment code here !
@@ -1553,6 +1580,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     .detach(this)
                     .attach(this)
                     .commit();
+                 
+                 return showGrid;
              
          }
 
@@ -1589,8 +1618,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              });
              
              ((AbsListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
-             
-             
+
              
              
             //  QueryMap mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(), true, mHandler);
@@ -1600,7 +1628,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
            //   uri = ContentUris.withAppendedId(uri, providerId);
             //  uri = ContentUris.withAppendedId(uri, accountId);
          //     mFilterView.doFilter( Imps.Contacts.CONTENT_URI_CONTACTS_BY, null);
-              
+             
+             
+              if (getActivity() != null)
+              {
+                  ((NewChatActivity)getActivity()).refreshLastConnection();
+              }
               return mFilterView;
            
          }
@@ -1615,7 +1648,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
             showGrid = settings.getBoolean("showGrid", false);
-            
+
+            ((NewChatActivity)activity).refreshLastConnection();
         }
 
         @Override
@@ -1629,8 +1663,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         @Override
         public void onDestroyView() {
-            mFilterView.setConnection(null);
-
             super.onDestroyView();
         }
 

@@ -50,6 +50,7 @@
             android:fontFamily="sans-serif-light"
              />
         
+        <!-- 
          <Switch
                 android:id="@+id/otrSwitch"
             android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat_msg_status_ok"
              />
-        
+         -->
         
     </LinearLayout>
 
@@ -195,7 +196,7 @@
             android:maxLines="4"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
-             
+             android:textColor="#333333"
          android:layout_alignParentLeft="true"
             />
            

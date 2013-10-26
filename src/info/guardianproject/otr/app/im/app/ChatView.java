@@ -166,8 +166,8 @@ public class ChatView extends LinearLayout {
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
     
-    private CompoundButton mOtrSwitch;
-    private boolean mOtrSwitchTouched = false;
+    //private CompoundButton mOtrSwitch;
+    //private boolean mOtrSwitchTouched = false;
     
     private boolean mIsSelected = false;
     
@@ -190,7 +190,7 @@ public class ChatView extends LinearLayout {
 
             setOTRState(isChecked);
 
-            mOtrSwitchTouched = true;
+            //mOtrSwitchTouched = true;
             updateWarningView();
         }
         
@@ -279,7 +279,7 @@ public class ChatView extends LinearLayout {
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
             mExpectingDelivery = false;
-            setDeliveryIcon();
+          
             
             if (c != null)
             {
@@ -466,7 +466,7 @@ public class ChatView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
       //  mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
-        mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
+     //   mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
        // mTitle = (TextView) findViewById(R.id.title);
         mHistory = (ListView) findViewById(R.id.history);
         mComposeMessage = (EditText) findViewById(R.id.composeMessage);
@@ -477,7 +477,7 @@ public class ChatView extends LinearLayout {
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
      
-        mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
+       // mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
        
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
@@ -524,9 +524,7 @@ public class ChatView extends LinearLayout {
 
         });
         
-        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-        
-        
+        //mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
         
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -823,7 +821,6 @@ public class ChatView extends LinearLayout {
         //mComposeMessage.setText("");
     
         updateWarningView();
-        setDeliveryIcon();
     }
 
     private void updateContactInfo() {
@@ -901,14 +898,6 @@ public class ChatView extends LinearLayout {
             int presenceResId = PresenceUtils.getStatusIconId(mPresenceStatus);
             //mStatusIcon.setImageDrawable(brandingRes.getDrawable(presenceResId));
             
-        }
-    }
-
-    private void setDeliveryIcon() {
-        if (mExpectingDelivery) {
-            mDeliveryIcon.setVisibility(VISIBLE);
-        } else {
-            mDeliveryIcon.setVisibility(GONE);
         }
     }
 
@@ -1077,7 +1066,7 @@ public class ChatView extends LinearLayout {
 
         // This is redundant if there are messages in view, because the cursor requery will update everything.
         // However, if there are no messages, no update will trigger below, and we still want this to update.
-        updateWarningView(true);
+        updateWarningView();
 
         // TODO: async query?
         Cursor cursor = getMessageCursor();
@@ -1316,21 +1305,15 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    void updateWarningView()
-    {
-        updateWarningView(false);
-    }
-    
-
-    void updateWarningView(boolean overrideUserTouch) {
+    void updateWarningView() {
                 
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
         boolean isConnected;
 
-        if (overrideUserTouch)
-            mOtrSwitchTouched = false;
+       // if (overrideUserTouch)
+         //   mOtrSwitchTouched = false;
 
         if (this.isGroupChat())
         {
@@ -1407,13 +1390,6 @@ public class ChatView extends LinearLayout {
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                     mComposeMessage.setHint(R.string.compose_hint);
                     
-                    if (!mOtrSwitchTouched)
-                    { 
-                        mOtrSwitch.setOnCheckedChangeListener(null);
-                        mOtrSwitch.setChecked(false);
-                        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                    }
-                    
                     mWarningText.setTextColor(Color.WHITE);
                     mStatusWarningView.setBackgroundResource(R.color.otr_red);
                     message = mContext.getString(R.string.otr_session_status_plaintext);
@@ -1426,10 +1402,6 @@ public class ChatView extends LinearLayout {
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
                
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(true);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                    
                     try {
                         IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
                                         
@@ -1482,14 +1454,7 @@ public class ChatView extends LinearLayout {
           
                 mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                 mComposeMessage.setHint(R.string.compose_hint);
-                
-                if (!mOtrSwitchTouched)
-                { 
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(true);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                }
-                
+          
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
@@ -1504,13 +1469,6 @@ public class ChatView extends LinearLayout {
 
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
             mComposeMessage.setHint(R.string.compose_hint);
-            
-            if (!mOtrSwitchTouched)
-            {
-                mOtrSwitch.setOnCheckedChangeListener(null);
-                mOtrSwitch.setChecked(false);
-                mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-            }
             
             visibility = View.GONE;
             iconVisibility = View.VISIBLE;
@@ -2021,7 +1979,6 @@ public class ChatView extends LinearLayout {
             if (!mExpectingDelivery && isDelivered) {
                 log("Setting delivery icon");
                 mExpectingDelivery = true;
-                setDeliveryIcon();
                 scheduleRequery(DEFAULT_QUERY_INTERVAL); // FIXME workaround to no refresh
             } else if (cursor.getPosition() == cursor.getCount() - 1) {
                 // if showTimeStamp is false for the latest message, then set a timer to query the

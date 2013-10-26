@@ -50,6 +50,8 @@
             android:fontFamily="sans-serif-light"
              />
         
+        <!--              android:textColor="#333333"
+        
          <CheckBox
             android:id="@+id/otrSwitch"
             android:layout_weight="0"
@@ -67,6 +69,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat_msg_status_ok"
              />
+              -->
     
     </LinearLayout>
     
@@ -198,7 +201,7 @@
             android:maxLines="4"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
-             
+             android:textColor="#333333"
             />
            
     <ImageButton
