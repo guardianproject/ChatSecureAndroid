@@ -203,10 +203,13 @@ public final class PRNGFixes {
                 }
                 out.write(bytes);
                 out.flush();
-                mSeeded = true;
             } catch (IOException e) {
-                throw new SecurityException(
-                        "Failed to mix seed into " + URANDOM_FILE, e);
+                // On a small fraction of devices /dev/urandom is not writable.
+                // Log and ignore.
+                Log.w(PRNGFixes.class.getSimpleName(),
+                        "Failed to mix seed into " + URANDOM_FILE);
+            } finally {
+                mSeeded = true;
             }
         }
 
@@ -257,15 +260,10 @@ public final class PRNGFixes {
             }
         }
 
-        private OutputStream getUrandomOutputStream() {
+        private OutputStream getUrandomOutputStream() throws IOException {
             synchronized (sLock) {
                 if (sUrandomOut == null) {
-                    try {
                         sUrandomOut = new FileOutputStream(URANDOM_FILE);
-                    } catch (IOException e) {
-                        throw new SecurityException("Failed to open "
-                                + URANDOM_FILE + " for writing", e);
-                    }
                 }
                 return sUrandomOut;
             }
