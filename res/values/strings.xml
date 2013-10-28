@@ -659,7 +659,7 @@
 	
 	<string name="otr_session_status_plaintext">Encryption is off</string>
 	<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
-	<string name="otr_session_status_finished">Encryption has been stopped</string>
+	<string name="otr_session_status_finished">Your contact has stopped the encrypted chat.</string>
 	<string name="otr_session_status_verified">Encrypted and verified!</string>
 	
 	<string name="account_wizard_setup_title">Account Wizard</string>
