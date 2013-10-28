@@ -1,8 +1,5 @@
 package info.guardianproject.util;
 
-import android.os.Build;
-import android.os.Process;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,6 +14,10 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.SecureRandomSpi;
 import java.security.Security;
+
+import android.os.Build;
+import android.os.Process;
+import android.util.Log;
 
 /**
  * Fixes for the output of the default PRNG having low entropy.
@@ -203,10 +204,13 @@ public final class PRNGFixes {
                 }
                 out.write(bytes);
                 out.flush();
-                mSeeded = true;
             } catch (IOException e) {
-                throw new SecurityException(
-                        "Failed to mix seed into " + URANDOM_FILE, e);
+                // On a small fraction of devices /dev/urandom is not writable.
+                // Log and ignore.
+                Log.w(PRNGFixes.class.getSimpleName(),
+                        "Failed to mix seed into " + URANDOM_FILE);
+            } finally {
+                mSeeded = true;
             }
         }
 
@@ -257,15 +261,10 @@ public final class PRNGFixes {
             }
         }
 
-        private OutputStream getUrandomOutputStream() {
+        private OutputStream getUrandomOutputStream() throws IOException {
             synchronized (sLock) {
                 if (sUrandomOut == null) {
-                    try {
                         sUrandomOut = new FileOutputStream(URANDOM_FILE);
-                    } catch (IOException e) {
-                        throw new SecurityException("Failed to open "
-                                + URANDOM_FILE + " for writing", e);
-                    }
                 }
                 return sUrandomOut;
             }
