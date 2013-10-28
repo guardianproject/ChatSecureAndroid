@@ -1109,7 +1109,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
         
-        mConfig.setRosterLoadedAtLogin(true);
+        mConfig.setRosterLoadedAtLogin(false);//we will load manually
         
         mConnection = new MyXMPPConnection(mConfig);
 
@@ -1723,6 +1723,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         debug(TAG,"could not add contact to list: " + e.getLocalizedMessage());
                     }
                 }
+
+                org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(contact.getAddress().getBareAddress());
+                qPresence.add(p);
+                handlePresenceChangedAsync();
+                
                 
             }
              
@@ -2636,7 +2641,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
                     String hash = dpe.getValue("photo");
                     
-                    if (hash != null && mLoadAvatars)
+                    if (hash != null)
                         loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
                     
                 }

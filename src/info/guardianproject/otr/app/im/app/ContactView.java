@@ -40,7 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ContactView extends LinearLayout {
-    static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+    static final String[] CONTACT_PROJECTION_FULL = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
                                                 Imps.Contacts.SUBSCRIPTION_TYPE,
@@ -53,6 +53,18 @@ public class ContactView extends LinearLayout {
                                                 
     };
 
+    static final String[] CONTACT_PROJECTION_LIGHT = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
+                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
+                                                 Imps.Contacts.SUBSCRIPTION_TYPE,
+                                                 Imps.Contacts.SUBSCRIPTION_STATUS,
+                                                 Imps.Presence.PRESENCE_STATUS,
+                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
+                                                 Imps.Chats.LAST_MESSAGE_DATE,
+                                                 Imps.Chats.LAST_UNREAD_MESSAGE
+                                                 
+     };
+    
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
     static final int COLUMN_CONTACT_ACCOUNT = 2;

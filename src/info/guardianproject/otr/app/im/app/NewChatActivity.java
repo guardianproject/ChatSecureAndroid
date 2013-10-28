@@ -57,6 +57,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -232,7 +233,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         initSideBar ();
         
-        mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
+        mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager(),this);
         mChatPager.setAdapter(mChatPagerAdapter);
         
         if (icicle != null) { 
@@ -1153,41 +1154,79 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             // Although we get this on our main thread, the dispatch is async and can happen after onDestroy
             // Ensure we are still alive
             if (mCursorChats != null)
-                refreshChatViews();
-            else
-                Log.w(TAG, "got onChange after onDestroy");
+              refreshChatViews();
         }
+        
     }
 
     public class ChatViewPagerAdapter extends DynamicPagerAdapter {
         private MyContentObserver mCursorObserver;
 
-        public ChatViewPagerAdapter(FragmentManager fm) {
+        private CursorLoader cLoader;
+        
+        public ChatViewPagerAdapter(FragmentManager fm, Context context) {
             super(fm);
-            mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
+            
+            cLoader = new CursorLoader(context)
+            {
+                @Override
+                public void deliverResult (Cursor cursor)
+                {
+
+                   updateCursor(cursor);
+                }
+            };
             
             mCursorObserver = new MyContentObserver();
+            
+            cLoader.setUri(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS);
+            cLoader.setProjection(ChatView.CHAT_PROJECTION);
+            
+            mCursorChats = cLoader.loadInBackground();
             mCursorChats.registerContentObserver(mCursorObserver);
         }
         
         public void onDestroy() {
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-            mCursorChats = null;
+            if (mCursorChats != null)
+            {
+                mCursorChats.unregisterContentObserver(mCursorObserver);
+                mCursorChats.close();
+                mCursorChats = null;
+            }
         }
 
-        @Override
-        public void notifyDataSetChanged() {
-            // In case that onDestroy was called first
+        private void updateCursor (Cursor cursor)
+        {
+         // In case that onDestroy was called first
             // FIXME check if this can actually happen
-            if (mCursorChats == null)
-                return;
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-
-            mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
+            if (mCursorChats != null)
+            {
+                
+                mCursorChats.unregisterContentObserver(mCursorObserver);
+                mCursorChats.close();
+            }
+            
+            mCursorChats = cursor;
             mCursorChats.registerContentObserver(mCursorObserver);
             
+            super.notifyDataSetChanged();
+            
+        }
+        
+        @Override
+        public void notifyDataSetChanged() {
+            
+            
+            if (mCursorChats != null)
+            {
+                
+                mCursorChats.unregisterContentObserver(mCursorObserver);
+                mCursorChats.close();
+            }
+            
+            mCursorChats = cLoader.loadInBackground();
+            mCursorChats.registerContentObserver(mCursorObserver);
+        
             super.notifyDataSetChanged();
         }
 

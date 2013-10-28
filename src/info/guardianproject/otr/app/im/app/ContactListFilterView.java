@@ -330,13 +330,17 @@ public class ContactListFilterView extends LinearLayout implements AbsListView.O
         
         CursorLoader cursorloader = new CursorLoader(getContext());
         cursorloader.setUri(mUri);
-        cursorloader.setProjection(ContactView.CONTACT_PROJECTION);
+        
+        if (mFilterList instanceof ListView)
+            cursorloader.setProjection(ContactView.CONTACT_PROJECTION_LIGHT);
+        else
+            cursorloader.setProjection(ContactView.CONTACT_PROJECTION_FULL);
+             
         cursorloader.setSortOrder(Imps.Contacts.DEFAULT_SORT_ORDER);
         cursorloader.setSelection(selection);
         
         Cursor cursor = cursorloader.loadInBackground();
 
-        
         return cursor;
     }
 
@@ -362,6 +366,7 @@ public class ContactListFilterView extends LinearLayout implements AbsListView.O
         }
 
        
+        /*
         @Override
         protected void onContentChanged() {
             
@@ -392,7 +397,8 @@ public class ContactListFilterView extends LinearLayout implements AbsListView.O
                 }, 500l);
             }
                 
-        }
+        }*/
+        
 
         @Override
         public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
