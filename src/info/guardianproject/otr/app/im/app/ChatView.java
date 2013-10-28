@@ -1364,7 +1364,8 @@ public class ChatView extends LinearLayout {
                 visibility = View.GONE;
                 message = "";
 
-                mActivity.updateEncryptionMenuState(false, false);
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
                 
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
@@ -1384,12 +1385,13 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
 
-                mActivity.updateEncryptionMenuState(false, false);
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
-
-                mActivity.updateEncryptionMenuState(false, false);
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
                 
                 visibility = View.GONE;
                 
@@ -1403,6 +1405,9 @@ public class ChatView extends LinearLayout {
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
 
                 visibility = View.GONE;
+                
+                mComposeMessage.setHint(R.string.compose_hint_secure);
+
                 
                 mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
@@ -1430,7 +1435,8 @@ public class ChatView extends LinearLayout {
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
                                 
-                                mActivity.updateEncryptionMenuState(true, false);
+                                if (mIsSelected)
+                                    mActivity.updateEncryptionMenuState(true, false);
                                 
                                 
                             } else {
@@ -1439,7 +1445,8 @@ public class ChatView extends LinearLayout {
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
                                 
-                                mActivity.updateEncryptionMenuState(true, true);
+                                if (mIsSelected)
+                                    mActivity.updateEncryptionMenuState(true, true);
                                 
                             }
                         } else {
@@ -1447,7 +1454,8 @@ public class ChatView extends LinearLayout {
                             mStatusWarningView.setBackgroundResource(R.color.otr_red);
                             message = mContext.getString(R.string.otr_session_status_plaintext);
                             
-                            mActivity.updateEncryptionMenuState(false, false);
+                            if (mIsSelected)        
+                                mActivity.updateEncryptionMenuState(false, false);
                         }
                         
 
@@ -1465,7 +1473,8 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
-                mActivity.updateEncryptionMenuState(true, false);
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(true, false);
 
                 visibility = View.VISIBLE;
             }  
@@ -1482,8 +1491,8 @@ public class ChatView extends LinearLayout {
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
             
-
-            mActivity.updateEncryptionMenuState(false, false);
+            if (mIsSelected)
+                mActivity.updateEncryptionMenuState(false, false);
         }
         
         mStatusWarningView.setVisibility(visibility);
