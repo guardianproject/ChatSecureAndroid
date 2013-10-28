@@ -113,6 +113,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
+    
+    Cursor mProviderCursor = null;
+    long[] mAccountIds;
+    
+    
 
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
@@ -191,6 +196,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                            
                     }
                     
+
+                    
+                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    
+                    
                 }
                 else
                 {
@@ -207,6 +217,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     
                     refreshLastConnection();
+                    
+
+                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+                    
                 }
             }
 
@@ -578,25 +592,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     }
                 }
             }
-            else
+            else if (intent.hasExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID))
             {
+                //set the current account id
                 mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,-1L);
                 
-                if (mContactList != null)
-                {
+                //refresh and set the actionbar spinner state
+                refreshSpinners();
+                
+                //move the pager back to the first page
+                if (mChatPager != null)
                     mChatPager.setCurrentItem(0);
-                    refreshSpinners();
-                    initAccount(mAccountId);
-                }
-
-               
+                               
+            }
+            else
+            {
+                refreshLastConnection();
             }
         }
         
-        if (mContactList != null)
-        {
-            setSpinnerState();
-        }
         
     }
     
@@ -1288,9 +1302,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
     }
     
-    Cursor mProviderCursor = null;
-    long[] mAccountIds;
-    
     
     private void refreshSpinners ()
     {
@@ -1298,6 +1309,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 mProviderCursor.close();
         
         setupSpinners();
+        setSpinnerState();
     }
     
     private void setupSpinners ()
@@ -1338,7 +1350,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mProviderCursor.moveToNext();
             
         }
-        
 
         setSpinnerState();
     }
@@ -1353,10 +1364,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             initAccount(mAccountIds[0]);
         }
-        else if (getAccountId() != -1) //multiple accounts, so select a spinner based on user input
+        else if (mAccountId != -1) //multiple accounts, so select a spinner based on user input
         {
 
-            
             int selIdx = 0;
             
             for (long accountId : mAccountIds)
@@ -1372,33 +1382,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
             
         }
-        else
-        {
-            List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
-            
-            for (IImConnection conn : listConns)
-            {
-                try
-                {
-                    long activeAccountId = conn.getAccountId();
-                    int spinnerIdx = -1;
-                    for (long accountId : mAccountIds )
-                    {
-                        spinnerIdx++;
-                        
-                        if (accountId == activeAccountId)
-                        {
-                            getSherlock().getActionBar().setSelectedNavigationItem(spinnerIdx);
-                            
-                            break;
-                        }
-                    }
-                    
-                }
-                catch (Exception e){}
-            }
-        }
-        
        
     }
     
