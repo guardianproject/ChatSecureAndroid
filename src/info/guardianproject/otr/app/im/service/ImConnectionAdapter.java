@@ -187,6 +187,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     public void setProxy(String type, String host, int port) throws RemoteException {
         mConnection.setProxy(type, host, port);
     }
+    
+    
 
     private HashMap<String, String> querySessionCookie(ContentResolver cr) {
         Cursor c = cr.query(getSessionCookiesUri(), SESSION_COOKIE_PROJECTION, null, null, null);
@@ -522,5 +524,12 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             mService.getStatusBarNotifier().notifyGroupInvitation(mProviderId, mAccountId, id,
                     sender);
         }
+    }
+
+    @Override
+    public void setLoadAvatars(boolean doLoad) throws RemoteException {
+        
+        mConnection.setLoadAvatars(doLoad);
+        
     }
 }

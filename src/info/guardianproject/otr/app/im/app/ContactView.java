@@ -134,8 +134,6 @@ public class ContactView extends LinearLayout {
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
 
-       
-         
         if (!TextUtils.isEmpty(underLineText)) {
             // highlight/underline the word being searched
             String lowercase = nickname.toLowerCase();
@@ -155,7 +153,7 @@ public class ContactView extends LinearLayout {
         else
             mHolder.mLine1.setText(nickname);
         
-        if (mHolder.mAvatar != null)
+        if (mHolder.mAvatar != null && !scrolling)
         {
             if (Imps.Contacts.TYPE_GROUP == type) {
                 mHolder.mAvatar.setImageResource(R.drawable.group_chat);

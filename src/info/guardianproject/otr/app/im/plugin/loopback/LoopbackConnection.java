@@ -292,4 +292,10 @@ public class LoopbackConnection extends ImConnection {
     @Override
     public void logout() {
     }
+
+    @Override
+    public void setLoadAvatars(boolean doLoad) {
+        // TODO Auto-generated method stub
+        
+    }
 }

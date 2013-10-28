@@ -808,6 +808,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
                 settings.edit().putBoolean("showGrid", gridState).commit();
                  
+                for (IImConnection conn : mApp.getActiveConnections())
+                {
+                    try {
+                        conn.setLoadAvatars(gridState);
+                    } catch (RemoteException e) {
+                       //could not set connection state
+                    }
+                }
+                
                 
             }
             
@@ -1441,6 +1450,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             mContactList.setConnection(conn);
 
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            boolean showGrid = settings.getBoolean("showGrid", false);
+            try {
+                conn.setLoadAvatars(showGrid);
+            } catch (RemoteException e1) {
+                LogCleaner.error(TAG, "error setting connection load avatar state",e1);
+            }
+            
             if (mContactList.mPresenceView != null)
             {
                 try {

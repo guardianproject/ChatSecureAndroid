@@ -418,9 +418,21 @@ public class ImApp extends Application {
     public synchronized void forceStopImService() 
     {
         if (mImService != null) {
+            
+            for (IImConnection conn: getActiveConnections())
+            {
+                try
+                {
+                    conn.logout();
+                }
+                catch (Exception e){}
+            }
+            
+            
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("stop ImService");
 
+            
             mApplicationContext.unbindService(mImServiceConn);
             mImService = null;
 
