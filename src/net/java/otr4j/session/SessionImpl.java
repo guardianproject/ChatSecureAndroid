@@ -348,7 +348,7 @@ public class SessionImpl implements Session {
             logger.finest("Query message with V2 support found.");
             getAuthContext().respondV2Auth();
         } else if (queryMessage.versions.contains(1) && policy.getAllowV1()) {
-            throw new UnsupportedOperationException();
+            logger.finest("Query message with V1 support found - ignoring.");
         }
     }
 
