@@ -789,7 +789,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             if (getCurrentChatView() != null)
             {
-                boolean isEnc = (getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED);
+                boolean isEnc = (getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED || 
+                        getCurrentChatView().mLastSessionStatus == SessionStatus.FINISHED
+                        );
                 
                 getCurrentChatView().setOTRState(!isEnc);
             

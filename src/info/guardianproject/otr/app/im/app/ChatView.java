@@ -225,7 +225,13 @@ public class ChatView extends LinearLayout {
                         {
                             otrChatSession.stopChatEncryption();    
                             mActivity.setSupportProgressBarIndeterminateVisibility(false);
-                        }                 
+                            
+                        }   
+                        
+
+                        mHandler.postAtTime(new Runnable (){
+                           public void run (){ updateWarningView();}
+                        }, 2000);
                     
                      
                     }
@@ -1365,9 +1371,6 @@ public class ChatView extends LinearLayout {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
 
-            } else if (mPresenceStatus == Imps.Presence.OFFLINE) {
-                visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_offline_warning, mRemoteNickname);
             } else {
 
                 visibility = View.GONE;
@@ -1376,6 +1379,7 @@ public class ChatView extends LinearLayout {
 
             if (mPresenceStatus == Imps.Presence.OFFLINE)
             {
+                visibility = View.VISIBLE;
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
@@ -1920,6 +1924,7 @@ public class ChatView extends LinearLayout {
             boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
             
             DeliveryState deliveryState = DeliveryState.NEUTRAL;
+            
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
             }
