@@ -1082,6 +1082,8 @@ public class ChatView extends LinearLayout {
     public void closeChatSession() {
         if (getChatSession() != null) {
             try {
+                setOTRState(false);
+                updateWarningView();
                 getChatSession().leave();
                 
             } catch (RemoteException e) {
