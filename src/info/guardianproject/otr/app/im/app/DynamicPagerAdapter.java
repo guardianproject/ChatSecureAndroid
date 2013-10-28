@@ -125,6 +125,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
             mFragments.add(null);
             mSavedState.add(null);
         }
+
         super.notifyDataSetChanged();
     }
     
@@ -165,19 +166,32 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int _position, Object object) {
         Fragment fragment = (Fragment)object;
-
+        // The supplied position is unreliable.  When an item is deleted, the pre-reorg position is supplied,
+        // but when an item is scrolled off screen due to an insert, the post-reorg position is supplied.
+        // Find the item ourselves.
+        int position = mFragments.indexOf(fragment);
+        
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + object
-                + " v=" + ((Fragment)object).getView());
-        while (mSavedState.size() <= position) {
-            mSavedState.add(null);
+
+        // Fragment might already have been reorged out of the list
+        if (position >= 0)
+        {
+            if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + object
+                    + " v=" + ((Fragment)object).getView());
+            while (mSavedState.size() <= position) {
+                mSavedState.add(null);
+            }
+            mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
+            mFragments.set(position, null);
         }
-        mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
-        mFragments.set(position, null);
+        
+        // TODO do we need to unset the visible hint, etc.?
+        if (mCurrentPrimaryItem == fragment)
+            mCurrentPrimaryItem = null;
 
         mCurTransaction.remove(fragment);
     }
@@ -190,11 +204,11 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
                 mCurrentPrimaryItem.setMenuVisibility(false);
                 mCurrentPrimaryItem.setUserVisibleHint(false);
             }
+            mCurrentPrimaryItem = fragment;
             if (fragment != null) {
                 fragment.setMenuVisibility(true);
                 fragment.setUserVisibleHint(true);
             }
-            mCurrentPrimaryItem = fragment;
         }
     }
 
