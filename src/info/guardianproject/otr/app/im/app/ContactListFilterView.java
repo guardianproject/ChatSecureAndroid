@@ -366,7 +366,7 @@ public class ContactListFilterView extends LinearLayout implements AbsListView.O
         }
 
        
-        /*
+        
         @Override
         protected void onContentChanged() {
             
@@ -394,10 +394,10 @@ public class ContactListFilterView extends LinearLayout implements AbsListView.O
                     }
                     
                     
-                }, 500l);
+                }, 2000l);
             }
                 
-        }*/
+        }
         
 
         @Override
