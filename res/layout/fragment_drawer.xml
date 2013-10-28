@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="180dp"
     android:layout_height="match_parent"
-    android:background="@drawable/bgcolor1"
-    android:orientation="vertical" >
-<!-- android:background="#565552" -->
+    android:orientation="vertical" 
+	android:background="#565552">
 <View
     android:layout_width="fill_parent"
     android:layout_height="1dp"
@@ -18,7 +17,7 @@
         android:drawableLeft="@drawable/social_person"
         android:gravity="left|center_vertical"
         android:text="@string/menu_view_accounts"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
          android:padding="3sp"
          />
     
@@ -39,7 +38,7 @@
         android:drawableLeft="@drawable/social_add_person"
         android:gravity="left|center_vertical"
         android:text="@string/add_contact_title"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
         
          android:padding="3sp"
          />
@@ -60,7 +59,7 @@
         android:drawableLeft="@drawable/social_add_group"
         android:gravity="left|center_vertical"
         android:text="@string/menu_new_group_chat"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
          android:padding="3sp"
         
          />
@@ -80,7 +79,7 @@
         android:drawableLeft="@drawable/sidebar_key"
         android:gravity="left|center_vertical"
         android:text="@string/menu_sidebar_qr"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
          android:padding="3sp"
         
          />
@@ -100,7 +99,7 @@
         android:drawableLeft="@drawable/sidebar_settings"
         android:gravity="left|center_vertical"
         android:text="@string/menu_settings"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
          android:padding="3sp"
         
          />
@@ -120,7 +119,7 @@
         android:drawableLeft="@drawable/ic_context_panic"
         android:gravity="left|center_vertical"
         android:text="@string/menu_panic"
-                android:textColor="#dddddd"
+                android:textColor="#ffffff"
         android:padding="3sp"
         
         

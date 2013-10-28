@@ -75,6 +75,13 @@
           android:title="@string/pref_theme_dark"
           android:summary="@string/pref_theme_dark_summary"
           android:defaultValue="false" />
+ 
+  
+  <CheckBoxPreference
+          android:key="showGrid"
+          android:title="@string/pref_show_grid"
+          android:summary="@string/pref_show_grid_summary"
+          android:defaultValue="false" />
   
  
    <EditTextPreference 

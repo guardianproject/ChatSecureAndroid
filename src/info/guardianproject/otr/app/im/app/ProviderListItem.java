@@ -17,7 +17,9 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -30,6 +32,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,11 +89,15 @@ public class ProviderListItem extends LinearLayout {
     private long mAccountId;
 
     private boolean mShowLongName = false;
+    private ImApp mApp = null;
     
     public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
         mActivity = activity;
         mSignInManager = signInManager;
+        
+        mApp = (ImApp)activity.getApplication();
+        
     }
 
     public void init(Cursor c, boolean showLongName) {
@@ -234,14 +241,32 @@ public class ProviderListItem extends LinearLayout {
 
             
             int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
+            
+            IImConnection conn = mApp.getConnection(providerId);
+            if (conn == null)
+            {
+                connectionStatus = ImConnection.DISCONNECTED;
+            }
+            else
+            {
+                try {
+                    connectionStatus = conn.getState();
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
 
             StringBuffer secondRowText = new StringBuffer();
 
-            mChatView.setVisibility(View.GONE);
+            if (mChatView != null)
+              mChatView.setVisibility(View.GONE);
 
             switch (connectionStatus) {
             
-            case Imps.ConnectionStatus.CONNECTING:
+            case ImConnection.LOGGING_IN:
+            case ImConnection.SUSPENDING:
+            case ImConnection.SUSPENDED:
                 secondRowText.append(r.getString(R.string.signing_in_wait));
 
                 if (mSignInSwitch != null && (!mUserChanged))
@@ -253,7 +278,7 @@ public class ProviderListItem extends LinearLayout {
                 
                 break;
 
-            case Imps.ConnectionStatus.ONLINE:
+            case ImConnection.LOGGED_IN:
             
                 if (mSignInSwitch != null && (!mUserChanged))
                 {
@@ -327,7 +352,8 @@ public class ProviderListItem extends LinearLayout {
                 break;
             }
 
-            mLoginName.setText(secondRowText);
+            if (mLoginName != null)
+                mLoginName.setText(secondRowText);
 
         } 
         

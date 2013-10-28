@@ -284,7 +284,8 @@
     <string name="me">Me</string>
     <!-- On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode -->
-    <string name="compose_hint">Send a message</string> 
+    <string name="compose_hint">Send a message</string>
+    <string name="compose_hint_secure">Send secure message</string>  
        
     <!-- Inline status message in the chat history list, when receiving a "online" status update. -->
     <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> is online</string>
@@ -659,7 +660,7 @@
 	
 	<string name="otr_session_status_plaintext">Encryption is off</string>
 	<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
-	<string name="otr_session_status_finished">Encryption has been stopped</string>
+	<string name="otr_session_status_finished">Your contact has stopped the encrypted chat.</string>
 	<string name="otr_session_status_verified">Encrypted and verified!</string>
 	
 	<string name="account_wizard_setup_title">Account Wizard</string>
@@ -853,5 +854,11 @@
     <string name="accept_transfer_">Accept transfer?</string>
     
     <string name="wants_to_send_you_the_file">wants to send you the file</string>
+    
+    <string name="menu_show_grid">Show Grid</string>
+    
+    <string name="pref_show_grid">Show Contact Grid</string>
+    <string name="pref_show_grid_summary">Display contact list as avatar grid</string>
+    
 </resources>
 

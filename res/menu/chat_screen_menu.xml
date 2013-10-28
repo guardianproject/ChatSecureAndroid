@@ -20,17 +20,97 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    
+     <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" 
+        android:icon="@drawable/ic_menu_settings"
+         android:showAsAction="never"
+         />
+     
+     <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
+        
+         <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        />
+         </group>
+  
+  <group android:enabled="true" android:id="@+id/menu_group_otr_unverified" android:visible="false">
+        
+         <item 
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_menu_encrypted"
+          android:showAsAction="always"
+        > <menu>
+         <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"
+        android:icon="@drawable/ic_menu_view_profile"
+         android:showAsAction="always"
+         />
+    
+        <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        />
+        
+            </menu>
+             
+             
+         </item>
+         </group>
+         
+    <group android:enabled="true" android:id="@+id/menu_group_otr_verified" android:visible="false">
+        
+         <item 
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_verified"
+          android:showAsAction="always"
+        >
+              <menu>
+         <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_view_profile"
+        android:icon="@drawable/ic_menu_view_profile"
+         android:showAsAction="always"
+         />
+    
+        <item android:id="@+id/menu_otr"
+        android:title="@string/menu_otr_stop"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        />
+        
+            </menu>
+             
+         </item>
+         </group>
+     
     <group android:enabled="true" android:id="@+id/menu_group_chats" android:visible="false">
         
-    <item android:id="@+id/menu_send_image"
-        android:title="@string/menu_send_image"
-         android:showAsAction="never"
-        />
-    
-    <item android:id="@+id/menu_send_file"
+        
+        
+  
+    <item 
         android:title="@string/menu_send_file"
-         android:showAsAction="never"
+         android:showAsAction="always"
+         android:icon="@drawable/content_new_attachment"
+        >
+        <menu>
+              <item android:id="@+id/menu_send_file"
+        android:title="@string/menu_send_file"
+        
+         android:icon="@drawable/content_new_attachment"
         />
+            
+               <item android:id="@+id/menu_send_image"
+        android:title="@string/menu_send_image"
+         android:showAsAction="always"
+         
+         android:icon="@drawable/content_new_picture"
+        />
+        </menu>
+       </item>
     
     <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
@@ -47,20 +127,22 @@
          />
     </group>
     
-
+ <group android:enabled="true" android:id="@+id/menu_group_contacts" android:visible="true">
+   
      <item
     android:id="@+id/menu_search"
     android:actionViewClass="com.actionbarsherlock.widget.SearchView"
     android:icon="@drawable/ic_menu_search"
     android:showAsAction="ifRoom|collapseActionView"
     android:title="@string/menu_search_contacts"/>
-     
-     
-     <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings" 
-        android:icon="@drawable/ic_menu_settings"
-         android:showAsAction="always"
-         />
+    
+     <item android:id="@+id/menu_grid"
+        android:title="@string/menu_show_grid" 
+        android:icon="@drawable/ic_menu_grid"
+         android:showAsAction="always"/>
+    
+    
+     </group>
 <!--
 
     <item android:id="@+id/menu_block_contact"

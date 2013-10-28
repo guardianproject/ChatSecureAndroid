@@ -76,6 +76,7 @@ public class MessageView extends LinearLayout {
         ImageView mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
         ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
         ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
+        ImageView mEncryptionIcon = (ImageView) findViewById(R.id.iconEncryption);
         
     }
     
@@ -166,11 +167,25 @@ public class MessageView extends LinearLayout {
         }
         
         if (encryption == EncryptionState.NONE)
+        {
             mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+            mHolder.mEncryptionIcon.setVisibility(GONE);
+               
+        }
         else if (encryption == EncryptionState.ENCRYPTED)
+        {
             mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
+            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
+            
+        }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
+        {
             mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
+            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
+            
+        }
         
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
@@ -211,8 +226,9 @@ public class MessageView extends LinearLayout {
          }
          
         if (delivery == DeliveryState.DELIVERED) {
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.check16);
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
+            
         } else if (delivery == DeliveryState.UNDELIVERED) {
             mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
@@ -220,6 +236,26 @@ public class MessageView extends LinearLayout {
             mHolder.mDeliveryIcon.setVisibility(GONE);
         }
         
+        if (encryption == EncryptionState.NONE)
+        {
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_plaintext);
+            mHolder.mEncryptionIcon.setVisibility(GONE);
+               
+        }
+        else if (encryption == EncryptionState.ENCRYPTED)
+        {
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_encrypted);
+            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
+            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
+            
+        }
+        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
+        {
+            mHolder.mMessageContainer.setBackgroundResource(R.color.incoming_message_bg_verified);
+            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
+            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
+            
+        }
 
         if (date != null)
         {

@@ -22,12 +22,16 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
      >
 
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:padding="0dip"
+		android:paddingLeft="0dp"
 		android:id="@+id/message_container"
+		android:paddingTop="3dp"
+		android:paddingBottom="3dp"
+		
 		>
  <ImageView
             android:id="@+id/avatar_left"
@@ -52,7 +56,16 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="6dp"
+		    android:layout_marginLeft="3dp"
+		     android:visibility="gone"
+		    /> 
+		    <ImageView
+		    android:id="@+id/iconEncryption"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_vertical"
+		    android:layout_marginLeft="3dp"
+		    android:visibility="gone"
 		    /> 
 
 		 <ImageView

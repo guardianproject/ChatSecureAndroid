@@ -161,13 +161,13 @@ public class ChatView extends LinearLayout {
     private TextView mWarningText;
     
     private ViewPager mEmojiPager;
-    private View mActionBox;
+   // private View mActionBox;
 
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
     
-    private CompoundButton mOtrSwitch;
-    private boolean mOtrSwitchTouched = false;
+    //private CompoundButton mOtrSwitch;
+    //private boolean mOtrSwitchTouched = false;
     
     private boolean mIsSelected = false;
     
@@ -179,6 +179,7 @@ public class ChatView extends LinearLayout {
     public void setSelected (boolean isSelected)
     {
         mIsSelected = isSelected;
+        updateWarningView();
     }
     
     private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()
@@ -189,7 +190,7 @@ public class ChatView extends LinearLayout {
 
             setOTRState(isChecked);
 
-            mOtrSwitchTouched = true;
+            //mOtrSwitchTouched = true;
             updateWarningView();
         }
         
@@ -216,11 +217,21 @@ public class ChatView extends LinearLayout {
                             
                         if (otrEnabled) {
                             otrChatSession.startChatEncryption();
+                            mActivity.setSupportProgressBarIndeterminateVisibility(true);
+                            
+
                         }
                         else
                         {
                             otrChatSession.stopChatEncryption();    
-                        }                 
+                            mActivity.setSupportProgressBarIndeterminateVisibility(false);
+                            
+                        }   
+                        
+
+                        mHandler.postAtTime(new Runnable (){
+                           public void run (){ updateWarningView();}
+                        }, 2000);
                     
                      
                     }
@@ -274,7 +285,7 @@ public class ChatView extends LinearLayout {
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor c) {
             mExpectingDelivery = false;
-            setDeliveryIcon();
+          
             
             if (c != null)
             {
@@ -461,7 +472,7 @@ public class ChatView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
       //  mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
-        mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
+     //   mDeliveryIcon = (ImageView) findViewById(R.id.deliveryIcon);
        // mTitle = (TextView) findViewById(R.id.title);
         mHistory = (ListView) findViewById(R.id.history);
         mComposeMessage = (EditText) findViewById(R.id.composeMessage);
@@ -472,7 +483,7 @@ public class ChatView extends LinearLayout {
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
      
-        mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
+       // mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
        
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
@@ -519,9 +530,7 @@ public class ChatView extends LinearLayout {
 
         });
         
-        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-        
-        
+        //mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
         
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -580,6 +589,7 @@ public class ChatView extends LinearLayout {
             }
         });
 
+        /*
         mActionBox = (View)findViewById(R.id.actionBox);
         ImageButton btnActionBox = (ImageButton)findViewById(R.id.btnActionBox);
         btnActionBox.setOnClickListener(new OnClickListener ()
@@ -661,7 +671,7 @@ public class ChatView extends LinearLayout {
             }
             
         });
-        
+        */
         
         initEmoji();
         
@@ -716,7 +726,7 @@ public class ChatView extends LinearLayout {
             public void onClick(View v) {
                  
 
-                mActionBox.setVisibility(View.GONE);
+          //     mActionBox.setVisibility(View.GONE);
                 
                 if (mEmojiPager.getVisibility() == View.GONE)
                     mEmojiPager.setVisibility(View.VISIBLE);
@@ -817,7 +827,6 @@ public class ChatView extends LinearLayout {
         //mComposeMessage.setText("");
     
         updateWarningView();
-        setDeliveryIcon();
     }
 
     private void updateContactInfo() {
@@ -895,14 +904,6 @@ public class ChatView extends LinearLayout {
             int presenceResId = PresenceUtils.getStatusIconId(mPresenceStatus);
             //mStatusIcon.setImageDrawable(brandingRes.getDrawable(presenceResId));
             
-        }
-    }
-
-    private void setDeliveryIcon() {
-        if (mExpectingDelivery) {
-            mDeliveryIcon.setVisibility(VISIBLE);
-        } else {
-            mDeliveryIcon.setVisibility(GONE);
         }
     }
 
@@ -1071,7 +1072,7 @@ public class ChatView extends LinearLayout {
 
         // This is redundant if there are messages in view, because the cursor requery will update everything.
         // However, if there are no messages, no update will trigger below, and we still want this to update.
-        updateWarningView(true);
+        updateWarningView();
 
         // TODO: async query?
         Cursor cursor = getMessageCursor();
@@ -1087,6 +1088,8 @@ public class ChatView extends LinearLayout {
     public void closeChatSession() {
         if (getChatSession() != null) {
             try {
+                setOTRState(false);
+                updateWarningView();
                 getChatSession().leave();
                 
             } catch (RemoteException e) {
@@ -1227,7 +1230,7 @@ public class ChatView extends LinearLayout {
     void sendMessage() {
         
         mEmojiPager.setVisibility(View.GONE);
-        mActionBox.setVisibility(View.GONE);
+        //mActionBox.setVisibility(View.GONE);
         
         String msg = mComposeMessage.getText().toString();
 
@@ -1310,21 +1313,15 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    void updateWarningView()
-    {
-        updateWarningView(false);
-    }
-    
-
-    void updateWarningView(boolean overrideUserTouch) {
+    void updateWarningView() {
                 
         int visibility = View.GONE;
         int iconVisibility = View.GONE;
         String message = null;
         boolean isConnected;
 
-        if (overrideUserTouch)
-            mOtrSwitchTouched = false;
+       // if (overrideUserTouch)
+         //   mOtrSwitchTouched = false;
 
         if (this.isGroupChat())
         {
@@ -1366,51 +1363,56 @@ public class ChatView extends LinearLayout {
             if (mType == Imps.Contacts.TYPE_GROUP) {
                 visibility = View.GONE;
                 message = "";
+
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
+                
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
-            } else if (mPresenceStatus == Imps.Presence.OFFLINE) {
-                visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_offline_warning, mRemoteNickname);
+
             } else {
 
-                visibility = View.VISIBLE;
+                visibility = View.GONE;
 
             }
 
             if (mPresenceStatus == Imps.Presence.OFFLINE)
             {
+                visibility = View.VISIBLE;
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
-                                
+
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(false, false);
+                
+                visibility = View.GONE;
+                
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                     mComposeMessage.setHint(R.string.compose_hint);
-                    
-                    if (!mOtrSwitchTouched)
-                    { 
-                        mOtrSwitch.setOnCheckedChangeListener(null);
-                        mOtrSwitch.setChecked(false);
-                        mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                    }
                     
                     mWarningText.setTextColor(Color.WHITE);
                     mStatusWarningView.setBackgroundResource(R.color.otr_red);
                     message = mContext.getString(R.string.otr_session_status_plaintext);
             }
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
-               
+
+                visibility = View.GONE;
+                
+                mComposeMessage.setHint(R.string.compose_hint_secure);
+
+                
+                mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
                     mSendButton.setImageResource(R.drawable.ic_send_secure);
                
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(true);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                    
                     try {
                         IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
                                         
@@ -1432,16 +1434,28 @@ public class ChatView extends LinearLayout {
     
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
+                                
+                                if (mIsSelected)
+                                    mActivity.updateEncryptionMenuState(true, false);
+                                
+                                
                             } else {
                                 message = mContext.getString(R.string.otr_session_status_verified);
     
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
+                                
+                                if (mIsSelected)
+                                    mActivity.updateEncryptionMenuState(true, true);
+                                
                             }
                         } else {
                             mWarningText.setTextColor(Color.WHITE);
                             mStatusWarningView.setBackgroundResource(R.color.otr_red);
                             message = mContext.getString(R.string.otr_session_status_plaintext);
+                            
+                            if (mIsSelected)        
+                                mActivity.updateEncryptionMenuState(false, false);
                         }
                         
 
@@ -1454,18 +1468,15 @@ public class ChatView extends LinearLayout {
           
                 mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                 mComposeMessage.setHint(R.string.compose_hint);
-                
-                if (!mOtrSwitchTouched)
-                { 
-                    mOtrSwitch.setOnCheckedChangeListener(null);
-                    mOtrSwitch.setChecked(true);
-                    mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-                }
-                
+          
                 mWarningText.setTextColor(Color.WHITE);
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
+                if (mIsSelected)
+                    mActivity.updateEncryptionMenuState(true, false);
+
+                visibility = View.VISIBLE;
             }  
 
         } else {
@@ -1474,22 +1485,18 @@ public class ChatView extends LinearLayout {
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
             mComposeMessage.setHint(R.string.compose_hint);
             
-            if (!mOtrSwitchTouched)
-            {
-                mOtrSwitch.setOnCheckedChangeListener(null);
-                mOtrSwitch.setChecked(false);
-                mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
-            }
-            
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
             
+            if (mIsSelected)
+                mActivity.updateEncryptionMenuState(false, false);
         }
         
         mStatusWarningView.setVisibility(visibility);
+        
         if (visibility == View.VISIBLE) {
             mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
@@ -1926,8 +1933,13 @@ public class ChatView extends LinearLayout {
             boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
             
             DeliveryState deliveryState = DeliveryState.NEUTRAL;
+            
             if (showDelivery && !isDelivered && mExpectingDelivery) {
                 deliveryState = DeliveryState.UNDELIVERED;
+            }
+            else if (isDelivered)
+            {
+                deliveryState = DeliveryState.DELIVERED;
             }
             
             EncryptionState encState = EncryptionState.NONE;
@@ -1983,7 +1995,6 @@ public class ChatView extends LinearLayout {
             if (!mExpectingDelivery && isDelivered) {
                 log("Setting delivery icon");
                 mExpectingDelivery = true;
-                setDeliveryIcon();
                 scheduleRequery(DEFAULT_QUERY_INTERVAL); // FIXME workaround to no refresh
             } else if (cursor.getPosition() == cursor.getCount() - 1) {
                 // if showTimeStamp is false for the latest message, then set a timer to query the

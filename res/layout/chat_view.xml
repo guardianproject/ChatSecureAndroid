@@ -23,20 +23,20 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#00000000"
+    
     >
 
 
     <LinearLayout android:id="@+id/warning"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:visibility="gone">
 
         <ImageView android:id="@+id/warningIcon"
-            android:layout_width="16dip"
-            android:layout_height="16dip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_im_message_not_sent" />
 
@@ -50,16 +50,13 @@
             android:fontFamily="sans-serif-light"
              />
         
-         <CheckBox
-            android:id="@+id/otrSwitch"
-            android:layout_weight="0"
-            android:layout_gravity="center_vertical"
+        <!-- 
+         <Switch
+                android:id="@+id/otrSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:padding="0dp"
-            android:layout_marginRight="6dp"/>
+            
+            />
  
         <ImageView android:id="@+id/deliveryIcon"            
             android:layout_width="16dip"
@@ -67,18 +64,18 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_chat_msg_status_ok"
              />
-    
+         -->
+        
     </LinearLayout>
-    
+
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#777777"
+        android:background="#aaaaaa"
         android:layout_margin="0dp"
         android:padding="0dp"
         android:orientation="horizontal"></LinearLayout>
     
-
 
     <ListView android:id="@+id/history"
         android:layout_width="fill_parent"
@@ -94,7 +91,6 @@
   		  	
          />
 
-    
     <LinearLayout android:id="@+id/invitationPanel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -159,44 +155,37 @@
     
     
 
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#aaaaaa"
-        android:layout_margin="0dp"
-        android:padding="0dp"
-        android:orientation="horizontal"></LinearLayout>
-
+    
   <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
-	     
+	     android:padding="3sp"
+	     android:background="#ffffff"
 	     >
-	
-       
+	<!-- 
         <ImageButton
         android:id="@+id/btnActionBox"
-        android:layout_width="42dip"
-        android:layout_height="42dip"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
       
         android:paddingBottom="5sp"
         android:src="@drawable/ic_btn_round_more_normal" />
-      
+       -->
     <ImageButton
         android:id="@+id/btnEmoji"
-        android:layout_width="42dip"
-        android:layout_height="42dip"
+        android:layout_width="32dip"
+        android:layout_height="32dip"
         android:background="@drawable/ad_selectable_background"
         android:scaleType="centerInside"
         
         android:paddingBottom="5sp"
         android:src="@drawable/smiley_smile" />
-      
+    
       <EditText android:id="@+id/composeMessage"
             android:layout_width="0dip"
            
@@ -207,13 +196,16 @@
             android:maxLines="4"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"
-             
+             android:textColor="#333333"
+         android:layout_alignParentLeft="true"
             />
            
     <ImageButton
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/composeMessage"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
         android:paddingBottom="3sp"
@@ -223,9 +215,8 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
-  
-  
-  <LinearLayout 
+      <!-- 
+   <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
@@ -234,15 +225,16 @@
 	     android:visibility="gone"
 	     android:id="@+id/actionBox"
 	     android:background="#aaaaaa"
+	     
 	     >
      
       <ImageView
         android:id="@+id/btnProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/ic_menu_view_profile"
+        android:fontFamily="sans-serif-light"  
         android:padding="8dip"
+        android:src="@drawable/ic_menu_view_profile"
         
          />
      <ImageView
@@ -251,7 +243,7 @@
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
         android:src="@drawable/content_new_attachment"
-                android:padding="8dip"
+        android:padding="8dip"
         
          />
      <ImageView
@@ -260,7 +252,7 @@
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
         android:src="@drawable/content_new_picture"
-                android:padding="8dip"
+        android:padding="8dip"
         
          />
      
@@ -271,33 +263,30 @@
         android:layout_height="wrap_content"        
         android:fontFamily="sans-serif-light"      
         android:src="@drawable/content_discard"
-                android:padding="8dip"
+        android:padding="8dip"
         
          />
      
       </LinearLayout>
-  
+       -->
+       
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"
         android:layout_height="140dip"
         android:visibility="gone"
-          android:paddingTop="3dp"
-           android:paddingLeft="3dp"
-           android:paddingRight="3dp"
-           android:paddingBottom="3dp"
+        
        >
-     
-       
-    <android.support.v4.view.PagerTabStrip
+     <android.support.v4.view.PagerTabStrip
         android:id="@+id/emoji_title_strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:textColor="#fff"
         android:paddingTop="4dp"
-        android:paddingBottom="4dp" />
-       
-   </android.support.v4.view.ViewPager>
+        android:paddingBottom="4dp" 
+       android:background="#565552"
+        android:textColor="#dddddd"
+        />
+    </android.support.v4.view.ViewPager>
       
 </info.guardianproject.otr.app.im.app.ChatView>

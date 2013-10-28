@@ -19,7 +19,7 @@
 
 <resources>
     
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" >
+    <style name="AppTheme" parent="Theme.Sherlock.Light" >
     
          <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
          
@@ -27,7 +27,6 @@
     
         <style name="AppThemeDark" parent="Theme.Sherlock" >
              <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
-        
              </style>
     
     <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">

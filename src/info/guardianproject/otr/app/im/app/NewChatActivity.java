@@ -23,6 +23,7 @@ import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
+import info.guardianproject.otr.app.im.app.ProviderListItem.SignInManager;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -36,6 +37,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
+import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -44,6 +46,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -51,6 +54,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -65,16 +69,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -108,6 +113,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
+    
+    Cursor mProviderCursor = null;
+    long[] mAccountIds;
+    
+    
 
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
@@ -129,11 +139,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
     
      //  requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
+        
+        this.getSherlock().getActionBar().setTitle("");
         
         ThemeableActivity.setBackgroundImage(this);
 
@@ -155,6 +169,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onPageSelected(int pos) {
+                
+                setSupportProgressBarIndeterminateVisibility(false);
+                
                 if (pos > 0) {
                     
                     if (lastPos != -1)
@@ -173,13 +190,36 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     lastPos = pos;
                     
                     if (mMenu != null)
+                    {
                         mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                        mMenu.setGroupVisible(R.id.menu_group_contacts, false);
+                           
+                    }
+                    
+
+                    
+                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    
                     
                 }
                 else
                 {
                     if (mMenu != null)
+                    {
                         mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                        mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+
+                        mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                        mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                        mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                        
+                    }
+                    
+                    
+                    refreshLastConnection();
+                    
+
+                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                     
                 }
             }
@@ -207,6 +247,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
         
         mApp.registerForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
+        
+        
+        setupSpinners();
+        
+       
+        
     }
     
     /*
@@ -546,25 +592,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     }
                 }
             }
-            else
+            else if (intent.hasExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID))
             {
+                //set the current account id
                 mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,-1L);
                 
-                if (mContactList != null)
-                {
+                //refresh and set the actionbar spinner state
+                refreshSpinners();
+                
+                //move the pager back to the first page
+                if (mChatPager != null)
                     mChatPager.setCurrentItem(0);
-                    mContactList.refreshSpinners();
-                    mContactList.initAccount(this, mAccountId);
-                }
-
-               
+                               
+            }
+            else
+            {
+                refreshLastConnection();
             }
         }
         
-        if (mContactList != null)
-        {
-            mContactList.setSpinnerState(this);
-        }
         
     }
     
@@ -593,6 +639,37 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     private Menu mMenu;
+    
+    public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
+    {
+        
+        if (mChatPager != null && mChatPager.getCurrentItem() > 0 && mMenu != null)
+        {                                        
+                if (isVerified)
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                        
+                }
+                else if (isEncrypted)
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,true);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+   
+                }
+                else
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,true);
+                
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+
+                }
+          
+         }
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -634,10 +711,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         };
         searchView.setOnQueryTextListener(queryTextListener);
         
-        if (mChatPager != null && mChatPager.getCurrentItem() > 0)
-            mMenu.setGroupVisible(R.id.menu_group_chats, true);
-        else
-            mMenu.setGroupVisible(R.id.menu_group_chats, false);
+        if (mMenu != null)
+        {
+            if (mChatPager != null && mChatPager.getCurrentItem() > 0)
+            {
+                mMenu.setGroupVisible(R.id.menu_group_chats, true);
+                mMenu.setGroupVisible(R.id.menu_group_contacts, false);
+                
+            }
+            else
+            {
+                mMenu.setGroupVisible(R.id.menu_group_chats, false);
+                mMenu.setGroupVisible(R.id.menu_group_contacts, true);
+                
+                mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                                        
+            }
+        }
         
         return true;
     }
@@ -654,11 +746,27 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         switch (item.getItemId()) {
 
         case R.id.menu_send_image:
-            startImagePicker();
+            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            {
+               startImagePicker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
             return true;
 
         case R.id.menu_send_file:
-            startFilePicker();
+            
+            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            {
+               startFilePicker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
+            
             return true;
 
         case R.id.menu_view_profile:
@@ -676,9 +784,34 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             startActivity(sintent);
             
             return true;
-         
-      
+            
+        case R.id.menu_otr:
+            
+            if (getCurrentChatView() != null)
+            {
+                boolean isEnc = (getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED || 
+                        getCurrentChatView().mLastSessionStatus == SessionStatus.FINISHED
+                        );
+                
+                getCurrentChatView().setOTRState(!isEnc);
+            
+            }
+            
+            return true;
 
+        case R.id.menu_grid:
+            
+            if (mContactList != null)
+            {
+                boolean gridState = mContactList.toggleGrid();
+                
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+                settings.edit().putBoolean("showGrid", gridState).commit();
+                 
+                
+            }
+            
+            return true;
         case android.R.id.home:
             menu.toggle();
             return true;
@@ -1166,10 +1299,178 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     return frag.getChatView();
             }
             
-            throw new RuntimeException("could not get chat view at " + pos);
+            return null; //this can happen if the user is quickly closing chats; just return null and swallow the event
+            //throw new RuntimeException("could not get chat view at " + pos);
         }
     }
     
+    
+    private void refreshSpinners ()
+    {
+        if (mProviderCursor != null && (!mProviderCursor.isClosed()))
+                mProviderCursor.close();
+        
+        setupSpinners();
+        setSpinnerState();
+    }
+    
+    private void setupSpinners ()
+    {
+        
+        mProviderCursor = getContentResolver().query(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
+                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
+        
+                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                Imps.Provider.DEFAULT_SORT_ORDER);
+
+        mAccountIds = new long[mProviderCursor.getCount()];
+        
+     
+        mProviderCursor.moveToFirst();
+
+        ProviderAdapter pAdapter = new ProviderAdapter(this, mProviderCursor);
+        
+        ActionBar ab = getSherlock().getActionBar();
+        
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ab.setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
+
+           @Override
+           public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+               initAccount(mAccountIds[itemPosition]);
+               return true;
+           }
+            
+        });
+        
+        mProviderCursor.moveToFirst();
+        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+        for (int i = 0; i < mAccountIds.length; i++)
+        {
+            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);              
+            mProviderCursor.moveToNext();
+            
+        }
+
+        setSpinnerState();
+    }
+    
+    public void setSpinnerState ()
+    {
+
+        if (mAccountIds == null)
+            return;
+        
+        if (mAccountIds.length == 1) //only one account, hide the spinner
+        {
+            initAccount(mAccountIds[0]);
+        }
+        else if (mAccountId != -1) //multiple accounts, so select a spinner based on user input
+        {
+
+            int selIdx = 0;
+            
+            for (long accountId : mAccountIds)
+            {
+                if (accountId == getAccountId())
+                {
+                    getSherlock().getActionBar().setSelectedNavigationItem(selIdx);
+                    
+                    break;
+                }
+                
+                selIdx++;
+            }
+            
+        }
+       
+    }
+    
+    public void initAccount (long accountId)
+    {
+
+        if (accountId == -1)
+            return;
+        
+        ContentResolver cr = getContentResolver();
+        Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), null,
+                null, null, null);
+      
+        if (c == null) {
+           // finish();
+            return;
+        }
+        if (!c.moveToFirst()) {
+            c.close();
+          //  finish();
+            return;
+        }
+
+        long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
+        setLastProviderId(providerId);
+        // FIXME doesn't mAccountId need to be set here?
+        
+        initConnection (accountId, providerId);
+        
+        c.close();
+    }
+    
+    public void refreshLastConnection ()
+    {
+        if (mAccountId != -1 && mLastProviderId != -1)
+            initConnection(mAccountId, mLastProviderId);
+        
+    }
+    
+    public void initConnection (long accountId, long providerId)
+    {
+        IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
+      
+        if (conn == null)
+        {
+            try {
+             conn =  ((ImApp)getApplication()).createConnection(providerId, accountId);
+            } catch (RemoteException e) {
+               Log.e(ImApp.LOG_TAG,"error creating connection",e);
+            }
+
+        }
+        
+        if (conn != null && mContactList != null)
+        {
+            mContactList.setConnection(conn);
+
+            if (mContactList.mPresenceView != null)
+            {
+                try {
+                    mContactList.mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
+                } catch (RemoteException e) {        
+                    mContactList.mPresenceView.loggingIn(false);
+                //    mHandler.showServiceErrorAlert();
+                }
+            }
+            
+            QueryMap settingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), false, null);
+            
+            Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                                : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                                                           
+            settingMap.close();
+            
+            Uri.Builder builder = baseUri.buildUpon();
+            ContentUris.appendId(builder, providerId);
+            ContentUris.appendId(builder, accountId);
+            
+            if (mContactList.mFilterView != null)
+                mContactList.mFilterView.doFilter(builder.build(), null);
+            
+        }        
+        
+        
+    }
+
+
     
     public static class ContactListFragment extends Fragment implements ContactListListener, ProviderListItem.SignInManager
     {
@@ -1202,18 +1503,24 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         static final int ACCOUNT_PRESENCE_STATUS = 9;
         static final int ACCOUNT_CONNECTION_STATUS = 10;
          
-        long[] mAccountIds = null;
         ContactListFilterView mFilterView = null;
         UserPresenceView mPresenceView = null;
-        
-        Cursor mProviderCursor = null;
-    
-        Spinner mSpinnerAccounts;
 
         boolean showGrid = true;
         
         ImApp mApp = null;
+        IImConnection mConn = null;
         
+        public void setConnection (IImConnection conn)
+        {
+            mConn = conn;
+            
+            if (mFilterView != null)
+                mFilterView.setConnection(mConn);
+            
+            if (mPresenceView != null)
+                mPresenceView.setConnection(mConn);
+        }
 
         private Handler mPresenceHandler = new Handler()
         {
@@ -1228,8 +1535,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             } 
         };
 
-
-
+       
         public ContactListFragment() {
         }
 
@@ -1247,7 +1553,22 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
          
          
-
+         public boolean toggleGrid ()
+         {
+             showGrid = !showGrid;
+          
+             
+             
+          // The reload fragment code here !
+             
+                 getFragmentManager().beginTransaction()
+                    .detach(this)
+                    .attach(this)
+                    .commit();
+                 
+                 return showGrid;
+             
+         }
 
         /**
           * The Fragment's UI is just a simple text view showing its
@@ -1256,7 +1577,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
          @Override
          public View onCreateView(LayoutInflater inflater, ViewGroup container,
                  Bundle savedInstanceState) {
-             
+            
              if (showGrid)
                  mFilterView = (ContactListFilterView) inflater.inflate(
                          R.layout.contact_grid_filter_view, null);
@@ -1282,8 +1603,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              });
              
              ((AbsListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
-             
-             
+
              
              
             //  QueryMap mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(), true, mHandler);
@@ -1293,22 +1613,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
            //   uri = ContentUris.withAppendedId(uri, providerId);
             //  uri = ContentUris.withAppendedId(uri, accountId);
          //     mFilterView.doFilter( Imps.Contacts.CONTENT_URI_CONTACTS_BY, null);
-              
-              setupSpinners(mFilterView);
-              
-              setSpinnerState(getActivity());
-              
+             
+             
+              if (getActivity() != null)
+              {
+                  ((NewChatActivity)getActivity()).refreshLastConnection();
+              }
               return mFilterView;
            
          }
 
-         
-        public void refreshSpinners ()
-        {
-            if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                mProviderCursor.close();
-            setupSpinners(mFilterView);
-        }
          
          @Override
         public void onAttach(Activity activity) {
@@ -1317,6 +1631,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mApp = ((ImApp)activity.getApplication()); 
             mApp.registerForConnEvents(mPresenceHandler);
 
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            showGrid = settings.getBoolean("showGrid", false);
+
+            ((NewChatActivity)activity).refreshLastConnection();
         }
 
         @Override
@@ -1330,205 +1648,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         @Override
         public void onDestroyView() {
-            if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                mProviderCursor.close();
-            mFilterView.setConnection(null);
-
             super.onDestroyView();
         }
 
-         private void setupSpinners (ContactListFilterView filterView)
-         {
-             
-             mProviderCursor = getActivity().getContentResolver().query(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, PROVIDER_PROJECTION,
-                     Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
-             
-                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                     Imps.Provider.DEFAULT_SORT_ORDER);
-
-             if (mProviderCursor == null)
-             {
-                 getActivity().finish();
-                 return;
-
-                 }
-           
-             //        + " AND " + Imps.Provider.ACCOUNT_CONNECTION_STATUS + " != 0"
-             
-                     /* selection */
-             mAccountIds = new long[mProviderCursor.getCount()];
-             
-          
-             mProviderCursor.moveToFirst();
-
-             ProviderAdapter pAdapter = new ProviderAdapter(getActivity(), mProviderCursor);
-             
-             mSpinnerAccounts = (Spinner)filterView.findViewById(R.id.spinnerAccounts);
-             
-             mSpinnerAccounts.setAdapter(pAdapter);
-             mSpinnerAccounts.setOnItemSelectedListener(new OnItemSelectedListener ()
-             {
-
-                 @Override
-                 public void onItemSelected(AdapterView<?> parent, View view, int itemPosition, long id) {
-                    
-                 //    mAccountId = mAccountIds[itemPosition];
-                     //update account list
-                     initAccount(getActivity(),mAccountIds[itemPosition]);
-                   
-                     
-                 }
-
-                 @Override
-                 public void onNothingSelected(AdapterView<?> arg0) {
-                     // TODO Auto-generated method stub
-                     
-                 }
-                 
-             });
-             
-             mProviderCursor.moveToFirst();
-             int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
-
-             for (int i = 0; i < mAccountIds.length; i++)
-             {
-                 mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);              
-                 mProviderCursor.moveToNext();
-                 
-             }
-         }
-         
-         public void setSpinnerState (Activity activity)
-         {
-
-             NewChatActivity chatActivity = (NewChatActivity)activity;
-             
-             if (mAccountIds == null)
-                 return;
-             
-             if (mAccountIds.length == 1) //only one account, hide the spinner
-             {
-                 mSpinnerAccounts.setVisibility(View.GONE);
-                 initAccount(activity,mAccountIds[0]);
-             }
-             else if (chatActivity.getAccountId() != -1) //multiple accounts, so select a spinner based on user input
-             {
-
-                 mSpinnerAccounts.setVisibility(View.VISIBLE);
-                 
-                 int selIdx = 0;
-                 
-                 for (long accountId : mAccountIds)
-                 {
-                     if (accountId == chatActivity.getAccountId())
-                     {
-                         mSpinnerAccounts.setSelection(selIdx);   
-                         break;
-                     }
-                     
-                     selIdx++;
-                 }
-                 
-             }
-             else if (getActivity() != null) //nothing from the user, show show an active account
-             {
-                 List<IImConnection> listConns = ((ImApp)getActivity().getApplication()).getActiveConnections();
-                 
-                 for (IImConnection conn : listConns)
-                 {
-                     try
-                     {
-                         long activeAccountId = conn.getAccountId();
-                         int spinnerIdx = -1;
-                         for (long accountId : mAccountIds )
-                         {
-                             spinnerIdx++;
-                             
-                             if (accountId == activeAccountId)
-                             {
-                                 mSpinnerAccounts.setSelection(spinnerIdx);
-                                 break;
-                             }
-                         }
-                         
-                     }
-                     catch (Exception e){}
-                 }
-             }
-             
-            
-         }
-         
-         public void initAccount (Activity activity, long accountId)
-         {
-
-             if (accountId == -1)
-                 return;
-             
-             ContentResolver cr = activity.getContentResolver();
-             Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId), null,
-                     null, null, null);
-           
-             if (c == null) {
-                // finish();
-                 return;
-             }
-             if (!c.moveToFirst()) {
-                 c.close();
-               //  finish();
-                 return;
-             }
-
-             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
-             ((NewChatActivity)activity).setLastProviderId(providerId);
-             // FIXME doesn't mAccountId need to be set here?
-             
-             initConnection (activity, accountId, providerId);
-             
-             c.close();
-         }
-         
-         private void initConnection (Activity activity, long accountId, long providerId)
-         {
-             IImConnection conn = ((ImApp)activity.getApplication()).getConnection(providerId);
-           
-             if (conn == null)
-             {
-                 try {
-                  conn =  ((ImApp)getActivity().getApplication()).createConnection(providerId, accountId);
-                 } catch (RemoteException e) {
-                    Log.e(ImApp.LOG_TAG,"error creating connection",e);
-                 }
-
-             }
-             
-             if (conn != null)
-             {
-                 mFilterView.setConnection(conn);
-                 mPresenceView.setConnection(conn);
-
-                 try {
-                     mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
-                 } catch (RemoteException e) {        
-                     mPresenceView.loggingIn(false);
-                 //    mHandler.showServiceErrorAlert();
-                 }
-
-                 QueryMap settingMap = new Imps.ProviderSettings.QueryMap(activity.getContentResolver(), false, null);
-                 
-                 Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                                                                     : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-                                                                
-                 settingMap.close();
-                 
-                 Uri.Builder builder = baseUri.buildUpon();
-                 ContentUris.appendId(builder, providerId);
-                 ContentUris.appendId(builder, accountId);
-                 mFilterView.doFilter(builder.build(), null);
-             }        
-             
-             
-         }
+        
 
         @Override
         public void startChat(Cursor c) {
@@ -1563,49 +1686,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         }
         
-        public class ProviderAdapter extends CursorAdapter {
-            private LayoutInflater mInflater;
-
-            @SuppressWarnings("deprecation")
-            public ProviderAdapter(Context context, Cursor c) {
-                super(context, c);
-                mInflater = LayoutInflater.from(context).cloneInContext(context);
-                mInflater.setFactory(new ProviderListItemFactory());
-            }
-
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                // create a custom view, so we can manage it ourselves. Mainly, we want to
-                // initialize the widget views (by calling getViewById()) in newView() instead of in
-                // bindView(), which can be called more often.
-                ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_small,
-                        parent, false);
-                view.init(cursor, true);
-                return view;
-            }
-            
-            
-
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                ((ProviderListItem) view).bindView(cursor);
-            }
-            
-            
-            
-        }
         
-        public class ProviderListItemFactory implements LayoutInflater.Factory {
-            public View onCreateView(String name, Context context, AttributeSet attrs) {
-                if (name != null && name.equals(ProviderListItem.class.getName())) {
-                    return new ProviderListItem(context, getActivity(), ContactListFragment.this);
-                }
-                return null;
-            }
-            
-            
-        }
-
         @Override
         public void signIn(long accountId) {
            throw new UnsupportedOperationException("not implemented");
@@ -1954,4 +2035,63 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     void setLastProviderId(long mLastProviderId) {
         this.mLastProviderId = mLastProviderId;
     }
+    
+    public class ProviderAdapter extends CursorAdapter {
+        private LayoutInflater mInflater;
+
+        @SuppressWarnings("deprecation")
+        public ProviderAdapter(Context context, Cursor c) {
+            super(context, c);
+            mInflater = LayoutInflater.from(context).cloneInContext(context);
+            mInflater.setFactory(new ProviderListItemFactory());
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            // create a custom view, so we can manage it ourselves. Mainly, we want to
+            // initialize the widget views (by calling getViewById()) in newView() instead of in
+            // bindView(), which can be called more often.
+            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_actionbar,
+                    parent, false);
+            view.init(cursor, true);
+            return view;
+        }
+        
+        
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ((ProviderListItem) view).bindView(cursor);
+        }
+        
+        
+        
+    }
+    
+    public class ProviderListItemFactory implements LayoutInflater.Factory {
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (name != null && name.equals(ProviderListItem.class.getName())) {
+                return new ProviderListItem(context, NewChatActivity.this, new SignInManager ()
+                {
+
+                    @Override
+                    public void signIn(long accountId) {
+                        // TODO Auto-generated method stub
+                        
+                    }
+
+                    @Override
+                    public void signOut(long accountId) {
+                        // TODO Auto-generated method stub
+                        
+                    }
+                    
+                });
+            }
+            return null;
+        }
+        
+        
+    }
+
 }

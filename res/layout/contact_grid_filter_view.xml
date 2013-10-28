@@ -26,12 +26,7 @@
             android:padding="0dp"
         
      >
-    
-     <Spinner
-        android:id="@+id/spinnerAccounts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+  
    
    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
@@ -75,7 +70,6 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"            
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginTop="3dp"
              />
 
