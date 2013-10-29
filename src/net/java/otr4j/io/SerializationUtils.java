@@ -216,7 +216,7 @@ public class SerializationUtils {
     }
 
     static final Pattern patternWhitespace = Pattern
-            .compile("( \\t  \\t\\t\\t\\t \\t \\t \\t  )(  \\t\\t  \\t )?( \\t \\t  \\t )?");
+            .compile("( \\t  \\t\\t\\t\\t \\t \\t \\t  )( \\t \\t  \\t )?(  \\t\\t  \\t )?");
 
     public static AbstractMessage toMessage(String s) throws IOException {
         if (s == null || s.length() <= 1)
