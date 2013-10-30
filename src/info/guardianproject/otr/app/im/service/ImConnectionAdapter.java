@@ -424,10 +424,10 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 loadSavedPresence();
 
             } else if (state == ImConnection.LOGGING_OUT) {
-                // The engine has started to logout the connection, remove it
-                // from the active connection list.
-                mService.removeConnection(ImConnectionAdapter.this);
+                // The engine has started to logout the connection. It will be removed once it's full disconnected.
+                // NOTE: if this logic is changed, the logic in ImApp.MyConnListener must be changed to match
             } else if (state == ImConnection.DISCONNECTED) {
+                // NOTE: if this logic is changed, the logic in ImApp.MyConnListener must be changed to match
                 mService.removeConnection(ImConnectionAdapter.this);
 
                 clearSessionCookie(cr);

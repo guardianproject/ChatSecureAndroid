@@ -899,6 +899,7 @@ public class ImApp extends Application {
                     break;
 
                 case ImConnection.LOGGING_OUT:
+                    // NOTE: if this logic is changed, the logic in ImConnectionAdapter.ConnectionAdapterListener must be changed to match
                     what = EVENT_CONNECTION_LOGGING_OUT;
                     // MIRON - remove only if disconnected!
                     //                    synchronized (mConnections) {
@@ -907,6 +908,7 @@ public class ImApp extends Application {
                     break;
 
                 case ImConnection.DISCONNECTED:
+                    // NOTE: if this logic is changed, the logic in ImConnectionAdapter.ConnectionAdapterListener must be changed to match
                     what = EVENT_CONNECTION_DISCONNECTED;
                     synchronized (mConnections) {
                         mConnections.remove(providerId);
