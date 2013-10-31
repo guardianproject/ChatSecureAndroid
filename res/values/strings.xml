@@ -96,8 +96,10 @@
     user to view the contact's profile. May be overrided by the plugin.-->
     <string name="menu_view_profile">Verify</string>
     <!-- Context/drop-down menu item for picking an image to send. -->
-    <string name="menu_send_image">Send Image</string>
+    <string name="menu_send_image">Send Photo</string>
     <string name="menu_send_file">Send File</string>
+    <string name="menu_send_audio">Send Audio</string>
+    
     
     
     
@@ -859,6 +861,7 @@
     
     <string name="pref_show_grid">Show Contact Grid</string>
     <string name="pref_show_grid_summary">Display contact list as avatar grid</string>
+    <string name="button_yes_accept_all">Yes, Accept All</string>
     
 </resources>
 
