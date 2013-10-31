@@ -85,7 +85,6 @@
 		    android:layout_gravity="center_vertical"
 		    android:layout_marginLeft="3dp"
 		     android:visibility="gone"
-		     android:background="#ffffff"
 		    /> 
 		    <ImageView
 		    android:id="@+id/iconEncryption"
@@ -95,7 +94,6 @@
 		    android:layout_marginLeft="3dp"
 		    android:visibility="gone"
 		    
-		     android:background="#ffffff"
 		    /> 
 		    </LinearLayout>
 
