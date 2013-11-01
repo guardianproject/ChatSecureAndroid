@@ -20,17 +20,17 @@
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     class="info.guardianproject.otr.app.im.app.MessageView"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="3dp"
+    android:layout_marginTop="6dp"
      >
 
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
 		android:paddingLeft="0dp"
 		android:id="@+id/message_container"
-		android:paddingTop="3dp"
-		android:paddingBottom="3dp"
+		android:paddingTop="0dp"
+		android:paddingBottom="0dp"
 		
 		>
  <ImageView
@@ -51,7 +51,34 @@
 	          android:padding="3dp"
 	         />
 	    
-		<ImageView
+		
+
+		 <ImageView
+            android:id="@+id/avatar_right"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop" 
+            android:visibility="gone"
+            android:layout_marginLeft="3dip"
+                    
+            />
+   	</LinearLayout>
+   			<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:paddingLeft="0dp"
+		android:paddingTop="0dp"
+		android:paddingBottom="0dp"
+		
+		>
+	    <TextView android:id="@+id/messagets"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	         android:fontFamily="sans-serif-light"
+	         android:value="00:00pm"
+	         />
+	    <ImageView
 		    android:id="@+id/iconView"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -66,26 +93,8 @@
 		    android:layout_gravity="center_vertical"
 		    android:layout_marginLeft="3dp"
 		    android:visibility="gone"
+		    
 		    /> 
-
-		 <ImageView
-            android:id="@+id/avatar_right"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop" 
-            android:visibility="gone"
-            android:layout_marginLeft="3dip"
-                    
-            />
-   	</LinearLayout>
-   		
-	    <TextView android:id="@+id/messagets"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	         android:fontFamily="sans-serif-light"
-	         android:value="00:00pm"
-	         />
+		    </LinearLayout>
 
 </view>

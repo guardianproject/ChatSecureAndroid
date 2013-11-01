@@ -54,6 +54,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -96,12 +97,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
     private static final int MENU_RESEND = Menu.FIRST;
+
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
     private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
+    private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
+
     private static final int CONTACT_LIST_LOADER_ID = 4444;
     private static final int CHAT_LIST_LOADER_ID = 4445;
 
+    
+    
     private ImApp mApp;
     private ViewPager mChatPager;
     private ChatViewPagerAdapter mChatPagerAdapter;
@@ -794,6 +800,19 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             return true;
 
+        case R.id.menu_send_audio:
+            
+            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            {
+               startAudioPicker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
+            
+            return true;
+            
         case R.id.menu_view_profile:
             if (getCurrentChatView() != null)
                 getCurrentChatView().viewProfile();
@@ -954,14 +973,22 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     void startFilePicker() {
         Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
         selectFile.setType("file/*");
-        startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
+        Intent intentChooser = Intent.createChooser(selectFile, "Select File");
+        
+        if (intentChooser != null)
+            startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
     }
     
+    void startAudioPicker() {
+        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        startActivityForResult(intent, REQUEST_SEND_AUDIO); // intent and requestCode of 1
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE) {
+            if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE || requestCode == REQUEST_SEND_AUDIO) {
                 Uri uri = resultIntent.getData() ;
                 if( uri == null ) {
                     return ;
