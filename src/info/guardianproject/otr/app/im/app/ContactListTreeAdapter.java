@@ -226,7 +226,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         
         Uri uri = builder.build();
 
-        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri, ContactView.CONTACT_PROJECTION,
+        mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri, ContactView.CONTACT_PROJECTION_FULL,
                 String.format(Locale.US, "%s=%d AND %s=%d", Imps.Contacts.SUBSCRIPTION_STATUS,
                         Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,
                         Imps.Contacts.SUBSCRIPTION_TYPE, Imps.Contacts.SUBSCRIPTION_TYPE_FROM),
@@ -242,7 +242,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         String[] args = { Long.toString(listId) };
         int token = (int) listId;
         mQueryHandler.startQuery(token, null, Imps.Contacts.CONTENT_URI,
-                ContactView.CONTACT_PROJECTION, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
+                ContactView.CONTACT_PROJECTION_FULL, selection, args, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
 
     public Object getChild(int groupPosition, int childPosition) {

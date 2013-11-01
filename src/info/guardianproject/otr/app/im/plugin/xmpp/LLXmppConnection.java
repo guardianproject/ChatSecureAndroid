@@ -783,4 +783,13 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             });
         }
     }
+
+    @Override
+    public void setLoadAvatars(boolean doLoad) {
+        
+        //we don't support vcard loading anyhow
+        
+    }
+    
+    
 }

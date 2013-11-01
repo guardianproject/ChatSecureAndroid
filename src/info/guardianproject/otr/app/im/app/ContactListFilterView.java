@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -39,24 +38,21 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.RemoteException;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.content.CursorLoader;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
 
-public class ContactListFilterView extends LinearLayout {
+public class ContactListFilterView extends LinearLayout implements AbsListView.OnScrollListener {
 
     private AbsListView mFilterList;
     private Filter mFilter;
@@ -109,7 +105,7 @@ public class ContactListFilterView extends LinearLayout {
 
         mFilterList = (AbsListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
-
+        mFilterList.setOnScrollListener(this);
         
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -327,11 +323,24 @@ public class ContactListFilterView extends LinearLayout {
 
         ContentResolver cr = mContext.getContentResolver();
         
-        Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
-                buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+      //  Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
+        //        buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
         
+        String selection = buf == null ? null : buf.toString();
         
+        CursorLoader cursorloader = new CursorLoader(getContext());
+        cursorloader.setUri(mUri);
         
+        if (mFilterList instanceof ListView)
+            cursorloader.setProjection(ContactView.CONTACT_PROJECTION_LIGHT);
+        else
+            cursorloader.setProjection(ContactView.CONTACT_PROJECTION_FULL);
+             
+        cursorloader.setSortOrder(Imps.Contacts.DEFAULT_SORT_ORDER);
+        cursorloader.setSelection(selection);
+        
+        Cursor cursor = cursorloader.loadInBackground();
+
         return cursor;
     }
 
@@ -350,19 +359,14 @@ public class ContactListFilterView extends LinearLayout {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-           
-
-            return super.getView(position, convertView, parent);
-        }
-
-        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-            v.bind(cursor, mSearchString, false);
+            v.bind(cursor, mSearchString, isScrolling());
             
         }
 
+       
+        
         @Override
         protected void onContentChanged() {
             
@@ -390,10 +394,11 @@ public class ContactListFilterView extends LinearLayout {
                     }
                     
                     
-                }, 1000l);
+                }, 2000l);
             }
                 
         }
+        
 
         @Override
         public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
@@ -522,4 +527,32 @@ public class ContactListFilterView extends LinearLayout {
             
         }
     }
+
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    private int mScrollState;
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        int oldState = mScrollState;
+
+        mScrollState = scrollState;
+        //  If we just finished a fling then some items may not have an icon
+        //  So force a full redraw now that the fling is complete
+        if (oldState == OnScrollListener.SCROLL_STATE_FLING) {
+        }    
+    }
+    
+    
+    public boolean isScrolling() {
+        return mScrollState == OnScrollListener.SCROLL_STATE_FLING;
+    }
+    
 }

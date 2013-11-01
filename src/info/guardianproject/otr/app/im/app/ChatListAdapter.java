@@ -219,7 +219,7 @@ public class ChatListAdapter implements ListAdapter, AbsListView.OnScrollListene
         
         
         mQueryHandler.startQuery(TOKEN_ONGOING_CONVERSATION, null, uri,
-                ContactView.CONTACT_PROJECTION, null, null, Imps.Contacts.DEFAULT_SORT_ORDER);
+                ContactView.CONTACT_PROJECTION_FULL, null, null, Imps.Contacts.DEFAULT_SORT_ORDER);
     }
     
  

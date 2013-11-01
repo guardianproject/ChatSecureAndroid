@@ -67,4 +67,5 @@ interface IImConnection {
     void sendHeartbeat();
     
     void setProxy(String type, String host, int port);
+    void setLoadAvatars (boolean doLoad);
 }

@@ -112,7 +112,7 @@ public class ContactsPickerActivity extends ListActivity {
         }
         clause.append(')');
         
-        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, excludedVals,
+        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION_LIGHT, mExcludeClause, excludedVals,
                 Imps.Contacts.DEFAULT_SORT_ORDER);
         if (cursor == null) {
             return false;
@@ -138,7 +138,7 @@ public class ContactsPickerActivity extends ListActivity {
         if (constraint == null) {
             where = mExcludeClause;
 
-            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, null,
+            return managedQuery(mData, ContactView.CONTACT_PROJECTION_LIGHT, where, null,
                     Imps.Contacts.DEFAULT_SORT_ORDER);
         } else {
             StringBuilder buf = new StringBuilder();
@@ -152,7 +152,7 @@ public class ContactsPickerActivity extends ListActivity {
             String[] whereVal = { DatabaseUtils.sqlEscapeString("%" + constraint + "%")};          
             where = buf.toString();
 
-            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, whereVal,
+            return managedQuery(mData, ContactView.CONTACT_PROJECTION_LIGHT, where, whereVal,
                     Imps.Contacts.DEFAULT_SORT_ORDER);
         }
     }

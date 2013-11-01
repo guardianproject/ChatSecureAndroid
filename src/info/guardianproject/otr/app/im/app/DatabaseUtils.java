@@ -123,20 +123,14 @@ public class DatabaseUtils {
         
     }
     
+    private final static String QUERY_AVATAR_HASH = Imps.Avatars.CONTACT + "=? AND " + Imps.Avatars.HASH + "=?";
+    
     public static boolean doesAvatarHashExist(ContentResolver resolver, Uri queryUri, 
             String jid, String hash) {
 
-        StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
-        buf.append("=?");
-        buf.append(" AND ");
-        buf.append(Imps.Avatars.HASH);
-        buf.append("=?");
-
         String[] selectionArgs = new String[] { jid, hash };
-
-        //return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
         
-        Cursor cursor = resolver.query(queryUri, null, buf.toString(), selectionArgs, null);
+        Cursor cursor = resolver.query(queryUri, null, QUERY_AVATAR_HASH, selectionArgs, null);
         if (cursor == null)
             return false;
         try {
