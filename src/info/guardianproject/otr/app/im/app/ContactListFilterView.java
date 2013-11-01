@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
@@ -25,42 +24,41 @@ import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.RemoteException;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ResourceCursorAdapter;
 
 public class ContactListFilterView extends LinearLayout {
 
+    private static final int CONTACT_LIST_LOADER = 4444;
     private AbsListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
+    
+    private String mSearchString;
 
     private Uri mUri;
     private final Context mContext;
@@ -68,6 +66,7 @@ public class ContactListFilterView extends LinearLayout {
     private final ConnectionListenerAdapter mConnectionListener;
 
     private IImConnection mConn;
+    private MyLoaderCallbacks mLoaderCallbacks;
   //  private EditText mEtSearch;
     
     public ContactListFilterView(Context context, AttributeSet attrs) {
@@ -274,16 +273,11 @@ public class ContactListFilterView extends LinearLayout {
         if (uri != null && !uri.equals(mUri)) {
             mUri = uri;
 
-            if (mContactAdapter != null && mContactAdapter.getCursor() != null)
-                mContactAdapter.getCursor() .close();
-            
-            Cursor contactCursor = runQuery(filterString);
-            
             if (mContactAdapter == null) {
                 
                 if (mFilterList instanceof ListView)
                 {
-                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view, contactCursor);
+                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view);
                     mFilter = mContactAdapter.getFilter();
 
                     ((ListView)mFilterList).setAdapter(mContactAdapter);
@@ -291,18 +285,17 @@ public class ContactListFilterView extends LinearLayout {
                 else if (mFilterList instanceof GridView)
                 {
 
-                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view_grid_layout, contactCursor);
+                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view_grid_layout);
                     mFilter = mContactAdapter.getFilter();
                         
                     ((GridView)mFilterList).setAdapter(mContactAdapter);
                 }
-                    
-                
+
+                mLoaderCallbacks = new MyLoaderCallbacks();
+                mLoaderManager.initLoader(CONTACT_LIST_LOADER, null, mLoaderCallbacks);
             } else {
-                mContactAdapter.changeCursor(contactCursor);
+                mLoaderManager.restartLoader(CONTACT_LIST_LOADER, null, mLoaderCallbacks);
             }
-            
-            
         } else {
             mFilter.filter(filterString);
         }
@@ -315,44 +308,13 @@ public class ContactListFilterView extends LinearLayout {
 
     }
 
-    Cursor runQuery(CharSequence constraint) {
-        StringBuilder buf = new StringBuilder();
-
-        if (constraint != null) {
-            
-            buf.append(Imps.Contacts.NICKNAME);
-            buf.append(" LIKE ");
-            DatabaseUtils.appendValueToSql(buf, "%" + constraint + "%");
-        }
-
-        ContentResolver cr = mContext.getContentResolver();
-        
-        Cursor cursor = cr.query(mUri, ContactView.CONTACT_PROJECTION,
-                buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
-        
-        
-        
-        return cursor;
-    }
-
     private class ContactAdapter extends ResourceCursorAdapter {
-        
-        private String mSearchString;
-
-        private Timer timer = null;
-        private boolean isUpdating = false;
-        
-        @SuppressWarnings("deprecation")
-        public ContactAdapter(Context context, int view, Cursor cursor) {
-            super(context, view, cursor);
-            
-            timer = new Timer();
+        public ContactAdapter(Context context, int view) {
+            super(context, view, null, 0);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-           
-
             return super.getView(position, convertView, parent);
         }
 
@@ -361,46 +323,6 @@ public class ContactListFilterView extends LinearLayout {
             ContactView v = (ContactView) view;
             v.bind(cursor, mSearchString, false);
             
-        }
-
-        @Override
-        protected void onContentChanged() {
-            
-            if (!isUpdating)
-            {
-
-                isUpdating = true;
-                
-                timer.schedule(new TimerTask(){
-    
-                    @Override
-                    public void run() {
-                       
-                        mHandler.post(new Runnable ()
-                        {
-                           public void run ()
-                           {    
-                               Cursor cursor = ContactListFilterView.this.runQuery(mSearchString);
-                           
-                               changeCursor(cursor);
-                           }
-                        });
-                        
-                        isUpdating = false;
-                    }
-                    
-                    
-                }, 1000l);
-            }
-                
-        }
-
-        @Override
-        public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-            if (constraint != null) {
-                mSearchString = constraint.toString();
-            }
-            return ContactListFilterView.this.runQuery(constraint);
         }
     }
 
@@ -412,31 +334,13 @@ public class ContactListFilterView extends LinearLayout {
     
     
     private ContactListListener mListener = null;
+    private LoaderManager mLoaderManager;
     
     public void setListener (ContactListListener listener)
     {
         mListener = listener;
     }
     
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-       
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        
-       
-        if (mContactAdapter != null && mContactAdapter.getCursor() != null)
-        {
-            mContactAdapter.getCursor().close();
-            mContactAdapter = null;
-        }
-        
-    }
-
     public void removeContactAtPosition(int packedPosition) {
         removeContact((Cursor)mFilterList.getItemAtPosition(packedPosition));
     }
@@ -522,4 +426,41 @@ public class ContactListFilterView extends LinearLayout {
             
         }
     }
+
+
+    public void setLoaderManager(LoaderManager loaderManager) {
+        mLoaderManager = loaderManager;
+    }
+    
+    class MyLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor> {
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            StringBuilder buf = new StringBuilder();
+
+            if (mSearchString != null) {
+                
+                buf.append(Imps.Contacts.NICKNAME);
+                buf.append(" LIKE ");
+                DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+            }
+
+            CursorLoader loader = new CursorLoader(getContext(), mUri, ContactView.CONTACT_PROJECTION,
+                    buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+            loader.setUpdateThrottle(1000L);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+            Log.d("XXX", "swap cursor");
+            mContactAdapter.swapCursor(newCursor);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            Log.d("XXX", "reset cursor");
+            mContactAdapter.swapCursor(null);
+        }
+        
+    };
 }

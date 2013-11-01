@@ -1585,9 +1585,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
               mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
               
-              mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
+             mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
 
              mFilterView.setListener(this);
+             mFilterView.setLoaderManager(getLoaderManager());
              
              TextView txtEmpty = (TextView)mFilterView.findViewById(R.id.empty);
              
