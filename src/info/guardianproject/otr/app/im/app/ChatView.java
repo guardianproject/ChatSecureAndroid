@@ -73,6 +73,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -1300,7 +1301,7 @@ public class ChatView extends LinearLayout {
         }
         try {
             if (getChatSession() != null) {
-                getChatSession().setDataListener(null);
+              //  getChatSession().setDataListener(null);
                 getChatSession().unregisterChatListener(mChatListener);
             }
             IImConnection conn = mApp.getConnection(mProviderId);
@@ -2065,13 +2066,11 @@ public class ChatView extends LinearLayout {
         
         @Override
         public void onTransferComplete(String from, String url, String type, String filePath) {
-            // TODO have a specific notifier for files / data
-            //String username = from.getScreenName();
-           
             
             File file = new File(filePath);
             
             try {
+                
                 Message msg = Message.obtain(mTransferHandler, 3);            
                 msg.getData().putString("path", file.getCanonicalPath());
                 msg.getData().putString("type", type);
@@ -2118,7 +2117,8 @@ public class ChatView extends LinearLayout {
 
         private boolean mAcceptTransfer = false;
         private boolean mWaitingForResponse = false;
-        
+        private boolean mAcceptAllTransfer = false;
+
         @Override
         public boolean onTransferRequested(String from, String to, String transferUrl) {
             
@@ -2148,45 +2148,67 @@ public class ChatView extends LinearLayout {
             
                 if (msg.what == 1)
                 {
-                    String transferUrl = msg.getData().getString("url");
-                    String transferFrom = msg.getData().getString("from");
-    
-                    String[] path = transferUrl.split("/"); 
-                    String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-                    
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-    
-                    builder.setTitle(mContext.getString(R.string.file_transfer));
-                    builder.setMessage(transferFrom + ' ' + mContext.getString(R.string.wants_to_send_you_the_file) 
-                    + " '" + sanitizedPath + "'. " + mContext.getString(R.string.accept_transfer_));
-    
-                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-    
-                        public void onClick(DialogInterface dialog, int which) {
-                            mAcceptTransfer = true;
-                            mWaitingForResponse = false;
-                            NOTIFY_DOWNLOAD_ID++;
-                            
-                            dialog.dismiss();
-                        }
-    
-                    });
-    
-                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-    
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mAcceptTransfer = false;
-                            mWaitingForResponse = false;
-    
-                            
-                            // Do nothing
-                            dialog.dismiss();
-                        }
-                    });
-    
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    if (mAcceptAllTransfer)
+                    {
+                        mAcceptTransfer = true;
+                        mWaitingForResponse = false;
+                        NOTIFY_DOWNLOAD_ID++;
+                    }
+                    else
+                    {
+                        String transferUrl = msg.getData().getString("url");
+                        String transferFrom = msg.getData().getString("from");
+        
+                        String[] path = transferUrl.split("/"); 
+                        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+                        
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        
+                        builder.setTitle(mContext.getString(R.string.file_transfer));
+                        builder.setMessage(transferFrom + ' ' + mContext.getString(R.string.wants_to_send_you_the_file) 
+                        + " '" + sanitizedPath + "'. " + mContext.getString(R.string.accept_transfer_));
+        
+                        builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
+        
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAcceptAllTransfer = true;
+                                mAcceptTransfer = true;
+                                mWaitingForResponse = false;
+                                NOTIFY_DOWNLOAD_ID++;
+                                
+                                dialog.dismiss();
+                            }
+        
+                        });
+                        
+                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAcceptTransfer = true;
+                                mWaitingForResponse = false;
+                                NOTIFY_DOWNLOAD_ID++;
+                                
+                                dialog.dismiss();
+                            }
+        
+                        });
+        
+                        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+        
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAcceptTransfer = false;
+                                mWaitingForResponse = false;
+        
+                                
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        });
+        
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
                 }
                 else if (msg.what == 2) //progress update
                 {
@@ -2221,6 +2243,21 @@ public class ChatView extends LinearLayout {
                 {
                     String filePath = msg.getData().getString("path");
                     String fileType = msg.getData().getString("type");
+                    
+                    if (fileType != null && fileType.startsWith("audio"))
+                    {
+                        MediaPlayer mp = new MediaPlayer();
+                        try {
+                            mp.setDataSource(filePath);
+                       
+                            mp.prepare();
+                            mp.start();
+                        
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
                     
                     if (mNotifyManager == null)
                     {
