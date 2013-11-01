@@ -1643,7 +1643,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         */
         
         // Runs in executor thread
-        private synchronized void do_loadContactLists() {
+        private void do_loadContactLists() {
    
             debug(TAG, "load contact lists");
 

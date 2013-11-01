@@ -615,7 +615,7 @@ public class ContactListManagerAdapter extends
             }
         }
 
-        public synchronized void onAllContactListsLoaded() {
+        public void onAllContactListsLoaded() {
             mAllContactsLoaded = true;
             
             handleDelayedContactChanges();
