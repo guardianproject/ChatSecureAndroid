@@ -52,8 +52,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class ContactListFilterView extends LinearLayout {
-
-    private static final int CONTACT_LIST_LOADER = 4444;
     private AbsListView mFilterList;
     private Filter mFilter;
     private ContactAdapter mContactAdapter;
@@ -292,9 +290,9 @@ public class ContactListFilterView extends LinearLayout {
                 }
 
                 mLoaderCallbacks = new MyLoaderCallbacks();
-                mLoaderManager.initLoader(CONTACT_LIST_LOADER, null, mLoaderCallbacks);
+                mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
             } else {
-                mLoaderManager.restartLoader(CONTACT_LIST_LOADER, null, mLoaderCallbacks);
+                mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
             }
         } else {
             mFilter.filter(filterString);
@@ -335,6 +333,7 @@ public class ContactListFilterView extends LinearLayout {
     
     private ContactListListener mListener = null;
     private LoaderManager mLoaderManager;
+    private int mLoaderId;
     
     public void setListener (ContactListListener listener)
     {
@@ -428,8 +427,9 @@ public class ContactListFilterView extends LinearLayout {
     }
 
 
-    public void setLoaderManager(LoaderManager loaderManager) {
+    public void setLoaderManager(LoaderManager loaderManager, int loaderId) {
         mLoaderManager = loaderManager;
+        mLoaderId = loaderId;
     }
     
     class MyLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -462,5 +462,5 @@ public class ContactListFilterView extends LinearLayout {
             mContactAdapter.swapCursor(null);
         }
         
-    };
+    }
 }
