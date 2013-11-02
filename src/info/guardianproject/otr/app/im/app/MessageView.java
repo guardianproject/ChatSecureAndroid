@@ -30,6 +30,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
@@ -77,6 +78,9 @@ public class MessageView extends LinearLayout {
         ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
         ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
         ImageView mEncryptionIcon = (ImageView) findViewById(R.id.iconEncryption);
+        View mStatusBlockLeft = findViewById(R.id.status_block_left);
+        View mStatusBlockRight = findViewById(R.id.status_block_right);
+        
         
     }
     
@@ -116,7 +120,7 @@ public class MessageView extends LinearLayout {
         setLayoutParams(lp);     
         setPadding(3,0,100,3);
         
-        showAvatar(address,true);
+        //showAvatar(address,true);
         
         if (showContact)
         {
@@ -147,7 +151,9 @@ public class MessageView extends LinearLayout {
         }
         
         
-        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mDeliveryIcon.setVisibility(GONE);
+        mHolder.mStatusBlockLeft.setVisibility(VISIBLE);
+        mHolder.mStatusBlockRight.setVisibility(GONE);
         
         if (date != null)
         {
@@ -165,26 +171,29 @@ public class MessageView extends LinearLayout {
             mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
            
         }
-        
+
+        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+
         if (encryption == EncryptionState.NONE)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
             mHolder.mEncryptionIcon.setVisibility(GONE);
+            mHolder.mStatusBlockLeft.setBackgroundColor(Color.LTGRAY);
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_encrypted);
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
+
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_dark);
             
         }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_verified);
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
-            
+
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_green_dark);
         }
         
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
@@ -209,12 +218,13 @@ public class MessageView extends LinearLayout {
 
         setPadding(100, 0, 3, 3);
         
-        showAvatar(address,false);
+      //  showAvatar(address,false);
     
         
         lastMessage = body;//formatMessage(body);
          
          try {
+             mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
              SpannableString spannablecontent=new SpannableString(lastMessage);
 
              EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
@@ -236,22 +246,30 @@ public class MessageView extends LinearLayout {
             mHolder.mDeliveryIcon.setVisibility(GONE);
         }
         
+
+        mHolder.mStatusBlockLeft.setVisibility(GONE);
+        mHolder.mStatusBlockRight.setVisibility(VISIBLE);
+
+        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+        
         if (encryption == EncryptionState.NONE)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
             mHolder.mEncryptionIcon.setVisibility(GONE);
+            mHolder.mStatusBlockRight.setBackgroundColor(Color.LTGRAY);
+
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_encrypted);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_orange_light);
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
             
         }
+        
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_verified);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_green_light);
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
             
