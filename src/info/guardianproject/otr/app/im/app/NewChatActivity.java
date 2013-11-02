@@ -47,6 +47,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -980,10 +983,34 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     void startAudioPicker() {
+       
+        
         Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        if (!isCallable(intent))
+        {
+            intent = new Intent("android.provider.MediaStore.RECORD_SOUND");
+            intent.addCategory("android.intent.category.DEFAULT");
+            
+            if (!isCallable(intent))
+            {
+                intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/*");
+                
+                if (!isCallable(intent))
+                    return;
+                
+            }
+        }
+        
         startActivityForResult(intent, REQUEST_SEND_AUDIO); // intent and requestCode of 1
 
     }
+    
+    private boolean isCallable(Intent intent) {
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 
+            PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
