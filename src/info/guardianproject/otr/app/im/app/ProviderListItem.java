@@ -17,8 +17,11 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import java.util.List;
+
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.AccountAdapter.AccountSetting;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -366,7 +369,95 @@ public class ProviderListItem extends LinearLayout {
     {
         public void signIn (long accountId);
         public void signOut (long accountId);
+    }
+
+    public void applyView( AccountAdapter.AccountSetting accountSetting ) {
+        // provide name
+        String providerNameText = accountSetting.activeUserName;
+        if (mShowLongName)
+            providerNameText += '@' + accountSetting.domain;
+        mProviderName.setText(providerNameText);
+        // switch
+        boolean switchOn = false;
+        String secondRowText;
+        
+        switch (accountSetting.connectionStatus) {
+        
+        case ImConnection.LOGGING_IN:
+        case ImConnection.SUSPENDING:
+        case ImConnection.SUSPENDED:
+            switchOn = true;
+            secondRowText = getResources().getString(R.string.signing_in_wait);
+            break;
+
+        case ImConnection.LOGGED_IN:
+            switchOn = true;
+            secondRowText = computeSecondRowText(accountSetting);
+            break;
+
+        default:
+            switchOn = false;
+            secondRowText = computeSecondRowText(accountSetting);
+            break;
+        }
+        
+        if (mSignInSwitch != null && (!mUserChanged))
+        {
+            mSignInSwitch.setOnCheckedChangeListener(null);
+            mSignInSwitch.setChecked(switchOn);
+            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+        }
+        // login name
+        if (mLoginName != null)
+            mLoginName.setText(secondRowText);
+
     };
+    
+    private String getPresenceString( Context context, int presenceStatus) {
+
+        switch (presenceStatus) {
+        case Imps.Presence.AVAILABLE:
+            return context.getString(R.string.presence_available);
+
+        case Imps.Presence.IDLE:
+            return context.getString(R.string.presence_idle);
+            
+        case Imps.Presence.AWAY:
+            return context.getString(R.string.presence_away);
+
+        case Imps.Presence.DO_NOT_DISTURB:
+
+            return context.getString(R.string.presence_busy);
+
+        case Imps.Presence.INVISIBLE:
+            return context.getString(R.string.presence_invisible);
+
+        default:
+            return context.getString(R.string.presence_offline);
+        }
+    }
+    
+    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting ) {
+        StringBuffer secondRowTextBuffer = new StringBuffer();
+
+        secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
+        secondRowTextBuffer.append(" - ");
+        if (accountSetting.host != null && accountSetting.host.length() > 0) {
+            secondRowTextBuffer.append(accountSetting.host);
+        } else {
+            secondRowTextBuffer.append(accountSetting.domain);
+        }
+
+        if (accountSetting.port != 5222 && accountSetting.port != 0)
+            secondRowTextBuffer.append(':').append(accountSetting.port);
+
+        if (accountSetting.isTor) {
+            secondRowTextBuffer.append(" - ");
+            secondRowTextBuffer.append(mActivity.getString(R.string._via_orbot));
+        }
+
+        return secondRowTextBuffer.toString();
+    }
 
 }
 

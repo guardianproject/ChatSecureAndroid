@@ -64,7 +64,7 @@ public class AccountListActivity extends SherlockListActivity implements View.On
 
     private static final String TAG = ImApp.LOG_TAG;
 
-    private ProviderAdapter mAdapter;
+    private AccountAdapter mAdapter;
     private Cursor mProviderCursor;
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
@@ -163,7 +163,10 @@ public class AccountListActivity extends SherlockListActivity implements View.On
     protected void onDestroy() {
         mSignInHelper.stop();
         
-       
+        if (mProviderCursor != null) {
+            mProviderCursor.close();
+            mAdapter.swapCursor(null);
+        }
         super.onDestroy();
     }
     
@@ -710,37 +713,6 @@ private Handler mHandlerGoogleAuth = new Handler ()
         }
     }
 
-    private final class ProviderAdapter extends CursorAdapter {
-
-        public ProviderAdapter(Context context, Cursor c, boolean autoRequery) {
-            super(context, c, autoRequery);
-            
-            mInflater = LayoutInflater.from(context).cloneInContext(context);
-            mInflater.setFactory(new ProviderListItemFactory());
-        }
-
-        private LayoutInflater mInflater;
-
-      
-        
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // create a custom view, so we can manage it ourselves. Mainly, we want to
-            // initialize the widget views (by calling getViewById()) in newView() instead of in
-            // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view,
-                    parent, false);
-            view.init(cursor, false);
-            return view;
-        }
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ((ProviderListItem) view).bindView(cursor);
-        }
-    }
-
-    
     private final class MyHandler extends SimpleAlertHandler {
 
         public MyHandler(Activity activity) {
@@ -807,7 +779,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
         if (mProviderCursor == null)
             return false;
         
-        mAdapter = new ProviderAdapter(this, mProviderCursor, true);
+        mAdapter = new AccountAdapter(this, mProviderCursor, true, new ProviderListItemFactory(), R.layout.account_view);
         setListAdapter(mAdapter);
         
         refreshAccountState();

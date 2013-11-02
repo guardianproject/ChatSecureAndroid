@@ -77,7 +77,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -304,6 +303,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onDestroy() {
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
+        closeProviderAdapter();
         super.onDestroy();
         mChatPagerAdapter = null;
     }
@@ -670,6 +670,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     private Menu mMenu;
+    private AccountAdapter mAdapter;
     
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
@@ -1339,11 +1340,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void refreshSpinners ()
     {
-        if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                mProviderCursor.close();
+        closeProviderAdapter();
         
         setupSpinners();
-        setSpinnerState();
+    }
+
+    private void closeProviderAdapter() {
+        if (mProviderCursor != null && (!mProviderCursor.isClosed()))
+                mProviderCursor.close();
+        mAdapter.swapCursor(null);
     }
     
     private void setupSpinners ()
@@ -1360,12 +1365,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
      
         mProviderCursor.moveToFirst();
 
-        ProviderAdapter pAdapter = new ProviderAdapter(this, mProviderCursor);
-        
+        mAdapter = new AccountAdapter(this, mProviderCursor, true, new ProviderListItemFactory(), R.layout.account_view_actionbar );
+        mAdapter.setListener(new AccountAdapter.Listener() {
+            @Override
+            public void onPopulate() {
+                setSpinnerState();
+            }
+        });
         ActionBar ab = getSherlock().getActionBar();
         
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ab.setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
+        ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
 
            @Override
            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -1384,8 +1394,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mProviderCursor.moveToNext();
             
         }
-
-        setSpinnerState();
     }
     
     public void setSpinnerState ()
@@ -2069,38 +2077,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     void setLastProviderId(long mLastProviderId) {
         this.mLastProviderId = mLastProviderId;
-    }
-    
-    public class ProviderAdapter extends CursorAdapter {
-        private LayoutInflater mInflater;
-
-        @SuppressWarnings("deprecation")
-        public ProviderAdapter(Context context, Cursor c) {
-            super(context, c);
-            mInflater = LayoutInflater.from(context).cloneInContext(context);
-            mInflater.setFactory(new ProviderListItemFactory());
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // create a custom view, so we can manage it ourselves. Mainly, we want to
-            // initialize the widget views (by calling getViewById()) in newView() instead of in
-            // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_actionbar,
-                    parent, false);
-            view.init(cursor, true);
-            return view;
-        }
-        
-        
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ((ProviderListItem) view).bindView(cursor);
-        }
-        
-        
-        
     }
     
     public class ProviderListItemFactory implements LayoutInflater.Factory {
