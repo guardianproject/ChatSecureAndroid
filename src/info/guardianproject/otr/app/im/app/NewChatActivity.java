@@ -58,6 +58,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
@@ -102,6 +103,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
     private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
 
+    private static final int ACCOUNT_LOADER_ID = 1000;
     private static final int CONTACT_LIST_LOADER_ID = 4444;
     private static final int CHAT_LIST_LOADER_ID = 4445;
 
@@ -120,10 +122,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
-    
-    Cursor mProviderCursor = null;
-    long[] mAccountIds;
-    
     
 
     final static class MyHandler extends SimpleAlertHandler {
@@ -671,6 +669,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private Menu mMenu;
     private AccountAdapter mAdapter;
+    protected Long[] mAccountIds;
     
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
@@ -1346,26 +1345,47 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
 
     private void closeProviderAdapter() {
-        if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                mProviderCursor.close();
         mAdapter.swapCursor(null);
     }
     
     private void setupSpinners ()
     {
-        
-        mProviderCursor = getContentResolver().query(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
-        
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
+        getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
 
-        mAccountIds = new long[mProviderCursor.getCount()];
-        
-     
-        mProviderCursor.moveToFirst();
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
+                        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
+                        
+                        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                        Imps.Provider.DEFAULT_SORT_ORDER);
 
-        mAdapter = new AccountAdapter(this, mProviderCursor, true, new ProviderListItemFactory(), R.layout.account_view_actionbar );
+                return loader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+                mAccountIds = new Long[newCursor.getCount()];
+                newCursor.moveToFirst();
+                int activeAccountIdColumn = newCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+                for (int i = 0; i < mAccountIds.length; i++)
+                {
+                    mAccountIds[i] = newCursor.getLong(activeAccountIdColumn);              
+                    newCursor.moveToNext();
+                    
+                }
+                mAdapter.swapCursor(newCursor);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                mAccountIds = null;
+                mAdapter.swapCursor(null);
+            }
+        });
+
+        mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
         mAdapter.setListener(new AccountAdapter.Listener() {
             @Override
             public void onPopulate() {
@@ -1385,15 +1405,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
         });
         
-        mProviderCursor.moveToFirst();
-        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
-
-        for (int i = 0; i < mAccountIds.length; i++)
-        {
-            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);              
-            mProviderCursor.moveToNext();
-            
-        }
     }
     
     public void setSpinnerState ()
@@ -1415,7 +1426,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 if (accountId == getAccountId())
                 {
-                    getSherlock().getActionBar().setSelectedNavigationItem(selIdx);
+                    ActionBar actionBar = getSherlock().getActionBar();
+                    if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST)
+                        actionBar.setSelectedNavigationItem(selIdx);
                     
                     break;
                 }

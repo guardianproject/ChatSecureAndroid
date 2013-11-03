@@ -29,17 +29,12 @@ public class AccountAdapter extends CursorAdapter {
     private List<AccountSetting> mAccountSettingList;
     private Listener mListener;
 
-    public AccountAdapter(Activity context, Cursor c, boolean autoRequery,
+    public AccountAdapter(Activity context,
             LayoutInflater.Factory factory, int resId) {
-        super(context, null, autoRequery);
-        mStashCursor = c;
+        super(context, null, 0);
         mInflater = LayoutInflater.from(context).cloneInContext(context);
         mInflater.setFactory(factory);
         mResId = resId;
-        
-        List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
-        
-        runBindTask( context, accountInfoList);
     }
     
     public void setListener(Listener listener) {
@@ -52,7 +47,14 @@ public class AccountAdapter extends CursorAdapter {
             mBindTask.cancel(false);
             mBindTask = null ;
         }
-        return super.swapCursor(newCursor);
+        mStashCursor = newCursor;
+        
+        if (mStashCursor != null) {
+            // Delay swapping in the cursor until we get the extra info
+            List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
+            runBindTask((Activity)mContext, accountInfoList);
+        }
+        return super.swapCursor(null);
     };
     
     /**
@@ -169,8 +171,9 @@ public class AccountAdapter extends CursorAdapter {
             protected void onPostExecute(List<AccountSetting> result) {
                 // store 
                 mAccountSettingList = result ;
+                mBindTask = null;
                 // swap
-                swapCursor(mStashCursor);
+                AccountAdapter.super.swapCursor(mStashCursor);
                 if (mListener != null)
                     mListener.onPopulate();
             }
