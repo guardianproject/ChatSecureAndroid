@@ -53,7 +53,6 @@ import android.widget.ListView;
 
 public class ContactListFilterView extends LinearLayout {
     private AbsListView mFilterList;
-    private Filter mFilter;
     private ContactAdapter mContactAdapter;
     
     private String mSearchString;
@@ -270,40 +269,31 @@ public class ContactListFilterView extends LinearLayout {
     public void doFilter(Uri uri, String filterString) {
         if (uri != null && !uri.equals(mUri)) {
             mUri = uri;
-
-            if (mContactAdapter == null) {
-                
-                if (mFilterList instanceof ListView)
-                {
-                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view);
-                    mFilter = mContactAdapter.getFilter();
-
-                    ((ListView)mFilterList).setAdapter(mContactAdapter);
-                }
-                else if (mFilterList instanceof GridView)
-                {
-
-                    mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view_grid_layout);
-                    mFilter = mContactAdapter.getFilter();
-                        
-                    ((GridView)mFilterList).setAdapter(mContactAdapter);
-                }
-
-                mLoaderCallbacks = new MyLoaderCallbacks();
-                mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
-            } else {
-                mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
-            }
-        } else {
-            mFilter.filter(filterString);
         }
+        doFilter(filterString);
     }
 
     public void doFilter(String filterString) {
-        
-        if (mFilter != null && filterString != null)
-        mFilter.filter(filterString);
+        mSearchString = filterString;
+        if (mContactAdapter == null) {
+            if (mFilterList instanceof ListView)
+            {
+                mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view);
 
+                ((ListView)mFilterList).setAdapter(mContactAdapter);
+            }
+            else if (mFilterList instanceof GridView)
+            {
+                mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view_grid_layout);
+
+                ((GridView)mFilterList).setAdapter(mContactAdapter);
+            }
+
+            mLoaderCallbacks = new MyLoaderCallbacks();
+            mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
+        } else {
+            mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
+        }
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
