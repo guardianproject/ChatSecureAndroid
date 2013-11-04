@@ -54,7 +54,7 @@ public class AccountAdapter extends CursorAdapter {
             List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
             runBindTask((Activity)mContext, accountInfoList);
         }
-        return super.swapCursor(null);
+        return super.swapCursor(mStashCursor);
     };
     
     /**
@@ -115,7 +115,9 @@ public class AccountAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ((ProviderListItem) view).bindView(cursor);
-        ((ProviderListItem) view).applyView(mAccountSettingList.get(cursor.getPosition()));
+        
+        if (mAccountSettingList != null)
+            ((ProviderListItem) view).applyView(mAccountSettingList.get(cursor.getPosition()));
     }
 
     private void runBindTask( final Activity context, final List<AccountInfo> accountInfoList ) {
