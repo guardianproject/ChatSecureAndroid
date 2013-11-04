@@ -65,6 +65,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -459,7 +460,7 @@ public class ImApp extends Application {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG))
                 log("service disconnected");
 
-            //mConnections.clear();
+            mConnections.clear();
             mImService = null;
         }
     };
@@ -702,7 +703,24 @@ public class ImApp extends Application {
             if (mConnections.size() == 0)
                 fetchActiveConnections();
             
-            return mConnections.get(providerId);
+            IImConnection im = mConnections.get(providerId);
+            
+            if (im != null)
+            {
+                try 
+                {
+                    im.getState();
+                }
+                catch (RemoteException doe)
+                {
+                    mConnections.clear();
+                    //something is wrong
+                    fetchActiveConnections();
+                    im = mConnections.get(providerId);
+                }
+            }
+            
+            return im;
         }
     }
 
