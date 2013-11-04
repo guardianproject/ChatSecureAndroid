@@ -29,7 +29,6 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.DummyActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
-import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener.State;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.engine.ConnectionFactory;
@@ -61,6 +60,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
@@ -84,11 +84,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private static final int ACCOUNT_PASSOWRD_COLUMN = 3;
 
     private static final int EVENT_SHOW_TOAST = 100;
-    private static final int EVENT_NETWORK_STATE_CHANGED = 200;
     
     private StatusBarNotifier mStatusBarNotifier;
     private Handler mServiceHandler;
-    NetworkConnectivityListener mNetworkConnectivityListener;
     private int mNetworkType;
     private boolean mNeedCheckAutoLogin;
 
@@ -104,6 +102,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     public long mHeartbeatInterval;
     private WakeLock mWakeLock;
+    private State mNetworkState;
 
     private static final String TAG = "GB.ImService";
 
@@ -191,10 +190,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mStatusBarNotifier = new StatusBarNotifier(this);
         mServiceHandler = new ServiceHandler();
 
-        mNetworkConnectivityListener = new NetworkConnectivityListener();
-        mNetworkConnectivityListener.registerHandler(mServiceHandler, EVENT_NETWORK_STATE_CHANGED);
-        mNetworkConnectivityListener.startListening(this);
-
         //mSettingsMonitor = new SettingsMonitor();
 
         /*
@@ -233,8 +228,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void sendHeartbeat() {
         Debug.onHeartbeat();
         try {
-            if (mNeedCheckAutoLogin
-                    && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+            if (mNeedCheckAutoLogin && mNetworkState != State.NOT_CONNECTED) {
                 debug("autoLogin from heartbeat");
                 mNeedCheckAutoLogin = false;
                 autoLogin();
@@ -278,6 +272,16 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
             return;
         }
+        
+        if (intent != null && HeartbeatService.NETWORK_STATE_ACTION.equals(intent.getAction())) {
+            NetworkInfo networkInfo = (NetworkInfo) intent
+                    .getParcelableExtra(HeartbeatService.NETWORK_INFO_EXTRA);
+            State networkState = State.values()[intent.getIntExtra(HeartbeatService.NETWORK_STATE_EXTRA, 0)];
+            // TODO(miron) wakelock?
+            networkStateChanged(networkInfo, networkState);
+            return;
+        }
+
 
         if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
             mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
@@ -290,7 +294,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
-        if (mNeedCheckAutoLogin && mNetworkConnectivityListener.getState() != State.NOT_CONNECTED) {
+        if (mNeedCheckAutoLogin && mNetworkState != State.NOT_CONNECTED) {
             mNeedCheckAutoLogin = false;
             autoLogin();
         }
@@ -411,10 +415,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         }
         
         
-        mNetworkConnectivityListener.unregisterHandler(mServiceHandler);
-        mNetworkConnectivityListener.stopListening();
-        mNetworkConnectivityListener = null;
-
        // unregisterReceiver(mSettingsMonitor);
 
         if (mGlobalSettings != null)
@@ -517,20 +517,16 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     private boolean isNetworkAvailable() {
-        return mNetworkConnectivityListener.getState() == State.CONNECTED;
+        return mNetworkState == State.CONNECTED;
     }
 
-    void networkStateChanged() {
-        if (mNetworkConnectivityListener == null) {
-            return;
-        }
-        NetworkInfo networkInfo = mNetworkConnectivityListener.getNetworkInfo();
-        NetworkInfo.State state = networkInfo.getState();
+    void networkStateChanged(NetworkInfo networkInfo, State networkState) {
+        mNetworkState = networkState;
 
-        debug("networkStateChanged:" + state);
+        debug("networkStateChanged:" + mNetworkState);
 
         int oldType = mNetworkType;
-        mNetworkType = networkInfo.getType();
+        mNetworkType = networkInfo != null ? networkInfo.getType() : -1;
 
         // Notify the connection that network type has changed. Note that this
         // only work for connected connections, we need to reestablish if it's
@@ -541,6 +537,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
 
+        NetworkInfo.State state = networkInfo != null ? networkInfo.getState() : NetworkInfo.State.DISCONNECTED;
         switch (state) {
         case CONNECTED:
             if (mNeedCheckAutoLogin) {
@@ -555,6 +552,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             if (!isNetworkAvailable()) {
                 suspendConnections();
             }
+            break;
+            // TODO(miron) what about DISCONNECTING?
+        default:
             break;
         }
     }
@@ -687,10 +687,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             switch (msg.what) {
             case EVENT_SHOW_TOAST:
                 Toast.makeText(RemoteImService.this, (CharSequence) msg.obj, msg.arg1).show();
-                break;
-
-            case EVENT_NETWORK_STATE_CHANGED:
-                networkStateChanged();
                 break;
 
             default:
