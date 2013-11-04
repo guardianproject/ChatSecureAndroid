@@ -364,7 +364,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     }
     
-    private void showExistingAccountListDialog() {
+    void showExistingAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
