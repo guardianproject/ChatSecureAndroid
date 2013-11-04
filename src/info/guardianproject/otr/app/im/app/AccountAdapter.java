@@ -116,7 +116,7 @@ public class AccountAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ((ProviderListItem) view).bindView(cursor);
         
-        if (mAccountSettingList != null)
+        if (mAccountSettingList != null && mAccountSettingList.size() > cursor.getPosition())
             ((ProviderListItem) view).applyView(mAccountSettingList.get(cursor.getPosition()));
     }
 
