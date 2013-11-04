@@ -193,6 +193,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mCacheWord != null)
+            mCacheWord.disconnect();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
