@@ -78,4 +78,6 @@
     <color name="contact_status_bg">#aaffffff</color>
     <color name="contact_status_avatar_overlay">#aa555555</color>
     
+    <color name="background_gray">#565552</color>
+    
 </resources>

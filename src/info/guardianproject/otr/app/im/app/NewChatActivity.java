@@ -49,7 +49,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,6 +64,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -114,6 +114,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ImApp mApp;
     private ViewPager mChatPager;
+    private android.support.v4.view.PagerTabStrip mChatPagerTitleStrip;
     private ChatViewPagerAdapter mChatPagerAdapter;
     
     private SimpleAlertHandler mHandler;
@@ -162,6 +163,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mHandler = new MyHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
+        mChatPagerTitleStrip = (PagerTabStrip)findViewById(R.id.pager_title_strip);
         mChatPager.setSaveEnabled(false);
         mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
             
@@ -228,7 +230,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
 
                     getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-                    
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_blue_dark);
+
                 }
             }
 
@@ -677,13 +680,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
         
-        if (mChatPager != null && mChatPager.getCurrentItem() > 0 && mMenu != null)
-        {                                        
+        if (mChatPager != null && mMenu != null)
+        {                         
+            if (mChatPager.getCurrentItem() > 0)
+            {
                 if (isVerified)
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+                    
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_purple);
                         
                 }
                 else if (isEncrypted)
@@ -692,6 +699,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
    
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_orange_light);
+                    
                 }
                 else
                 {
@@ -700,7 +709,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_gray);
                 }
+            }
+            else
+            {
+                mChatPagerTitleStrip.setBackgroundResource(R.color.holo_blue_dark);
+            }
           
          }
     }

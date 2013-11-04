@@ -3,7 +3,7 @@
     android:layout_width="180dp"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-	android:background="#565552">
+	android:background="@color/background_gray">
 <View
     android:layout_width="fill_parent"
     android:layout_height="1dp"

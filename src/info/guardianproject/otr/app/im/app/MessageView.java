@@ -185,7 +185,7 @@ public class MessageView extends LinearLayout {
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
 
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_dark);
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_light);
             
         }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
@@ -193,7 +193,7 @@ public class MessageView extends LinearLayout {
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
 
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_green_dark);
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_purple);
         }
         
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
@@ -269,7 +269,7 @@ public class MessageView extends LinearLayout {
         
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_green_light);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_purple);
             mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             mHolder.mEncryptionIcon.setVisibility(VISIBLE);
             
