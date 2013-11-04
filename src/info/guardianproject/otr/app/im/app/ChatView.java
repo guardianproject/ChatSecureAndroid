@@ -271,8 +271,8 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_INVITATION = 2;
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
-    private static final long SHOW_TIME_STAMP_INTERVAL = 30 * 1000; // 1 minute
-    private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 10 seconds
+    private static final long SHOW_TIME_STAMP_INTERVAL = 15 * 1000; // 15 seconds
+    private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
     private static final long FAST_QUERY_INTERVAL = 100;
     private static final int QUERY_TOKEN = 10;
