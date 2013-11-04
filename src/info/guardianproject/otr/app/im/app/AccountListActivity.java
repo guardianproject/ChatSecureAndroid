@@ -40,6 +40,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -115,6 +116,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
         initProviderCursor();
         setContentView(R.layout.account_list_activity);
+        
+        
     }
 
     AccountAdapter getAdapter() {
@@ -267,25 +270,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
     }
 
     public void signOut(final long accountId) {
-        Cursor cursor = mAdapter.getCursor();
-        
-        if (cursor.isAfterLast())
-        {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast())
-            {
-                long cAccountId = cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                
-                if (cAccountId == accountId)
-                    break;
-                
-                cursor.moveToNext();
-            }
-            
-
-            cursor.moveToPosition(-1);
-        }
-
         // Remember that the user signed out and do not auto sign in until they
         // explicitly do so
         setKeepSignedIn(accountId, false);
@@ -738,6 +722,7 @@ private Handler mHandlerGoogleAuth = new Handler ()
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
                 mAdapter.swapCursor(null);
+                
             }
         });
 
