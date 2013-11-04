@@ -129,6 +129,9 @@ public class AccountAdapter extends CursorAdapter {
         if (mBindTask != null)
             mBindTask.cancel(false);
         // 
+        
+        mAccountSettingList = null;
+        
         mBindTask = new AsyncTask<Void, Void, List<AccountSetting>>() {
             
             @Override
