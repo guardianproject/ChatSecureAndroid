@@ -70,8 +70,10 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
         boolean noConnectivity = intent.getBooleanExtra(
                 ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
-        mNetworkInfo = (NetworkInfo) intent
-                .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+        ConnectivityManager manager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Getting from intent is deprecated - get from manager
+        mNetworkInfo = manager.getActiveNetworkInfo();
         mOtherNetworkInfo = (NetworkInfo) intent
                 .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
 
