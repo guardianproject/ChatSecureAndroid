@@ -193,6 +193,7 @@
     <string name="signing_in_to">getting the ChatSecure going...</string>
     <!-- This is the progress/status text displayed in the middle of the sign-in progress screen. -->
     <string name="signing_in_wait">Signing in\u2026</string>
+    <string name="signing_out_wait">Signing out\u2026</string>
     <!-- Dialog title -->
     <!-- This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app -->

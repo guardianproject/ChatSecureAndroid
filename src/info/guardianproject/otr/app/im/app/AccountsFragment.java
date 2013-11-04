@@ -20,9 +20,15 @@ public class AccountsFragment extends ListFragment {
         public void onAttach(Activity activity) {
             super.onAttach(activity);
             mActivity = (AccountListActivity)activity;
-            setListAdapter(mActivity.getAdapter());
         }
         
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+
+            setListAdapter(mActivity.getAdapter());
+        }
+
         @Override
         public void onDetach() {
             super.onDetach();

@@ -255,9 +255,7 @@ public class ProviderListItem extends LinearLayout {
                 case ImConnection.SUSPENDING:
                 case ImConnection.SUSPENDED:
                     mSecondRowText = r.getString(R.string.signing_in_wait);
-
                     mSwitchOn = true;
-                    
                     break;
 
                 case ImConnection.LOGGED_IN:
@@ -266,6 +264,12 @@ public class ProviderListItem extends LinearLayout {
 
                     break;
 
+                case ImConnection.LOGGING_OUT:
+                    mSwitchOn = false;
+                    mSecondRowText = r.getString(R.string.signing_out_wait);
+
+                    break;
+                    
                 default:
 
                     mSwitchOn = false;
