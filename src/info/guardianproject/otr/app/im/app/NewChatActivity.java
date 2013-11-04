@@ -47,7 +47,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,6 +57,10 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -75,7 +78,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,18 +97,21 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
     private static final int MENU_RESEND = Menu.FIRST;
+
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
     private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
     private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
+
+    private static final int ACCOUNT_LOADER_ID = 1000;
+    private static final int CONTACT_LIST_LOADER_ID = 4444;
+    private static final int CHAT_LIST_LOADER_ID = 4445;
 
     
     
     private ImApp mApp;
     private ViewPager mChatPager;
     private ChatViewPagerAdapter mChatPagerAdapter;
-    
-    private Cursor mCursorChats;
     
     private SimpleAlertHandler mHandler;
     
@@ -117,10 +122,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
-    
-    Cursor mProviderCursor = null;
-    long[] mAccountIds;
-    
     
 
     final static class MyHandler extends SimpleAlertHandler {
@@ -255,8 +256,29 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         setupSpinners();
         
-       
-        
+        getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new MyLoaderCallbacks());
+    }
+    
+    class MyLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor> {
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
+
+            loader.setUpdateThrottle(1000L);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+            Log.d("YYY", "swap cursor");
+            mChatPagerAdapter.swapCursor(newCursor);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            Log.d("YYY", "reset cursor");
+            mChatPagerAdapter.swapCursor(null);
+        }
     }
     
     /*
@@ -278,9 +300,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     @Override
     protected void onDestroy() {
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
-        mChatPagerAdapter.onDestroy();
-        mChatPagerAdapter = null;
+        mChatPagerAdapter.swapCursor(null);
+        closeProviderAdapter();
         super.onDestroy();
+        mChatPagerAdapter = null;
     }
     
     @Override
@@ -549,14 +572,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
                         long requestedContactId = ContentUris.parseId(data);
-                                           
-                        mCursorChats.moveToPosition(-1);
+                                    
+                        Cursor cursorChats = mChatPagerAdapter.getCursor();
+                        cursorChats.moveToPosition(-1);
                         int posIdx = 1;
                         boolean foundChatView = false;
 
-                        while (mCursorChats.moveToNext())
+                        while (cursorChats.moveToNext())
                         {
-                            long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+                            long chatId = cursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
 
                             if (chatId == requestedContactId)
                             {
@@ -620,12 +644,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     public void showChat (long requestedChatId)
     {
-        mCursorChats.moveToPosition(-1);
+        Cursor cursorChats = mChatPagerAdapter.getCursor();
+        cursorChats.moveToPosition(-1);
         int posIdx = 1;
         
-        while (mCursorChats.moveToNext())
+        while (cursorChats.moveToNext())
         {
-            long chatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+            long chatId = cursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
             
             if (chatId == requestedChatId)
             {
@@ -643,6 +668,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     private Menu mMenu;
+    private AccountAdapter mAdapter;
+    protected Long[] mAccountIds;
     
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
@@ -1001,9 +1028,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         int currentPos = mChatPager.getCurrentItem();
         if (currentPos == 0)
             return null;
-        mCursorChats.moveToPosition(currentPos - 1);
-        long providerId = mCursorChats.getLong(ChatView.PROVIDER_COLUMN);
-        String username = mCursorChats.getString(ChatView.USERNAME_COLUMN);
+        Cursor cursorChats = mChatPagerAdapter.getCursor();
+        cursorChats.moveToPosition(currentPos - 1);
+        long providerId = cursorChats.getLong(ChatView.PROVIDER_COLUMN);
+        String username = cursorChats.getString(ChatView.USERNAME_COLUMN);
         IChatSessionManager sessionMgr = getChatSessionManager(providerId);
         if (sessionMgr != null) {
             try {
@@ -1158,60 +1186,39 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
     }
     
-    private class MyContentObserver extends ContentObserver {
-
-        public MyContentObserver() {
-            super(mHandler);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            // Although we get this on our main thread, the dispatch is async and can happen after onDestroy
-            // Ensure we are still alive
-            if (mCursorChats != null)
-                refreshChatViews();
-            else
-                Log.w(TAG, "got onChange after onDestroy");
-        }
-    }
-
     public class ChatViewPagerAdapter extends DynamicPagerAdapter {
-        private MyContentObserver mCursorObserver;
+        Cursor mCursor;
+        boolean mDataValid;
 
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            
-            mCursorObserver = new MyContentObserver();
-            mCursorChats.registerContentObserver(mCursorObserver);
         }
         
-        public void onDestroy() {
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-            mCursorChats = null;
+        public Cursor getCursor() {
+            return mCursor;
         }
 
-        @Override
-        public void notifyDataSetChanged() {
-            // In case that onDestroy was called first
-            // FIXME check if this can actually happen
-            if (mCursorChats == null)
-                return;
-            mCursorChats.unregisterContentObserver(mCursorObserver);
-            mCursorChats.close();
-
-            mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            mCursorChats.registerContentObserver(mCursorObserver);
-            
-            super.notifyDataSetChanged();
+        public Cursor swapCursor(Cursor newCursor) {
+            if (newCursor == mCursor) {
+                return null;
+            }
+            Cursor oldCursor = mCursor;
+            mCursor = newCursor;
+            if (newCursor != null) {
+                mDataValid = true;
+                // notify the observers about the new cursor
+                refreshChatViews();
+                notifyDataSetChanged();
+            } else {
+                mDataValid = false;
+            }
+            return oldCursor;
         }
-
 
         @Override
         public int getCount() {
-            if (mCursorChats != null)
-                return mCursorChats.getCount() + 1;
+            if (mCursor != null)
+                return mCursor.getCount() + 1;
             else
                 return 0;
         }
@@ -1226,10 +1233,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 int positionMod = position - 1;
                 
-                mCursorChats.moveToPosition(positionMod);            
-                long contactChatId = mCursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
-                String contactName = mCursorChats.getString(ChatView.USERNAME_COLUMN); 
-                long providerId = mCursorChats.getLong(ChatView.PROVIDER_COLUMN); 
+                mCursor.moveToPosition(positionMod);            
+                long contactChatId = mCursor.getLong(ChatView.CONTACT_ID_COLUMN);
+                String contactName = mCursor.getString(ChatView.USERNAME_COLUMN); 
+                long providerId = mCursor.getLong(ChatView.PROVIDER_COLUMN); 
                 
                 return ChatViewFragment.newInstance(contactChatId, contactName, providerId);
             }
@@ -1246,14 +1253,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 int position = PagerAdapter.POSITION_NONE;
                 
                 // TODO: cache positions so we don't scan the cursor every time
-                if (mCursorChats.getCount() > 0)
+                if (mCursor.getCount() > 0)
                 {
-                    mCursorChats.moveToFirst();
+                    mCursor.moveToFirst();
                     
                     int posIdx = 1;
                     
                     do {
-                        long chatId = mCursorChats.getLong(ChatView.CHAT_ID_COLUMN);
+                        long chatId = mCursor.getLong(ChatView.CHAT_ID_COLUMN);
                         
                         if (chatId == viewChatId)                        
                         {
@@ -1263,7 +1270,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                         posIdx++;
                     }
-                    while (mCursorChats.moveToNext());
+                    while (mCursor.moveToNext());
                     
                 }
                 
@@ -1293,9 +1300,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 int positionMod = position - 1;
 
-                mCursorChats.moveToPosition(positionMod);
-                if (!mCursorChats.isAfterLast())
-                    return mCursorChats.getString(ChatView.NICKNAME_COLUMN);
+                mCursor.moveToPosition(positionMod);
+                if (!mCursor.isAfterLast())
+                    return mCursor.getString(ChatView.NICKNAME_COLUMN);
                 else
                     return "";//unknown title
             }
@@ -1332,33 +1339,63 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void refreshSpinners ()
     {
-        if (mProviderCursor != null && (!mProviderCursor.isClosed()))
-                mProviderCursor.close();
+        closeProviderAdapter();
         
         setupSpinners();
-        setSpinnerState();
+    }
+
+    private void closeProviderAdapter() {
+        mAdapter.swapCursor(null);
     }
     
     private void setupSpinners ()
     {
-        
-        mProviderCursor = getContentResolver().query(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
-                Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
-        
-                new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                Imps.Provider.DEFAULT_SORT_ORDER);
+        getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
 
-        mAccountIds = new long[mProviderCursor.getCount()];
-        
-     
-        mProviderCursor.moveToFirst();
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
+                        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
+                        
+                        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                        Imps.Provider.DEFAULT_SORT_ORDER);
 
-        ProviderAdapter pAdapter = new ProviderAdapter(this, mProviderCursor);
-        
+                return loader;
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+                mAccountIds = new Long[newCursor.getCount()];
+                newCursor.moveToFirst();
+                int activeAccountIdColumn = newCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+
+                for (int i = 0; i < mAccountIds.length; i++)
+                {
+                    mAccountIds[i] = newCursor.getLong(activeAccountIdColumn);              
+                    newCursor.moveToNext();
+                    
+                }
+                mAdapter.swapCursor(newCursor);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                mAccountIds = null;
+                mAdapter.swapCursor(null);
+            }
+        });
+
+        mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
+        mAdapter.setListener(new AccountAdapter.Listener() {
+            @Override
+            public void onPopulate() {
+                setSpinnerState();
+            }
+        });
         ActionBar ab = getSherlock().getActionBar();
         
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ab.setListNavigationCallbacks(pAdapter, new OnNavigationListener () {
+        ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
 
            @Override
            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -1368,17 +1405,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
         });
         
-        mProviderCursor.moveToFirst();
-        int activeAccountIdColumn = mProviderCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
-
-        for (int i = 0; i < mAccountIds.length; i++)
-        {
-            mAccountIds[i] = mProviderCursor.getLong(activeAccountIdColumn);              
-            mProviderCursor.moveToNext();
-            
-        }
-
-        setSpinnerState();
     }
     
     public void setSpinnerState ()
@@ -1400,7 +1426,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 if (accountId == getAccountId())
                 {
-                    getSherlock().getActionBar().setSelectedNavigationItem(selIdx);
+                    ActionBar actionBar = getSherlock().getActionBar();
+                    if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST)
+                        actionBar.setSelectedNavigationItem(selIdx);
                     
                     break;
                 }
@@ -1527,7 +1555,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
         static final int ACCOUNT_PRESENCE_STATUS = 9;
         static final int ACCOUNT_CONNECTION_STATUS = 10;
-         
+
+
+
         ContactListFilterView mFilterView = null;
         UserPresenceView mPresenceView = null;
 
@@ -1610,9 +1640,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
               mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
               
-              mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
+             mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
 
              mFilterView.setListener(this);
+             mFilterView.setLoaderManager(getLoaderManager(), CONTACT_LIST_LOADER_ID);
              
              TextView txtEmpty = (TextView)mFilterView.findViewById(R.id.empty);
              
@@ -2059,38 +2090,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     void setLastProviderId(long mLastProviderId) {
         this.mLastProviderId = mLastProviderId;
-    }
-    
-    public class ProviderAdapter extends CursorAdapter {
-        private LayoutInflater mInflater;
-
-        @SuppressWarnings("deprecation")
-        public ProviderAdapter(Context context, Cursor c) {
-            super(context, c);
-            mInflater = LayoutInflater.from(context).cloneInContext(context);
-            mInflater.setFactory(new ProviderListItemFactory());
-        }
-
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // create a custom view, so we can manage it ourselves. Mainly, we want to
-            // initialize the widget views (by calling getViewById()) in newView() instead of in
-            // bindView(), which can be called more often.
-            ProviderListItem view = (ProviderListItem) mInflater.inflate(R.layout.account_view_actionbar,
-                    parent, false);
-            view.init(cursor, true);
-            return view;
-        }
-        
-        
-
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ((ProviderListItem) view).bindView(cursor);
-        }
-        
-        
-        
     }
     
     public class ProviderListItemFactory implements LayoutInflater.Factory {

@@ -423,6 +423,14 @@ public class ContactListManagerAdapter extends
 
     }
 
+    interface ContactListBroadcaster {
+        void broadcast(IContactListListener listener) throws RemoteException;
+    }
+
+    interface SubscriptionBroadcaster {
+        void broadcast(ISubscriptionListener listener) throws RemoteException;
+    }
+
     final class ContactListListenerAdapter implements ContactListListener {
         private boolean mAllContactsLoaded;
 
@@ -441,6 +449,22 @@ public class ContactListManagerAdapter extends
 
         private Vector<StoredContactChange> mDelayedContactChanges = new Vector<StoredContactChange>();
 
+        private void broadcast(ContactListBroadcaster callback) {
+            synchronized (mRemoteContactListeners) {
+                final int N = mRemoteContactListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
+                    try {
+                        callback.broadcast(listener);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
+                }
+                mRemoteContactListeners.finishBroadcast();
+            }
+        }
+
         public void onContactsPresenceUpdate(final Contact[] contacts) {
             // The client listens only to presence updates for now. Update
             // the avatars first to ensure it can get the new avatar when
@@ -449,19 +473,13 @@ public class ContactListManagerAdapter extends
             // updateAvatarsContent(contacts);
             updatePresenceContent(contacts);
 
-            final int N = mRemoteContactListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
-                try {
+            broadcast(new ContactListBroadcaster() {
+                public void broadcast(IContactListListener listener) throws RemoteException {
                     listener.onContactsPresenceUpdate(contacts);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteContactListeners.finishBroadcast();
+            });
         }
-
+        
         public void onContactChange(final int type, final ContactList list, final Contact contact) {
             ContactListAdapter removed = null;
             String notificationText = null;
@@ -577,17 +595,12 @@ public class ContactListManagerAdapter extends
             } else {
                 listAdapter = (list == null) ? null : getContactListAdapter(list.getAddress());
             }
-            final int N = mRemoteContactListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
-                try {
+            
+            broadcast(new ContactListBroadcaster() {
+                public void broadcast(IContactListListener listener) throws RemoteException {
                     listener.onContactChange(type, listAdapter, contact);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteContactListeners.finishBroadcast();
+            });
 
             if (mAllContactsLoaded && notificationText != null) {
            //     mContext.showToast(notificationText, Toast.LENGTH_SHORT);
@@ -596,17 +609,11 @@ public class ContactListManagerAdapter extends
 
         public void onContactError(final int errorType, final ImErrorInfo error,
                 final String listName, final Contact contact) {
-            final int N = mRemoteContactListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
-                try {
+            broadcast(new ContactListBroadcaster() {
+                public void broadcast(IContactListListener listener) throws RemoteException {
                     listener.onContactError(errorType, error, listName, contact);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteContactListeners.finishBroadcast();
+            });
         }
 
         public void handleDelayedContactChanges() {
@@ -615,23 +622,17 @@ public class ContactListManagerAdapter extends
             }
         }
 
-        public synchronized void onAllContactListsLoaded() {
+        public void onAllContactListsLoaded() {
             mAllContactsLoaded = true;
             
             handleDelayedContactChanges();
             removeObsoleteContactsAndLists();
-            
-            final int N = mRemoteContactListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IContactListListener listener = mRemoteContactListeners.getBroadcastItem(i);
-                try {
+
+            broadcast(new ContactListBroadcaster() {
+                public void broadcast(IContactListListener listener) throws RemoteException {
                     listener.onAllContactListsLoaded();
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteContactListeners.finishBroadcast();
+            });
         }
     }
 
@@ -646,51 +647,49 @@ public class ContactListManagerAdapter extends
                     Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING);
             mContext.getStatusBarNotifier().notifySubscriptionRequest(mProviderId, mAccountId,
                     ContentUris.parseId(uri), username, nickname);
-            final int N = mRemoteSubscriptionListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
-                try {
+            broadcast(new SubscriptionBroadcaster() {
+                public void broadcast(ISubscriptionListener listener) throws RemoteException {
                     listener.onSubScriptionRequest(from);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
+            });
+        }
+
+        private void broadcast(SubscriptionBroadcaster callback) {
+            synchronized (mRemoteSubscriptionListeners) {
+                final int N = mRemoteSubscriptionListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
+                    try {
+                        callback.broadcast(listener);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
+                }
+                mRemoteSubscriptionListeners.finishBroadcast();
             }
-            mRemoteSubscriptionListeners.finishBroadcast();
         }
 
         public void onSubscriptionApproved(final String contact) {
             insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
-            final int N = mRemoteSubscriptionListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
-                try {
+            broadcast(new SubscriptionBroadcaster() {
+                public void broadcast(ISubscriptionListener listener) throws RemoteException {
                     listener.onSubscriptionApproved(contact);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteSubscriptionListeners.finishBroadcast();
+            });
         }
 
         public void onSubscriptionDeclined(final String contact) {
             insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
-            final int N = mRemoteSubscriptionListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
-                try {
+            broadcast(new SubscriptionBroadcaster() {
+                public void broadcast(ISubscriptionListener listener) throws RemoteException {
                     listener.onSubscriptionDeclined(contact);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
                 }
-            }
-            mRemoteSubscriptionListeners.finishBroadcast();
+            });
         }
 
         public void onApproveSubScriptionError(final String contact, final ImErrorInfo error) {
