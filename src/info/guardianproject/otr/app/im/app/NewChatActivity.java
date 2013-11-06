@@ -1832,7 +1832,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         manager.createChatSession(username);
                     } else {
                         // Already have session
-                        showChat(chatContactId);
+                        if (!showChat(chatContactId)) {
+                            // We have a session, but it's not in the cursor yet
+                            mRequestedChatId = chatContactId;
+                        }
                     }
                 } catch (RemoteException e) {
                   //  mHandler.showServiceErrorAlert(e.getMessage());
