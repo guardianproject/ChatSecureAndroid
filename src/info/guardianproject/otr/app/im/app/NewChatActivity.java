@@ -23,7 +23,6 @@ import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
-import info.guardianproject.otr.app.im.app.ProviderListItem.SignInManager;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -161,6 +160,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         ThemeableActivity.setBackgroundImage(this);
 
         mHandler = new MyHandler(this);
+        mRequestedChatId = -1;
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPagerTitleStrip = (PagerTabStrip)findViewById(R.id.pager_title_strip);
@@ -278,6 +278,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
+            if (mRequestedChatId >= 0) {
+                if (showChat(mRequestedChatId)) {
+                    mRequestedChatId = -1;
+                }
+            }
         }
 
         @Override
@@ -648,7 +653,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    public void showChat (long requestedChatId)
+    public boolean showChat (long requestedChatId)
     {
         Cursor cursorChats = mChatPagerAdapter.getCursor();
         cursorChats.moveToPosition(-1);
@@ -661,11 +666,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (chatId == requestedChatId)
             {
                 mChatPager.setCurrentItem(posIdx);
-                break;
+                return true;
             }
             
             posIdx++;
         }
+        
+        // Was not found
+        return false;
     }
 
     public void refreshChatViews ()
@@ -676,6 +684,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private Menu mMenu;
     private AccountAdapter mAdapter;
     protected Long[] mAccountIds;
+    private long mRequestedChatId;
     
     public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
     {
@@ -1818,11 +1827,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     IChatSessionManager manager = conn.getChatSessionManager();
                     IChatSession session = manager.getChatSession(username);
                     if (session == null) {
+                        // Create session.  Stash requested contact ID for when we get called back. 
+                        mRequestedChatId = chatContactId;
                         manager.createChatSession(username);
+                    } else {
+                        // Already have session
+                        showChat(chatContactId);
                     }
-
-                    refreshChatViews(); // Refresh early so that we can jump to the chat
-                    showChat(chatContactId);
                 } catch (RemoteException e) {
                   //  mHandler.showServiceErrorAlert(e.getMessage());
                     LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
@@ -2019,21 +2030,19 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             IChatSession session = manager.getChatSession(roomAddress);
             if (session == null) {
                 session = manager.createMultiUserChatSession(roomAddress);
-            }
-
-            if (session != null)
-            {
+                if (session != null)
+                {
+                    mRequestedChatId = session.getId(); 
+                } else {
+                    mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
+                }
+            } else {
                 long id = session.getId();
                 showChat(id);
                 //Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);                
                 //Intent i = new Intent(Intent.ACTION_VIEW, data);
                 //i.addCategory(ImApp.IMPS_CATEGORY);            
                 //startActivity(i);
-            }
-            else
-            {
-                mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
-                
             }
             
         } catch (RemoteException e) {
@@ -2137,22 +2146,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     public class ProviderListItemFactory implements LayoutInflater.Factory {
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, NewChatActivity.this, new SignInManager ()
-                {
-
-                    @Override
-                    public void signIn(long accountId) {
-                        // TODO Auto-generated method stub
-                        
-                    }
-
-                    @Override
-                    public void signOut(long accountId) {
-                        // TODO Auto-generated method stub
-                        
-                    }
-                    
-                });
+                return new ProviderListItem(context, NewChatActivity.this, null);
             }
             return null;
         }
