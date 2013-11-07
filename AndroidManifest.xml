@@ -52,7 +52,7 @@ android:anyDensity="true"
 
     <application android:name=".app.ImApp"
              android:label="@string/im_label"
-             android:icon="@drawable/ic_launcher_chatsecure"
+             android:icon="@drawable/ic_launcher"
              android:theme="@style/AppTheme"
              android:allowBackup="false"
 			>
