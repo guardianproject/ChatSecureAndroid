@@ -19,16 +19,11 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/csbackground"
+    android:gravity="center_vertical"
     >
-	<ImageView android:layout_width="fill_parent" 
-	  	android:layout_marginRight="30dip" 
-	  	android:scaleType="fitCenter" 
-	  	android:layout_marginLeft="30dip" 
-	  	android:layout_height="wrap_content" 
-	  	android:id="@+id/imageView1" 
-	  	android:src="@drawable/launch_chatsecure"/>
 	  	<LinearLayout android:orientation="horizontal" android:gravity="center_horizontal"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"  android:layout_marginTop="20dp">		
 	  	<TextView android:text="@string/signing_in_wait" android:layout_width="wrap_content" android:layout_height="wrap_content"/>

@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    
+     android:background="@drawable/csbackground"
+     >
 
     <LinearLayout
         android:id="@+id/frameRoot"
@@ -12,18 +15,9 @@
         android:layout_margin="0dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="140dip"
-            android:adjustViewBounds="true"
-            android:src="@drawable/chatsecure_banner"
-            android:layout_margin="10dip" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
-            android:background="#aa666666"
             >
 
             <LinearLayout
