@@ -2008,7 +2008,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     {
         int cItemIdx;
         
-        if ((cItemIdx = mChatPager.getCurrentItem()) > 0)
+        if (mChatPagerAdapter != null && (cItemIdx = mChatPager.getCurrentItem()) > 0)
         {
             return mChatPagerAdapter.getChatViewAt(cItemIdx);            
         }
