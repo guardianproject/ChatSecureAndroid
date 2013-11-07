@@ -29,11 +29,21 @@
      
      <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
         
-         <item android:id="@+id/menu_otr"
+         <item 
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_menu_unencrypted"
+          android:showAsAction="always"
+        >
+             <menu>
+                    <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_menu_unencrypted"
           android:showAsAction="always"
         />
+                 
+             </menu>
+             
+         </item>
          </group>
   
   <group android:enabled="true" android:id="@+id/menu_group_otr_unverified" android:visible="false">
@@ -118,13 +128,6 @@
         />
         </menu>
        </item>
-    
-    <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_view_profile"
-        android:icon="@drawable/ic_menu_info"
-         android:showAsAction="never"
-         />
-    
   
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
@@ -132,6 +135,15 @@
          android:showAsAction="never"
         
          />
+    
+    <!-- 
+     <item android:id="@+id/menu_delete_conversation"
+        android:title="@string/menu_clear_chat" 
+        android:icon="@drawable/ic_menu_trash"
+         android:showAsAction="never"
+        
+         />
+          -->
     </group>
     
  <group android:enabled="true" android:id="@+id/menu_group_contacts" android:visible="true">

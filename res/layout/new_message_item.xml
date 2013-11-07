@@ -37,16 +37,26 @@
 		android:id="@+id/message_container"
 		android:paddingTop="0dp"
 		android:paddingBottom="0dp"
-		
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
 		>
-		<LinearLayout android:layout_width="9dp"
+		<LinearLayout android:layout_width="16dp"
 		android:layout_height="match_parent" android:orientation="horizontal"
 		android:padding="0dp"
 		android:id="@+id/status_block_left"
-		
+		android:gravity="bottom"
 		android:visibility="gone"
 		>
- <ImageView
+		
+		    <ImageView
+		    android:id="@+id/iconEncryptionLeft"
+		    android:layout_width="16dp"
+		    android:layout_height="16dp"
+		     android:src="@drawable/lock16"
+		    android:visibility="gone"/>
+
+		</LinearLayout>
+		<ImageView
             android:id="@+id/avatar_left"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -54,8 +64,6 @@
             android:visibility="gone"
             android:layout_marginRight="0dip"
             />
- 
-		</LinearLayout>
 	    <TextView android:id="@+id/message"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:layout_width="0dip"
@@ -65,16 +73,9 @@
 	          android:fontFamily="sans-serif-light"
 	          android:padding="3dp"
 	         />
-	    
-		
-	    <LinearLayout android:layout_width="9dp"
-		android:layout_height="match_parent" android:orientation="horizontal"
-		android:padding="0dp"
-		android:id="@+id/status_block_right"
-		android:visibility="gone"
-		>
-		</LinearLayout>
-
+	       
+		    
+	        
 		 <ImageView
             android:id="@+id/avatar_right"
             android:layout_width="48dp"
@@ -84,6 +85,32 @@
             android:layout_marginLeft="3dip"
                     
             />
+		
+	    <LinearLayout android:layout_width="16dp"
+		android:layout_height="match_parent" 
+		android:orientation="vertical"
+		android:padding="0dp"
+		android:id="@+id/status_block_right"
+		android:visibility="gone"
+		android:gravity="bottom"
+		>
+ 
+		     <ImageView
+		    android:id="@+id/iconDelivery" 
+		    android:layout_width="16dp"
+		    android:layout_height="16dp"		    		   
+		     android:src="@drawable/ic_chat_msg_status_ok"
+		     android:visibility="gone"
+		    />  
+		    <ImageView
+		    android:id="@+id/iconEncryptionRight" android:layout_width="16dp"
+		    android:layout_height="16dp"		   
+		    android:visibility="gone"
+		    android:src="@drawable/lock16"
+		    
+		    />
+		</LinearLayout>
+
    	</LinearLayout>
    			<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:orientation="horizontal"
@@ -100,23 +127,7 @@
 	         android:fontFamily="sans-serif-light"
 	         android:visibility="gone"
 	         />
-	    <ImageView
-		    android:id="@+id/iconView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="3dp"
-		     android:visibility="gone"
-		    /> 
-		    <ImageView
-		    android:id="@+id/iconEncryption"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="3dp"
-		    android:visibility="gone"
-		    
-		    /> 
+	
 		    </LinearLayout>
 
 </view>

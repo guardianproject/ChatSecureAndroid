@@ -864,5 +864,6 @@
     <string name="pref_show_grid_summary">Display contact list as avatar grid</string>
     <string name="button_yes_accept_all">Yes, Accept All</string>
     
+    <string name="app_unlocked">Activated &amp; unlocked</string>
 </resources>
 
