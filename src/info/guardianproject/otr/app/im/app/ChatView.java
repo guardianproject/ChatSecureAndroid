@@ -1366,7 +1366,7 @@ public class ChatView extends LinearLayout {
                 message = "";
 
                 if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
+                    mActivity.updateEncryptionMenuState(false, false, mPresenceStatus);
                 
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
@@ -1387,12 +1387,12 @@ public class ChatView extends LinearLayout {
                 message = mContext.getString(R.string.presence_offline);
 
                 if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
+                    mActivity.updateEncryptionMenuState(false, false, mPresenceStatus);
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
                 if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
+                    mActivity.updateEncryptionMenuState(false, false, mPresenceStatus);
                 
                 visibility = View.GONE;
                 
@@ -1437,7 +1437,7 @@ public class ChatView extends LinearLayout {
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
                                 
                                 if (mIsSelected)
-                                    mActivity.updateEncryptionMenuState(true, false);
+                                    mActivity.updateEncryptionMenuState(true, false, mPresenceStatus);
                                 
                                 
                             } else {
@@ -1447,7 +1447,7 @@ public class ChatView extends LinearLayout {
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
                                 
                                 if (mIsSelected)
-                                    mActivity.updateEncryptionMenuState(true, true);
+                                    mActivity.updateEncryptionMenuState(true, true, mPresenceStatus);
                                 
                             }
                         } else {
@@ -1456,7 +1456,7 @@ public class ChatView extends LinearLayout {
                             message = mContext.getString(R.string.otr_session_status_plaintext);
                             
                             if (mIsSelected)        
-                                mActivity.updateEncryptionMenuState(false, false);
+                                mActivity.updateEncryptionMenuState(false, false, mPresenceStatus);
                         }
                         
 
@@ -1475,7 +1475,7 @@ public class ChatView extends LinearLayout {
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
                 if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(true, false);
+                    mActivity.updateEncryptionMenuState(true, false, mPresenceStatus);
 
                 visibility = View.VISIBLE;
             }  
@@ -1493,7 +1493,7 @@ public class ChatView extends LinearLayout {
             message = mContext.getString(R.string.disconnected_warning);
             
             if (mIsSelected)
-                mActivity.updateEncryptionMenuState(false, false);
+                mActivity.updateEncryptionMenuState(false, false, -1);
         }
         
         mStatusWarningView.setVisibility(visibility);

@@ -686,7 +686,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected Long[] mAccountIds;
     private long mRequestedChatId;
     
-    public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified)
+    public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified, int presence)
     {
         
         if (mChatPager != null && mMenu != null)
@@ -718,7 +718,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_gray);
+                    if (presence == Imps.Presence.AVAILABLE)
+                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_green_light);
+                    else if (presence == Imps.Presence.AWAY)
+                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_orange_light);
+                    else if (presence == Imps.Presence.DO_NOT_DISTURB)
+                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_light);
+                    else
+                        mChatPagerTitleStrip.setBackgroundResource(R.color.background_gray);
                 }
             }
             else
