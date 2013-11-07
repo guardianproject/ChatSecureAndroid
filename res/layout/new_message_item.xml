@@ -18,105 +18,102 @@
  */
 -->
 <view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="info.guardianproject.otr.app.im.app.MessageView"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
-    
-    	android:paddingLeft="0dp"
-		android:paddingRight="0dp"
-	
-     >
+    android:layout_marginTop="6dp"
+    class="info.guardianproject.otr.app.im.app.MessageView"
+    android:orientation="vertical"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp" >
 
-	<LinearLayout android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:paddingLeft="0dp"
-		android:id="@+id/message_container"
-		android:paddingTop="0dp"
-		android:paddingBottom="0dp"
-		
-		>
-		<LinearLayout android:layout_width="9dp"
-		android:layout_height="match_parent" android:orientation="horizontal"
-		android:padding="0dp"
-		android:id="@+id/status_block_left"
-		
-		android:visibility="gone"
-		>
- <ImageView
-            android:id="@+id/avatar_left"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop" 
-            android:visibility="gone"
-            android:layout_marginRight="0dip"
-            />
- 
-		</LinearLayout>
-	    <TextView android:id="@+id/message"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="0dip"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	         android:autoLink="all"
-	          android:fontFamily="sans-serif-light"
-	          android:padding="3dp"
-	         />
-	    
-		
-	    <LinearLayout android:layout_width="9dp"
-		android:layout_height="match_parent" android:orientation="horizontal"
-		android:padding="0dp"
-		android:id="@+id/status_block_right"
-		android:visibility="gone"
-		>
-		</LinearLayout>
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp" >
 
-		 <ImageView
+        <LinearLayout
+            android:id="@+id/status_block_left"
+            android:layout_width="9dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/avatar_left"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="0dip"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoLink="all"
+            android:fontFamily="sans-serif-light"
+            android:padding="3dp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:id="@+id/status_block_right"
+            android:layout_width="9dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            android:visibility="gone" >
+        </LinearLayout>
+
+        <ImageView
             android:id="@+id/avatar_right"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="centerCrop" 
-            android:visibility="gone"
             android:layout_marginLeft="3dip"
-                    
-            />
-   	</LinearLayout>
-   			<LinearLayout android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:orientation="horizontal"
-		android:paddingLeft="0dp"
-		android:paddingTop="0dp"
-		android:paddingBottom="0dp"
-		
-		>
-	    <TextView android:id="@+id/messagets"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	         android:fontFamily="sans-serif-light"
-	         android:visibility="gone"
-	         />
-	    <ImageView
-		    android:id="@+id/iconView"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="3dp"
-		     android:visibility="gone"
-		    /> 
-		    <ImageView
-		    android:id="@+id/iconEncryption"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="3dp"
-		    android:visibility="gone"
-		    
-		    /> 
-		    </LinearLayout>
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingTop="0dp" >
+
+        <TextView
+            android:id="@+id/messagets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iconEncryption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </view>
