@@ -44,15 +44,14 @@
 		android:layout_height="match_parent" android:orientation="horizontal"
 		android:padding="0dp"
 		android:id="@+id/status_block_left"
-		
+		android:gravity="bottom"
 		android:visibility="gone"
 		>
 		
 		    <ImageView
 		    android:id="@+id/iconEncryptionLeft"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
+		    android:layout_width="16dp"
+		    android:layout_height="16dp"
 		     android:src="@drawable/lock16"
 		    android:visibility="gone"/>
 
@@ -88,30 +87,28 @@
             />
 		
 	    <LinearLayout android:layout_width="16dp"
-		android:layout_height="match_parent" android:orientation="vertical"
+		android:layout_height="match_parent" 
+		android:orientation="vertical"
 		android:padding="0dp"
 		android:id="@+id/status_block_right"
 		android:visibility="gone"
+		android:gravity="bottom"
 		>
  
+		     <ImageView
+		    android:id="@+id/iconDelivery" 
+		    android:layout_width="16dp"
+		    android:layout_height="16dp"		    		   
+		     android:src="@drawable/ic_chat_msg_status_ok"
+		     android:visibility="gone"
+		    />  
 		    <ImageView
-		    android:id="@+id/iconEncryptionRight"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
+		    android:id="@+id/iconEncryptionRight" android:layout_width="16dp"
+		    android:layout_height="16dp"		   
 		    android:visibility="gone"
 		    android:src="@drawable/lock16"
 		    
 		    />
-		     <ImageView
-		    android:id="@+id/iconDelivery"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_gravity="center_vertical"
-		    android:layout_marginLeft="3dp"
-		     android:src="@drawable/check16"
-		     android:visibility="gone"
-		    />  
 		</LinearLayout>
 
    	</LinearLayout>

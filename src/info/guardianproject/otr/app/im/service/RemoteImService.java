@@ -218,7 +218,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         PendingIntent launchIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
         notification.setLatestEventInfo(getApplicationContext(),
                 getString(R.string.app_name),
-                getString(R.string.presence_available),
+                getString(R.string.app_unlocked),
                 launchIntent);
         
         stopForeground(true);

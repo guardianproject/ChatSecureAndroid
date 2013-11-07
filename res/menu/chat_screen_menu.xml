@@ -132,6 +132,15 @@
          android:showAsAction="never"
         
          />
+    
+    <!-- 
+     <item android:id="@+id/menu_delete_conversation"
+        android:title="@string/menu_clear_chat" 
+        android:icon="@drawable/ic_menu_trash"
+         android:showAsAction="never"
+        
+         />
+          -->
     </group>
     
  <group android:enabled="true" android:id="@+id/menu_group_contacts" android:visible="true">

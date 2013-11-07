@@ -125,6 +125,31 @@
         
          />
 
+
+
+ <View
+    android:layout_width="fill_parent"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
+    
+    />
+ 
+ <Button
+        android:id="@+id/btnDrawerExit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_sidebar_stop"
+        android:gravity="left|center_vertical"
+        android:text="@string/menu_exit"
+                android:textColor="#ffffff"
+        android:padding="3sp"
+        
+        
+         />
+
+
+
  <View
     android:layout_width="fill_parent"
     android:layout_height="2dp"

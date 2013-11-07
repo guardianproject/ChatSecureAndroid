@@ -49,6 +49,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,6 +67,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -230,7 +235,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
 
                     getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_blue_dark);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
 
                 }
             }
@@ -384,7 +389,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         Button btnDrawerGroupChat = (Button) findViewById(R.id.btnDrawerGroupChat);
         Button btnDrawerAddContact = (Button) findViewById(R.id.btnDrawerAddContact);
         Button btnDrawerFingerprint = (Button) findViewById(R.id.btnDrawerQRCode);
-         
+        Button btnDrawerExit = (Button) findViewById(R.id.btnDrawerExit);
+
         
         btnDrawerAccount.setOnClickListener(new OnClickListener ()
         {
@@ -475,6 +481,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                
                 
                 displayQRCode ();
+            }
+            
+        });
+        
+        btnDrawerExit.setOnClickListener(new OnClickListener ()
+        {
+            @Override
+            public void onClick(View v) {
+               
+                doHardShutdown();
             }
             
         });
@@ -686,14 +702,18 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected Long[] mAccountIds;
     private long mRequestedChatId;
     
-    public void updateEncryptionMenuState (boolean isEncrypted, boolean isVerified, int presence)
+    public void updateEncryptionMenuState ()
     {
+        ChatView cView = getCurrentChatView();
+
+        if (cView == null)
+            return;        
         
         if (mChatPager != null && mMenu != null)
         {                         
             if (mChatPager.getCurrentItem() > 0)
             {
-                if (isVerified)
+                if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
@@ -702,13 +722,22 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mChatPagerTitleStrip.setBackgroundResource(R.color.holo_purple);
                         
                 }
-                else if (isEncrypted)
+                else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED)
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
    
                     mChatPagerTitleStrip.setBackgroundResource(R.color.holo_orange_light);
+                    
+                }
+                else if (cView.getOtrSessionStatus() == SessionStatus.FINISHED)
+                {
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,true);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+   
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_dark);
                     
                 }
                 else
@@ -718,19 +747,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    if (presence == Imps.Presence.AVAILABLE)
-                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_green_light);
-                    else if (presence == Imps.Presence.AWAY)
-                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_orange_light);
-                    else if (presence == Imps.Presence.DO_NOT_DISTURB)
-                        mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_light);
-                    else
-                        mChatPagerTitleStrip.setBackgroundResource(R.color.background_gray);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
                 }
             }
             else
             {
-                mChatPagerTitleStrip.setBackgroundResource(R.color.holo_blue_dark);
+                mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
             }
           
          }
@@ -811,7 +833,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         switch (item.getItemId()) {
 
         case R.id.menu_send_image:
-            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
             {
                startImagePicker();
             }
@@ -823,7 +845,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         case R.id.menu_send_file:
             
-            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
             {
                startFilePicker();
             }
@@ -836,7 +858,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         case R.id.menu_send_audio:
             
-            if (getCurrentChatView() != null && getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED)
+            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
             {
                startAudioPicker();
             }
@@ -851,12 +873,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (getCurrentChatView() != null)
                 getCurrentChatView().viewProfile();
             return true;
-
+         
         case R.id.menu_end_conversation:
             if (getCurrentChatView() != null)
-                getCurrentChatView().closeChatSession();
+                getCurrentChatView().closeChatSession(false);
             return true;
-            
+        /*
+        case R.id.menu_delete_conversation:
+            if (getCurrentChatView() != null)
+                getCurrentChatView().closeChatSession(true);
+            return true;
+          */  
         case R.id.menu_settings:
             Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
             startActivity(sintent);
@@ -867,8 +894,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             if (getCurrentChatView() != null)
             {
-                boolean isEnc = (getCurrentChatView().mLastSessionStatus == SessionStatus.ENCRYPTED || 
-                        getCurrentChatView().mLastSessionStatus == SessionStatus.FINISHED
+                boolean isEnc = (getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED || 
+                        getCurrentChatView().getOtrSessionStatus() == SessionStatus.FINISHED
                         );
                 
                 getCurrentChatView().setOTRState(!isEnc);
@@ -1360,7 +1387,23 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
                 mCursor.moveToPosition(positionMod);
                 if (!mCursor.isAfterLast())
-                    return mCursor.getString(ChatView.NICKNAME_COLUMN);
+                {
+                    
+
+                    String nickname = mCursor.getString(ChatView.NICKNAME_COLUMN);
+                    int presence = mCursor.getInt(ChatView.PRESENCE_STATUS_COLUMN);
+                    
+                    BrandingResources brandingRes = mApp.getBrandingResource(mCursor.getInt(ChatView.PROVIDER_COLUMN));
+
+                    SpannableString s = new SpannableString("+ " + nickname);
+                    Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
+                    statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
+                            statusIcon.getIntrinsicHeight());
+                    s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    return s;
+                    
+                }
                 else
                     return "";//unknown title
             }
@@ -2163,5 +2206,35 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         
     }
+    
+    private void doHardShutdown() {
+        
+        for (IImConnection conn : mApp.getActiveConnections())
+        {
+               try {
+                conn.logout();
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        mHandler.postDelayed(new Runnable()
+        {
+            public void run ()
+            {
+                mApp.forceStopImService();
+                
+            }
+        }, 2000l);
+        
+        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+        // Request lock
+        intent.putExtra("doLock", true);
+        // Clear the backstack
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+   }
 
 }
