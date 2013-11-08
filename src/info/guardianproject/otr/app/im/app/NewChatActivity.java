@@ -1484,7 +1484,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         });
         ActionBar ab = getSherlock().getActionBar();
-        
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
         ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
 
            @Override
