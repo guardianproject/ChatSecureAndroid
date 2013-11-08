@@ -2080,7 +2080,10 @@ public class ChatView extends LinearLayout {
                 msg.getData().putString("path", file.getCanonicalPath());
                 msg.getData().putString("type", type);
                 
-                Imps.insertMessageInDb(getContext().getContentResolver(), false, mLastChatId, true, null, file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.OUTGOING,
+                Imps.insertMessageInDb(getContext().getContentResolver(),
+                        false, mLastChatId,
+                        true, null,
+                        file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.INCOMING_ENCRYPTED,
                         0, null, type);
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
