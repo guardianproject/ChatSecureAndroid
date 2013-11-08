@@ -283,6 +283,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
+            resolveIntent();
             if (mRequestedChatId >= 0) {
                 if (showChat(mRequestedChatId)) {
                     mRequestedChatId = -1;
@@ -317,9 +318,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onDestroy() {
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
-        closeProviderAdapter();
+        mAdapter.swapCursor(null);
         super.onDestroy();
         mChatPagerAdapter = null;
+        mAdapter = null;
     }
     
     @Override
@@ -332,12 +334,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     @Override
     protected void onResume() {     
         super.onResume();
-        
-        if (getIntent() != null)
-        {
-            resolveIntent(getIntent());
-            setIntent(null);
-        }
         
         if (menu.isMenuShowing())
             menu.toggle();
@@ -537,7 +533,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         Toast.makeText(this, "Please start a secure conversation before scanning codes", Toast.LENGTH_LONG).show();
      }
     
-    void resolveIntent(Intent intent) {
+    private void resolveIntent() {
+        if (getIntent() != null)
+        {
+            doResolveIntent(getIntent());
+            setIntent(null);
+        }
+    }
+    
+    private void doResolveIntent(Intent intent) {
         
         if (requireOpenDashboardOnStart(intent)) {
             long providerId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1L);
@@ -651,9 +655,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 //set the current account id
                 mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID,-1L);
-                
-                //refresh and set the actionbar spinner state
-                refreshSpinners();
                 
                 //move the pager back to the first page
                 if (mChatPager != null)
@@ -1438,17 +1439,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     
-    private void refreshSpinners ()
-    {
-        closeProviderAdapter();
-        
-        setupSpinners();
-    }
-
-    private void closeProviderAdapter() {
-        mAdapter.swapCursor(null);
-    }
-    
     private void setupSpinners ()
     {
         getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
@@ -1495,7 +1485,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         });
         ActionBar ab = getSherlock().getActionBar();
         
-        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
 
            @Override
@@ -1507,7 +1496,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         });
         
     }
-    
+
     public void setSpinnerState ()
     {
 
