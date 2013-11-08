@@ -109,7 +109,7 @@ public class MessageView extends LinearLayout {
     public String getLastMessage () {
         return lastMessage.toString();
     }
-    public void bindIncomingMessage(String address, String nickname, String body, Date date, Markup smileyRes,
+    public void bindIncomingMessage(String address, String nickname, String mimeType, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
 
@@ -206,7 +206,7 @@ public class MessageView extends LinearLayout {
         return android.text.Html.fromHtml(body).toString();
     }
     
-    public void bindOutgoingMessage(String address, String body, Date date, Markup smileyRes, boolean scrolling,
+    public void bindOutgoingMessage(String address, String mimeType, String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
         

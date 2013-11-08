@@ -1109,8 +1109,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
 
     private void handleSend(Uri uri) {
-        
-        
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
@@ -1118,8 +1116,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 IChatSession session = getCurrentChatSession();
            
-                if (session != null)
+                if (session != null) {
                     session.offerData( info.path, info.type );
+                    Imps.insertMessageInDb(
+                            getContentResolver(), false, session.getId(), true, null, uri.toString(),
+                            System.currentTimeMillis(), Imps.MessageType.OUTGOING,
+                            0, null, info.type);
+                }
             }
             else
             {

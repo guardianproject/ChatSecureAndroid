@@ -83,7 +83,8 @@ public class ImpsProvider extends ContentProvider {
 
     private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
     private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
-    private static final int DATABASE_VERSION = 102;
+
+    private static final int DATABASE_VERSION = 103;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
@@ -467,6 +468,26 @@ public class ImpsProvider extends ContentProvider {
                 return;
             case 101:
                 // This was a no-op upgrade when we added the encrypted DB option
+                return;
+            case 102:
+                if (newVersion <= 102) {
+                    return;
+                }
+                db.beginTransaction();
+                try {
+                    db.execSQL("ALTER TABLE " + TABLE_MESSAGES
+                               + " ADD COLUMN mime_type TEXT;");
+                    if (!mInMemoryDB) {
+                        db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
+                                + " ADD COLUMN mime_type TEXT;");
+                    }
+                    db.setTransactionSuccessful();
+                } catch (Throwable ex) {
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
+                } finally {
+                    db.endTransaction();
+                }
+
                 return;
             case 1:
                 if (newVersion <= 100) {
@@ -887,6 +908,8 @@ public class ImpsProvider extends ContentProvider {
         sMessagesProjectionMap.put(Imps.Messages.DISPLAY_SENT_TIME, "messages.show_ts AS show_ts");
         sMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED,
                 "messages.is_delivered AS is_delivered");
+        sMessagesProjectionMap.put(Imps.Messages.MIME_TYPE,
+                "messages.mime_type AS mime_type");
         // contacts columns
         sMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");
@@ -915,6 +938,8 @@ public class ImpsProvider extends ContentProvider {
                 "inMemoryMessages.show_ts AS show_ts");
         sInMemoryMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED,
                 "inMemoryMessages.is_delivered AS is_delivered");
+        sInMemoryMessagesProjectionMap.put(Imps.Messages.MIME_TYPE,
+                "inMemoryMessages.mime_type AS mime_type");
         // contacts columns
         sInMemoryMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sInMemoryMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");

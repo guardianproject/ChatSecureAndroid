@@ -135,6 +135,7 @@ public class ChatView extends LinearLayout {
     static final int PRESENCE_STATUS_COLUMN = 6;
     static final int LAST_UNREAD_MESSAGE_COLUMN = 7;
     static final int CHAT_ID_COLUMN = 8;
+    static final int MIME_TYPE_COLUMN = 9;
 
     static final String[] INVITATION_PROJECT = { Imps.Invitation._ID, Imps.Invitation.PROVIDER,
                                                 Imps.Invitation.SENDER, };
@@ -1875,6 +1876,8 @@ public class ChatView extends LinearLayout {
         private int mErrCodeColumn;
         private int mDeltaColumn;
         private int mDeliveredColumn;
+        private int mMimeTypeColumn;
+
 
         private LayoutInflater mInflater;
 
@@ -1898,6 +1901,7 @@ public class ChatView extends LinearLayout {
             mErrCodeColumn = c.getColumnIndexOrThrow(Imps.Messages.ERROR_CODE);
             mDeltaColumn = c.getColumnIndexOrThrow(DeltaCursor.DELTA_COLUMN_NAME);
             mDeliveredColumn = c.getColumnIndexOrThrow(Imps.Messages.IS_DELIVERED);
+            mMimeTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.MIME_TYPE);
         }
 
         @Override
@@ -1924,6 +1928,7 @@ public class ChatView extends LinearLayout {
             mType = cursor.getInt(mTypeColumn);
             
             String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
+            String mimeType = cursor.getString(mMimeTypeColumn);
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
@@ -1969,7 +1974,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(mRemoteAddress, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
@@ -1981,7 +1986,7 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(null, mimeType, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
                 
@@ -2075,6 +2080,8 @@ public class ChatView extends LinearLayout {
                 msg.getData().putString("path", file.getCanonicalPath());
                 msg.getData().putString("type", type);
                 
+                Imps.insertMessageInDb(getContext().getContentResolver(), false, mLastChatId, true, null, file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.OUTGOING,
+                        0, null, type);
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
                 mHandler.showAlert("Transfer Error", "Unable to read file to storage");
