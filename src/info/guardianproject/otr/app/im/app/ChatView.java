@@ -1877,6 +1877,7 @@ public class ChatView extends LinearLayout {
         private int mDeltaColumn;
         private int mDeliveredColumn;
         private int mMimeTypeColumn;
+        private int mIdColumn;
 
 
         private LayoutInflater mInflater;
@@ -1902,6 +1903,7 @@ public class ChatView extends LinearLayout {
             mDeltaColumn = c.getColumnIndexOrThrow(DeltaCursor.DELTA_COLUMN_NAME);
             mDeliveredColumn = c.getColumnIndexOrThrow(Imps.Messages.IS_DELIVERED);
             mMimeTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.MIME_TYPE);
+            mIdColumn = c.getColumnIndexOrThrow(Imps.Messages._ID);
         }
 
         @Override
@@ -1929,6 +1931,7 @@ public class ChatView extends LinearLayout {
             
             String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
             String mimeType = cursor.getString(mMimeTypeColumn);
+            int id = cursor.getInt(mIdColumn);
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
@@ -1974,7 +1977,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
@@ -1986,7 +1989,7 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(null, mimeType, body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(id, null, mimeType, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
                 

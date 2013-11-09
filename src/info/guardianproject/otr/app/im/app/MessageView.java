@@ -19,21 +19,27 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ContactView.ViewHolder;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.LruCache;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -80,8 +86,10 @@ public class MessageView extends LinearLayout {
         ImageView mEncryptionIcon = (ImageView) findViewById(R.id.iconEncryption);
         View mStatusBlockLeft = findViewById(R.id.status_block_left);
         View mStatusBlockRight = findViewById(R.id.status_block_right);
-        
-        
+        ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
+        // save the media uri while the MediaScanner is creating the thumbnail
+        // if the holder was reused, the pair is broken
+        Uri mMediaUri = null ; 
     }
     
     @Override
@@ -109,10 +117,10 @@ public class MessageView extends LinearLayout {
     public String getLastMessage () {
         return lastMessage.toString();
     }
-    public void bindIncomingMessage(String address, String nickname, String mimeType, String body, Date date, Markup smileyRes,
+
+    public void bindIncomingMessage(int id, String address, String nickname, String mimeType, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
-
         mHolder = (ViewHolder)getTag();
         
         ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -122,16 +130,28 @@ public class MessageView extends LinearLayout {
         
         //showAvatar(address,true);
         
-        if (showContact)
-        {
-            String[] nickParts = nickname.split("/");
-            
-            lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
-            
-        }
-        else
-        {
-            lastMessage = formatMessage(body);
+        if( mimeType != null ) {
+            lastMessage = "";
+            mHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
+            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
+            mHolder.mTextViewForMessages.setText(lastMessage);
+            if( mimeType.startsWith("image/") ) {
+                Uri mediaUri = Uri.parse( body ) ;
+                setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+            }
+        } else {
+            mHolder.mMediaThumbnail.setVisibility(View.GONE);
+            if (showContact)
+            {
+                String[] nickParts = nickname.split("/");
+                
+                lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
+                
+            }
+            else
+            {
+                lastMessage = formatMessage(body);
+            }
         }
         
         if (lastMessage.length() > 0)
@@ -200,13 +220,82 @@ public class MessageView extends LinearLayout {
        
 
     }
+    
+    /**
+     * @param contentResolver 
+     * @param id 
+     * @param aHolder
+     * @param mediaUri
+     */
+    private void setIncomingImageThumbnail(final ContentResolver contentResolver, final int id, final ViewHolder aHolder, final Uri mediaUri) {
+        // if a content uri - already scanned
+        if( mediaUri.getScheme() != null ) {
+            setThumbnail(contentResolver, aHolder, mediaUri);
+            return;
+        }
+        // new file - scan
+        File file = new File(mediaUri.getPath());
+        final Handler handler = new Handler();
+        aHolder.mMediaUri = mediaUri;
+        MediaScannerConnection.scanFile(
+                getContext(), new String[] { file.toString() }, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, final Uri uri) {
+                        // write the uri into the db
+                        Imps.updateMessageBody(contentResolver, id, uri.toString() );
+                        handler.post( new Runnable() {
+                            @Override
+                            public void run() {
+                                // confirm the holder is still paired to this uri
+                                if( aHolder.mMediaUri == mediaUri ) {
+                                    setThumbnail(contentResolver, aHolder, uri);
+                                }
+                            }
+                        });
+                    }
+                });
+    }
+    
+    /**
+     * @param contentResolver 
+     * @param aHolder
+     * @param uri
+     */
+    private void setThumbnail(ContentResolver contentResolver, final ViewHolder aHolder, Uri uri) {
+        // TODO move to async
+        
+        // thumbnail extraction
+        Bitmap bitmap = getThumbnail( contentResolver, uri );
+        if( bitmap != null ) {
+            aHolder.mMediaThumbnail.setImageBitmap(bitmap);
+        } else {
+            // thumbnail extraction failed, use default icon
+            aHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
+        }
+    }
+
+    public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
+        String[] projection = {MediaStore.Images.Media._ID};
+        Cursor cursor = cr.query( uri, projection, null, null, null);
+        if( cursor == null ) {
+            return null ;
+        }
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+        int id = cursor.getInt(columnIndex);
+        cursor.close();
+        
+        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MICRO_KIND, null );
+        return bitmap;
+    }    
+    
 
     private String formatMessage (String body)
     {
         return android.text.Html.fromHtml(body).toString();
     }
     
-    public void bindOutgoingMessage(String address, String mimeType, String body, Date date, Markup smileyRes, boolean scrolling,
+    public void bindOutgoingMessage(int id, String address, String mimeType, String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
         
@@ -219,21 +308,32 @@ public class MessageView extends LinearLayout {
         setPadding(100, 0, 3, 3);
         
       //  showAvatar(address,false);
-    
         
-        lastMessage = body;//formatMessage(body);
+        if( mimeType != null ) {
+            lastMessage = "";
+            mHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
+            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
+            mHolder.mTextViewForMessages.setText(lastMessage);
+            if( mimeType.startsWith("image/") ) {
+                Uri mediaUri = Uri.parse( body ) ;
+                setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+            }
+        } else {
+            mHolder.mMediaThumbnail.setVisibility(View.GONE);
+            lastMessage = body;//formatMessage(body);
          
-         try {
-             mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
-             SpannableString spannablecontent=new SpannableString(lastMessage);
-
-             EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
-             
-             mHolder.mTextViewForMessages.setText(spannablecontent);
-         } catch (IOException e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-         }
+             try {
+                 mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+                 SpannableString spannablecontent=new SpannableString(lastMessage);
+    
+                 EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+                 
+                 mHolder.mTextViewForMessages.setText(spannablecontent);
+             } catch (IOException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+             }
+        }
          
         if (delivery == DeliveryState.DELIVERED) {
             mHolder.mDeliveryIcon.setImageResource(R.drawable.check16);

@@ -2568,4 +2568,17 @@ public class Imps {
 
         return resolver.insert(isEncrypted ? Messages.getOtrMessagesContentUriByThreadId(contactId) : Messages.getContentUriByThreadId(contactId), values);
     }
+
+    public static int updateMessageBody(ContentResolver resolver, int id, String body) {
+        
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI.buildUpon();
+        builder.appendPath(String.valueOf(id));
+        
+        ContentValues values = new ContentValues();
+        values.put(Imps.Messages.BODY, body);
+        return resolver.update(builder.build(), values, null, null);
+    }
+
+    
+    
 }
