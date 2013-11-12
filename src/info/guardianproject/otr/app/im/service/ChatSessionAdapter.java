@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.java.otr4j.session.SessionStatus;
+
 import org.jivesoftware.smack.packet.Packet;
 
 import android.content.ContentResolver;
@@ -705,7 +707,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         @Override
-        public void onStatusChanged(ChatSession session) {
+        public void onStatusChanged(ChatSession session, SessionStatus status) {
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IChatListener listener = mRemoteListeners.getBroadcastItem(i);
@@ -717,6 +719,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 }
             }
             mRemoteListeners.finishBroadcast();
+            mDataHandler.onOtrStatusChanged(status);
         }
 
         @Override

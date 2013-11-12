@@ -17,15 +17,13 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import java.util.List;
-
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.AccountAdapter.AccountSetting;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -214,6 +212,12 @@ public class ProviderListItem extends LinearLayout {
             final int dbConnectionStatus, final String presenceString) {
         if (mBindTask != null)
             mBindTask.cancel(false);
+        final ContentResolver contentResolver = getContext().getContentResolver();
+        
+        // Fail early
+        if (contentResolver == null)
+            throw new NullPointerException();
+        
         mBindTask = new AsyncTask<Void, Void, Void>() {
             private String mProviderNameText;
             private String mSecondRowText;
@@ -222,7 +226,7 @@ public class ProviderListItem extends LinearLayout {
             @Override
             protected Void doInBackground(Void... params) {
                 final Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(),
+                        new Imps.ProviderSettings.QueryMap(contentResolver,
                                 providerId, false , null);
                 
                 int connectionStatus = dbConnectionStatus;

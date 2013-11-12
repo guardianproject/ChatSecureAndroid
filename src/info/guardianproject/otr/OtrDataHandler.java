@@ -25,6 +25,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import net.java.otr4j.session.SessionStatus;
+
 import org.apache.http.HttpException;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpRequest;
@@ -84,9 +86,25 @@ public class OtrDataHandler implements DataHandler {
     private ChatSession mChatSession;
 
     private IDataListener mDataListener;
+    private SessionStatus mOtrStatus;
 
     public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
+    }
+
+    public void onOtrStatusChanged(SessionStatus status) {
+        mOtrStatus = status;
+        if (status == SessionStatus.ENCRYPTED) {
+            retryRequests();
+        }
+    }
+    
+    private void retryRequests() {
+        // Resend all unfilled requests
+        for (Request request: requestCache.asMap().values()) {
+            if (!request.isSeen())
+                sendRequest(request);
+        }
     }
 
     public void setDataListener (IDataListener dataListener)
@@ -216,6 +234,8 @@ public class OtrDataHandler implements DataHandler {
                     return;
                 }
                 
+                offer.seen(); // in case we don't see a response to underlying request, but peer still proceeds
+                
                 if (!req.containsHeader("Range"))
                 {
                     sendResponse(requestUs, 400, "Range must start with bytes=", uid, EMPTY_BODY);
@@ -340,7 +360,7 @@ public class OtrDataHandler implements DataHandler {
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
         message.setFrom(us);
-        debug("send response");        
+        debug("send response " + statusString + " for " + uid);
         mChatSession.sendDataAsync(message, true, data);
     }
 
@@ -477,28 +497,29 @@ public class OtrDataHandler implements DataHandler {
         headers.put("File-Hash-SHA1", sha1sum(byteBuffer.toByteArray()));
         String[] paths = localUri.split("/");
         String url = URI_PREFIX_OTR_IN_BAND + SystemServices.sanitize(paths[paths.length - 1]);
-        Request request = new Request("OFFER", url);
-        offerCache.put(url, new Offer(id, localUri));
-        sendRequest(us, "OFFER", url, headers, EMPTY_BODY, request);
+        Request request = new Request("OFFER", us, url, headers);
+        offerCache.put(url, new Offer(id, localUri, request));
+        sendRequest(request);
     }
 
     public Request performGetData(Address us, String url, Map<String, String> headers, int start, int end) {
         String rangeSpec = "bytes=" + start + "-" + end;
-        debug("Getting range " + rangeSpec);
         headers.put("Range", rangeSpec);
-        Request requestMemo = new Request("GET", url, start, end);
+        Request request = new Request("GET", us, url, start, end, headers, EMPTY_BODY);
 
-        sendRequest(us, "GET", url, headers, EMPTY_BODY, requestMemo);
-        return requestMemo;
+        sendRequest(request);
+        return request;
     }
 
     static class Offer {
         private String mId;
         private String mUri;
+        private Request request;
 
-        public Offer(String id, String uri) {
+        public Offer(String id, String uri, Request request) {
             this.mId = id;
             this.mUri = uri;
+            this.request = request;
         }
         
         public String getUri() {
@@ -508,18 +529,30 @@ public class OtrDataHandler implements DataHandler {
         public String getId() {
             return mId;
         }
+
+        public Request getRequest() {
+            return request;
+        }
+        
+        public void seen() {
+            request.seen();
+        }
     }
     
     static class Request {
-        public Request(String method, String url, int start, int end) {
+
+        public Request(String method, Address us, String url, int start, int end, Map<String, String> headers, byte[] body) {
             this.method = method;
             this.url = url;
             this.start = start;
             this.end = end;
+            this.us = us;
+            this.headers = headers;
+            this.body = body;
         }
 
-        public Request(String method, String url) {
-            this(method, url, -1, -1);
+        public Request(String method, Address us, String url, Map<String, String> headers) {
+            this(method, us, url, -1, -1, headers, null);
         }
         
         public String method;
@@ -528,6 +561,9 @@ public class OtrDataHandler implements DataHandler {
         public int end;
         public byte[] data;
         public boolean seen = false;
+        public Address us;
+        public Map<String, String> headers;
+        public byte[] body;
         
         public boolean isSeen() {
             return seen;
@@ -610,21 +646,21 @@ public class OtrDataHandler implements DataHandler {
     Cache<String, Request> requestCache = CacheBuilder.newBuilder().maximumSize(100).build();
     Cache<String, Transfer> transferCache = CacheBuilder.newBuilder().maximumSize(100).build();
     
-    private void sendRequest(Address us, String method, String url, Map<String, String> headers, byte[] body, Request requestMemo) {
+    private void sendRequest(Request request) {
         MemorySessionOutputBuffer outBuf = new MemorySessionOutputBuffer();
         HttpMessageWriter writer = new HttpRequestWriter(outBuf, lineFormatter, params);
-        HttpMessage req = new BasicHttpRequest(method, url, PROTOCOL_VERSION);
+        HttpMessage req = new BasicHttpRequest(request.method, request.url, PROTOCOL_VERSION);
         String uid = UUID.randomUUID().toString();
         req.addHeader("Request-Id", uid);
-        if (headers != null) {
-            for (Entry<String, String> entry : headers.entrySet()) {
+        if (request.headers != null) {
+            for (Entry<String, String> entry : request.headers.entrySet()) {
                 req.addHeader(entry.getKey(), entry.getValue());
             }
         }
         
         try {
             writer.write(req);
-            outBuf.write(body);
+            outBuf.write(request.body);
             outBuf.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -633,9 +669,12 @@ public class OtrDataHandler implements DataHandler {
         }
         byte[] data = outBuf.getOutput();
         Message message = new Message("");
-        message.setFrom(us);
-        debug("send request " + method + " " + url);
-        requestCache.put(uid, requestMemo);
+        message.setFrom(request.us);
+        if (req.containsHeader("Range"))
+            debug("send request " + request.method + " " + request.url + " " + req.getFirstHeader("Range"));
+        else
+            debug("send request " + request.method + " " + request.url);
+        requestCache.put(uid, request);
         mChatSession.sendDataAsync(message, false, data);
     }
     
