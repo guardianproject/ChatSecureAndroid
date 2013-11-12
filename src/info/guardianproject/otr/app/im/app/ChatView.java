@@ -275,6 +275,7 @@ public class ChatView extends LinearLayout {
 
     private static final long SHOW_TIME_STAMP_INTERVAL = 15 * 1000; // 15 seconds
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
+    private static final long SHOW_MEDIA_DELIVERY_INTERVAL = 120 * 1000; // 2 minutes
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
     private static final long FAST_QUERY_INTERVAL = 100;
     private static final int QUERY_TOKEN = 10;
@@ -1926,7 +1927,8 @@ public class ChatView extends LinearLayout {
             
             Date date = showTimeStamp ? new Date(timestamp) : null;
             boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
-            boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
+            long showDeliveryInterval = (mimeType == null) ? SHOW_DELIVERY_INTERVAL : SHOW_MEDIA_DELIVERY_INTERVAL; 
+            boolean showDelivery = ((System.currentTimeMillis() - timestamp) > showDeliveryInterval);
             
             DeliveryState deliveryState = DeliveryState.NEUTRAL;
             
@@ -2057,10 +2059,11 @@ public class ChatView extends LinearLayout {
         return mComposeMessage;
     }
   
+    // FIXME this must be moved out of the UI and mostly into the remote process
     class DataAdapter extends IDataListener.Stub {
         
         @Override
-        public void onTransferComplete(String from, String url, String type, String filePath) {
+        public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String type, String filePath) {
             
             File file = new File(filePath);
             
@@ -2070,11 +2073,16 @@ public class ChatView extends LinearLayout {
                 msg.getData().putString("path", file.getCanonicalPath());
                 msg.getData().putString("type", type);
                 
-                Imps.insertMessageInDb(getContext().getContentResolver(),
-                        false, mLastChatId,
-                        true, null,
-                        file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.INCOMING_ENCRYPTED,
-                        0, null, type);
+                if (outgoing) {
+                    Imps.updateConfirmInDb(mActivity.getContentResolver(), offerId, true);
+                } else {
+                    Imps.insertMessageInDb(getContext().getContentResolver(),
+                            false, mLastChatId,
+                            true, null,
+                            file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.INCOMING_ENCRYPTED,
+                            0, offerId, type);
+                }
+                
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
                 mHandler.showAlert("Transfer Error", "Unable to read file to storage");
@@ -2085,7 +2093,7 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onTransferFailed(String from, String url, String reason) {
+        public void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason) {
             
 
             String[] path = url.split("/"); 
@@ -2100,7 +2108,7 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onTransferProgress(String from, String url, float percentF) {
+        public void onTransferProgress(boolean outgoing, String offerId, String from, String url, float percentF) {
             
             long percent = (long)(100.00*percentF);
             
@@ -2120,7 +2128,7 @@ public class ChatView extends LinearLayout {
         private boolean mAcceptAllTransfer = false;
 
         @Override
-        public boolean onTransferRequested(String from, String to, String transferUrl) {
+        public boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
             
             mAcceptTransfer = false;            
             mWaitingForResponse = true;
@@ -2133,6 +2141,7 @@ public class ChatView extends LinearLayout {
             
             while (mWaitingForResponse)
             {
+                // FIXME
                 try { Thread.sleep(500);} catch (Exception e){}
             }
             

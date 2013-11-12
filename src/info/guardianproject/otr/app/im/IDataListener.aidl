@@ -6,12 +6,12 @@ package info.guardianproject.otr.app.im;
 
 interface IDataListener {
 
-    void onTransferComplete(String from, String url, String type, String fileLocalPath);
+    void onTransferComplete(boolean outgoing, String offerId, String from, String url, String type, String fileLocalPath);
 
-    void onTransferFailed(String from, String url, String reason);
+    void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason);
 
-    void onTransferProgress(String from, String url, float f);
+    void onTransferProgress(boolean outgoing, String offerId, String from, String url, float f);
     
-    boolean onTransferRequested(String from, String to, String transferUrl);  
+    boolean onTransferRequested(String offerId, String from, String to, String transferUrl);  
   
 }

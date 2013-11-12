@@ -193,7 +193,7 @@ public class OtrDataHandler implements DataHandler {
             if (mDataListener != null)
             {
                 try {
-                    accept = mDataListener.onTransferRequested(requestThem.getAddress(),requestUs.getAddress(),transfer.url);
+                    accept = mDataListener.onTransferRequested(null, requestThem.getAddress(),requestUs.getAddress(),transfer.url);
                     
                     if (accept)
                         transfer.perform();
@@ -253,7 +253,7 @@ public class OtrDataHandler implements DataHandler {
                     
                     if (percent < .98f)
                     {
-                        mDataListener.onTransferProgress(requestThem.getAddress(), offer.getUri(), 
+                        mDataListener.onTransferProgress(true, offer.getId(), requestThem.getAddress(), offer.getUri(), 
                             percent);
                     }
                     else
@@ -261,7 +261,7 @@ public class OtrDataHandler implements DataHandler {
                         String mimeType = null;
                         if (req.getFirstHeader("Mime-Type") != null)
                             mimeType = req.getFirstHeader("Mime-Type").getValue();                    
-                        mDataListener.onTransferComplete(requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
+                        mDataListener.onTransferComplete(true, offer.getId(), requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
                     }
                 }
                 
@@ -399,6 +399,8 @@ public class OtrDataHandler implements DataHandler {
                         
                         if (mDataListener != null)
                             mDataListener.onTransferComplete(
+                                    false,
+                                    null,
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
@@ -406,6 +408,8 @@ public class OtrDataHandler implements DataHandler {
                     } else {
                         if (mDataListener != null)
                             mDataListener.onTransferFailed(
+                                    false,
+                                    null,
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 "checksum");
@@ -413,7 +417,7 @@ public class OtrDataHandler implements DataHandler {
                     }
                 } else {
                     if (mDataListener != null)
-                        mDataListener.onTransferProgress(mChatSession.getParticipant().getAddress().getAddress(), transfer.url, 
+                        mDataListener.onTransferProgress(true, null, mChatSession.getParticipant().getAddress().getAddress(), transfer.url, 
                             ((float)transfer.chunksReceived) / transfer.chunks);
                     transfer.perform();
                     debug("Progress " + transfer.chunksReceived + " / " + transfer.chunks);
@@ -453,11 +457,8 @@ public class OtrDataHandler implements DataHandler {
     
     }
 
-    /**
-     * @param headers may be null 
-     */
     @Override
-    public void offerData(Address us, String localUri, Map<String, String> headers) {
+    public void offerData(String id, Address us, String localUri, Map<String, String> headers) {
         // TODO stash localUri and intended recipient
         long length = new File(localUri).length();
         if (length > MAX_TRANSFER_LENGTH) {
@@ -477,7 +478,7 @@ public class OtrDataHandler implements DataHandler {
         String[] paths = localUri.split("/");
         String url = URI_PREFIX_OTR_IN_BAND + SystemServices.sanitize(paths[paths.length - 1]);
         Request request = new Request("OFFER", url);
-        offerCache.put(url, new Offer(localUri));
+        offerCache.put(url, new Offer(id, localUri));
         sendRequest(us, "OFFER", url, headers, EMPTY_BODY, request);
     }
 
@@ -492,14 +493,20 @@ public class OtrDataHandler implements DataHandler {
     }
 
     static class Offer {
+        private String mId;
         private String mUri;
 
-        public Offer(String uri) {
+        public Offer(String id, String uri) {
+            this.mId = id;
             this.mUri = uri;
         }
         
         public String getUri() {
             return mUri;
+        }
+        
+        public String getId() {
+            return mId;
         }
     }
     

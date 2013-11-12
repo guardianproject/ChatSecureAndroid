@@ -2579,6 +2579,15 @@ public class Imps {
         return resolver.update(builder.build(), values, null, null);
     }
 
-    
+    public static int updateConfirmInDb(ContentResolver resolver, String id, boolean isDelivered) {
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
+        builder.appendPath(id);
+        
+        ContentValues values = new ContentValues(1);
+        values.put(Imps.Messages.IS_DELIVERED, isDelivered);
+        return resolver.update(builder.build(), values, null, null);
+    }
+
+
     
 }

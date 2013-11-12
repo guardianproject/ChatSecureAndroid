@@ -598,8 +598,14 @@ public class ImUrlActivity extends ThemeableActivity {
                 {
                     try {
                     
-                        if (mSendUrl != null)
-                            session.offerData( mSendUrl, mSendType );
+                        if (mSendUrl != null) {
+                            String offerId = UUID.randomUUID().toString();
+                            session.offerData(offerId, mSendUrl, mSendType );
+                            Imps.insertMessageInDb(
+                                    getContentResolver(), false, session.getId(), true, null, mSendUrl.toString(),
+                                    System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
+                                    0, offerId, mSendType);
+                        }
                         else if (mSendText != null)
                             session.sendMessage(mSendText);
                         

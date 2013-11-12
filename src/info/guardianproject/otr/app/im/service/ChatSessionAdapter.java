@@ -283,7 +283,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
-    public void offerData(String url, String type) {
+    public void offerData(String offerId, String url, String type) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // TODO send later
             return;
@@ -295,7 +295,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             headers.put("Mime-Type", type);
         }
         
-        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, headers);
+        mDataHandler.offerData(offerId, mConnection.getLoginUser().getAddress(), url, headers);
     }
 
     /**
@@ -540,15 +540,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         return Imps.insertMessageInDb(mContentResolver, mIsGroupChat, mContactId, isEncrypted, contact, body, time, type, errCode, id, null);
     }
 
-    int updateConfirmInDb(String id, int value) {
-        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
-        builder.appendPath(id);
-        
-        ContentValues values = new ContentValues(1);
-        values.put(Imps.Messages.IS_DELIVERED, value);
-        return mContentResolver.update(builder.build(), values, null, null);
-    }
-
     int updateMessageInDb(String id, int type, long time) {
         
         Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
@@ -687,7 +678,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         @Override
         public void onIncomingReceipt(ChatSession ses, String id) {
-            updateConfirmInDb(id, 1);
+            Imps.updateConfirmInDb(mContentResolver, id, true);
 
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
