@@ -20,6 +20,7 @@ import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -40,7 +41,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ListFragment;
+import android.os.RemoteException;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -229,28 +230,18 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
     
     }
 
-    private void handlePanic() {
-        signOutAll ();
-    }
- 
-    private void signOutAll() {
-        Cursor cursor = mAdapter.getCursor();
-              
-        if (cursor != null)
+    private void doHardShutdown() {
+        
+        for (IImConnection conn : mApp.getActiveConnections())
         {
-            cursor.moveToPosition(-1);
-            
-            while (cursor.moveToNext())
-            {
-                long accountId = cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                signOut(accountId);
+               try {
+                conn.logout();
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
         
-        goLock();
-   }
-
-    private void goLock() {
         mHandler.postDelayed(new Runnable()
         {
             public void run ()
@@ -267,8 +258,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-
+   }
     public void signOut(final long accountId) {
         // Remember that the user signed out and do not auto sign in until they
         // explicitly do so
@@ -308,7 +298,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_sign_out_all:
-            signOutAll();
+            doHardShutdown();
             return true;
         case R.id.menu_existing_account:
             showExistingAccountListDialog();

@@ -80,10 +80,11 @@ public class MessageView extends LinearLayout {
               
         TextView mTextViewForMessages = (TextView) findViewById(R.id.message);
         TextView mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
-        ImageView mDeliveryIcon = (ImageView) findViewById(R.id.iconView);
+        ImageView mDeliveryIcon = (ImageView) findViewById(R.id.iconDelivery);
         ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
         ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
-        ImageView mEncryptionIcon = (ImageView) findViewById(R.id.iconEncryption);
+        ImageView mEncryptionIconLeft = (ImageView) findViewById(R.id.iconEncryptionLeft);
+        ImageView mEncryptionIconRight = (ImageView) findViewById(R.id.iconEncryptionRight);
         View mStatusBlockLeft = findViewById(R.id.status_block_left);
         View mStatusBlockRight = findViewById(R.id.status_block_right);
         ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
@@ -170,7 +171,6 @@ public class MessageView extends LinearLayout {
             mHolder.mTextViewForMessages.setText(lastMessage);
         }
         
-        
         mHolder.mDeliveryIcon.setVisibility(GONE);
         mHolder.mStatusBlockLeft.setVisibility(VISIBLE);
         mHolder.mStatusBlockRight.setVisibility(GONE);
@@ -196,24 +196,25 @@ public class MessageView extends LinearLayout {
 
         if (encryption == EncryptionState.NONE)
         {
-            mHolder.mEncryptionIcon.setVisibility(GONE);
+            mHolder.mEncryptionIconLeft.setVisibility(GONE);
+            mHolder.mEncryptionIconRight.setVisibility(GONE);
             mHolder.mStatusBlockLeft.setBackgroundColor(Color.LTGRAY);
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
-            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
-
+            mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
             mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_light);
+            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.ic_menu_encrypted);
+            
             
         }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
-            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
-
+            mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
             mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_purple);
+            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.ic_menu_verified);
+            
         }
         
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
@@ -336,9 +337,9 @@ public class MessageView extends LinearLayout {
         }
          
         if (delivery == DeliveryState.DELIVERED) {
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.check16);
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
-            
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+
         } else if (delivery == DeliveryState.UNDELIVERED) {
             mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
@@ -354,7 +355,10 @@ public class MessageView extends LinearLayout {
         
         if (encryption == EncryptionState.NONE)
         {
-            mHolder.mEncryptionIcon.setVisibility(GONE);
+
+            mHolder.mEncryptionIconLeft.setVisibility(GONE);
+            mHolder.mEncryptionIconRight.setVisibility(GONE);
+            
             mHolder.mStatusBlockRight.setBackgroundColor(Color.LTGRAY);
 
                
@@ -362,17 +366,15 @@ public class MessageView extends LinearLayout {
         else if (encryption == EncryptionState.ENCRYPTED)
         {
             mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_orange_light);
-            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
-            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
-            
+            mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
+            mHolder.mEncryptionIconRight.setImageResource(R.drawable.ic_menu_encrypted);
         }
         
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
             mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_purple);
-            mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
-            mHolder.mEncryptionIcon.setVisibility(VISIBLE);
-            
+            mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
+            mHolder.mEncryptionIconRight.setImageResource(R.drawable.ic_menu_verified);
         }
 
         if (date != null)

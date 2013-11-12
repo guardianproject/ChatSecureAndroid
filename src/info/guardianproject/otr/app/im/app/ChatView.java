@@ -174,7 +174,8 @@ public class ChatView extends LinearLayout {
     private boolean mIsSelected = false;
     
 
-    SessionStatus mLastSessionStatus = null;
+    private SessionStatus mLastSessionStatus = null;
+    private boolean mIsVerified = false;
     
     
     
@@ -741,24 +742,6 @@ public class ChatView extends LinearLayout {
            
         
     }
-    
-  
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-       
-        
-        if (event.getPointerCount() > 1 && event.getAction() == MotionEvent.ACTION_DOWN)
-        {
-            
-
-            ChatView.this.closeChatSession();
-            
-            return true;
-        }
-        
-        return false;
-        
-    }
 
     public void startListening() {
         if (!isServiceUp)
@@ -1087,10 +1070,13 @@ public class ChatView extends LinearLayout {
         return mMessageAdapter == null ? null : mMessageAdapter.getCursor();
     }
 
-    public void closeChatSession() {
+    public void closeChatSession(boolean doDelete) {
         if (getChatSession() != null) {
             try {
-                setOTRState(false);
+                
+                if (doDelete)
+                    setOTRState(false);
+                
                 updateWarningView();
                 getChatSession().leave();
                 
@@ -1101,7 +1087,8 @@ public class ChatView extends LinearLayout {
             }
         } 
         
-        deleteChat();
+        if (doDelete)
+            deleteChat();
                 
     }
 
@@ -1365,10 +1352,6 @@ public class ChatView extends LinearLayout {
             if (mType == Imps.Contacts.TYPE_GROUP) {
                 visibility = View.GONE;
                 message = "";
-
-                if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
-                
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
@@ -1387,13 +1370,9 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.presence_offline);
 
-                if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
             }
             else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
-                if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(false, false);
                 
                 visibility = View.GONE;
                 
@@ -1428,17 +1407,15 @@ public class ChatView extends LinearLayout {
                         }
 
                         String rFingerprint = OtrChatSession.getRemoteFingerprint();
-                        boolean rVerified = OtrChatSession.isKeyVerified(mRemoteAddress);
+                        mIsVerified = OtrChatSession.isKeyVerified(mRemoteAddress);
     
                         if (rFingerprint != null) {
-                            if (!rVerified) {
+                            if (!mIsVerified) {
                                 message = mContext.getString(R.string.otr_session_status_encrypted);
     
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
                                 
-                                if (mIsSelected)
-                                    mActivity.updateEncryptionMenuState(true, false);
                                 
                                 
                             } else {
@@ -1447,8 +1424,6 @@ public class ChatView extends LinearLayout {
                                 mWarningText.setTextColor(Color.BLACK);
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
                                 
-                                if (mIsSelected)
-                                    mActivity.updateEncryptionMenuState(true, true);
                                 
                             }
                         } else {
@@ -1456,8 +1431,6 @@ public class ChatView extends LinearLayout {
                             mStatusWarningView.setBackgroundResource(R.color.otr_red);
                             message = mContext.getString(R.string.otr_session_status_plaintext);
                             
-                            if (mIsSelected)        
-                                mActivity.updateEncryptionMenuState(false, false);
                         }
                         
 
@@ -1475,8 +1448,6 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
                 
-                if (mIsSelected)
-                    mActivity.updateEncryptionMenuState(true, false);
 
                 visibility = View.VISIBLE;
             }  
@@ -1487,14 +1458,14 @@ public class ChatView extends LinearLayout {
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
             mComposeMessage.setHint(R.string.compose_hint);
             
+            /*
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
             message = mContext.getString(R.string.disconnected_warning);
+            */
             
-            if (mIsSelected)
-                mActivity.updateEncryptionMenuState(false, false);
         }
         
         mStatusWarningView.setVisibility(visibility);
@@ -1504,9 +1475,25 @@ public class ChatView extends LinearLayout {
             mWarningText.setText(message);
         }
         
+        mActivity.updateEncryptionMenuState();
 
     }
 
+    public SessionStatus getOtrSessionStatus ()
+    {
+        return mLastSessionStatus;
+    }
+    
+    public boolean isOtrSessionVerified ()
+    {
+        return mIsVerified;
+    }
+    
+    public int getRemotePresence ()
+    {
+        return mPresenceStatus;
+    }
+    
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         userActionDetected();
