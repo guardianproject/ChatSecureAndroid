@@ -38,6 +38,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Spannable;
@@ -118,7 +119,7 @@ public class MessageView extends LinearLayout {
     public String getLastMessage () {
         return lastMessage.toString();
     }
-
+    
     public void bindIncomingMessage(int id, String address, String nickname, String mimeType, String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
@@ -133,7 +134,7 @@ public class MessageView extends LinearLayout {
         
         if( mimeType != null ) {
             lastMessage = "";
-            mHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
+            mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
             if( mimeType.startsWith("image/") ) {
@@ -262,17 +263,29 @@ public class MessageView extends LinearLayout {
      * @param aHolder
      * @param uri
      */
-    private void setThumbnail(ContentResolver contentResolver, final ViewHolder aHolder, Uri uri) {
-        // TODO move to async
-        
-        // thumbnail extraction
-        Bitmap bitmap = getThumbnail( contentResolver, uri );
-        if( bitmap != null ) {
-            aHolder.mMediaThumbnail.setImageBitmap(bitmap);
-        } else {
-            // thumbnail extraction failed, use default icon
-            aHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
-        }
+    private void setThumbnail(final ContentResolver contentResolver, final ViewHolder aHolder, final Uri uri) {
+        new AsyncTask<String, Void, Bitmap>() {
+            
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                return getThumbnail( contentResolver, uri );
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                // confirm the holder is still paired to this uri
+                if( aHolder.mMediaUri != uri ) {
+                    return ;
+                }
+                // thumbnail extraction failed, use bropken image icon
+                if( result == null ) {
+                    mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
+                    return ;
+                }
+                // set the thumbnail
+                aHolder.mMediaThumbnail.setImageBitmap(result);
+            }
+        }.execute();
     }
 
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
@@ -312,7 +325,7 @@ public class MessageView extends LinearLayout {
         
         if( mimeType != null ) {
             lastMessage = "";
-            mHolder.mMediaThumbnail.setImageResource(R.drawable.smiley_smile);
+            mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
             if( mimeType.startsWith("image/") ) {

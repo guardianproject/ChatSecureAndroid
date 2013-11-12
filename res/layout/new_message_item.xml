@@ -70,7 +70,7 @@
             android:layout_height="48dp"
             android:layout_marginLeft="3dip"
             android:scaleType="fitCenter"
-            android:src="@drawable/smiley_smile"
+            android:src="@drawable/ic_file"
             android:visibility="gone" />
 		
 	    <TextView android:id="@+id/message"
