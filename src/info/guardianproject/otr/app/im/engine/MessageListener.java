@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.OtrDataHandler.Transfer;
+import net.java.otr4j.session.SessionStatus;
 
 /**
  * Interface that allows for implementing classes to listen for new message.
@@ -71,7 +72,7 @@ public interface MessageListener {
     public void onReceiptsExpected(ChatSession ses);
 
     /** Called when OTR status changes */
-    public void onStatusChanged(ChatSession session);
+    public void onStatusChanged(ChatSession session, SessionStatus status);
 
     public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value);
 
