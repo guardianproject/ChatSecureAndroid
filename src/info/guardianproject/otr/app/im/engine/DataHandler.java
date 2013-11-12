@@ -4,6 +4,8 @@ import info.guardianproject.otr.app.im.IDataListener;
 
 import java.util.Map;
 
+import net.java.otr4j.session.SessionStatus;
+
 public interface DataHandler {
     /**
      * @param from this is OUR address
@@ -22,4 +24,6 @@ public interface DataHandler {
     void offerData(Address us, String localUri, Map<String, String> headers);
     
     void setDataListener(IDataListener dataListener);
+
+    void onOtrStatusChanged(SessionStatus status);
 }
