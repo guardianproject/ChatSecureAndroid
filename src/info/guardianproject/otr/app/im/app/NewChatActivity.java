@@ -2007,7 +2007,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     public ChatView getCurrentChatView ()
     {
         int cItemIdx;
-        
+
+        // FIXME why is mChatPagerAdapter null here?  Is this called after onDestroy?
         if (mChatPagerAdapter != null && (cItemIdx = mChatPager.getCurrentItem()) > 0)
         {
             return mChatPagerAdapter.getChatViewAt(cItemIdx);            
