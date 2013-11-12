@@ -30,6 +30,7 @@ import java.util.Date;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -91,7 +92,20 @@ public class MessageView extends LinearLayout {
         ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
         // save the media uri while the MediaScanner is creating the thumbnail
         // if the holder was reused, the pair is broken
-        Uri mMediaUri = null ; 
+        Uri mMediaUri = null;
+        
+        public void setOnClickListenerMediaThumbnail( final String mimeType, final String body ) {
+            mMediaThumbnail.setOnClickListener( new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickMediaIcon( mimeType, body );
+                }
+            });
+        }
+        
+        public void resetOnClickListenerMediaThumbnail() {
+            mMediaThumbnail.setOnClickListener( null );
+        }
     }
     
     @Override
@@ -120,7 +134,7 @@ public class MessageView extends LinearLayout {
         return lastMessage.toString();
     }
     
-    public void bindIncomingMessage(int id, String address, String nickname, String mimeType, String body, Date date, Markup smileyRes,
+    public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
         mHolder = (ViewHolder)getTag();
@@ -132,13 +146,18 @@ public class MessageView extends LinearLayout {
         
         //showAvatar(address,true);
         
+        mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
+            mHolder.setOnClickListenerMediaThumbnail(mimeType, body);     
             lastMessage = "";
-            mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+            // if a new uri, display generic icon first, then set it to the media icon/thumbnail
+            Uri mediaUri = Uri.parse( body ) ;
+            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+            }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
             if( mimeType.startsWith("image/") ) {
-                Uri mediaUri = Uri.parse( body ) ;
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
         } else {
@@ -224,12 +243,25 @@ public class MessageView extends LinearLayout {
     }
     
     /**
+     * @param mimeType
+     * @param body
+     */
+    protected void onClickMediaIcon(String mimeType, String body) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);  
+        intent.setDataAndType(Uri.parse( body ), mimeType);
+        getContext().startActivity(intent);
+    }
+
+
+    /**
      * @param contentResolver 
      * @param id 
      * @param aHolder
      * @param mediaUri
      */
     private void setIncomingImageThumbnail(final ContentResolver contentResolver, final int id, final ViewHolder aHolder, final Uri mediaUri) {
+        // pair this holder to the uri. if the holder is recycled, the pairing is broken
+        aHolder.mMediaUri = mediaUri;
         // if a content uri - already scanned
         if( mediaUri.getScheme() != null ) {
             setThumbnail(contentResolver, aHolder, mediaUri);
@@ -238,7 +270,6 @@ public class MessageView extends LinearLayout {
         // new file - scan
         File file = new File(mediaUri.getPath());
         final Handler handler = new Handler();
-        aHolder.mMediaUri = mediaUri;
         MediaScannerConnection.scanFile(
                 getContext(), new String[] { file.toString() }, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
@@ -274,7 +305,7 @@ public class MessageView extends LinearLayout {
             @Override
             protected void onPostExecute(Bitmap result) {
                 // confirm the holder is still paired to this uri
-                if( aHolder.mMediaUri != uri ) {
+                if( ! uri.equals( aHolder.mMediaUri ) ) {
                     return ;
                 }
                 // thumbnail extraction failed, use bropken image icon
@@ -309,7 +340,7 @@ public class MessageView extends LinearLayout {
         return android.text.Html.fromHtml(body).toString();
     }
     
-    public void bindOutgoingMessage(int id, String address, String mimeType, String body, Date date, Markup smileyRes, boolean scrolling,
+    public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
         
@@ -323,13 +354,18 @@ public class MessageView extends LinearLayout {
         
       //  showAvatar(address,false);
         
+        mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
+            mHolder.setOnClickListenerMediaThumbnail(mimeType, body);     
             lastMessage = "";
-            mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+            // if a new uri, display generic icon first, then set it to the media icon/thumbnail
+            Uri mediaUri = Uri.parse( body ) ;
+            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+            }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
             if( mimeType.startsWith("image/") ) {
-                Uri mediaUri = Uri.parse( body ) ;
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
         } else {
