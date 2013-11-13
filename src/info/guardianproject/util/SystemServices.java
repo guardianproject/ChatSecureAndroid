@@ -113,19 +113,23 @@ public class SystemServices {
         }
         
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
         
-        int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-        
-        if (dataIdx != -1)
+        if (cursor != null)
         {
-            info.path = cursor.getString(dataIdx);
-            info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
-        
-        
-            return info;
+            cursor.moveToFirst();
+            
+            int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            
+            if (dataIdx != -1)
+            {
+                info.path = cursor.getString(dataIdx);
+                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+            
+            
+                return info;
+            }
         }
-        else
-            return null;
+        
+        return null;
     }
 }
