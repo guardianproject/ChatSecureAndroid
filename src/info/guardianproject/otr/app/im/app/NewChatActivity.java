@@ -2214,7 +2214,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             public void run ()
             {
-                mApp.forceStopImService();
+                mApp.stopImServiceIfInactive();
                 
             }
         }, 2000l);
