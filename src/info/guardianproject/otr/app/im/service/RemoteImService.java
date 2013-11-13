@@ -206,7 +206,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
 
-        startForegroundCompat();
+        if (getGlobalSettings().getUseForegroundPriority())
+            startForegroundCompat();
+                
         HeartbeatService.startBeating(getApplicationContext());
     }
     
