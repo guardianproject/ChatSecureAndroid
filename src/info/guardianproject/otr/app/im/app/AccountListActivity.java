@@ -137,7 +137,9 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         if (mSignInHelper != null)
             mSignInHelper.stop();
         
-        mAdapter.swapCursor(null);
+        if (mAdapter != null)
+            mAdapter.swapCursor(null);
+        
         super.onDestroy();
     }
     

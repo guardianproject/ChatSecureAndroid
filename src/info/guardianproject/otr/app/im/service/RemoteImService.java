@@ -106,11 +106,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     private static final String TAG = "GB.ImService";
 
-    public RemoteImService() {
-        mConnections = new Vector<ImConnectionAdapter>();
-        mHandler = new Handler();
-    }
-
     public long getHeartbeatInterval() {
         return mHeartbeatInterval;
     }
@@ -178,6 +173,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onCreate() {
         debug("ImService started");
+        
+        mConnections = new Vector<ImConnectionAdapter>();
+        mHandler = new Handler();
+        
         Debug.onServiceStart();
 
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -205,9 +204,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         // Have the heartbeat start autoLogin, unless onStart turns this off
         mNeedCheckAutoLogin = true;
-
-        if (getGlobalSettings().getUseForegroundPriority())
-            startForegroundCompat();
                 
         HeartbeatService.startBeating(getApplicationContext());
     }
@@ -416,22 +412,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             conn.logout();
         }
         
-        
-       // unregisterReceiver(mSettingsMonitor);
+        if (getGlobalSettings().getUseForegroundPriority())
+            stopForeground(true);
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
      
         Imps.clearPassphrase(this);
         
-        /*
-        if (mKillProcessOnStop)
-        {
-            int pid = android.os.Process.myPid();
-            Log.w(TAG, "ImService: killing process: " + pid);
-            android.os.Process.killProcess(pid); 
-        }*/
-
     }
 
     @Override
@@ -479,6 +467,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     IImConnection do_createConnection(long providerId, long accountId) {
+        
+        if (mConnections.size() == 0)
+        {
+            if (getGlobalSettings().getUseForegroundPriority())
+                startForegroundCompat();
+        }
+        
         Map<String, String> settings = loadProviderSettings(providerId);
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
@@ -516,6 +511,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             mOtrChatManager.removeConnection(connection);
         
         mConnections.remove(connection);
+        
+        if (mConnections.size() == 0)
+            if (getGlobalSettings().getUseForegroundPriority())
+                stopForeground(true);
     }
 
     private boolean isNetworkAvailable() {
