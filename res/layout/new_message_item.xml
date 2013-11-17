@@ -64,6 +64,15 @@
             android:visibility="gone"
             android:layout_marginRight="0dip"
             />
+        <ImageView
+            android:id="@+id/media_thumbnail"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="3dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_file"
+            android:visibility="gone" />
+		
 	    <TextView android:id="@+id/message"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:layout_width="0dip"

@@ -799,6 +799,9 @@ public class Imps {
 
         /** Whether a delivery confirmation was received. <P>Type: INTEGER</P> */
         String IS_DELIVERED = "is_delivered";
+        
+        /** Mime type.  If non-null, body is a URI. */
+        String MIME_TYPE = "mime_type";
     }
 
     /** This table contains messages. */
@@ -2537,4 +2540,53 @@ public class Imps {
         }
     }
 
+    public static Uri insertMessageInDb(ContentResolver resolver,
+            boolean isGroup,
+            long contactId,
+            boolean isEncrypted,
+            String contact,
+            String body,
+            long time,
+            int type,
+            int errCode,
+            String id,
+            String mimeType) {
+        
+        ContentValues values = new ContentValues();
+        values.put(Imps.Messages.BODY, body);
+        values.put(Imps.Messages.DATE, time);
+        values.put(Imps.Messages.TYPE, type);
+        values.put(Imps.Messages.ERROR_CODE, errCode);
+        if (isGroup) {
+            values.put(Imps.Messages.NICKNAME, contact);
+            values.put(Imps.Messages.IS_GROUP_CHAT, 1);
+        }
+        values.put(Imps.Messages.IS_DELIVERED, 0);
+        values.put(Imps.Messages.MIME_TYPE, mimeType);
+        values.put(Imps.Messages.PACKET_ID, id);
+
+        return resolver.insert(isEncrypted ? Messages.getOtrMessagesContentUriByThreadId(contactId) : Messages.getContentUriByThreadId(contactId), values);
+    }
+
+    public static int updateMessageBody(ContentResolver resolver, int id, String body) {
+        
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI.buildUpon();
+        builder.appendPath(String.valueOf(id));
+        
+        ContentValues values = new ContentValues();
+        values.put(Imps.Messages.BODY, body);
+        return resolver.update(builder.build(), values, null, null);
+    }
+
+    public static int updateConfirmInDb(ContentResolver resolver, String id, boolean isDelivered) {
+        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
+        builder.appendPath(id);
+        
+        ContentValues values = new ContentValues(1);
+        values.put(Imps.Messages.IS_DELIVERED, isDelivered);
+        return resolver.update(builder.build(), values, null, null);
+    }
+
+
+    
 }

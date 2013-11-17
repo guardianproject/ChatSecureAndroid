@@ -135,6 +135,7 @@ public class ChatView extends LinearLayout {
     static final int PRESENCE_STATUS_COLUMN = 6;
     static final int LAST_UNREAD_MESSAGE_COLUMN = 7;
     static final int CHAT_ID_COLUMN = 8;
+    static final int MIME_TYPE_COLUMN = 9;
 
     static final String[] INVITATION_PROJECT = { Imps.Invitation._ID, Imps.Invitation.PROVIDER,
                                                 Imps.Invitation.SENDER, };
@@ -274,6 +275,7 @@ public class ChatView extends LinearLayout {
 
     private static final long SHOW_TIME_STAMP_INTERVAL = 15 * 1000; // 15 seconds
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
+    private static final long SHOW_MEDIA_DELIVERY_INTERVAL = 120 * 1000; // 2 minutes
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
     private static final long FAST_QUERY_INTERVAL = 100;
     private static final int QUERY_TOKEN = 10;
@@ -1862,6 +1864,9 @@ public class ChatView extends LinearLayout {
         private int mErrCodeColumn;
         private int mDeltaColumn;
         private int mDeliveredColumn;
+        private int mMimeTypeColumn;
+        private int mIdColumn;
+
 
         private LayoutInflater mInflater;
 
@@ -1885,6 +1890,8 @@ public class ChatView extends LinearLayout {
             mErrCodeColumn = c.getColumnIndexOrThrow(Imps.Messages.ERROR_CODE);
             mDeltaColumn = c.getColumnIndexOrThrow(DeltaCursor.DELTA_COLUMN_NAME);
             mDeliveredColumn = c.getColumnIndexOrThrow(Imps.Messages.IS_DELIVERED);
+            mMimeTypeColumn = c.getColumnIndexOrThrow(Imps.Messages.MIME_TYPE);
+            mIdColumn = c.getColumnIndexOrThrow(Imps.Messages._ID);
         }
 
         @Override
@@ -1911,6 +1918,8 @@ public class ChatView extends LinearLayout {
             mType = cursor.getInt(mTypeColumn);
             
             String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
+            String mimeType = cursor.getString(mMimeTypeColumn);
+            int id = cursor.getInt(mIdColumn);
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
             boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
@@ -1918,7 +1927,8 @@ public class ChatView extends LinearLayout {
             
             Date date = showTimeStamp ? new Date(timestamp) : null;
             boolean isDelivered = cursor.getLong(mDeliveredColumn) > 0;
-            boolean showDelivery = ((System.currentTimeMillis() - timestamp) > SHOW_DELIVERY_INTERVAL);
+            long showDeliveryInterval = (mimeType == null) ? SHOW_DELIVERY_INTERVAL : SHOW_MEDIA_DELIVERY_INTERVAL; 
+            boolean showDelivery = ((System.currentTimeMillis() - timestamp) > showDeliveryInterval);
             
             DeliveryState deliveryState = DeliveryState.NEUTRAL;
             
@@ -1956,7 +1966,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(mRemoteAddress, nickname, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat());
                 }
 
                 break;
@@ -1968,7 +1978,7 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(id, null, mimeType, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
                 
@@ -2049,10 +2059,11 @@ public class ChatView extends LinearLayout {
         return mComposeMessage;
     }
   
+    // FIXME this must be moved out of the UI and mostly into the remote process
     class DataAdapter extends IDataListener.Stub {
         
         @Override
-        public void onTransferComplete(String from, String url, String type, String filePath) {
+        public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String type, String filePath) {
             
             File file = new File(filePath);
             
@@ -2061,6 +2072,16 @@ public class ChatView extends LinearLayout {
                 Message msg = Message.obtain(mTransferHandler, 3);            
                 msg.getData().putString("path", file.getCanonicalPath());
                 msg.getData().putString("type", type);
+                
+                if (outgoing) {
+                    Imps.updateConfirmInDb(mActivity.getContentResolver(), offerId, true);
+                } else {
+                    Imps.insertMessageInDb(getContext().getContentResolver(),
+                            false, mLastChatId,
+                            true, null,
+                            file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.INCOMING_ENCRYPTED,
+                            0, offerId, type);
+                }
                 
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
@@ -2072,7 +2093,7 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onTransferFailed(String from, String url, String reason) {
+        public void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason) {
             
 
             String[] path = url.split("/"); 
@@ -2087,7 +2108,7 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onTransferProgress(String from, String url, float percentF) {
+        public void onTransferProgress(boolean outgoing, String offerId, String from, String url, float percentF) {
             
             long percent = (long)(100.00*percentF);
             
@@ -2107,7 +2128,7 @@ public class ChatView extends LinearLayout {
         private boolean mAcceptAllTransfer = false;
 
         @Override
-        public boolean onTransferRequested(String from, String to, String transferUrl) {
+        public boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
             
             mAcceptTransfer = false;            
             mWaitingForResponse = true;
@@ -2120,6 +2141,7 @@ public class ChatView extends LinearLayout {
             
             while (mWaitingForResponse)
             {
+                // FIXME
                 try { Thread.sleep(500);} catch (Exception e){}
             }
             
