@@ -101,6 +101,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         
         
         mApp.maybeInit(this);
+
+
+        if (!mDoLock)
+        {
+            mApp.checkForCrashes(this);            
+            
+        }
         
         if (!mDoLock && openEncryptedStores(null, false))
             // DB already open, or unencrypted
@@ -108,13 +115,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             return;
         else
             connectToCacheWord ();
-
-        if (!mDoLock)
-        {
-            mApp.checkForCrashes(this);
-            
-            checkForUpdates();
-        }
+        
      
     }
 
@@ -197,7 +198,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onDestroy() {
         super.onDestroy();
         
-        mCacheWord.disconnect();
+        if (mCacheWord != null)
+            mCacheWord.disconnect();
     }
 
     @Override
