@@ -531,11 +531,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordLocked() {
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock requested but already locked");
-            finish();
             
         } else {
             showLockScreen();
         }
+        
+        finish();
     }
 
     @Override
