@@ -134,7 +134,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     @Override
     protected void onDestroy() {
-        if (mSignInHelper != null)
+        if (mSignInHelper != null) // if !Imps.isUnlocked(this)
             mSignInHelper.stop();
         
         if (mAdapter != null)
