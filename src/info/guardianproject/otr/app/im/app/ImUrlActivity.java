@@ -545,10 +545,14 @@ public class ImUrlActivity extends ThemeableActivity {
        
           
             FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
-            mSendUrl = info.path;
-            mSendType = type != null ? type : info.type;
-
-            startContactPicker();
+            
+            if (info != null)
+            {
+                mSendUrl = info.path;
+                mSendType = type != null ? type : info.type;
+    
+                startContactPicker();
+            }
         }
     }
 
