@@ -99,6 +99,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         mDoLock = getIntent().getBooleanExtra("doLock", false);
         
+        
         mApp.maybeInit(this);
         
         if (!mDoLock && openEncryptedStores(null, false))
@@ -108,10 +109,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         else
             connectToCacheWord ();
 
-        mApp.checkForCrashes(this);
-        
-        checkForUpdates();
-        
+        if (!mDoLock)
+        {
+            mApp.checkForCrashes(this);
+            
+            checkForUpdates();
+        }
      
     }
 
@@ -121,6 +124,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
         
         mCacheWord.connectToService();
+        
         
     }
     
@@ -189,8 +193,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     }
 
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        mCacheWord.disconnect();
+    }
 
     @Override
     protected void onResume() {
@@ -523,9 +531,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordLocked() {
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock requested but already locked");
+            
         } else {
             showLockScreen();
         }
+        
         finish();
     }
 
@@ -534,7 +544,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock");
             mCacheWord.manuallyLock();
-            finish();
+            mCacheWord.disconnect();
+            finish(); 
             return;
         }
        Log.d(ImApp.LOG_TAG,"cache word opened");
