@@ -96,7 +96,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         for (ImConnectionAdapter connection : mConnections) {
             Contact user = connection.getLoginUser();
             if (user != null) {
-                if (user.getAddress().getAddress().equals(localAddress))
+                if (user.getAddress().getBareAddress().equals(XmppAddress.stripResource(localAddress)))
                     return connection;
             }
         }
@@ -144,21 +144,23 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     private void sendMessage(SessionID sessionID, String body) {
         ImConnectionAdapter connection = findConnection(sessionID.getAccountID());
-        ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter) connection
-                .getChatSessionManager();
-        ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
-                .getChatSession(sessionID.getUserID());
-        ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
-
-        Message msg = new Message(body);
-        
-        msg.setFrom(connection.getLoginUser().getAddress());sessionID.getFullUserID();
-        final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
-        msg.setTo(appendSessionResource(sessionID, to));
-        msg.setDateTime(new Date());
-        msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
-        chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
-        
+        if (connection != null)
+        {
+            ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter) connection
+                    .getChatSessionManager();
+            ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
+                    .getChatSession(sessionID.getUserID());
+            ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
+    
+            Message msg = new Message(body);
+            
+            msg.setFrom(connection.getLoginUser().getAddress());sessionID.getFullUserID();
+            final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
+            msg.setTo(appendSessionResource(sessionID, to));
+            msg.setDateTime(new Date());
+            msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
+            chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+        }        
     }
 
     public void injectMessage(SessionID sessionID, String text) {

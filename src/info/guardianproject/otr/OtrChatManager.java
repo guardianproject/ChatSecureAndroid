@@ -162,6 +162,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     public SessionID startSession(String localUserId, String remoteUserId) {
         try {
             SessionID sessionId = getSessionId(localUserId, remoteUserId);
+            
             mOtrEngine.startSession(sessionId);
 
             return sessionId;
