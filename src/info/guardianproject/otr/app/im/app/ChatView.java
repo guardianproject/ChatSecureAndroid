@@ -1855,6 +1855,7 @@ public class ChatView extends LinearLayout {
             // TODO Auto-generated method stub
             return 0;
         }
+
     }
 
     private class MessageAdapter extends CursorAdapter implements AbsListView.OnScrollListener {

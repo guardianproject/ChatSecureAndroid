@@ -123,7 +123,7 @@ public class MessageView extends LinearLayout {
         
         //showAvatar(address,true);
         
-        if (showContact)
+        if (showContact && nickname != null)
         {
             String[] nickParts = nickname.split("/");
             
