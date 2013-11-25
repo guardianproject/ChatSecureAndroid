@@ -714,13 +714,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {                         
             if (mChatPager.getCurrentItem() > 0)
             {
+                
                 if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
                     
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_purple);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_green_dark);
                         
                 }
                 else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED)
@@ -748,7 +749,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_light);
                 }
             }
             else

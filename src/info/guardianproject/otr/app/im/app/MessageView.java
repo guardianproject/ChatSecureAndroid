@@ -178,22 +178,22 @@ public class MessageView extends LinearLayout {
         {
             mHolder.mEncryptionIconLeft.setVisibility(GONE);
             mHolder.mEncryptionIconRight.setVisibility(GONE);
-            mHolder.mStatusBlockLeft.setBackgroundColor(Color.LTGRAY);
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_red_light);
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
             mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
             mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_light);
-            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.ic_menu_encrypted);
+            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.lock16);
             
             
         }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
             mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_purple);
-            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.ic_menu_verified);
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_green_dark);
+            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.lock16);
             
         }
         
@@ -225,7 +225,7 @@ public class MessageView extends LinearLayout {
         lastMessage = body;//formatMessage(body);
          
          try {
-             mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+    //         mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
              SpannableString spannablecontent=new SpannableString(lastMessage);
 
              EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
@@ -238,10 +238,10 @@ public class MessageView extends LinearLayout {
          
         if (delivery == DeliveryState.DELIVERED) {
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_ok);
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.check);
 
         } else if (delivery == DeliveryState.UNDELIVERED) {
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.ic_chat_msg_status_failed);
+            mHolder.mDeliveryIcon.setImageResource(R.drawable.navigation_cancel);
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);
         } else {
             mHolder.mDeliveryIcon.setVisibility(GONE);
@@ -259,7 +259,7 @@ public class MessageView extends LinearLayout {
             mHolder.mEncryptionIconLeft.setVisibility(GONE);
             mHolder.mEncryptionIconRight.setVisibility(GONE);
             
-            mHolder.mStatusBlockRight.setBackgroundColor(Color.LTGRAY);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_red_light);
 
                
         }
@@ -267,14 +267,14 @@ public class MessageView extends LinearLayout {
         {
             mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_orange_light);
             mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
-            mHolder.mEncryptionIconRight.setImageResource(R.drawable.ic_menu_encrypted);
+            mHolder.mEncryptionIconRight.setImageResource(R.drawable.lock16);
         }
         
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_purple);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_green_dark);
             mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
-            mHolder.mEncryptionIconRight.setImageResource(R.drawable.ic_menu_verified);
+            mHolder.mEncryptionIconRight.setImageResource(R.drawable.lock16);
         }
 
         if (date != null)
