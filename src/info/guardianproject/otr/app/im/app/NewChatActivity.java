@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -39,6 +40,7 @@ import java.util.List;
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -51,6 +53,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -519,7 +522,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 
                 if (localFingerprint != null)
                  {
-                    IntentIntegrator.shareText(this, localFingerprint);
+                    new IntentIntegrator(this).shareText(localFingerprint);
                     return;
                  }
                 
@@ -749,7 +752,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_light);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_dark);
                 }
             }
             else
@@ -2081,33 +2084,77 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
+    private IImConnection mLastConnGroup = null;
+    
     public void startGroupChat (String room, String server, IImConnection conn)
     {
-        String roomAddress = room + '@' + server;
+        mLastConnGroup = conn;
         
-        try {
-            IChatSessionManager manager = conn.getChatSessionManager();
-            IChatSession session = manager.getChatSession(roomAddress);
-            if (session == null) {
-                session = manager.createMultiUserChatSession(roomAddress);
-                if (session != null)
-                {
-                    mRequestedChatId = session.getId(); 
-                } else {
-                    mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
-                }
-            } else {
-                long id = session.getId();
-                showChat(id);
-                //Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);                
-                //Intent i = new Intent(Intent.ACTION_VIEW, data);
-                //i.addCategory(ImApp.IMPS_CATEGORY);            
-                //startActivity(i);
+        new AsyncTask<String, Void, String>() {
+        
+            private ProgressDialog dialog;
+        
+            
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(NewChatActivity.this);
+                
+                dialog.setMessage(getString(R.string.connecting_to_group_chat_));
+                dialog.setCancelable(true);
+                dialog.show();
             }
             
-        } catch (RemoteException e) {
-           mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
-        }
+            @Override
+            protected String doInBackground(String... params) {
+              
+                String roomAddress = params[0] + '@' + params[1];
+                
+                try {
+                    IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
+                    IChatSession session = manager.getChatSession(roomAddress);
+                    if (session == null) {
+                        session = manager.createMultiUserChatSession(roomAddress);
+                        if (session != null)
+                        {
+                            mRequestedChatId = session.getId(); 
+                            showChat(mRequestedChatId);
+                            
+                        } else {
+                            return getString(R.string.unable_to_create_or_join_group_chat);
+                            
+                        }
+                    } else {
+                        long id = session.getId();
+                        showChat(id);
+                    }
+                    
+                    return null;
+                    
+                } catch (RemoteException e) {
+                    return e.toString();
+                }
+                
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                
+                if (result != null)
+                {
+                    mHandler.showServiceErrorAlert(result);
+
+                }
+               
+               
+            }
+        }.execute(room, server);
+        
+       
        
     }
     

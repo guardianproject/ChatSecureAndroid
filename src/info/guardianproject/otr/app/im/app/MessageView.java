@@ -177,7 +177,7 @@ public class MessageView extends LinearLayout {
         {
             mHolder.mEncryptionIconLeft.setVisibility(GONE);
             mHolder.mEncryptionIconRight.setVisibility(GONE);
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_red_light);
+            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_red_dark);
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
@@ -258,7 +258,7 @@ public class MessageView extends LinearLayout {
             mHolder.mEncryptionIconLeft.setVisibility(GONE);
             mHolder.mEncryptionIconRight.setVisibility(GONE);
             
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_red_light);
+            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_red_dark);
 
                
         }

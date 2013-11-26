@@ -1045,9 +1045,9 @@ public class AccountActivity extends Activity {
             @Override
             protected void onPreExecute() {
                 dialog = new ProgressDialog(AccountActivity.this);
-                
-                this.dialog.setMessage(getString(R.string.registering_new_account_));
-                this.dialog.show();
+                dialog.setCancelable(true);
+                dialog.setMessage(getString(R.string.registering_new_account_));
+                dialog.show();
             }
             
             @Override
