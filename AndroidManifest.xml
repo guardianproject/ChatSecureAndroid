@@ -72,7 +72,45 @@ android:anyDensity="true"
 			        <data android:pathPattern=".*\\.ofcaes" />
 			        <data android:host="*" />
 			    </intent-filter>
-			         
+			         <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="info.guardianproject.otr.app.im.category.XMPP" />
+                <data android:scheme="im" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="imto" android:host="xmpp"/>
+                
+            </intent-filter>
+            
+             <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="immu"/>
+                
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="ima"/>
+            </intent-filter>
+             <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="otr-in-band"/>
+            </intent-filter>
+             <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.ALTERNATIVE" /> 
+                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" /> 
+                 
+                 <data android:mimeType="*/*" />
+                
+            </intent-filter>
              </activity>
         
         <activity android:name=".app.ActiveChatListView"
@@ -175,45 +213,7 @@ android:anyDensity="true"
         
 
         <activity android:name=".app.ImUrlActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="info.guardianproject.otr.app.im.category.XMPP" />
-                <data android:scheme="im" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="imto" android:host="xmpp"/>
-                
-            </intent-filter>
             
-             <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="immu"/>
-                
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.INSERT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="ima"/>
-            </intent-filter>
-             <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="otr-in-band"/>
-            </intent-filter>
-             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                 <category android:name="android.intent.category.ALTERNATIVE" /> 
-                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" /> 
-                 
-                 <data android:mimeType="*/*" />
-                
-            </intent-filter>
         </activity>
 
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"

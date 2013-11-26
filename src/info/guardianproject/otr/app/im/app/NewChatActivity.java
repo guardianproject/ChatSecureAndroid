@@ -1394,15 +1394,30 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
                     String nickname = mCursor.getString(ChatView.NICKNAME_COLUMN);
                     int presence = mCursor.getInt(ChatView.PRESENCE_STATUS_COLUMN);
+                    int type = mCursor.getInt(ChatView.TYPE_COLUMN);
                     
                     BrandingResources brandingRes = mApp.getBrandingResource(mCursor.getInt(ChatView.PROVIDER_COLUMN));
 
-                    SpannableString s = new SpannableString("+ " + nickname);
-                    Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
-                    statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
-                            statusIcon.getIntrinsicHeight());
-                    s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+                    
+                    SpannableString s = null;
+                    
+                    Drawable statusIcon = null;
+                    
+                    if (Imps.Contacts.TYPE_GROUP == type)
+                    {
+                        s = new SpannableString(nickname);
+                    }
+                    else    
+                    {
+                        s = new SpannableString("+ " + nickname);
+                        statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
+                        statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
+                                statusIcon.getIntrinsicHeight());
+                        s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+ 
+                    }
+                    
+                   
                     return s;
                     
                 }

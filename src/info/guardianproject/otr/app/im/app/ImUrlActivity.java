@@ -82,13 +82,14 @@ public class ImUrlActivity extends ThemeableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
-        
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
         if (!Imps.isUnlocked(this)) {
             onDBLocked();
         }
+        
+        initProviderCursor(null); //reinit the provider cursor
         
         doOnCreate();
     }
@@ -165,7 +166,12 @@ public class ImUrlActivity extends ThemeableActivity {
                                 mConn = ((ImApp)getApplication()).getConnection(providerId);
                             
                             signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
+                            settings.close();
                             return;
+                        }
+                        else
+                        {
+                            settings.close();
                         }
                     }
                 }
@@ -271,16 +277,11 @@ public class ImUrlActivity extends ThemeableActivity {
                 {
                     Toast.makeText(ImUrlActivity.this, R.string.signing_in_wait, Toast.LENGTH_LONG).show();
                 }
-                else if (state == ImConnection.DISCONNECTED)
-                {
-                    //finish();
-                }
+                
             }
         });
         
-        
-        
-        signInHelper.signIn(password, providerId, accountId, false);
+        signInHelper.signIn(password, providerId, accountId, true);
     }
 
     private void showContactList(long accountId) {
@@ -459,9 +460,13 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     void createNewAccount() {
+        
+        String username = getIntent().getData().getUserInfo();
+        String appCreateAcct = String.format(getString(R.string.allow_s_to_create_a_new_chat_account_for_s_),username);
+        
         new AlertDialog.Builder(this)            
-        .setTitle("Create account?")
-        .setMessage("You seem to not have an account for chat. Create one now?")
+        .setTitle(R.string.prompt_create_new_account_)
+        .setMessage(appCreateAcct)
         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
              
@@ -490,7 +495,7 @@ public class ImUrlActivity extends ThemeableActivity {
                 if (uriAccountData.getScheme().equals("immu"))
                 {
                     //need to generate proper IMA url for account setup
-                    String randomJid = ((int)(Math.random()*10000))+"";
+                    String randomJid = ((int)(Math.random()*1000))+"";
                     String regUser = mFromAddress + randomJid;
                     String regPass =  UUID.randomUUID().toString().substring(0,16);
                     String regDomain = mHost.replace("conference.", "");                
@@ -562,23 +567,22 @@ public class ImUrlActivity extends ThemeableActivity {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 sendOtrInBand(username);
-            }
-            else if (requestCode == REQUEST_SIGNIN_ACCOUNT)
-            {
-                //okay we have an account, signed in, now open the chat
-                doOnCreate();
-            }
-            else if (requestCode == REQUEST_CREATE_ACCOUNT)  
-            {
-                Toast.makeText(this, "Your account has been created. However, we must wait a few seconds before it is ready for you to login.", Toast.LENGTH_LONG).show();
                 
-                try { Thread.sleep(5000);}
-                catch (Exception e){};//wait 2 seconds while the account is provisioned
-                //okay we have an account, signed in, now open the chat
-                doOnCreate();
+            }
+            else if (requestCode == REQUEST_SIGNIN_ACCOUNT || requestCode == REQUEST_CREATE_ACCOUNT)
+            {
+                initProviderCursor(null); //reinit the provider cursor
+
+                mHandlerRouter.postDelayed(new Runnable()
+                {
+                    public void run ()
+                    {
+                        doOnCreate();
+                    }
+                }, 500);
+              
             }
             
-            finish();
         } else {
             finish();
         }

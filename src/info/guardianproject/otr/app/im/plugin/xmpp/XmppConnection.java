@@ -237,6 +237,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private boolean execute(Runnable runnable) {
+        
+        if (mExecutor == null)
+            createExecutor();
+        
         try {
             mExecutor.execute(runnable);
         } catch (RejectedExecutionException ex) {

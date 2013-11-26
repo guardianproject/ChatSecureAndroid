@@ -120,8 +120,8 @@ public class MessageView extends LinearLayout {
         setGravity(Gravity.LEFT);
         setLayoutParams(lp);     
         setPadding(3,0,100,3);
-        
-        //showAvatar(address,true);
+
+        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
         
         if (showContact && nickname != null)
         {
@@ -172,7 +172,6 @@ public class MessageView extends LinearLayout {
            
         }
 
-        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
 
         if (encryption == EncryptionState.NONE)
         {

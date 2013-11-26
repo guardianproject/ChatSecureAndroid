@@ -865,5 +865,12 @@
     <string name="button_yes_accept_all">Yes, Accept All</string>
     
     <string name="app_unlocked">Activated &amp; unlocked</string>
+    
+    <string name="prompt_create_new_account_">Create new account?</string>
+    
+    <string name="allow_s_to_create_a_new_chat_account_for_s_">Create a new chat account for username \'%1$s\'?</string>
+    
+    <string name="registering_new_account_">Registering new account...</string>
+    
 </resources>
 
