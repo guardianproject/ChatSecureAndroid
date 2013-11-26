@@ -872,5 +872,7 @@
     
     <string name="registering_new_account_">Registering new account...</string>
     
+    <string name="connecting_to_group_chat_">Connecting to group chat...</string>
+    
 </resources>
 
