@@ -879,7 +879,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             public void onClick(DialogInterface dialog, int which) {
                 
                 //launch QR code intent
-                IntentIntegrator.initiateScan(activity);
+                new IntentIntegrator(activity).initiateScan();
                 
             }
         };

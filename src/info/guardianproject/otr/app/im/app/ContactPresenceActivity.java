@@ -363,8 +363,7 @@ public class ContactPresenceActivity extends Activity {
     }
 
     public void startScan() {
-        IntentIntegrator.initiateScan(this);
-
+        new IntentIntegrator(this).initiateScan();
     }
 
     
