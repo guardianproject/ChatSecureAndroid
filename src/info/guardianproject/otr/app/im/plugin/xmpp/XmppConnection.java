@@ -239,7 +239,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private boolean execute(Runnable runnable) {
         
         if (mExecutor == null)
-            createExecutor();
+            throw new RuntimeException ("Executor was null. This shouldn't happen");
         
         try {
             mExecutor.execute(runnable);
