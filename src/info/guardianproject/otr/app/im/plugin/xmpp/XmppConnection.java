@@ -216,16 +216,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ServiceDiscoveryManager.setIdentityName("Gibberbot");
         ServiceDiscoveryManager.setIdentityType("phone");
 
-        mUser = makeUser();
+        //user is NULL here because provider ID has not been specified
+        //mUser = makeUser();
     }
 
-    Contact makeUser() {
+    private Contact makeUser() {
         ContentResolver contentResolver = mContext.getContentResolver();
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
                 contentResolver, mProviderId, false, null);
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
-        String xmppName = userName + '@' + domain;// + '/' + providerSettings.getXmppResource();    
+        String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    
         providerSettings.close();
         
         return new Contact(new XmppAddress(xmppName), userName);
@@ -239,7 +240,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private boolean execute(Runnable runnable) {
         
         if (mExecutor == null)
-            throw new RuntimeException ("Executor was null. This shouldn't happen");
+           createExecutor (); //if we disconnected, will need to recreate executor here, because join() made it null
         
         try {
             mExecutor.execute(runnable);
