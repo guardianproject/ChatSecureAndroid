@@ -185,7 +185,9 @@ public class AccountActivity extends Activity {
                 mSignInHelper.activateAccount(mProviderId, accountId);
                 mSignInHelper.signIn(pass, mProviderId, accountId, true);
                 setResult(RESULT_OK);
+                cursor.close();
                 finish();
+                return;
                 
             } else {
                 mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
@@ -193,11 +195,12 @@ public class AccountActivity extends Activity {
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
                 mSignInHelper.activateAccount(mProviderId, accountId);
                 createNewAccount(mUserName, pass, accountId);
+                cursor.close();
+                return;
             }
            
-            cursor.close();
-            
-            return;
+           
+        
             
         } else if (Intent.ACTION_INSERT.equals(action)) {
             
@@ -675,6 +678,7 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         } 
+        //mEditPass can be NULL if this activity is used in "headless" mode for auto account setup
         else if (mEditPass != null && mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
             //this is not @gmail but IS a google account
