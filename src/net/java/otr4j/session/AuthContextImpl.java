@@ -417,8 +417,8 @@ class AuthContextImpl implements AuthContext {
     private void handleSignatureMessage(SignatureMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a signature message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+       logger.finest(sessionID.getLocalUserId() + " received a signature message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("Policy does not allow OTRv2, ignoring message.");
             return;
@@ -471,8 +471,8 @@ class AuthContextImpl implements AuthContext {
     private void handleRevealSignatureMessage(RevealSignatureMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a reveal signature message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a reveal signature message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("Policy does not allow OTRv2, ignoring message.");
@@ -570,8 +570,8 @@ class AuthContextImpl implements AuthContext {
     private void handleDHKeyMessage(DHKeyMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a D-H key message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a D-H key message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("If ALLOW_V2 is not set, ignore this message.");
@@ -611,8 +611,8 @@ class AuthContextImpl implements AuthContext {
     private void handleDHCommitMessage(DHCommitMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a D-H commit message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a D-H commit message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("ALLOW_V2 is not set, ignore this message.");

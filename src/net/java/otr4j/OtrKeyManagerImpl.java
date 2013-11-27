@@ -126,7 +126,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (sessionID == null)
             return;
 
-        String accountID = sessionID.getAccountID();
+        String accountID = sessionID.getLocalUserId();
         KeyPair keyPair;
         try {
             keyPair = KeyPairGenerator.getInstance("DSA").genKeyPair();
@@ -181,14 +181,14 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (sessionID == null)
             return false;
 
-        return this.store.getPropertyBoolean(sessionID.getUserID() + ".publicKey.verified", false);
+        return this.store.getPropertyBoolean(sessionID.getLocalUserId() + ".publicKey.verified", false);
     }
 
     public KeyPair loadLocalKeyPair(SessionID sessionID) {
         if (sessionID == null)
             return null;
 
-        String accountID = sessionID.getAccountID();
+        String accountID = sessionID.getLocalUserId();
         // Load Private Key.
         byte[] b64PrivKey = this.store.getPropertyBytes(accountID + ".privateKey");
         if (b64PrivKey == null)
@@ -227,7 +227,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (sessionID == null)
             return null;
 
-        String userID = sessionID.getUserID();
+        String userID = sessionID.getLocalUserId();
 
         byte[] b64PubKey = this.store.getPropertyBytes(userID + ".publicKey");
         if (b64PubKey == null)
@@ -255,7 +255,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
 
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
-        String userID = sessionID.getUserID();
+        String userID = sessionID.getRemoteUserId();
         this.store.setProperty(userID + ".publicKey", x509EncodedKeySpec.getEncoded());
 
         this.store.removeProperty(userID + ".publicKey.verified");
@@ -270,7 +270,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (!isVerified(sessionID))
             return;
 
-        this.store.removeProperty(sessionID.getUserID() + ".publicKey.verified");
+        this.store.removeProperty(sessionID.getRemoteUserId() + ".publicKey.verified");
 
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
@@ -284,7 +284,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (this.isVerified(sessionID))
             return;
 
-        store.setProperty(sessionID.getUserID() + ".publicKey.verified", true);
+        store.setProperty(sessionID.getRemoteUserId() + ".publicKey.verified", true);
         
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);

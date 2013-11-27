@@ -339,8 +339,8 @@ public class SessionImpl implements Session {
     }
 
     private void handleQueryMessage(QueryMessage queryMessage) throws OtrException {
-        logger.finest(getSessionID().getAccountID() + " received a query message from "
-                      + getSessionID().getUserID() + " throught "
+        logger.finest(getSessionID().getLocalUserId() + " received a query message from "
+                      + getSessionID().getRemoteUserId() + " throught "
                       + getSessionID().getProtocolName() + ".");
 
         setSessionStatus(SessionStatus.PLAINTEXT);
@@ -355,8 +355,8 @@ public class SessionImpl implements Session {
     }
 
     private void handleErrorMessage(ErrorMessage errorMessage) throws OtrException {
-        logger.finest(getSessionID().getAccountID() + " received an error message from "
-                      + getSessionID().getUserID() + " throught " + getSessionID().getUserID()
+        logger.finest(getSessionID().getLocalUserId() + " received an error message from "
+                      + getSessionID().getRemoteUserId() + " throught " + getSessionID().getRemoteUserId()
                       + ".");
 
         OtrPolicy policy = getSessionPolicy();
@@ -383,8 +383,8 @@ public class SessionImpl implements Session {
     }
 
     private String handleDataMessage(DataMessage data, List<TLV> tlvs) throws OtrException {
-        logger.finest(getSessionID().getAccountID() + " received a data message from "
-                      + getSessionID().getUserID() + ".");
+        logger.finest(getSessionID().getLocalUserId() + " received a data message from "
+                      + getSessionID().getRemoteUserId() + ".");
 
         switch (this.getSessionStatus()) {
         case ENCRYPTED:
@@ -513,8 +513,8 @@ public class SessionImpl implements Session {
     }
 
     private String handlePlainTextMessage(PlainTextMessage plainTextMessage) throws OtrException {
-        logger.finest(getSessionID().getAccountID() + " received a plaintext message from "
-                      + getSessionID().getUserID() + " throught "
+        logger.finest(getSessionID().getLocalUserId() + " received a plaintext message from "
+                      + getSessionID().getRemoteUserId() + " throught "
                       + getSessionID().getProtocolName() + ".");
 
         OtrPolicy policy = getSessionPolicy();
@@ -589,8 +589,8 @@ public class SessionImpl implements Session {
                 return msgText;
         case ENCRYPTED:
             this.lastSentMessage = msgText;
-            logger.finest(getSessionID().getAccountID() + " sends an encrypted message to "
-                          + getSessionID().getUserID() + " through "
+            logger.finest(getSessionID().getLocalUserId() + " sends an encrypted message to "
+                          + getSessionID().getRemoteUserId() + " through "
                           + getSessionID().getProtocolName() + ".");
 
             // Get encryption keys.
@@ -668,7 +668,7 @@ public class SessionImpl implements Session {
         case FINISHED:
             this.lastSentMessage = msgText;
             showError("Your message to "
-                    + sessionID.getUserID()
+                    + sessionID.getRemoteUserId()
                     + " was not sent.  Either end your private conversation, or restart it.");
             return null;
         default:
