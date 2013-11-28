@@ -156,7 +156,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
-     
+       
     }
 
     
