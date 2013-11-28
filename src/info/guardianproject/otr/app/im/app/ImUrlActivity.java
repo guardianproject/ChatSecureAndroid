@@ -67,8 +67,6 @@ public class ImUrlActivity extends ThemeableActivity {
     
     private ImApp mApp;
     private IImConnection mConn;
-    private long mProviderId;
-    private long mAccountId;
     private IChatSessionManager mChatSessionManager;
     
     private String mSendUrl;
@@ -109,6 +107,7 @@ public class ImUrlActivity extends ThemeableActivity {
         
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
+        //look for active connections that match the host we need
         for (IImConnection conn : listConns)
         {            
    
@@ -117,10 +116,12 @@ public class ImUrlActivity extends ThemeableActivity {
                 long connProviderId = conn.getProviderId();
 
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                        cr, connProviderId, false /* don't keep updated */, null /* no handler */);
                 
                 try {
-                    if (mHost.contains(settings.getDomain()))
+                    String domainToCheck = settings.getDomain();
+                    
+                    if (domainToCheck != null && domainToCheck.length() > 0 && mHost.contains(domainToCheck))
                     {
                         mConn = conn;
                         providerId = connProviderId;
@@ -139,6 +140,7 @@ public class ImUrlActivity extends ThemeableActivity {
             
         }
 
+        //nothing active, let's see if non-active connections match
         if (mConn == null) {
             
             if (mProviderCursor == null || mProviderCursor.getCount() == 0) {                                
@@ -150,29 +152,31 @@ public class ImUrlActivity extends ThemeableActivity {
                 
                 while (mProviderCursor.moveToNext())
                 {                
+                    //make sure there is a stored password
                     if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
                             
                         long cProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
                         
                         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                                cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                                cr, cProviderId, false /* don't keep updated */, null /* no handler */);
                         
-                        if (mHost.contains(settings.getDomain()))
+                        //does the conference host we need, match the settings domain for a logged in account
+                        String domainToCheck = settings.getDomain(); 
+                        
+                        if (domainToCheck != null && domainToCheck.length() > 0 && mHost.contains(domainToCheck))
                         {
                             providerId = cProviderId;
                             accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-                            if (providerId != -1)            
-                                mConn = ((ImApp)getApplication()).getConnection(providerId);
+                            mConn = ((ImApp)getApplication()).getConnection(providerId);
                             
+                            //now sign in
                             signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
                             settings.close();
-                            return;
+                            return; //do sign in, the rest of the process will happen later
+                           
                         }
                         else
-                        {
                             settings.close();
-                        }
                     }
                 }
                 
@@ -236,7 +240,8 @@ public class ImUrlActivity extends ThemeableActivity {
         }
         else
         {
-            finish();
+            createNewAccount();
+            return;
         }
     }
 
@@ -652,18 +657,20 @@ public class ImUrlActivity extends ThemeableActivity {
                 {
                     try {
                         mChatSessionManager = conn.getChatSessionManager();
-                        mProviderId = conn.getProviderId();
-                        mAccountId = conn.getAccountId();
+                        long mProviderId = conn.getProviderId();
+                        long mAccountId = conn.getAccountId();
+                   
+                        ContentUris.appendId(builder,  mProviderId);
+                        ContentUris.appendId(builder,  mAccountId);
+                        Uri data = builder.build();
+                
+                        Intent i = new Intent(Intent.ACTION_PICK, data);
+                        startActivityForResult(i, REQUEST_PICK_CONTACTS);
+                        break;
+                        
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    ContentUris.appendId(builder,  mProviderId);
-                    ContentUris.appendId(builder,  mAccountId);
-                    Uri data = builder.build();
-            
-                    Intent i = new Intent(Intent.ACTION_PICK, data);
-                    startActivityForResult(i, REQUEST_PICK_CONTACTS);
-                    break;
                 }
             }
             catch (RemoteException re){}
