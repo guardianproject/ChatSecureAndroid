@@ -101,7 +101,6 @@ import com.actionbarsherlock.widget.SearchView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-
 public class NewChatActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
@@ -2107,7 +2106,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             @Override
             protected String doInBackground(String... params) {
               
-                String roomAddress = params[0] + '@' + params[1];
+                String roomAddress = (params[0] + '@' + params[1]).toLowerCase();
                 
                 try {
                     IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
