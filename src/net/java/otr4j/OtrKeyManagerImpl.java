@@ -227,7 +227,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         if (sessionID == null)
             return null;
 
-        String userID = sessionID.getLocalUserId();
+        String userID = sessionID.getRemoteUserId();
 
         byte[] b64PubKey = this.store.getPropertyBytes(userID + ".publicKey");
         if (b64PubKey == null)
