@@ -370,12 +370,15 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         
         if ((intentOrig = getIntent().getParcelableExtra("originalIntent"))!=null)
         {
-            if (intentOrig.getData().getScheme().equals("immu")||
-            intentOrig.getData().getScheme().equals("ima"))
+            if (intentOrig.getData() != null)
             {
-            
-                initializeWithPassphrase();
-                return;
+                if (intentOrig.getData().getScheme().equals("immu")||
+                intentOrig.getData().getScheme().equals("ima"))
+                {
+                
+                    initializeWithPassphrase();
+                    return;
+                }
             }
         }
         
