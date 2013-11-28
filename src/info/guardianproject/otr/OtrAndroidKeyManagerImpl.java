@@ -598,12 +598,12 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         if (sessionID == null)
             return false;
         
-        
         String remoteFingerprint =getRemoteFingerprint(sessionID.getRemoteUserId());
         
         if (remoteFingerprint != null)
         {
-            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(sessionID.getRemoteUserId(), remoteFingerprint);
+            String username = Address.stripResource(sessionID.getRemoteUserId());
+            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(username, remoteFingerprint);
             return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
         }
         else
