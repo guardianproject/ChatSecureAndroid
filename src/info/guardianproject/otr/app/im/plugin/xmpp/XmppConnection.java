@@ -189,7 +189,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
 
     LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
-      
     
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -215,11 +214,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ServiceDiscoveryManager.setIdentityName("Gibberbot");
         ServiceDiscoveryManager.setIdentityType("phone");
-
-        //user is NULL here because provider ID has not been specified
-        //mUser = makeUser();
     }
-
+    
+    public void initUser(long providerId, long accountId)
+    {
+        mProviderId = providerId;
+        mAccountId = accountId;
+        mUser = makeUser();
+    }
+    
     private Contact makeUser() {
         ContentResolver contentResolver = mContext.getContentResolver();
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
@@ -1516,17 +1519,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ChatSession findSession(String address) {
             
-            String nAddress = Address.stripResource(address);
-            
-            for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
-                ChatSession session = iter.next();
-                
-                String tAddress = Address.stripResource(session.getParticipant().getAddress().getAddress());
-                
-                if (tAddress.equalsIgnoreCase(nAddress))
-                    return session;
-            }
-            return null;
+           
+            return mSessions.get(Address.stripResource(address));
+
         }
         
     }
@@ -2582,8 +2577,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (contact == null) {
             
         
-            debug(TAG, "got presence updated for NEW user: "
-                    + presence.getFrom());
+           // debug(TAG, "got presence updated for NEW user: "
+             //       + presence.getFrom());
             
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
@@ -2614,8 +2609,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         } else {
 
-            debug(TAG, "Got presence update for EXISTING user: "
-                    + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
+          //  debug(TAG, "Got presence update for EXISTING user: "
+          //          + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
           
         }
 
