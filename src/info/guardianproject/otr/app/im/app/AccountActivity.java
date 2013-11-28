@@ -1038,7 +1038,7 @@ public class AccountActivity extends Activity {
         return out.toString();
     }
 
-    public void createNewAccount (String usernameNew, String passwordNew, long accountId)
+    public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId)
     {
         
         new AsyncTask<String, Void, String>() {
@@ -1064,6 +1064,7 @@ public class AccountActivity extends Activity {
                     settingsForDomain(mDomain, mPort, settings);
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
+                    xmppConn.initUser(mProviderId, newAccountId);
                     xmppConn.registerAccount(settings, params[0], params[1]);
                     // settings closed in registerAccount
                 } catch (Exception e) {
