@@ -134,21 +134,18 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                     
                     otrKeyManager.addListener(new OtrKeyManagerListener() {
                         public void verificationStatusChanged(SessionID session) {
-                            //String msg = session + ": verification status="
-                              //           + mOtrKeyManager.isVerified(session);
-
-                            //OtrDebugLogger.log(msg);
                             boolean isVerified = mOtrChatManager.getKeyManager().isVerified(session);
-                            
+                            String msg = session + ": verification status=" + isVerified;
+        
+                            OtrDebugLogger.log(msg);
+
                         }
 
                         public void remoteVerifiedUs(SessionID session) {
                             String msg = session + ": remote verified us";
-
                             OtrDebugLogger.log(msg);
                             
-                            Toast.makeText(RemoteImService.this, getString(R.string.remote_verified_us), Toast.LENGTH_LONG).show();
-                            
+                            showToast(getString(R.string.remote_verified_us),Toast.LENGTH_SHORT);
                          //   if (!isRemoteKeyVerified(session))
                            //     showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
                         }
@@ -501,6 +498,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         ConnectionFactory factory = ConnectionFactory.getInstance();
         try {
             ImConnection conn = factory.createConnection(settings, this);
+            conn.initUser(providerId, accountId);
             ImConnectionAdapter imConnectionAdapter = 
                     new ImConnectionAdapter(providerId, accountId, conn, this);
             
