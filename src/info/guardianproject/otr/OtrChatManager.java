@@ -4,6 +4,7 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -331,7 +332,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         dialog.putExtra("q", question);
-        dialog.putExtra("sid", sessionID.getSessionId());
+        dialog.putExtra("sid", sessionID.getRemoteUserId());//yes "sid" = remoteUserId in this case - see SMPResponseActivity
         ImConnectionAdapter connection = mOtrEngineHost.findConnection(sessionID);
         if (connection == null) {
             OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.getSessionId());
