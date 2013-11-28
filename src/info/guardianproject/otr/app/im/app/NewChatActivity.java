@@ -2106,7 +2106,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             @Override
             protected String doInBackground(String... params) {
               
-                String roomAddress = (params[0] + '@' + params[1]).toLowerCase();
+                String roomAddress = (params[0] + '@' + params[1]).toLowerCase().replace(' ', '_');
                 
                 try {
                     IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
