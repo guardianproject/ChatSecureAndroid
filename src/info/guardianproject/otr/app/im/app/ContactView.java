@@ -198,11 +198,20 @@ public class ContactView extends LinearLayout {
         {
             if (mHolder.mLine2 != null)                
             {
+                
                 if (statusText == null || statusText.length() == 0)
                 {
-                    ImApp app = ((ImApp)((Activity) mContext).getApplication());
-                    BrandingResources brandingRes = app.getBrandingResource(providerId);
-                    statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
+
+                    if (Imps.Contacts.TYPE_GROUP == type) 
+                    {
+                        statusText = mContext.getString(R.string.menu_new_group_chat);
+                    }
+                    else
+                    {
+                        ImApp app = ((ImApp)((Activity) mContext).getApplication());
+                        BrandingResources brandingRes = app.getBrandingResource(providerId);
+                        statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
+                    }
                 }
                 
                 mHolder.mLine2.setText(statusText);

@@ -67,8 +67,6 @@ public class ImUrlActivity extends ThemeableActivity {
     
     private ImApp mApp;
     private IImConnection mConn;
-    private long mProviderId;
-    private long mAccountId;
     private IChatSessionManager mChatSessionManager;
     
     private String mSendUrl;
@@ -82,13 +80,14 @@ public class ImUrlActivity extends ThemeableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
-        
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
         if (!Imps.isUnlocked(this)) {
             onDBLocked();
         }
+        
+        initProviderCursor(null); //reinit the provider cursor
         
         doOnCreate();
     }
@@ -108,6 +107,7 @@ public class ImUrlActivity extends ThemeableActivity {
         
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
+        //look for active connections that match the host we need
         for (IImConnection conn : listConns)
         {            
    
@@ -116,10 +116,12 @@ public class ImUrlActivity extends ThemeableActivity {
                 long connProviderId = conn.getProviderId();
 
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                        cr, connProviderId, false /* don't keep updated */, null /* no handler */);
                 
                 try {
-                    if (mHost.contains(settings.getDomain()))
+                    String domainToCheck = settings.getDomain();
+                    
+                    if (domainToCheck != null && domainToCheck.length() > 0 && mHost.contains(domainToCheck))
                     {
                         mConn = conn;
                         providerId = connProviderId;
@@ -138,6 +140,7 @@ public class ImUrlActivity extends ThemeableActivity {
             
         }
 
+        //nothing active, let's see if non-active connections match
         if (mConn == null) {
             
             if (mProviderCursor == null || mProviderCursor.getCount() == 0) {                                
@@ -149,24 +152,31 @@ public class ImUrlActivity extends ThemeableActivity {
                 
                 while (mProviderCursor.moveToNext())
                 {                
+                    //make sure there is a stored password
                     if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
                             
                         long cProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
                         
                         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                                cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                                cr, cProviderId, false /* don't keep updated */, null /* no handler */);
                         
-                        if (mHost.contains(settings.getDomain()))
+                        //does the conference host we need, match the settings domain for a logged in account
+                        String domainToCheck = settings.getDomain(); 
+                        
+                        if (domainToCheck != null && domainToCheck.length() > 0 && mHost.contains(domainToCheck))
                         {
                             providerId = cProviderId;
                             accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-                            if (providerId != -1)            
-                                mConn = ((ImApp)getApplication()).getConnection(providerId);
+                            mConn = ((ImApp)getApplication()).getConnection(providerId);
                             
+                            //now sign in
                             signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
-                            return;
+                            settings.close();
+                            return; //do sign in, the rest of the process will happen later
+                           
                         }
+                        else
+                            settings.close();
                     }
                 }
                 
@@ -230,7 +240,8 @@ public class ImUrlActivity extends ThemeableActivity {
         }
         else
         {
-            finish();
+            createNewAccount();
+            return;
         }
     }
 
@@ -271,16 +282,11 @@ public class ImUrlActivity extends ThemeableActivity {
                 {
                     Toast.makeText(ImUrlActivity.this, R.string.signing_in_wait, Toast.LENGTH_LONG).show();
                 }
-                else if (state == ImConnection.DISCONNECTED)
-                {
-                    //finish();
-                }
+                
             }
         });
         
-        
-        
-        signInHelper.signIn(password, providerId, accountId, false);
+        signInHelper.signIn(password, providerId, accountId, true);
     }
 
     private void showContactList(long accountId) {
@@ -459,9 +465,13 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     void createNewAccount() {
+        
+        String username = getIntent().getData().getUserInfo();
+        String appCreateAcct = String.format(getString(R.string.allow_s_to_create_a_new_chat_account_for_s_),username);
+        
         new AlertDialog.Builder(this)            
-        .setTitle("Create account?")
-        .setMessage("You seem to not have an account for chat. Create one now?")
+        .setTitle(R.string.prompt_create_new_account_)
+        .setMessage(appCreateAcct)
         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
              
@@ -490,7 +500,7 @@ public class ImUrlActivity extends ThemeableActivity {
                 if (uriAccountData.getScheme().equals("immu"))
                 {
                     //need to generate proper IMA url for account setup
-                    String randomJid = ((int)(Math.random()*10000))+"";
+                    String randomJid = ((int)(Math.random()*1000))+"";
                     String regUser = mFromAddress + randomJid;
                     String regPass =  UUID.randomUUID().toString().substring(0,16);
                     String regDomain = mHost.replace("conference.", "");                
@@ -562,23 +572,22 @@ public class ImUrlActivity extends ThemeableActivity {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 sendOtrInBand(username);
-            }
-            else if (requestCode == REQUEST_SIGNIN_ACCOUNT)
-            {
-                //okay we have an account, signed in, now open the chat
-                doOnCreate();
-            }
-            else if (requestCode == REQUEST_CREATE_ACCOUNT)  
-            {
-                Toast.makeText(this, "Your account has been created. However, we must wait a few seconds before it is ready for you to login.", Toast.LENGTH_LONG).show();
                 
-                try { Thread.sleep(5000);}
-                catch (Exception e){};//wait 2 seconds while the account is provisioned
-                //okay we have an account, signed in, now open the chat
-                doOnCreate();
+            }
+            else if (requestCode == REQUEST_SIGNIN_ACCOUNT || requestCode == REQUEST_CREATE_ACCOUNT)
+            {
+                initProviderCursor(null); //reinit the provider cursor
+
+                mHandlerRouter.postDelayed(new Runnable()
+                {
+                    public void run ()
+                    {
+                        doOnCreate();
+                    }
+                }, 500);
+              
             }
             
-            finish();
         } else {
             finish();
         }
@@ -648,18 +657,20 @@ public class ImUrlActivity extends ThemeableActivity {
                 {
                     try {
                         mChatSessionManager = conn.getChatSessionManager();
-                        mProviderId = conn.getProviderId();
-                        mAccountId = conn.getAccountId();
+                        long mProviderId = conn.getProviderId();
+                        long mAccountId = conn.getAccountId();
+                   
+                        ContentUris.appendId(builder,  mProviderId);
+                        ContentUris.appendId(builder,  mAccountId);
+                        Uri data = builder.build();
+                
+                        Intent i = new Intent(Intent.ACTION_PICK, data);
+                        startActivityForResult(i, REQUEST_PICK_CONTACTS);
+                        break;
+                        
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    ContentUris.appendId(builder,  mProviderId);
-                    ContentUris.appendId(builder,  mAccountId);
-                    Uri data = builder.build();
-            
-                    Intent i = new Intent(Intent.ACTION_PICK, data);
-                    startActivityForResult(i, REQUEST_PICK_CONTACTS);
-                    break;
                 }
             }
             catch (RemoteException re){}

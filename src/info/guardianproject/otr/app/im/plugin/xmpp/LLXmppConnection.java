@@ -371,13 +371,32 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        mUser = new Contact(new XmppAddress(mServiceName), userName);
+        makeUser();//mUser = new Contact(new XmppAddress(mServiceName), userName);
 
         // Initiate Link-local message session
         mService.init();
 
         debug(TAG, "logged in");
         setState(LOGGED_IN, null);
+    }
+    
+    public void initUser(long providerId, long accountId)
+    {
+        mProviderId = providerId;
+        mAccountId = accountId;
+        mUser = makeUser();
+    }
+    
+    private Contact makeUser() {
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                contentResolver, mProviderId, false, null);
+        String userName = Imps.Account.getUserName(contentResolver, mAccountId);
+        String domain = providerSettings.getDomain();
+        String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    
+        providerSettings.close();
+        
+        return new Contact(new XmppAddress(xmppName), userName);
     }
 
     private InetAddress getMyAddress(final String serviceName, boolean doLock) {
@@ -555,12 +574,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
 
         ChatSession findSession(String address) {
-            for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
-                ChatSession session = iter.next();
-                if (session.getParticipant().getAddress().getAddress().equals(address))
-                    return session;
-            }
-            return null;
+            
+            return mSessions.get(Address.stripResource(address));
+            
+            
         }
     }
 

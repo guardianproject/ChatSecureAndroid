@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,11 +30,11 @@ public abstract class ChatSessionManager {
     private CopyOnWriteArrayList<ChatSessionListener> mListeners;
 
     /** Map session to the participant communicate with. */
-    protected Vector<ChatSession> mSessions;
+    protected Hashtable<String,ChatSession> mSessions;
 
     protected ChatSessionManager() {
         mListeners = new CopyOnWriteArrayList<ChatSessionListener>();
-        mSessions = new Vector<ChatSession>();
+        mSessions = new Hashtable<String,ChatSession>();
     }
 
     /**
@@ -64,22 +65,20 @@ public abstract class ChatSessionManager {
      * @return the created ChatSession.
      */
     public synchronized ChatSession createChatSession(ImEntity participant) {
-        for (ChatSession session : mSessions) {
-            
-            if (session.getParticipant().equals(participant)) {
-                return session;
+        
+        ChatSession session = mSessions.get(participant.getAddress().getBareAddress());
+
+        if (session == null)
+        {
+            session = new ChatSession(participant, this);
+            mSessions.put(participant.getAddress().getBareAddress(),session);
+    
+            for (ChatSessionListener listener : mListeners) {
+                listener.onChatSessionCreated(session);
             }
+
         }
         
-        
-
-        ChatSession session = new ChatSession(participant, this);
-        for (ChatSessionListener listener : mListeners) {
-            listener.onChatSessionCreated(session);
-        }
-
-        mSessions.add(session);
-
         return session;
     }
 
@@ -91,7 +90,7 @@ public abstract class ChatSessionManager {
      * @param session the ChatSession to close.
      */
     public void closeChatSession(ChatSession session) {
-        mSessions.remove(session);
+        mSessions.remove(session.getParticipant().getAddress().getBareAddress());
     }
 
     /**

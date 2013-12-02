@@ -115,7 +115,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             return;
         else
             connectToCacheWord ();
-        
      
     }
 
@@ -235,15 +234,23 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         }
             
         
-        if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
-            mDidAutoLaunch = true;
-            signInAll();
-            showAccounts();
-        } else if (countSignedIn >= 1) {
-            showActiveAccount();
-        } else {
-            showAccounts();
-        }/*
+        if (getIntent() != null && getIntent().getData() != null)
+        {
+            handleIntentAPILaunch();
+        }
+        else
+        {
+            if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
+                mDidAutoLaunch = true;
+                signInAll();
+                showAccounts();
+            } else if (countSignedIn >= 1) {
+                showActiveAccount();
+            } else {
+                showAccounts();
+            }
+        }
+            /*
         else
         {
             setContentView(R.layout.welcome_activity);
@@ -447,6 +454,15 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         finish();
     }
     
+    void handleIntentAPILaunch ()
+    {
+        Intent intent = new Intent(getBaseContext(), ImUrlActivity.class);
+        intent.setAction(getIntent().getAction());
+        intent.setData(getIntent().getData());
+        startActivity(intent);
+        finish();
+    }
+    
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
                 Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
@@ -521,8 +537,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     void showLockScreen() {
         Intent intent = new Intent(this, LockScreenActivity.class);
-    //    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Intent returnIntent = new Intent(this, WelcomeActivity.class);
+        Intent returnIntent = getIntent();
         returnIntent.putExtra("doSignIn", mDoSignIn);
         intent.putExtra("originalIntent", returnIntent);
         startActivity(intent);

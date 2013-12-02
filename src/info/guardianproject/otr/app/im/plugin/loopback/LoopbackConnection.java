@@ -12,6 +12,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
@@ -56,6 +57,17 @@ public class LoopbackConnection extends ImConnection {
         mContactListManager.doPresence(contacts_array);
     }
 
+    public void initUser(long providerId, long accountId)
+    {
+       
+        mUser = makeUser();
+    }
+    
+    private Contact makeUser() {
+       
+        return new Contact(new XmppAddress("test@foo"), "test");
+    }
+    
     @Override
     public int getCapability() {
         // TODO Auto-generated method stub

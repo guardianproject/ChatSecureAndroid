@@ -189,7 +189,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
 
     LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
-      
     
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -215,17 +214,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ServiceDiscoveryManager.setIdentityName("Gibberbot");
         ServiceDiscoveryManager.setIdentityType("phone");
-
+    }
+    
+    public void initUser(long providerId, long accountId)
+    {
+        mProviderId = providerId;
+        mAccountId = accountId;
         mUser = makeUser();
     }
-
-    Contact makeUser() {
+    
+    private Contact makeUser() {
         ContentResolver contentResolver = mContext.getContentResolver();
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
                 contentResolver, mProviderId, false, null);
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
-        String xmppName = userName + '@' + domain;// + '/' + providerSettings.getXmppResource();    
+        String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    
         providerSettings.close();
         
         return new Contact(new XmppAddress(xmppName), userName);
@@ -237,6 +241,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private boolean execute(Runnable runnable) {
+        
+        if (mExecutor == null)
+           createExecutor (); //if we disconnected, will need to recreate executor here, because join() made it null
+        
         try {
             mExecutor.execute(runnable);
         } catch (RejectedExecutionException ex) {
@@ -1511,17 +1519,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         ChatSession findSession(String address) {
             
-            String nAddress = Address.stripResource(address);
-            
-            for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
-                ChatSession session = iter.next();
-                
-                String tAddress = Address.stripResource(session.getParticipant().getAddress().getAddress());
-                
-                if (tAddress.equalsIgnoreCase(nAddress))
-                    return session;
-            }
-            return null;
+           
+            return mSessions.get(Address.stripResource(address));
+
         }
         
     }
@@ -2577,8 +2577,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (contact == null) {
             
         
-            debug(TAG, "got presence updated for NEW user: "
-                    + presence.getFrom());
+           // debug(TAG, "got presence updated for NEW user: "
+             //       + presence.getFrom());
             
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
@@ -2609,8 +2609,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         } else {
 
-            debug(TAG, "Got presence update for EXISTING user: "
-                    + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
+          //  debug(TAG, "Got presence update for EXISTING user: "
+          //          + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
           
         }
 

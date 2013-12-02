@@ -365,6 +365,24 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
     @Override
     public void onCacheWordUninitialized() {
+        
+        Intent intentOrig;
+        
+        if ((intentOrig = getIntent().getParcelableExtra("originalIntent"))!=null)
+        {
+            if (intentOrig.getData() != null)
+            {
+                if (intentOrig.getData().getScheme().equals("immu")||
+                intentOrig.getData().getScheme().equals("ima"))
+                {
+                
+                    initializeWithPassphrase();
+                    return;
+                }
+            }
+        }
+        
+        
         initializePassphrase();
         
     }

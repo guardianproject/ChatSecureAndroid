@@ -4,9 +4,11 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.service.RemoteImService;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -44,10 +46,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     
     private OtrKeyManager mOtrKeyManager;
 
-    private OtrChatManager(int otrPolicy, ImService context, OtrKeyManager otrKeyManager) throws Exception {
+    private OtrChatManager(int otrPolicy, RemoteImService imService, OtrKeyManager otrKeyManager) throws Exception {
         
         mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy),
-                context, otrKeyManager);
+                imService, otrKeyManager, imService);
 
         mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
         mOtrEngine.addOtrEngineListener(this);
@@ -55,26 +57,19 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mSessions = new Hashtable<String, SessionID>();
         mOtrSms = new Hashtable<SessionID, OtrSm>();
 
-        mContext = context;
+        mContext = imService;
         
         mOtrKeyManager = otrKeyManager;
     }
 
-    public static synchronized OtrChatManager getInstance(int otrPolicy, ImService context, OtrKeyManager otrKeyManager)
+    
+    public static synchronized OtrChatManager getInstance(int otrPolicy, RemoteImService imService, OtrKeyManager otrKeyManager)
             throws Exception {
         if (mInstance == null) {
-            mInstance = new OtrChatManager(otrPolicy, context,otrKeyManager);
+            mInstance = new OtrChatManager(otrPolicy, imService,otrKeyManager);
         }
 
         return mInstance;
-    }
-
-    public void addConnection(ImConnectionAdapter imConnectionAdapter) {
-        mOtrEngineHost.addConnection(imConnectionAdapter);
-    }
-
-    public void removeConnection(ImConnectionAdapter imConnectionAdapter) {
-        mOtrEngineHost.removeConnection(imConnectionAdapter);
     }
 
     public void addOtrEngineListener(OtrEngineListener oel) {
@@ -109,7 +104,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         SessionID sessionId = mSessions.get(sessionIdKey);
         if (sessionId == null ||
-                (!sessionId.getFullUserID().equals(remoteUserId) &&
+                (!sessionId.getRemoteUserId().equals(remoteUserId) &&
                         remoteUserId.contains("/"))) {
             // Remote has changed (either different presence, or from generic JID to specific presence),
             // or we didn't have a session yet.
@@ -162,6 +157,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     public SessionID startSession(String localUserId, String remoteUserId) {
         try {
             SessionID sessionId = getSessionId(localUserId, remoteUserId);
+            
             mOtrEngine.startSession(sessionId);
 
             return sessionId;
@@ -336,12 +332,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         dialog.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         dialog.putExtra("q", question);
-        dialog.putExtra("sid", sessionID.getUserID());
-        ImConnectionAdapter connection = mOtrEngineHost.findConnection(sessionID.getAccountID());
+        dialog.putExtra("sid", sessionID.getRemoteUserId());//yes "sid" = remoteUserId in this case - see SMPResponseActivity
+        ImConnectionAdapter connection = mOtrEngineHost.findConnection(sessionID);
         if (connection == null) {
-            OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.getAccountID());
+            OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.getSessionId());
             return;
         }
+        
         dialog.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, connection.getProviderId());
 
         mContext.getApplicationContext().startActivity(dialog);
