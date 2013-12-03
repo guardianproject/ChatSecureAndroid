@@ -1164,9 +1164,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         info.type = "application/octet-stream";
                     String offerId = UUID.randomUUID().toString();
                     session.offerData(offerId, info.path, info.type );
+                    ChatView cView = getCurrentChatView();
+                    int type = cView.isOtrSessionVerified() ? Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED : Imps.MessageType.OUTGOING_ENCRYPTED;
                     Imps.insertMessageInDb(
                             getContentResolver(), false, session.getId(), true, null, uri.toString(),
-                            System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
+                            System.currentTimeMillis(), type,
                             0, offerId, info.type);
                 }
             }
