@@ -25,6 +25,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -40,6 +41,7 @@ import java.util.UUID;
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -52,6 +54,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -96,7 +99,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 
 public class NewChatActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
@@ -518,7 +520,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 
                 if (localFingerprint != null)
                  {
-                    IntentIntegrator.shareText(this, localFingerprint);
+                    new IntentIntegrator(this).shareText(localFingerprint);
                     return;
                  }
                 
@@ -713,13 +715,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {                         
             if (mChatPager.getCurrentItem() > 0)
             {
+                
                 if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
                     
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_purple);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_green_dark);
                         
                 }
                 else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED)
@@ -747,7 +750,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_dark);
                 }
             }
             else
@@ -1400,15 +1403,30 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
                     String nickname = mCursor.getString(ChatView.NICKNAME_COLUMN);
                     int presence = mCursor.getInt(ChatView.PRESENCE_STATUS_COLUMN);
+                    int type = mCursor.getInt(ChatView.TYPE_COLUMN);
                     
                     BrandingResources brandingRes = mApp.getBrandingResource(mCursor.getInt(ChatView.PROVIDER_COLUMN));
 
-                    SpannableString s = new SpannableString("+ " + nickname);
-                    Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
-                    statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
-                            statusIcon.getIntrinsicHeight());
-                    s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+                    
+                    SpannableString s = null;
+                    
+                    Drawable statusIcon = null;
+                    
+                    if (Imps.Contacts.TYPE_GROUP == type)
+                    {
+                        s = new SpannableString(nickname);
+                    }
+                    else    
+                    {
+                        s = new SpannableString("+ " + nickname);
+                        statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
+                        statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
+                                statusIcon.getIntrinsicHeight());
+                        s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+ 
+                    }
+                    
+                   
                     return s;
                     
                 }
@@ -2072,33 +2090,77 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
+    private IImConnection mLastConnGroup = null;
+    
     public void startGroupChat (String room, String server, IImConnection conn)
     {
-        String roomAddress = room + '@' + server;
+        mLastConnGroup = conn;
         
-        try {
-            IChatSessionManager manager = conn.getChatSessionManager();
-            IChatSession session = manager.getChatSession(roomAddress);
-            if (session == null) {
-                session = manager.createMultiUserChatSession(roomAddress);
-                if (session != null)
-                {
-                    mRequestedChatId = session.getId(); 
-                } else {
-                    mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
-                }
-            } else {
-                long id = session.getId();
-                showChat(id);
-                //Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);                
-                //Intent i = new Intent(Intent.ACTION_VIEW, data);
-                //i.addCategory(ImApp.IMPS_CATEGORY);            
-                //startActivity(i);
+        new AsyncTask<String, Void, String>() {
+        
+            private ProgressDialog dialog;
+        
+            
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(NewChatActivity.this);
+                
+                dialog.setMessage(getString(R.string.connecting_to_group_chat_));
+                dialog.setCancelable(true);
+                dialog.show();
             }
             
-        } catch (RemoteException e) {
-           mHandler.showServiceErrorAlert(getString(R.string.unable_to_create_or_join_group_chat));
-        }
+            @Override
+            protected String doInBackground(String... params) {
+              
+                String roomAddress = (params[0] + '@' + params[1]).toLowerCase().replace(' ', '_');
+                
+                try {
+                    IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
+                    IChatSession session = manager.getChatSession(roomAddress);
+                    if (session == null) {
+                        session = manager.createMultiUserChatSession(roomAddress);
+                        if (session != null)
+                        {
+                            mRequestedChatId = session.getId(); 
+                            showChat(mRequestedChatId);
+                            
+                        } else {
+                            return getString(R.string.unable_to_create_or_join_group_chat);
+                            
+                        }
+                    } else {
+                        long id = session.getId();
+                        showChat(id);
+                    }
+                    
+                    return null;
+                    
+                } catch (RemoteException e) {
+                    return e.toString();
+                }
+                
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                
+                if (result != null)
+                {
+                    mHandler.showServiceErrorAlert(result);
+
+                }
+               
+               
+            }
+        }.execute(room, server);
+        
+       
        
     }
     
@@ -2221,7 +2283,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             public void run ()
             {
-                mApp.forceStopImService();
+                mApp.stopImServiceIfInactive();
                 
             }
         }, 2000l);

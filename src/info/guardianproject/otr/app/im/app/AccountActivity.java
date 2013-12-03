@@ -124,11 +124,17 @@ public class AccountActivity extends Activity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        //getWindow().requestFeature(Window.FEATURE_LEFT_ICON);
-        setContentView(R.layout.account_activity);
         Intent i = getIntent();
         
-        mIsNewAccount = getIntent().getBooleanExtra("register", false);
+        mApp = (ImApp)getApplication();
+
+        String action = i.getAction();
+
+        if (i.hasExtra("isSignedIn"))
+            isSignedIn = i.getBooleanExtra("isSignedIn", false);
+        
+
+        final ProviderDef provider;
         
         mSignInHelper = new SignInHelper(this);
         SignInHelper.SignInListener signInListener = new SignInHelper.SignInListener() {
@@ -142,56 +148,9 @@ public class AccountActivity extends Activity {
                 }
             }
         };
+        
         mSignInHelper.setSignInListener(signInListener);
-        mEditUserAccount = (EditText) findViewById(R.id.edtName);
-        mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                checkUserChanged();
-            }
-        });
-
-        mEditPass = (EditText) findViewById(R.id.edtPass);
         
-        mEditPassConfirm = (EditText) findViewById(R.id.edtPassConfirm);
-        mSpinnerDomains = (Spinner) findViewById(R.id.spinnerDomains);
-        
-        if (mIsNewAccount)
-        {
-            mEditPassConfirm.setVisibility(View.VISIBLE);
-            mSpinnerDomains.setVisibility(View.VISIBLE);
-            mEditUserAccount.setHint(R.string.account_setup_new_username);
-        }
-        
-        mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
-        mUseTor = (CheckBox) findViewById(R.id.useTor);
-       
-
-        mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
-        
-        if (mIsNewAccount)
-            mBtnSignIn.setText("Create Account");
-        
-        mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
-        mBtnDelete = (Button) findViewById(R.id.btnDelete);
-        
-        mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateWidgetState();
-            }
-        });
-
-        
-        mApp = (ImApp)getApplication();
-
-        String action = i.getAction();
-
-        if (i.hasExtra("isSignedIn"))
-            isSignedIn = i.getBooleanExtra("isSignedIn", false);
-        
-
-        final ProviderDef provider;
 
         ContentResolver cr = getContentResolver();
 
@@ -221,20 +180,33 @@ public class AccountActivity extends Activity {
                 accountId = cursor.getLong(0);
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
                 pass = cursor.getString(ACCOUNT_PASSWORD_COLUMN);
+                
+                setAccountKeepSignedIn(true);
+                mSignInHelper.activateAccount(mProviderId, accountId);
+                mSignInHelper.signIn(pass, mProviderId, accountId, true);
+                setResult(RESULT_OK);
+                cursor.close();
+                finish();
+                return;
+                
             } else {
                 mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
                 accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
-
-                createNewAccount(mUserName, pass);
+                mSignInHelper.activateAccount(mProviderId, accountId);
+                createNewAccount(mUserName, pass, accountId);
+                cursor.close();
+                return;
             }
-            cursor.close();
-            setAccountKeepSignedIn(true);
-            mSignInHelper.activateAccount(mProviderId, accountId);
-            mSignInHelper.signIn(pass, mProviderId, accountId, true);
-            setResult(RESULT_OK);
-            finish();
+           
+           
+        
+            
         } else if (Intent.ACTION_INSERT.equals(action)) {
+            
+
+            setupUIPre();
+            
             mOriginalUserAccount = "";
             // TODO once we implement multiple IM protocols
             mProviderId = ContentUris.parseId(uri);
@@ -252,6 +224,10 @@ public class AccountActivity extends Activity {
 
             
         } else if (Intent.ACTION_EDIT.equals(action)) {
+            
+
+            setupUIPre();
+            
             if ((uri == null) || !Imps.Account.CONTENT_ITEM_TYPE.equals(cr.getType(uri))) {
                 LogCleaner.warn(ImApp.LOG_TAG, "<AccountActivity>Bad data");
                 return;
@@ -302,6 +278,62 @@ public class AccountActivity extends Activity {
             return;
         }
 
+       setupUIPost();
+
+    }
+    
+    private void setupUIPre ()
+    {
+        setContentView(R.layout.account_activity);
+        
+        mIsNewAccount = getIntent().getBooleanExtra("register", false);
+        
+        
+        mEditUserAccount = (EditText) findViewById(R.id.edtName);
+        mEditUserAccount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                checkUserChanged();
+            }
+        });
+
+        mEditPass = (EditText) findViewById(R.id.edtPass);
+        
+        mEditPassConfirm = (EditText) findViewById(R.id.edtPassConfirm);
+        mSpinnerDomains = (Spinner) findViewById(R.id.spinnerDomains);
+        
+        if (mIsNewAccount)
+        {
+            mEditPassConfirm.setVisibility(View.VISIBLE);
+            mSpinnerDomains.setVisibility(View.VISIBLE);
+            mEditUserAccount.setHint(R.string.account_setup_new_username);
+        }
+        
+        mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
+        mUseTor = (CheckBox) findViewById(R.id.useTor);
+       
+
+        mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
+        
+        if (mIsNewAccount)
+            mBtnSignIn.setText("Create Account");
+        
+        mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
+        mBtnDelete = (Button) findViewById(R.id.btnDelete);
+        
+        mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateWidgetState();
+            }
+        });
+
+    }
+    
+    private void setupUIPost ()
+    {
+        Intent i = getIntent();
+        
         if (isSignedIn) {
             mBtnSignIn.setText(getString(R.string.menu_sign_out));
             mBtnSignIn.setBackgroundResource(R.drawable.btn_red);
@@ -389,7 +421,7 @@ public class AccountActivity extends Activity {
                 {
                     if (pass.equals(passConf))
                     {
-                        createNewAccount(mUserName, pass);
+                        createNewAccount(mUserName, pass, accountId);
                         setAccountKeepSignedIn(rememberPass);
                         mSignInHelper.activateAccount(mProviderId, accountId);
                         setResult(RESULT_OK);
@@ -470,7 +502,6 @@ public class AccountActivity extends Activity {
         {
             mUseTor.setVisibility(View.GONE);
         }
-
     }
 
     private Cursor openAccountByUsernameAndDomain(ContentResolver cr) {
@@ -647,7 +678,8 @@ public class AccountActivity extends Activity {
             settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         } 
-        else if (mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
+        //mEditPass can be NULL if this activity is used in "headless" mode for auto account setup
+        else if (mEditPass != null && mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
             //this is not @gmail but IS a google account
             settings.setDoDnsSrv(false);
@@ -1006,10 +1038,21 @@ public class AccountActivity extends Activity {
         return out.toString();
     }
 
-    public void createNewAccount (String usernameNew, String passwordNew)
+    public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId)
     {
         
         new AsyncTask<String, Void, String>() {
+            
+            private ProgressDialog dialog;
+            
+            
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(AccountActivity.this);
+                dialog.setCancelable(true);
+                dialog.setMessage(getString(R.string.registering_new_account_));
+                dialog.show();
+            }
             
             @Override
             protected String doInBackground(String... params) {
@@ -1021,6 +1064,7 @@ public class AccountActivity extends Activity {
                     settingsForDomain(mDomain, mPort, settings);
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
+                    xmppConn.initUser(mProviderId, newAccountId);
                     xmppConn.registerAccount(settings, params[0], params[1]);
                     // settings closed in registerAccount
                 } catch (Exception e) {
@@ -1039,14 +1083,18 @@ public class AccountActivity extends Activity {
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
                 
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                
                 if (result != null)
                 {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
                 }
-                else
-                {
-                    AccountActivity.this.finish();
-                }
+                
+                AccountActivity.this.setResult(RESULT_OK);
+                AccountActivity.this.finish();
+                
                
             }
         }.execute(usernameNew, passwordNew);

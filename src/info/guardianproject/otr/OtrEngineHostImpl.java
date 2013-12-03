@@ -1,27 +1,23 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
-import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSessionManager;
-import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
+import info.guardianproject.otr.app.im.service.RemoteImService;
 
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.List;
 
 import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManager;
-import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 
@@ -31,7 +27,6 @@ import net.java.otr4j.session.SessionID;
  */
 public class OtrEngineHostImpl implements OtrEngineHost {
 
-    private List<ImConnectionAdapter> mConnections;
     private OtrPolicy mPolicy;
 
     private OtrKeyManager mOtrKeyManager;
@@ -39,41 +34,20 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     private ImService mContext;
 
     private Hashtable<SessionID, String> mSessionResources;
-
-    public OtrEngineHostImpl(OtrPolicy policy, ImService context, OtrKeyManager otrKeyManager) throws IOException {
+    
+    private RemoteImService mImService;
+    
+    public OtrEngineHostImpl(OtrPolicy policy, ImService context, OtrKeyManager otrKeyManager, RemoteImService imService) throws IOException {
         mPolicy = policy;
         mContext = context;
 
         mSessionResources = new Hashtable<SessionID, String>();
 
         mOtrKeyManager = otrKeyManager;
+        
+        mImService = imService;
 
-        mOtrKeyManager.addListener(new OtrKeyManagerListener() {
-            public void verificationStatusChanged(SessionID session) {
-                String msg = session + ": verification status="
-                             + mOtrKeyManager.isVerified(session);
 
-                OtrDebugLogger.log(msg);
-            }
-
-            public void remoteVerifiedUs(SessionID session) {
-                String msg = session + ": remote verified us";
-
-                OtrDebugLogger.log(msg);
-                if (!isRemoteKeyVerified(session))
-                    showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
-            }
-        });
-
-        mConnections = new ArrayList<ImConnectionAdapter>();
-    }
-
-    public void addConnection(ImConnectionAdapter connection) {
-        mConnections.add(connection);
-    }
-
-    public void removeConnection(ImConnectionAdapter connection) {
-        mConnections.remove(connection);
     }
 
     public void putSessionResource(SessionID session, String resource) {
@@ -92,15 +66,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
             return to;
     }
 
-    public ImConnectionAdapter findConnection(String localAddress) {
-        for (ImConnectionAdapter connection : mConnections) {
-            Contact user = connection.getLoginUser();
-            if (user != null) {
-                if (user.getAddress().getAddress().equals(localAddress))
-                    return connection;
-            }
-        }
-        return null;
+    public ImConnectionAdapter findConnection(SessionID session) {
+        return mImService.getConnection(Address.stripResource(session.getLocalUserId()));
     }
 
     public OtrKeyManager getKeyManager() {
@@ -143,22 +110,37 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     }
 
     private void sendMessage(SessionID sessionID, String body) {
-        ImConnectionAdapter connection = findConnection(sessionID.getAccountID());
-        ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter) connection
-                .getChatSessionManager();
-        ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
-                .getChatSession(sessionID.getUserID());
-        ChatSessionManager chatSessionManager = chatSessionManagerAdapter.getChatSessionManager();
-
-        Message msg = new Message(body);
-        
-        msg.setFrom(connection.getLoginUser().getAddress());sessionID.getFullUserID();
-        final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
-        msg.setTo(appendSessionResource(sessionID, to));
-        msg.setDateTime(new Date());
-        msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
-        chatSessionManager.sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
-        
+        ImConnectionAdapter connection = findConnection(sessionID);
+        if (connection != null)
+        {
+            ChatSessionManagerAdapter chatSessionManagerAdapter = (ChatSessionManagerAdapter) connection
+                    .getChatSessionManager();
+            ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
+                    .getChatSession(Address.stripResource(sessionID.getRemoteUserId()));
+            
+            if (chatSessionAdapter != null)
+            {
+                
+                Message msg = new Message(body);
+                
+                msg.setFrom(connection.getLoginUser().getAddress());
+                final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
+                msg.setTo(appendSessionResource(sessionID, to));
+                msg.setDateTime(new Date());
+                msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
+                chatSessionManagerAdapter.getChatSessionManager().sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+            }
+            else
+            {
+                OtrDebugLogger.log(sessionID.toString() + ": could not find chatSession");
+                
+            }
+        }   
+        else
+        {
+            OtrDebugLogger.log(sessionID.toString() + ": could not find ImConnection");
+            
+        }
     }
 
     public void injectMessage(SessionID sessionID, String text) {
@@ -174,7 +156,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
-     
+       
     }
 
     

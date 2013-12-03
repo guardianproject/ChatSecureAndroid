@@ -31,13 +31,13 @@
         
          <item 
         android:title="@string/menu_otr_start"
-         android:icon="@drawable/ic_menu_unencrypted"
+         android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
         >
              <menu>
                     <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_start"
-         android:icon="@drawable/ic_menu_unencrypted"
+         android:icon="@drawable/ic_white_encrypted_and_verified"
           android:showAsAction="always"
         />
                  
@@ -50,18 +50,18 @@
         
          <item 
         android:title="@string/menu_otr_start"
-         android:icon="@drawable/ic_menu_encrypted"
+         android:icon="@drawable/ic_white_encrypted_not_verified"
           android:showAsAction="always"
         > <menu>
          <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_view_profile"
-        android:icon="@drawable/ic_menu_view_profile"
+        android:title="@string/menu_verify"
+        android:icon="@drawable/ic_white_encrypted_not_verified"
          android:showAsAction="always"
          />
     
         <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_stop"
-         android:icon="@drawable/ic_menu_unencrypted"
+         android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
         />
         
@@ -75,19 +75,19 @@
         
          <item 
         android:title="@string/menu_otr_stop"
-         android:icon="@drawable/ic_menu_verified"
+         android:icon="@drawable/ic_white_encrypted_and_verified"
           android:showAsAction="always"
         >
               <menu>
          <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
-        android:icon="@drawable/ic_menu_view_profile"
+        android:icon="@drawable/ic_white_encrypted_not_verified"
          android:showAsAction="always"
          />
     
         <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_stop"
-         android:icon="@drawable/ic_menu_unencrypted"
+         android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
         />
         

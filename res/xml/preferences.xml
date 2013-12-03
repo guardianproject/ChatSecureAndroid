@@ -100,12 +100,12 @@
           android:summary="@string/start_on_boot_summary"
           android:defaultValue="true" />
   
-  <!--  <CheckBoxPreference
+   <CheckBoxPreference
           android:key="pref_foreground_service"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
           android:defaultValue="true" />
-  -->
+  
 
   <EditTextPreference 
           android:key="pref_heartbeat_interval"

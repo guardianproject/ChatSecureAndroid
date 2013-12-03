@@ -273,7 +273,7 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_INVITATION = 2;
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
-    private static final long SHOW_TIME_STAMP_INTERVAL = 15 * 1000; // 15 seconds
+    private static final long SHOW_TIME_STAMP_INTERVAL = 60 * 1000; // 15 seconds
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
     private static final long SHOW_MEDIA_DELIVERY_INTERVAL = 120 * 1000; // 2 minutes
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
@@ -694,10 +694,9 @@ public class ChatView extends LinearLayout {
 
             try
             {
-                emojiManager.addJsonDefinitions("emoji/phantom.json", "emoji/phantom", "png");
-         
+               
                 emojiManager.addJsonPlugins();
-                
+               
             }
             catch (JsonSyntaxException jse)
             {
@@ -711,35 +710,42 @@ public class ChatView extends LinearLayout {
             {
                     Log.e(ImApp.LOG_TAG,"could not load emoji definition",fe);
             }      
+            
         }
         
         
         mEmojiPager = (ViewPager)this.findViewById(R.id.emojiPager);
-            
+        ImageView btnEmoji = (ImageView)findViewById(R.id.btnEmoji);
+        
         Collection<EmojiGroup> emojiGroups = emojiManager.getEmojiGroups();
         
-        EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
-      
-        mEmojiPager.setAdapter(emojiPagerAdapter);
-        
-        ImageView btnEmoji = (ImageView)findViewById(R.id.btnEmoji);
-        btnEmoji.setOnClickListener(new OnClickListener ()
+        if (emojiGroups.size() == 0)
         {
-
-            @Override
-            public void onClick(View v) {
-                 
-
-          //     mActionBox.setVisibility(View.GONE);
-                
-                if (mEmojiPager.getVisibility() == View.GONE)
-                    mEmojiPager.setVisibility(View.VISIBLE);
-                else
-                    mEmojiPager.setVisibility(View.GONE);
-            }
+            btnEmoji.setVisibility(View.GONE);
+        }
+        else
+        {
+            EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
+          
+            mEmojiPager.setAdapter(emojiPagerAdapter);
             
-        });
-
+            btnEmoji.setOnClickListener(new OnClickListener ()
+            {
+    
+                @Override
+                public void onClick(View v) {
+                     
+    
+              //     mActionBox.setVisibility(View.GONE);
+                    
+                    if (mEmojiPager.getVisibility() == View.GONE)
+                        mEmojiPager.setVisibility(View.VISIBLE);
+                    else
+                        mEmojiPager.setVisibility(View.GONE);
+                }
+                
+            });
+        }
            
         
     }
@@ -1851,6 +1857,7 @@ public class ChatView extends LinearLayout {
             // TODO Auto-generated method stub
             return 0;
         }
+
     }
 
     private class MessageAdapter extends CursorAdapter implements AbsListView.OnScrollListener {

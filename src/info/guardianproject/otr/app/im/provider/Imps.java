@@ -1906,7 +1906,6 @@ public class Imps {
                 super(contentResolver.query(CONTENT_URI,new String[] {NAME, VALUE},PROVIDER + "=?",new String[] { Long.toString(providerId)},
                         null), // no sort order
                         NAME, keepUpdated, handlerForUpdateNotifications);
-                
                
                 mContentResolver = contentResolver;
                 mProviderId = providerId;
@@ -2061,7 +2060,7 @@ public class Imps {
             }
 
             public boolean getUseForegroundPriority() {
-                return getBoolean(USE_FOREGROUND_PRIORITY, false /* default */);
+                return getBoolean(USE_FOREGROUND_PRIORITY, true /* default */);
             }
 
             /**

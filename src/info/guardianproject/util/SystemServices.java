@@ -113,19 +113,57 @@ public class SystemServices {
         }
         
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
         
-        int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-        
-        if (dataIdx != -1)
+        if (cursor != null)
         {
-            info.path = cursor.getString(dataIdx);
-            info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
-        
-        
-            return info;
+            cursor.moveToFirst();
+            
+            //need to check columns for different types
+            int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            if (dataIdx != -1) 
+            {
+                info.path = cursor.getString(dataIdx);
+                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
+            
+                return info;
+            }
+            
+            if (dataIdx == -1)
+                dataIdx = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
+            
+            if (dataIdx != -1)
+            {
+                info.path = cursor.getString(dataIdx);
+                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
+            
+                return info;
+            }
+            
+            if (dataIdx == -1)
+                dataIdx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            
+            if (dataIdx != -1)
+            {
+                info.path = cursor.getString(dataIdx);
+                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE));
+            
+                return info;
+            }
+            
+            if (dataIdx == -1)
+                dataIdx = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+            
+            if (dataIdx != -1)
+            {
+                info.path = cursor.getString(dataIdx);
+                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE));
+            
+                return info;
+            }
+            
+         
         }
-        else
-            return null;
+        
+        return null;
     }
 }

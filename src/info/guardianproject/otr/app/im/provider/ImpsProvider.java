@@ -1129,17 +1129,25 @@ public class ImpsProvider extends ContentProvider {
     public final int delete(final Uri url, final String selection, final String[] selectionArgs) {
         int result;
         SQLiteDatabase db = getDBHelper().getWritableDatabase();
-        db.beginTransaction();
-        try {
-            result = deleteInternal(url, selection, selectionArgs);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+        if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
+        {
+            db.beginTransaction();
+            try {
+                result = deleteInternal(url, selection, selectionArgs);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+            if (result > 0) {
+                getContext().getContentResolver()
+                        .notifyChange(url, null /* observer */, false /* sync */);
+            }
         }
-        if (result > 0) {
-            getContext().getContentResolver()
-                    .notifyChange(url, null /* observer */, false /* sync */);
+        else
+        {
+            result = -1;
         }
+        
         return result;
     }
 
