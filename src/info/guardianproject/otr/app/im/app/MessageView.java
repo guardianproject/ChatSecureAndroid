@@ -171,9 +171,14 @@ public class MessageView extends LinearLayout {
             }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
-            if( mimeType.startsWith("image/") ) {
+            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
+            else if (mimeType.startsWith("audio"))
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            }
+            
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             if (showContact)
@@ -264,7 +269,7 @@ public class MessageView extends LinearLayout {
      */
     protected void onClickMediaIcon(String mimeType, String body) {
         
-        if (mimeType.startsWith("audio"))
+        if (mimeType.startsWith("audio") || (body.endsWith("3gp")||body.endsWith("amr")))
         {
            
             if (mMediaPlayer != null)
@@ -405,8 +410,13 @@ public class MessageView extends LinearLayout {
             }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
-            if( mimeType.startsWith("image/") ) {
+            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+            }
+            else if (mimeType.startsWith("audio"))
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+                
             }
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
