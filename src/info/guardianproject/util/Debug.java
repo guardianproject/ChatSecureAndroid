@@ -48,6 +48,7 @@ public class Debug {
             return "#notrail";
         }
     }
+    
     public static void recordTrail(Context context, String key, String value) {
         File trail = new File(context.getFilesDir(), "trail.properties");
         Properties props = new Properties();
@@ -66,6 +67,19 @@ public class Debug {
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    public static String getTrail(Context context, String key) {
+        File trail = new File(context.getFilesDir(), "trail.properties");
+        Properties props = new Properties();
+        try {
+            FileReader reader = new FileReader(trail);
+            props.load(reader);
+            reader.close();
+            return props.getProperty(key);
+        } catch (IOException e) {
+            return null;
         }
     }
     

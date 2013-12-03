@@ -30,6 +30,7 @@ import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.sqlcipher.database.SQLiteConstraintException;
@@ -51,6 +52,8 @@ import android.text.TextUtils;
 
 /** A content provider for IM */
 public class ImpsProvider extends ContentProvider {
+    private static final String EMPTY_KEY_TRAIL_TAG = "empty_key";
+    private static final String DATABASE_OPEN_TRAIL_TAG = "database_open";
     private static final String LOG_TAG = "imProvider";
     private static final boolean DBG = false;
 
@@ -1077,7 +1080,9 @@ public class ImpsProvider extends ContentProvider {
                 mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
                 OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
                 LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
-                Debug.recordTrail(getContext(), "empty_key", "" + pkey.isEmpty());
+                
+                Debug.recordTrail(getContext(), EMPTY_KEY_TRAIL_TAG, "" + pkey.isEmpty());
+                Debug.recordTrail(getContext(), DATABASE_OPEN_TRAIL_TAG, new Date());
             } else {
                 LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
             }

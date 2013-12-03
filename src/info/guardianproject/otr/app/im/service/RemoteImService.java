@@ -75,6 +75,9 @@ import android.widget.Toast;
 
 public class RemoteImService extends Service implements OtrEngineListener, ImService {
 
+    private static final String SERVICE_DESTROY_TRAIL_TAG = "service_destroy";
+    private static final String PREV_SERVICE_CREATE_TRAIL_TAG = "prev_service_create";
+    private static final String SERVICE_CREATE_TRAIL_KEY = "service_create";
     private static final String[] ACCOUNT_PROJECTION = { Imps.Account._ID, Imps.Account.PROVIDER,
                                                         Imps.Account.USERNAME,
                                                         Imps.Account.PASSWORD, };
@@ -193,6 +196,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onCreate() {
         debug("ImService started");
+        Debug.recordTrail(this, PREV_SERVICE_CREATE_TRAIL_TAG, Debug.getTrail(this, SERVICE_CREATE_TRAIL_KEY));
+        Debug.recordTrail(this, SERVICE_CREATE_TRAIL_KEY, new Date());
         
         mConnections = new Hashtable<String, ImConnectionAdapter>();
         mHandler = new Handler();
@@ -425,6 +430,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public void onDestroy() {
+        Debug.recordTrail(this, SERVICE_DESTROY_TRAIL_TAG, new Date());
+        
         HeartbeatService.stopBeating(getApplicationContext());
         
         Log.w(TAG, "ImService stopped.");
