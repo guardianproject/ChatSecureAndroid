@@ -19,13 +19,11 @@ package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrChatListener;
-import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrChatSessionAdapter;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrDataHandler.Transfer;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IDataListener;
-import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
@@ -84,7 +82,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     /*package*/Uri mChatURI;
 
     private Uri mMessageURI;
-    private Uri mOtrMessageURI;
 
     private boolean mConvertingToGroupChat;
 
@@ -98,6 +95,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private DataHandler mDataHandler;
 
     private IDataListener mDataListener;
+
+    private long mContactId;
 
     public ChatSessionAdapter(ChatSession chatSession, ImConnectionAdapter connection) {
         
@@ -142,13 +141,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     private void init(ChatGroup group) {
         mIsGroupChat = true;
-        long groupId = insertGroupContactInDb(group);
+        mContactId = insertGroupContactInDb(group);
         group.addMemberListener(mListenerAdapter);
 
-        mMessageURI = Imps.Messages.getContentUriByThreadId(groupId);
-        mOtrMessageURI = Imps.Messages.getOtrMessagesContentUriByThreadId(groupId);
+        mMessageURI = Imps.Messages.getContentUriByThreadId(mContactId);
         
-        mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, groupId);
+        mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mContactId);
         insertOrUpdateChat(null);
 
         for (Contact c : group.getMembers()) {
@@ -160,12 +158,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mIsGroupChat = false;
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
-        long contactId = listManager.queryOrInsertContact(contact);
+        mContactId = listManager.queryOrInsertContact(contact);
 
-        mMessageURI = Imps.Messages.getContentUriByThreadId(contactId);
-        mOtrMessageURI = Imps.Messages.getOtrMessagesContentUriByThreadId(contactId);
+        mMessageURI = Imps.Messages.getContentUriByThreadId(mContactId);
 
-        mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, contactId);
+        mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mContactId);
         insertOrUpdateChat(null);
 
         mContactStatusMap.put(contact.getName(), contact.getPresence().getStatus());
@@ -288,7 +285,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
-    public void offerData(String url, String type) {
+    public void offerData(String offerId, String url, String type) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // TODO send later
             return;
@@ -300,7 +297,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             headers.put("Mime-Type", type);
         }
         
-        mDataHandler.offerData(mConnection.getLoginUser().getAddress(), url, headers);
+        mDataHandler.offerData(offerId, mConnection.getLoginUser().getAddress(), url, headers);
     }
 
     /**
@@ -535,37 +532,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {
-        
-        ContentValues values = new ContentValues(mIsGroupChat ? 4 : 3);
-        values.put(Imps.Messages.BODY, body);
-        values.put(Imps.Messages.DATE, time);
-        values.put(Imps.Messages.TYPE, type);
-        values.put(Imps.Messages.ERROR_CODE, errCode);
-        if (mIsGroupChat) {
-            values.put(Imps.Messages.NICKNAME, contact);
-            values.put(Imps.Messages.IS_GROUP_CHAT, 1);
-        }
-        values.put(Imps.Messages.IS_DELIVERED, 0);
-        values.put(Imps.Messages.PACKET_ID, id);
-
         boolean isEncrypted = true;
         try {
             isEncrypted = mOtrChatSession.isChatEncrypted();
         } catch (RemoteException e) {
             // Leave it as encrypted so it gets stored in memory
-            // TODO(miron)
+            // FIXME(miron)
         }
-        
-        return mContentResolver.insert(isEncrypted ? mOtrMessageURI : mMessageURI, values);
-    }
-
-    int updateConfirmInDb(String id, int value) {
-        Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
-        builder.appendPath(id);
-        
-        ContentValues values = new ContentValues(1);
-        values.put(Imps.Messages.IS_DELIVERED, value);
-        return mContentResolver.update(builder.build(), values, null, null);
+        return Imps.insertMessageInDb(mContentResolver, mIsGroupChat, mContactId, isEncrypted, contact, body, time, type, errCode, id, null);
     }
 
     int updateMessageInDb(String id, int type, long time) {
@@ -706,7 +680,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         @Override
         public void onIncomingReceipt(ChatSession ses, String id) {
-            updateConfirmInDb(id, 1);
+            Imps.updateConfirmInDb(mContentResolver, id, true);
 
             int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {

@@ -21,7 +21,15 @@ public interface DataHandler {
      */
     void onIncomingResponse(Address from, Address to, byte[] value);
 
-    void offerData(Address us, String localUri, Map<String, String> headers);
+    /**
+     * Offer data to peer
+     * 
+     * @param offerId offer ID
+     * @param us our Address
+     * @param localUri URI of data
+     * @param headers extra headrs or null
+     */
+    void offerData(String offerId, Address us, String localUri, Map<String, String> headers);
     
     void setDataListener(IDataListener dataListener);
 

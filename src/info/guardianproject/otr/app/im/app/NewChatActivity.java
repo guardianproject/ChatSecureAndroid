@@ -36,6 +36,7 @@ import info.guardianproject.util.SystemServices.FileInfo;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
@@ -70,9 +71,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -1156,8 +1155,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
 
     private void handleSend(Uri uri) {
-        
-        
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
@@ -1165,8 +1162,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 IChatSession session = getCurrentChatSession();
            
-                if (session != null)
-                    session.offerData( info.path, info.type );
+                if (session != null) {
+                    if (info.type == null)
+                        info.type = "application/octet-stream";
+                    String offerId = UUID.randomUUID().toString();
+                    session.offerData(offerId, info.path, info.type );
+                    Imps.insertMessageInDb(
+                            getContentResolver(), false, session.getId(), true, null, uri.toString(),
+                            System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
+                            0, offerId, info.type);
+                }
             }
             else
             {
