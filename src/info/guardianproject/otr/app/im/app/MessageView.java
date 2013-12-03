@@ -34,9 +34,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -49,6 +50,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -254,14 +256,40 @@ public class MessageView extends LinearLayout {
 
     }
     
+    private MediaPlayer mMediaPlayer = null;
+    
     /**
      * @param mimeType
      * @param body
      */
     protected void onClickMediaIcon(String mimeType, String body) {
+        
+        if (mimeType.startsWith("audio"))
+        {
+           
+            if (mMediaPlayer != null)
+                mMediaPlayer.release();
+            
+            try
+            {
+                mMediaPlayer = new  MediaPlayer();
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mMediaPlayer.setDataSource(body);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+                
+                return;
+            } catch (IOException e) {
+                Log.e(ImApp.LOG_TAG,"error playing audio",e);
+            }
+            
+            
+        }
+        
         Intent intent = new Intent(Intent.ACTION_VIEW);  
         intent.setDataAndType(Uri.parse( body ), mimeType);
         getContext().startActivity(intent);
+        
     }
 
 
