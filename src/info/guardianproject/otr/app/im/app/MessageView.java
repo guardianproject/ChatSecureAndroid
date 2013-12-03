@@ -342,7 +342,7 @@ public class MessageView extends LinearLayout {
         int id = cursor.getInt(columnIndex);
         cursor.close();
         
-        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MICRO_KIND, null );
+        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null );
         return bitmap;
     }    
     
@@ -384,17 +384,18 @@ public class MessageView extends LinearLayout {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             lastMessage = body;//formatMessage(body);
          
-         try {
-    //         mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
-             SpannableString spannablecontent=new SpannableString(lastMessage);
-
-             EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
-             
-             mHolder.mTextViewForMessages.setText(spannablecontent);
-         } catch (IOException e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-         }
+             try {
+        //         mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+                 SpannableString spannablecontent=new SpannableString(lastMessage);
+    
+                 EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
+                 
+                 mHolder.mTextViewForMessages.setText(spannablecontent);
+             } catch (IOException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+             }
+        }
          
         if (delivery == DeliveryState.DELIVERED) {
             mHolder.mDeliveryIcon.setVisibility(VISIBLE);

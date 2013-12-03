@@ -66,8 +66,8 @@
             />
         <ImageView
             android:id="@+id/media_thumbnail"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="196dp"
+            android:layout_height="196dp"
             android:layout_marginLeft="3dip"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_file"
