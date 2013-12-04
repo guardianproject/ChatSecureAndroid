@@ -75,6 +75,9 @@ import android.widget.Toast;
 
 public class RemoteImService extends Service implements OtrEngineListener, ImService {
 
+    private static final String PREV_CONNECTIONS_TRAIL_TAG = "prev_connections";
+    private static final String CONNECTIONS_TRAIL_TAG = "connections";
+    private static final String LAST_SWIPE_TRAIL_TAG = "last_swipe";
     private static final String SERVICE_DESTROY_TRAIL_TAG = "service_destroy";
     private static final String PREV_SERVICE_CREATE_TRAIL_TAG = "prev_service_create";
     private static final String SERVICE_CREATE_TRAIL_KEY = "service_create";
@@ -196,8 +199,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void onCreate() {
         debug("ImService started");
-        Debug.recordTrail(this, PREV_SERVICE_CREATE_TRAIL_TAG, Debug.getTrail(this, SERVICE_CREATE_TRAIL_KEY));
+        final String prev = Debug.getTrail(this, SERVICE_CREATE_TRAIL_KEY);
+        if (prev != null)
+            Debug.recordTrail(this, PREV_SERVICE_CREATE_TRAIL_TAG, prev);
         Debug.recordTrail(this, SERVICE_CREATE_TRAIL_KEY, new Date());
+        final String prevConnections = Debug.getTrail(this, CONNECTIONS_TRAIL_TAG);
+        if (prevConnections != null)
+            Debug.recordTrail(this, PREV_CONNECTIONS_TRAIL_TAG, prevConnections);
+        Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "0");
         
         mConnections = new Hashtable<String, ImConnectionAdapter>();
         mHandler = new Handler();
@@ -517,6 +526,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             providerSettings.close();
             
             mConnections.put(userName + '@' + domain,imConnectionAdapter);
+            Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "" + mConnections.size());
 
             initOtr();
 
@@ -755,7 +765,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
     
     public void onTaskRemoved(Intent rootIntent) {
-        Debug.recordTrail(this, "lastSwipe", new Date());
+        Debug.recordTrail(this, LAST_SWIPE_TRAIL_TAG, new Date());
         Intent intent = new Intent(this, DummyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

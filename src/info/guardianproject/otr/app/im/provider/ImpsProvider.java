@@ -52,6 +52,7 @@ import android.text.TextUtils;
 
 /** A content provider for IM */
 public class ImpsProvider extends ContentProvider {
+    private static final String PREV_DATABASE_OPEN_TRAIL_TAG = "prev_database_open";
     private static final String EMPTY_KEY_TRAIL_TAG = "empty_key";
     private static final String DATABASE_OPEN_TRAIL_TAG = "database_open";
     private static final String LOG_TAG = "imProvider";
@@ -1082,6 +1083,10 @@ public class ImpsProvider extends ContentProvider {
                 LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
                 
                 Debug.recordTrail(getContext(), EMPTY_KEY_TRAIL_TAG, "" + pkey.isEmpty());
+                String prevOpen = Debug.getTrail(getContext(), DATABASE_OPEN_TRAIL_TAG);
+                if (prevOpen != null) {
+                    Debug.recordTrail(getContext(), PREV_DATABASE_OPEN_TRAIL_TAG, prevOpen);
+                }
                 Debug.recordTrail(getContext(), DATABASE_OPEN_TRAIL_TAG, new Date());
             } else {
                 LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
