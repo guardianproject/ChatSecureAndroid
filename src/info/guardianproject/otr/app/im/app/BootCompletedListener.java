@@ -1,5 +1,7 @@
 package info.guardianproject.otr.app.im.app;
 
+import java.util.Date;
+
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.StatusBarNotifier;
 import info.guardianproject.util.Debug;
@@ -20,6 +22,7 @@ import android.util.Log;
  */
 public class BootCompletedListener extends BroadcastReceiver {
     
+    private static final String LAST_BOOT_TRAIL_TAG = "last_boot";
     public final static String BOOTFLAG = "BOOTFLAG";
     
     @Override
@@ -27,6 +30,7 @@ public class BootCompletedListener extends BroadcastReceiver {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         
+        Debug.recordTrail(context, LAST_BOOT_TRAIL_TAG, new Date());
         boolean prefStartOnBoot = prefs.getBoolean("pref_start_on_boot", true); 
         
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
