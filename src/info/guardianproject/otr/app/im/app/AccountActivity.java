@@ -1083,8 +1083,16 @@ public class AccountActivity extends Activity {
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
                 
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
+                try
+                {
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                        dialog = null;
+                    }
+                }
+                catch ( java.lang.IllegalArgumentException iae)
+                {
+                    //dialog may not be attached to window if Activity was closed
                 }
                 
                 if (result != null)
