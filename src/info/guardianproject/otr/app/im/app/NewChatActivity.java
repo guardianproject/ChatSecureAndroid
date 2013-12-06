@@ -25,7 +25,6 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -33,8 +32,10 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,6 +57,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -110,6 +112,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
     private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
     private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
+    private static final int REQUEST_TAKE_PICTURE = REQUEST_SEND_AUDIO + 1;
 
     private static final int ACCOUNT_LOADER_ID = 1000;
     private static final int CONTACT_LIST_LOADER_ID = 4444;
@@ -845,6 +848,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
             }
             return true;
+        case R.id.menu_take_picture:
+            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
+            {
+               startPhotoTaker();
+            }
+            else
+            {
+                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+            }
+            return true;
 
         case R.id.menu_send_file:
             
@@ -1034,6 +1047,21 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         startActivityForResult(intent, REQUEST_SEND_IMAGE);
     }
     
+    Uri mLastPhoto = null;
+    
+    void startPhotoTaker() {
+        
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photo = new File(Environment.getExternalStorageDirectory(),  new Date().getTime() + ".jpg");
+        mLastPhoto = Uri.fromFile(photo);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                mLastPhoto);
+        
+        // start the image capture Intent
+        startActivityForResult(intent, REQUEST_TAKE_PICTURE);
+    }
+    
     void startFilePicker() {
         Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
         selectFile.setType("file/*");
@@ -1083,6 +1111,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 }
                 handleSend(uri);
             }
+            else if (requestCode == REQUEST_TAKE_PICTURE)
+            {
+                getContentResolver().notifyChange(mLastPhoto, null);
+                handleSend(mLastPhoto);
+            }
+            
 /*            if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {
