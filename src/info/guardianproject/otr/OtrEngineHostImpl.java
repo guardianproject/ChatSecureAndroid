@@ -1,8 +1,8 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
+import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.engine.Address;
-import info.guardianproject.otr.app.im.engine.ChatSessionManager;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
@@ -20,6 +20,8 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
+import android.content.Intent;
+import android.widget.Toast;
 
 /*
  * OtrEngineHostImpl is the connects this app and the OtrEngine
@@ -152,11 +154,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
+        Toast.makeText(mContext.getApplicationContext(),"ERROR: " + error, Toast.LENGTH_LONG).show();
+        
     }
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
        
+        Toast.makeText(mContext.getApplicationContext(),"WARNING: " + warning, Toast.LENGTH_LONG).show();
     }
 
     

@@ -408,10 +408,6 @@ public class ActiveChatListView extends LinearLayout {
         return superState;
     }
 
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state); 
-    }
 
     protected void setAutoRefreshContacts(boolean isRefresh) {
         mAutoRefresh = isRefresh;
