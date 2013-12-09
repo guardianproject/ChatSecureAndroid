@@ -694,7 +694,7 @@ public class SessionImpl implements Session {
             return;
 
         if (!getSessionPolicy().getAllowV2())
-            throw new UnsupportedOperationException();
+            throw new OtrException("OTRv2 is not supported by this session");
 
         this.getAuthContext().startV2Auth();
     }
