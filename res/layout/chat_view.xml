@@ -79,18 +79,16 @@
     
 
     <ListView android:id="@+id/history"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"        
-        android:drawSelectorOnTop="false"
-        android:listSelector="@drawable/chat_history_selector"
-        android:stackFromBottom="true"
-        android:transcriptMode="normal"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:divider="@null"
-		android:dividerHeight="0dp"
-  		  	android:layout_margin="0dp"
+        android:layout_weight="1"                        
+        android:stackFromBottom="true"               
+  		android:layout_margin="0dp"
         android:padding="0dp"
+        android:divider="#00000000"
+        android:dividerHeight="0dp"
+        android:scrollingCache="true"
+        android:transcriptMode="normal"
          />
 
     <LinearLayout android:id="@+id/invitationPanel"
