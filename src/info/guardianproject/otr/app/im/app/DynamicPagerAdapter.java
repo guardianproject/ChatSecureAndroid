@@ -157,6 +157,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
         while (mFragments.size() <= position) {
             mFragments.add(null);
         }
+        
         fragment.setMenuVisibility(false);
         fragment.setUserVisibleHint(false);
         mFragments.set(position, fragment);

@@ -113,7 +113,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
     private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
     private static final int REQUEST_TAKE_PICTURE = REQUEST_SEND_AUDIO + 1;
-
+    private static final int REQUEST_SETTINGS = REQUEST_TAKE_PICTURE + 1;
+    
+    
     private static final int ACCOUNT_LOADER_ID = 1000;
     private static final int CONTACT_LIST_LOADER_ID = 4444;
     private static final int CHAT_LIST_LOADER_ID = 4445;
@@ -411,9 +413,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onClick(View v) {
-                Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
-                startActivity(sintent);
-                
+                Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);                
+                startActivityForResult(sintent,REQUEST_SETTINGS);
             }
             
         });
@@ -925,11 +926,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (mContactList != null)
             {
                 boolean gridState = mContactList.toggleGrid();
-                
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
                 settings.edit().putBoolean("showGrid", gridState).commit();
-                 
-                
+                finish();
+                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);                
+                startActivity(intent);
             }
             
             return true;
@@ -1115,6 +1116,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             {
                 getContentResolver().notifyChange(mLastPhoto, null);
                 handleSend(mLastPhoto);
+            }
+            else if (requestCode == REQUEST_SETTINGS)
+            {
+                finish();
+                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);                
+                startActivity(intent);
             }
             
 /*            if (requestCode == REQUEST_PICK_CONTACTS) {
@@ -1759,15 +1766,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
          public boolean toggleGrid ()
          {
              showGrid = !showGrid;
+             
           
-             
-             
-          // The reload fragment code here !
-             
-                 getFragmentManager().beginTransaction()
-                    .detach(this)
-                    .attach(this)
-                    .commit();
+          
+         //   getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+          //   getFragmentManager().beginTransaction().replace(getId(),this).commit();
                  
                  return showGrid;
              
@@ -1785,7 +1788,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                  mFilterView = (ContactListFilterView) inflater.inflate(
                          R.layout.contact_grid_filter_view, null);
              else
-              mFilterView = (ContactListFilterView) inflater.inflate(
+                 mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
               
              mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);

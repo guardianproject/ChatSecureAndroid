@@ -112,13 +112,13 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         else if (key.equals("pref_default_locale"))
         {
            ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
-           setResult(2);
+           setResult(RESULT_OK);
            
         }
         else if (key.equals("themeDark"))
         {
          
-            setResult(2);
+            setResult(RESULT_OK);
         }
         
         settings.close();
