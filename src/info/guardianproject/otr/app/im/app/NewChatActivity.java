@@ -1054,7 +1054,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photo = new File(Environment.getExternalStorageDirectory(),  new Date().getTime() + ".jpg");
+        File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),  "cs_" + new Date().getTime() + ".jpg");
         mLastPhoto = Uri.fromFile(photo);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 mLastPhoto);
