@@ -500,16 +500,17 @@ public class ChatView extends LinearLayout {
              if (arg1 instanceof MessageView)
              {
 
-                 // Gets a handle to the clipboard service.
-                 ClipboardManager clipboard = (ClipboardManager)
-                         mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-
-                 
                  String textToCopy = ((MessageView)arg1).getLastMessage();
                  
-                 ClipData clip = ClipData.newPlainText("chat",textToCopy);
-    
-                 clipboard.setPrimaryClip(clip);
+                 int sdk = android.os.Build.VERSION.SDK_INT;
+                 if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                     clipboard.setText(textToCopy); // 
+                 } else {
+                     android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE); 
+                     android.content.ClipData clip = android.content.ClipData.newPlainText("chat",textToCopy);
+                     clipboard.setPrimaryClip(clip); // 
+                 }
                  
                  Toast.makeText(mActivity, "message copied to the clipboard", Toast.LENGTH_SHORT).show();
                  
