@@ -120,6 +120,8 @@ public class AccountActivity extends Activity {
     private SignInHelper mSignInHelper;
 
     private boolean mIsNewAccount = false;
+
+    private AsyncTask<String, Void, String> mCreateAccountTask = null;
     
     @Override
     protected void onCreate(Bundle icicle) {
@@ -518,6 +520,11 @@ public class AccountActivity extends Activity {
     @Override
     protected void onDestroy() {
        
+        if (mCreateAccountTask != null && (!mCreateAccountTask.isCancelled()))
+        {
+            mCreateAccountTask.cancel(true);           
+        }
+        
         if (mSignInHelper != null)
             mSignInHelper.stop();
                 
@@ -1040,8 +1047,12 @@ public class AccountActivity extends Activity {
 
     public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId)
     {
+        if (mCreateAccountTask != null && (!mCreateAccountTask.isCancelled()))
+        {
+            mCreateAccountTask.cancel(true);           
+        }
         
-        new AsyncTask<String, Void, String>() {
+        mCreateAccountTask = new AsyncTask<String, Void, String>() {
             
             private ProgressDialog dialog;
             
