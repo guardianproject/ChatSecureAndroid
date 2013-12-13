@@ -2070,7 +2070,7 @@ public class ChatView extends LinearLayout {
     class DataAdapter extends IDataListener.Stub {
         
         @Override
-        public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String type, String filePath) {
+        public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
             File file = new File(filePath);
             
@@ -2078,16 +2078,17 @@ public class ChatView extends LinearLayout {
                 
                 Message msg = Message.obtain(mTransferHandler, 3);            
                 msg.getData().putString("path", file.getCanonicalPath());
-                msg.getData().putString("type", type);
+                msg.getData().putString("type", mimeType);
                 
                 if (outgoing) {
                     Imps.updateConfirmInDb(mActivity.getContentResolver(), offerId, true);
                 } else {
+                    int type = isOtrSessionVerified() ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
                     Imps.insertMessageInDb(getContext().getContentResolver(),
                             false, mLastChatId,
                             true, null,
-                            file.getCanonicalPath(), System.currentTimeMillis(), Imps.MessageType.INCOMING_ENCRYPTED,
-                            0, offerId, type);
+                            file.getCanonicalPath(), System.currentTimeMillis(), type,
+                            0, offerId, mimeType);
                 }
                 
                 mTransferHandler.sendMessage(msg);
