@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -453,4 +454,6 @@ public class ContactListFilterView extends LinearLayout {
         }
         
     }
+
+    
 }

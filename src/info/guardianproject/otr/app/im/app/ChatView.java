@@ -273,7 +273,7 @@ public class ChatView extends LinearLayout {
     private static final int VIEW_TYPE_INVITATION = 2;
     private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
-    private static final long SHOW_TIME_STAMP_INTERVAL = 60 * 1000; // 15 seconds
+    private static final long SHOW_TIME_STAMP_INTERVAL = 30 * 1000; // 15 seconds
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
     private static final long SHOW_MEDIA_DELIVERY_INTERVAL = 120 * 1000; // 2 minutes
     private static final long DEFAULT_QUERY_INTERVAL = 1000;
@@ -500,16 +500,17 @@ public class ChatView extends LinearLayout {
              if (arg1 instanceof MessageView)
              {
 
-                 // Gets a handle to the clipboard service.
-                 ClipboardManager clipboard = (ClipboardManager)
-                         mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-
-                 
                  String textToCopy = ((MessageView)arg1).getLastMessage();
                  
-                 ClipData clip = ClipData.newPlainText("chat",textToCopy);
-    
-                 clipboard.setPrimaryClip(clip);
+                 int sdk = android.os.Build.VERSION.SDK_INT;
+                 if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                     clipboard.setText(textToCopy); // 
+                 } else {
+                     android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE); 
+                     android.content.ClipData clip = android.content.ClipData.newPlainText("chat",textToCopy);
+                     clipboard.setPrimaryClip(clip); // 
+                 }
                  
                  Toast.makeText(mActivity, "message copied to the clipboard", Toast.LENGTH_SHORT).show();
                  
@@ -1913,15 +1914,47 @@ public class ChatView extends LinearLayout {
             }
         }
 
+
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return mInflater.inflate(R.layout.new_message_item, parent, false);
+        public int getItemViewType(int position) {
+         
+            Cursor c = getCursor();
+            c.moveToPosition(position);
+            int type = c.getInt(mTypeColumn);
+            boolean isLeft = (type == Imps.MessageType.INCOMING_ENCRYPTED)||(type == Imps.MessageType.INCOMING)||(type == Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED);
+
+            if (isLeft)
+                return 0;
+            else
+                return 1;
+                        
         }
 
         @Override
+        public int getViewTypeCount() { 
+            return 2;
+        }
+
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            
+            View result;
+            
+            int type = getItemViewType(cursor.getPosition());
+            
+            if (type == 0)
+                result     = mInflater.inflate(R.layout.message_view_left, null);
+            else
+                result     = mInflater.inflate(R.layout.message_view_right, null);  
+            
+            return result;
+        }
+        
+        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             MessageView messageView = (MessageView) view;
-
+            
             mType = cursor.getInt(mTypeColumn);
             
             String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
@@ -1929,7 +1962,7 @@ public class ChatView extends LinearLayout {
             int id = cursor.getInt(mIdColumn);
             String body = cursor.getString(mBodyColumn);
             long delta = cursor.getLong(mDeltaColumn);
-            boolean showTimeStamp = (delta > SHOW_TIME_STAMP_INTERVAL);
+            boolean showTimeStamp = true;//(delta > SHOW_TIME_STAMP_INTERVAL);
             long timestamp = cursor.getLong(mDateColumn);
             
             Date date = showTimeStamp ? new Date(timestamp) : null;

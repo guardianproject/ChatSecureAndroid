@@ -218,6 +218,8 @@ android:anyDensity="true"
 
         <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
             android:exported="false"
+           android:configChanges="orientation|keyboardHidden|screenSize"
+            
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -261,7 +263,8 @@ android:anyDensity="true"
         </activity>
         <activity android:name=".app.ContactListActivity"
             android:exported="false"
-            >
+             android:configChanges="orientation|keyboardHidden|screenSize"
+                       >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

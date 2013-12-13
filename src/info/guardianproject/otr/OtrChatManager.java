@@ -155,16 +155,22 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      * @param remoteUserId i.e. the account that this user is talking to
      */
     public SessionID startSession(String localUserId, String remoteUserId) {
+
+        SessionID sessionId = getSessionId(localUserId, remoteUserId);
+
         try {
-            SessionID sessionId = getSessionId(localUserId, remoteUserId);
             
             mOtrEngine.startSession(sessionId);
 
+            
+            
             return sessionId;
 
         } catch (OtrException e) {
             OtrDebugLogger.log("startSession", e);
-
+            
+            showError(sessionId,"Unable to start OTR session: " + e.getLocalizedMessage());
+            
         }
 
         return null;
@@ -312,6 +318,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     public void showError(SessionID sessionID, String error) {
         mOtrEngineHost.showError(sessionID, error);
 
+        
     }
 
     @Override

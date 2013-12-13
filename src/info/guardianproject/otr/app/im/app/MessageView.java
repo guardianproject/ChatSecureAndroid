@@ -34,9 +34,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -49,14 +50,18 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
+    
+    public final static int ICON_AUDIO_SIZE = 48;
+    
     public enum DeliveryState {
         NEUTRAL, DELIVERED, UNDELIVERED
     }
@@ -78,21 +83,23 @@ public class MessageView extends LinearLayout {
     class ViewHolder 
     {
 
-        View mMessageContainer = findViewById (R.id.message_container);
-              
         TextView mTextViewForMessages = (TextView) findViewById(R.id.message);
         TextView mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
-        ImageView mDeliveryIcon = (ImageView) findViewById(R.id.iconDelivery);
-        ImageView mAvatarLeft = (ImageView) findViewById(R.id.avatar_left);
-        ImageView mAvatarRight = (ImageView) findViewById(R.id.avatar_right);
-        ImageView mEncryptionIconLeft = (ImageView) findViewById(R.id.iconEncryptionLeft);
-        ImageView mEncryptionIconRight = (ImageView) findViewById(R.id.iconEncryptionRight);
-        View mStatusBlockLeft = findViewById(R.id.status_block_left);
-        View mStatusBlockRight = findViewById(R.id.status_block_right);
+        ImageView mAvatar = (ImageView) findViewById(R.id.avatar);              
+        View mStatusBlock = findViewById(R.id.status_block);        
         ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
+        ImageView mMediaDelivery = (ImageView) findViewById(R.id.message_delivered);
+        View mContainer = findViewById(R.id.message_container);
+        
         // save the media uri while the MediaScanner is creating the thumbnail
         // if the holder was reused, the pair is broken
         Uri mMediaUri = null;
+        
+        public ViewHolder ()
+        {
+            mAvatar.setVisibility(View.GONE);
+            mMediaDelivery.setVisibility(View.GONE);
+        }
         
         public void setOnClickListenerMediaThumbnail( final String mimeType, final String body ) {
             mMediaThumbnail.setOnClickListener( new OnClickListener() {
@@ -111,7 +118,8 @@ public class MessageView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
+        
+        /*
         mHolder = (ViewHolder)getTag();
         
         if (mHolder == null)
@@ -119,7 +127,7 @@ public class MessageView extends LinearLayout {
             mHolder = new ViewHolder();
             
             setTag(mHolder);
-        }
+        }*/
 
         mResources = getResources();
     }
@@ -137,14 +145,9 @@ public class MessageView extends LinearLayout {
     public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
-        mHolder = (ViewHolder)getTag();
-        
-        ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        setGravity(Gravity.LEFT);
-        setLayoutParams(lp);     
-        setPadding(3,0,100,3);
+        //mHolder = (ViewHolder)getTag();
+        mHolder = new ViewHolder();
 
-        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
         
         if (showContact && nickname != null)
         {
@@ -156,7 +159,7 @@ public class MessageView extends LinearLayout {
         else
         {
             lastMessage = formatMessage(body);
-        //showAvatar(address,true);
+            showAvatar(address,true);
         
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
@@ -169,9 +172,16 @@ public class MessageView extends LinearLayout {
             }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
-            if( mimeType.startsWith("image/") ) {
+            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
+            else if (mimeType.startsWith("audio"))
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+                mHolder.mMediaThumbnail.getLayoutParams().height = ICON_AUDIO_SIZE;
+                mHolder.mMediaThumbnail.getLayoutParams().width = ICON_AUDIO_SIZE;
+            }
+            
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             if (showContact)
@@ -204,9 +214,6 @@ public class MessageView extends LinearLayout {
             mHolder.mTextViewForMessages.setText(lastMessage);
         }
         
-        mHolder.mDeliveryIcon.setVisibility(GONE);
-        mHolder.mStatusBlockLeft.setVisibility(VISIBLE);
-        mHolder.mStatusBlockRight.setVisibility(GONE);
         
         if (date != null)
         {
@@ -228,24 +235,25 @@ public class MessageView extends LinearLayout {
 
         if (encryption == EncryptionState.NONE)
         {
-            mHolder.mEncryptionIconLeft.setVisibility(GONE);
-            mHolder.mEncryptionIconRight.setVisibility(GONE);
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_red_dark);
+            
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_orange_light);
-            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.lock16);
+            
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);
+            
+            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             
             
         }
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mEncryptionIconLeft.setVisibility(VISIBLE);
-            mHolder.mStatusBlockLeft.setBackgroundResource(R.color.holo_green_dark);
-            mHolder.mEncryptionIconLeft.setImageResource(R.drawable.lock16);
+            
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
+            
+            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
             
         }
         
@@ -254,14 +262,40 @@ public class MessageView extends LinearLayout {
 
     }
     
+    private MediaPlayer mMediaPlayer = null;
+    
     /**
      * @param mimeType
      * @param body
      */
     protected void onClickMediaIcon(String mimeType, String body) {
+        
+        if (mimeType.startsWith("audio") || (body.endsWith("3gp")||body.endsWith("amr")))
+        {
+           
+            if (mMediaPlayer != null)
+                mMediaPlayer.release();
+            
+            try
+            {
+                mMediaPlayer = new  MediaPlayer();
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mMediaPlayer.setDataSource(body);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+                
+                return;
+            } catch (IOException e) {
+                Log.e(ImApp.LOG_TAG,"error playing audio: " + body,e);
+            }
+            
+            
+        }
+        
         Intent intent = new Intent(Intent.ACTION_VIEW);  
         intent.setDataAndType(Uri.parse( body ), mimeType);
         getContext().startActivity(intent);
+        
     }
 
 
@@ -355,16 +389,7 @@ public class MessageView extends LinearLayout {
     public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
-        
-        
-        ListView.LayoutParams lp = new ListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-       // lp.setMargins(3,3,100,3);
-        setLayoutParams(lp);
-        setGravity(Gravity.RIGHT);
-
-        setPadding(100, 0, 3, 3);
-        
-      //  showAvatar(address,false);
+        mHolder = new ViewHolder();
         
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
@@ -377,15 +402,21 @@ public class MessageView extends LinearLayout {
             }
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             mHolder.mTextViewForMessages.setText(lastMessage);
-            if( mimeType.startsWith("image/") ) {
+            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+            }
+            else if (mimeType.startsWith("audio"))
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+                mHolder.mMediaThumbnail.setMaxHeight(48);
+                mHolder.mMediaThumbnail.setMaxWidth(48);
             }
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             lastMessage = body;//formatMessage(body);
          
              try {
-        //         mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+
                  SpannableString spannablecontent=new SpannableString(lastMessage);
     
                  EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
@@ -398,59 +429,61 @@ public class MessageView extends LinearLayout {
         }
          
         if (delivery == DeliveryState.DELIVERED) {
-            mHolder.mDeliveryIcon.setVisibility(VISIBLE);
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.check);
-
+            
+            mHolder.mMediaDelivery.setVisibility(View.VISIBLE);
+            mHolder.mMediaDelivery.setImageResource(R.drawable.check);
+            
+            
         } else if (delivery == DeliveryState.UNDELIVERED) {
-            mHolder.mDeliveryIcon.setImageResource(R.drawable.navigation_cancel);
-            mHolder.mDeliveryIcon.setVisibility(VISIBLE);
-        } else {
-            mHolder.mDeliveryIcon.setVisibility(GONE);
+
+            mHolder.mMediaDelivery.setVisibility(View.VISIBLE);
+            mHolder.mMediaDelivery.setImageResource(R.drawable.navigation_cancel);
+            
+        } 
+        else
+        {
+            mHolder.mMediaDelivery.setVisibility(View.GONE);
+            
         }
         
 
-        mHolder.mStatusBlockLeft.setVisibility(GONE);
-        mHolder.mStatusBlockRight.setVisibility(VISIBLE);
 
-        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
+        mHolder.mStatusBlock.setVisibility(VISIBLE);
+
+//        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
         
         if (encryption == EncryptionState.NONE)
         {
 
-            mHolder.mEncryptionIconLeft.setVisibility(GONE);
-            mHolder.mEncryptionIconRight.setVisibility(GONE);
-            
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_red_dark);
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
 
                
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_orange_light);
-            mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
-            mHolder.mEncryptionIconRight.setImageResource(R.drawable.lock16);
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);            
+     
+            
+            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
         }
         
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
-            mHolder.mStatusBlockRight.setBackgroundResource(R.color.holo_green_dark);
-            mHolder.mEncryptionIconRight.setVisibility(VISIBLE);
-            mHolder.mEncryptionIconRight.setImageResource(R.drawable.lock16);
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
+            
+            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
         }
 
         if (date != null)
         {
-            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date));
-            mHolder.mTextViewForTimestamp.setGravity(Gravity.CENTER);
-            mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
-            mHolder.mTextViewForTimestamp.setPadding(0,0,0,12);
+            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date));            
+            mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);            
 
         }
         else
         {
             mHolder.mTextViewForTimestamp.setText("");
-            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
-            mHolder.mTextViewForTimestamp.setPadding(0,0,0,0);
+            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);            
 
         }
         
@@ -461,8 +494,7 @@ public class MessageView extends LinearLayout {
     private void showAvatar (String address, boolean isLeft)
     {
 
-        mHolder.mAvatarLeft.setVisibility(View.GONE);
-        mHolder.mAvatarRight.setVisibility(View.GONE);
+        mHolder.mAvatar.setVisibility(View.GONE);        
         
         if (address != null)
         {
@@ -473,19 +505,13 @@ public class MessageView extends LinearLayout {
             {
                 if (isLeft)
                 {
-                    mHolder.mAvatarLeft.setVisibility(View.VISIBLE);
-                    mHolder.mAvatarLeft.setImageDrawable(avatar);
-                }
-                else
-                {
-                    mHolder.mAvatarRight.setVisibility(View.VISIBLE);
-                    mHolder.mAvatarRight.setImageDrawable(avatar);
+                    mHolder.mAvatar.setVisibility(View.VISIBLE);
+                    mHolder.mAvatar.setImageDrawable(avatar);
                 }
             }
             else
             {
-                mHolder.mAvatarLeft.setVisibility(View.GONE);
-                mHolder.mAvatarRight.setVisibility(View.GONE);
+                mHolder.mAvatar.setVisibility(View.GONE);
             }
                 
             
@@ -496,13 +522,13 @@ public class MessageView extends LinearLayout {
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mHolder.mTextViewForMessages.setText(message);
         mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
-        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+       // mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
     public void bindErrorMessage(int errCode) {
         mHolder.mTextViewForMessages.setText(R.string.msg_sent_failed);
         mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
-        mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        //mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
     }
 
    

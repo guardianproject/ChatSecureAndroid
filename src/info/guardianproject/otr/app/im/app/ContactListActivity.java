@@ -294,11 +294,12 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
         boolean isFiltering = savedInstanceState.getBoolean(FILTER_STATE_KEY);
         if (isFiltering) {
             showFilterView();
         }
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override

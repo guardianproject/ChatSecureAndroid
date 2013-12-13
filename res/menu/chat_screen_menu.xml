@@ -120,6 +120,13 @@
          android:icon="@drawable/content_new_picture"
         />
                
+                  <item android:id="@+id/menu_take_picture"
+        android:title="@string/menu_take_picture"
+         android:showAsAction="always"
+         
+         android:icon="@drawable/content_take_picture"
+        />
+               
                   <item android:id="@+id/menu_send_audio"
         android:title="@string/menu_send_audio"
          android:showAsAction="always"
