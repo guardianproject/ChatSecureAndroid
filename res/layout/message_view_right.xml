@@ -88,10 +88,10 @@
                   
         <ImageView
             android:id="@+id/media_thumbnail"
-            android:layout_width="128dp"
-            android:layout_height="96dp"
-            android:layout_marginLeft="3dip"
-            android:scaleType="fitCenter"
+            android:layout_width="196dp"
+            android:layout_height="128dp"
+			android:layout_margin="0dp"            
+			android:scaleType="fitCenter"
             android:src="@drawable/ic_file"
             android:visibility="gone"            
             android:layout_below="@+id/messagets"

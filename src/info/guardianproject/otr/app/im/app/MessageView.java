@@ -43,6 +43,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -62,6 +63,9 @@ public class MessageView extends LinearLayout {
     
     public final static int ICON_AUDIO_SIZE = 48;
     
+    private static int sCacheSize = 4 * 1024 * 1024; // 4MiB
+    private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
+            
     public enum DeliveryState {
         NEUTRAL, DELIVERED, UNDELIVERED
     }
@@ -148,6 +152,7 @@ public class MessageView extends LinearLayout {
         //mHolder = (ViewHolder)getTag();
         mHolder = new ViewHolder();
 
+        mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         
         if (showContact && nickname != null)
         {
@@ -170,8 +175,9 @@ public class MessageView extends LinearLayout {
             if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
             }
-            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
+            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
             mHolder.mTextViewForMessages.setText(lastMessage);
+            mHolder.mTextViewForMessages.setVisibility(View.GONE);
             if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
@@ -345,11 +351,20 @@ public class MessageView extends LinearLayout {
             
             @Override
             protected Bitmap doInBackground(String... params) {
-                return getThumbnail( contentResolver, uri );
+                
+                Bitmap result = mBitmapCache.get(uri.toString());
+                
+                if (result == null)                
+                    return getThumbnail( contentResolver, uri );
+                else
+                    return result;
             }
 
             @Override
             protected void onPostExecute(Bitmap result) {
+                
+                mBitmapCache.put(uri.toString(), result);
+                
                 // confirm the holder is still paired to this uri
                 if( ! uri.equals( aHolder.mMediaUri ) ) {
                     return ;
@@ -390,7 +405,7 @@ public class MessageView extends LinearLayout {
             DeliveryState delivery, EncryptionState encryption) {
         
         mHolder = new ViewHolder();
-        
+        mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
             mHolder.setOnClickListenerMediaThumbnail(mimeType, body);     
@@ -400,8 +415,10 @@ public class MessageView extends LinearLayout {
             if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
             }
-            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
+            
             mHolder.mTextViewForMessages.setText(lastMessage);
+            mHolder.mTextViewForMessages.setVisibility(View.GONE);
+            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);            
             if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
                 setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
@@ -411,6 +428,7 @@ public class MessageView extends LinearLayout {
                 mHolder.mMediaThumbnail.setMaxHeight(48);
                 mHolder.mMediaThumbnail.setMaxWidth(48);
             }
+            
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             lastMessage = body;//formatMessage(body);
