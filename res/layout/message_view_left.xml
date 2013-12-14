@@ -78,6 +78,7 @@
                      />
                 </LinearLayout>
                 
+<!-- 
                   <ImageView
             android:id="@+id/message_delivered"
             android:layout_width="16dp"
@@ -86,6 +87,7 @@
             android:visibility="gone"            
             android:layout_toRightOf="@+id/messagets"            
              />
+              -->
              
                   <TextView
                 android:id="@+id/messagets"

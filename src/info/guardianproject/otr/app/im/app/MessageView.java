@@ -97,12 +97,6 @@ public class MessageView extends LinearLayout {
         // if the holder was reused, the pair is broken
         Uri mMediaUri = null;
         
-        public ViewHolder ()
-        {
-            mAvatar.setVisibility(View.GONE);
-            mMediaDelivery.setVisibility(View.GONE);
-        }
-        
         public void setOnClickListenerMediaThumbnail( final String mimeType, final String body ) {
             mMediaThumbnail.setOnClickListener( new OnClickListener() {
                 @Override

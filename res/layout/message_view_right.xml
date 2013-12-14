@@ -61,18 +61,9 @@
                      />
              </LinearLayout>
              
-                <ImageView
-            android:id="@+id/message_delivered"
-            android:layout_width="16dp"
-            android:layout_height="16dp"            
-            android:scaleType="fitCenter"
-            android:visibility="gone"            
-            android:layout_toLeftOf="@+id/messagets"
-                        
-             />
                   <TextView
                 android:id="@+id/messagets"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
             	android:layout_below="@+id/messagebox"
@@ -80,9 +71,20 @@
                 android:layout_gravity="right"
                     android:gravity="right"
                     android:layout_marginBottom="3dp"
+                    android:layout_alignParentRight="true"
+                    
                 />
                   
                      
+                <ImageView
+            android:id="@+id/message_delivered"
+            android:layout_width="12dp"
+            android:layout_height="12dp"            
+            android:scaleType="fitCenter"     
+            android:layout_below="@+id/messagebox"  
+            android:layout_toLeftOf="@+id/messagets"
+            android:layout_gravity="bottom"      
+             />
                   
              
                   
