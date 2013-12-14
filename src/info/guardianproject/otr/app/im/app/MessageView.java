@@ -63,7 +63,7 @@ public class MessageView extends LinearLayout {
     
     public final static int ICON_AUDIO_SIZE = 48;
     
-    private static int sCacheSize = 4 * 1024 * 1024; // 4MiB
+    private static int sCacheSize = 512; // 4MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
             
     public enum DeliveryState {
