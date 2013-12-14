@@ -61,8 +61,6 @@ import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
     
-    public final static int ICON_AUDIO_SIZE = 48;
-    
     private static int sCacheSize = 512; // 4MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
             
@@ -184,8 +182,6 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
-                mHolder.mMediaThumbnail.getLayoutParams().height = ICON_AUDIO_SIZE;
-                mHolder.mMediaThumbnail.getLayoutParams().width = ICON_AUDIO_SIZE;
             }
             
         } else {
@@ -425,8 +421,6 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
-                mHolder.mMediaThumbnail.setMaxHeight(48);
-                mHolder.mMediaThumbnail.setMaxWidth(48);
             }
             
         } else {
