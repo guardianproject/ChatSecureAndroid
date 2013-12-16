@@ -97,7 +97,7 @@ public class SystemServices {
     public static class FileInfo {
         public String path;
         public String type;
-    };
+    }
     
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
@@ -114,7 +114,7 @@ public class SystemServices {
         
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
         
-        if (cursor != null)
+        if (cursor != null && cursor.getCount() > 0)
         {
             cursor.moveToFirst();
             
@@ -125,45 +125,42 @@ public class SystemServices {
                 info.path = cursor.getString(dataIdx);
                 info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
             
-                return info;
             }
-            
-            if (dataIdx == -1)
+            else
+            {
                 dataIdx = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
             
-            if (dataIdx != -1)
-            {
-                info.path = cursor.getString(dataIdx);
-                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
+                if (dataIdx != -1)
+                {
+                    info.path = cursor.getString(dataIdx);
+                    info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
+                }
+                else
+                {
+                    dataIdx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             
-                return info;
+                    if (dataIdx != -1)
+                    {
+                        info.path = cursor.getString(dataIdx);
+                        info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE));
+                    }
+                    else
+                    {
+                        dataIdx = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                
+                        if (dataIdx != -1)
+                        {
+                            info.path = cursor.getString(dataIdx);
+                            info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE));
+                          
+                        }
+                    }
+                }
+                
+                cursor.close();
             }
-            
-            if (dataIdx == -1)
-                dataIdx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-            
-            if (dataIdx != -1)
-            {
-                info.path = cursor.getString(dataIdx);
-                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.MIME_TYPE));
-            
-                return info;
-            }
-            
-            if (dataIdx == -1)
-                dataIdx = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
-            
-            if (dataIdx != -1)
-            {
-                info.path = cursor.getString(dataIdx);
-                info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE));
-            
-                return info;
-            }
-            
-         
         }
         
-        return null;
+        return info;
     }
 }
