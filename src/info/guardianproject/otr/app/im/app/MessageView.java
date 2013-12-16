@@ -61,7 +61,7 @@ import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
     
-    private static int sCacheSize = 512; // 4MiB
+    private static int sCacheSize = 512; // 1MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
             
     public enum DeliveryState {
@@ -115,7 +115,7 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         
-        /*
+        
         mHolder = (ViewHolder)getTag();
         
         if (mHolder == null)
@@ -123,7 +123,7 @@ public class MessageView extends LinearLayout {
             mHolder = new ViewHolder();
             
             setTag(mHolder);
-        }*/
+        }
 
         mResources = getResources();
     }
@@ -141,8 +141,7 @@ public class MessageView extends LinearLayout {
     public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
-        //mHolder = (ViewHolder)getTag();
-        mHolder = new ViewHolder();
+        mHolder = (ViewHolder)getTag();
 
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         
@@ -164,9 +163,7 @@ public class MessageView extends LinearLayout {
             lastMessage = "";
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
-            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-            }
+            
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
             mHolder.mTextViewForMessages.setText(lastMessage);
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
@@ -176,6 +173,11 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            }
+            else
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+                
             }
             
         } else {
@@ -394,7 +396,8 @@ public class MessageView extends LinearLayout {
     public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
-        mHolder = new ViewHolder();
+        mHolder = (ViewHolder)getTag();
+
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
@@ -402,9 +405,6 @@ public class MessageView extends LinearLayout {
             lastMessage = "";
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
-            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-            }
             
             mHolder.mTextViewForMessages.setText(lastMessage);
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
@@ -415,6 +415,11 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            }
+            else
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+                
             }
             
         } else {
