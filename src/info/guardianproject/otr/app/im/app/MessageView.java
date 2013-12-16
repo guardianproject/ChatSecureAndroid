@@ -80,7 +80,6 @@ public class MessageView extends LinearLayout {
     }
 
     private ViewHolder mHolder = null;
-    private Resources mResources = null;
     
     class ViewHolder 
     {
@@ -125,7 +124,6 @@ public class MessageView extends LinearLayout {
             setTag(mHolder);
         }
 
-        mResources = getResources();
     }
     
 
@@ -530,16 +528,22 @@ public class MessageView extends LinearLayout {
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
+        
+        mHolder = (ViewHolder)getTag();
+
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mHolder.mTextViewForMessages.setText(message);
-        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
-       // mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.chat_msg_presence));
+
     }
 
     public void bindErrorMessage(int errCode) {
+        
+        mHolder = (ViewHolder)getTag();
+
         mHolder.mTextViewForMessages.setText(R.string.msg_sent_failed);
-        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
-        //mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.error));
+
     }
 
    
@@ -553,7 +557,7 @@ public class MessageView extends LinearLayout {
         int len = spanText.length();
         spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new ForegroundColorSpan(mResources.getColor(android.R.color.darker_gray)),
+        spanText.setSpan(new ForegroundColorSpan(android.R.color.darker_gray),
                 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       
         return spanText;
@@ -562,22 +566,25 @@ public class MessageView extends LinearLayout {
     private CharSequence formatPresenceUpdates(String contact, int type, boolean isGroupChat,
             boolean scrolling) {
         String body;
+        
+        Resources resources =getResources();
+        
         switch (type) {
         case Imps.MessageType.PRESENCE_AVAILABLE:
-            body = mResources.getString(isGroupChat ? R.string.contact_joined
+            body = resources.getString(isGroupChat ? R.string.contact_joined
                                                    : R.string.contact_online, contact);
             break;
 
         case Imps.MessageType.PRESENCE_AWAY:
-            body = mResources.getString(R.string.contact_away, contact);
+            body = resources.getString(R.string.contact_away, contact);
             break;
 
         case Imps.MessageType.PRESENCE_DND:
-            body = mResources.getString(R.string.contact_busy, contact);
+            body = resources.getString(R.string.contact_busy, contact);
             break;
 
         case Imps.MessageType.PRESENCE_UNAVAILABLE:
-            body = mResources.getString(isGroupChat ? R.string.contact_left
+            body = resources.getString(isGroupChat ? R.string.contact_left
                                                    : R.string.contact_offline, contact);
             break;
 
