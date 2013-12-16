@@ -28,14 +28,13 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import net.java.otr4j.session.SessionStatus;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -53,7 +52,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ImUrlActivity extends ThemeableActivity {
+public class ImUrlActivity extends Activity {
     
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
@@ -65,7 +64,6 @@ public class ImUrlActivity extends ThemeableActivity {
     private String mFromAddress;
     private String mHost;
     
-    private ImApp mApp;
     private IImConnection mConn;
     private IChatSessionManager mChatSessionManager;
     
@@ -73,23 +71,27 @@ public class ImUrlActivity extends ThemeableActivity {
     private String mSendType;
     private String mSendText;
     
-
-    private Cursor mProviderCursor;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
-        mApp = (ImApp)getApplication();
-        mApp.maybeInit(this);
-
-        if (!Imps.isUnlocked(this)) {
-            onDBLocked();
-        }
-        
-        initProviderCursor(null); //reinit the provider cursor
-        
         doOnCreate();
+    }
+
+    
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        
+        setIntent(intent);
     }
 
     public void onDBLocked() {
@@ -143,19 +145,21 @@ public class ImUrlActivity extends ThemeableActivity {
         //nothing active, let's see if non-active connections match
         if (mConn == null) {
             
-            if (mProviderCursor == null || mProviderCursor.getCount() == 0) {                                
+            Cursor cursorProvider = initProviderCursor();
+            
+            if (cursorProvider == null || cursorProvider.getCount() == 0) {                                
 
                 createNewAccount();
                 return;
             } else {
                 
                 
-                while (mProviderCursor.moveToNext())
+                while (cursorProvider.moveToNext())
                 {                
                     //make sure there is a stored password
-                    if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
+                    if (!cursorProvider.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
                             
-                        long cProviderId = mProviderCursor.getLong(PROVIDER_ID_COLUMN);
+                        long cProviderId = cursorProvider.getLong(PROVIDER_ID_COLUMN);
                         
                         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                                 cr, cProviderId, false /* don't keep updated */, null /* no handler */);
@@ -166,19 +170,23 @@ public class ImUrlActivity extends ThemeableActivity {
                         if (domainToCheck != null && domainToCheck.length() > 0 && mHost.contains(domainToCheck))
                         {
                             providerId = cProviderId;
-                            accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                            accountId = cursorProvider.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                             mConn = ((ImApp)getApplication()).getConnection(providerId);
                             
                             //now sign in
-                            signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
-                            settings.close();
-                            return; //do sign in, the rest of the process will happen later
+                            signInAccount(accountId, providerId, cursorProvider.getString(ACTIVE_ACCOUNT_PW_COLUMN));
+                            
+                            break; //do sign in, the rest of the process will happen later
                            
                         }
-                        else
-                            settings.close();
+                        
+                        settings.close();
+                        cursorProvider.close();
+                        
                     }
                 }
+                
+                
                 
                 
             }
@@ -194,13 +202,13 @@ public class ImUrlActivity extends ThemeableActivity {
                 
                 if (state < ImConnection.LOGGED_IN) {                
                     
-                    initProviderCursor(null); //reinit the provider cursor
+                    Cursor cursorProvider = initProviderCursor();
                     
-                    while(mProviderCursor.moveToNext())
+                    while(cursorProvider.moveToNext())
                     {
-                        if (mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN) == accountId)
+                        if (cursorProvider.getLong(ACTIVE_ACCOUNT_ID_COLUMN) == accountId)
                         {
-                            signInAccount(accountId, providerId, mProviderCursor.getString(ACTIVE_ACCOUNT_PW_COLUMN));
+                            signInAccount(accountId, providerId, cursorProvider.getString(ACTIVE_ACCOUNT_PW_COLUMN));
 
                             try {
                                 Thread.sleep (500);
@@ -212,6 +220,8 @@ public class ImUrlActivity extends ThemeableActivity {
                             break;
                         }
                     }
+                    
+                    cursorProvider.close();
                 } 
                 
                 if (state == ImConnection.LOGGED_IN || state == ImConnection.SUSPENDED) {
@@ -524,7 +534,7 @@ public class ImUrlActivity extends ThemeableActivity {
         
         String[] proj = { MediaColumns.DATA };
         
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         String path = cursor.getString(column_index);
@@ -554,9 +564,9 @@ public class ImUrlActivity extends ThemeableActivity {
                 localUrl = localUrl.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, "");
        
           
-            FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, Uri.parse(localUrl));
+            FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, data);
             
-            if (info != null)
+            if (info != null && info.path != null)
             {
                 mSendUrl = info.path;
                 mSendType = type != null ? type : info.type;
@@ -572,12 +582,10 @@ public class ImUrlActivity extends ThemeableActivity {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 sendOtrInBand(username);
-                
+                finish();
             }
             else if (requestCode == REQUEST_SIGNIN_ACCOUNT || requestCode == REQUEST_CREATE_ACCOUNT)
             {
-                initProviderCursor(null); //reinit the provider cursor
-
                 mHandlerRouter.postDelayed(new Runnable()
                 {
                     public void run ()
@@ -614,6 +622,8 @@ public class ImUrlActivity extends ThemeableActivity {
                         if (mSendUrl != null) {
                             String offerId = UUID.randomUUID().toString();
                             session.offerData(offerId, mSendUrl, mSendType );
+                            
+                            
                             Imps.insertMessageInDb(
                                     getContentResolver(), false, session.getId(), true, null, mSendUrl.toString(),
                                     System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
@@ -621,6 +631,8 @@ public class ImUrlActivity extends ThemeableActivity {
                         }
                         else if (mSendText != null)
                             session.sendMessage(mSendText);
+                        
+                        
                         
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
@@ -632,6 +644,7 @@ public class ImUrlActivity extends ThemeableActivity {
         {
             e.printStackTrace();
         }
+        
     }
     
     private IChatSession getChatSession(String username) {
@@ -652,7 +665,8 @@ public class ImUrlActivity extends ThemeableActivity {
     }
 
     private void startContactPicker() {
-        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
+        
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();   
         List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
         for (IImConnection conn : listConns)
@@ -732,7 +746,7 @@ public class ImUrlActivity extends ThemeableActivity {
                 return;
             }
             
-            mApp = (ImApp)getApplication();
+            ImApp mApp = (ImApp)getApplication();
             
             if (mApp.serviceConnected())
                 handleIntent();
@@ -752,13 +766,13 @@ public class ImUrlActivity extends ThemeableActivity {
         }
     }
     
-    private void initProviderCursor (final String pkey)
+    private Cursor initProviderCursor ()
     {
         Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-        uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
+       // uri = uri.buildUpon().appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pkey).build();
       
         //just init the contentprovider db
-        mProviderCursor = managedQuery(uri, PROVIDER_PROJECTION,
+        return getContentResolver().query(uri, PROVIDER_PROJECTION,
                 Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                 new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                 Imps.Provider.DEFAULT_SORT_ORDER);
