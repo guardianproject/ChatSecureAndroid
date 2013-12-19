@@ -61,7 +61,7 @@ import android.widget.TextView;
 
 public class MessageView extends LinearLayout {
     
-    private static int sCacheSize = 512; // 4MiB
+    private static int sCacheSize = 512; // 1MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
             
     public enum DeliveryState {
@@ -80,7 +80,6 @@ public class MessageView extends LinearLayout {
     }
 
     private ViewHolder mHolder = null;
-    private Resources mResources = null;
     
     class ViewHolder 
     {
@@ -115,7 +114,7 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         
-        /*
+        
         mHolder = (ViewHolder)getTag();
         
         if (mHolder == null)
@@ -123,9 +122,8 @@ public class MessageView extends LinearLayout {
             mHolder = new ViewHolder();
             
             setTag(mHolder);
-        }*/
+        }
 
-        mResources = getResources();
     }
     
 
@@ -141,8 +139,7 @@ public class MessageView extends LinearLayout {
     public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact) {
       
-        //mHolder = (ViewHolder)getTag();
-        mHolder = new ViewHolder();
+        mHolder = (ViewHolder)getTag();
 
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         
@@ -164,9 +161,7 @@ public class MessageView extends LinearLayout {
             lastMessage = "";
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
-            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-            }
+            
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
             mHolder.mTextViewForMessages.setText(lastMessage);
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
@@ -176,6 +171,11 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            }
+            else
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+                
             }
             
         } else {
@@ -394,7 +394,8 @@ public class MessageView extends LinearLayout {
     public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
         
-        mHolder = new ViewHolder();
+        mHolder = (ViewHolder)getTag();
+
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
@@ -402,9 +403,6 @@ public class MessageView extends LinearLayout {
             lastMessage = "";
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
-            if( ! mediaUri.equals( mHolder.mMediaUri ) ) {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-            }
             
             mHolder.mTextViewForMessages.setText(lastMessage);
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
@@ -415,6 +413,11 @@ public class MessageView extends LinearLayout {
             else if (mimeType.startsWith("audio"))
             {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            }
+            else
+            {
+                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+                
             }
             
         } else {
@@ -525,16 +528,22 @@ public class MessageView extends LinearLayout {
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
+        
+        mHolder = (ViewHolder)getTag();
+
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mHolder.mTextViewForMessages.setText(message);
-        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.chat_msg_presence));
-       // mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.chat_msg_presence));
+
     }
 
     public void bindErrorMessage(int errCode) {
+        
+        mHolder = (ViewHolder)getTag();
+
         mHolder.mTextViewForMessages.setText(R.string.msg_sent_failed);
-        mHolder.mTextViewForMessages.setTextColor(mResources.getColor(R.color.error));
-        //mHolder.mDeliveryIcon.setVisibility(INVISIBLE);
+        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.error));
+
     }
 
    
@@ -548,7 +557,7 @@ public class MessageView extends LinearLayout {
         int len = spanText.length();
         spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new ForegroundColorSpan(mResources.getColor(android.R.color.darker_gray)),
+        spanText.setSpan(new ForegroundColorSpan(android.R.color.darker_gray),
                 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       
         return spanText;
@@ -557,22 +566,25 @@ public class MessageView extends LinearLayout {
     private CharSequence formatPresenceUpdates(String contact, int type, boolean isGroupChat,
             boolean scrolling) {
         String body;
+        
+        Resources resources =getResources();
+        
         switch (type) {
         case Imps.MessageType.PRESENCE_AVAILABLE:
-            body = mResources.getString(isGroupChat ? R.string.contact_joined
+            body = resources.getString(isGroupChat ? R.string.contact_joined
                                                    : R.string.contact_online, contact);
             break;
 
         case Imps.MessageType.PRESENCE_AWAY:
-            body = mResources.getString(R.string.contact_away, contact);
+            body = resources.getString(R.string.contact_away, contact);
             break;
 
         case Imps.MessageType.PRESENCE_DND:
-            body = mResources.getString(R.string.contact_busy, contact);
+            body = resources.getString(R.string.contact_busy, contact);
             break;
 
         case Imps.MessageType.PRESENCE_UNAVAILABLE:
-            body = mResources.getString(isGroupChat ? R.string.contact_left
+            body = resources.getString(isGroupChat ? R.string.contact_left
                                                    : R.string.contact_offline, contact);
             break;
 

@@ -47,7 +47,7 @@ public class ContactsPickerActivity extends ListActivity {
     private String mExcludeClause;
     Uri mData;
     Filter mFilter;
-    Cursor mCursor; // TODO
+   // Cursor mCursor; // TODO
 
     private static final void log(String msg) {
         Log.d(ImApp.LOG_TAG, "<ContactsPickerActivity> " + msg);
@@ -112,6 +112,7 @@ public class ContactsPickerActivity extends ListActivity {
         }
         clause.append(')');
         
+        
         Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, excludedVals,
                 Imps.Contacts.DEFAULT_SORT_ORDER);
         if (cursor == null) {
@@ -130,6 +131,7 @@ public class ContactsPickerActivity extends ListActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
         setResult(RESULT_OK, data);
+        this.stopManagingCursor(cursor);
         finish();
     }
     
@@ -159,7 +161,8 @@ public class ContactsPickerActivity extends ListActivity {
 
     private class ContactsAdapter extends ResourceCursorAdapter {
         private String mConstraints;
-
+       // private Cursor mCursor;
+        
         public ContactsAdapter(Context context, Cursor c) {
             super(context, R.layout.contact_view, c);
         }
@@ -170,14 +173,15 @@ public class ContactsPickerActivity extends ListActivity {
             v.setPadding(0, 0, 0, 0);
             v.bind(cursor, mConstraints, false);
         }
-
+        /*
         @Override
         public void changeCursor(Cursor cursor) {
             if (mCursor != null && mCursor != cursor) {
-                mCursor.deactivate();
+                mCursor.close();
+                mCursor = cursor;
             }
             super.changeCursor(cursor);
-        }
+        }*/
 
         @Override
         public Cursor runQueryOnBackgroundThread(CharSequence constraint) {

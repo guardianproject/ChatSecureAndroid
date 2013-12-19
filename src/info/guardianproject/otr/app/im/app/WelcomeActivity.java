@@ -233,10 +233,15 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             mSignInHelper.setSignInListener(null);
         }
             
+        Intent intent = getIntent();
+        Uri intentData = intent.getData();
         
-        if (getIntent() != null && getIntent().getData() != null)
+        if (intentData == null && intent.getExtras() != null && intent.getExtras().containsKey(Intent.EXTRA_STREAM))
+            intentData = (Uri)intent.getExtras().get(Intent.EXTRA_STREAM);
+        
+        if (intent != null && intentData != null)
         {
-            handleIntentAPILaunch();
+            handleIntentAPILaunch(intent, intentData);
         }
         else
         {
@@ -454,11 +459,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         finish();
     }
     
-    void handleIntentAPILaunch ()
+    void handleIntentAPILaunch (Intent srcIntent, Uri intentData)
     {
-        Intent intent = new Intent(getBaseContext(), ImUrlActivity.class);
-        intent.setAction(getIntent().getAction());
-        intent.setData(getIntent().getData());
+        Intent intent = new Intent(this, ImUrlActivity.class);
+        intent.setAction(srcIntent.getAction());
+        intent.setData(intentData);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);        
+        intent.putExtras(srcIntent.getExtras());
         startActivity(intent);
         finish();
     }
