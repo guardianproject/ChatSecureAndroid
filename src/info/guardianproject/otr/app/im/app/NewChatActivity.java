@@ -136,7 +136,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private ContactListFragment mContactList = null;
     private static final String TAG = "GB.NewChatActivity";
-    
+
+    private SearchView mSearchView = null;
 
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
@@ -212,15 +213,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     if (mMenu != null)
                     {
+                       // mSearchView.clearFocus();
+                       // mSearchView.setIconified(true); 
+                           
                         mMenu.setGroupVisible(R.id.menu_group_chats, true);
                         mMenu.setGroupVisible(R.id.menu_group_contacts, false);
                            
                     }
                     
-
-                    
                     getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-                    
+                 
                     
                 }
                 else
@@ -774,11 +776,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        if (null != searchView )
+        mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        if (mSearchView != null )
         {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setIconifiedByDefault(false);   
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            mSearchView.setIconifiedByDefault(false);   
         }
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() 
@@ -806,7 +808,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 return true;
             }
         };
-        searchView.setOnQueryTextListener(queryTextListener);
+        
+        mSearchView.setOnQueryTextListener(queryTextListener);
         
         if (mMenu != null)
         {
