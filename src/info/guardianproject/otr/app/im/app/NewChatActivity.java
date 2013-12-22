@@ -785,6 +785,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             public boolean onQueryTextChange(String newText) 
             {
+                if (mContactList == null) //the contact list can be not init'd yet
+                    return false;
+                
                 mContactList.filterContacts(newText);
                 
                 if (mChatPager.getCurrentItem() != 0)
