@@ -363,19 +363,22 @@ public class MessageView extends LinearLayout {
             @Override
             protected void onPostExecute(Bitmap result) {
                 
-                mBitmapCache.put(uri.toString(), result);
-                
-                // confirm the holder is still paired to this uri
-                if( ! uri.equals( aHolder.mMediaUri ) ) {
-                    return ;
+                if (uri != null && result != null)
+                {
+                    mBitmapCache.put(uri.toString(), result);
+                    
+                    // confirm the holder is still paired to this uri
+                    if( ! uri.equals( aHolder.mMediaUri ) ) {
+                        return ;
+                    }
+                    // thumbnail extraction failed, use bropken image icon
+                    if( result == null ) {
+                        mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
+                        return ;
+                    }
+                    // set the thumbnail
+                    aHolder.mMediaThumbnail.setImageBitmap(result);
                 }
-                // thumbnail extraction failed, use bropken image icon
-                if( result == null ) {
-                    mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
-                    return ;
-                }
-                // set the thumbnail
-                aHolder.mMediaThumbnail.setImageBitmap(result);
             }
         }.execute();
     }
