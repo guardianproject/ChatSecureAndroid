@@ -1600,7 +1600,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     break;
                 }
-                2814
+                
                 selIdx++;
             }
             
