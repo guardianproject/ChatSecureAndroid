@@ -386,7 +386,7 @@ public class MessageView extends LinearLayout {
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
         String[] projection = {MediaStore.Images.Media._ID};
         Cursor cursor = cr.query( uri, projection, null, null, null);
-        if( cursor == null ) {
+        if( cursor == null || cursor.getCount() == 0 ) {
             return null ;
         }
         cursor.moveToFirst();
