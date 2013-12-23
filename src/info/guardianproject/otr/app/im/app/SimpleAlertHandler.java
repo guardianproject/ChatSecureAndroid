@@ -50,10 +50,14 @@ public class SimpleAlertHandler extends Handler {
         if (error != null) {
             promptMsg = mActivity.getString(R.string.signed_out_prompt_with_error, provider.mName,
                     ErrorResUtils.getErrorRes(mRes, error.getCode()));
-        } else {
+        } else if (provider != null) {
             promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
-     //   showAlert(R.string.error, promptMsg); //TODO debug issue
+        else    
+        {
+            promptMsg = mActivity.getString(R.string.error);
+        }
+        showAlert(R.string.error, promptMsg); 
     }
 
     public void registerForBroadcastEvents() {
@@ -84,13 +88,16 @@ public class SimpleAlertHandler extends Handler {
 
     public void showAlert(final CharSequence title, final CharSequence message) {
         if (Looper.myLooper() == getLooper()) {
-            new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                    .setPositiveButton(R.string.ok, null).show();
+            //new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
+              //      .setPositiveButton(R.string.ok, null).show();
+            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
+            
         } else {
             post(new Runnable() {
                 public void run() {
-                    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                            .setPositiveButton(R.string.ok, null).show();
+                //    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
+                  //          .setPositiveButton(R.string.ok, null).show();
+                    Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
