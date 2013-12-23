@@ -205,18 +205,13 @@ public class ProviderListItem extends LinearLayout {
         if (mBindTask != null)
             mBindTask.cancel(false);
         mBindTask = null;
-        super.onAttachedToWindow();
+        super.onDetachedFromWindow();
     }
 
     private void runBindTask(final Resources r, final int providerId, final String activeUserName,
             final int dbConnectionStatus, final String presenceString) {
         if (mBindTask != null)
             mBindTask.cancel(false);
-        final ContentResolver contentResolver = getContext().getContentResolver();
-        
-        // Fail early
-        if (contentResolver == null)
-            throw new NullPointerException();
         
         mBindTask = new AsyncTask<Void, Void, Void>() {
             private String mProviderNameText;
@@ -225,8 +220,14 @@ public class ProviderListItem extends LinearLayout {
 
             @Override
             protected Void doInBackground(Void... params) {
+                
+                ContentResolver cr = getContext().getContentResolver();
+                
+                if (cr == null)
+                    return null;
+                
                 final Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(contentResolver,
+                        new Imps.ProviderSettings.QueryMap(cr,
                                 providerId, false , null);
                 
                 int connectionStatus = dbConnectionStatus;
@@ -287,7 +288,9 @@ public class ProviderListItem extends LinearLayout {
             
             @Override
             protected void onPostExecute(Void result) {
-                applyView(mProviderNameText, mSwitchOn, mSecondRowText);
+                
+                if (mProviderNameText != null)
+                    applyView(mProviderNameText, mSwitchOn, mSecondRowText);
             }
         };
         mBindTask.execute();
@@ -311,10 +314,12 @@ public class ProviderListItem extends LinearLayout {
         String secondRowText;
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
+        /*
         secondRowTextBuffer.append(presenceString);
 
         secondRowTextBuffer.append(" - ");
-
+        */
+        
         if (settings.getServer() != null && settings.getServer().length() > 0)
         {
             secondRowTextBuffer.append(settings.getServer());
@@ -421,6 +426,7 @@ public class ProviderListItem extends LinearLayout {
 
     };
     
+    /**
     private String getPresenceString( Context context, int presenceStatus) {
 
         switch (presenceStatus) {
@@ -443,13 +449,13 @@ public class ProviderListItem extends LinearLayout {
         default:
             return context.getString(R.string.presence_offline);
         }
-    }
+    }*/
     
     private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting ) {
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
-        secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
-        secondRowTextBuffer.append(" - ");
+   //     secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
+    //    secondRowTextBuffer.append(" - ");
         if (accountSetting.host != null && accountSetting.host.length() > 0) {
             secondRowTextBuffer.append(accountSetting.host);
         } else {
