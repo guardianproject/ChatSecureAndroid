@@ -1528,16 +1528,21 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-                mAccountIds = new Long[newCursor.getCount()];
-                newCursor.moveToFirst();
-                int activeAccountIdColumn = newCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
-
-                for (int i = 0; i < mAccountIds.length; i++)
+                
+                if (newCursor != null && newCursor.getCount() > 0)
                 {
-                    mAccountIds[i] = newCursor.getLong(activeAccountIdColumn);              
-                    newCursor.moveToNext();
-                    
+                    mAccountIds = new Long[newCursor.getCount()];
+                    newCursor.moveToFirst();
+                    int activeAccountIdColumn = newCursor.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
+    
+                    for (int i = 0; i < mAccountIds.length; i++)
+                    {
+                        mAccountIds[i] = newCursor.getLong(activeAccountIdColumn);              
+                        newCursor.moveToNext();
+                        
+                    }
                 }
+
                 mAdapter.swapCursor(newCursor);
             }
 
@@ -1595,7 +1600,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     break;
                 }
-                
+                2814
                 selIdx++;
             }
             
