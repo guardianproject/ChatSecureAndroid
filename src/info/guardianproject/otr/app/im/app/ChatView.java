@@ -183,6 +183,7 @@ public class ChatView extends LinearLayout {
     {
         mIsSelected = isSelected;
         updateWarningView();
+        mComposeMessage.requestFocus();
     }
     
     private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()

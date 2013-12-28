@@ -81,6 +81,8 @@ public class MessageView extends LinearLayout {
 
     private ViewHolder mHolder = null;
     
+    private final static DateFormat MESSAGE_DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    
     class ViewHolder 
     {
 
@@ -108,20 +110,27 @@ public class MessageView extends LinearLayout {
         public void resetOnClickListenerMediaThumbnail() {
             mMediaThumbnail.setOnClickListener( null );
         }
+        
+       long mTimeDiff = -1;
     }
     
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         
-        
-        mHolder = (ViewHolder)getTag();
-        
-        if (mHolder == null)
+        if (!isInEditMode() )
         {
-            mHolder = new ViewHolder();
+        
+            mHolder = (ViewHolder)getTag();
             
-            setTag(mHolder);
+            if (mHolder == null)
+            {
+                mHolder = new ViewHolder();
+                
+                setTag(mHolder);
+                
+                
+            }
         }
 
     }
@@ -213,10 +222,9 @@ public class MessageView extends LinearLayout {
         
         if (date != null)
         {
-         CharSequence tsText = formatTimeStamp(date);
+         CharSequence tsText = formatTimeStamp(date,MESSAGE_DATE_FORMAT);
          
          mHolder.mTextViewForTimestamp.setText(tsText);
-         mHolder.mTextViewForTimestamp.setGravity(Gravity.CENTER);
          mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
         
         }
@@ -224,7 +232,7 @@ public class MessageView extends LinearLayout {
         {
             
             mHolder.mTextViewForTimestamp.setText("");
-            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
+            //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
            
         }
 
@@ -309,6 +317,7 @@ public class MessageView extends LinearLayout {
             setThumbnail(contentResolver, aHolder, mediaUri);
             return;
         }
+        
         // new file - scan
         File file = new File(mediaUri.getPath());
         final Handler handler = new Handler();
@@ -329,6 +338,7 @@ public class MessageView extends LinearLayout {
                         });
                     }
                 });
+                
     }
     
     /**
@@ -353,19 +363,22 @@ public class MessageView extends LinearLayout {
             @Override
             protected void onPostExecute(Bitmap result) {
                 
-                mBitmapCache.put(uri.toString(), result);
-                
-                // confirm the holder is still paired to this uri
-                if( ! uri.equals( aHolder.mMediaUri ) ) {
-                    return ;
+                if (uri != null && result != null)
+                {
+                    mBitmapCache.put(uri.toString(), result);
+                    
+                    // confirm the holder is still paired to this uri
+                    if( ! uri.equals( aHolder.mMediaUri ) ) {
+                        return ;
+                    }
+                    // thumbnail extraction failed, use bropken image icon
+                    if( result == null ) {
+                        mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
+                        return ;
+                    }
+                    // set the thumbnail
+                    aHolder.mMediaThumbnail.setImageBitmap(result);
                 }
-                // thumbnail extraction failed, use bropken image icon
-                if( result == null ) {
-                    mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
-                    return ;
-                }
-                // set the thumbnail
-                aHolder.mMediaThumbnail.setImageBitmap(result);
             }
         }.execute();
     }
@@ -373,7 +386,7 @@ public class MessageView extends LinearLayout {
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
         String[] projection = {MediaStore.Images.Media._ID};
         Cursor cursor = cr.query( uri, projection, null, null, null);
-        if( cursor == null ) {
+        if( cursor == null || cursor.getCount() == 0 ) {
             return null ;
         }
         cursor.moveToFirst();
@@ -404,7 +417,7 @@ public class MessageView extends LinearLayout {
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
             
-            mHolder.mTextViewForMessages.setText(lastMessage);
+            mHolder.mTextViewForMessages.setText("");//no message if there is a file mimeType
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);            
             if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
@@ -485,14 +498,14 @@ public class MessageView extends LinearLayout {
 
         if (date != null)
         {
-            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date));            
+            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date,MESSAGE_DATE_FORMAT));            
             mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);            
-
+         
         }
         else
         {
             mHolder.mTextViewForTimestamp.setText("");
-            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);            
+//            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);            
 
         }
         
@@ -548,18 +561,16 @@ public class MessageView extends LinearLayout {
 
    
 
-    private SpannableString formatTimeStamp(Date date) {
-    //    DateFormat format = new SimpleDateFormat(mResources.getString(R.string.time_stamp));
-        
-        DateFormat format = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    private SpannableString formatTimeStamp(Date date, DateFormat format) {
         String dateStr = format.format(date);
         SpannableString spanText = new SpannableString(dateStr);
         int len = spanText.length();
         spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        
         spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new ForegroundColorSpan(android.R.color.darker_gray),
-                0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-      
+        spanText.setSpan(new ForegroundColorSpan(R.color.soft_grey),
+              0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+     
         return spanText;
     }
 
