@@ -30,6 +30,13 @@ public interface SubscriptionRequestListener {
     void onSubScriptionRequest(Contact from);
 
     /**
+     * Called when a unsubscription request from another user is received.
+     * 
+     * @param from
+     */
+    void onUnSubScriptionRequest(Contact from);
+    
+    /**
      * Called when a subscription request is approved.
      * 
      * @param contact
