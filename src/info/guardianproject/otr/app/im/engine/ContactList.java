@@ -40,7 +40,9 @@ public class ContactList extends ImEntity {
         mContactsCache = new HashMap<String, Contact>();
         if (contacts != null) {
             for (Contact c : contacts) {
-                mContactsCache.put(manager.normalizeAddress(c.getAddress().getAddress()), c);
+                String aKey = mManager.normalizeAddress(address.getAddress());
+                if (!mContactsCache.containsKey(aKey))
+                    mContactsCache.put(aKey, c);
             }
         }
     }
@@ -91,13 +93,15 @@ public class ContactList extends ImEntity {
                         "Contact has been blocked");
             }
         }
+        
+        String aKey = mManager.normalizeAddress(address);
 
-        if (containsContact(mManager.normalizeAddress(address))) {
+        if (containsContact(aKey)) {
             throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
                     "Contact already exists in the list");
         }
 
-        mManager.addContactToListAsync(mManager.normalizeAddress(address), this);
+        mManager.addContactToListAsync(aKey, this);
     }
 
     /**
@@ -111,19 +115,21 @@ public class ContactList extends ImEntity {
      */
     public void addExistingContact(Contact contact) throws ImException {
        
+        String aKey = mManager.normalizeAddress(contact.getAddress().getAddress());
+        
         if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED) {
-            if (mManager.isBlocked(contact.getAddress().getBareAddress())) {
+            if (mManager.isBlocked(aKey)) {
                 throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
                         "Contact has been blocked");
             }
         }
 
-        if (containsContact(contact.getAddress().getBareAddress())) {
+        if (containsContact(aKey)) {
             throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
                     "Contact already exists in the list");
         }
 
-        mContactsCache.put(contact.getAddress().getBareAddress(), contact);
+        mContactsCache.put(aKey, contact);
     }
 
     /**
@@ -159,30 +165,31 @@ public class ContactList extends ImEntity {
 
         if (containsContact(contact)) {
             mManager.removeContactFromListAsync(contact, this);
+            mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getAddress()));            
         }
     }
 
-    public synchronized Contact getContact(Address address) {
-        return mContactsCache.get(mManager.normalizeAddress(address.getAddress()));
+    public Contact getContact(Address address) {
+        return getContact(mManager.normalizeAddress(address.getAddress()));
     }
 
-    public synchronized Contact getContact(String address) {
-        return mContactsCache.get(mManager.normalizeAddress(address));
+    public Contact getContact(String address) {
+        return mContactsCache.get(address);
     }
 
-    public synchronized int getContactsCount() {
+    public int getContactsCount() {
         return mContactsCache.size();
     }
 
-    public synchronized Collection<Contact> getContacts() {
+    public Collection<Contact> getContacts() {
         return new ArrayList<Contact>(mContactsCache.values());
     }
 
-    public synchronized boolean containsContact(String address) {
+    public boolean containsContact(String address) {
         return mContactsCache.containsKey(mManager.normalizeAddress(address));
     }
 
-    public synchronized boolean containsContact(Address address) {
+    public boolean containsContact(Address address) {
         return address == null ? false : mContactsCache.containsKey(mManager
                 .normalizeAddress(address.getAddress()));
     }
