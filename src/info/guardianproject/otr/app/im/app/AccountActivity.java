@@ -84,7 +84,7 @@ public class AccountActivity extends Activity {
     
     public final static String DEFAULT_SERVER_GOOGLE = "talk.l.google.com";
     public final static String DEFAULT_SERVER_FACEBOOK = "chat.facebook.com";
-    public final static String DEFAULT_SERVER_JABBERORG = "hermes.jabber.org";
+    public final static String DEFAULT_SERVER_JABBERORG = "hermes2.jabber.org";
     public final static String DEFAULT_SERVER_DUKGO = "dukgo.com";
     public final static String ONION_JABBERCCC = "okj7xc6j2szr2y75.onion";
     
