@@ -1954,7 +1954,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                    org.jivesoftware.smack.packet.Presence.Type.subscribed);
+                    org.jivesoftware.smack.packet.Presence.Type.subscribe);
             response.setTo(address);
 
             sendPacket(response);
@@ -1989,12 +1989,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void approveSubscriptionRequest(String contact) {
             debug(TAG, "approve subscription");
-            try {
-                mContactListManager.doAddContactToListAsync(contact, getDefaultContactList());
-            } catch (ImException e) {
-                debug(TAG, "failed to add " + contact + " to default list");
-            }
+            org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
+                    org.jivesoftware.smack.packet.Presence.Type.subscribed);
+            response.setTo(contact);
+            sendPacket(response);
             mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
+            
         }
 
         @Override
