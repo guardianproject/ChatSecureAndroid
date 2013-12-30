@@ -174,14 +174,10 @@ public class ContactListManagerAdapter extends
     }
 
     public int removeContact(String address) {
-        if (isTemporary(address)) {
-            // For temporary contact, just close the session and delete him in
-            // database.
-            closeChatSession(address);
+        
+        closeChatSession(address);
 
-            String selection = Imps.Contacts.USERNAME + "=?";
-            String[] selectionArgs = { address };
-            mResolver.delete(mContactUrl, selection, selectionArgs);
+        if (isTemporary(address)) {
             synchronized (mTemporaryContacts) {
                 mTemporaryContacts.remove(address);
             }
@@ -198,9 +194,14 @@ public class ContactListManagerAdapter extends
                         return resCode;
                     }
                 }
+
             }
         }
 
+        String selection = Imps.Contacts.USERNAME + "=?";
+        String[] selectionArgs = { address };
+        mResolver.delete(mContactUrl, selection, selectionArgs);
+        
         return ImErrorInfo.NO_ERROR;
     }
 
@@ -654,6 +655,14 @@ public class ContactListManagerAdapter extends
             });
         }
 
+        public void onUnSubScriptionRequest(final Contact from) {
+            String username = from.getAddress().getAddress();
+            String nickname = from.getName();
+            
+            //to be implemented - should prompt user to approve unsubscribe?
+        }
+
+        
         private void broadcast(SubscriptionBroadcaster callback) {
             synchronized (mRemoteSubscriptionListeners) {
                 final int N = mRemoteSubscriptionListeners.beginBroadcast();
