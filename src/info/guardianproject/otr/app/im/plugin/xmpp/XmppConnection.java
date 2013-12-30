@@ -59,6 +59,7 @@ import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
+import org.jivesoftware.smack.Roster.SubscriptionMode;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
@@ -1558,7 +1559,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public String normalizeAddress(String address) {
-            return address.split("/")[0];
+            return Address.stripResource(address);
         }
 
         @Override
@@ -1912,12 +1913,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
                 else
                 {
+                    group.removeEntry(entry);
+                    
                     // Remove from Roster if this is the last group
                     if (entry.getGroups().size() <= 1)
                         roster.removeEntry(entry);
     
-                    group.removeEntry(entry);
-                }
+                    
+                }                                
+                
             } catch (XMPPException e) {
                 debug(TAG, "remove entry failed: " + e.getMessage());
                 throw new RuntimeException(e);
@@ -1928,6 +1932,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(address);
             sendPacket(response);
+            
+            
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_REMOVED, contact);
         }
 
@@ -1994,7 +2000,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             response.setTo(contact);
             sendPacket(response);
             mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
-            
+
+            try {
+                doAddContactToListAsync(contact, getContactListManager().getDefaultContactList());
+            } catch (ImException e) {
+               debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
+               
+            }
         }
 
         @Override
@@ -2614,16 +2626,25 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
           
         }
 
-        if (presence.getType() == Type.subscribe || presence.getType() == Type.subscribed) {                    
+        if (presence.getType() == Type.subscribe) {                    
             debug(TAG,"got subscribe request: " + presence.getFrom());
             
-            mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(
-                    contact);
+            mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
+        }
+        else if (presence.getType() == Type.subscribed) {                    
+            debug(TAG,"got subscribed confirmation request: " + presence.getFrom());
+            
+            mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(presence.getFrom());
         } 
         else if (presence.getType() == Type.unsubscribe) {
-            //what should we do here? remove them from our list?
             debug(TAG,"got unsubscribe request: " + presence.getFrom());
             
+            mContactListManager.getSubscriptionRequestListener().onUnSubScriptionRequest(contact);
+        }
+        else if (presence.getType() == Type.unsubscribed) {
+            debug(TAG,"got unsubscribe request: " + presence.getFrom());
+            
+            mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(presence.getFrom());
         }
         else {
         
