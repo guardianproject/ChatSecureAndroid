@@ -21,9 +21,11 @@ import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.ISubscriptionListener;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
+import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
@@ -353,6 +355,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         super.onNewIntent(intent);
         
         setIntent(intent);
+        resolveIntent();
     }
 
     @Override
@@ -1662,6 +1665,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             mContactList.setConnection(conn);
 
+            try {
+                conn.getContactListManager().registerSubscriptionListener(mSubscriptionListener);
+            } catch (RemoteException e1) {
+                Log.e(ImApp.LOG_TAG,"error registering listener",e1);
+
+            }
+            
+            
             if (mContactList.mPresenceView != null)
             {
                 try {
@@ -2241,22 +2252,29 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     void showSubscriptionDialog (final long subProviderId, final String subFrom)
     {
-        new AlertDialog.Builder(this)            
-        .setTitle(getString(R.string.subscriptions))
-        .setMessage(getString(R.string.subscription_prompt,subFrom))
-        .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                approveSubscription(subProviderId, subFrom);
+        mHandler.post(new Runnable()
+        {
+            
+            public void run ()
+            {
+                new AlertDialog.Builder(NewChatActivity.this)            
+                .setTitle(getString(R.string.subscriptions))
+                .setMessage(getString(R.string.subscription_prompt,subFrom))
+                .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+        
+                        approveSubscription(subProviderId, subFrom);
+                    }
+                })
+                .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+        
+                        declineSubscription(subProviderId, subFrom);
+                    }
+                })
+                .create().show();
             }
-        })
-        .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                declineSubscription(subProviderId, subFrom);
-            }
-        })
-        .create().show();
+        });
     }
 
     void approveSubscription(long providerId, String userName) {
@@ -2344,5 +2362,24 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         startActivity(intent);
         finish();
    }
+
+
+    private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
+
+        public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
+            showSubscriptionDialog (providerId, from.getAddress().getAddress());
+
+        }
+
+        public void onSubscriptionApproved(String contact, long providerId, long accountId) {
+
+        }
+
+        public void onSubscriptionDeclined(String contact, long providerId, long accountId) {
+
+        }
+
+    };
+    
 
 }

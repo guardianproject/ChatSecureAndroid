@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.ISubscriptionListener;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +54,7 @@ public abstract class ContactListManager {
     protected Vector<ContactList> mContactLists;
 
     protected CopyOnWriteArrayList<ContactListListener> mContactListListeners;
-    protected SubscriptionRequestListener mSubscriptionRequestListener;
+    protected ISubscriptionListener mSubscriptionRequestListener;
 
     protected Vector<Contact> mBlockedList;
 
@@ -134,11 +136,11 @@ public abstract class ContactListManager {
      * 
      * @param listener the ContactInvitationListener.
      */
-    public synchronized void setSubscriptionRequestListener(SubscriptionRequestListener listener) {
+    public synchronized void setSubscriptionRequestListener(ISubscriptionListener listener) {
         mSubscriptionRequestListener = listener;
     }
 
-    public synchronized SubscriptionRequestListener getSubscriptionRequestListener() {
+    public synchronized ISubscriptionListener getSubscriptionRequestListener() {
         return mSubscriptionRequestListener;
     }
 

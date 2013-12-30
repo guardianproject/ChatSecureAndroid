@@ -29,7 +29,6 @@ import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Presence;
-import info.guardianproject.otr.app.im.engine.SubscriptionRequestListener;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.io.ByteArrayOutputStream;
@@ -637,9 +636,9 @@ public class ContactListManagerAdapter extends
         }
     }
 
-    final class SubscriptionRequestListenerAdapter implements SubscriptionRequestListener {
+    final class SubscriptionRequestListenerAdapter extends ISubscriptionListener.Stub {
 
-        public void onSubScriptionRequest(final Contact from) {
+        public void onSubScriptionRequest(final Contact from, long providerId, long accountId) {
             String username = from.getAddress().getAddress();
             String nickname = from.getName();
             queryOrInsertContact(from); // FIXME Miron
@@ -650,12 +649,12 @@ public class ContactListManagerAdapter extends
                     ContentUris.parseId(uri), username, nickname);
             broadcast(new SubscriptionBroadcaster() {
                 public void broadcast(ISubscriptionListener listener) throws RemoteException {
-                    listener.onSubScriptionRequest(from);
+                    listener.onSubScriptionRequest(from, mProviderId, mAccountId);
                 }
             });
         }
 
-        public void onUnSubScriptionRequest(final Contact from) {
+        public void onUnSubScriptionRequest(final Contact from, long providerId, long accountId) {
             String username = from.getAddress().getAddress();
             String nickname = from.getName();
             
@@ -679,24 +678,24 @@ public class ContactListManagerAdapter extends
             }
         }
 
-        public void onSubscriptionApproved(final String contact) {
+        public void onSubscriptionApproved(final String contact, long providerId, long accountId) {
             insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {
                 public void broadcast(ISubscriptionListener listener) throws RemoteException {
-                    listener.onSubscriptionApproved(contact);
+                    listener.onSubscriptionApproved(contact, mProviderId, mAccountId);
                 }
             });
         }
 
-        public void onSubscriptionDeclined(final String contact) {
+        public void onSubscriptionDeclined(final String contact, long providerId, long accountId) {
             insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {
                 public void broadcast(ISubscriptionListener listener) throws RemoteException {
-                    listener.onSubscriptionDeclined(contact);
+                    listener.onSubscriptionDeclined(contact, mProviderId, mAccountId);
                 }
             });
         }

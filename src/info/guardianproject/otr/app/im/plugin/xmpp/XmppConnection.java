@@ -118,6 +118,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.RemoteException;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -1989,7 +1990,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(contact);
             sendPacket(response);
-            mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact);
+            try {
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact, mProviderId, mAccountId);
+            } catch (RemoteException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -1999,13 +2005,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     org.jivesoftware.smack.packet.Presence.Type.subscribed);
             response.setTo(contact);
             sendPacket(response);
-            mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact);
+            try
+            {
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
 
-            try {
                 doAddContactToListAsync(contact, getContactListManager().getDefaultContactList());
             } catch (ImException e) {
                debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
                
+            }
+            catch (RemoteException e) {
+                debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
+            
             }
         }
 
@@ -2629,22 +2640,42 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (presence.getType() == Type.subscribe) {                    
             debug(TAG,"got subscribe request: " + presence.getFrom());
             
-            mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact);
+            try
+            {
+                mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact, mProviderId, mAccountId);
+            }
+            catch (RemoteException e)
+            {
+                Log.e(TAG,"remote exception on subscription handling",e);
+            }
         }
         else if (presence.getType() == Type.subscribed) {                    
             debug(TAG,"got subscribed confirmation request: " + presence.getFrom());
-            
-            mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(presence.getFrom());
+            try
+            {
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(presence.getFrom(), mProviderId, mAccountId);
+            }
+            catch (RemoteException e)
+            {
+                Log.e(TAG,"remote exception on subscription handling",e);
+            }
         } 
         else if (presence.getType() == Type.unsubscribe) {
             debug(TAG,"got unsubscribe request: " + presence.getFrom());
-            
-            mContactListManager.getSubscriptionRequestListener().onUnSubScriptionRequest(contact);
+         
+            //TBD how to handle this
+       //     mContactListManager.getSubscriptionRequestListener().onUnSubScriptionRequest(contact);
         }
         else if (presence.getType() == Type.unsubscribed) {
             debug(TAG,"got unsubscribe request: " + presence.getFrom());
-            
-            mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(presence.getFrom());
+            try
+            {
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(presence.getFrom(), mProviderId, mAccountId);
+            }
+            catch (RemoteException e)
+            {
+                Log.e(TAG,"remote exception on subscription handling",e);
+            }
         }
         else {
         
