@@ -19,8 +19,8 @@ import org.apache.commons.io.output.StringBuilderWriter;
 import android.os.StrictMode;
 
 public class Debug {
-    public static final boolean DEBUG_ENABLED = true;
-    public static final boolean DEBUGGER_ATTACH_ENABLED = true;
+    public static final boolean DEBUG_ENABLED = false;
+    public static final boolean DEBUGGER_ATTACH_ENABLED = false;
     public static final boolean DEBUG_INJECT_ERRORS = false;
     private static int injectCount = 0;
 
