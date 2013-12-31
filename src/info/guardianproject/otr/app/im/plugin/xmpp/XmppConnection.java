@@ -1816,7 +1816,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-                handlePresenceChanged(presence);
+               // handlePresenceChanged(presence);
                 //we are already monitoring all presence packets so this is over kill
             }
 
