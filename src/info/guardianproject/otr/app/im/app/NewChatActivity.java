@@ -162,7 +162,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         super.onCreate(icicle);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
+        setSupportProgressBarIndeterminateVisibility(false);
+        
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
     
@@ -2252,29 +2253,32 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     void showSubscriptionDialog (final long subProviderId, final String subFrom)
     {
-        mHandler.post(new Runnable()
-        {
-            
-            public void run ()
+        if (! ((Activity) this).isFinishing()) {
+        
+            mHandler.postDelayed(new Runnable()
             {
-                new AlertDialog.Builder(NewChatActivity.this)            
-                .setTitle(getString(R.string.subscriptions))
-                .setMessage(getString(R.string.subscription_prompt,subFrom))
-                .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-        
-                        approveSubscription(subProviderId, subFrom);
-                    }
-                })
-                .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-        
-                        declineSubscription(subProviderId, subFrom);
-                    }
-                })
-                .create().show();
-            }
-        });
+                
+                public void run ()
+                {
+                    new AlertDialog.Builder(NewChatActivity.this)            
+                    .setTitle(getString(R.string.subscriptions))
+                    .setMessage(getString(R.string.subscription_prompt,subFrom))
+                    .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+            
+                            approveSubscription(subProviderId, subFrom);
+                        }
+                    })
+                    .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+            
+                            declineSubscription(subProviderId, subFrom);
+                        }
+                    })
+                    .create().show();
+                }
+            },500);
+        }
     }
 
     void approveSubscription(long providerId, String userName) {
