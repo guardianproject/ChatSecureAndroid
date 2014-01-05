@@ -245,15 +245,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
             }
         }
         
-        mHandler.postDelayed(new Runnable()
-        {
-            public void run ()
-            {
-                mApp.forceStopImService();
-                
-            }
-        }, 2000l);
-        
         Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
         // Request lock
         intent.putExtra("doLock", true);
