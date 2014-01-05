@@ -86,15 +86,15 @@ public class ContactListView extends LinearLayout {
 
     private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
 
-        public void onSubScriptionRequest(Contact from) {
+        public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
             querySubscription();
         }
 
-        public void onSubscriptionApproved(String contact) {
+        public void onSubscriptionApproved(String contact, long providerId, long accountId) {
             querySubscription();
         }
 
-        public void onSubscriptionDeclined(String contact) {
+        public void onSubscriptionDeclined(String contact, long providerId, long accountId) {
             querySubscription();
         }
 
