@@ -101,20 +101,19 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
         if (!mDoLock)
         {
-            
             mApp.maybeInit(this);
             mApp.checkForCrashes(this);            
-    
         }
         
-        
-        if (!mDoLock && openEncryptedStores(null, false))
+        if (openEncryptedStores(null, false))
+        {
             // DB already open, or unencrypted
             // openEncryptedStores has finished()
             return;
+        }
         else
             connectToCacheWord ();
-     
+    
     }
 
     private void connectToCacheWord ()
@@ -534,7 +533,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         Log.d(ImApp.LOG_TAG,"cache word uninit");
         
         if (mDoLock) {
-            Log.d(ImApp.LOG_TAG, "cacheword lock requested but already uninitialized");
+            completeShutdown();
         } else {
             showLockScreen();
         }
@@ -565,20 +564,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     public void onCacheWordOpened() {
         if (mDoLock) {
-            Log.d(ImApp.LOG_TAG, "cacheword lock");
-            mApp.forceStopImService();
             mCacheWord.manuallyLock();
             mCacheWord.disconnect();
-            
-            mHandler.postDelayed(new Runnable () {
-                
-                public void run ()
-                {
-                    Imps.clearPassphrase(mApp);
-                    WelcomeActivity.this.finish();
-                }
-            }, 3000); 
-            
+            completeShutdown();
             return;
         }
        Log.d(ImApp.LOG_TAG,"cache word opened");
@@ -591,11 +579,31 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        mCacheWord.setTimeoutMinutes(defaultTimeout);
     }
 
+    private void completeShutdown ()
+    {
+        
+        mApp.forceStopImService();
+
+        mHandler.postDelayed(new Runnable () {
+            
+            public void run ()
+            {
+                Imps.clearPassphrase(mApp);
+                WelcomeActivity.this.finish();
+            }
+        }, 3000); 
+        
+    }
+    
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
-            doOnResume();
+            if (mDoLock)
+                completeShutdown();
+            else
+                doOnResume();
+        
             return true;
         } else {
             return false;
