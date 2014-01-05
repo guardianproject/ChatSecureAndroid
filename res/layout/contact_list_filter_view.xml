@@ -65,12 +65,15 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="1dip"
+            android:paddingTop="1dip"
             android:inputType="textCapSentences|textAutoCorrect"
             android:selectAllOnFocus="true"
             android:singleLine="true"            
                 android:fontFamily="sans-serif-light"
             android:layout_marginTop="3dp"
             
+            android:textAppearance="?android:attr/textAppearanceMedium"
              />
 
         <TextView
