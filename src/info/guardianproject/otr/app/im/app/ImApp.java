@@ -932,7 +932,8 @@ public class ImApp extends Application {
                         mConnections.remove(providerId);
                     }
                     // stop the service if there isn't an active connection anymore.
-                  //  stopImServiceIfInactive();
+                    stopImServiceIfInactive();
+                    
                     break;
 
                 case ImConnection.SUSPENDED:
