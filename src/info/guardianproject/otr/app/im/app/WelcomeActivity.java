@@ -97,16 +97,16 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         mDoLock = getIntent().getBooleanExtra("doLock", false);
-        
-        
-        mApp.maybeInit(this);
 
 
         if (!mDoLock)
         {
-            mApp.checkForCrashes(this);            
             
+            mApp.maybeInit(this);
+            mApp.checkForCrashes(this);            
+    
         }
+        
         
         if (!mDoLock && openEncryptedStores(null, false))
             // DB already open, or unencrypted
@@ -566,10 +566,19 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     public void onCacheWordOpened() {
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock");
+            mApp.forceStopImService();
             mCacheWord.manuallyLock();
             mCacheWord.disconnect(true);
             
-            finish(); 
+            mHandler.postDelayed(new Runnable () {
+                
+                public void run ()
+                {
+                    Imps.clearPassphrase(mApp);
+                    WelcomeActivity.this.finish();
+                }
+            }, 3000); 
+            
             return;
         }
        Log.d(ImApp.LOG_TAG,"cache word opened");

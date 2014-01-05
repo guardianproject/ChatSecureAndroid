@@ -356,6 +356,7 @@ public class ImApp extends Application {
             }
         }
 
+        Imps.clearPassphrase(this);
         super.onTerminate();
     }
 
