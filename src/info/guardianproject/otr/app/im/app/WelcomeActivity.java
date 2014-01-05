@@ -197,7 +197,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         super.onDestroy();
         
         if (mCacheWord != null)
-            mCacheWord.disconnect(false);
+            mCacheWord.disconnect();
     }
 
     @Override
@@ -568,7 +568,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             Log.d(ImApp.LOG_TAG, "cacheword lock");
             mApp.forceStopImService();
             mCacheWord.manuallyLock();
-            mCacheWord.disconnect(true);
+            mCacheWord.disconnect();
             
             mHandler.postDelayed(new Runnable () {
                 
