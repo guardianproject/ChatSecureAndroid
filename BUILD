@@ -2,11 +2,6 @@
 
     git submodule update --init
     ./update-ant-build.sh
-    
-    * Ensure that external/MessageBar/library/project.properties has:
-      android.library=true
-    * setup external/asmack/local.properties to point to your android sdk *
-    (cd external/asmack && ./build.bash && cp build/asmack-android-4.jar ../../libs)
 
 == Building with ant
 
@@ -14,22 +9,30 @@ Follow the steps from the prep section, then:
 
     ant debug
 
+
 == Eclipse
 
 Add the following as Android projects (File->New->Project..., Android project from existing code), 
 after following the steps in the prep section:
 
-1. File --> Import... --> Android --> Existing Android Code Into Workspace
-    * external/OnionKit/library
-    * external/MemorizingTrustManager
-    * external/ActionBarSherlock/library
+Note: Libraries with root folder 'library' must be renamed
+after import, as Eclipse does not allow duplicate project names within a workspace.
+The Eclipse project name does not affect the project's directory structure.
 
-2. Right-click on the project called 'library' --> Refactor --> Rename... and
-   rename it to 'ActionBarSherlock'
+1. File --> Import... --> Android --> Existing Android Code Into Workspace
+    * external/ActionBarSherlock/actionbarsherlock
+    * external/AndroidPinning
+    * external/cacheword/cachewordlib
+    * external/OnionKit/libonionkit
+    * external/MemorizingTrustManager
+    * external/AndroidEmojiInput/library
+    * external/SlidingMenu/library
+
+2. If project imports with name 'library': Right-click project 'library' --> Refactor --> Rename... and
+   give it a descriptive name. 
 
 3. Import Gibberbot itself like #1 above
     
-
 == Old Stuff
 
 Patching Smack library for Android [1]
@@ -44,5 +47,4 @@ $ cd ../target
 
 
 
-[1] Thanks to: http://bjdodson.blogspot.com/2009/07/xmpp-on-android-using-smack.html)
-l
+[1] Thanks to: http://bjdodson.blogspot.com/2009/07/xmpp-on-android-using-smack.html
