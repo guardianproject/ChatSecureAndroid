@@ -531,9 +531,6 @@ public class ImApp extends Application {
     }
 
     private void loadImProviderSettings() {
-        if (mProviders != null) {
-            return;
-        }
 
         mProviders = new HashMap<Long, ProviderDef>();
         ContentResolver cr = getContentResolver();
