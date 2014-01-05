@@ -75,7 +75,7 @@ public class HeartbeatService extends Service {
             startHeartbeat(HEARTBEAT_INTERVAL);
             startService(mRelayIntent);
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
     
     @Override
