@@ -10,7 +10,6 @@ android update lib-project --path external/OnionKit/libonionkit --target $target
 android update lib-project --path external/AndroidPinning --target $target
 android update lib-project --path external/cacheword/cachewordlib --target $target
 android update lib-project --path external/SlidingMenu/library --target $target
-android update lib-project --path external/SlideListView/library --target $target
 android update lib-project --path external/AndroidEmojiInput/library --target $target
 
 android update project --path . --name $projectname --target android-17 --subprojects
