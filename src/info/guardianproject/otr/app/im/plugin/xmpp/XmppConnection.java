@@ -1373,12 +1373,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void logoutAsync() {
+        do_logout();
+        /**
         execute(new Runnable() {
             @Override
             public void run() {
                 do_logout();
             }
         });
+        */
     }
 
     // Force immediate logout
