@@ -413,24 +413,27 @@ public class AccountActivity extends Activity {
                     }
                 }
 
-                final long accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
+                ImPluginHelper helper = ImPluginHelper.getInstance(AccountActivity.this);
+                mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
+
+                mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
                         rememberPass ? pass : null);
 
-                mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
+                mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
                 
                 //if remember pass is true, set the "keep signed in" property to true
                 if (mIsNewAccount)
                 {
                     if (pass.equals(passConf))
                     {
-                        createNewAccount(mUserName, pass, accountId);
+                        createNewAccount(mUserName, pass, mAccountId);
                         setAccountKeepSignedIn(rememberPass);
-                        mSignInHelper.activateAccount(mProviderId, accountId);
-                        setResult(RESULT_OK);
+                        mSignInHelper.activateAccount(mProviderId, mAccountId);
+                       // setResult(RESULT_OK);
                         //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
                         //isSignedIn = true;
                         //updateWidgetState();
-                        finish();
+                       // finish();
                     }
                     else
                     {
@@ -450,11 +453,11 @@ public class AccountActivity extends Activity {
                             confirmTermsOfUse(brandingRes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                                    mSignInHelper.signIn(pass, mProviderId, mAccountId, isActive);
                                 }
                             });
                         } else {
-                            mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
+                            mSignInHelper.signIn(pass, mProviderId, mAccountId, isActive);
                         }
                       
                         isSignedIn = true;
