@@ -88,7 +88,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
 
-        
         mSignInHelper = new SignInHelper(this);
        
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -198,7 +197,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         super.onDestroy();
         
         if (mCacheWord != null)
-            mCacheWord.disconnect();
+            mCacheWord.disconnect(false);
     }
 
     @Override
@@ -568,7 +567,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock");
             mCacheWord.manuallyLock();
-            mCacheWord.disconnect();
+            mCacheWord.disconnect(true);
+            
             finish(); 
             return;
         }
