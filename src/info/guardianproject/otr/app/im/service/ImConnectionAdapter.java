@@ -209,7 +209,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     public void logout() {
         mConnectionState = ImConnection.LOGGING_OUT;
-        mConnection.logoutAsync();
+        mConnection.logout();
     }
 
     public synchronized void cancelLogin() {

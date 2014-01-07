@@ -2349,15 +2349,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         }
         
-        mHandler.postDelayed(new Runnable()
-        {
-            public void run ()
-            {
-                mApp.stopImServiceIfInactive();
-                
-            }
-        }, 2000l);
-        
         Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
         // Request lock
         intent.putExtra("doLock", true);

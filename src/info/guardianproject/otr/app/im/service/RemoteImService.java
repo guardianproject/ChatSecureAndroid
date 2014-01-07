@@ -279,7 +279,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
     
     
@@ -454,7 +454,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         if (mGlobalSettings != null)
             mGlobalSettings.close();
      
-        Imps.clearPassphrase(this);
+       // Imps.clearPassphrase(this); //TODO let the cacheword-managing activity handle this
         
     }
 

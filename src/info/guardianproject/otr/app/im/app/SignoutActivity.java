@@ -102,7 +102,7 @@ public class SignoutActivity extends ThemeableActivity {
         } finally {
             //finish();
 
-            Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
+         //   Toast.makeText(this, getString(R.string.signed_out_prompt), Toast.LENGTH_LONG).show();
         }
     }
 

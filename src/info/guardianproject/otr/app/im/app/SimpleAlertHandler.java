@@ -46,18 +46,20 @@ public class SimpleAlertHandler extends Handler {
         ImApp app = (ImApp)mActivity.getApplication();
         ProviderDef provider = app.getProvider(providerId);
         ImErrorInfo error = (ImErrorInfo) msg.obj;
-        String promptMsg;
+        String promptMsg = null;
         if (error != null) {
             promptMsg = mActivity.getString(R.string.signed_out_prompt_with_error, provider.mName,
                     ErrorResUtils.getErrorRes(mRes, error.getCode()));
         } else if (provider != null) {
-            promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
+           // promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
         else    
         {
             promptMsg = mActivity.getString(R.string.error);
         }
-        showAlert(R.string.error, promptMsg); 
+        
+        if (promptMsg != null)
+            showAlert(R.string.error, promptMsg); 
     }
 
     public void registerForBroadcastEvents() {

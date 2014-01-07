@@ -24,8 +24,6 @@ public class Debug {
     public static final boolean DEBUG_INJECT_ERRORS = false;
     private static int injectCount = 0;
 
-
-    @SuppressLint("SimpleDateFormat")
     public static void recordTrail(Context context, String key, Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));

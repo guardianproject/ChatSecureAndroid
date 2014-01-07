@@ -845,9 +845,9 @@ public class AccountActivity extends Activity {
             Log.e(ImApp.LOG_TAG, "signout: caught ", ex);
         } finally {
 
-            Toast.makeText(this,
-                    getString(R.string.signed_out_prompt, this.mEditUserAccount.getText()),
-                    Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(this,
+        //            getString(R.string.signed_out_prompt, this.mEditUserAccount.getText()),
+        //            Toast.LENGTH_SHORT).show();
             isSignedIn = false;
 
             mBtnSignIn.setText(getString(R.string.sign_in));

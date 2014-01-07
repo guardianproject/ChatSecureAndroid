@@ -1379,12 +1379,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void logoutAsync() {
+        do_logout();
+        /**
         execute(new Runnable() {
             @Override
             public void run() {
                 do_logout();
             }
         });
+        */
     }
 
     // Force immediate logout
@@ -1822,7 +1825,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-                handlePresenceChanged(presence);
+               // handlePresenceChanged(presence);
                 //we are already monitoring all presence packets so this is over kill
             }
 

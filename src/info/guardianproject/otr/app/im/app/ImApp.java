@@ -356,6 +356,7 @@ public class ImApp extends Application {
             }
         }
 
+        Imps.clearPassphrase(this);
         super.onTerminate();
     }
 
@@ -929,7 +930,8 @@ public class ImApp extends Application {
                         mConnections.remove(providerId);
                     }
                     // stop the service if there isn't an active connection anymore.
-                  //  stopImServiceIfInactive();
+                    stopImServiceIfInactive();
+                    
                     break;
 
                 case ImConnection.SUSPENDED:
