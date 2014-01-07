@@ -292,7 +292,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-            Log.d("YYY", "swap cursor");
+           // Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
             resolveIntent();
             if (mRequestedChatId >= 0) {

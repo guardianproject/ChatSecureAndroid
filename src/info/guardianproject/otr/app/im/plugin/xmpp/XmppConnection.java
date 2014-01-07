@@ -1159,12 +1159,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     ChatSession session = findOrCreateSession(address);
                    
+                    XmppAddress aFrom = new XmppAddress(smackMessage.getFrom());
+                    
                     Message rec = new Message(body);
                     rec.setTo(mUser.getAddress());
-                    rec.setFrom(new XmppAddress(smackMessage.getFrom()));
+                    rec.setFrom(aFrom);
                     rec.setDateTime(new Date());
 
                     rec.setType(Imps.MessageType.INCOMING);
+                    
+                    Contact rContact = mContactListManager.getContact(aFrom);
+                    if (rContact == null)
+                        mContactListManager.createTemporaryContact(smackMessage.getFrom());
                     
                     // Detect if this was said by us, and mark message as outgoing
                     if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
@@ -2023,7 +2029,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public Contact createTemporaryContact(String address) {
             debug(TAG, "create temporary " + address);
-            return makeContact(address);
+            Contact contact = makeContact(address);
+            Contact[] contacts = {contact};
+            notifyContactsPresenceUpdated(contacts);
+
+            return contact;
         }
     }
 
