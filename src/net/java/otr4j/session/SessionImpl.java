@@ -334,7 +334,7 @@ public class SessionImpl implements Session {
             }
             return null;
         default:
-            throw new UnsupportedOperationException("Received an uknown message type.");
+            throw new UnsupportedOperationException("Received an unknown message type.");
         }
     }
 
