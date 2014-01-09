@@ -672,7 +672,7 @@ public class SessionImpl implements Session {
                     + " was not sent.  Either end your private conversation, or restart it.");
             return null;
         default:
-            logger.finest("Uknown message state, not processing.");
+            logger.finest("Unknown message state, not processing.");
             return msgText;
         }
     }
