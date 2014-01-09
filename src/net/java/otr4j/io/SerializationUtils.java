@@ -327,7 +327,7 @@ public class SerializationUtils {
                 QueryMessage query = new QueryMessage(versions);
                 return query;
             default:
-                throw new IOException("Uknown message type.");
+                throw new IOException("Unknown message type.");
             }
         }
     }
