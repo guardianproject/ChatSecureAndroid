@@ -318,7 +318,7 @@ public class AccountActivity extends Activity {
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
         
         if (mIsNewAccount)
-            mBtnSignIn.setText("Create Account");
+            mBtnSignIn.setText(R.string.btn_create_account);
         
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
         mBtnDelete = (Button) findViewById(R.id.btnDelete);
@@ -403,6 +403,10 @@ public class AccountActivity extends Activity {
                         mEditUserAccount.requestFocus();
                         return;
                     }
+                    
+                    ImPluginHelper helper = ImPluginHelper.getInstance(AccountActivity.this);
+                    mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
+
                 }
                 else
                 {
@@ -411,14 +415,16 @@ public class AccountActivity extends Activity {
                         mEditUserAccount.requestFocus();
                         return;
                     }
+                    else
+                    {
+                        settingsForDomain(mDomain,mPort);//apply final settings
+                    }
                 }
 
-                ImPluginHelper helper = ImPluginHelper.getInstance(AccountActivity.this);
-                mProviderId = helper.createAdditionalProvider(helper.getProviderNames().get(0)); //xmpp FIXME
-
+     
                 mAccountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName,
                         rememberPass ? pass : null);
-
+                
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId);
                 
                 //if remember pass is true, set the "keep signed in" property to true
@@ -549,25 +555,22 @@ public class AccountActivity extends Activity {
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
-        try {
-            if (useTor && (!orbotHelper.isOrbotInstalled()))
-            {
-                //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
-                
-                orbotHelper.promptToInstall(this);
-                
-                mUseTor.setChecked(false);
-                settings.setUseTor(false);
-            }
-            else
-            {
-                settings.setUseTor(useTor);
-            }
+        if (useTor && (!orbotHelper.isOrbotInstalled()))
+        {
+            //Toast.makeText(this, "Orbot app is not installed. Please install from Google Play or from https://guardianproject.info/releases", Toast.LENGTH_LONG).show();
             
-            settingsForDomain(settings.getDomain(),settings.getPort());
-        } finally {
-            settings.close();
+            orbotHelper.promptToInstall(this);
+            
+            mUseTor.setChecked(false);
+            settings.setUseTor(false);
         }
+        else
+        {
+            settings.setUseTor(useTor);
+        }
+        
+        settingsForDomain(settings.getDomain(),settings.getPort(),settings);
+        settings.close();
     }
 /*
     private void getOTRKeyInfo() {
@@ -667,12 +670,11 @@ public class AccountActivity extends Activity {
 
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
-
-        try {
-            settingsForDomain(domain, port, settings);
-        } finally {
-            settings.close();
-        }
+    
+        settingsForDomain(domain, port, settings);
+   
+        settings.close();
+   
     }
 
     private void settingsForDomain(String domain, int port, Imps.ProviderSettings.QueryMap settings) {
@@ -899,6 +901,11 @@ public class AccountActivity extends Activity {
             rememberPass = false; 
     
         }
+        else
+        {
+            mRememberPass.setChecked(true);
+        }
+        
         mRememberPass.setEnabled(hasNameAndPassword);
         mRememberPass.setFocusable(hasNameAndPassword);
 
