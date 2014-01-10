@@ -101,7 +101,9 @@ SPKI Pin: B3A7C02FC620C25F3C395AB043BF3C7729CE3C41
     **/
         PINLIST.add("A39399C404C3B209B081C21F21622778C2748E4C");
         /**
-             ### Certificate 1
+         * # Connecting to jabber.ccc.de [1 of 1 hosts]
+## Found 2 pinnable certs in chain
+### Certificate 1
 SubjectDN: CN=jabber.ccc.de, O=Chaos Computer Club e.V., L=Hamburg, ST=Hamburg, C=DE
 IssuerDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=http://www.cacert.org, O=Root CA
 Fingerprint: 4E09F9D9F224174684768D467A84B139B86A021F
@@ -112,6 +114,7 @@ SubjectDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=htt
 IssuerDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=http://www.cacert.org, O=Root CA
 Fingerprint: 135CEC36F49CB8E93B1AB270CD80884676CE8F33
 SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
+
 
 **/
         
@@ -190,24 +193,25 @@ SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
         
         /**
 
-               # Connecting to dukgo.com [7 of 9 hosts]
-               ## Found 2 pinnable certs in chain
-               ### Certificate 1
-               SubjectDN: CN=*.dukgo.com, OU=EssentialSSL Wildcard, OU=Domain Control Validated
-               IssuerDN: CN=EssentialSSL CA, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
-               Fingerprint: 7727F3D42E00BDBFBEF697470F013B9E1C41A8CB
-               SPKI Pin: F44CF8786F4346082E18AB760CC49B6167B1B9D8
+              # Connecting to dukgo.com [4 of 5 hosts]
+## Found 2 pinnable certs in chain
+### Certificate 1
+SubjectDN: CN=duck.co, OU=Multi-Domain SSL, O=DuckDuckGo, STREET=20 Paoli Pike, L=Paoli, ST=Pennsylvania, OID.2.5.4.17=19460, C=US
+IssuerDN: CN=COMODO High-Assurance Secure Server CA, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
+Fingerprint: 081F7C200A8048340601F0725EAAAA0E38285CE4
+SPKI Pin: 3AE35A2F6960B3267769F8C66BDD517C64463E10
 
-               ### Certificate 2
-               SubjectDN: CN=EssentialSSL CA, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
-               IssuerDN: CN=COMODO Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
-               Fingerprint: 73820A20F8F47A457CD0B54CC4E4E31CEFA5C1E7
-               SPKI Pin: CA91EDBE3EEF0F1736BDA1BA53E48E79B8ED7389
+### Certificate 2
+SubjectDN: CN=COMODO High-Assurance Secure Server CA, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
+IssuerDN: CN=AddTrust External CA Root, OU=AddTrust External TTP Network, O=AddTrust AB, C=SE
+Fingerprint: B9B4C7A488C0885EC1C83AA87E4EBD2B215F9FA4
+SPKI Pin: 4DC08738FE301627BF02D49EE265BD4B7C15D54E
+
 
 **/
 
-        PINLIST.add("F44CF8786F4346082E18AB760CC49B6167B1B9D8");
-        PINLIST.add("CA91EDBE3EEF0F1736BDA1BA53E48E79B8ED7389");
+        PINLIST.add("3AE35A2F6960B3267769F8C66BDD517C64463E10");
+        PINLIST.add("4DC08738FE301627BF02D49EE265BD4B7C15D54E");
         
         /**
 
