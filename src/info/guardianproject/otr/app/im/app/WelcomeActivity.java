@@ -17,13 +17,12 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.util.LogCleaner;
 import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -627,6 +626,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 {
                     mCacheWord.manuallyLock();
                 }
+                
+
+                Intent cacheWordIntent = CacheWordService
+                        .getBlankServiceIntent(getApplicationContext());
+                WelcomeActivity.this.stopService(cacheWordIntent);
                 
                 WelcomeActivity.this.finish();
             }

@@ -85,21 +85,23 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     @Override
     protected void onPause() {
         super.onPause();
-        try { mCacheWord.onPause();}
-        catch (Exception e){}
+        mCacheWord.onPause();
+        
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-      
-        try
-        {
-            mCacheWord.onResume();
-        }
-        catch (Exception e){}
+        mCacheWord.onResume();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCacheWord.disconnect();
+    }
+    
     @Override
     public void onBackPressed() {
       
