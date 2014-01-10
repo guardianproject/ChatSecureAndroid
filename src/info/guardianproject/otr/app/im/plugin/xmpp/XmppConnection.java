@@ -415,7 +415,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
         } catch (XMPPException e) {
             
-            Log.d(ImApp.LOG_TAG,"err loading vcard");
+           // Log.d(ImApp.LOG_TAG,"err loading vcard");
             
             if (e.getStreamError() != null)
             {
@@ -1379,25 +1379,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void logoutAsync() {
-        do_logout();
-        /**
+        
         execute(new Runnable() {
             @Override
             public void run() {
                 do_logout();
             }
         });
-        */
+        
     }
 
     // Force immediate logout
     public void logout() {
-        do_logout();
+        logoutAsync();
     }
 
     // Usually runs in executor thread, unless called from logout()
     private void do_logout() {
-        Log.w(TAG, "logout");
         setState(LOGGING_OUT, null);
         disconnect();
         disconnected(null);
