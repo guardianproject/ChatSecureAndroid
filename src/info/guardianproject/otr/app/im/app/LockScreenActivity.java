@@ -255,6 +255,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                     // Check passphrase
                     try {
                         mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
+                        ImApp.mUsingCacheword = true;
                     } catch (GeneralSecurityException e) {
                         mEnterPassphrase.setText("");
                         // TODO implement try again and wipe if fail

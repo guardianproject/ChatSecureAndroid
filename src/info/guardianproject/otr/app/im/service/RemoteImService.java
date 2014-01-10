@@ -448,14 +448,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             conn.logout();
         }
         
-        if (getGlobalSettings().getUseForegroundPriority())
+        if (mUseForeground)
             stopForeground(true);
 
         if (mGlobalSettings != null)
             mGlobalSettings.close();
      
-       // Imps.clearPassphrase(this); //TODO let the cacheword-managing activity handle this
-        
     }
 
     @Override
@@ -502,11 +500,15 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         return results[0];
     }
 
+    private boolean mUseForeground = false;
+    
     IImConnection do_createConnection(long providerId, long accountId) {
         
         if (mConnections.size() == 0)
         {
-            if (getGlobalSettings().getUseForegroundPriority())
+            mUseForeground = getGlobalSettings().getUseForegroundPriority();
+            
+            if (mUseForeground)
                 startForegroundCompat();
         }
         

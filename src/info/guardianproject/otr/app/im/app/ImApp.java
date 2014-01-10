@@ -115,6 +115,8 @@ public class ImApp extends Application {
     HashMap<Long, ProviderDef> mProviders;
 
     Broadcaster mBroadcaster;
+    
+    public static boolean mUsingCacheword = false;
 
     /**
      * A queue of messages that are waiting to be sent when service is
@@ -698,9 +700,6 @@ public class ImApp extends Application {
     public IImConnection getConnection(long providerId) {
         synchronized (mConnections) {
             
-            if (mConnections.size() == 0)
-                fetchActiveConnections();
-            
             IImConnection im = mConnections.get(providerId);
             
             if (im != null)
@@ -740,9 +739,6 @@ public class ImApp extends Application {
     public List<IImConnection> getActiveConnections() {
         synchronized (mConnections) {
 
-            if (mConnections.size() == 0)
-                fetchActiveConnections();
-            
             ArrayList<IImConnection> result = new ArrayList<IImConnection>();
             result.addAll(mConnections.values());
             return result;
@@ -903,6 +899,9 @@ public class ImApp extends Application {
             }
 
             try {
+
+                fetchActiveConnections();
+                
                 int what = -1;
                 long providerId = conn.getProviderId();
                 switch (state) {
