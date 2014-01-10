@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
             	android:layout_below="@+id/messagebox"
-                android:textAppearance="?android:attr/textAppearanceSmall" 
+                    android:textSize="12sp"
                 android:layout_gravity="right"
                     android:gravity="right"
                     android:layout_marginBottom="1dp"
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="16sp"
                     android:layout_gravity="right"
                     android:gravity="right"
                      />
