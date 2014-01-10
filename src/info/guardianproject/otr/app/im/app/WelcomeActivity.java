@@ -21,10 +21,13 @@ import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.LogCleaner;
 import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +36,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -105,15 +109,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             mApp.checkForCrashes(this);            
         }
         
-        if (openEncryptedStores(null, false))
+        if (ImApp.mUsingCacheword)
+            connectToCacheWord();
+        else 
         {
-            // DB already open, or unencrypted
-            // openEncryptedStores has finished()
-            return;
+           
+           if (!openEncryptedStores(null, false))
+               connectToCacheWord(); //first time setup
         }
-        else
-            connectToCacheWord ();
-    
     }
 
     private void connectToCacheWord ()
@@ -564,34 +567,72 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     public void onCacheWordOpened() {
         if (mDoLock) {
-            mCacheWord.manuallyLock();
-            mCacheWord.disconnect();
             completeShutdown();
             return;
         }
-       Log.d(ImApp.LOG_TAG,"cache word opened");
-       
+        
        byte[] encryptionKey = mCacheWord.getEncryptionKey();
        openEncryptedStores(encryptionKey, true);
 
        int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
 
        mCacheWord.setTimeoutMinutes(defaultTimeout);
+       
     }
 
     private void completeShutdown ()
     {
-        
-        mApp.forceStopImService();
-
-        mHandler.postDelayed(new Runnable () {
+           new AsyncTask<String, Void, String>() {
             
-            public void run ()
-            {
+            private ProgressDialog dialog;
+            
+            
+            @Override
+            protected void onPreExecute() {
+                if (mApp.getActiveConnections().size() > 0)
+                {
+                    dialog = new ProgressDialog(WelcomeActivity.this);
+                    dialog.setCancelable(true);
+                    dialog.setMessage(getString(R.string.signing_out_wait));
+                    dialog.show();
+                }
+            }
+            
+            @Override
+            protected String doInBackground(String... params) {
+              
+
+                while (mApp.getActiveConnections().size() > 0)
+                {
+                    try{Thread.sleep(500);}catch (Exception e){}
+                }
+                
+              
+                
+                return "";
+              }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+
+                if (dialog != null)
+                    dialog.hide();
+
+                mApp.forceStopImService();
+                
                 Imps.clearPassphrase(mApp);
+                
+                if (mCacheWord != null)
+                {
+                    mCacheWord.manuallyLock();
+                }
+                
                 WelcomeActivity.this.finish();
             }
-        }, 3000); 
+        }.execute();
+        
+      
         
     }
     
@@ -599,6 +640,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
+            
             if (mDoLock)
                 completeShutdown();
             else
