@@ -876,5 +876,7 @@
     
     <string name="connecting_to_group_chat_">Connecting to group chat...</string>
     
+    <string name="btn_create_account">Create Account</string>
+    
 </resources>
 
