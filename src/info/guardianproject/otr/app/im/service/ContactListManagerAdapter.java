@@ -204,6 +204,26 @@ public class ContactListManagerAdapter extends
         return ImErrorInfo.NO_ERROR;
     }
 
+    public int setContactName(String address, String name) {
+        // update the server
+        try {
+            mAdaptee.setContactName(address,name);
+        } catch (ImException e) {
+            return e.getImError().getCode();
+        }
+        // update locally
+        String selection = Imps.Contacts.USERNAME + "=?";
+        String[] selectionArgs = { address };
+        ContentValues values = new ContentValues(1);
+        values.put( Imps.Contacts.NICKNAME, name);
+        int updated = mResolver.update(mContactUrl, values, selection, selectionArgs);
+        if( updated != 1 ) {
+            return ImErrorInfo.ILLEGAL_CONTACT_ADDRESS;
+        }
+        
+        return ImErrorInfo.NO_ERROR;
+    }
+
     public void approveSubscription(String address) {
         mAdaptee.approveSubscriptionRequest(address);
     }

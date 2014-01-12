@@ -241,6 +241,11 @@ public class LoopbackConnection extends ImConnection {
             // TODO Auto-generated method stub
             return;
         }
+
+        @Override
+        protected void doSetContactName(String address, String name) throws ImException {
+            // stub - no server
+        }
     }
 
     class LoopbackAddress extends Address {

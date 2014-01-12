@@ -752,6 +752,11 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "create temporary " + address);
             return makeContact(parseAddressName(address), address);
         }
+
+        @Override
+        protected void doSetContactName(String address, String name) throws ImException {
+            // stub - no server
+        }
     }
 
     @Override

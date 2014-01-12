@@ -72,6 +72,8 @@
     <string name="menu_block_contact">Block contact</string>
     <!-- Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+    <string name="menu_contact_nickname">Contact nickname</string>
+    <!-- Screen menu item on the contact to edit nickname.-->
     <string name="menu_view_blocked">Blocked</string>
     <!-- Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->

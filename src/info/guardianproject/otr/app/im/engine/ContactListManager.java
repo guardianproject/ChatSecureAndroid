@@ -393,7 +393,35 @@ public abstract class ContactListManager {
 
         doRemoveContactFromListAsync(contact, list);
     }
+    
+    /**
+     * @param address
+     * @param name
+     * @return
+     * @throws ImException 
+     */
+    public void setContactName(String address, String name) throws ImException {
+        checkState();
 
+        doSetContactName(address,name);
+        updateCache(address,name); // used to refresh the display
+    }
+    
+    protected abstract void doSetContactName(String address, String name) throws ImException;
+    
+    protected void updateCache(String address, String name) {
+        // each contact list holds a cache
+        for (ContactList list : mContactLists) {
+            Contact contact = list.getContact(normalizeAddress(address));
+            if (contact != null) {
+                // refresh the cache
+                Contact newContact = new Contact(contact.getAddress(), name);
+                newContact.setPresence(contact.getPresence());
+                list.insertToCache(newContact);
+            }
+        }
+    }
+    
     /**
      * Gets a unmodifiable list of blocked contacts.
      * 
@@ -634,4 +662,5 @@ public abstract class ContactListManager {
     protected abstract void doRemoveContactFromListAsync(Contact contact, ContactList list);
 
     protected abstract void setListNameAsync(String name, ContactList list);
+
 }
