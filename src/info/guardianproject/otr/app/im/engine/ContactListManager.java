@@ -415,9 +415,8 @@ public abstract class ContactListManager {
             Contact contact = list.getContact(normalizeAddress(address));
             if (contact != null) {
                 // refresh the cache
-                Contact newContact = new Contact(contact.getAddress(), name);
-                newContact.setPresence(contact.getPresence());
-                list.insertToCache(newContact);
+                contact.setName(name);
+                list.insertToCache(contact);
             }
         }
     }

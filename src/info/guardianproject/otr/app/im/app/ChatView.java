@@ -1860,15 +1860,6 @@ public class ChatView extends LinearLayout {
             return 0;
         }
 
-        /* (non-Javadoc)
-         * @see android.database.Cursor#getNotificationUri()
-         */
-        @Override
-        public Uri getNotificationUri() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
     }
 
     private class MessageAdapter extends CursorAdapter implements AbsListView.OnScrollListener {
