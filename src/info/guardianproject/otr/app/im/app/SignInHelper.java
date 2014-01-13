@@ -124,23 +124,27 @@ public class SignInHelper {
         if (state == ImConnection.DISCONNECTED) {
             // sign in failed
             final ProviderDef provider = mApp.getProvider(providerId);
-            String providerName = provider.mName;
-
-
-            Resources r = mContext.getResources();
-            String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
-                    error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
             
-            Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
-            /*
-            new AlertDialog.Builder(mContext).setTitle(R.string.error)
-                    .setMessage()
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            // FIXME
-                        }
-                    }).setCancelable(false).show();
-                    */
+            if (provider != null) //a provider might have been deleted
+            {
+                String providerName = provider.mName;
+    
+    
+                Resources r = mContext.getResources();
+                String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
+                        error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
+                
+                Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
+                /*
+                new AlertDialog.Builder(mContext).setTitle(R.string.error)
+                        .setMessage()
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // FIXME
+                            }
+                        }).setCancelable(false).show();
+                        */
+            }
         }
     }
 
