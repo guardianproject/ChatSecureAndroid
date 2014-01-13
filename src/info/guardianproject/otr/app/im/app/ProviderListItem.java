@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -76,6 +78,18 @@ public class ProviderListItem extends LinearLayout {
     private boolean mShowLongName = false;
     private ImApp mApp = null;
     private AsyncTask<Void, Void, Void> mBindTask;
+    
+    private Handler mHandler = new Handler()
+    {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            
+            //update notifications from async task
+        }
+        
+    };
     
     public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
@@ -228,7 +242,7 @@ public class ProviderListItem extends LinearLayout {
                 
                 final Imps.ProviderSettings.QueryMap settings =
                         new Imps.ProviderSettings.QueryMap(cr,
-                                providerId, false , null);
+                                providerId, false, mHandler);
                 
                 int connectionStatus = dbConnectionStatus;
                 String userDomain = settings.getDomain();
