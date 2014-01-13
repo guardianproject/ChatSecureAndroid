@@ -43,7 +43,7 @@ import android.widget.TextView;
 public class ProviderListItem extends LinearLayout {
     private Activity mActivity;
     private SignInManager mSignInManager;
-    
+    private ContentResolver mResolver;
     private CompoundButton mSignInSwitch;
     private OnCheckedChangeListener mCheckedChangeListner = new OnCheckedChangeListener(){
 
@@ -97,6 +97,8 @@ public class ProviderListItem extends LinearLayout {
         mSignInManager = signInManager;
         
         mApp = (ImApp)activity.getApplication();
+        
+        mResolver = mApp.getContentResolver();
         
     }
 
@@ -235,13 +237,8 @@ public class ProviderListItem extends LinearLayout {
             @Override
             protected Void doInBackground(Void... params) {
                 
-                ContentResolver cr = getContext().getContentResolver();
-                
-                if (cr == null)
-                    return null;
-                
-                final Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(cr,
+                Imps.ProviderSettings.QueryMap settings =
+                        new Imps.ProviderSettings.QueryMap(mResolver,
                                 providerId, false, mHandler);
                 
                 int connectionStatus = dbConnectionStatus;
@@ -279,7 +276,7 @@ public class ProviderListItem extends LinearLayout {
 
                 case ImConnection.LOGGED_IN:
                     mSwitchOn = true;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings);
+                    mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
 
                     break;
 
@@ -292,7 +289,7 @@ public class ProviderListItem extends LinearLayout {
                 default:
 
                     mSwitchOn = false;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings);
+                    mSecondRowText = computeSecondRowText(presenceString, r, settings, false);
                     break;
                 }
 
@@ -324,15 +321,17 @@ public class ProviderListItem extends LinearLayout {
     }
 
     private String computeSecondRowText(String presenceString, Resources r,
-            final Imps.ProviderSettings.QueryMap settings) {
+            final Imps.ProviderSettings.QueryMap settings, boolean showPresence) {
         String secondRowText;
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
-        /*
-        secondRowTextBuffer.append(presenceString);
 
-        secondRowTextBuffer.append(" - ");
-        */
+        if (showPresence)
+        {
+            secondRowTextBuffer.append(presenceString);
+            secondRowTextBuffer.append(" - ");
+        }
+            
         
         if (settings.getServer() != null && settings.getServer().length() > 0)
         {
@@ -419,12 +418,12 @@ public class ProviderListItem extends LinearLayout {
 
         case ImConnection.LOGGED_IN:
             switchOn = true;
-            secondRowText = computeSecondRowText(accountSetting);
+            secondRowText = computeSecondRowText(accountSetting, true);
             break;
 
         default:
             switchOn = false;
-            secondRowText = computeSecondRowText(accountSetting);
+            secondRowText = computeSecondRowText(accountSetting, false);
             break;
         }
         
@@ -440,7 +439,6 @@ public class ProviderListItem extends LinearLayout {
 
     };
     
-    /**
     private String getPresenceString( Context context, int presenceStatus) {
 
         switch (presenceStatus) {
@@ -463,13 +461,17 @@ public class ProviderListItem extends LinearLayout {
         default:
             return context.getString(R.string.presence_offline);
         }
-    }*/
+    }
     
-    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting ) {
+    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting, boolean showPresence ) {
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
-   //     secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
-    //    secondRowTextBuffer.append(" - ");
+        if (showPresence)
+        {
+            secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
+            secondRowTextBuffer.append(" - ");
+        }
+            
         if (accountSetting.host != null && accountSetting.host.length() > 0) {
             secondRowTextBuffer.append(accountSetting.host);
         } else {
