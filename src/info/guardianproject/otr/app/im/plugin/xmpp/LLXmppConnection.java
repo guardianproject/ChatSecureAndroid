@@ -568,6 +568,8 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                     message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
             msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
             msg.setBody(message.getBody());
+         //   msg.setPacketID(message.getID());
+            
             debug(TAG, "sending packet ID " + msg.getPacketID());
             message.setID(msg.getPacketID());
             sendPacket(msg);

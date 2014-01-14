@@ -208,9 +208,9 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             mPassword = password;
 
             if (isImportFromKeySync)
-                loadAES(password);
+                loadAES(mPassword);
             else
-                loadOpenSSL(password);
+                loadOpenSSL(mPassword);
         }
 
         private void loadAES(final String password) throws IOException 
@@ -259,9 +259,23 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         {
             // Encrypt these bytes
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, password.toCharArray());
-            mProperties.store(encOS, null);
-            encOS.flush();
+            
+            try
+            {
+                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, password.toCharArray());
+                mProperties.store(encOS, null);
+                encOS.flush();
+            }
+            catch (IllegalArgumentException iae)
+            {
+
+                //might be a unicode character in the password
+                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, Base64.encodeBytes(password.getBytes()).toCharArray());
+                mProperties.store(encOS, null);
+                encOS.flush();
+                
+            
+            }
             
             FileOutputStream fos = new FileOutputStream(fileStore);
             fos.write(baos.toByteArray());
@@ -299,12 +313,16 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
                 fis = new FileInputStream(mStoreFile);
 
-                
                 // Decrypt the bytes
-                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
-                
-                    mProperties.load(encIS);
-                
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());                
+                mProperties.load(encIS);
+            }
+            catch (IllegalArgumentException iae)
+            {
+                //might be a unicode character in the password
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, Base64.encodeBytes(password.getBytes()).toCharArray());                
+                mProperties.load(encIS);
+            
             } catch (FileNotFoundException fnfe) {
                 OtrDebugLogger.log("Properties store file not found: First time?");
                 mStoreFile.getParentFile().mkdirs();

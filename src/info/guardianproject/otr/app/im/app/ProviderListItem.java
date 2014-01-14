@@ -30,7 +30,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -41,7 +44,7 @@ import android.widget.TextView;
 public class ProviderListItem extends LinearLayout {
     private Activity mActivity;
     private SignInManager mSignInManager;
-    
+    private ContentResolver mResolver;
     private CompoundButton mSignInSwitch;
     private OnCheckedChangeListener mCheckedChangeListner = new OnCheckedChangeListener(){
 
@@ -77,12 +80,26 @@ public class ProviderListItem extends LinearLayout {
     private ImApp mApp = null;
     private AsyncTask<Void, Void, Void> mBindTask;
     
+    private Handler mHandler = new Handler()
+    {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            
+            //update notifications from async task
+        }
+        
+    };
+    
     public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
         mActivity = activity;
         mSignInManager = signInManager;
         
         mApp = (ImApp)activity.getApplication();
+        
+        mResolver = mApp.getContentResolver();
         
     }
 
@@ -221,68 +238,73 @@ public class ProviderListItem extends LinearLayout {
             @Override
             protected Void doInBackground(Void... params) {
                 
-                ContentResolver cr = getContext().getContentResolver();
-                
-                if (cr == null)
-                    return null;
-                
-                final Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(cr,
-                                providerId, false , null);
-                
-                int connectionStatus = dbConnectionStatus;
-                String userDomain = settings.getDomain();
-                
-                
-                IImConnection conn = mApp.getConnection(providerId);
-                if (conn == null)
+                if (providerId != -1)
                 {
-                    connectionStatus = ImConnection.DISCONNECTED;
-                }
-                else
-                {
-                    try {
-                        connectionStatus = conn.getState();
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    try
+                    {
+                        Imps.ProviderSettings.QueryMap settings =
+                                new Imps.ProviderSettings.QueryMap(mResolver,
+                                        providerId, false, mHandler);
+                        
+                        String userDomain = settings.getDomain();
+                        int connectionStatus = dbConnectionStatus;
+                        
+                        IImConnection conn = mApp.getConnection(providerId);
+                        if (conn == null)
+                        {
+                            connectionStatus = ImConnection.DISCONNECTED;
+                        }
+                        else
+                        {
+                            try {
+                                connectionStatus = conn.getState();
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+        
+                        if (mShowLongName)
+                            mProviderNameText = activeUserName + '@' + userDomain;
+                        else
+                            mProviderNameText = activeUserName;
+        
+                        switch (connectionStatus) {
+                        
+                        case ImConnection.LOGGING_IN:
+                        case ImConnection.SUSPENDING:
+                        case ImConnection.SUSPENDED:
+                            mSecondRowText = r.getString(R.string.signing_in_wait);
+                            mSwitchOn = true;
+                            break;
+        
+                        case ImConnection.LOGGED_IN:
+                            mSwitchOn = true;
+                            mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
+        
+                            break;
+        
+                        case ImConnection.LOGGING_OUT:
+                            mSwitchOn = false;
+                            mSecondRowText = r.getString(R.string.signing_out_wait);
+        
+                            break;
+                            
+                        default:
+        
+                            mSwitchOn = false;
+                            mSecondRowText = computeSecondRowText(presenceString, r, settings, false);
+                            break;
+                        }
+        
+                        settings.close();
+                    }
+                    catch (NullPointerException npe)
+                    {
+                        Log.d(ImApp.LOG_TAG,"null on QueryMap (this shouldn't happen anymore, but just in case)",npe);
                     }
                 }
-
-                if (mShowLongName)
-                    mProviderNameText = activeUserName + '@' + userDomain;
-                else
-                    mProviderNameText = activeUserName;
-
-                switch (connectionStatus) {
                 
-                case ImConnection.LOGGING_IN:
-                case ImConnection.SUSPENDING:
-                case ImConnection.SUSPENDED:
-                    mSecondRowText = r.getString(R.string.signing_in_wait);
-                    mSwitchOn = true;
-                    break;
-
-                case ImConnection.LOGGED_IN:
-                    mSwitchOn = true;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings);
-
-                    break;
-
-                case ImConnection.LOGGING_OUT:
-                    mSwitchOn = false;
-                    mSecondRowText = r.getString(R.string.signing_out_wait);
-
-                    break;
-                    
-                default:
-
-                    mSwitchOn = false;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings);
-                    break;
-                }
-
-                settings.close();
                 return null;
             }
             
@@ -310,15 +332,17 @@ public class ProviderListItem extends LinearLayout {
     }
 
     private String computeSecondRowText(String presenceString, Resources r,
-            final Imps.ProviderSettings.QueryMap settings) {
+            final Imps.ProviderSettings.QueryMap settings, boolean showPresence) {
         String secondRowText;
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
-        /*
-        secondRowTextBuffer.append(presenceString);
 
-        secondRowTextBuffer.append(" - ");
-        */
+        if (showPresence)
+        {
+            secondRowTextBuffer.append(presenceString);
+            secondRowTextBuffer.append(" - ");
+        }
+            
         
         if (settings.getServer() != null && settings.getServer().length() > 0)
         {
@@ -405,12 +429,12 @@ public class ProviderListItem extends LinearLayout {
 
         case ImConnection.LOGGED_IN:
             switchOn = true;
-            secondRowText = computeSecondRowText(accountSetting);
+            secondRowText = computeSecondRowText(accountSetting, true);
             break;
 
         default:
             switchOn = false;
-            secondRowText = computeSecondRowText(accountSetting);
+            secondRowText = computeSecondRowText(accountSetting, false);
             break;
         }
         
@@ -426,7 +450,6 @@ public class ProviderListItem extends LinearLayout {
 
     };
     
-    /**
     private String getPresenceString( Context context, int presenceStatus) {
 
         switch (presenceStatus) {
@@ -449,13 +472,17 @@ public class ProviderListItem extends LinearLayout {
         default:
             return context.getString(R.string.presence_offline);
         }
-    }*/
+    }
     
-    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting ) {
+    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting, boolean showPresence ) {
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
-   //     secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
-    //    secondRowTextBuffer.append(" - ");
+        if (showPresence)
+        {
+            secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
+            secondRowTextBuffer.append(" - ");
+        }
+            
         if (accountSetting.host != null && accountSetting.host.length() > 0) {
             secondRowTextBuffer.append(accountSetting.host);
         } else {

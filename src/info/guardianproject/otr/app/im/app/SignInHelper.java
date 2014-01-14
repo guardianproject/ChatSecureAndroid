@@ -124,23 +124,27 @@ public class SignInHelper {
         if (state == ImConnection.DISCONNECTED) {
             // sign in failed
             final ProviderDef provider = mApp.getProvider(providerId);
-            String providerName = provider.mName;
-
-
-            Resources r = mContext.getResources();
-            String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
-                    error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
             
-            Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
-            /*
-            new AlertDialog.Builder(mContext).setTitle(R.string.error)
-                    .setMessage()
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            // FIXME
-                        }
-                    }).setCancelable(false).show();
-                    */
+            if (provider != null) //a provider might have been deleted
+            {
+                String providerName = provider.mName;
+    
+    
+                Resources r = mContext.getResources();
+                String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
+                        error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
+                
+                Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
+                /*
+                new AlertDialog.Builder(mContext).setTitle(R.string.error)
+                        .setMessage()
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // FIXME
+                            }
+                        }).setCancelable(false).show();
+                        */
+            }
         }
     }
 
@@ -159,30 +163,34 @@ public class SignInHelper {
             final boolean isActive) {
 
         final ProviderDef provider = mApp.getProvider(providerId);
-        final String providerName = provider.mName;
-
-        if (mApp.serviceConnected()) {
-            if (mSignInListener != null)
-                mSignInListener.connectedToService();
-            if (!isActive) {
-                activateAccount(providerId, accountId);
-            }
-            signInAccount(password, providerId, providerName, accountId);
-        }
-        else
+        
+        if (provider != null) //provider may be null if deleted, or db not updated yet
         {
-            mApp.callWhenServiceConnected(mHandler, new Runnable() {
-                public void run() {
-                    if (mApp.serviceConnected()) {
-                        if (mSignInListener != null)
-                            mSignInListener.connectedToService();
-                        if (!isActive) {
-                            activateAccount(providerId, accountId);
-                        }
-                        signInAccount(password, providerId, providerName, accountId);
-                    }
+            final String providerName = provider.mName;
+    
+            if (mApp.serviceConnected()) {
+                if (mSignInListener != null)
+                    mSignInListener.connectedToService();
+                if (!isActive) {
+                    activateAccount(providerId, accountId);
                 }
-            });
+                signInAccount(password, providerId, providerName, accountId);
+            }
+            else
+            {
+                mApp.callWhenServiceConnected(mHandler, new Runnable() {
+                    public void run() {
+                        if (mApp.serviceConnected()) {
+                            if (mSignInListener != null)
+                                mSignInListener.connectedToService();
+                            if (!isActive) {
+                                activateAccount(providerId, accountId);
+                            }
+                            signInAccount(password, providerId, providerName, accountId);
+                        }
+                    }
+                });
+            }
         }
     }
 

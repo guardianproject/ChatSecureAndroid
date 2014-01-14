@@ -552,8 +552,9 @@ public class AccountActivity extends Activity {
         checkUserChanged();
     
         OrbotHelper orbotHelper = new OrbotHelper(this);
+        
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+               getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
 
         if (useTor && (!orbotHelper.isOrbotInstalled()))
         {
