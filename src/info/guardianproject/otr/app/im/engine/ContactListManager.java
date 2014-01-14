@@ -182,8 +182,8 @@ public abstract class ContactListManager {
      * @param address the address of the temporary contact.
      * @return the created temporary contact
      */
-    public abstract Contact createTemporaryContact(String address);
-
+    public abstract Contact[] createTemporaryContacts(String[] addresses);
+    
     /**
      * Tell whether the manager contains the specified contact
      * 

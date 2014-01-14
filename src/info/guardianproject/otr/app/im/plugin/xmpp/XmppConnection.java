@@ -371,9 +371,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 // FIXME synchronize this to executor thread
               
-                    vCard.load(mConnection, jid);
+                vCard.load(mConnection, jid);
                
-
                 // If VCard is loaded, then save the avatar to the personal folder.
                 String avatarHash = vCard.getAvatarHash();
                 
@@ -383,9 +382,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     if (avatarBytes != null)
                     {
-                      
-                        debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);
-                        
+                        /*
+                        debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);                       
                         debug(ImApp.LOG_TAG, "start avatar length: " + avatarBytes.length);
                         
                         int width = ImApp.DEFAULT_AVATAR_WIDTH;
@@ -403,8 +401,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         
                         debug(ImApp.LOG_TAG, "compressed avatar length: " + avatarBytesCompressed.length);
                         
-                        
-                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, avatarHash, jid);
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, hash, jid);
+                        */
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, hash, jid);
                         
                         // int providerId, int accountId, byte[] data, String hash,String contact
                         return true;
@@ -1186,7 +1185,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     Contact rContact = mContactListManager.getContact(aFrom);
                     if (rContact == null)
-                        mContactListManager.createTemporaryContact(smackMessage.getFrom());
+                    {
+                        String[] from = {smackMessage.getFrom()};
+                        mContactListManager.createTemporaryContacts(from);
+                    }
                     
                     // Detect if this was said by us, and mark message as outgoing
                     if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
@@ -2050,13 +2052,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public Contact createTemporaryContact(String address) {
-            debug(TAG, "create temporary " + address);
-            Contact contact = makeContact(address);
-            Contact[] contacts = {contact};
+        public Contact[] createTemporaryContacts(String[] addresses) {
+           // debug(TAG, "create temporary " + address);
+            
+            Contact[] contacts = new Contact[addresses.length];
+            
+            int i = 0;
+            
+            for (String address : addresses)
+            {
+                contacts[i++] = makeContact(address);
+            }
+            
             notifyContactsPresenceUpdated(contacts);
-
-            return contact;
+            return contacts;
         }
 
         @Override
@@ -2729,15 +2738,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Contact[] contacts = new Contact[] { contact };
     
             mContactListManager.notifyContactsPresenceUpdated(contacts);
-            
-            PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
-            if (pe != null) {
-                DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
-                String hash = dpe.getValue("photo");
-                
-                if (hash != null)
-                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
-                
+
+            if (p.getStatus() == Presence.AVAILABLE)
+            {
+                PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
+                if (pe != null) {
+                    DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
+                    String hash = dpe.getValue("photo");
+                    
+                    if (hash != null)
+                        loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
+                    
+                }
             }
         }
         

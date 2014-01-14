@@ -750,9 +750,19 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public Contact createTemporaryContact(String address) {
-            debug(TAG, "create temporary " + address);
-            return makeContact(parseAddressName(address), address);
+        public Contact[] createTemporaryContacts(String[] addresses) {
+            
+            Contact[] contacts = new Contact[addresses.length];
+            
+            int i = 0;
+            
+            for (String address : addresses)
+            {
+                debug(TAG, "create temporary " + address);
+                contacts[i++] = makeContact(parseAddressName(address), address);
+            }
+            
+            return contacts;
         }
 
         @Override

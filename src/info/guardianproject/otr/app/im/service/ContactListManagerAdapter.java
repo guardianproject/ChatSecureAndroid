@@ -136,12 +136,17 @@ public class ContactListManagerAdapter extends
         Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
                 null, null, null);
        
+        String[] addresses = new String[contactCursor.getCount()];
+        int i = 0;
         while (contactCursor.moveToNext())
         {
-            String address = contactCursor.getString(0);
-            mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
+            addresses[i++] = contactCursor.getString(0);
+            
         }
-       
+        
+        Contact[] contacts = mAdaptee.createTemporaryContacts(addresses);
+        for (Contact contact : contacts)
+                mOfflineContacts.put(contact.getAddress().getBareAddress(), contact);
     
         contactCursor.close();
     }
@@ -315,11 +320,13 @@ public class ContactListManagerAdapter extends
             return c;
         }
     }
-
-    public Contact createTemporaryContact(String address) {
-        Contact c = mAdaptee.createTemporaryContact(address);
-        insertTemporary(c);
-        return c;
+    
+    public Contact[] createTemporaryContacts(String[] addresses) {
+        Contact[] contacts = mAdaptee.createTemporaryContacts(addresses);
+        
+        for (Contact c : contacts)
+            insertTemporary(c);
+        return contacts;
     }
 
     public long queryOrInsertContact(Contact c) {

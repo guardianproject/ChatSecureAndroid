@@ -231,7 +231,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public Contact createTemporaryContact(String address) {
+        public Contact[] createTemporaryContacts(String[] address) {
             // TODO Auto-generated method stub
             return null;
         }
