@@ -33,6 +33,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -237,63 +238,73 @@ public class ProviderListItem extends LinearLayout {
             @Override
             protected Void doInBackground(Void... params) {
                 
-                Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(mResolver,
-                                providerId, false, mHandler);
-                
-                int connectionStatus = dbConnectionStatus;
-                String userDomain = settings.getDomain();
-                
-                
-                IImConnection conn = mApp.getConnection(providerId);
-                if (conn == null)
+                if (providerId != -1)
                 {
-                    connectionStatus = ImConnection.DISCONNECTED;
-                }
-                else
-                {
-                    try {
-                        connectionStatus = conn.getState();
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    try
+                    {
+                        Imps.ProviderSettings.QueryMap settings =
+                                new Imps.ProviderSettings.QueryMap(mResolver,
+                                        providerId, false, mHandler);
+                        
+                        String userDomain = settings.getDomain();
+                        int connectionStatus = dbConnectionStatus;
+                        
+                        IImConnection conn = mApp.getConnection(providerId);
+                        if (conn == null)
+                        {
+                            connectionStatus = ImConnection.DISCONNECTED;
+                        }
+                        else
+                        {
+                            try {
+                                connectionStatus = conn.getState();
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+        
+                        if (mShowLongName)
+                            mProviderNameText = activeUserName + '@' + userDomain;
+                        else
+                            mProviderNameText = activeUserName;
+        
+                        switch (connectionStatus) {
+                        
+                        case ImConnection.LOGGING_IN:
+                        case ImConnection.SUSPENDING:
+                        case ImConnection.SUSPENDED:
+                            mSecondRowText = r.getString(R.string.signing_in_wait);
+                            mSwitchOn = true;
+                            break;
+        
+                        case ImConnection.LOGGED_IN:
+                            mSwitchOn = true;
+                            mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
+        
+                            break;
+        
+                        case ImConnection.LOGGING_OUT:
+                            mSwitchOn = false;
+                            mSecondRowText = r.getString(R.string.signing_out_wait);
+        
+                            break;
+                            
+                        default:
+        
+                            mSwitchOn = false;
+                            mSecondRowText = computeSecondRowText(presenceString, r, settings, false);
+                            break;
+                        }
+        
+                        settings.close();
+                    }
+                    catch (NullPointerException npe)
+                    {
+                        Log.d(ImApp.LOG_TAG,"null on QueryMap (this shouldn't happen anymore, but just in case)",npe);
                     }
                 }
-
-                if (mShowLongName)
-                    mProviderNameText = activeUserName + '@' + userDomain;
-                else
-                    mProviderNameText = activeUserName;
-
-                switch (connectionStatus) {
                 
-                case ImConnection.LOGGING_IN:
-                case ImConnection.SUSPENDING:
-                case ImConnection.SUSPENDED:
-                    mSecondRowText = r.getString(R.string.signing_in_wait);
-                    mSwitchOn = true;
-                    break;
-
-                case ImConnection.LOGGED_IN:
-                    mSwitchOn = true;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
-
-                    break;
-
-                case ImConnection.LOGGING_OUT:
-                    mSwitchOn = false;
-                    mSecondRowText = r.getString(R.string.signing_out_wait);
-
-                    break;
-                    
-                default:
-
-                    mSwitchOn = false;
-                    mSecondRowText = computeSecondRowText(presenceString, r, settings, false);
-                    break;
-                }
-
-                settings.close();
                 return null;
             }
             
