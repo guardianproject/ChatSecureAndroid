@@ -97,7 +97,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
                 settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
             }
         }
-        else if (key.equals("pref_foreground_service")) {
+        else if (key.equals("pref_foreground_enabled")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
         } else if (key.equals("pref_heartbeat_interval")) {
             try
