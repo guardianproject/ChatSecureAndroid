@@ -33,7 +33,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -41,16 +41,20 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Filter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactListFilterView extends LinearLayout {
     private AbsListView mFilterList;
@@ -125,7 +129,11 @@ public class ContactListFilterView extends LinearLayout {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 
-                String[] contactOptions = {mContext.getString(R.string.contact_profile_title),mContext.getString(R.string.menu_remove_contact),mContext.getString(R.string.menu_block_contact)};
+                String[] contactOptions = {
+                                           mContext.getString(R.string.contact_profile_title),
+                                           mContext.getString(R.string.menu_contact_nickname),
+                                           mContext.getString(R.string.menu_remove_contact),
+                                           mContext.getString(R.string.menu_block_contact)};
                 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setItems(contactOptions, new DialogInterface.OnClickListener() {
@@ -136,10 +144,13 @@ public class ContactListFilterView extends LinearLayout {
                                if (which == 0)
                                    mListener.showProfile((Cursor)mFilterList.getItemAtPosition(position));
                                else if (which == 1)
-                                   removeContactAtPosition(position);
+                                   setContactNickname(position);
                                else if (which == 2)
+                                   removeContactAtPosition(position);
+                               else if (which == 3)
                                    blockContactAtPosition(position);
                        }
+
                 });
 
                 builder.create().show();
@@ -331,6 +342,57 @@ public class ContactListFilterView extends LinearLayout {
         mListener = listener;
     }
     
+    private void setContactNickname(int aPosition) {
+        Cursor cursor = (Cursor)mFilterList.getItemAtPosition(aPosition);
+        if (cursor == null || mConn == null) {
+            mHandler.showAlert(R.string.error, R.string.select_contact);
+            return ;
+        }
+        final String address = cursor.getString(cursor.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+        final String nickname = cursor.getString(cursor.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+        final View view = LayoutInflater.from(mContext).inflate(R.layout.alert_dialog_contact_nickname, null);
+        ((TextView)view.findViewById(R.id.contact_address_textview)).setText( address );
+        ((EditText)view.findViewById(R.id.contact_nickname_edittext)).setText( nickname );
+        
+        new AlertDialog.Builder(mContext)
+        .setTitle(mContext.getString(R.string.menu_contact_nickname, nickname))
+        .setView(view)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                final String newNickname = ((EditText)view.findViewById(R.id.contact_nickname_edittext)).getText().toString();
+                new Handler().postDelayed(new Runnable() {                    
+                    @Override
+                    public void run() {
+                        setContactNickname( address, newNickname ) ;
+                    }
+                }, 500);
+            }
+        })
+        .setNegativeButton(R.string.cancel, null).show();
+    }
+    
+    /**
+     * @param value
+     */
+    protected void setContactNickname(String aAddress, String aNickname) {
+        try {
+            IContactListManager listManager = mConn.getContactListManager();
+            int result = listManager.setContactName(aAddress, aNickname); 
+            if( result != ImErrorInfo.NO_ERROR ) {
+                Toast.makeText(mContext, "ERROR: " + result, Toast.LENGTH_LONG); // TODO -LS error handling
+            }
+        } catch( Exception e ) {
+            Toast.makeText(mContext, "ERROR: " + e.getMessage(), Toast.LENGTH_LONG); // TODO -LS error handling
+        }
+        mFilterList.invalidate();
+        final InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindowToken(), 0);
+    }
+
+
     public void removeContactAtPosition(int packedPosition) {
         removeContact((Cursor)mFilterList.getItemAtPosition(packedPosition));
     }

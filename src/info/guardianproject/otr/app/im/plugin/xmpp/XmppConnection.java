@@ -2036,6 +2036,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             return contact;
         }
+
+        @Override
+        protected void doSetContactName(String address, String name) throws ImException {
+            Roster roster = mConnection.getRoster();
+            RosterEntry entry = roster.getEntry(address);
+            // confirm entry still exists
+            if (entry == null) {
+                return;
+            }
+            // set name
+            entry.setName(name);
+        }
     }
 
     public void sendHeartbeat(final long heartbeatInterval) {

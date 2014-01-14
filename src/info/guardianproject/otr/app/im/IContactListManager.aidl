@@ -63,6 +63,14 @@ interface IContactListManager {
     int removeContact(String address);
 
     /**
+     * Set a contact's nickname 
+     *
+     * @param address the address of the contact to be updates
+     * @param name the new name
+     */
+    int setContactName(String address, String name);
+
+    /**
      * Approves a subscription request from another user.
      */
     void approveSubscription(String address);

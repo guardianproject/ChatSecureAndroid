@@ -45,6 +45,10 @@ public class Contact extends ImEntity implements Parcelable {
     public String getName() {
         return mName;
     }
+    
+    public void setName( String aName ) {
+        mName = aName;
+    }
 
     public Presence getPresence() {
         return mPresence;
