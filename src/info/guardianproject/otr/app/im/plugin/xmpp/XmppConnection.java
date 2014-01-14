@@ -59,7 +59,6 @@ import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.Roster.SubscriptionMode;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
@@ -73,6 +72,7 @@ import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.DefaultPacketExtension;
 import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
@@ -1143,6 +1143,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
                 String address = smackMessage.getFrom();
                 String body = smackMessage.getBody();
+                
+                if (body == null)
+                {
+                    
+                    Collection<Body> mColl = smackMessage.getBodies();
+                    for (Body bodyPart : mColl)
+                    {
+                        String msg = bodyPart.getMessage();
+                        if (msg != null)
+                        {
+                            body = msg;
+                            break;
+                        }
+                    }
+                                        
+                }
             
                 DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
@@ -1508,8 +1524,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 org.jivesoftware.smack.packet.Message msg = muc.createMessage();
                
                 msg.setBody(message.getBody());
-                
+
+                debug(TAG, "sending packet ID " + msg.getPacketID());
+               // msg.setPacketID(message.getID());
                 message.setID(msg.getPacketID());
+
                 sendPacket(msg);
             }
             else
@@ -1520,8 +1539,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 msg.setBody(message.getBody());
                 
-             //   debug(TAG, "sending packet ID " + msg.getPacketID());
+                debug(TAG, "sending packet ID " + msg.getPacketID());
                 message.setID(msg.getPacketID());
+                
+                //msg.setPacketID(message.getID());
+                
                 sendPacket(msg);
             }
         }
