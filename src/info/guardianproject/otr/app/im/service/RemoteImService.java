@@ -709,6 +709,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             mKillProcessOnStop = killProcessOnStop;
         }
         
+        @Override
+        public void enableDebugLogging (boolean debug)
+        {
+            Debug.DEBUG_ENABLED = debug;
+        }
     };
     
     private boolean mKillProcessOnStop = false;

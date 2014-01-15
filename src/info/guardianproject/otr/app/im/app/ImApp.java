@@ -280,7 +280,15 @@ public class ImApp extends Application {
         Configuration config = getResources().getConfiguration();
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
      
-        
+        if (mImService != null)
+        {
+            boolean debugOn = settings.getBoolean("prefDebug", false);
+            try {
+                mImService.enableDebugLogging(debugOn);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     public boolean checkLocale ()
