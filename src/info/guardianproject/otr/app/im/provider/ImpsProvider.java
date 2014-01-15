@@ -1176,23 +1176,30 @@ public class ImpsProvider extends ContentProvider {
         
         if (getDBHelper() != null)
         {
-            SQLiteDatabase db = getDBHelper().getWritableDatabase();
-            synchronized (db)
+            try
             {
-                if (db.isOpen())
+                SQLiteDatabase db = getDBHelper().getWritableDatabase();
+                synchronized (db)
                 {
-                    db.beginTransaction();
-                    try {
-                        result = insertInternal(url, values);
-                        db.setTransactionSuccessful();
-                    } finally {
-                        db.endTransaction();
-                    }
-                    if (result != null) {
-                        getContext().getContentResolver()
-                                .notifyChange(url, null /* observer */, false /* sync */);
+                    if (db.isOpen())
+                    {
+                        db.beginTransaction();
+                        try {
+                            result = insertInternal(url, values);
+                            db.setTransactionSuccessful();
+                        } finally {
+                            db.endTransaction();
+                        }
+                        if (result != null) {
+                            getContext().getContentResolver()
+                                    .notifyChange(url, null /* observer */, false /* sync */);
+                        }
                     }
                 }
+            }
+            catch (IllegalStateException ise)
+            {
+                log("database closed when insert attempted: " + url.toString());
             }
         }
         return result;
