@@ -101,11 +101,10 @@
           android:defaultValue="true" />
   
    <CheckBoxPreference
-          android:key="pref_foreground_service"
+          android:key="pref_foreground_enable"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
-          android:defaultValue="true" />
-  
+          android:defaultValue="false" />
 
   <EditTextPreference 
           android:key="pref_heartbeat_interval"
@@ -168,4 +167,14 @@
   -->
     </PreferenceCategory>
 
+  
+
+ 
+  <CheckBoxPreference
+          android:key="prefDebug"
+          android:title="@string/pref_debug_title"
+          android:summary="@string/pref_debug_summary"
+          android:defaultValue="false" />
+ 
+  
 </PreferenceScreen>

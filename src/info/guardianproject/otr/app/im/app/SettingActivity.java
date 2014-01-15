@@ -97,7 +97,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
                 settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
             }
         }
-        else if (key.equals("pref_foreground_service")) {
+        else if (key.equals("pref_foreground_enable")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
         } else if (key.equals("pref_heartbeat_interval")) {
             try
@@ -136,7 +136,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         // TODO re-enable Ringtone preference
         //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
-        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
+        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_enable");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
         
         mThemeBackground = (EditTextPreference) findPreference("pref_background");

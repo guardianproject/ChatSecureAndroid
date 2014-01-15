@@ -73,12 +73,12 @@ interface IContactListManager {
     /**
      * Approves a subscription request from another user.
      */
-    void approveSubscription(String address);
+    void approveSubscription(in Contact address);
 
     /**
      * Declines a subscription request from another user.
      */
-    void declineSubscription(String address);
+    void declineSubscription(in Contact address);
 
     /**
      * Blocks a contact. The ContactListListener will be notified when the contact is blocked

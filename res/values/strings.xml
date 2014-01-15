@@ -880,5 +880,8 @@
     
     <string name="btn_create_account">Create Account</string>
     
+    <string name="pref_debug_title">Enable Debug Logs</string>
+    <string name="pref_debug_summary">Output app log data to standard out / logcat for debugging</string>
+    
 </resources>
 

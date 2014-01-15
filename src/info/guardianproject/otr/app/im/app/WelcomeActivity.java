@@ -603,9 +603,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
                 while (mApp.getActiveConnections().size() > 0)
                 {
-                    try{Thread.sleep(500);}catch (Exception e){}
+                    try{Thread.sleep(200);}catch (Exception e){}
                 }
                 
+                //wait another half second just in case
+                try{Thread.sleep(500);}catch (Exception e){}
               
                 
                 return "";

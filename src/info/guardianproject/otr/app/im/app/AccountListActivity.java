@@ -238,7 +238,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         for (IImConnection conn : mApp.getActiveConnections())
         {
                try {
-                conn.logout();
+                conn.logout();                
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

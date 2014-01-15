@@ -136,12 +136,17 @@ public class ContactListManagerAdapter extends
         Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
                 null, null, null);
        
+        String[] addresses = new String[contactCursor.getCount()];
+        int i = 0;
         while (contactCursor.moveToNext())
         {
-            String address = contactCursor.getString(0);
-            mOfflineContacts.put(address, mAdaptee.createTemporaryContact(address));
+            addresses[i++] = contactCursor.getString(0);
+            
         }
-       
+        
+        Contact[] contacts = mAdaptee.createTemporaryContacts(addresses);
+        for (Contact contact : contacts)
+                mOfflineContacts.put(contact.getAddress().getBareAddress(), contact);
     
         contactCursor.close();
     }
@@ -224,11 +229,11 @@ public class ContactListManagerAdapter extends
         return ImErrorInfo.NO_ERROR;
     }
 
-    public void approveSubscription(String address) {
+    public void approveSubscription(Contact address) {
         mAdaptee.approveSubscriptionRequest(address);
     }
 
-    public void declineSubscription(String address) {
+    public void declineSubscription(Contact address) {
         mAdaptee.declineSubscriptionRequest(address);
     }
 
@@ -315,11 +320,13 @@ public class ContactListManagerAdapter extends
             return c;
         }
     }
-
-    public Contact createTemporaryContact(String address) {
-        Contact c = mAdaptee.createTemporaryContact(address);
-        insertTemporary(c);
-        return c;
+    
+    public Contact[] createTemporaryContacts(String[] addresses) {
+        Contact[] contacts = mAdaptee.createTemporaryContacts(addresses);
+        
+        for (Contact c : contacts)
+            insertTemporary(c);
+        return contacts;
     }
 
     public long queryOrInsertContact(Contact c) {
@@ -665,13 +672,18 @@ public class ContactListManagerAdapter extends
             Uri uri = insertOrUpdateSubscription(username, nickname,
                     Imps.Contacts.SUBSCRIPTION_TYPE_FROM,
                     Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING);
-            mContext.getStatusBarNotifier().notifySubscriptionRequest(mProviderId, mAccountId,
-                    ContentUris.parseId(uri), username, nickname);
-            broadcast(new SubscriptionBroadcaster() {
+           
+            boolean hadListener = broadcast(new SubscriptionBroadcaster() {
                 public void broadcast(ISubscriptionListener listener) throws RemoteException {
                     listener.onSubScriptionRequest(from, mProviderId, mAccountId);
                 }
             });
+            
+            if (!hadListener)
+            {
+                mContext.getStatusBarNotifier().notifySubscriptionRequest(mProviderId, mAccountId,
+                        ContentUris.parseId(uri), username, nickname);
+            }
         }
 
         public void onUnSubScriptionRequest(final Contact from, long providerId, long accountId) {
@@ -682,13 +694,16 @@ public class ContactListManagerAdapter extends
         }
 
         
-        private void broadcast(SubscriptionBroadcaster callback) {
+        private boolean broadcast(SubscriptionBroadcaster callback) {
+            boolean hadListener = false;
+            
             synchronized (mRemoteSubscriptionListeners) {
                 final int N = mRemoteSubscriptionListeners.beginBroadcast();
                 for (int i = 0; i < N; i++) {
                     ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
                     try {
                         callback.broadcast(listener);
+                        hadListener = true;
                     } catch (RemoteException e) {
                         // The RemoteCallbackList will take care of removing the
                         // dead listeners.
@@ -696,10 +711,12 @@ public class ContactListManagerAdapter extends
                 }
                 mRemoteSubscriptionListeners.finishBroadcast();
             }
+            
+            return hadListener;
         }
 
-        public void onSubscriptionApproved(final String contact, long providerId, long accountId) {
-            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+        public void onSubscriptionApproved(final Contact contact, long providerId, long accountId) {
+            insertOrUpdateSubscription(contact.getAddress().getBareAddress(), null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {
@@ -709,8 +726,8 @@ public class ContactListManagerAdapter extends
             });
         }
 
-        public void onSubscriptionDeclined(final String contact, long providerId, long accountId) {
-            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+        public void onSubscriptionDeclined(final Contact contact, long providerId, long accountId) {
+            insertOrUpdateSubscription(contact.getAddress().getBareAddress(), null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {

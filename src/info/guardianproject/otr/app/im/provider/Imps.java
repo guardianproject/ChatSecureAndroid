@@ -2060,7 +2060,7 @@ public class Imps {
             }
 
             public boolean getUseForegroundPriority() {
-                return getBoolean(USE_FOREGROUND_PRIORITY, true /* default */);
+                return getBoolean(USE_FOREGROUND_PRIORITY, false /* default */);
             }
 
             /**

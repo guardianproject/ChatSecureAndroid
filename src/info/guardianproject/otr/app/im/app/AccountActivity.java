@@ -895,18 +895,6 @@ public class AccountActivity extends Activity {
         mEditPass.setFocusable(goodUsername);
         mEditPass.setFocusableInTouchMode(goodUsername);
 
-        // enable keep sign in only when remember password is checked.
-        boolean rememberPass = mRememberPass.isChecked();
-        if (rememberPass && !hasNameAndPassword) {
-            mRememberPass.setChecked(false);
-            rememberPass = false; 
-    
-        }
-        else
-        {
-            mRememberPass.setChecked(true);
-        }
-        
         mRememberPass.setEnabled(hasNameAndPassword);
         mRememberPass.setFocusable(hasNameAndPassword);
 

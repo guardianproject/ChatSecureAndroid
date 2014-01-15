@@ -28,6 +28,7 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -107,7 +108,7 @@ public class ImUrlActivity extends Activity {
         long providerId = -1;
         long accountId = -1;
         
-        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
+        Collection<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
         //look for active connections that match the host we need
         for (IImConnection conn : listConns)
@@ -667,7 +668,7 @@ public class ImUrlActivity extends Activity {
     private void startContactPicker() {
         
         Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();   
-        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
+        Collection<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
         
         for (IImConnection conn : listConns)
         {

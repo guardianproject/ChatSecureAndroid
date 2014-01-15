@@ -97,6 +97,7 @@
                     android:textSize="16sp"
                     android:layout_gravity="right"
                     android:gravity="right"
+                    android:autoLink="web|email|phone|map"
                      />
              </LinearLayout>
              

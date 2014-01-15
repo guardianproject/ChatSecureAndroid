@@ -77,7 +77,8 @@ public class ChatSessionManagerAdapter extends
         Contact contact = listManager.getContactByAddress(contactAddress);
         if (contact == null) {
             try {
-                contact = listManager.createTemporaryContact(contactAddress);
+                String[] address = {contactAddress};
+                contact = listManager.createTemporaryContacts(address)[0];
             } catch (IllegalArgumentException e) {
                 mSessionListenerAdapter.notifyChatSessionCreateFailed(contactAddress,
                         new ImErrorInfo(ImErrorInfo.ILLEGAL_CONTACT_ADDRESS,
