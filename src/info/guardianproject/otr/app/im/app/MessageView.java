@@ -50,11 +50,10 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -263,7 +262,8 @@ public class MessageView extends LinearLayout {
         
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
-
+        Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
+        
     }
     
     private MediaPlayer mMediaPlayer = null;
@@ -511,6 +511,9 @@ public class MessageView extends LinearLayout {
         
                   
         mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
+        
+        Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
+        
     }
 
     private void showAvatar (String address, boolean isLeft)
