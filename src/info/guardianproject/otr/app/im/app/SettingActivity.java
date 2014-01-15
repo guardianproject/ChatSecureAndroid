@@ -136,7 +136,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         // TODO re-enable Ringtone preference
         //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
-        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_service");
+        mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_enabled");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
         
         mThemeBackground = (EditTextPreference) findPreference("pref_background");
