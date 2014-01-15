@@ -672,8 +672,6 @@ private Handler mHandlerGoogleAuth = new Handler ()
             }
             
         }
-        
-        initProviderCursor();
     }
 
 
