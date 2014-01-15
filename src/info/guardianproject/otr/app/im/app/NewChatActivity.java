@@ -1579,12 +1579,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         });
 
         mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
+        /*
         mAdapter.setListener(new AccountAdapter.Listener() {
             @Override
             public void onPopulate() {
                 setSpinnerState();
             }
-        });
+        });*/
 
         
     }
