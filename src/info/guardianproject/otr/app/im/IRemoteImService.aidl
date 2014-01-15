@@ -75,4 +75,10 @@ interface IRemoteImService {
     * get interface to keymanager/store singleton
     **/
     IOtrKeyManager getOtrKeyManager ();
+    
+    /**
+    * use debug log to logcat out
+    **/
+    void enableDebugLogging (boolean debugOn);
+    
 }
