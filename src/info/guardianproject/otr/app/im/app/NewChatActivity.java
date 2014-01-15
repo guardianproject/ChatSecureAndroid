@@ -245,12 +245,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                    
-                    refreshLastConnection();
-                    
-
                     getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
+                    
+                   // refreshLastConnection();
+                    setSpinnerState ();
 
                 }
             }
