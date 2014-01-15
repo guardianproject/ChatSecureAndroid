@@ -37,6 +37,7 @@ import info.guardianproject.util.SystemServices.FileInfo;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -598,15 +599,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                          
                     if (host != null && path != null)
                     {
-                        List<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
+                        Collection<IImConnection> connActive = mApp.getActiveConnections();
                         
-                        if (!listConns.isEmpty())
-                        {
-                            
-                             startGroupChat(path, host, listConns.get(0));
-                            
-                             setResult(RESULT_OK);
+                        for (IImConnection conn : connActive)
+                        {                            
+                            startGroupChat (path, host, conn);                        
+                            setResult(RESULT_OK);
+                            break;
                         }
+                        
                     }
                     
                     
@@ -1566,6 +1567,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                    }
                     
                 });
+                
+                setSpinnerState ();
             }
 
             @Override
