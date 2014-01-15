@@ -83,7 +83,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+                getContentResolver(), mProviderId, true /* don't keep updated */, null /* no handler */);
         String value;
 
         if (key.equals("pref_account_xmpp_resource")) {
@@ -113,7 +113,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
                         .show();
             }
-            if (settings.getPort() != 5222 && settings.getPort() != 0)
+            if (settings.getPort() != 0)
                 mPort.setSummary(value);
         } else if (key.equals("pref_account_server")) {
             value = prefs.getString(key, null);
