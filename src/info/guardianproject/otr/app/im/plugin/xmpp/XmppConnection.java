@@ -382,7 +382,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     if (avatarBytes != null)
                     {
-                        /*
+                        
                         debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);                       
                         debug(ImApp.LOG_TAG, "start avatar length: " + avatarBytes.length);
                         
@@ -402,8 +402,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         debug(ImApp.LOG_TAG, "compressed avatar length: " + avatarBytesCompressed.length);
                         
                         DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, hash, jid);
-                        */
-                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytes, hash, jid);
                         
                         // int providerId, int accountId, byte[] data, String hash,String contact
                         return true;
@@ -1194,6 +1192,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         }
                         
                         boolean good = session.onReceiveMessage(rec);
+                        
+                        handlePresenceChanged(mConnection.getRoster().getPresence(rec.getFrom().getBareAddress()));
     
                         if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                             if (good) {
