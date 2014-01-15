@@ -672,13 +672,18 @@ public class ContactListManagerAdapter extends
             Uri uri = insertOrUpdateSubscription(username, nickname,
                     Imps.Contacts.SUBSCRIPTION_TYPE_FROM,
                     Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING);
-            mContext.getStatusBarNotifier().notifySubscriptionRequest(mProviderId, mAccountId,
-                    ContentUris.parseId(uri), username, nickname);
-            broadcast(new SubscriptionBroadcaster() {
+           
+            boolean hadListener = broadcast(new SubscriptionBroadcaster() {
                 public void broadcast(ISubscriptionListener listener) throws RemoteException {
                     listener.onSubScriptionRequest(from, mProviderId, mAccountId);
                 }
             });
+            
+            if (!hadListener)
+            {
+                mContext.getStatusBarNotifier().notifySubscriptionRequest(mProviderId, mAccountId,
+                        ContentUris.parseId(uri), username, nickname);
+            }
         }
 
         public void onUnSubScriptionRequest(final Contact from, long providerId, long accountId) {
@@ -689,13 +694,16 @@ public class ContactListManagerAdapter extends
         }
 
         
-        private void broadcast(SubscriptionBroadcaster callback) {
+        private boolean broadcast(SubscriptionBroadcaster callback) {
+            boolean hadListener = false;
+            
             synchronized (mRemoteSubscriptionListeners) {
                 final int N = mRemoteSubscriptionListeners.beginBroadcast();
                 for (int i = 0; i < N; i++) {
                     ISubscriptionListener listener = mRemoteSubscriptionListeners.getBroadcastItem(i);
                     try {
                         callback.broadcast(listener);
+                        hadListener = true;
                     } catch (RemoteException e) {
                         // The RemoteCallbackList will take care of removing the
                         // dead listeners.
@@ -703,6 +711,8 @@ public class ContactListManagerAdapter extends
                 }
                 mRemoteSubscriptionListeners.finishBroadcast();
             }
+            
+            return hadListener;
         }
 
         public void onSubscriptionApproved(final String contact, long providerId, long accountId) {
