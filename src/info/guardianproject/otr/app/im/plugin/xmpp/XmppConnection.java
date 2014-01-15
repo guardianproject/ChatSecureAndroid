@@ -2634,8 +2634,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
      // Get presence from the Roster to handle priorities and such
         final Roster roster = mConnection.getRoster();
         
-        if (presence.getType() != Type.subscribe && presence.getType() != Type.unsubscribe)
-            if (roster != null)
+        if (presence.getType() == Type.available) //get the latest presence for the highest priority
                 presence = roster.getPresence(xaddress.getBareAddress());
         
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
@@ -2643,17 +2642,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Presence p = new Presence(parsePresence(presence), status, null, null,
                 Presence.CLIENT_TYPE_DEFAULT);
         
-        
         String[] presenceParts = presence.getFrom().split("/");
         if (presenceParts.length > 1)
             p.setResource(presenceParts[1]);
         
 
-        if (contact == null) {
-            
-        
-           // debug(TAG, "got presence updated for NEW user: "
-             //       + presence.getFrom());
+        if (contact == null && presence.getType() == Type.subscribe) {
             
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
@@ -2684,9 +2678,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         } else {
 
-          //  debug(TAG, "Got presence update for EXISTING user: "
-          //          + contact.getAddress().getBareAddress() + " presence:" + p.getStatus());
-          
+            //we have no contact, and this is not a subscribe request
+            
+            return;
         }
 
         if (presence.getType() == Type.subscribe) {                    
@@ -2728,6 +2722,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             {
                 Log.e(TAG,"remote exception on subscription handling",e);
             }
+            
+            
         }
         else {
         
