@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="13.0.10"
+     android:versionName="13.1.0"
      android:versionCode="105"
      android:installLocation="auto"     
      >     
