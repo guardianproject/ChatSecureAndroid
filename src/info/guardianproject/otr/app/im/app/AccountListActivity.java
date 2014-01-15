@@ -302,7 +302,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
-            startActivity(sintent);
+            startActivityForResult(sintent,0);
             return true;
         case R.id.menu_import_keys:
             importKeyStore();
@@ -672,6 +672,8 @@ private Handler mHandlerGoogleAuth = new Handler ()
             }
             
         }
+        
+        initProviderCursor();
     }
 
 

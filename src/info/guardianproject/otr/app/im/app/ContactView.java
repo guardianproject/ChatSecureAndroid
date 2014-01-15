@@ -190,8 +190,7 @@ public class ContactView extends LinearLayout {
             }
            
             
-            if (mHolder.mLine2 != null)
-                mHolder.mLine2.setText(lastMsg);
+            mHolder.mLine2.setText(android.text.Html.fromHtml(lastMsg).toString());
                         
         }
         else 
