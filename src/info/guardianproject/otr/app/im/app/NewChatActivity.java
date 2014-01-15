@@ -1551,24 +1551,27 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         newCursor.moveToNext();
                         
                     }
+
+                    newCursor.moveToFirst();
+                    mAdapter.swapCursor(newCursor);
+    
+                    ActionBar ab = getSherlock().getActionBar();
+    
+                    ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
+    
+                       @Override
+                       public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                           initConnection(mAccountIds[itemPosition][0],mAccountIds[itemPosition][1]);
+                           return true;
+                       }
+                        
+                    });
+                    
+                    setSpinnerState ();
+                
                 }
 
-                newCursor.moveToFirst();
-                mAdapter.swapCursor(newCursor);
 
-                ActionBar ab = getSherlock().getActionBar();
-
-                ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
-
-                   @Override
-                   public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                       initConnection(mAccountIds[itemPosition][0],mAccountIds[itemPosition][1]);
-                       return true;
-                   }
-                    
-                });
-                
-                setSpinnerState ();
             }
 
             @Override
