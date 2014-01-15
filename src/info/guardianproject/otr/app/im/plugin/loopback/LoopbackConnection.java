@@ -215,8 +215,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
-            Contact contact = new Contact(new LoopbackAddress(address, address, null), address);
+        protected void doAddContactToListAsync(Contact contact, ContactList list) throws ImException {
             contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null,
                     Presence.CLIENT_TYPE_DEFAULT));
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
@@ -225,7 +224,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public void declineSubscriptionRequest(String contact) {
+        public void declineSubscriptionRequest(Contact contact) {
             // TODO Auto-generated method stub
 
         }
@@ -237,7 +236,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public void approveSubscriptionRequest(String contact) {
+        public void approveSubscriptionRequest(Contact contact) {
             // TODO Auto-generated method stub
             return;
         }

@@ -17,6 +17,8 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -94,14 +96,22 @@ public class ContactList extends ImEntity {
             }
         }
         
-        String aKey = mManager.normalizeAddress(address);
-
-        if (containsContact(aKey)) {
-            throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
-                    "Contact already exists in the list");
+        //String aKey = mManager.normalizeAddress(address);
+        Contact contact = getContact(address);
+        
+        if (contact != null)
+        {
+            if (containsContact(contact)) {
+                throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
+                        "Contact already exists in the list");
+            }
+        }
+        else
+        {
+            contact = new Contact (new XmppAddress(address),address);
         }
 
-        mManager.addContactToListAsync(aKey, this);
+        mManager.addContactToListAsync(contact, this);
     }
 
     /**

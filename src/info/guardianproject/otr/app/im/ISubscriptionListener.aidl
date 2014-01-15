@@ -35,12 +35,12 @@ oneway interface ISubscriptionListener {
      *
      * @see info.guardianproject.otr.app.im.engine.SubscriptionRequestListener#onSubscriptionApproved(String contact)
      */
-    void onSubscriptionApproved(String contact, long providerId, long accountId);
+    void onSubscriptionApproved(in Contact from, long providerId, long accountId);
 
     /**
      * Called when a subscription request is declined.
      *
      * @see info.guardianproject.otr.app.im.engine.ContactListListener#onSubscriptionDeclined(String contact)
      */
-    void onSubscriptionDeclined(String contact, long providerId, long accountId);
+    void onSubscriptionDeclined(in Contact from, long providerId, long accountId);
 }

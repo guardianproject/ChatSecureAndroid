@@ -229,11 +229,11 @@ public class ContactListManagerAdapter extends
         return ImErrorInfo.NO_ERROR;
     }
 
-    public void approveSubscription(String address) {
+    public void approveSubscription(Contact address) {
         mAdaptee.approveSubscriptionRequest(address);
     }
 
-    public void declineSubscription(String address) {
+    public void declineSubscription(Contact address) {
         mAdaptee.declineSubscriptionRequest(address);
     }
 
@@ -715,8 +715,8 @@ public class ContactListManagerAdapter extends
             return hadListener;
         }
 
-        public void onSubscriptionApproved(final String contact, long providerId, long accountId) {
-            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+        public void onSubscriptionApproved(final Contact contact, long providerId, long accountId) {
+            insertOrUpdateSubscription(contact.getAddress().getBareAddress(), null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {
@@ -726,8 +726,8 @@ public class ContactListManagerAdapter extends
             });
         }
 
-        public void onSubscriptionDeclined(final String contact, long providerId, long accountId) {
-            insertOrUpdateSubscription(contact, null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
+        public void onSubscriptionDeclined(final Contact contact, long providerId, long accountId) {
+            insertOrUpdateSubscription(contact.getAddress().getBareAddress(), null, Imps.Contacts.SUBSCRIPTION_TYPE_NONE,
                     Imps.Contacts.SUBSCRIPTION_STATUS_NONE);
 
             broadcast(new SubscriptionBroadcaster() {

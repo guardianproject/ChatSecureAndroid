@@ -378,7 +378,7 @@ public abstract class ContactListManager {
         doBlockContactAsync(address, false);
     }
 
-    protected void addContactToListAsync(String address, ContactList list) throws ImException {
+    protected void addContactToListAsync(Contact address, ContactList list) throws ImException {
         checkState();
 
         doAddContactToListAsync(address, list);
@@ -489,9 +489,9 @@ public abstract class ContactListManager {
      */
     public abstract void loadContactListsAsync();
 
-    public abstract void approveSubscriptionRequest(String contact);
+    public abstract void approveSubscriptionRequest(Contact contact);
 
-    public abstract void declineSubscriptionRequest(String contact);
+    public abstract void declineSubscriptionRequest(Contact contact);
 
     protected abstract ImConnection getConnection();
 
@@ -655,7 +655,7 @@ public abstract class ContactListManager {
         }
     }
 
-    protected abstract void doAddContactToListAsync(String address, ContactList list)
+    protected abstract void doAddContactToListAsync(Contact contact, ContactList list)
             throws ImException;
 
     protected abstract void doRemoveContactFromListAsync(Contact contact, ContactList list);

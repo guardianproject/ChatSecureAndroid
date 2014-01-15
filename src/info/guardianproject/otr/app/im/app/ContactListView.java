@@ -90,11 +90,11 @@ public class ContactListView extends LinearLayout {
             querySubscription();
         }
 
-        public void onSubscriptionApproved(String contact, long providerId, long accountId) {
+        public void onSubscriptionApproved(Contact contact, long providerId, long accountId) {
             querySubscription();
         }
 
-        public void onSubscriptionDeclined(String contact, long providerId, long accountId) {
+        public void onSubscriptionDeclined(Contact contact, long providerId, long accountId) {
             querySubscription();
         }
 

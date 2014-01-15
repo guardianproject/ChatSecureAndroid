@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -1661,7 +1662,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             }
             
-            
             if (mContactList.mPresenceView != null)
             {
                 try {
@@ -2274,7 +2274,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         try {
             IContactListManager manager = conn.getContactListManager();
-            manager.approveSubscription(userName);
+            
+            manager.approveSubscription(new Contact(new XmppAddress(userName),userName));
         } catch (RemoteException e) {
 
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
@@ -2289,7 +2290,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {
             try {
                 IContactListManager manager = conn.getContactListManager();
-                manager.declineSubscription(userName);
+                manager.declineSubscription(new Contact(new XmppAddress(userName),userName));
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "decline sub error",e);
@@ -2350,11 +2351,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         }
 
-        public void onSubscriptionApproved(String contact, long providerId, long accountId) {
+        public void onSubscriptionApproved(Contact contact, long providerId, long accountId) {
 
         }
 
-        public void onSubscriptionDeclined(String contact, long providerId, long accountId) {
+        public void onSubscriptionDeclined(Contact contact, long providerId, long accountId) {
 
         }
 

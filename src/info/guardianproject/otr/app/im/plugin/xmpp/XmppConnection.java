@@ -1381,7 +1381,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             type = Presence.DO_NOT_DISTURB;
         else if (rtype == Type.unavailable || rtype == Type.error)
             type = Presence.OFFLINE;
-    
+        
         return type;
     }
 
@@ -1987,19 +1987,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
+        protected void doAddContactToListAsync(Contact contact, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribe);
-            response.setTo(address);
+            response.setTo(contact.getAddress().getBareAddress());
 
             sendPacket(response);
 
             Roster roster = mConnection.getRoster();
             String[] groups = new String[] { list.getName() };
             try {
-                Contact contact = makeContact(address);
-                roster.createEntry(address, contact.getName(), groups);
+                roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
 
                 // If contact exists locally, don't create another copy
                 
@@ -2013,11 +2012,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public void declineSubscriptionRequest(String contact) {
+        public void declineSubscriptionRequest(Contact contact) {
             debug(TAG, "decline subscription");
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
-            response.setTo(contact);
+            response.setTo(contact.getAddress().getBareAddress());
             sendPacket(response);
             try {
                 mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact, mProviderId, mAccountId);
@@ -2028,11 +2027,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public void approveSubscriptionRequest(String contact) {
+        public void approveSubscriptionRequest(Contact contact) {
             debug(TAG, "approve subscription");
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribed);
-            response.setTo(contact);
+            response.setTo(contact.getAddress().getBareAddress());
             sendPacket(response);
             try
             {
@@ -2637,6 +2636,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (presence.getType() == Type.available) //get the latest presence for the highest priority
                 presence = roster.getPresence(xaddress.getBareAddress());
         
+        
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
         Presence p = new Presence(parsePresence(presence), status, null, null,
@@ -2676,16 +2676,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             
 
-        } else {
-
-            //we have no contact, and this is not a subscribe request
-            
-            return;
+        }
+        else if (contact == null)
+        {
+            return; //do nothing if we don't have a contact
         }
 
         if (presence.getType() == Type.subscribe) {                    
             debug(TAG,"got subscribe request: " + presence.getFrom());
-            
+
+            contact.setPresence(p);
             try
             {
                 mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact, mProviderId, mAccountId);
@@ -2699,7 +2699,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG,"got subscribed confirmation request: " + presence.getFrom());
             try
             {
-                mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(presence.getFrom(), mProviderId, mAccountId);
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
             }
             catch (RemoteException e)
             {
@@ -2716,7 +2716,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG,"got unsubscribe request: " + presence.getFrom());
             try
             {
-                mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(presence.getFrom(), mProviderId, mAccountId);
+                mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact, mProviderId, mAccountId);
             }
             catch (RemoteException e)
             {

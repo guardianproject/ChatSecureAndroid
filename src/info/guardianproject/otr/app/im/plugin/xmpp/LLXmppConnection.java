@@ -732,19 +732,19 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
+        protected void doAddContactToListAsync(Contact address, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
             // TODO
         }
 
         @Override
-        public void declineSubscriptionRequest(String contact) {
+        public void declineSubscriptionRequest(Contact contact) {
             debug(TAG, "decline subscription");
             // TODO
         }
 
         @Override
-        public void approveSubscriptionRequest(String contact) {
+        public void approveSubscriptionRequest(Contact contact) {
             debug(TAG, "approve subscription");
             // TODO
         }
