@@ -1184,33 +1184,31 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     rec.setType(Imps.MessageType.INCOMING);
                     
                     Contact rContact = mContactListManager.getContact(aFrom);
-                    if (rContact == null)
+                    if (rContact != null) //if we have not added them as a contact, don't receive message
                     {
-                        String[] from = {smackMessage.getFrom()};
-                        mContactListManager.createTemporaryContacts(from);
-                    }
                     
-                    // Detect if this was said by us, and mark message as outgoing
-                    if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
-                            rec.getFrom().getResource().equals(rec.getTo().getUser())) {
-                        rec.setType(Imps.MessageType.OUTGOING);
-                    }
-                    
-                    boolean good = session.onReceiveMessage(rec);
-
-                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                        if (good) {
-                            debug(TAG, "sending delivery receipt");
-                        // got XEP-0184 request, send receipt
-                            sendReceipt(smackMessage);
-                            session.onReceiptsExpected();
-                        } else {
-                            debug(TAG, "not sending delivery receipt due to processing error");
+                        // Detect if this was said by us, and mark message as outgoing
+                        if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
+                                rec.getFrom().getResource().equals(rec.getTo().getUser())) {
+                            rec.setType(Imps.MessageType.OUTGOING);
                         }
                         
-                     } else if (!good) {
-                         debug(TAG, "packet processing error");
-                     }
+                        boolean good = session.onReceiveMessage(rec);
+    
+                        if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                            if (good) {
+                                debug(TAG, "sending delivery receipt");
+                            // got XEP-0184 request, send receipt
+                                sendReceipt(smackMessage);
+                                session.onReceiptsExpected();
+                            } else {
+                                debug(TAG, "not sending delivery receipt due to processing error");
+                            }
+                            
+                         } else if (!good) {
+                             debug(TAG, "packet processing error");
+                         }
+                    }
                 }
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
