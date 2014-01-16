@@ -86,7 +86,7 @@
   		android:layout_margin="0dp"
         android:padding="0dp"
         android:divider="#00000000"
-        android:dividerHeight="0dp"
+        android:dividerHeight="10dp"
         android:scrollingCache="true"
         android:transcriptMode="normal"
          />

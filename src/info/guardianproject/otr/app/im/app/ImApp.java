@@ -424,8 +424,6 @@ public class ImApp extends Application {
     }
     
     
-    //private boolean mKillServerOnStart = false;
-    
     public synchronized void forceStopImService() 
     {
         if (mImService != null) {
@@ -927,7 +925,7 @@ public class ImApp extends Application {
                     what = EVENT_CONNECTION_DISCONNECTED;                    
                     mConnections.remove(providerId);                    
                     // stop the service if there isn't an active connection anymore.
-                    stopImServiceIfInactive();
+                    //stopImServiceIfInactive();
                     
                     break;
 

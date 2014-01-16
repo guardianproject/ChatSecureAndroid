@@ -297,7 +297,8 @@ public class MessageView extends LinearLayout {
         }
         
         Intent intent = new Intent(Intent.ACTION_VIEW);  
-        intent.setDataAndType(Uri.parse( body ), mimeType);
+        //intent.setDataAndType(Uri.parse( body ), mimeType);
+        intent.setData(Uri.parse( body ));
         getContext().startActivity(intent);
         
     }

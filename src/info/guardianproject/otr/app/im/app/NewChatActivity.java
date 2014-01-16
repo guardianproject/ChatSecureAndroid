@@ -1359,10 +1359,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 mDataValid = true;
                 // notify the observers about the new cursor
                 refreshChatViews();
-                notifyDataSetChanged();
+               
             } else {
                 mDataValid = false;
             }
+            notifyDataSetChanged();
             return oldCursor;
         }
 
@@ -1404,7 +1405,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 int position = PagerAdapter.POSITION_NONE;
                 
                 // TODO: cache positions so we don't scan the cursor every time
-                if (mCursor.getCount() > 0)
+                if (mCursor != null && mCursor.getCount() > 0)
                 {
                     mCursor.moveToFirst();
                     
@@ -1443,7 +1444,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         @Override
         public CharSequence getPageTitle(int position) {
            
-            if (position == 0)
+            if (position == 0 || mCursor == null)
             {
                 return getString(R.string.contacts);
             }
