@@ -609,7 +609,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 //wait another half second just in case
                 try{Thread.sleep(500);}catch (Exception e){}
               
-                
                 return "";
               }
 
