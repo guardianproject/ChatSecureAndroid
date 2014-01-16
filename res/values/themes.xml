@@ -29,5 +29,13 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.7</item>
     </style>
+    <style name="AppTheme" parent="Theme.Sherlock.Light" >
+    
+         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+        </style>
+    
+   <style name="AppThemeDark" parent="Theme.Sherlock" >
+        <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+        </style>
 </resources>
 
