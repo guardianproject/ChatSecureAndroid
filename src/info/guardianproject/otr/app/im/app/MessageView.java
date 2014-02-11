@@ -296,10 +296,22 @@ public class MessageView extends LinearLayout {
             
         }
         
+        // check body extension
+        if (body.endsWith("png") || body.endsWith("jpg")) {
+                mimeType = "image/*";
+        }
+
+        // check if file protocol is there
+        if (!body.startsWith("file")) {
+                body = "file://" + body;
+        }
+        
         Intent intent = new Intent(Intent.ACTION_VIEW);  
         //intent.setDataAndType(Uri.parse( body ), mimeType);
         intent.setData(Uri.parse( body ));
         getContext().startActivity(intent);
+        
+        
         
     }
 
