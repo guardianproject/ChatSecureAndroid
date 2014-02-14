@@ -27,10 +27,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -57,6 +60,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MessageView extends LinearLayout {
     
@@ -296,12 +300,34 @@ public class MessageView extends LinearLayout {
             
         }
         
-        Intent intent = new Intent(Intent.ACTION_VIEW);  
-        //intent.setDataAndType(Uri.parse( body ), mimeType);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse( body ));
-        getContext().startActivity(intent);
+        
+        //set a general mime type not specific
+        if (mimeType != null)
+        {
+            intent.setType(mimeType.split("/")[0] + "/*");
+            
+        }
+        
+        if (isIntentAvailable(getContext(),intent))
+        {        
+            getContext().startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(getContext(), R.string.there_is_no_viewer_available_for_this_file_format, Toast.LENGTH_LONG).show();
+        }
         
     }
+    
+    public static boolean isIntentAvailable(Context context, Intent intent) {  
+        final PackageManager packageManager = context.getPackageManager();  
+        List<ResolveInfo> list =  
+                packageManager.queryIntentActivities(intent,  
+                        PackageManager.MATCH_DEFAULT_ONLY);  
+        return list.size() > 0;  
+    }  
 
 
     /**

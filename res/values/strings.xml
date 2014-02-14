@@ -882,6 +882,7 @@
     
     <string name="pref_debug_title">Enable Debug Logs</string>
     <string name="pref_debug_summary">Output app log data to standard out / logcat for debugging</string>
+    <string name="there_is_no_viewer_available_for_this_file_format">There is no viewer available for this file format</string>
     
 </resources>
 
