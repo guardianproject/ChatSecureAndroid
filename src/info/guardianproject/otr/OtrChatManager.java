@@ -44,8 +44,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
     private ImService mContext;
     
-    private OtrKeyManager mOtrKeyManager;
-
     private OtrChatManager(int otrPolicy, RemoteImService imService, OtrKeyManager otrKeyManager) throws Exception {
         
         mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy),
@@ -59,7 +57,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         mContext = imService;
         
-        mOtrKeyManager = otrKeyManager;
+        
     }
 
     
@@ -393,9 +391,5 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrEngineHost.injectMessage(sessionID, encrypted);
     }
     
-    public OtrKeyManager getOtrKeyManager ()
-    {
-        return mOtrKeyManager;
-    }
 
 }
