@@ -35,11 +35,11 @@
 		/>
 		<LinearLayout 
 	        android:layout_width="wrap_content"        
-		android:layout_height="match_parent" 
+		android:layout_height="wrap_content" 
 		android:orientation="vertical"
 		android:padding="0dp"
 		android:layout_gravity="top"
-		android:background="#cccccc"		
+		android:background="#eeeeee"		
 		>
 		<ImageView
             android:id="@+id/avatar"
@@ -59,7 +59,6 @@
         android:padding="0dp"         
         android:layout_marginRight="36dp"
         android:paddingLeft="6dp"
-         android:background="#ddffffff"
         >
                 
 <!-- 
@@ -77,10 +76,11 @@
                 android:id="@+id/messagets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-            android:layout_below="@+id/messagebox"            
-                android:textSize="12sp"
+            	android:layout_below="@+id/messagebox"            
+                
                     android:layout_marginBottom="1dp"
+                    
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     
                 />
                   
@@ -112,8 +112,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:textSize="16sp"
                     android:autoLink="web|email|phone|map"
+                    
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                      />
                 </LinearLayout>
              

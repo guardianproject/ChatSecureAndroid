@@ -264,7 +264,7 @@ public class MessageView extends LinearLayout {
             
         }
         
-        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
+      //  mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.incoming_message_fg));
        
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
         
@@ -301,12 +301,13 @@ public class MessageView extends LinearLayout {
         }
         
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.setData(Uri.parse( body ));
         
         //set a general mime type not specific
         if (mimeType != null)
         {
-            intent.setType(mimeType.split("/")[0] + "/*");
+            intent.setType(mimeType);
             
         }
         
@@ -539,7 +540,7 @@ public class MessageView extends LinearLayout {
         }
         
                   
-        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
+       // mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
         
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
         
@@ -578,7 +579,7 @@ public class MessageView extends LinearLayout {
 
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
         mHolder.mTextViewForMessages.setText(message);
-        mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.chat_msg_presence));
+     //   mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.chat_msg_presence));
 
     }
 
@@ -600,8 +601,8 @@ public class MessageView extends LinearLayout {
         spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         
         spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spanText.setSpan(new ForegroundColorSpan(R.color.soft_grey),
-              0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //    spanText.setSpan(new ForegroundColorSpan(R.color.soft_grey),
+      //        0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
      
         return spanText;
     }
