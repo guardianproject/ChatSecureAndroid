@@ -134,8 +134,6 @@ public class DatabaseUtils {
 
         String[] selectionArgs = new String[] { jid, hash };
 
-        //return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
-        
         Cursor cursor = resolver.query(queryUri, null, buf.toString(), selectionArgs, null);
         if (cursor == null)
             return false;

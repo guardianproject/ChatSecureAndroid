@@ -146,8 +146,10 @@ public class AccountAdapter extends CursorAdapter {
             private AccountSetting getAccountSettings(AccountInfo ai) {
                 AccountSetting as = new AccountSetting();
                 
-                final Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(resolver, ai.providerId, false , null);
+                
+                Cursor pCursor = resolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(ai.providerId)},null);
+                Imps.ProviderSettings.QueryMap settings =
+                        new Imps.ProviderSettings.QueryMap(pCursor, resolver, ai.providerId, false , null);
                 
                 as.connectionStatus = ai.dbConnectionStatus;
                 as.activeUserName = ai.activeUserName;

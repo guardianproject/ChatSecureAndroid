@@ -242,9 +242,12 @@ public class ProviderListItem extends LinearLayout {
                 {
                     try
                     {
-                        Imps.ProviderSettings.QueryMap settings =
-                                new Imps.ProviderSettings.QueryMap(mResolver,
-                                        providerId, false, mHandler);
+        
+                        Cursor pCursor = mResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( providerId)},null);            
+
+                        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, mResolver,
+                                providerId,     false /* keep updated */, mHandler /* no handler */);
+
                         
                         String userDomain = settings.getDomain();
                         int connectionStatus = dbConnectionStatus;

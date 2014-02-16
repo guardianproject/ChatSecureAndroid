@@ -139,9 +139,11 @@ public class AddContactActivity extends Activity {
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
         //mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
           //      ImpsConfigNames.DEFAULT_DOMAIN);
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
         
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+                pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
         
         mDefaultDomain = settings.getDomain();//get domain of current user
     }

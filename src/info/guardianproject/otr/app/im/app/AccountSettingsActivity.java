@@ -26,6 +26,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -48,7 +49,8 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(cr,
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                 mProviderId, false /* keep updated */, null /* no handler */);
         String text;
 
@@ -82,8 +84,12 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, true /* don't keep updated */, null /* no handler */);
+        
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                pCursor, cr, mProviderId, true /* don't keep updated */, null /* no handler */);
         String value;
 
         if (key.equals("pref_account_xmpp_resource")) {

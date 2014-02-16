@@ -164,8 +164,7 @@ public class ContactView extends LinearLayout {
             else
             {
             
-                Drawable avatar = 
-                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                  
                 if (avatar != null)
                     mHolder.mAvatar.setImageDrawable(avatar);

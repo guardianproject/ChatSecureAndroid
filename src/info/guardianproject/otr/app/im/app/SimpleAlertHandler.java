@@ -47,11 +47,9 @@ public class SimpleAlertHandler extends Handler {
         ProviderDef provider = app.getProvider(providerId);
         ImErrorInfo error = (ImErrorInfo) msg.obj;
         String promptMsg = null;
-        if (error != null) {
+        if (error != null && provider != null) {
             promptMsg = mActivity.getString(R.string.signed_out_prompt_with_error, provider.mName,
                     ErrorResUtils.getErrorRes(mRes, error.getCode()));
-        } else if (provider != null) {
-           // promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
         else    
         {
