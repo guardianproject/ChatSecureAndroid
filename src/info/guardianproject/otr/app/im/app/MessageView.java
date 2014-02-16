@@ -178,7 +178,7 @@ public class MessageView extends LinearLayout {
             mHolder.mTextViewForMessages.setText(lastMessage);
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
             if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
-                setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+                setImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
             else if (mimeType.startsWith("audio"))
             {
@@ -336,7 +336,7 @@ public class MessageView extends LinearLayout {
      * @param aHolder
      * @param mediaUri
      */
-    private void setIncomingImageThumbnail(final ContentResolver contentResolver, final int id, final ViewHolder aHolder, final Uri mediaUri) {
+    private void setImageThumbnail(final ContentResolver contentResolver, final int id, final ViewHolder aHolder, final Uri mediaUri) {
         // pair this holder to the uri. if the holder is recycled, the pairing is broken
         aHolder.mMediaUri = mediaUri;
         // if a content uri - already scanned
@@ -365,6 +365,7 @@ public class MessageView extends LinearLayout {
                         });
                     }
                 });
+        
                 
     }
     
@@ -439,7 +440,8 @@ public class MessageView extends LinearLayout {
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
-            mHolder.setOnClickListenerMediaThumbnail(mimeType, body);     
+            mHolder.setOnClickListenerMediaThumbnail(mimeType, body);  
+
             lastMessage = "";
             // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
@@ -448,7 +450,7 @@ public class MessageView extends LinearLayout {
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);            
             if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
-                setIncomingImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+                setImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
             }
             else if (mimeType.startsWith("audio"))
             {
