@@ -86,6 +86,10 @@ public class MessageView extends LinearLayout {
     
     private final static DateFormat MESSAGE_DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
     
+
+    private final static char DELIVERED_SUCCESS = '\u2714';
+    private final static char DELIVERED_FAIL = '\u2718';
+
     class ViewHolder 
     {
 
@@ -94,7 +98,6 @@ public class MessageView extends LinearLayout {
         ImageView mAvatar = (ImageView) findViewById(R.id.avatar);              
         View mStatusBlock = findViewById(R.id.status_block);        
         ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
-        ImageView mMediaDelivery = (ImageView) findViewById(R.id.message_delivered);
         View mContainer = findViewById(R.id.message_container);
         
         // save the media uri while the MediaScanner is creating the thumbnail
@@ -225,7 +228,7 @@ public class MessageView extends LinearLayout {
         
         if (date != null)
         {
-         CharSequence tsText = formatTimeStamp(date,MESSAGE_DATE_FORMAT);
+         CharSequence tsText = formatTimeStamp(date,MESSAGE_DATE_FORMAT, null);
          
          mHolder.mTextViewForTimestamp.setText(tsText);
          mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
@@ -480,25 +483,7 @@ public class MessageView extends LinearLayout {
              }
         }
          
-        if (delivery == DeliveryState.DELIVERED) {
-            
-            mHolder.mMediaDelivery.setVisibility(View.VISIBLE);
-            mHolder.mMediaDelivery.setImageResource(R.drawable.check);
-            
-            
-        } else if (delivery == DeliveryState.UNDELIVERED) {
-
-            mHolder.mMediaDelivery.setVisibility(View.VISIBLE);
-            mHolder.mMediaDelivery.setImageResource(R.drawable.navigation_cancel);
-            
-        } 
-        else
-        {
-            mHolder.mMediaDelivery.setVisibility(View.GONE);
-            
-        }
-        
-
+       
 
         mHolder.mStatusBlock.setVisibility(VISIBLE);
 
@@ -515,33 +500,29 @@ public class MessageView extends LinearLayout {
         {
             mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);            
      
-            
-            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
         }
         
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
             mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
             
-            //mHolder.mEncryptionIcon.setImageResource(R.drawable.lock16);
         }
+
 
         if (date != null)
         {
-            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date,MESSAGE_DATE_FORMAT));            
+            
+            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date,MESSAGE_DATE_FORMAT, delivery));            
             mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);            
          
         }
         else
         {
-            mHolder.mTextViewForTimestamp.setText("");
-//            mHolder.mTextViewForTimestamp.setVisibility(View.GONE);            
+            mHolder.mTextViewForTimestamp.setText("");      
 
         }
         
                   
-       // mHolder.mTextViewForMessages.setTextColor(getResources().getColor(R.color.outgoing_message_fg));
-        
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
         
     }
@@ -592,11 +573,27 @@ public class MessageView extends LinearLayout {
 
     }
 
-   
+    private SpannableString formatTimeStamp(Date date, DateFormat format, MessageView.DeliveryState delivery) {
+        
 
-    private SpannableString formatTimeStamp(Date date, DateFormat format) {
-        String dateStr = format.format(date);
-        SpannableString spanText = new SpannableString(dateStr);
+        StringBuilder deliveryText = new StringBuilder();
+        deliveryText.append(format.format(date));
+        deliveryText.append(' ');
+        
+        if (delivery != null)
+        {
+            if (delivery == DeliveryState.DELIVERED) {
+                
+                deliveryText.append(DELIVERED_SUCCESS);
+                    
+            } else if (delivery == DeliveryState.UNDELIVERED) {
+    
+                deliveryText.append(DELIVERED_FAIL);
+                
+            } 
+        }
+        
+        SpannableString spanText = new SpannableString(deliveryText.toString());
         int len = spanText.length();
         spanText.setSpan(new StyleSpan(Typeface.ITALIC), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         
