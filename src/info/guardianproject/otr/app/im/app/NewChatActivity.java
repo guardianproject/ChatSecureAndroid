@@ -300,7 +300,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
            // Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
-            resolveIntent();
+            
+            if (getIntent() != null)
+                resolveIntent(getIntent());
+            
             if (mRequestedChatId >= 0) {
                 if (showChat(mRequestedChatId)) {
                     mRequestedChatId = -1;
@@ -362,7 +365,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         super.onNewIntent(intent);
         
         setIntent(intent);
-        resolveIntent();
+        resolveIntent(intent);
     }
 
     @Override
@@ -547,15 +550,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {}
         
         //did not work
-        Toast.makeText(this, "Please start a secure conversation before scanning codes", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.please_start_a_secure_conversation_before_scanning_codes, Toast.LENGTH_LONG).show();
      }
     
-    private void resolveIntent() {
-        if (getIntent() != null)
-        {
-            doResolveIntent(getIntent());
-            setIntent(null);
-        }
+    private void resolveIntent(Intent intent) {
+        
+        doResolveIntent(intent);
+        setIntent(null);
+    
     }
     
     private void doResolveIntent(Intent intent) {
