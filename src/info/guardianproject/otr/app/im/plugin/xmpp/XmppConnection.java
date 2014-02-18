@@ -954,8 +954,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             password = refreshGoogleToken(userName, password, domain);
             password = password.split(":")[1];            
-     //       mUsername = userName + '@' + domain;
-                       
         }
         
         initConnection(providerSettings, userName);
@@ -973,10 +971,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sendPresencePacket();
 
-        Roster roster = mConnection.getRoster();
-        roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
-        getContactListManager().listenToRoster(roster);
-        
+        mRoster = mConnection.getRoster();
+        mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+        getContactListManager().listenToRoster(mRoster);
 
     }
 
@@ -1283,6 +1280,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mStreamHandler == null || !mStreamHandler.isResumePending()) {
                     debug(TAG, "Reconnection success");
                     onReconnectionSuccessful();
+                    mRoster = mConnection.getRoster();
                 } else {
                     debug(TAG, "Ignoring reconnection callback due to pending resume");
                 }
@@ -1296,8 +1294,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void reconnectingIn(int seconds) {
-                // We are not using the reconnection manager
-                throw new UnsupportedOperationException();
+               // // We are not using the reconnection manager
+               // throw new UnsupportedOperationException();
             }
 
             @Override
