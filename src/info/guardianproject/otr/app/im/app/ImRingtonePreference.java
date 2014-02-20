@@ -21,8 +21,10 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
@@ -45,8 +47,13 @@ public class ImRingtonePreference extends RingtonePreference {
 
     @Override
     protected Uri onRestoreRingtone() {
+        
+        ContentResolver cr = getContext().getContentResolver();
+
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+
         final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContext().getContentResolver(), false /* keep updated */, null /* no handler */);
+                pCursor,cr,  Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, false /* keep updated */, null /* no handler */);
 
         String uri = settings.getRingtoneURI();
         if (Log.isLoggable(ImApp.LOG_TAG, Log.VERBOSE)) {
@@ -66,8 +73,13 @@ public class ImRingtonePreference extends RingtonePreference {
 
     @Override
     protected void onSaveRingtone(Uri ringtoneUri) {
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContext().getContentResolver(), false /* keep updated */, null /* no handler */);
+        
+        ContentResolver cr = getContext().getContentResolver();
+
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, false /* keep updated */, null /* no handler */);
 
         // When ringtoneUri is null, that means 'Silent' was chosen
         settings.setRingtoneURI(ringtoneUri == null ? "" : ringtoneUri.toString());

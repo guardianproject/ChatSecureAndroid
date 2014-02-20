@@ -51,6 +51,7 @@ import org.jivesoftware.smackx.LLServiceDiscoveryManager;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
@@ -235,17 +236,22 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
     public void do_login() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                contentResolver, mProviderId, false, null);
-        // providerSettings is closed in initConnection()
-        String userName = Imps.Account.getUserName(contentResolver, mAccountId);
-        String domain = providerSettings.getDomain();
-        mResource = providerSettings.getXmppResource();
-        
-        providerSettings.close(); // close this, which was opened in do_login()
-        
+
         try {
-            initConnection(userName, domain);
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+            
+            if (cursor == null)
+                throw new ImException ("unable to query the provider settings");
+           
+            Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                    cursor, contentResolver, mProviderId, false, null);
+            // providerSettings is closed in initConnection()
+            String userName = Imps.Account.getUserName(contentResolver, mAccountId);
+            String domain = providerSettings.getDomain();
+            mResource = providerSettings.getXmppResource();
+            
+            initConnection(userName, domain, providerSettings);
         } catch (Exception e) {
             Log.w(TAG, "login failed", e);
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
@@ -259,7 +265,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(String userName, String domain) throws Exception {
+    private void initConnection(String userName, String domain, Imps.ProviderSettings.QueryMap providerSettings) throws Exception {
 
         setState(LOGGING_IN, null);
         
@@ -371,7 +377,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             }
         });
 
-        makeUser();//mUser = new Contact(new XmppAddress(mServiceName), userName);
+        makeUser(providerSettings);//mUser = new Contact(new XmppAddress(mServiceName), userName);
 
         // Initiate Link-local message session
         mService.init();
@@ -380,17 +386,28 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(LOGGED_IN, null);
     }
     
-    public void initUser(long providerId, long accountId)
+    public void initUser(long providerId, long accountId) throws ImException
     {
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        
+        if (cursor == null)
+            throw new ImException("unable to query settings");
+       
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                cursor, contentResolver, mProviderId, false, null);
+        
         mProviderId = providerId;
         mAccountId = accountId;
-        mUser = makeUser();
+        mUser = makeUser(providerSettings);
+        
+        providerSettings.close();
     }
     
-    private Contact makeUser() {
+    private Contact makeUser(Imps.ProviderSettings.QueryMap providerSettings) {
         ContentResolver contentResolver = mContext.getContentResolver();
-        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                contentResolver, mProviderId, false, null);
+
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
         String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    

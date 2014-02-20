@@ -118,8 +118,10 @@ public class ImUrlActivity extends Activity {
             try {
                 long connProviderId = conn.getProviderId();
 
+                Cursor cursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(connProviderId)},null);
+
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        cr, connProviderId, false /* don't keep updated */, null /* no handler */);
+                        cursor, cr, connProviderId, false /* don't keep updated */, null /* no handler */);
                 
                 try {
                     String domainToCheck = settings.getDomain();
@@ -161,9 +163,10 @@ public class ImUrlActivity extends Activity {
                     if (!cursorProvider.isNull(ACTIVE_ACCOUNT_PW_COLUMN)) {
                             
                         long cProviderId = cursorProvider.getLong(PROVIDER_ID_COLUMN);
-                        
+                        Cursor cursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(cProviderId)},null);
+
                         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                                cr, cProviderId, false /* don't keep updated */, null /* no handler */);
+                                cursor, cr, cProviderId, false /* don't keep updated */, null /* no handler */);
                         
                         //does the conference host we need, match the settings domain for a logged in account
                         String domainToCheck = settings.getDomain(); 

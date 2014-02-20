@@ -255,6 +255,7 @@ public class Imps {
         /** The content:// style URL for looking up by domain */
         public static final Uri BY_DOMAIN_URI = Uri
                 .parse("content://info.guardianproject.otr.app.im.provider.Imps/domainAccounts");
+        
 
         /**
          * The MIME type of {@link #CONTENT_URI} providing a directory of
@@ -1305,7 +1306,8 @@ public class Imps {
 
     public static class ProviderSettings implements ProviderSettingsColumns {
         // Global settings are saved with this provider ID, for backward compatibility
-        public static final int PROVIDER_ID_FOR_GLOBAL_SETTINGS = 1;
+        
+        public static final long PROVIDER_ID_FOR_GLOBAL_SETTINGS = 1;
 
         private ProviderSettings() {
         }
@@ -1894,17 +1896,19 @@ public class Imps {
             private long mProviderId;
             private Exception mStacktrace;
 
+            /*
             public QueryMap(ContentResolver contentResolver, boolean keepUpdated,
                     Handler handlerForUpdateNotifications) {
                 this(contentResolver, ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
                         keepUpdated, handlerForUpdateNotifications);
-            }
+            }*/
 
-            public QueryMap(ContentResolver contentResolver, long providerId, boolean keepUpdated,
+            //contentResolver.query(CONTENT_URI,new String[] {NAME, VALUE},PROVIDER + "=?",new String[] { Long.toString(providerId)},null)
+            
+            public QueryMap(Cursor cursor, ContentResolver contentResolver, long providerId, boolean keepUpdated,
                     Handler handlerForUpdateNotifications) {
                 
-                super(contentResolver.query(CONTENT_URI,new String[] {NAME, VALUE},PROVIDER + "=?",new String[] { Long.toString(providerId)},
-                        null), // no sort order
+                super(cursor, // no sort order
                         NAME, keepUpdated, handlerForUpdateNotifications);
                
                 mContentResolver = contentResolver;

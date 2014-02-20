@@ -31,9 +31,11 @@ import org.jsoup.Jsoup;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -190,13 +192,23 @@ public class StatusBarNotifier {
         }
     }
 
+
     private Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {
-            mGlobalSettings = new Imps.ProviderSettings.QueryMap(mContext.getContentResolver(),
-                    true, mHandler);
+            
+            ContentResolver contentResolver = mContext.getContentResolver();
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+            
+            if (cursor == null)
+                return null;
+            
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(cursor, contentResolver, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, mHandler);
         }
+        
         return mGlobalSettings;
     }
+
 
     private boolean isNotificationEnabled(long providerId) {
         return getGlobalSettings().getEnableNotification();

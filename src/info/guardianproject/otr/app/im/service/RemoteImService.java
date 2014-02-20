@@ -132,6 +132,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
             try {
                 OtrKeyManager otrKeyManager = OtrAndroidKeyManagerImpl.getInstance(this);
+                
                 if (otrKeyManager != null)
                 {
                     // TODO OTRCHAT add support for more than one connection type (this is a kludge)
@@ -190,9 +191,17 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     private Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {
-            mGlobalSettings = new Imps.ProviderSettings.QueryMap(getContentResolver(), true,
-                    mHandler);
+            
+            ContentResolver contentResolver = getContentResolver();
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+
+            if (cursor == null)
+                return null;
+            
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(cursor, contentResolver, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, mHandler);
         }
+        
         return mGlobalSettings;
     }
 
@@ -515,17 +524,22 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             ImConnectionAdapter imConnectionAdapter = 
                     new ImConnectionAdapter(providerId, accountId, conn, this);
             
+            
             ContentResolver contentResolver = getContentResolver();
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(providerId)},null);
+            
+            if (cursor == null)
+                throw new ImException ("unable to query the provider settings");
+            
             Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                    contentResolver, providerId, false, null);
+                    cursor, contentResolver, providerId, false, null);
             String userName = Imps.Account.getUserName(contentResolver, accountId);
             String domain = providerSettings.getDomain();
             providerSettings.close();
             
             mConnections.put(userName + '@' + domain,imConnectionAdapter);
             Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "" + mConnections.size());
-
-            initOtr();
 
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
@@ -748,22 +762,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public void sessionStatusChanged(SessionID sessionID) {
 
-        SessionStatus sStatus = mOtrChatManager.getSessionStatus(sessionID);
-
-        String msg = "";
-
-        if (sStatus == SessionStatus.PLAINTEXT) {
-            msg = getString(R.string.otr_session_status_plaintext);
-
-        } else if (sStatus == SessionStatus.ENCRYPTED) {
-            msg = getString(R.string.otr_session_status_encrypted);
-
-        } else if (sStatus == SessionStatus.FINISHED) {
-            msg = getString(R.string.otr_session_status_finished);
-        }
-
-        //showToast(msg, Toast.LENGTH_SHORT);
-
+        //this method does nothing!
     }
     
     public void onTaskRemoved(Intent rootIntent) {

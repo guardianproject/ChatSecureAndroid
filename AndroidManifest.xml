@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="13.1.2"
-     android:versionCode="107"
-     android:installLocation="auto"     
+     android:versionName="13.1.3-beta-3"
+     android:versionCode="110"
+     android:installLocation="auto"    
+    
      >     
     <supports-screens
 android:smallScreens="true"
@@ -11,7 +12,7 @@ android:normalScreens="true"
 android:largeScreens="true"
 android:anyDensity="true"
 />
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="18" />
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19" />
 
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY" />
     <uses-permission android:name="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
@@ -55,6 +56,7 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher"
              android:theme="@style/AppTheme"
              android:allowBackup="false"
+              android:hardwareAccelerated="true" 
 			>
          <activity android:name=".app.WelcomeActivity"
          	>

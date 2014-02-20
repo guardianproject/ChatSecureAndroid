@@ -257,8 +257,10 @@ public class AccountActivity extends Activity {
             mProviderId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
             provider = mApp.getProvider(mProviderId);
 
+            Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+
             Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                    cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                    pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
             try {
                 mOriginalUserAccount = cursor.getString(ACCOUNT_USERNAME_COLUMN) + "@"
@@ -552,9 +554,12 @@ public class AccountActivity extends Activity {
         checkUserChanged();
     
         OrbotHelper orbotHelper = new OrbotHelper(this);
-        
+
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-               getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+               pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
         if (useTor && (!orbotHelper.isOrbotInstalled()))
         {
@@ -669,8 +674,11 @@ public class AccountActivity extends Activity {
      */
     void settingsForDomain(String domain,int port) {
 
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+                pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
     
         settingsForDomain(domain, port, settings);
    
@@ -1066,8 +1074,12 @@ public class AccountActivity extends Activity {
             
             @Override
             protected String doInBackground(String... params) {
+                
+                ContentResolver cr = getContentResolver();
+                Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                        getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+                       pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
                 try {
                                         

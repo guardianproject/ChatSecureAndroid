@@ -51,9 +51,11 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     EditTextPreference mThemeBackground;
 
     private void setInitialValues() {
-        ContentResolver cr = getContentResolver();
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(cr,
-                false /* keep updated */, null /* no handler */);
+        ContentResolver cr = getContentResolver();        
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
+                Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
         mOtrMode.setValue(settings.getOtrMode());
         mHideOfflineContacts.setChecked(settings.getHideOfflineContacts());
         mEnableNotification.setChecked(settings.getEnableNotification());
@@ -72,8 +74,11 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), false /* don't keep updated */, null /* no handler */);
+        ContentResolver cr = getContentResolver();        
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
+                Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
 
         if (key.equals("pref_security_otr_mode")) {
             settings.setOtrMode(prefs.getString(key, "auto"));

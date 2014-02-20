@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -59,6 +60,7 @@ public class SessionImpl implements Session {
     private boolean isLastMessageRetransmit = false;
     private byte[] extraKey;
     private long lastStart;
+    private OtrAssembler assembler;
 
     public SessionImpl(SessionID sessionID, OtrEngineHost listener) {
 
@@ -70,6 +72,7 @@ public class SessionImpl implements Session {
         // -> setSessionStatus() fires statusChangedEvent
         // -> client application calls OtrEngine.getSessionStatus()
         this.sessionStatus = SessionStatus.PLAINTEXT;
+	assembler = new OtrAssembler();
     }
 
     @Override
@@ -299,6 +302,16 @@ public class SessionImpl implements Session {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
             return msgText;
         }
+
+        try {
+            msgText = assembler.accumulate(msgText);
+        } catch (ProtocolException e) {
+            logger.warning("An invalid message fragment was discarded.");
+            return null;
+        }
+
+        if (msgText == null)
+            return null; // Not a complete message (yet).
 
         AbstractMessage m;
         try {

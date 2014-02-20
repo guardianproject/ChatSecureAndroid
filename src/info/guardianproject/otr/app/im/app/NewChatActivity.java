@@ -58,6 +58,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -183,7 +184,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPagerTitleStrip = (PagerTabStrip)findViewById(R.id.pager_title_strip);
-        mChatPager.setSaveEnabled(false);
+        //mChatPager.setSaveEnabled(false);
+        mChatPager.setOffscreenPageLimit(4);
+        
         mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
             
             private int lastPos = -1;
@@ -297,7 +300,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
            // Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
-            resolveIntent();
+            
+            if (getIntent() != null)
+                resolveIntent(getIntent());
+            
             if (mRequestedChatId >= 0) {
                 if (showChat(mRequestedChatId)) {
                     mRequestedChatId = -1;
@@ -359,7 +365,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         super.onNewIntent(intent);
         
         setIntent(intent);
-        resolveIntent();
+        resolveIntent(intent);
     }
 
     @Override
@@ -544,15 +550,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {}
         
         //did not work
-        Toast.makeText(this, "Please start a secure conversation before scanning codes", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.please_start_a_secure_conversation_before_scanning_codes, Toast.LENGTH_LONG).show();
      }
     
-    private void resolveIntent() {
-        if (getIntent() != null)
-        {
-            doResolveIntent(getIntent());
-            setIntent(null);
-        }
+    private void resolveIntent(Intent intent) {
+        
+        doResolveIntent(intent);
+        setIntent(null);
+    
     }
     
     private void doResolveIntent(Intent intent) {
@@ -612,48 +617,52 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     
                 } else {
+                    
                     String type = getContentResolver().getType(data);
                     if (Imps.Chats.CONTENT_ITEM_TYPE.equals(type)) {
                         
                         long requestedContactId = ContentUris.parseId(data);
                                     
                         Cursor cursorChats = mChatPagerAdapter.getCursor();
-                        cursorChats.moveToPosition(-1);
-                        int posIdx = 1;
-                        boolean foundChatView = false;
-
-                        while (cursorChats.moveToNext())
-                        {
-                            long chatId = cursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
-
-                            if (chatId == requestedContactId)
-                            {
-                                mChatPager.setCurrentItem(posIdx);
-                                foundChatView = true;
-                                break;
-                            }
-
-                            posIdx++;
-                        }
-
-                        if (!foundChatView)
-                        {
-
-                            Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
-                            ContentUris.appendId(builder, requestedContactId);
-                            Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
-                            
-                            try {
-                                if (cursor.getCount() > 0)
-                                { 
-                                    cursor.moveToFirst();                            
-                                    startChat(cursor);
-                                }
-                            } finally {
-                                cursor.close();
-                            }
-                        }
                         
+                        if (cursorChats != null)
+                        {
+                            cursorChats.moveToPosition(-1);
+                            int posIdx = 1;
+                            boolean foundChatView = false;
+    
+                            while (cursorChats.moveToNext())
+                            {
+                                long chatId = cursorChats.getLong(ChatView.CONTACT_ID_COLUMN);
+    
+                                if (chatId == requestedContactId)
+                                {
+                                    mChatPager.setCurrentItem(posIdx);
+                                    foundChatView = true;
+                                    break;
+                                }
+    
+                                posIdx++;
+                            }
+    
+                            if (!foundChatView)
+                            {
+    
+                                Uri.Builder builder = Imps.Contacts.CONTENT_URI.buildUpon();
+                                ContentUris.appendId(builder, requestedContactId);
+                                Cursor cursor = getContentResolver().query(builder.build(), ChatView.CHAT_PROJECTION, null, null, null);
+                                
+                                try {
+                                    if (cursor.getCount() > 0)
+                                    { 
+                                        cursor.moveToFirst();                            
+                                        startChat(cursor);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                            }
+                        }
                    
                     } else if (Imps.Invitation.CONTENT_ITEM_TYPE.equals(type)) {
                         //chatView.bindInvitation(ContentUris.parseId(data));
@@ -1124,12 +1133,33 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if( uri == null ) {
                     return ;
                 }
-                handleSend(uri);
+                handleSend(uri,null);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
-                getContentResolver().notifyChange(mLastPhoto, null);
-                handleSend(mLastPhoto);
+                /**
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(mLastPhoto);
+                this.sendBroadcast(mediaScanIntent);
+                */
+                
+                File file = new File(getRealPathFromURI(mLastPhoto));
+                final Handler handler = new Handler();
+                MediaScannerConnection.scanFile(
+                        this, new String[] { file.toString() }, null,
+                        new MediaScannerConnection.OnScanCompletedListener() {
+                            public void onScanCompleted(String path, final Uri uri) {
+                                
+                                handler.post( new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        handleSend(mLastPhoto,"image/*");
+                                    }
+                                });
+                            }
+                        });
+                
+              
             }
             else if (requestCode == REQUEST_SETTINGS)
             {
@@ -1209,7 +1239,31 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
 
 
-    private void handleSend(Uri uri) {
+  //----------------------------------------
+    /**
+     * This method is used to get real path of file from from uri
+     * 
+     * @param contentUri
+     * @return String
+     */
+    //----------------------------------------
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        try
+        {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        catch (Exception e)
+        {
+            return contentUri.getPath();
+        }
+    }
+    
+    private void handleSend(Uri uri, String mimeType) {
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
@@ -1219,13 +1273,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
            
                 if (session != null) {
                     if (info.type == null)
-                        info.type = "application/octet-stream";
+                        if (mimeType != null)
+                            info.type = mimeType;
+                        else
+                            info.type = "application/octet-stream";
+                    
                     String offerId = UUID.randomUUID().toString();
                     session.offerData(offerId, info.path, info.type );
                     ChatView cView = getCurrentChatView();
                     int type = cView.isOtrSessionVerified() ? Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED : Imps.MessageType.OUTGOING_ENCRYPTED;
                     Imps.insertMessageInDb(
-                            getContentResolver(), false, session.getId(), true, null, uri.toString(),
+                            getContentResolver(), false, session.getId(), true, null, this.getRealPathFromURI(uri),
                             System.currentTimeMillis(), type,
                             0, offerId, info.type);
                 }
@@ -1672,13 +1730,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 }
             }
             
-            QueryMap settingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), false, null);
-            
-            Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                                                                : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-                                                           
-            settingMap.close();
-            
+            ContentResolver cr = getContentResolver();
+            Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+            QueryMap settingMap = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, false, null);
+                      
+                      Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                                          : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                                                                     
+                      settingMap.close();
+                      
+                      
             Uri.Builder builder = baseUri.buildUpon();
             ContentUris.appendId(builder, providerId);
             ContentUris.appendId(builder, accountId);
@@ -2087,13 +2148,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     {
         ContentResolver cr = getContentResolver();
 
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                cr, mLastProviderId, false /* don't keep updated */, null /* no handler */);
-
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mLastProviderId)},null);            
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr, mLastProviderId, true, null);
+        
         String chatDomain = "conference." + settings.getDomain();
         
         settings.close();
-        
         
         
      // This example shows how to add a custom layout to an AlertDialog

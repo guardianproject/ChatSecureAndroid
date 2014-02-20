@@ -88,8 +88,8 @@ public class ImApp extends Application {
     public static final String IMPS_CATEGORY = "info.guardianproject.otr.app.im.IMPS_CATEGORY";
     public static final String ACTION_QUIT = "info.guardianproject.otr.app.im.QUIT";
 
-    public static final int DEFAULT_AVATAR_WIDTH = 120;
-    public static final int DEFAULT_AVATAR_HEIGHT = 120;
+    public static final int DEFAULT_AVATAR_WIDTH = 128;
+    public static final int DEFAULT_AVATAR_HEIGHT = 128;
 
     public static final String HOCKEY_APP_ID = "2fa3b9252319e47367f1f125bb3adcd1";
 

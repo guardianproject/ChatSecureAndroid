@@ -58,6 +58,7 @@ import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -70,7 +71,6 @@ import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketIDFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
-import org.jivesoftware.smack.packet.DefaultPacketExtension;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
@@ -116,8 +116,10 @@ import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
@@ -135,7 +137,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Synchronized by executor thread
     private MyXMPPConnection mConnection;
     private XmppStreamHandler mStreamHandler;
-
+    
+    private Roster mRoster;
+    
     private XmppChatSessionManager mSessionManager;
     private ConnectionConfiguration mConfig;
 
@@ -218,21 +222,30 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ServiceDiscoveryManager.setIdentityType("phone");
     }
     
-    public void initUser(long providerId, long accountId)
+    public void initUser(long providerId, long accountId) throws ImException
     {
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(providerId)},null);
+        
+        if (cursor == null)
+            throw new ImException("unable to query settings");
+       
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                cursor, contentResolver, providerId, false, null);
+        
         mProviderId = providerId;
         mAccountId = accountId;
-        mUser = makeUser();
+        mUser = makeUser(providerSettings, contentResolver);
+        
+        providerSettings.close();
     }
     
-    private Contact makeUser() {
-        ContentResolver contentResolver = mContext.getContentResolver();
-        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                contentResolver, mProviderId, false, null);
+    private Contact makeUser(Imps.ProviderSettings.QueryMap providerSettings, ContentResolver contentResolver) {
+        
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
         String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    
-        providerSettings.close();
         
         return new Contact(new XmppAddress(xmppName), userName);
     }
@@ -317,53 +330,64 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
     }
     
-    /*
+    
+    private boolean mLoadingAvatars = false;
+    
     private void loadVCardsAsync ()
     {
-     // Using an AsyncTask to load the slow images in a background thread
-        new AsyncTask<String, Void, String>() {
-            
-            @Override
-            protected String doInBackground(String... params) {
-                loadVCards();
-                return "";
-              }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-               
-            }
-        }.execute("");
-    }
-    
-    private void loadVCards ()
-    {
-        String jid = null;
-        ContentResolver resolver = mContext.getContentResolver();
-        
-      
-        try
+        if (!mLoadingAvatars)
         {
-            while ((jid = qAvatar.poll(1000, TimeUnit.MILLISECONDS)) != null)
-            {
-        
-                loadVCard (resolver, jid);
-               
-               
-            }
+         // Using an AsyncTask to load the slow images in a background thread
+            new AsyncTask<String, Void, String>() {
+                
+                @Override
+                protected String doInBackground(String... params) {
+                    
+                    mLoadingAvatars = true;
+                    
+                    String jid = null;
+                    ContentResolver resolver = mContext.getContentResolver();
+                  
+                    try
+                    {
+                        while ((jid = qAvatar.poll(1, TimeUnit.SECONDS)) != null)
+                        {
+                    
+                            loadVCard (resolver, jid, null);
+                           
+                           
+                        }
+                    }
+                    catch (Exception e) {}
+                    
+                    return "";
+                  }
+    
+                @Override
+                protected void onPostExecute(String result) {
+                    super.onPostExecute(result);
+                    
+                    mLoadingAvatars = false;
+                   
+                }
+            }.execute("");
         }
-        catch (Exception e) {}
-       
-        
-        
-    };*/
+    }
     
     private boolean loadVCard (ContentResolver resolver, String jid, String hash)
     {
         try {
             
-            if ((!DatabaseUtils.doesAvatarHashExist(resolver,  Imps.Avatars.CONTENT_URI, jid, hash)))
+            boolean loadAvatar = false;
+            
+            if (hash != null)
+                loadAvatar = (!DatabaseUtils.doesAvatarHashExist(resolver,  Imps.Avatars.CONTENT_URI, jid, hash));
+            else
+            {
+               loadAvatar = DatabaseUtils.hasAvatarContact(resolver, Imps.Avatars.CONTENT_URI, jid);
+            }
+            
+            if (!loadAvatar)
             {
                 debug(ImApp.LOG_TAG, "loading vcard for: " + jid);
                 
@@ -373,6 +397,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
               
                 vCard.load(mConnection, jid);
                
+                
                 // If VCard is loaded, then save the avatar to the personal folder.
                 String avatarHash = vCard.getAvatarHash();
                 
@@ -385,9 +410,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         
                         debug(ImApp.LOG_TAG, "found avatar image in vcard for: " + jid);                       
                         debug(ImApp.LOG_TAG, "start avatar length: " + avatarBytes.length);
-                        
+                       
                         int width = ImApp.DEFAULT_AVATAR_WIDTH;
                         int height = ImApp.DEFAULT_AVATAR_HEIGHT;
+                        
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);               
@@ -396,7 +422,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         Bitmap b = BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);     
                         
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        b.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                        b.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                         byte[] avatarBytesCompressed = stream.toByteArray();
                         
                         debug(ImApp.LOG_TAG, "compressed avatar length: " + avatarBytesCompressed.length);
@@ -749,7 +775,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mProviderId = providerId;
         mRetryLogin = retry;
 
-        mUser = makeUser();
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        
+        if (cursor == null)
+            return;
+       
+        Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
+                cursor, contentResolver, mProviderId, false, null);
+        
+        mUser = makeUser(providerSettings, contentResolver);
+        
+        providerSettings.close();
         
         execute(new Runnable() {
             @Override
@@ -769,8 +807,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         
         ContentResolver contentResolver = mContext.getContentResolver();
+
+        Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        
+        if (cursor == null)
+            return; //not going to work
+        
         Imps.ProviderSettings.QueryMap providerSettings = new Imps.ProviderSettings.QueryMap(
-                contentResolver, mProviderId, false, null);
+                cursor, contentResolver, mProviderId, false, null);
+        
+        
         
         // providerSettings is closed in initConnection();
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
@@ -886,6 +932,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     public void initConnection(MyXMPPConnection connection, Contact user, int state) {
         mConnection = connection;
+        mRoster = mConnection.getRoster();
         mUser = user;
         setState(state, null);
     }
@@ -907,8 +954,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             password = refreshGoogleToken(userName, password, domain);
             password = password.split(":")[1];            
-     //       mUsername = userName + '@' + domain;
-                       
         }
         
         initConnection(providerSettings, userName);
@@ -926,10 +971,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sendPresencePacket();
 
-        Roster roster = mConnection.getRoster();
-        roster.setSubscriptionMode(Roster.SubscriptionMode.manual);
-        getContactListManager().listenToRoster(roster);
-        
+        mRoster = mConnection.getRoster();
+        mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+        getContactListManager().listenToRoster(mRoster);
 
     }
 
@@ -1006,7 +1050,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         
         
-        if (serverPort == 0)
+        if (serverPort == 0) //if serverPort is set to 0 then use 5222 as default
             serverPort = 5222;
 
         // No server requested and SRV lookup wasn't requested or returned nothing - use domain
@@ -1122,7 +1166,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
                 
         // Don't use smack reconnection - not reliable
-        mConfig.setReconnectionAllowed(false);
+        mConfig.setReconnectionAllowed(true);
         mConfig.setSendPresence(true);
         
         mConfig.setRosterLoadedAtLogin(true);
@@ -1193,7 +1237,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         
                         boolean good = session.onReceiveMessage(rec);
                         
-                        handlePresenceChanged(mConnection.getRoster().getPresence(rec.getFrom().getBareAddress()));
+                        handlePresenceChanged(mConnection.getRoster().getPresence(smackMessage.getFrom()));
     
                         if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                             if (good) {
@@ -1236,6 +1280,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mStreamHandler == null || !mStreamHandler.isResumePending()) {
                     debug(TAG, "Reconnection success");
                     onReconnectionSuccessful();
+                    mRoster = mConnection.getRoster();
                 } else {
                     debug(TAG, "Ignoring reconnection callback due to pending resume");
                 }
@@ -1249,8 +1294,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void reconnectingIn(int seconds) {
-                // We are not using the reconnection manager
-                throw new UnsupportedOperationException();
+               // // We are not using the reconnection manager
+               // throw new UnsupportedOperationException();
             }
 
             @Override
@@ -2463,8 +2508,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             sdm.addFeature(DISCO_FEATURE);
         if (!sdm.includesFeature(DeliveryReceipts.NAMESPACE))
             sdm.addFeature(DeliveryReceipts.NAMESPACE);
+        
     }
 
+    
     private void onReconnectionSuccessful() {
         mNeedReconnect = false;
         setState(LOGGED_IN, null);
@@ -2631,12 +2678,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         String status = presence.getStatus();
         
      // Get presence from the Roster to handle priorities and such
-        final Roster roster = mConnection.getRoster();
         
-        if (presence.getType() == Type.available) //get the latest presence for the highest priority
-                presence = roster.getPresence(xaddress.getBareAddress());
-        
-        
+     //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
+            //presence = roster.getPresence(xaddress.getBareAddress());
+       
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
         Presence p = new Presence(parsePresence(presence), status, null, null,
@@ -2651,7 +2696,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
-            RosterEntry rEntry = roster.getEntry(xAddr.getBareAddress());
+            RosterEntry rEntry = mRoster.getEntry(xAddr.getBareAddress());
             
             String name = null;
             
@@ -2728,27 +2773,30 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         else {
         
             contact.setPresence(p);
-
-            Contact[] contacts = new Contact[] { contact };
-    
-            mContactListManager.notifyContactsPresenceUpdated(contacts);
-
+            mContactListManager.notifyContactsPresenceUpdated(new Contact[] { contact });
+            
             if (p.getStatus() == Presence.AVAILABLE)
             {
                 PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
                 if (pe != null) {
+                    try
+                    {
+                        qAvatar.put(contact.getAddress().getAddress());
+                        loadVCardsAsync ();
+                    }
+                    catch (InterruptedException ie){}
+                    /*
                     DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
                     String hash = dpe.getValue("photo");
                     
                     if (hash != null)
-                        loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
-                    
+                        loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);/
+                        */
                 }
             }
         }
         
     }
-
         
     
 }

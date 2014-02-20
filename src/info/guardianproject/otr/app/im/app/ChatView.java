@@ -38,6 +38,7 @@ import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
@@ -152,7 +153,8 @@ public class ChatView extends LinearLayout {
     ImApp mApp;
     SimpleAlertHandler mHandler;
     Cursor mCursor;
-
+    IImConnection mConn;
+    
     //private ImageView mStatusIcon;
    // private TextView mTitle;
     /*package*/ListView mHistory;
@@ -186,31 +188,27 @@ public class ChatView extends LinearLayout {
         mComposeMessage.requestFocus();
     }
     
-    private OnCheckedChangeListener mOtrListener = new OnCheckedChangeListener ()
+    
+    private void checkConnection () throws ImException
     {
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            setOTRState(isChecked);
-
-            //mOtrSwitchTouched = true;
-            updateWarningView();
-        }
+        if (mConn == null)
+            mConn = mApp.getConnection(mProviderId);
         
-    };
+        if (mConn == null)
+            throw new ImException("unable to get connection");
+
+    }
     
     public void setOTRState(boolean otrEnabled) {
 
 
         try {
             
-            IImConnection conn = mApp.getConnection(mProviderId);
-            boolean isConnected = (conn == null) ? false : conn.getState() != ImConnection.SUSPENDED;
+            boolean isConnected = (mConn == null) ? false : mConn.getState() != ImConnection.SUSPENDED;
          
             if (isConnected)
             {
-                mCurrentChatSession = conn.getChatSessionManager().getChatSession(mRemoteAddress);
+                mCurrentChatSession = mConn.getChatSessionManager().getChatSession(mRemoteAddress);
                 
                 if (mCurrentChatSession != null)
                 {
@@ -232,11 +230,11 @@ public class ChatView extends LinearLayout {
                             
                         }   
                         
-
+                        /**
                         mHandler.postAtTime(new Runnable (){
                            public void run (){ updateWarningView();}
                         }, 2000);
-                    
+                        **/
                      
                     }
                 }
@@ -277,8 +275,8 @@ public class ChatView extends LinearLayout {
     private static final long SHOW_TIME_STAMP_INTERVAL = 30 * 1000; // 15 seconds
     private static final long SHOW_DELIVERY_INTERVAL = 5 * 1000; // 5 seconds
     private static final long SHOW_MEDIA_DELIVERY_INTERVAL = 120 * 1000; // 2 minutes
-    private static final long DEFAULT_QUERY_INTERVAL = 1000;
-    private static final long FAST_QUERY_INTERVAL = 100;
+    private static final long DEFAULT_QUERY_INTERVAL = 2000;
+    private static final long FAST_QUERY_INTERVAL = 200;
     private static final int QUERY_TOKEN = 10;
 
     // Async QueryHandler
@@ -1123,11 +1121,12 @@ public class ChatView extends LinearLayout {
         DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
-                    IImConnection conn = mApp.getConnection(mProviderId);
-                    IContactListManager manager = conn.getContactListManager();
+                    checkConnection();
+                    mConn = mApp.getConnection(mProviderId);
+                    IContactListManager manager = mConn.getContactListManager();
                     manager.blockContact(Address.stripResource(mRemoteAddress));
                   //  mActivity.finish();
-                } catch (RemoteException e) {
+                } catch (Exception e) {
 
                     mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                     LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
@@ -1160,50 +1159,56 @@ public class ChatView extends LinearLayout {
 
     private IChatSession createChatSession() {
         
-        IImConnection conn = mApp.getConnection(mProviderId);
-
-        if (conn != null) {
-            try {
-                IChatSessionManager sessionMgr = conn.getChatSessionManager();
-                if (sessionMgr != null) {
-                   
-                    IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
-                  
-                    return session;
-                    
-                }
-            } catch (RemoteException e) {
-                
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+        try
+        {
+            checkConnection ();
+            
+            if (mConn != null) {
+                    IChatSessionManager sessionMgr = mConn.getChatSessionManager();
+                    if (sessionMgr != null) {
+                       
+                        IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
+                      
+                        return session;
+                        
+                    }
             }
+            
+        } catch (Exception e) {
+            
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
         }
-        
+    
         return null;
     }
  
     private IChatSession getChatSession() {
         
-        IImConnection conn = mApp.getConnection(mProviderId);
-
-        if (conn != null) {
-            try {
-                IChatSessionManager sessionMgr = conn.getChatSessionManager();
-                if (sessionMgr != null) {
-                   
-                        IChatSession session = sessionMgr.getChatSession(Address.stripResource(mRemoteAddress));
-                        
-                     //   if (session == null)
-                       //     session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
-                      
-                        return session;
-                    
-                }
-            } catch (RemoteException e) {
+        try {
+            
+            checkConnection ();
+            
+            if (mConn != null) {
                 
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+                    IChatSessionManager sessionMgr = mConn.getChatSessionManager();
+                    if (sessionMgr != null) {
+                       
+                            IChatSession session = sessionMgr.getChatSession(Address.stripResource(mRemoteAddress));
+                            
+                         //   if (session == null)
+                           //     session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
+                          
+                            return session;
+                        
+                    }
+        
             }
+            
+        } catch (Exception e) {
+            
+            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
         }
         
         return null;
@@ -1282,12 +1287,16 @@ public class ChatView extends LinearLayout {
                 getChatSession().registerChatListener(mChatListener);
                 getChatSession().setDataListener(mDataListenerAdapter);
             }
-            IImConnection conn = mApp.getConnection(mProviderId);
-            if (conn != null) {
-                IContactListManager listMgr = conn.getContactListManager();
+        
+            checkConnection();
+        
+            if (mConn != null)
+            {
+                IContactListManager listMgr = mConn.getContactListManager();
                 listMgr.registerContactListListener(mContactListListener);
             }
-        } catch (RemoteException e) {
+        
+        } catch (Exception e) {
             Log.w(ImApp.LOG_TAG, "<ChatView> registerChatListener fail:" + e.getMessage());
         }
     }
@@ -1301,12 +1310,13 @@ public class ChatView extends LinearLayout {
               //  getChatSession().setDataListener(null);
                 getChatSession().unregisterChatListener(mChatListener);
             }
-            IImConnection conn = mApp.getConnection(mProviderId);
-            if (conn != null) {
-                IContactListManager listMgr = conn.getContactListManager();
+            checkConnection ();
+            
+            if (mConn != null) {
+                IContactListManager listMgr = mConn.getContactListManager();
                 listMgr.unregisterContactListListener(mContactListListener);
             }
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             Log.w(ImApp.LOG_TAG, "<ChatView> unregisterChatListener fail:" + e.getMessage());
         }
     }
@@ -1330,10 +1340,11 @@ public class ChatView extends LinearLayout {
         }
 
         try {
-            IImConnection conn = mApp.getConnection(mProviderId);
-            isConnected = (conn == null) ? false : conn.getState() == ImConnection.LOGGED_IN;
+            //IImConnection conn = mApp.getConnection(mProviderId);
+            checkConnection();
+            isConnected = (mConn == null) ? false : mConn.getState() == ImConnection.LOGGED_IN;
            
-        } catch (RemoteException e) {
+        } catch (Exception e) {
            
             isConnected = false;
         }

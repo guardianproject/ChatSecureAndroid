@@ -150,7 +150,10 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
        // getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
          //       brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContentResolver(), true, null);
+        
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+        
+        mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
             public void run() {

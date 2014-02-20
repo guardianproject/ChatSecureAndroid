@@ -101,7 +101,7 @@ public abstract class ImConnection {
         return new Presence(mUserPresence);
     }
     
-    public abstract void initUser (long providerId, long accountId);
+    public abstract void initUser (long providerId, long accountId) throws ImException;
 
     public void updateUserPresenceAsync(Presence newPresence) throws ImException {
         if (mState != LOGGED_IN) {
