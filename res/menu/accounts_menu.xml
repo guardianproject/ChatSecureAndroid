@@ -28,10 +28,10 @@
      <menu>
         <item
             android:id="@+id/menu_existing_account"
-            android:title="Existing Account" />
+            android:title="@string/menu_use_existing_account" />
         <item
             android:id="@+id/menu_create_account"
-            android:title="Create Account" />
+            android:title="@string/menu_create_account" />
     </menu>
      
  </item>

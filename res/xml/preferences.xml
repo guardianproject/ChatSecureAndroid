@@ -23,7 +23,7 @@
   
    <PreferenceCategory android:title="@string/pref_group_security_title">
   
-  <ListPreference android:title="Chat Encryption"
+  <ListPreference android:title="@string/chat_encryption_title"
     android:key="pref_security_otr_mode"
     android:entryValues="@array/otr_options_values"
     android:entries="@array/otr_options"
