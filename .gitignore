@@ -6,3 +6,7 @@ assets/gibberbot.properties
 releases
 docs
 doc
+.directory
+tests/proguard-project.txt
+tests/project.properties
+tests/build.xml
