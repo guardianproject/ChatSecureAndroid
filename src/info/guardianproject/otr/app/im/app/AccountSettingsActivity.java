@@ -66,7 +66,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
-        if (text != null && settings.getPort() != 5222 && settings.getPort() != 0) {
+        if (text != null && settings.getPort() != 0) {
             mPort.setSummary(text);
         }
         text = settings.getServer();
@@ -172,6 +172,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         super.onResume();
 
         setInitialValues();
+        
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
