@@ -124,19 +124,14 @@ public class MessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         
-        if (!isInEditMode() )
-        {
+      
+        mHolder = (ViewHolder)getTag();
         
-            mHolder = (ViewHolder)getTag();
+        if (mHolder == null)
+        {
+            mHolder = new ViewHolder();   
+            setTag(mHolder);
             
-            if (mHolder == null)
-            {
-                mHolder = new ViewHolder();
-                
-                setTag(mHolder);
-                
-                
-            }
         }
 
     }
@@ -304,19 +299,23 @@ public class MessageView extends LinearLayout {
         }
         
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.setData(Uri.parse( body ));
-        
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+      
         //set a general mime type not specific
         if (mimeType != null)
         {
-            intent.setType(mimeType);
-            
+            intent.setDataAndType(Uri.parse( body ), mimeType);
+        }
+        else
+        {
+            intent.setData(Uri.parse( body ));
         }
         
-        if (isIntentAvailable(getContext(),intent))
+        Context context = getContext().getApplicationContext();
+        
+        if (isIntentAvailable(context,intent))
         {        
-            getContext().startActivity(intent);
+            context.startActivity(intent);
         }
         else
         {
