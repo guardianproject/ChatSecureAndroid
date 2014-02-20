@@ -1050,7 +1050,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         
         
-        if (serverPort == 0)
+        if (serverPort == 0) //if serverPort is set to 0 then use 5222 as default
             serverPort = 5222;
 
         // No server requested and SRV lookup wasn't requested or returned nothing - use domain
