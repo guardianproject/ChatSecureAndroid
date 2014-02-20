@@ -189,10 +189,10 @@ public class ChatView extends LinearLayout {
     }
     
     
-    private void checkConnection () throws ImException
+    private void checkConnection () throws ImException, RemoteException
     {
         if (mConn == null)
-            mConn = mApp.getConnection(mProviderId);
+            mConn = mApp.createConnection(mProviderId,mAccountId);
         
         if (mConn == null)
             throw new ImException("unable to get connection");
