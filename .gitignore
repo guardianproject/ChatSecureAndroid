@@ -6,3 +6,5 @@ assets/gibberbot.properties
 releases
 docs
 doc
+tests/
+.directory

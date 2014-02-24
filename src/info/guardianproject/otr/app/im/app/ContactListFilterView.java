@@ -382,10 +382,10 @@ public class ContactListFilterView extends LinearLayout {
             IContactListManager listManager = mConn.getContactListManager();
             int result = listManager.setContactName(aAddress, aNickname); 
             if( result != ImErrorInfo.NO_ERROR ) {
-                Toast.makeText(mContext, "ERROR: " + result, Toast.LENGTH_LONG); // TODO -LS error handling
+                Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + result, Toast.LENGTH_LONG); // TODO -LS error handling
             }
         } catch( Exception e ) {
-            Toast.makeText(mContext, "ERROR: " + e.getMessage(), Toast.LENGTH_LONG); // TODO -LS error handling
+            Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + e.getMessage(), Toast.LENGTH_LONG); // TODO -LS error handling
         }
         mFilterList.invalidate();
         final InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);

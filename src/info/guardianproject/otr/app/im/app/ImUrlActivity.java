@@ -455,8 +455,8 @@ public class ImUrlActivity extends Activity {
     void openMultiUserChat(final Uri data) {
         
         new AlertDialog.Builder(this)            
-        .setTitle("Join Chat Room?")
-        .setMessage("An external app is attempting to connect you to a chatroom. Allow?")
+        .setTitle(getString(R.string.dialog_connect_chatroom_title))
+        .setMessage(getString(R.string.dialog_connect_chatroom_message))
         .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 

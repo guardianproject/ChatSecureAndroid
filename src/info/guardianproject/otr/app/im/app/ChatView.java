@@ -511,7 +511,7 @@ public class ChatView extends LinearLayout {
                      clipboard.setPrimaryClip(clip); // 
                  }
                  
-                 Toast.makeText(mActivity, "message copied to the clipboard", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(mActivity, mContext.getString(R.string.toast_chat_copied_to_clipboard), Toast.LENGTH_SHORT).show();
                  
                  return true;
                  
@@ -2138,7 +2138,7 @@ public class ChatView extends LinearLayout {
                 
                 mTransferHandler.sendMessage(msg);
             } catch (IOException e) {
-                mHandler.showAlert("Transfer Error", "Unable to read file to storage");
+                mHandler.showAlert(mContext.getString(R.string.error_chat_file_transfer_title), mContext.getString(R.string.error_chat_file_transfer_body));
                 OtrDebugLogger.log("error reading file", e);
             }
             
