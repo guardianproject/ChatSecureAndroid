@@ -50,6 +50,8 @@
 		<string name="lock_screen_passphrase_not_set_confirm">Confirm New Password</string>
 		<string name="lock_screen_passphrases_not_matching">Password did not match, please try again</string>
 		<string name="lock_screen_skip">I\'m Feeling Lazy (No Password!)</string>
+		<string name="app_passphrase_view_title_dialog">Information Prompt</string>
+		<string name="app_passphrase_view_password_question">Enter Password Please</string>
 		
 		<!-- Views: Setup -->
 		<string name="landing_page_title">Select an account</string>
@@ -283,7 +285,7 @@
 		<string name="invitation_sent_prompt"> Invitation has been sent to <xliff:g id="user">%1$s</xliff:g>.</string>
 		<string name="accept_invitation">Accept</string>
 		<string name="decline_invitation">Decline</string>
-		 <string name="menu_new_group_chat">Group Chat</string>
+		<string name="menu_new_group_chat">Group Chat</string>
 		<string name="create_or_join_group_chat">Create or Join Group Chat</string>
 		<string name="connecting_to_group_chat_">Connecting to group chat...</string>
 		
@@ -301,8 +303,8 @@
 		<!-- Security: OTR -->
 		<string name="menu_otr_start">Start Encryption</string>
 		<string name="menu_otr_stop">Stop Encryption</string>
-		<string name ="starting_otr_chat">Starting encrypted chat session...</string>
-		<string name ="stopping_otr_chat">Stopping encrypted chat session...</string>
+		<string name="starting_otr_chat">Starting encrypted chat session...</string>
+		<string name="stopping_otr_chat">Stopping encrypted chat session...</string>
 		<string name="label_fingerprint_remote">Security Fingerprint</string>
 		<string name="menu_sign_in">Sign In</string>
 		<string name="menu_gen_key">Regen Key</string>
@@ -402,6 +404,17 @@
 		<string name="signout_kill_confirm_message">Do you want to sign out all services AND kill all processes (hard exit)?</string>
 		<string name="prompt_create_new_account_">Create new account?</string>
 		<string name="allow_s_to_create_a_new_chat_account_for_s_">Create a new chat account for username \'%1$s\'?</string>
+		<string name="dialog_cert_title">Certificate Info</string>
+		<string name="dialog_cert_subject">Certificate: </string>
+		<string name="dialog_cert_issuer">Issued by: </string>
+		<string name="dialog_cert_fingerprint">SHA1 Fingerprint: </string>
+		<string name="dialog_cert_issue_date">Issued: </string>
+		<string name="dialog_cert_expires">Expires: </string>
+		<string name="dialog_connect_chatroom_title">Join Chat Room?</string>
+		<string name="dialog_connect_chatroom_message">An external app is attempting to connect you to a chatroom. Allow?</string>
+		<string name="dialog_settings_choose_background_title">Choose Background</string>
+		<string name="dialog_settings_choose_background_body">Do you want to select a background image from the Gallery?</string>
+		<string name="dialog_settings_choose_background_picker">Select Picture</string>
 
 		<!-- Alerts: Notifications -->
 		<string name="newMessages_label">New <xliff:g id="provider">%1$s</xliff:g> messages</string>
@@ -413,9 +426,11 @@
 		<string name="new_messages_notify">New message(s) from</string>
 		<string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
 		<string name="app_unlocked">Activated &amp; unlocked</string>
+		<string name="toast_chat_copied_to_clipboard">message copied to the clipboard</string>
 		
 		<!-- Alerts: Exceptions -->
 		<string name="error">Attention</string>
+		<string name="error_prefix">Error: </string>
 		<string name="general_error">Error code <xliff:g id="code">%1$d</xliff:g></string>
 		<string name="login_service_failed">Unable to sign in to the <xliff:g id="service">%1$s</xliff:g> service. Please try again later.\n(Detail: <xliff:g id="description">%2$s</xliff:g>)</string>
 		<string name="add_list_failed">The list was not added.</string>
@@ -472,12 +487,19 @@
 		<string name="disconnected_warning">Messages will be sent on reconnect</string>
 		<string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
 		<string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> is not in your Contact list.</string>
+		<string name="error_account_password_mismatch">Your passwords do not match</string>
+		<string name="error_account_settings_priority">Priority must be a number in the range [0 .. 127]</string>
+		<string name="error_account_settings_port">Port number must be a number</string>
+		<string name="error_chat_file_transfer_title">Transfer Error</string>
+		<string name="error_chat_file_transfer_body">Unable to read file to storage</string>
+		<string name="error_welcome_database">Major Error: Unable to unlock or load app database. Please re-install the app or clear data.</string>
 	
 		<!-- Other -->
 		<string name="_open_conversations">" open conversation(s)"</string>
 		<string name="mtm_accept_cert">Accept Server Certificate?</string>
 		<string name="buddies">Buddies</string>
 		<string name="contacts">Contacts</string>
+		<string name="about_link">About Gibberbot\nhttps://guardianproject.info/apps/chatsecure/</string>
 		
 		<!-- Other: Slide Menu -->
 		<string name="menu_contact_list">Contact List</string>

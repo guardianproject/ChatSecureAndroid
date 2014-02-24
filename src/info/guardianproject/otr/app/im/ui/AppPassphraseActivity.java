@@ -22,7 +22,7 @@ public class AppPassphraseActivity extends ThemeableActivity {
 
     private void foo() {
         dl = new Dialog(this);
-        dl.setTitle("Information Prompt");
+        dl.setTitle(getString(R.string.app_passphrase_view_title_dialog));
 
         dl.setContentView(R.layout.auth_view);
         EditText inputBox1 = (EditText) dl.findViewById(R.id.user);
@@ -50,7 +50,7 @@ public class AppPassphraseActivity extends ThemeableActivity {
 
     private void showPasswordDialog() {
         dl = new Dialog(this);
-        dl.setTitle("Enter Password Please");
+        dl.setTitle(getString(R.string.app_passphrase_view_password_question));
 
         dl.setContentView(R.layout.password_prompt);
         EditText inputBox1 = (EditText) dl.findViewById(R.id.pwd);

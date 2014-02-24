@@ -445,7 +445,7 @@ public class AccountActivity extends Activity {
                     }
                     else
                     {
-                       Toast.makeText(AccountActivity.this, "Your passwords do not match", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(AccountActivity.this, getString(R.string.error_account_password_mismatch), Toast.LENGTH_SHORT).show();
                     }
                 }
                 else
