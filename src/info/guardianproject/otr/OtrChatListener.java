@@ -29,7 +29,7 @@ public class OtrChatListener implements MessageListener {
     @Override
     public boolean onIncomingMessage(ChatSession session, Message msg) {
 
-        OtrDebugLogger.log("processing incoming message: " + msg.getID());
+  //      OtrDebugLogger.log("processing incoming message: " + msg.getID());
 
         String body = msg.getBody();
         String from = msg.getFrom().getAddress();
@@ -39,7 +39,7 @@ public class OtrChatListener implements MessageListener {
 
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
 
-        OtrDebugLogger.log("session status: " + otrStatus.name());
+//        OtrDebugLogger.log("session status: " + otrStatus.name());
 
         List<TLV> tlvs = new ArrayList<TLV>();
 
@@ -57,8 +57,8 @@ public class OtrChatListener implements MessageListener {
         } catch (OtrException e) {
             
             OtrDebugLogger.log("error decrypting message", e);            
-            msg.setBody("[You received an unreadable encrypted message]");
-            mMessageListener.onIncomingMessage(session, msg);
+          //  msg.setBody("[You received an unreadable encrypted message]");
+          //  mMessageListener.onIncomingMessage(session, msg);
         }
         
         for (TLV tlv : tlvs) {
