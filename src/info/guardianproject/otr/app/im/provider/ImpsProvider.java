@@ -477,6 +477,7 @@ public class ImpsProvider extends ContentProvider {
                 if (newVersion <= 102) {
                     return;
                 }
+                
                 db.beginTransaction();
                 try {
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES
