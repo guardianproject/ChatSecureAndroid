@@ -226,6 +226,7 @@ public class ContactListTreeAdapter extends BaseExpandableListAdapter implements
         
         Uri uri = builder.build();
 
+        //@todo User users locale? - scento
         mQueryHandler.startQuery(TOKEN_SUBSCRIPTION, null, uri, ContactView.CONTACT_PROJECTION,
                 String.format(Locale.US, "%s=%d AND %s=%d", Imps.Contacts.SUBSCRIPTION_STATUS,
                         Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING,

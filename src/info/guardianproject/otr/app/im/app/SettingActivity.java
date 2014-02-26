@@ -187,8 +187,8 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Choose Background");
-        builder.setMessage("Do you want to select a background image from the Gallery?");
+        builder.setTitle(getString(R.string.dialog_settings_choose_background_title));
+        builder.setMessage(getString(R.string.dialog_settings_choose_background_body));
 
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -196,7 +196,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 888);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.dialog_settings_choose_background_picker)), 888);
 
                 dialog.dismiss();
             }

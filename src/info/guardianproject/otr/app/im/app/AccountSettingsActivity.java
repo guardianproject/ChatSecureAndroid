@@ -107,7 +107,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 settings.setXmppResourcePrio(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
                 Toast.makeText(getBaseContext(),
-                        "Priority must be a number in the range [0 .. 127]", Toast.LENGTH_SHORT)
+                        getString(R.string.error_account_settings_priority), Toast.LENGTH_SHORT)
                         .show();
             }
             mXmppResourcePrio.setSummary(value);
@@ -116,7 +116,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
             try {
                 settings.setPort(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
-                Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
+                Toast.makeText(getBaseContext(), getString(R.string.error_account_settings_port), Toast.LENGTH_SHORT)
                         .show();
             }
             if (settings.getPort() != 0)

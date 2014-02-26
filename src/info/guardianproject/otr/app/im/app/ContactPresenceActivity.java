@@ -455,8 +455,8 @@ public class ContactPresenceActivity extends Activity {
 
         if (viewSmp != null)
         {
-            new AlertDialog.Builder(this).setTitle("OTR Q&A Verification").setView(viewSmp)
-                    .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this).setTitle(getString(R.string.otr_qa_title)).setView(viewSmp)
+                    .setPositiveButton(getString(R.string.otr_qa_send), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
     
                             EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
@@ -465,7 +465,7 @@ public class ContactPresenceActivity extends Activity {
                             String answer = eiAnswer.getText().toString();
                             initSmp(question, answer);
                         }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.otr_qa_cancel), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             // Do nothing.
                         }

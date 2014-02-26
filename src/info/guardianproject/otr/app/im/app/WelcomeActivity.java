@@ -165,7 +165,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             if (allowCreate) {
                 Log.e(ImApp.LOG_TAG, e.getMessage(), e);
 
-                Toast.makeText(this, "MAJOR ERROR: Unable to unlock or load app database. Please re-install the app or clear data.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.error_welcome_database), Toast.LENGTH_LONG).show();
                 finish();
             }
             
@@ -448,7 +448,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private void showAbout() {
         //TODO implement this about form
-        Toast.makeText(this, "About Gibberbot\nhttps://guardianproject.info/apps/gibber",
+        Toast.makeText(this, getString(R.string.about_link),
                 Toast.LENGTH_LONG).show();
     }
 
