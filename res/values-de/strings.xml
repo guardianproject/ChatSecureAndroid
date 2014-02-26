@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
-  <string name="ro_perm_label">Nachricht lesen</string>
-  <string name="ro_perm_desc">\n        Erlaubt Anwendungen Daten vom IM-Provider zu lesen.\n    </string>
-  <string name="wo_perm_label">Instant Messages schreiben</string>
-  <string name="wo_perm_desc">\n        Erlaubt Anwendungen Daten zom IM-Provider zu schreiben.\n    </string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="ro_perm_label">Sofortnachrichten lesen</string>
+  <string name="ro_perm_desc">\nErlaubt es Anwendungen, Daten vom Sofortnachrichteninhalteanbieter zu lesen.\n</string>
+  <string name="wo_perm_label">Sofortnachrichten schreiben</string>
+  <string name="wo_perm_desc">\nErlaubt es Anwendungen, Daten zum Sofortnachrichtinhalteanbieter zu schreiben.\n</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
-  <string name="landing_page_title">Chat - Wählen Sie ein Konto</string>
+  <string name="landing_page_title">Konto auswählen</string>
   <!--Landing page screen menu and context menu items.-->
   <string name="menu_about">Über</string>
   <!--Conext menu item: add a new account.-->
@@ -22,8 +22,9 @@
   <string name="menu_sign_out_all">Alle abmelden</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
-  <string name="choose_account_title">Chat - Wählen Sie ein Konto</string>
+  <string name="choose_account_title">Konto auswählen</string>
   <!--Displays the number of ongoing chats on the landing page.-->
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
   <string name="menu_cancel_signin">Anmeldung abbrechen</string>
@@ -41,12 +42,14 @@
   <string name="menu_block_contact">Kontakt sperren</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <string name="menu_contact_nickname">Spitzname des Kontaktes</string>
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">Gesperrt</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Konten</string>
   <!--Screen menu item on active chat list to start new chat-->
-  <string name="menu_new_chat">Neuer Chat</string>
+  <string name="menu_new_chat">Neue Unterhaltung</string>
   <!--Screen menu item on accounts list to create new account-->
   <string name="menu_new_account">Neues Konto</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
@@ -56,21 +59,24 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
-  <string name="menu_start_chat">Chat starten</string>
+  <string name="menu_start_chat">Unterhaltung starten</string>
   <!--Screen menu item on the contact list to sign out the service.-->
   <string name="menu_sign_out">Abmelden</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Profil anzeigen</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <string name="menu_view_profile">Profil ansehen</string>
+  <string name="menu_verify">Schlüssel überprüfen</string>
+  <!--Context/drop-down menu item for picking an image to send.-->
+  <string name="menu_send_image">Foto senden</string>
+  <string name="menu_send_file">Datei senden</string>
+  <string name="menu_send_audio">Ton senden</string>
+  <string name="menu_take_picture">Bild aufnehmen</string>
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">Starte OTR</string>
   <string name="menu_otr_stop">Beende OTR</string>
-  <string name="menu_clear_chat">Clear Chat</string>
-  <string name="menu_end_conversation">Chat beenden</string>
+  <string name="menu_clear_chat">Unterhaltung löschen</string>
+  <string name="menu_end_conversation">Unterhaltung beenden</string>
   <string name="menu_voip_title">Sicherer Anruf</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
@@ -81,15 +87,15 @@
   <string name="menu_invite_contact">Einladen\u2026</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">Chat wechseln</string>
+  <string name="menu_switch_chats">Unterhaltung wechseln</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Smiley einfügen</string>
   <string name="menu_resend">Erneut senden</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Scan Fingerprint</string>
-  <string name="menu_fingerprint">Mein Fingerabdruck</string>
-  <string name="menu_verify_fingerprint">Fingerprint überprüfen</string>
-  <string name="menu_verify_secret">Überprüfen Geheimnis </string>
+  <string name="menu_scan">QR Code scannen</string>
+  <string name="menu_fingerprint">Ihr Fingerabdruck</string>
+  <string name="menu_verify_fingerprint">Anleitung</string>
+  <string name="menu_verify_secret">Frage</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -102,11 +108,11 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">Von allen Diensten abmelden?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
+  <string name="confirm_delete_contact">Kontakt »&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;« wird gelöscht.</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
+  <string name="confirm_block_contact">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wird gesperrt.</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
+  <string name="confirm_unblock_contact">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wird nicht mehr gesperrt.</string>
   <!--The "OK" button label for the error message dialog.-->
   <string name="ok">OK</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
@@ -116,12 +122,12 @@
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">Abbrechen</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
+  <string name="signed_out_prompt">Sie wurden von &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; abgemeldet.</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
+  <string name="signed_out_prompt_with_error">Sie wurden aus folgendem Grund von &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; abgemeldet: &lt;xliff:g id="REASON"&gt;%2$s&lt;/xliff:g&gt;.</string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
+  <string name="add_account">&lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;-Konto hinzufügen</string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">Benutzername:</string>
@@ -130,19 +136,20 @@
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
   <string name="remember_password">Passwort speichern</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Automatisch anmelden</string>
+  <string name="keep_me_signed_in">Automatisch anmelden.</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Besitzen Sie kein Konto?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">Bei Verlust Ihres Handys ändern Sie bitte Ihr Passwort über die entsprechende Webseite.</string>
-  <string name="check_auto_sign_in">Mit dieser Option werden Sie bei jedem Öffnen der Anwendung automatisch angemeldet. Wenn Sie die Option deaktivieren möchten, melden Sie sich ab, und deaktivieren Sie das Kontrollkästchen \\"Automatisch anmelden\\".</string>
+  <string name="check_save_password">Bei Verlust oder Diebstahl, Ihres Handys, bitte Ihr Passwort über die entsprechende Webseite ändern.</string>
+  <string name="check_auto_sign_in">Mit dieser Option werden Sie bei jedem Öffnen der Anwendung automatisch angemeldet. Wenn Sie die Option deaktivieren möchten, melden Sie sich ab, und deaktivieren Sie das Kontrollkästchen »Automatisch anmelden«.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Anmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">ChatSecure am Laufen halten...</string>
+  <string name="signing_in_to">ChatSecure zum Laufen bringen …</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Anmeldung wird ausgeführt...</string>
+  <string name="signing_out_wait">Abmelden\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -150,7 +157,7 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
+  <string name="bg_data_prompt_message">\nNetzwerkdatenverbindung (inklusive Hintergrunddaten) wird für die App benötigt, um sich anzumelden.\n</string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">Aktivieren</string>
@@ -158,23 +165,23 @@
   <string name="bg_data_prompt_cancel">Beenden</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
+  <string name="ongoing_conversation">Derzeit ausgeführte Unterhaltungen (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
+  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; online</string>
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">Freundschaftseinladungen</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
-  <string name="unknown_contact">(\"<i>\"Unbekannt\"</i>\")</string>
+  <string name="unknown_contact">(<i>Unbekannt</i>)</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
   <string name="empty_contact_group">Leer</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">Keine Chats</string>
+  <string name="empty_conversation_group">Keine Gespräche</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">Kontakte für Einladung auswählen</string>
   <string name="contact_filter_hint">Gesuchten Kontakt eingeben</string>
-  <string name="empty_contact_list">Keine Kontakte gefunden.</string>
+  <string name="empty_contact_list">Keine Kontakte gefunden.\n\nZum Einladen tippen.</string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
+  <string name="blocked_list_title">Gesperrte Kontakte - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">Keine gesperrten Kontakte.</string>
   <!--These strings are displayed in the contact info dialog.-->
@@ -210,44 +217,44 @@
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
+  <string name="chat_with">Mit &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; unterhalten</string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Ich</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Nachricht hier eintippen</string>
+  <string name="compose_hint">Nachricht senden</string>
+  <string name="compose_hint_secure">Sichere Nachricht senden</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
+  <string name="contact_online">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist online.</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
+  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist abwesend.</string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
+  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist beschäftigt.</string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
+  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist offline.</string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
+  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; hat die Teilnahme begonnen.</string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
+  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; hat die Unterhaltung verlassen.</string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
-  <string name="time_stamp" format="date"></string>
+  <string name="time_stamp" format="date">Um &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; am &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt; gesendet</string>
   <!--The send button on the chat screen.-->
   <string name="send">Senden</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Die Nachricht kann nicht gesendet werden.</string>
+  <string name="msg_sent_failed">Die Nachricht konnte nicht gesendet werden.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Verbindung zum Server verloren. Nachrichten werden gesendet, sobald eine Online-Verbindung besteht.</string>
+  <string name="disconnected_warning">Nachrichten werden nach Wiederverbinden gesendet</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
+  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; ist offline. Von Ihnen gesendete Nachrichten werden zugestellt, sobald &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; online ist.</string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist nicht in Ihrer Kontaktliste enthalten.</string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">Link auswählen</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">Keine aktiven Chats</string>
+  <string name="empty_chat_list">Keine aktiven Unterhaltungen.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Verschlüsselte Chat Session wird gestartet...</string>
-  <string name="stopping_otr_chat">Verschlüsselte Chat Session wird gestoppt...</string>
+  <string name="starting_otr_chat">Verschlüsselte Unterhaltung wird gestartet …</string>
+  <string name="stopping_otr_chat">Verschlüsselte Unterhaltung Session wird gestoppt …</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Kontakt hinzufügen</string>
@@ -261,24 +268,24 @@
   <string name="invite_label">Einladung senden</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber/XMPP</string>
-  <string name="provider_full_name_llxmpp">Lokaler Netzwerk Chat (Bonjour/ZeroConf)</string>
+  <string name="provider_full_name_llxmpp">Lokales Netzwerk (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="account_setup_title">Konto-Setup</string>
+  <string name="account_setup_title">Kontoeinstellungen</string>
   <string name="encryption_and_anonymity_title">Verschlüsselung und Anonymität</string>
   <string name="hide_offline_contacts">Offline-Kontakte ausblenden</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
   <string name="notification_group_title">Benachrichtigungseinstellungen</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">Chat-Benachrichtigung</string>
+  <string name="notification_enabled_title">Benachrichtigung über Sofortnachrichten</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Bei Nachrichteneingang Benachrichtigung in Statuszeile anzeigen</string>
+  <string name="notification_enabled_summary">Bei Nachrichteneingang eine Benachrichtigung in der Statuszeile anzeigen</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="foreground_service_title">Vordergrundpriorität verwenden</string>
-  <string name="foreground_service_summary">Reduzieren Sie die Chance, dass Android eine Verbindung neustartet. Dies wird eine Meldung im Infobereich platzieren. </string>
+  <string name="foreground_service_summary">Reduzieren Sie die Chance, dass Android eine Verbindung neu startet. Dies wird eine Meldung im Infobereich platzieren. </string>
   <string name="heartbeat_interval_title">Heartbeat interval</string>
-  <string name="heartbeat_interval_summary">Verwenden Sie einen höheren Wert (in Minuten), um Batterie zu sparen. Ein hoher Wert kann dazu führen das der Anbieter, die Verbindung wegen Inaktivität beendet. </string>
+  <string name="heartbeat_interval_summary">Verwenden Sie einen höheren Wert (in Minuten), um Batterie zu sparen. Ein hoher Wert kann dazu führen, dass der Anbieter die Verbindung wegen Inaktivität beendet. </string>
   <string name="notification_vibrate_title">Vibrieren</string>
   <!--This is the summary of the vibrate notification setting-->
   <string name="notification_vibrate_summary">Bei Nachrichteneingang vibrieren</string>
@@ -289,53 +296,60 @@
   <string name="notification_sound_summary">Bei Nachrichteneingang Klingelton wiedergeben</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Klingelton auswählen</string>
+  <string name="notification_ringtone_title">ChatSecures individuellen Klingelton benutzen</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
+  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; hat Sie zu einer Gruppenunterhaltung eingeladen.</string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
+  <string name="invitation_sent_prompt">Einladung wurde an &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; gesendet.</string>
   <!--The button for accepting an invitation.-->
   <string name="accept_invitation">Annehmen</string>
   <!--The button for decline an invitation.-->
   <string name="decline_invitation">Ablehnen</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
+  <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; möchte Sie in die Kontaktliste aufnehmen.</string>
   <!--The button for approving a subscription request.-->
   <string name="approve_subscription">Annehmen</string>
   <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">Ablehnen</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
+  <string name="approve_subscription_error">Anmeldung von &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; kann nicht genehmigt werden. Bitte versuchen Sie es später erneut.</string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
+  <string name="decline_subscription_error">Anmeldung von &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; kann nicht abgelehnt werden. Bitte versuchen Sie es später erneut.</string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
+  <string name="newMessages_label">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
+  <string name="num_unread_chats">
+&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; ungelesene Unterhaltungen
+</string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
+  <string name="subscription_notify_text">Neue Freundschaftseinladung von &lt;xliff:g id="USER"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="file_notify_text">
+Neue Datei &lt;xliff:g id="filename"&gt;%s&lt;/xliff:g&gt; von &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;
+    </string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
-  <string name="notify_groupchat_label">Einladung zum Gruppenchat</string>
+  <string name="notify_groupchat_label">Einladung zur Gruppenunterhaltung</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
+  <string name="group_chat_invite_notify_text">
+Neue Einladung zur Gruppenunterhaltung von &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;
+</string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
+  <string name="add_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« hinzugefügt</string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
+  <string name="delete_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« gelöscht</string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
+  <string name="block_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« gesperrt</string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
+  <string name="unblock_contact_success">Blockierung des Kontakts »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« aufgehoben</string>
   <!--IM service permission-->
-  <string name="perm_label">Chat-Service starten</string>
-  <string name="perm_desc">Ermöglicht Anwendungen das eigenständige Starten von Chat-Services.</string>
+  <string name="perm_label">Sofortnachrichtendienst starten</string>
+  <string name="perm_desc">Ermöglicht Anwendungen das eigenständige Starten des Sofortnachrichtendienstes.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
   <string name="error">Achtung</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
+  <string name="login_service_failed">Anmeldung beim &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;-Service nicht möglich. Bitte versuchen Sie es später erneut."\n"(Details: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">Die Liste wurde nicht hinzugefügt.</string>
   <!--Error message for blocking contact failed.-->
@@ -353,14 +367,14 @@
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">Verbindung zum Server kann nicht hergestellt werden. Überprüfen Sie die Verbindung.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
+  <string name="contact_already_exist">»&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;« ist bereits in der Kontaktliste vorhanden.</string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
+  <string name="contact_blocked">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wurde gesperrt.</string>
   <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">Kontaktliste wird geladen, bitte warten.</string>
   <!--Error message for when a network error occurred.-->
   <string name="network_error">Ein Netzwerkfehler ist aufgetreten.</string>
-  <string name="wifi_not_connected_error">WiFi ist nötig für diese Verbindung.</string>
+  <string name="wifi_not_connected_error">Für diese Verbindung ist WiFi nötig.</string>
   <!--Error message for lack of server support error.-->
   <string name="service_not_support">Diese Funktion wird vom Server nicht unterstützt.</string>
   <!--Erorr message for bad password error.-->
@@ -372,7 +386,7 @@
   <!--Error message for server not available error.-->
   <string name="service_unavaiable">Der Server ist derzeit nicht verfügbar.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">Timeout beim Verbindungsaufbau zum Server</string>
+  <string name="timeout">Zeitüberschreitung beim Verbindungsaufbau zum Server</string>
   <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">Die aktuelle Version wird vom Server nicht unterstützt.</string>
   <!--Error message for when the message queue on the server is full.-->
@@ -382,7 +396,7 @@
   <!--Error message for a bad username error.-->
   <string name="unknown_user">Der eingegebene Benutzername wird nicht erkannt.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Sie werden leider vom Benutzer gesperrt.</string>
+  <string name="recipient_blocked_the_user">Sie wurden leider vom Benutzer gesperrt.</string>
   <!--Error message for session expired error.-->
   <string name="session_expired">Die Sitzung ist abgelaufen, bitte melden Sie sich erneut an.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
@@ -393,7 +407,7 @@
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">Sie sind derzeit nicht angemeldet.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
+  <string name="general_error">Fehlercode &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>Glücklich</item>
@@ -448,33 +462,33 @@
     <item>:-[</item>
     <item>O:-)</item>
     <item>:-\\</item>
-    <item>:\'(</item>
+    <item>:\\'(</item>
     <item>:-X</item>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="buddy_list_title"></string>
+  <string name="buddy_list_title">Kontaktliste - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_contact_list">Kontaktliste</string>
   <string name="menu_view_encrypt_chat">Verschlüsseln An/Aus</string>
-  <string name="use_tor">Verbinden über Tor (Benötigt Orbot app)</string>
+  <string name="use_tor">Verbinden über Tor (Benötigt Orbot-App)</string>
   <!--Welcome Splash Screen-->
   <string name="app_name">ChatSecure</string>
-  <string name="welcome_first">Benutzen Sie ChatSecure das erste mal?</string>
-  <string name="welcome_skip">Intro überspringen!</string>
+  <string name="welcome_first">Benutzen Sie ChatSecure das erste Mal?</string>
+  <string name="welcome_skip">Nicht warten, um loszulegen?</string>
   <string name="welcome_about">Über Gibberbot</string>
-  <string name="welcome_account">Konto-Setup</string>
+  <string name="welcome_account">Kontoeinstellungen</string>
   <!--About: Welcome-->
   <string name="about_welcome_title">Über ChatSecure</string>
-  <string name="about_welcome">ChatSecure ist eine Instant Messaging App für Mobilgeräte mit Sicherheitsfunktionen, die verhindern, daß Konversationen und Kommunikation ausspioniert werden.\n\nAlle Chat Dienste, welche das Jabber oder XMPP Protokoll benutzen werden unterstützt, wie zum Beispiel Gtalk oder Jabber.org.</string>
+  <string name="about_welcome">ChatSecure ist eine mobile Sofortnachrichten-App mit Sicherheitsfunktionen, die verhindern, dass Konversationen und Kommunikation ausspioniert werden.\n\nAlle Unterhaltungsdienste, die das Jabber- oder XMPP-Protokoll benutzen, werden unterstützt, wie zum Beispiel GoogleTalk oder Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Wie funktioniert OTR?</string>
-  <string name="about_otr">\'Off-the-Record Messaging\' ist ein Verschlüsselungssystem, daß entworfen wurde, die Privatheit der Kommunikation in der echten Welt nachzubilden.\nIm einzelnen sind dies: Verschlüsselung um Menschen außer Reichweite auszusperren, Beglaubigung (Authentication) um der Identität des Gesprächspartners sicher zu sein, Abstreitbarkeit (Deniability) um im Nachhinein verleugnen zu können bestimmte Aussagen getroffen zu haben, Folgenlosigkeit (Perfect Forward Secrecy) damit der Verlust des privaten Schlüssels es nicht ermöglicht Kommunikation der Vergangenheit nachträglich zu enschlüsseln.\n\nDas eingesetzte OTR-Protokoll ist kompatibel mit Desktop-IM-Clients wie Adium, Pidgin ua. </string>
+  <string name="about_otr">»Off-the-Record Messaging« (zu deutsch: inoffizielle; vertrauliche, nicht für die Öffentlichkeit bestimmte Nachrichtenvermittlung) ist ein Verschlüsselungssystem, das entworfen wurde, um die Privatsphäre von Gesprächen in der echten Welt nachzubilden.\nIm einzelnen hat es folgende Eigenschaften: Verschlüsselung, um unberechtigtes Mitlesen zu verhindern, Beglaubigung (Authentifizierung), um der Identität des Gesprächspartners sicher zu sein, Abstreitbarkeit (Deniability), um im Nachhinein verleugnen zu können, bestimmte Aussagen getroffen zu haben, sowie Folgenlosigkeit (Perfect Forward Secrecy), damit der Verlust des privaten Schlüssels es nicht ermöglicht, Kommunikation der Vergangenheit nachträglich zu entschlüsseln.\n\nDas eingesetzte OTR-Protokoll ist mit Desktop-IM-Anwendungen wie Adium, Pidgin ua. kompatibel.</string>
   <!--About: Security-->
-  <string name="about_security_title">Sind meine Chats sicher?</string>
-  <string name="about_security">ChatSecures Chatverschlüsselung funktioniert nur wenn die Gegenseite ein kompatibles Programm benutzt. Deswegen sollten Sie darauf achten, dass Ihr Kontakt entweder auf dem Handy ChatSecure und Adium oder Pidgin auf dem Desktop benutzt. Feineinstellungen wie und wann ChatSecure verschlüsselt können in den Kontoeinstellungen vorgenommen werden.\n\nLassen Sie uns beginnen!</string>
+  <string name="about_security_title">Sind meine Unterhaltungen sicher?</string>
+  <string name="about_security">Die Verschlüsselungsfunktion von ChatSecure funktioniert nur, wenn die Gegenseite eine kompatible Anwendung benutzt. Deswegen sollten Sie darauf achten, dass Ihr Kontakt entweder auf dem Handy ChatSecure oder auf dem Desktop Adium oder Pidgin benutzt. Sie können in den Kontoeinstellungen im Detail angeben, wie und wann ChatSecure verschlüsseln soll.\n\nLassen Sie uns beginnen!</string>
   <!--Setup: Passphrase-->
-  <string name="setup_passphrase_title">Passphrase Setup</string>
-  <string name="setup_passphrase">Bevor Sie starten legen Sie bitte ein sicheres Passwort fest um Ihre ChatSecure Daten vor unberechtigtem Zugang zu schützen.</string>
+  <string name="setup_passphrase_title">Passwort-Einrichtung</string>
+  <string name="setup_passphrase">Bevor Sie starten, legen Sie bitte ein sicheres Passwort fest, um Ihre ChatSecure-Daten vor unberechtigtem Zugriff zu schützen.</string>
   <string name="setup_passphrase_label1">Passwort:</string>
   <string name="setup_passphrase_label2">Passwort (Wiederholung) :</string>
   <!--Account Setup: Account-->
@@ -483,8 +497,8 @@
   <string name="account_setup_service_provider">Dienstanbieter (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">Passwort</string>
   <string name="account_setup_password_confirm">Passwort bestätigen</string>
-  <string name="account_setup_advanced_button">Erweiterte Konten-Einstellungen</string>
-  <string name="account_select_type">Konto Typen</string>
+  <string name="account_setup_advanced_button">Erweiterte Kontoeinstellungen</string>
+  <string name="account_select_type">Kontotyp</string>
   <string name="btn_create_new_account">Konto registrieren</string>
   <!--Account Setup: Persistence-->
   <string name="account_setup_pers_sub">Persistenz</string>
@@ -495,132 +509,176 @@
   <string name="account_setup_pers_auto_on">Beim Start von ChatSecure verbinden</string>
   <string name="account_setup_pers_auto_off">Beim Start von ChatSecure nicht verbinden</string>
   <string name="account_setup_pers_now_title">Jetzt anmelden</string>
-  <string name="account_setup_pers_now_on">Verbinden Sie folgendes Konto</string>
-  <string name="account_setup_pers_now_off">Verbinden Sie folgendes Konto nicht</string>
+  <string name="account_setup_pers_now_on">Nach Kontoeinrichtung verbinden</string>
+  <string name="account_setup_pers_now_off">Nach Kontoeinrichtung nicht verbinden</string>
   <!--Account Setup: Personal-->
   <string name="account_setup_personal_sub">Persönliche Daten (optional)</string>
-  <string name="account_setup_personal_alias_title">Account Alias (Mein Name)</string>
-  <string name="account_setup_personal_alias_sub">Wie mein Konto online erscheint</string>
+  <string name="account_setup_personal_alias_title">Knoto-Alias (Ihr Name)</string>
+  <string name="account_setup_personal_alias_sub">Wie Ihr Konto online erscheint</string>
   <string name="account_setup_personal_profile_title">Profil</string>
   <string name="account_setup_personal_profile_sub">Eine kurzes Wort über mich</string>
   <!--Account Setup: Advanced-->
-  <string name="account_setup_advanced_enc_force">Verschlüsselung vorraussetzen / Klartext verweigern </string>
-  <string name="account_setup_advanced_enc_auto">Wenn möglich, Chats automatisch verschlüsseln </string>
-  <string name="account_setup_advanced_enc_req">Chats auf Anforderung verschlüsseln</string>
+  <string name="account_setup_advanced_enc_force">Verschlüsselung erzwingen / Klartext verweigern </string>
+  <string name="account_setup_advanced_enc_auto">Wenn möglich, Unterhaltungen automatisch verschlüsseln </string>
+  <string name="account_setup_advanced_enc_req">Unterhaltungen auf Anforderung verschlüsseln</string>
   <string name="account_setup_advanced_enc_off">Verschlüsselung abschalten</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Überprüfe Anmeldeinformationen ...</string>
-  <string name="account_setup_signin_b">Generiere Schlüsselpaar ...</string>
-  <string name="account_setup_signin_c">Melde an...</string>
+  <string name="account_setup_signin_a">Anmeldeinformationen überprüfen …</string>
+  <string name="account_setup_signin_b">Schlüsselpaar generieren … </string>
+  <string name="account_setup_signin_c">Anmelden …</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">ChatSecure erlitt bei der Überprüfung von Benutzername und Passwort eine Störung – bitte kontrollieren Sie beides und wiederholen Sie den Vorgang.</string>
-  <string name="account_setup_error_keypair">ChatSecure erlitt bei der Generierung des Schlüsselpaars eine Störung.</string>
-  <string name="account_setup_error_server">ChatSecure erfuhr beim Verbinden mit dem Chat Server einen Fehler – bitte prüfen Sie die Einstellungen und versuchen Sie es nochmals.</string>
-  <string name="account_setup_error_connectivity">ChatSecure erfuhr beim Verbinden einen Fehler – bitte prüfen Sie die Netzwerkverbindung und versuchen Sie es nochmals.</string>
-  <string name="label_fingerprint_remote"> Fingerabdruck des Gegenübers</string>
-  <string name="label_fingerprint_local">Mein Fingerabdruck</string>
+  <string name="account_setup_error_validating">ChatSecure entdeckte bei der Überprüfung von Benutzername und Passwort eine Störung – bitte kontrollieren Sie beides und wiederholen Sie den Vorgang.</string>
+  <string name="account_setup_error_keypair">Bei der Generierung des Schlüsselpaars trat ein Fehler auf.</string>
+  <string name="account_setup_error_server">ChatSecure hatte einen Fehler beim Verbinden mit dem Unterhaltungs-Server – bitte überprüfen Sie die Einstellungen und versuchen Sie es nochmals.</string>
+  <string name="account_setup_error_connectivity">ChatSecure hatte einen Fehler beim Verbinden – bitte prüfen Sie die Netzwerkverbindung und versuchen Sie es nochmals.</string>
+  <string name="label_fingerprint_remote">Sicherheitsfingerabdruck</string>
   <string name="menu_sign_in">Anmelden</string>
   <string name="menu_gen_key">Schlüssel erneuern</string>
   <string name="error_suspended_connection">ChatSecure hat die Verbindung zum Netzwerk verloren</string>
-  <string name="error_reestablish_connection">ChatSecure versucht die Verbindung wiederaufzubauen</string>
-  <string name="otr_session_status_plaintext">Achtung: Dieser Chat ist nicht verschlüsselt</string>
-  <string name="otr_session_status_encrypted">Dieser Chat ist sicher, aber die Identität der Teilnehmer wurde noch nicht überprüft</string>
-  <string name="otr_session_status_finished">Achtung: Die Chat-Verschlüsselung wurde beendet.</string>
-  <string name="otr_session_status_verified">Dieser Chat ist gesichert und überprüft.</string>
-  <string name="account_wizard_setup_title">Konto-Assistent</string>
-  <string name="account_wizard_account_title">Meine Konto-ID</string>
+  <string name="error_reestablish_connection">ChatSecure versucht die Verbindung wieder aufzubauen</string>
+  <string name="otr_session_status_plaintext">Unverschlüsselt</string>
+  <string name="otr_session_status_encrypted">Verschlüsselt (zum Überprüfen tippen)</string>
+  <string name="otr_session_status_finished">Ihr Kontakt hat die verschlüsselte Unterhaltung beendet.</string>
+  <string name="otr_session_status_verified">Verschlüsselt und verifiziert!</string>
+  <string name="account_wizard_setup_title">Kontoassistent</string>
+  <string name="account_wizard_account_title">Ihre Kontokennung</string>
   <string name="account_wizard_host_title">Server konfigurieren</string>
   <string name="account_wizard_ready_title">Sind Sie bereit?</string>
-  <string name="account_wizard_setup_body">Geben Sie die Konto ID ein um ChatSecure für den XMPP Chat Dienst zu konfigurieren. Es sieht wie eine Mailadresse aus:</string>
-  <string name="account_wizard_account_body">Bitte geben Sie Ihre Konto-ID (user @ hostname) :</string>
+  <string name="account_wizard_setup_body">Geben Sie die Kontokennung ein um ChatSecure für den XMPP-Chat-Dienst zu konfigurieren. Sie sieht wie eine E-Mail-Adresse aus:</string>
+  <string name="account_wizard_account_body">Bitte geben Sie Ihre Kontokennung ein (user@hostname):</string>
   <string name="account_wizard_host_body">Bitte geben Sie Host und Port (5222 ist Standard) ihres \njabber/xmpp Servers ein.</string>
-  <string name="account_wizard_ready_body">ChatSecure wurde konfiguriert und ist nun für einen sicheren und privaten Chat verbindungsbereit.</string>
-  <string name="account_wizard_no_domain_warning">An Ihrer Benutzerkennung fehlt ein Servername der Form @hostname.com</string>
-  <string name="account_wizard_no_root_domain_warning">An Ihrer Benutzerkennung fehlt die Top-Level-Domain, beispielsweise .com</string>
+  <string name="account_wizard_ready_body">ChatSecure wurde konfiguriert und nun ist es Zeit sich zu Ihrem Dienst zu verbinden und sich sicher, geheim und privat zu unterhalten!</string>
+  <string name="account_wizard_no_domain_warning">An Ihrer Benutzerkennung fehlt ein Servername in der Form @hostname.com</string>
+  <string name="account_wizard_no_root_domain_warning">An Ihrer Benutzerkennung fehlt die Top-Level-Domain, beispielsweise ».de«</string>
   <string name="signin_password_prompt">Geben Sie Ihr Passwort ein:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
-  <string name="account_settings_title">Account-Einstellungen</string>
+  <string name="account_settings_title">Kontoeinstellungen</string>
   <string name="pref_default_locale">defLoc</string>
-  <string name="warning_alpha">WARNUNG: Dies ist eine frühe ChatSecure Veröffentlichung, die möglicherweise noch Sicherheitslöcher und Fehler enthält.</string>
+  <string name="warning_alpha">ACHTUNG: Dieses ist eine vorläufige ChatSecure-Version, die möglicherweise noch Sicherheitslücken und Fehler enthält.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruppen</string>
-  <string name="otr_gen_key">Erzeuge neues OTR Schlüsselpaar...</string>
+  <string name="otr_gen_key">Neues OTR-Schlüsselpaar erzeugen …</string>
   <string name="search_label">Kontakt</string>
-  <string name="search_hint">Geben Sie den Namen des Kontakts ein, mit dem Sie chatten möchten.</string>
+  <string name="search_hint">Den Kontaktnamen eingeben um sich mit ihm zu unterhalten</string>
   <string name="search_button_text">Auf gehts!</string>
   <string name="menu_locale">Sprache</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Sprachen</string>
   <string name="KEY_PREF_LANGUAGE_SUMMARY">Welche Sprache sollte im InTheClear Display angezeigt werden? </string>
   <string name="do_srv_lookup">SRV Betrachtung</string>
-  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Nutze </string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Nutze DNS SRV, um tatsächlichen XMPP-Server anhand des Domainnamens zu finden</string>
   <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Dürfen Nutzername und Passwort unverschlüsselt versendet weden, wenn die Verbindung nicht verschlüsselt ist?</string>
-  <string name="allow_plain_text_auth">Unverschlüsselten Login erlauben</string>
+  <string name="allow_plain_text_auth">Klartext Autorisierung erlauben</string>
   <string name="verify_that_the_certificate_is_trusted">Überprüfen Sie, ob das Zertifikat vertrauenswürdig ist </string>
   <string name="tls_verification">TLS Verifikation</string>
-  <string name="require_tls_ssl_connection">TLS/SSL Verbindung nötig</string>
-  <string name="transport_encryption">Transport Verschlüsselung</string>
-  <string name="how_encrypted_chats_are_started">wie verschlüsselte Chats gestartet werden</string>
-  <string name="the_server_to_connect_to_if_needed">Server verbinden, wen nötig</string>
+  <string name="require_tls_ssl_connection">TLS-Verbindung benötigt</string>
+  <string name="transport_encryption">Transport-Verschlüsselung</string>
+  <string name="how_encrypted_chats_are_started">wie verschlüsselte Unterhaltungen gestartet werden</string>
+  <string name="the_server_to_connect_to_if_needed">Mit diesem Server verbinden, wenn nötig</string>
   <string name="connect_server">Server verbinden</string>
-  <string name="tcp_port_for_xmpp_server">TCP Port für XMPP Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port für XMPP-Server</string>
   <string name="server_port">Server Port</string>
   <string name="xmpp_resource">XMPP-Ressource </string>
-  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">diese Verbindung von anderen Clients, die auch angemeldet sind unterscheiden</string>
-  <string name="xmpp_resource_prio_title">XMPP-Ressource Priorität</string>
-  <string name="xmpp_resource_prio_summary">Nachrichten für Kunden mit mehreren aktiven Ressourcen auf die Ressource mit der höchsten Priorität gesendet werden</string>
-  <string name="btn_next">Nächstes</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">um diese Verbindung von anderen Clients, die auch angemeldet sind, zu unterscheiden</string>
+  <string name="xmpp_resource_prio_title">XMPP-Ressourcen-Priorität</string>
+  <string name="xmpp_resource_prio_summary">Nachrichten an Empfänger mit mehreren aktiven Ressourcen werden zu der Ressource mit der höchsten Priorität gesendet werden</string>
+  <string name="btn_next">Weiter</string>
   <string name="btn_back">Zurück</string>
-  <string name="title_chats">Chats</string>
+  <string name="title_chats">Gespräche</string>
   <string name="new_messages_notify">Neue Nachricht(en) von</string>
   <string name="smp_question_title">Authentifizierung</string>
-  <string name="smp_question_summary">Geben Sie eine Frage ein die ihrem Kontakt gesendet wird und die Antwort die Sie erwarten, um zu überprüfen, wer das ist.</string>
-  <string name="smp_question_hint">Frage stellen </string>
+  <string name="smp_question_summary">Geben Sie eine Frage ein, die ihrem Kontakt gesendet wird, und die Antwort, die Sie erwarten, um zu überprüfen, dass es sich um die richtige Person handelt.</string>
+  <string name="smp_question_hint">die Frage, die gestellt wird</string>
   <string name="qmp_answer_hint">die erwartete Antwort</string>
-  <string name="remote_verified_us">Ihr Ansprechpartner wurde erfolgreich überprüft. Jetzt überprüfen Sie Ihre Kontaktdaten, indem Sie Ihre eigene Frage stellen. </string>
-  <string name="no_messages">No Chats.⏎\n⏎\nHier klicken um eines zu starten!</string>
-  <string name="pref_theme_dark">Dark Theme benutzen</string>
-  <string name="warning_tor_connect">Da Sie Tor verwenden, müssen Sie dens XMPP \' Connect Server \' hostnamen direkt in die Erweiterte Kontoeinstellungen eingeben</string>
+  <string name="remote_verified_us">Ihr Gesprächspartner hat Sie erfolgreich überprüft. Überprüfen Sie jetzt Ihren Gesprächspartner, indem Sie Ihre eigene Frage stellen. </string>
+  <string name="no_messages">Keine Gespräche\n\nHier tippen, um einen zu starten!</string>
+  <string name="pref_theme_dark">Dunkles Design benutzen</string>
+  <string name="pref_theme_dark_summary">Dunkle Oberfläche verwenden</string>
+  <string name="warning_tor_connect">Da Sie Tor verwenden, müssen Sie den XMPP »Connect Server«-Hostnamen direkt in »Erweiterte Kontoeinstellungen« eingeben</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <string name="start_on_boot">ChatSecure automatisch starten</string>
   <string name="start_on_boot_summary">Automatischer Start und Anmeldung in vorher angemeldeten Konten</string>
-  <string name="empty_account_message">Sie haben keine Konten konfiguriert.⏎\n⏎\nKlicken Sie hier um eines zu konfigurieren!</string>
-  <string name="google_account">Google Konto</string>
-  <string name="pref_in_memory_db_title">In-Memory Message Storage Nur</string>
-  <string name="pref_in_memory_db_summary">Nachrichten im Speicher behalten, nicht auf Flash-Speicher, um gegen Nachrichten, die extrahiert wurden zu verteidigen. (Nachrichten können verloren werden)</string>
-  <string name="pref_background_title">Hintergrund Bild</string>
-  <string name="pref_background_summary">Pfad benutzen (\"/ sdcard / foo.jpg\"), um ein Hintergrundbild für den App zu benutzen</string>
+  <string name="empty_account_message">Sie haben keine \nKonten konfiguriert.\n\nHier tippen\num eines hinzuzufügen!</string>
+  <string name="google_account">Google-Konto</string>
+  <string name="pref_in_memory_db_title">Nachrichten nur im flüchtigen Arbeitsspeicher aufbewahren</string>
+  <string name="pref_in_memory_db_summary">Nachrichten nur im Arbeitsspeicher, nicht auf dem Flash-Speicher, speichern, um sich dagegen abzusichern, dass Nachrichten nachträglich extrahiert werden. (Kann zum Verlust von Nachrichten führen).</string>
+  <string name="pref_background_title">Hintergrundbild</string>
+  <string name="pref_background_summary">Pfad benutzen (\"/sdcard/beispiel.jpg\"), um ein Hintergrundbild für die App zu benutzen</string>
   <string name="pref_group_security_title">Sicherheit und Datenschutz</string>
   <string name="pref_group_looknfeel_title">Benutzeroberfläche</string>
   <string name="pref_group_tuning_title">Andere Feineinstellungen</string>
-  <string name="_open_conversations">Chat(s) öffnen</string>
+  <string name="_open_conversations">Gespräch(e) öffnen</string>
   <string name="_via_orbot">Orbot (Tor)</string>
-  <string name="menu_exit">Schliessen</string>
+  <string name="menu_exit">Schließen</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <string name="signout_kill_confirm_message">Wollen Sie sich von allen Diensten abmelden UND alle Prozesse killen (hartes Schliessen) ? </string>
-  <string name="rekey_message">Neue Passphrase eingeben. Es muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger wie sechs Ziffern sein.</string>
-  <string name="do_rekey">Ihre bestehenden Mitteilungen mit der neuen Passphrase verschlüsseln (bitte warten...)</string>
+  <string name="signout_kill_confirm_message">Wollen Sie sich von allen Diensten abmelden UND alle Prozesse beenden (hartes Schließen) ? </string>
+  <string name="rekey_message">Neue Passphrase eingeben. Sie muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger als sechs Ziffern sein.</string>
+  <string name="do_rekey">Ihre bestehenden Mitteilungen mit der neuen Passphrase verschlüsseln (bitte warten …)</string>
   <string name="enter_pass">Eingabe Ihrer Passphrase:</string>
-  <string name="new_pass">Willkommen! Geben Sie zur Sicherung Ihrer Mitteilungen eine starke Passphrase ein. Es muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger wie sechs Ziffern sein.</string>
+  <string name="new_pass">Willkommen! Geben Sie zur Sicherung Ihrer Mitteilungen eine starke Passphrase ein. Sie muss mindesten einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten und muss länger wie sechs Ziffern sein.</string>
   <string name="pass_err_length">Ihre Passphrase war nicht lang genug</string>
   <string name="pass_err_upper">Ihre Passphrase enthält keine Großbuchstaben</string>
   <string name="pass_err_lower">Ihre Passphrase enthält keine Kleinbuchstaben</string>
   <string name="pass_err_num">Ihre Passphrase enthält keine Zahlen</string>
   <string name="lock_screen_open">Öffnen</string>
   <string name="title_activity_lock_screen">ChatSecure gesperrt</string>
-  <string name="lock_screen_create_passphrase">Passphrase erstellen</string>
-  <string name="lock_screen_passphrase_hint">Passphrase eingeben</string>
-  <string name="lock_screen_passphrase_not_set_enter">Neue Passphrase eingeben</string>
-  <string name="lock_screen_passphrase_not_set_confirm">Passphrase bestätigen</string>
-  <string name="lock_screen_passphrases_not_matching">Passphrase stimmt nicht überein, bitte versuchen Sie es nochmal</string>
-  <string name="pref_sip_account_title">Sprachsicherung</string>
-  <string name="pref_sip_account_summary">Geben Sie hier Sipgate oder einen anderen sicheren SIP Dienst zur Anrufinetgration ein</string>
+  <string name="lock_screen_create_passphrase">Passwort setzen</string>
+  <string name="lock_screen_confirm_passphrase">Passwort bestätigen</string>
+  <string name="lock_screen_passphrase_hint">Passwort</string>
+  <string name="lock_screen_passphrase_not_set_enter">Neues Passwort</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Neues Passwort bestätigen</string>
+  <string name="lock_screen_passphrases_not_matching">Passpwort stimmt nicht überein, bitte versuchen Sie es noch einmal</string>
+  <string name="lock_screen_skip">Ich bin faul (Kein Passwort!)</string>
+  <string name="pref_sip_account_title">Sicherer Sprachdienst</string>
+  <string name="pref_sip_account_summary">Geben Sie hier Ihre Kontodaten von Sipgate, OStel.co oder einem anderen sicheren SIP-Dienst zur Anrufintegration ein</string>
   <string name="default_service_provider">dukgo.com</string>
-  <string name="detected_Otr_keystore_import">Ein vorhandener OTR Key wurde entdeckt und kann importiert werden. Möchten Sie nun das QR Passwort scannen?</string>
-  <string name="menu_import_keys">Importiere OTR Keystore</string>
-  <string name="successfully_imported_otr_keyring">OTR Keyring erfolgreich importiert</string>
-  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Der OTR Keyring ist nicht importiert; Bitte prüfen Sie die Korrektheit der Datei auf Format und Ort.</string>
-  <string name="pref_cacheword_timeout_title">Passwort Timeout</string>
-  <string name="pref_cacheword_timeout_summary">Dauer während die App Verschlüsselung entsperrt sein soll</string>
+  <string name="detected_Otr_keystore_import">Ein vorhandener OTR-Schlüssel-Container wurde entdeckt und kann importiert werden. Möchten Sie nun das QR-Passwort scannen?</string>
+  <string name="menu_import_keys">Schlüsselsynchronisation aktivieren</string>
+  <string name="successfully_imported_otr_keyring">OTR-Schlüsselbund erfolgreich importiert</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Der OTR-Schlüsselbund ist nicht importiert; Bitte prüfen Sie die Korrektheit der Datei auf Format und Ort.</string>
+  <string name="pref_cacheword_timeout_title"> Zeitüberschreitung beim Passwort</string>
+  <string name="pref_cacheword_timeout_summary">Zeitraum, in dem die App-Verschlüsselung entsperrt bleiben soll</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_group_chat">Gruppenunterhaltung</string>
+  <string name="create_or_join_group_chat">Gruppenunterhaltung erstellen oder beitreten</string>
+  <string name="connect">Verbinden</string>
+  <string name="their_fingerprint_verified_">Sicherheitsfingerabdurck(verifiziert)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Diesen Fingerabdruck wirklich bestätigen</string>
+  <string name="verify_key_">Fingerabdruck überprüfen?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Entfernter Fingerabdruck wurde überprüft!</string>
+  <string name="menu_panic">Panik</string>
+  <string name="unable_to_create_or_join_group_chat">Gruppenunterhaltung erstellen oder beitreten fehlgeschlagen</string>
+  <string name="buddies">Freunde</string>
+  <string name="contacts">Kontakte</string>
+  <string name="select_domain_new_account">Domain auswählen</string>
+  <string name="otr_keysync_warning_message">Bitte die Datei \'otr_keystore.ofcaes\' vom Programm OtrFileConverter in das Stammverzeichnis des Gerätespeichers kopieren</string>
+  <string name="mtm_accept_cert">Server Zertifikat annehmen?</string>
+  <string name="sorry_we_cannot_share_that_file_type">Dieser Dateityp kann leider nicht weitergegeben werden</string>
+  <string name="err_otr_share_no_encryption">Zum Teilen von Dateien muss die Verschlüsselung aktiviert werden</string>
+  <string name="starting_the_chatsecure_service_">Den ChatSecure Dienst starten …</string>
+  <string name="menu_sidebar_qr">Fingerabdruck</string>
+  <string name="fingerprint_for_you">Fingerabdruck für Sie</string>
+  <string name="fingerprint_for_">Fingerabdruck für</string>
+  <string name="please_enable_chat_encryption_to_share_files">Zum Teilen von Dateien die Verschlüsselung aktivieren</string>
+  <string name="swipe_alert">ChatSecure hat eine Anfrage zum Entfernen seiner Aufgaben entdeckt. ChatSecure wird wahrscheinlich abstürzen. Bitte nutzen Sie stattdessen »Alle abmelden« im Menü der Kontoliste.</string>
+  <string name="file_transfer">Datei Transfer</string>
+  <string name="transfer_complete">Dateitransfer fertig</string>
+  <string name="transfer_in_progress">Dateitransfer läuft</string>
+  <string name="accept_transfer_">Transfer akzeptieren?</string>
+  <string name="wants_to_send_you_the_file">will dir eine Datei schicken</string>
+  <string name="menu_show_grid">Gitter anzeigen</string>
+  <string name="pref_show_grid">Kontaktgitter anzeigen</string>
+  <string name="pref_show_grid_summary">Kontaktliste als Benutzerbildgitter anzeigen</string>
+  <string name="button_yes_accept_all">Ja, alle akzeptieren</string>
+  <string name="app_unlocked">Aktiviert und entsperrt</string>
+  <string name="prompt_create_new_account_">Neues Konto erstellen?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Ein neues Unterhaltungskonto für den Benutzernamen »%1$s« erstellen?</string>
+  <string name="registering_new_account_">Neues Konto registrieren …</string>
+  <string name="connecting_to_group_chat_">Zur Gruppenunterhaltung verbinden …</string>
+  <string name="btn_create_account">Konto erstellen</string>
+  <string name="pref_debug_title">Fehlersuchprotokolle aktivieren</string>
+  <string name="pref_debug_summary">App-Protokolldaten zur Standardausgabe ausgeben - logcat zur Fehlersuche</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Für dieses Dateiformat ist kein Betrachter vorhanden</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Bitte ein sicheres Gespräch starten, bevor Sie Codes einlesen</string>
 </resources>
