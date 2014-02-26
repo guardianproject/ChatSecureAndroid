@@ -185,7 +185,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         mChatPagerTitleStrip = (PagerTabStrip)findViewById(R.id.pager_title_strip);
         //mChatPager.setSaveEnabled(false);
-        mChatPager.setOffscreenPageLimit(4);
+        mChatPager.setOffscreenPageLimit(3);
+        mChatPager.setDrawingCacheEnabled(true);
+        mChatPager.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         
         mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
             
@@ -952,7 +954,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
                 settings.edit().putBoolean("showGrid", gridState).commit();
                 finish();
-                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);                
+                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);    
+                
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mLastProviderId);
+                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mLastAccountId);
+                
                 startActivity(intent);
             }
             
