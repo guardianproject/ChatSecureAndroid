@@ -17,19 +17,16 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-
-import info.guardianproject.otr.app.im.R;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.widget.Toast;
+import android.util.Log;
 
 public class SimpleAlertHandler extends Handler {
 
@@ -87,20 +84,27 @@ public class SimpleAlertHandler extends Handler {
     }
 
     public void showAlert(final CharSequence title, final CharSequence message) {
-        if (Looper.myLooper() == getLooper()) {
-            //new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-              //      .setPositiveButton(R.string.ok, null).show();
-            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
-            
-        } else {
-            post(new Runnable() {
-                public void run() {
-                //    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                  //          .setPositiveButton(R.string.ok, null).show();
-                    Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
-                }
-            });
+        
+        if (!title.equals(message)) //sometimes this reads Attention: Attention!
+        {
+        
+            if (Looper.myLooper() == getLooper()) {
+                //new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
+                  //      .setPositiveButton(R.string.ok, null).show();
+              //  Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
+                
+            } else {
+                post(new Runnable() {
+                    public void run() {
+                    //    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
+                      //          .setPositiveButton(R.string.ok, null).show();
+                //        Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
+        
+        Log.w(ImApp.LOG_TAG,message.toString());
     }
 
     public void showServiceErrorAlert(String msg) {

@@ -698,17 +698,20 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         }
         
         @Override
-        public IOtrKeyManager getOtrKeyManager ()
+        public IOtrKeyManager getOtrKeyManager()
         {
-            try {
-                return OtrAndroidKeyManagerImpl.getInstance(RemoteImService.this);
-            } catch (IOException e) {
-                
-                OtrDebugLogger.log("unable to get keymanager instance", e);
-
-                return null;
+        
+            try
+            {
+                OtrAndroidKeyManagerImpl keyMgr = OtrAndroidKeyManagerImpl.getInstance(RemoteImService.this);
+    
+                return keyMgr;
             }
-            
+            catch (IOException re)
+            {
+                throw new RuntimeException("Could not open OTR Key Manager store");
+            }
+      
         }
         
         

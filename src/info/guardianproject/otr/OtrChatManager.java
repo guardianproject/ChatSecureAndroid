@@ -194,7 +194,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         String plain = null;
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
-        OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
+       // OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
 
         if (mOtrEngine != null && sessionId != null) {
             mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));

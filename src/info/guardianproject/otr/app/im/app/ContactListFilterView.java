@@ -61,6 +61,8 @@ public class ContactListFilterView extends LinearLayout {
     private ContactAdapter mContactAdapter;
     
     private String mSearchString;
+    
+    private TextView mEmptyView = null;
 
     private Uri mUri;
     private final Context mContext;
@@ -110,7 +112,8 @@ public class ContactListFilterView extends LinearLayout {
 
         mFilterList = (AbsListView) findViewById(R.id.filteredList);
         mFilterList.setTextFilterEnabled(true);
-
+        
+        mEmptyView = (TextView) findViewById(R.id.empty);
         
         mFilterList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -507,6 +510,12 @@ public class ContactListFilterView extends LinearLayout {
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             Log.d("XXX", "swap cursor");
             mContactAdapter.swapCursor(newCursor);
+            
+            if (newCursor.getCount() == 0)
+            {
+                mEmptyView.setText(R.string.empty_contact_list);
+            }
+            
         }
 
         @Override

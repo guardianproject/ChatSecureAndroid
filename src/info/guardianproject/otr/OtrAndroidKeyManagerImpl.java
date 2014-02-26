@@ -84,6 +84,12 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
     public static void setKeyStorePassword (String keyStorePassword)
     {
         mKeyStorePassword = keyStorePassword;
+        
+        if (_instance != null)
+        {
+            _instance = null;
+            
+        }
     }
     
     public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
