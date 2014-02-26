@@ -218,7 +218,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         XmppStreamHandler.addExtensionProviders();
         DeliveryReceipts.addExtensionProviders();
 
-        ServiceDiscoveryManager.setIdentityName("Gibberbot");
+        ServiceDiscoveryManager.setIdentityName("ChatSecure");
         ServiceDiscoveryManager.setIdentityType("phone");
     }
     
@@ -1268,7 +1268,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
-
+        
         ConnectionListener connectionListener = new ConnectionListener() {
             /**
              * Called from smack when connect() is fully successful
@@ -1415,18 +1415,28 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
 
-    protected static int parsePresence(org.jivesoftware.smack.packet.Presence presence) {
+    protected int parsePresence(org.jivesoftware.smack.packet.Presence presence) {
         int type = Presence.AVAILABLE;
         Mode rmode = presence.getMode();
         Type rtype = presence.getType();
-    
-        if (rmode == Mode.away || rmode == Mode.xa)
-            type = Presence.AWAY;
-        else if (rmode == Mode.dnd)
-            type = Presence.DO_NOT_DISTURB;
-        else if (rtype == Type.unavailable || rtype == Type.error)
-            type = Presence.OFFLINE;
-        
+
+        //if a device sends something other than available, check if there is a higher priority one available on the server
+        if (rmode != Mode.available)
+        {
+            
+            org.jivesoftware.smack.packet.Presence npresence = mRoster.getPresence(XmppAddress.stripResource(presence.getFrom()));
+            rmode = npresence.getMode();
+            rtype = npresence.getType();
+            
+            if (rmode == Mode.away || rmode == Mode.xa)
+                type = Presence.AWAY;
+            else if (rmode == Mode.dnd)
+                type = Presence.DO_NOT_DISTURB;
+            else if (rtype == Type.unavailable || rtype == Type.error)
+                type = Presence.OFFLINE;
+            
+        }
+            
         return type;
     }
 
@@ -1822,7 +1832,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                 }
                 
-                org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());
+                org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());                
                 contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
                 
                 if (!cl.containsContact(contact))
@@ -1835,13 +1845,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
                 
             }
-                        
+            
+            notifyContactListLoaded(cl);            
+            notifyContactListsLoaded();
+            
             notifyContactsPresenceUpdated(cl.getContacts().toArray(new Contact[cl.getContacts().size()]));
             
-            notifyContactListLoaded(cl);
-            
-            notifyContactListsLoaded();
-
         }
 
         /*
@@ -1890,7 +1899,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-               // handlePresenceChanged(presence);
+                handlePresenceChanged(presence);
                 //we are already monitoring all presence packets so this is over kill
             }
 
@@ -2252,6 +2261,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void networkTypeChanged() {
         super.networkTypeChanged();
+        
+        this.maybe_reconnect();
     }
 
     /*
@@ -2680,8 +2691,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
      // Get presence from the Roster to handle priorities and such
         
      //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
-            //presence = roster.getPresence(xaddress.getBareAddress());
-       
+            //presence = roster.getPresence(xaddress.getBareAddress());       
+        
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
         Presence p = new Presence(parsePresence(presence), status, null, null,
@@ -2690,7 +2701,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         String[] presenceParts = presence.getFrom().split("/");
         if (presenceParts.length > 1)
             p.setResource(presenceParts[1]);
-        
 
         if (contact == null && presence.getType() == Type.subscribe) {
             
