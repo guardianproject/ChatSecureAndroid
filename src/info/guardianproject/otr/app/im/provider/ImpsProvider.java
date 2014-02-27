@@ -88,7 +88,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
     private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
 
-    private static final int DATABASE_VERSION = 103;
+    private static final int DATABASE_VERSION = 104;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
@@ -473,24 +473,39 @@ public class ImpsProvider extends ContentProvider {
             case 101:
                 // This was a no-op upgrade when we added the encrypted DB option
                 return;
-            case 102:
-                if (newVersion <= 102) {
+            case 103:
+                if (newVersion <= 103) {
                     return;
                 }
                 
-                db.beginTransaction();
+               
                 try {
+                    db.beginTransaction();
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES
                                + " ADD COLUMN mime_type TEXT;");
-                    if (!mInMemoryDB) {
-                        db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
-                                + " ADD COLUMN mime_type TEXT;");
-                    }
+
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
                     LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                 } finally {
                     db.endTransaction();
+                }
+                
+                if (mInMemoryDB) { //this should actually be if mInMemoryDB = true, then update the table
+                    
+                        try {
+                           
+                                db.beginTransaction();
+                                db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
+                                        + " ADD COLUMN mime_type TEXT;");
+                                db.setTransactionSuccessful();
+                            
+                        } catch (Throwable ex) {
+                            LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
+                        } finally {
+                            db.endTransaction();
+                        }
+                        
                 }
 
                 return;
