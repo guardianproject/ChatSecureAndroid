@@ -325,9 +325,7 @@
 </string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
   <string name="subscription_notify_text">Neue Freundschaftseinladung von &lt;xliff:g id="USER"&gt;%s&lt;/xliff:g&gt;</string>
-  <string name="file_notify_text">
-Neue Datei &lt;xliff:g id="filename"&gt;%s&lt;/xliff:g&gt; von &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;
-    </string>
+  <string name="file_notify_text">Neue Datei &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; von &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">Einladung zur Gruppenunterhaltung</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
@@ -462,7 +460,7 @@ Neue Einladung zur Gruppenunterhaltung von &lt;xliff:g id="user"&gt;%s&lt;/xliff
     <item>:-[</item>
     <item>O:-)</item>
     <item>:-\\</item>
-    <item>:\\'(</item>
+    <item>:\\\'(</item>
     <item>:-X</item>
     <item>:-D</item>
     <item>o_O</item>

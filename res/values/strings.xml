@@ -781,8 +781,6 @@
     <string name="please_start_a_secure_conversation_before_scanning_codes">Please start a secure conversation before scanning codes</string>
     
     <string name="loading">loading...</string>
-    
-</resources>
 
 		<!-- Other -->
 		<string name="_open_conversations">" open conversation(s)"</string>
