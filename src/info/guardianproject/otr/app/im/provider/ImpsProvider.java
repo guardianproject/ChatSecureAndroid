@@ -88,7 +88,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
     private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
 
-    private static final int DATABASE_VERSION = 103;
+    private static final int DATABASE_VERSION = 104;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
@@ -482,10 +482,6 @@ public class ImpsProvider extends ContentProvider {
                 try {
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES
                                + " ADD COLUMN mime_type TEXT;");
-                    if (!mInMemoryDB) {
-                        db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
-                                + " ADD COLUMN mime_type TEXT;");
-                    }
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
                     LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
