@@ -75,9 +75,10 @@
 		<item>el</item>	
 	</string-array>
     
-	<string-array name="account_domains">
+	<string-array name="account_domains">	    
         <item>dukgo.com</item>
         <item>jabber.ccc.de</item>
+        <item>jabber.calyxinstitute.org</item>
         <item>xmpp.jp</item>
         <item>jabberpl.org</item>
         <item>neko.im</item>
