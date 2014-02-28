@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress" />
 
+    <!-- 
     <TextView android:id="@+id/choose_list_label"
         android:layout_marginTop="10dip"
         android:layout_width="fill_parent"
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:text="@string/invite_instruction" />
-
+ -->
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="right">
@@ -63,4 +64,5 @@
               android:layout_height="wrap_content"
               android:text="@string/invite_label" />
     </LinearLayout>
+    
 </LinearLayout>
