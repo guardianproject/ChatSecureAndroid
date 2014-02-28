@@ -1520,12 +1520,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         ChatSession session = mSessionManager.findSession(address);
 
         if (session == null) {
-            Contact contact = findOrCreateContact(address);
-            session = mSessionManager.createChatSession(contact);
+            Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
+            
+            if (contact != null)
+                session = mSessionManager.createChatSession(contact);
         }
         return session;
     }
 
+    /**
     Contact findOrCreateContact(String address) {
         Contact contact = mContactListManager.getContact(address);
         if (contact == null) {
@@ -1533,7 +1536,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         return contact;
-    }
+    }**/
 
     
     private Contact makeContact(String address) {
@@ -1899,21 +1902,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             		
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+
                 handlePresenceChanged(presence);
-                //we are already monitoring all presence packets so this is over kill
+            
             }
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
-               // execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
 
-                loadContactListsAsync(); 
+                execute(new UpdateContactsRunnable(mContactListManager,addresses));
+ 
             }
 
             @Override
             public void entriesDeleted(Collection<String> addresses) {
-                //LogCleaner.debug(ImApp.LOG_TAG, "entries deleted notification: " + addresses.size());
                 
                 ContactList cl;
                 try {
@@ -1922,24 +1925,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     for (String address : addresses)
                     {
                         Contact contact = makeContact(address);
-                        mContactListManager.notifyContactListUpdated(cl, 1, contact);
+                        mContactListManager.notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_REMOVED, contact);
                     }
                     
                 } catch (ImException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                //loadContactListsAsync();
                 
             }
 
             @Override
             public void entriesAdded(Collection<String> addresses) {
                 
-                
-             //   LogCleaner.debug(ImApp.LOG_TAG, "entries added notification: " + addresses.size());
-                //execute(new UpdateContactsRunnable(XmppContactList.this,addresses));
-
                 loadContactListsAsync();
             }
         };
@@ -1960,12 +1958,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 Collection<Contact> contacts = new ArrayList<Contact>();
                 
                 for (String address :mAddresses)
-                    contacts.add(findOrCreateContact(address));
+                    contacts.add(mConMgr.getContact(XmppAddress.stripResource(address)));
                 
                 mConMgr.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
 
-              // LogCleaner.debug(ImApp.LOG_TAG, "entries updated notification: " +contacts.size());
-               
             }
 
 
