@@ -333,7 +333,7 @@
     <!-- This is the title of the Add Contact Screen. -->
     <string name="add_contact_title">Add contact</string>
     <!-- The label of the email input box on the Add Contact Screen. -->
-    <string name="input_contact_label">Email address of person you wish to invite:</string>
+    <string name="input_contact_label">Email or Jabber ID of person you wish to add:</string>
     <!-- The label of the list spinner on the Add Contact Screen. -->
     <string name="choose_list_label">Choose a list:</string>
     <!-- This is an instruction message displayed under the input box on the Add Contact Screen.  -->
