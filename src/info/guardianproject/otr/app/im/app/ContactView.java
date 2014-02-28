@@ -68,22 +68,12 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_AVATAR_DATA = 12;
 
    
-    private Drawable mAvatarUnknown;
-   
-    private Context mContext; 
-    
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
-        mContext = context;
-        
-        mAvatarUnknown = context.getResources().getDrawable(R.drawable.avatar_unknown);
-        
     }
 
-    private ViewHolder mHolder = null;
-    
-    class ViewHolder 
+    static class ViewHolder 
     {
         //ImageView mPresence;
         TextView mLine1;
@@ -93,29 +83,6 @@ public class ContactView extends LinearLayout {
         View mStatusBlock;
         
     }
-    
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        mHolder = (ViewHolder)getTag();
-        
-        if (mHolder == null)
-        {
-            mHolder = new ViewHolder();
-            
-            //mPresence = (ImageView) findViewById(R.id.presence);
-            mHolder.mLine1 = (TextView) findViewById(R.id.contactStatus);
-            mHolder.mLine2 = (TextView) findViewById(R.id.line2);
-           
-            mHolder.mTimeStamp = (TextView) findViewById(R.id.timestamp);
-            mHolder.mAvatar = (ImageView)findViewById(R.id.contactAvatar);
-            
-            mHolder.mStatusBlock = findViewById(R.id.status_block);
-            
-            setTag(mHolder);
-        }
-    }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
         bind(cursor, underLineText, true, scrolling);
@@ -123,10 +90,10 @@ public class ContactView extends LinearLayout {
 
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
         
-        mHolder = (ViewHolder)getTag();
+        ViewHolder holder = (ViewHolder)getTag();
         
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
-        String address = cursor.getString(COLUMN_CONTACT_USERNAME);
+        //String address = cursor.getString(COLUMN_CONTACT_USERNAME);
         String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
         String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
@@ -134,8 +101,6 @@ public class ContactView extends LinearLayout {
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
 
-       
-         
         if (!TextUtils.isEmpty(underLineText)) {
             // highlight/underline the word being searched
             String lowercase = nickname.toLowerCase();
@@ -145,20 +110,20 @@ public class ContactView extends LinearLayout {
                 SpannableString str = new SpannableString(nickname);
                 str.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-                mHolder.mLine1.setText(str);
+                holder.mLine1.setText(str);
 
             }
             else
-                mHolder.mLine1.setText(nickname);
+                holder.mLine1.setText(nickname);
 
         }
         else
-            mHolder.mLine1.setText(nickname);
+            holder.mLine1.setText(nickname);
         
-        if (mHolder.mAvatar != null)
+        if (holder.mAvatar != null)
         {
             if (Imps.Contacts.TYPE_GROUP == type) {
-                mHolder.mAvatar.setImageResource(R.drawable.group_chat);
+                holder.mAvatar.setImageResource(R.drawable.group_chat);
                 
             }
             else
@@ -167,34 +132,34 @@ public class ContactView extends LinearLayout {
                 Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                  
                 if (avatar != null)
-                    mHolder.mAvatar.setImageDrawable(avatar);
+                    holder.mAvatar.setImageDrawable(avatar);
                 else
-                    mHolder.mAvatar.setImageDrawable(mAvatarUnknown);
+                    holder.mAvatar.setImageDrawable(getContext().getResources().getDrawable(R.drawable.avatar_unknown));
             }
         }
         
         if (showChatMsg && lastMsg != null) {
 
             
-            if (mHolder.mAvatar != null)
+            if (holder.mAvatar != null)
             {
                 setBackgroundResource(R.color.holo_blue_bright);
-                mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
-                mHolder.mLine1.setTextColor(Color.WHITE);
+                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
+                holder.mLine1.setTextColor(Color.WHITE);
             }
-            else if (mHolder.mStatusBlock != null)
+            else if (holder.mStatusBlock != null)
             {
-                mHolder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
+                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
                 
             }
            
-            if (mHolder.mLine2 != null)
-                mHolder.mLine2.setText(android.text.Html.fromHtml(lastMsg).toString());
+            if (holder.mLine2 != null)
+                holder.mLine2.setText(android.text.Html.fromHtml(lastMsg).toString());
                         
         }
         else 
         {
-            if (mHolder.mLine2 != null)                
+            if (holder.mLine2 != null)                
             {
                 
                 if (statusText == null || statusText.length() == 0)
@@ -202,75 +167,75 @@ public class ContactView extends LinearLayout {
 
                     if (Imps.Contacts.TYPE_GROUP == type) 
                     {
-                        statusText = mContext.getString(R.string.menu_new_group_chat);
+                        statusText = getContext().getString(R.string.menu_new_group_chat);
                     }
                     else
                     {
-                        ImApp app = ((ImApp)((Activity) mContext).getApplication());
+                        ImApp app = ((ImApp)((Activity) getContext()).getApplication());
                         BrandingResources brandingRes = app.getBrandingResource(providerId);
                         statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
                     }
                 }
                 
-                mHolder.mLine2.setText(statusText);
+                holder.mLine2.setText(statusText);
                 
             }
             
             
             if (presence == Imps.Presence.AVAILABLE)
             {
-                if (mHolder.mAvatar != null)
+                if (holder.mAvatar != null)
                 {
                     setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                    mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
-                    mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
+                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
                 }
-                else if (mHolder.mStatusBlock != null)
+                else if (holder.mStatusBlock != null)
                 {
-                    mHolder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
+                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
                     
                 }
                 
             }
             else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
             {
-                if (mHolder.mAvatar != null)
+                if (holder.mAvatar != null)
                 {
                     setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                    mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
-                    mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
+                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
                 }
-                else if (mHolder.mStatusBlock != null)
+                else if (holder.mStatusBlock != null)
                 {
-                    mHolder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
                     
                 }
                 
             }
             else if (presence == Imps.Presence.DO_NOT_DISTURB)
             {
-                if (mHolder.mAvatar != null)
+                if (holder.mAvatar != null)
                 {
                     setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                    mHolder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
-                    mHolder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
+                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
                 }
-                else if (mHolder.mStatusBlock != null)
+                else if (holder.mStatusBlock != null)
                 {
-                    mHolder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
                     
                 }
             }   
             else
             {
-                if (mHolder.mAvatar != null)
+                if (holder.mAvatar != null)
                 {
                     setBackgroundColor(Color.LTGRAY);
-                    mHolder.mLine1.setBackgroundColor(Color.LTGRAY);
+                    holder.mLine1.setBackgroundColor(Color.LTGRAY);
                 }
-                else if (mHolder.mStatusBlock != null)
+                else if (holder.mStatusBlock != null)
                 {
-                    mHolder.mStatusBlock.setBackgroundColor(Color.LTGRAY);
+                    holder.mStatusBlock.setBackgroundColor(Color.LTGRAY);
                     
                 }
             }
