@@ -230,11 +230,10 @@ public class ChatView extends LinearLayout {
                             
                         }   
                         
-                        /**
                         mHandler.postAtTime(new Runnable (){
                            public void run (){ updateWarningView();}
                         }, 2000);
-                        **/
+                       
                      
                     }
                 }
