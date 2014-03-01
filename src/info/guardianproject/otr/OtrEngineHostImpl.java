@@ -128,6 +128,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 msg.setFrom(connection.getLoginUser().getAddress());
                 final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
                 msg.setTo(appendSessionResource(sessionID, to));
+                //msg.setTo(to);
                 msg.setDateTime(new Date());
                 
                 // msg ID is set by plugin
@@ -149,7 +150,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     }
 
     public void injectMessage(SessionID sessionID, String text) {
-        OtrDebugLogger.log(sessionID.toString() + ": injecting message: " + text);
+      //  OtrDebugLogger.log(sessionID.toString() + ": injecting message: " + text);
 
         sendMessage(sessionID, text);
     }
