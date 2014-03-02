@@ -2210,7 +2210,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     {
         mLastConnGroup = conn;
         
-        new AsyncTask<String, Void, String>() {
+        new AsyncTask<String, Long, String>() {
         
             private ProgressDialog dialog;
         
@@ -2237,7 +2237,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         if (session != null)
                         {
                             mRequestedChatId = session.getId(); 
-                            showChat(mRequestedChatId);
+                            publishProgress(mRequestedChatId);
                             
                         } else {
                             return getString(R.string.unable_to_create_or_join_group_chat);
@@ -2245,7 +2245,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         }
                     } else {
                         long id = session.getId();
-                        showChat(id);
+                        publishProgress(id);
                     }
                     
                     return null;
@@ -2255,7 +2255,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 }
                 
               }
-
+			
+			protected void onProgressUpdate(Long... showChatId) {
+                showChat(showChatId[0]);
+            }
+			
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
