@@ -294,11 +294,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         case R.id.menu_sign_out_all:
             doHardShutdown();
             return true;
-        case R.id.menu_existing_account:
+        case R.id.menu_add_account:
             showExistingAccountListDialog();
-            return true;
-        case R.id.menu_create_account:
-            showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -332,6 +329,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     }
     
+    /* CHANGE phoenix_nz - add "Create Account" to List */
     void showExistingAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -339,7 +337,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         List<String> listProviders = helper.getProviderNames();
         
-        mAccountList = new String[listProviders.size()+1];
+        mAccountList = new String[listProviders.size()+2]; //potentialProviders + google + create account
         
         int i = 0;
         mAccountList[i] = getString(R.string.google_account);
@@ -347,7 +345,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         for (String providerName : listProviders)
             mAccountList[i++] = providerName;
-                
+        
+        mAccountList[i++] = getString(R.string.menu_create_account);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
@@ -366,6 +365,10 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                     String username = "";
                     String passwordPlaceholder = "password";//zeroconf doesn't need a password
                     showSetupAccountForm(mAccountList[pos],username,passwordPlaceholder, false,mAccountList[pos],true);
+                }
+                else if (pos == 3) //create account
+                {
+                    showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
                 }
             }
         });

@@ -18,23 +18,13 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
- <item 
-        android:title="@string/menu_new_account"
+<item
+        android:id="@+id/menu_add_account"
+        android:title="@string/menu_add_account"
          android:icon="@android:drawable/ic_menu_add"
                  android:showAsAction="always|withText"
-         
-         >
-     <menu>
-        <item
-            android:id="@+id/menu_existing_account"
-            android:title="@string/menu_use_existing_account" />
-        <item
-            android:id="@+id/menu_create_account"
-            android:title="@string/menu_create_account" />
-    </menu>
-     
- </item>
+        >
+</item>
 
  
  <item android:id="@+id/menu_settings"
