@@ -63,6 +63,8 @@
 		<string name="menu_sign_out_all">Sign out all</string>
 		<string name="signout_all_confirm_message">Do you want to sign out all services?</string>
 		<string name="signed_out_prompt">You have been signed out of <xliff:g id="account">%1$s</xliff:g>.</string>
+		<string name="signed_out_prompt_with_error">You have been signed out of <xliff:g id="account">%1$s</xliff:g> because <xliff:g id="reason">%2$s</xliff:g></string>
+  
 		
 		<string name="welcome_first">First time using ChatSecure?</string>
 		<string name="welcome_skip">Can\'t wait to get started?</string>
