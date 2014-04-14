@@ -493,4 +493,424 @@
 		<string name="error_chat_file_transfer_title">Transfer Error</string>
 		<string name="error_chat_file_transfer_body">Unable to read file to storage</string>
 		<string name="error_welcome_database">Major Error: Unable to unlock or load app database. Please re-install the app or clear data.</string>
+	
+	<!-- Setup: Passphrase-->
+    <string name="setup_passphrase_title">Passphrase Setup</string>
+	<string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your ChatSecure data from unjust access.</string>
+    <string name="setup_passphrase_label1">Passphrase:</string>
+    <string name="setup_passphrase_label2">Passphrase (again):</string>
+	
+	<!-- Account Setup: Account -->
+    <string name="account_setup_example_email_address">user@domain.com</string>
+    <string name="account_setup_new_username">new username</string>
+    <string name="account_setup_service_provider">service provider (dukgo.com, jabber.ccc.de)</string>
+    
+    <string name="account_setup_password">password</string>
+    
+    <string name="account_setup_password_confirm">confirm password</string>
+    
+    <string name="account_setup_advanced_button">Advanced Account Settings</string>
+    <string name="account_select_type">Account Type</string>
+    
+    <string name="btn_create_new_account">Register Account</string>
+    	
+	<!-- Account Setup: Persistence -->
+	<string name="account_setup_pers_sub">Persistence</string>
+	<string name="account_setup_pers_pw_title">Remember Password</string>
+	<string name="account_setup_pers_pw_on">Password cached</string>
+	<string name="account_setup_pers_pw_off">Password not cached</string>
+	<string name="account_setup_pers_auto_title">Automatically Sign In</string>
+	<string name="account_setup_pers_auto_on">Connect at ChatSecure start-up</string>
+	<string name="account_setup_pers_auto_off">Don\'t connect at ChatSecure start-up</string>
+	<string name="account_setup_pers_now_title">Sign In Now</string>
+	<string name="account_setup_pers_now_on">Connect following account setup</string>
+	<string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
+
+	
+	<!-- Account Setup: Personal -->
+	<string name="account_setup_personal_sub">Personal (optional)</string>
+    <string name="account_setup_personal_alias_title">Account Alias (your name)</string>
+    <string name="account_setup_personal_alias_sub">How your account appears online</string>
+    <string name="account_setup_personal_profile_title">Profile</string>
+    <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
+	
+	<!-- Account Setup: Advanced -->
+    <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
+    <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
+    <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
+	<string name="account_setup_advanced_enc_off">Disable chat encryption</string>
+
+	<!-- Account Setup: First Sign In -->
+	<string name="account_setup_signin_a">Validating credentials...</string>
+	<string name="account_setup_signin_b">Generating keypair...</string>
+	<string name="account_setup_signin_c">Signing in...</string>
+
+	<!-- Account Setup: Sign In Errors -->
+	<string name="account_setup_error_validating">ChatSecure encountered an error while validating your username or password - please check them and try again.</string>
+	<string name="account_setup_error_keypair">ChatSecure encountered an error while generating a keypair.</string>
+	<string name="account_setup_error_server">ChatSecure encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+	<string name="account_setup_error_connectivity">ChatSecure encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+    
+    
+        <string name="label_fingerprint_remote">Security Fingerprint</string>
+    
+    <string name="menu_sign_in">Sign In</string>
+    <string name="menu_gen_key">Regen Key</string>
+    
+    <string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
+	<string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
+	
+	<string name="otr_session_status_plaintext">Encryption is off</string>
+	<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
+	<string name="otr_session_status_finished">Your contact has stopped the encrypted chat.</string>
+	<string name="otr_session_status_verified">Encrypted and verified!</string>
+	
+	<string name="account_wizard_setup_title">Account Wizard</string>
+	<string name="account_wizard_account_title">Your Account ID</string>
+	<string name="account_wizard_host_title">Configure Server</string>
+	<string name="account_wizard_ready_title">Are You Ready?</string>
+	
+	
+	<string name="account_wizard_setup_body">Enter your account ID to configure ChatSecure for your XMPP chat service. It looks like an email address:</string>
+	<string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
+	<string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
+	<string name="account_wizard_ready_body">ChatSecure has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
+			
+
+	<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+    <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+    <string name="signin_password_prompt">Enter your password:</string>
+
+    <!-- Do not localize! Symbols for looking up preferences in Java code. -->
+
+	<string name="account_settings_title">Account Settings</string>
+	<string name="pref_default_locale">defLoc</string>
+	
+	<string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
+
+	<!--  added 2011/09/01 -->
+	<string name="menu_view_groups">Groups</string>
+
+	<string name="otr_gen_key">Generating new OTR keypair...</string>
+	
+	<string name="search_label">Contact</string>
+	<string name="search_hint">type the name of a contact to chat with</string>
+	<string name="search_button_text">Go</string>
+    
+	<string name="menu_locale">Language</string>
+	<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+	<string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+	<string name="do_srv_lookup">Do SRV Lookup</string>
+	<string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+	<string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+	<string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+	<string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+	<string name="tls_verification">TLS Verification</string>
+	<string name="require_tls_ssl_connection">Require TLS Connection</string>
+	<string name="transport_encryption">Transport Encryption</string>
+	<string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+	<string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+	<string name="connect_server">Connect Server</string>
+	<string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+	<string name="server_port">Server Port</string>
+	<string name="xmpp_resource">XMPP Resource</string>
+	<string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+	<string name="xmpp_resource_prio_title">XMPP Resource Priority</string>
+	<string name="xmpp_resource_prio_summary">Messages to clients with multiple active resources will be sent to the resource with the highest priority</string>
+
+	<string name="btn_next">Next</string>
+	<string name="btn_back">Back</string>
+	
+	<string name="title_chats">Conversations</string>
+	
+	
+	<string name="new_messages_notify">New message(s) from</string>
+	
+	<string name="smp_question_title">Authentication</string>
+	<string name="smp_question_summary">Enter a question to send to your contact, and the answer you expect them to give, in order to verify they are who they claim to be.</string>
+	
+	<string name="smp_question_hint">the question to ask</string>
+	<string name="qmp_answer_hint">the expected answer</string>
+	<string name="remote_verified_us">Your contact has successfully authenticated you.  Now authenticate your contact by asking your own question.</string>
+
+
+	<string name="no_messages">No conversations.\n\nTap here to start one!</string>
+	
+	<string name="pref_theme_dark">Use Dark Theme</string>
+	<string name="pref_theme_dark_summary">Change the app theme to dark</string>
+	
+	<string name="warning_tor_connect">Since you are using Tor, you must enter the XMPP \'Connect Server\' hostname directly into Advanced Account Settings</string>
+	
+	<!-- 
+	<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
+	
+	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>
+	 -->
+	 
+	 <string name="start_on_boot">Start ChatSecure Automatically</string>
+	 <string name="start_on_boot_summary">Always start and automatically sign into previously logged in accounts</string>
+	 
+	 <string name="empty_account_message">You have no\naccounts configured.\n\nTap here to add one!</string>
+	 
+	 <string name="google_account">Google Account</string>
+	 
+	 <string name="pref_in_memory_db_title">In-Memory Message Storage Only</string>
+	 <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>
+
+
+	 <string name="pref_background_title">Background Image</string>
+	 <string name="pref_background_summary">Set path ("/sdcard/foo.jpg") to a background image wallpaper for the app</string>
+	 
+	 <string name="pref_group_security_title">Security and Privacy</string>
+	 <string name="pref_group_looknfeel_title">User Interface</string>
+	 <string name="pref_group_tuning_title">Other Tuning</string>
+	 <string name="_open_conversations">" open conversation(s)"</string>
+	 <string name="_via_orbot">"Orbot (Tor)"</string>
+	 
+	 <string name="menu_exit">Exit</string>
+	 
+	 <!-- This is the message displayed in the confirm dialog when the user choose to sign out all service -->
+    <string name="signout_kill_confirm_message">Do you want to sign out all services AND kill all processes (hard exit)?</string>
+    
+     <string name="rekey_message">Enter a *new* passphrase. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="do_rekey">Encrypting your existing notes with the new passphrase (patience...)</string>
+    <string name="enter_pass">Enter your passphrase:</string>
+    <string name="new_pass">Welcome! Enter a strong passphrase to secure your notes. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
+    <string name="pass_err_length">Your passphrase was not long enough</string>
+    <string name="pass_err_upper">Your passphrase did not contain any uppercase letters</string>
+    <string name="pass_err_lower">Your passphrase did not contain any lowercase letters</string>
+    <string name="pass_err_num">Your passphrase did not contain any numbers</string>
+    
+    <string name="lock_screen_open">Open</string>
+    <string name="title_activity_lock_screen">ChatSecure Locked</string>
+    <string name="lock_screen_create_passphrase">Set Password</string>
+    <string name="lock_screen_confirm_passphrase">Confirm Password</string>
+    
+	<string name="lock_screen_passphrase_hint">Password</string>
+	<string name="lock_screen_passphrase_not_set_enter">New Password</string>
+	<string name="lock_screen_passphrase_not_set_confirm">Confirm New Password</string>
+	<string name="lock_screen_passphrases_not_matching">Password did not match, please try again</string>
+	
+	<string name="lock_screen_skip">I\'m Feeling Lazy (No Password!)</string>
+	
+	<string name="pref_sip_account_title">Secure Voice</string>
+	<string name="pref_sip_account_summary">Enter your OStel.co or other secure SIP service account here for call integration</string>
+	
+	<string name="default_service_provider">dukgo.com</string>
+	
+	<string name="detected_Otr_keystore_import">We have detected an OTR keystore to import. Would you like to scan the QR password now?</string>
+    
+	<string name="menu_import_keys">Activate KeySync</string>
+    
+	<string name="successfully_imported_otr_keyring">Successfully imported OTR keyring</string>
+    
+	<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
+
+	<string name="pref_cacheword_timeout_title">Password Timeout</string>
+	<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
+
+	<!-- Screen menu item on active chat list to start new chat -->
+    <string name="menu_new_group_chat">Group Chat</string>
+    <string name="create_or_join_group_chat">Create or Join Group Chat</string>
+    <string name="connect">Connect</string>
+    <string name="their_fingerprint_verified_">Security Fingerprint (Verified)</string>
+    <string name="are_you_sure_you_want_to_confirm_this_key_">Are you sure you want to confirm this fingerprint?</string>
+    <string name="verify_key_">Verify Fingerprint?</string>
+    <string name="the_remote_key_fingerprint_has_been_verified_">The remote fingerprint has been verified!</string>
+    
+    <string name="menu_panic">Panic</string>
+    
+    <string name="unable_to_create_or_join_group_chat">Unable to create or join group chat</string>
+    
+    <string name="buddies">Buddies</string>
+    
+    <string name="contacts">Contacts</string>
+    
+    <string name="select_domain_new_account">Choose a domain</string>
+    
+    <string name="otr_keysync_warning_message">Please copy the \'otr_keystore.ofcaes\' file from the desktop OtrFileConverter tool to the root directory of your device storage</string>
+
+    <string name="mtm_accept_cert">Accept Server Certificate?</string>
+
+    <string name="sorry_we_cannot_share_that_file_type">Sorry we cannot share that file type</string>
+
+    <string name="err_otr_share_no_encryption">You must enable encryption to share files</string>
+
+    <string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
+    
+    <string name="menu_sidebar_qr">Fingerprint</string>
+    
+    <string name="fingerprint_for_you">Fingerprint for you</string>
+    
+    <string name="fingerprint_for_">"Fingerprint for "</string>
+    
+    <string name="please_enable_chat_encryption_to_share_files">Please enable chat encryption to share files</string>
+    <string name="swipe_alert">ChatSecure detected that a request was made to remove its task.  ChatSecure will likely crash.  Please use the Sign out all menu item from the account list screen instead.</string>
+    
+    <string name="file_transfer">File Transfer</string>
+    
+    <string name="transfer_complete">Transfer Complete</string>
+    
+    <string name="transfer_in_progress">Transfer in progress</string>
+    
+    <string name="accept_transfer_">Accept transfer?</string>
+    
+    <string name="wants_to_send_you_the_file">wants to send you the file</string>
+    
+    <string name="menu_show_grid">Show Grid</string>
+    
+    <string name="pref_show_grid">Show Contact Grid</string>
+    <string name="pref_show_grid_summary">Display contact list as avatar grid</string>
+    <string name="button_yes_accept_all">Yes, Accept All</string>
+    
+    <string name="app_unlocked">Activated &amp; unlocked</string>
+    
+    <string name="prompt_create_new_account_">Create new account?</string>
+    
+    <string name="allow_s_to_create_a_new_chat_account_for_s_">Create a new chat account for username \'%1$s\'?</string>
+    
+    <string name="registering_new_account_">Registering new account...</string>
+    
+    <string name="connecting_to_group_chat_">Connecting to group chat...</string>
+    
+    <string name="btn_create_account">Create Account</string>
+    
+    <string name="pref_debug_title">Enable Debug Logs</string>
+    <string name="pref_debug_summary">Output app log data to standard out / logcat for debugging</string>
+    <string name="there_is_no_viewer_available_for_this_file_format">There is no viewer available for this file format</string>
+    <string name="please_start_a_secure_conversation_before_scanning_codes">Please start a secure conversation before scanning codes</string>
+    
+    <string name="loading">loading...</string>
+
+		<!-- Other -->
+		<string name="_open_conversations">" open conversation(s)"</string>
+		<string name="mtm_accept_cert">Accept Server Certificate?</string>
+		<string name="buddies">Buddies</string>
+		<string name="contacts">Contacts</string>
+		<string name="about_link">About Gibberbot\nhttps://guardianproject.info/apps/chatsecure/</string>
+		
+		<!-- Other: Slide Menu -->
+		<string name="menu_contact_list">Contact List</string>
+		<string name="menu_settings">Settings</string>
+		<string name="menu_view_accounts">Accounts</string>
+		<string name="menu_sign_out">Sign out</string>
+		<string name="menu_view_contact_list">Contact list</string>
+		<string name="menu_view_groups">Groups</string>
+		<string name="menu_sidebar_qr">Fingerprint</string>
+		<string name="menu_panic">Panic</string>
+		<string name="menu_exit">Exit</string>
+		
+		<!-- Other: Provider -->
+		<string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+		<string name="provider_full_name_llxmpp">Local Area (Bonjour/ZeroConf)</string>
+		<string name="google_account">Google Account</string>
+		<string name="default_service_provider">dukgo.com</string>
+		
+		<!-- Other: Development Strings [Do not localize!] -->
+		<string name="preference_title" translatable="false"><xliff:g id="provider">%1$s</xliff:g> settings (dev only)</string>
+		<string name="data_channel_label" translatable="false">Data channel</string>
+		<string name="data_encoding_label" translatable="false">Data encoding</string>
+		<string name="cir_channel_label" translatable="false">CIR channel</string>
+		<string name="host_label" translatable="false">Host</string>
+		<string name="msisdn_label" translatable="false">MSISDN</string>
+		<string name="http" translatable="false">HTTP</string>
+		<string name="sms" translatable="false">SMS</string>
+		<string name="tcp" translatable="false">TCP</string>
+		<string name="xml" translatable="false">XML</string>
+		<string name="wbxml" translatable="false">WBXML</string>
+		<string name="save" translatable="false">Save</string>
+		<string name="account_settings_title">Account Settings</string>
+		<string name="pref_default_locale">defLoc</string>
+		<string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
+		
+		<!-- Other: Presence States -->
+		<string name="presence_available">Online</string>
+		<string name="presence_busy">Busy</string>
+		<string name="presence_away">Away</string>
+		<string name="presence_idle">Idle</string>
+		<string name="presence_offline">Offline</string>
+		<string name="presence_invisible">Appear offline</string>
+		
+		<!-- Other: Smileys -->
+		<string-array name="default_smiley_names">
+			<item>Happy</item>
+			<item>Sad</item>
+			<item>Winking</item>
+			<item>Tongue sticking out</item>
+			<item>Surprised</item>
+			<item>Kissing</item>
+			<item>Yelling</item>
+			<item>Cool</item>
+			<item>Money mouth</item>
+			<item>Foot in mouth</item>
+			<item>Embarrassed</item>
+			<item>Angel</item>
+			<item>Undecided</item>
+			<item>Crying</item>
+			<item>Lips are sealed</item>
+			<item>Laughing</item>
+			<item>Confused</item>
+		</string-array>
+		
+		<!-- [Do not localize!] -->
+		<string-array name="default_smiley_texts" translatable="false">
+			<item>:-)</item>
+			<item>:-(</item>
+			<item>;-)</item>
+			<item>:-P</item>
+			<item>=-O</item>
+			<item>:-*</item>
+			<item>:O</item>
+			<item>B-)</item>
+			<item>:-$</item>
+			<item>:-!</item>
+			<item>:-[</item>
+			<item>O:-)</item>
+			<item>:-\\</item>
+			<item>:\'(</item>
+			<item>:-X</item>
+			<item>:-D</item>
+			<item>o_O</item>
+		</string-array>
+		
+		<string-array name="smiley_names">
+			<item>Happy</item>
+			<item>Sad</item>
+			<item>Winking</item>
+			<item>Tongue sticking out</item>
+			<item>Surprised</item>
+			<item>Kissing</item>
+			<item>Yelling</item>
+			<item>Cool</item>
+			<item>Money mouth</item>
+			<item>Foot in mouth</item>
+			<item>Embarrassed</item>
+			<item>Angel</item>
+			<item>Undecided</item>
+			<item>Crying</item>
+			<item>Lips are sealed</item>
+			<item>Laughing</item>
+			<item>Confused</item>
+		</string-array>
+		
+		<string-array name="smiley_texts">
+			<item>:-)</item>
+			<item>:-(</item>
+			<item>;-)</item>
+			<item>:-P</item>
+			<item>=-O</item>
+			<item>:-*</item>
+			<item>:O</item>
+			<item>B-)</item>
+			<item>:-$</item>
+			<item>:-!</item>
+			<item>:-[</item>
+			<item>O:-)</item>
+			<item>:-\\</item>
+			<item>:\'(</item>
+			<item>:-X</item>
+			<item>:-D</item>
+			<item>o_O</item>
+		</string-array>
 	</resources>
+

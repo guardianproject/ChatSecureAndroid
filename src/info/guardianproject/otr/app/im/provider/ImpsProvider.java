@@ -483,10 +483,6 @@ public class ImpsProvider extends ContentProvider {
                     db.beginTransaction();
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES
                                + " ADD COLUMN mime_type TEXT;");
-<<<<<<< HEAD
-
-=======
->>>>>>> f95bc909cd388c4fedae4117f163b65b89d04dc5
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
                     LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
