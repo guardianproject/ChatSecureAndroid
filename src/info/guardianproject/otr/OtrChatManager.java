@@ -248,7 +248,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                            && sessionPolicy.getSendWhitespaceTag()) {
                     // Work around asmack not sending whitespace tag for auto discovery
                     body += " \t  \t\t\t\t \t \t \t   \t \t  \t   \t\t  \t ";
-
+                    
                 }
             } catch (OtrException e) {
                 OtrDebugLogger.log("error encrypting", e);

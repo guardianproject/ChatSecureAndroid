@@ -868,6 +868,10 @@ public class ContactListManagerAdapter extends
     }
 
     void updatePresenceContent(Contact[] contacts) {
+        
+        if (mAdaptee == null)
+            return;
+        
         ArrayList<String> usernames = new ArrayList<String>();
         ArrayList<String> statusArray = new ArrayList<String>();
         ArrayList<String> customStatusArray = new ArrayList<String>();

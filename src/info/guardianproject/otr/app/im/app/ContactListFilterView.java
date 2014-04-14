@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactView.ViewHolder;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -51,6 +52,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -312,13 +314,35 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
+        
+        private int mViewLayout;
+        
         public ContactAdapter(Context context, int view) {
             super(context, view, null, 0);
+            
+            mViewLayout = view;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            
+            View view = super.newView(context, cursor, parent);
+          
+            ContactView.ViewHolder holder = null;
+                
+            holder = new ContactView.ViewHolder();
+                
+            holder.mLine1 = (TextView) view.findViewById(R.id.contactStatus);
+            holder.mLine2 = (TextView) view.findViewById(R.id.line2);
+               
+            holder.mTimeStamp = (TextView) view.findViewById(R.id.timestamp);
+            holder.mAvatar = (ImageView)view.findViewById(R.id.contactAvatar);
+                
+            holder.mStatusBlock = view.findViewById(R.id.status_block);
+                
+            view.setTag(holder);
+            
+           return view;
         }
 
         @Override

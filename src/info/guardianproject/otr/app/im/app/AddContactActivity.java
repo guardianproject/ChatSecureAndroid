@@ -65,7 +65,7 @@ public class AddContactActivity extends Activity {
     private static final int CONTACT_LIST_NAME_COLUMN = 1;
 
     private MultiAutoCompleteTextView mAddressList;
-    private Spinner mListSpinner;
+    //private Spinner mListSpinner;
     Button mInviteButton;
     ImApp mApp;
     SimpleAlertHandler mHandler;
@@ -94,7 +94,8 @@ public class AddContactActivity extends Activity {
         mAddressList.setAdapter(new EmailAddressAdapter(this));
         mAddressList.setTokenizer(new Rfc822Tokenizer());
         mAddressList.addTextChangedListener(mTextWatcher);
-
+        
+        /**
         mListSpinner = (Spinner) findViewById(R.id.choose_list);
 
         Cursor c = queryContactLists();
@@ -106,6 +107,7 @@ public class AddContactActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mListSpinner.setAdapter(adapter);
         mListSpinner.setSelection(initSelection);
+        **/
         
         mInviteButton = (Button) findViewById(R.id.invite);
         mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
@@ -154,8 +156,8 @@ public class AddContactActivity extends Activity {
             IImConnection conn = mApp.getConnection(mProviderId);
             IContactList list = getContactList(conn);
             if (list == null) {
-                Log.e(ImApp.LOG_TAG, "<AddContactActivity> can't find given contact list:"
-                                     + getSelectedListName());
+               // Log.e(ImApp.LOG_TAG, "<AddContactActivity> can't find given contact list:"
+                 //                    + getSelectedListName());
                 finish();
             } else {
                 boolean fail = false;
@@ -191,7 +193,8 @@ public class AddContactActivity extends Activity {
 
         try {
             IContactListManager contactListMgr = conn.getContactListManager();
-            String listName = getSelectedListName();
+            String listName = "";//getSelectedListName(); 
+            
             if (!TextUtils.isEmpty(listName)) {
                 return contactListMgr.getContactList(listName);
             } else {
@@ -214,11 +217,12 @@ public class AddContactActivity extends Activity {
             return null;
         }
     }
-
+    
+    /**
     private String getSelectedListName() {
         Cursor c = (Cursor) mListSpinner.getSelectedItem();
         return (c == null) ? null : c.getString(CONTACT_LIST_NAME_COLUMN);
-    }
+    }*/
 
     private View.OnClickListener mButtonHandler = new View.OnClickListener() {
         public void onClick(View v) {

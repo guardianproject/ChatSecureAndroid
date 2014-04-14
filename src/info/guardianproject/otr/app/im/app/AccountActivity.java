@@ -87,6 +87,7 @@ public class AccountActivity extends Activity {
     public final static String DEFAULT_SERVER_JABBERORG = "hermes2.jabber.org";
     public final static String DEFAULT_SERVER_DUKGO = "dukgo.com";
     public final static String ONION_JABBERCCC = "okj7xc6j2szr2y75.onion";
+    public final static String ONION_CALYX = "ijeeynrc6x2uy5ob.onion";
     
     //    private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
     //    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
@@ -726,6 +727,25 @@ public class AccountActivity extends Activity {
             settings.setServer(DEFAULT_SERVER_FACEBOOK);
             settings.setRequireTls(true); //facebook TLS now seems to be on
             settings.setTlsCertVerify(true); //but cert verify can still be funky - off by default
+            settings.setAllowPlainAuth(false);
+        } 
+        else if (domain.equals("jabber.calyxinstitute.org")) {
+            
+            if (settings.getUseTor())
+            {                
+                settings.setDoDnsSrv(false);
+                settings.setServer(ONION_CALYX);
+            }
+            else
+            {
+                settings.setDoDnsSrv(false);
+                settings.setServer("");
+            }
+            
+            settings.setDomain(domain);
+            settings.setPort(DEFAULT_PORT);            
+            settings.setRequireTls(true);
+            settings.setTlsCertVerify(true);
             settings.setAllowPlainAuth(false);
         } 
         else if (domain.equals("jabber.ccc.de")) {
