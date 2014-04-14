@@ -14,6 +14,7 @@ import info.guardianproject.otr.app.im.engine.ContactList;
 import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImEntity;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Invitation;
@@ -325,7 +326,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     void postpone(final org.jivesoftware.smack.packet.Packet packet) {
         if (packet instanceof org.jivesoftware.smack.packet.Message) {
-            ChatSession session = findOrCreateSession(packet.getTo());
+            boolean groupChat = ((org.jivesoftware.smack.packet.Message) packet).getType().equals( org.jivesoftware.smack.packet.Message.Type.groupchat);
+            ChatSession session = findOrCreateSession(packet.getTo(), groupChat);
             session.onMessagePostponed(packet.getPacketID());
         }
     }
@@ -1207,31 +1209,37 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (dr != null) {
                     
                     debug(TAG, "got delivery receipt for " + dr.getId());
-                    ChatSession session = findOrCreateSession(address);
+                    boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
+                    ChatSession session = findOrCreateSession(address, groupMessage);
                     session.onMessageReceipt(dr.getId());
                 } 
                 
                 if (body != null)
                 {
-
-                    ChatSession session = findOrCreateSession(address);
-                   
                     XmppAddress aFrom = new XmppAddress(smackMessage.getFrom());
-                    
-                    Message rec = new Message(body);
-                    rec.setTo(mUser.getAddress());
-                    rec.setFrom(aFrom);
-                    rec.setDateTime(new Date());
 
-                    rec.setType(Imps.MessageType.INCOMING);
+                    boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
                     
-                    Contact rContact = mContactListManager.getContact(aFrom);
+                    ImEntity rContact = null;
+                    if (groupMessage) {
+                        rContact = getChatGroupManager().getChatGroup(aFrom);
+                    }
+                    else {
+                        rContact = mContactListManager.getContact(aFrom);
+                    }
                     if (rContact != null) //if we have not added them as a contact, don't receive message
                     {
-                    
+                        ChatSession session = findOrCreateSession(address, groupMessage);
+                       
+                        Message rec = new Message(body);
+                        rec.setTo(mUser.getAddress());
+                        rec.setFrom(aFrom);
+                        rec.setDateTime(new Date());
+
+                        rec.setType(Imps.MessageType.INCOMING);
+                        
                         // Detect if this was said by us, and mark message as outgoing
-                        if (smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat &&
-                                rec.getFrom().getResource().equals(rec.getTo().getUser())) {
+                        if (groupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
                             rec.setType(Imps.MessageType.OUTGOING);
                         }
                         
@@ -1516,29 +1524,43 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         });
     }
 
-    private ChatSession findOrCreateSession(String address) {
-        ChatSession session = mSessionManager.findSession(address);
-
-        if (session == null) {
-            Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
-            
-            if (contact != null)
-                session = mSessionManager.createChatSession(contact);
-        }
-        return session;
+    private ChatSession findOrCreateSession(String address, boolean groupChat) {
+         ChatSession session = mSessionManager.findSession(address);
+ 
+         if (session == null) {
+            ImEntity participant = findOrCreateParticipant(address, groupChat);
+            session = mSessionManager.createChatSession(participant);
+         }
+         return session;
+     }
+ 
+    ImEntity findOrCreateParticipant(String address, boolean groupChat) {
+        ImEntity participant = mContactListManager.getContact(address);
+        if (participant == null) {
+            if (groupChat) {
+                participant = makeContact(address);
+            }
+            else {
+                try {
+                    mChatGroupManager.createChatGroupAsync(address);
+                
+                    Address xmppAddress = new XmppAddress(address);
+                
+                    participant = mChatGroupManager.getChatGroup(xmppAddress);
+                }
+                catch (Exception e) {
+                    Log.e(ImApp.LOG_TAG,"unable to join group chat",e);
+                }
+            }
+         }
+ 
+        return participant;
     }
-
-    /**
-    Contact findOrCreateContact(String address) {
-        Contact contact = mContactListManager.getContact(address);
-        if (contact == null) {
-            contact = makeContact(address);
-        }
-
-        return contact;
-    }**/
-
     
+    Contact findOrCreateContact(String address) {
+        return (Contact) findOrCreateParticipant(address, false);
+     }
+
     private Contact makeContact(String address) {
        
         Contact contact = null;
@@ -1607,10 +1629,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         ChatSession findSession(String address) {
-            
-           
             return mSessions.get(Address.stripResource(address));
-
         }
         
     }

@@ -172,7 +172,7 @@ public abstract class ContactListManager {
         }
         return null;
     }
-
+    
     public abstract String normalizeAddress(String address);
 
     /**

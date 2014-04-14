@@ -192,7 +192,7 @@ public abstract class ChatGroupManager {
      * @return a ChatGroup.
      */
     public ChatGroup getChatGroup(Address address) {
-        return mGroups.get(address.getAddress());
+        return mGroups.get(address.getBareAddress());
     }
 
     /**
