@@ -88,6 +88,13 @@ android:anyDensity="true"
                 
             </intent-filter>
             
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="imto" android:host="jabber" />
+                
+            </intent-filter>
+            
              <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
