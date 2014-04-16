@@ -308,6 +308,7 @@
 		<string name="starting_otr_chat">Starting encrypted chat session...</string>
 		<string name="stopping_otr_chat">Stopping encrypted chat session...</string>
 		<string name="label_fingerprint_remote">Security Fingerprint</string>
+		<string name="label_fingerprint_local">Security Fingerprint</string>
 		<string name="menu_sign_in">Sign In</string>
 		<string name="menu_gen_key">Regen Key</string>
 		<string name="otr_session_status_plaintext">Encryption is off</string>
