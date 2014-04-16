@@ -32,10 +32,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ResourceCursorAdapter;
+import android.widget.TextView;
 
 /** Activity used to pick a contact. */
 public class ContactsPickerActivity extends ListActivity {
@@ -167,12 +170,6 @@ public class ContactsPickerActivity extends ListActivity {
             super(context, R.layout.contact_view, c);
         }
 
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ContactView v = (ContactView) view;
-            v.setPadding(0, 0, 0, 0);
-            v.bind(cursor, mConstraints, false);
-        }
         /*
         @Override
         public void changeCursor(Cursor cursor) {
@@ -188,6 +185,35 @@ public class ContactsPickerActivity extends ListActivity {
             mConstraints = constraint.toString();
 
             return ContactsPickerActivity.this.runQuery(constraint);
+        }
+        
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            
+            View view = super.newView(context, cursor, parent);
+          
+            ContactView.ViewHolder holder = null;
+                
+            holder = new ContactView.ViewHolder();
+                
+            holder.mLine1 = (TextView) view.findViewById(R.id.contactStatus);
+            holder.mLine2 = (TextView) view.findViewById(R.id.line2);
+               
+            holder.mTimeStamp = (TextView) view.findViewById(R.id.timestamp);
+            holder.mAvatar = (ImageView)view.findViewById(R.id.contactAvatar);
+                
+            holder.mStatusBlock = view.findViewById(R.id.status_block);
+                
+            view.setTag(holder);
+            
+           return view;
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            ContactView v = (ContactView) view;
+            v.bind(cursor, mConstraints, false);
+            
         }
     }
 
