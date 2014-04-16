@@ -464,8 +464,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         Intent intent = new Intent(this, ImUrlActivity.class);
         intent.setAction(srcIntent.getAction());
         intent.setData(intentData);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);        
-        intent.putExtras(srcIntent.getExtras());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);    
+        if (srcIntent.getExtras()!= null)
+            intent.putExtras(srcIntent.getExtras());
         startActivity(intent);
         finish();
     }
