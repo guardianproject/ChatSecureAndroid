@@ -103,6 +103,7 @@ public class ImUrlActivity extends Activity {
     }
 
     void handleIntent() {
+        
         ContentResolver cr = getContentResolver();
         
         long providerId = -1;
@@ -150,7 +151,7 @@ public class ImUrlActivity extends Activity {
             
             Cursor cursorProvider = initProviderCursor();
             
-            if (cursorProvider == null || cursorProvider.getCount() == 0) {                                
+            if (cursorProvider == null || cursorProvider.isClosed() || cursorProvider.getCount() == 0) {                                
 
                 createNewAccount();
                 return;
@@ -185,10 +186,13 @@ public class ImUrlActivity extends Activity {
                         }
                         
                         settings.close();
-                        cursorProvider.close();
                         
-                    }
+                    }    
+                    
                 }
+                
+                cursorProvider.close();
+                
                 
                 
                 
