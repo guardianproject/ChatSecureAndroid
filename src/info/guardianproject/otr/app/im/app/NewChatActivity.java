@@ -740,8 +740,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         {                         
             if (mChatPager.getCurrentItem() > 0)
             {
-                
-                if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
+                // phoenix-nz - a group chat should not be shown as 'unverified' as it (currently)
+                // cannot be verified. Thus, show as neutral.
+                if (cView.isGroupChat())
+                {                    
+                    mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
+                    mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
+
+                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
+                }
+                else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
                 {
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,true);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
