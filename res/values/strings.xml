@@ -102,9 +102,7 @@
 		<string name="menu_add_account">Add account</string>
 		<string name="menu_edit_account">Edit account</string>
 		<string name="menu_remove_account">Remove account</string>
-		<string name="btn_create_account">Create Account</string>
 		<string name="menu_use_existing_account">Existing Account</string>
-		<string name="menu_create_account">Create Account</string>
 		
 		<!-- Views: Setup: Account -->
 		<string name="label_username">User@Host</string>
@@ -223,7 +221,7 @@
 		<string name="subscriptions">Friend invitations</string>
 		<string name="unknown_contact">(<i>Unknown</i>) </string>
 		<string name="empty_contact_group">Empty</string>
-		<string name="empty_conversation_group">No conversations</string>
+		<string name="empty_conversation_group">No conversations open\n\nTap to start chatting!</string>
 		
 		<string name="search_label">Contact</string>
 		<string name="search_hint">type the name of a contact to chat with</string>
@@ -530,7 +528,6 @@
     
     
 	<string name="loading">loading...</string>
-
 		<!-- Other -->
 		
 		<string name="about_link">About Gibberbot\nhttps://guardianproject.info/apps/chatsecure/</string>
