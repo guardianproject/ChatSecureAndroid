@@ -337,38 +337,44 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         List<String> listProviders = helper.getProviderNames();
         
-        mAccountList = new String[listProviders.size()+2]; //potentialProviders + google + create account
+        Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
+                
+        mAccountList = new String[listProviders.size()+googleAccounts.length+1]; //potentialProviders + google + create account
         
         int i = 0;
-        mAccountList[i] = getString(R.string.google_account);
-        i++;
         
         for (String providerName : listProviders)
             mAccountList[i++] = providerName;
         
-        mAccountList[i++] = getString(R.string.menu_create_account);
+        for (Account account : googleAccounts)
+        {
+            mAccountList[i++] = account.name;
+        }
+        
+        mAccountList[i++] = getString(R.string.btn_create_account);
+        
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
 
-                if (pos == 0) //google accounts based on xmpp
-                {           
-                    showGoogleAccountListDialog();
-                }
-                else if (pos == 1) //xmpp
+                if (pos == 0) //xmpp
                 {
                     //otherwise support the actual plugin-type
                     showSetupAccountForm(mAccountList[pos],null, null, false,mAccountList[pos],false);
                 }
-                else if (pos == 2) //zeroconf
+                else if (pos == 1) //zeroconf
                 {
                     String username = "";
                     String passwordPlaceholder = "password";//zeroconf doesn't need a password
                     showSetupAccountForm(mAccountList[pos],username,passwordPlaceholder, false,mAccountList[pos],true);
                 }
-                else if (pos == 3) //create account
+                else if (pos == mAccountList.length-1) //create account
                 {
                     showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
+                }
+                else
+                {
+                    addGoogleAccount(mAccountList[pos]);
                 }
             }
         });
@@ -391,44 +397,26 @@ private Handler mHandlerGoogleAuth = new Handler ()
         
 };
 
-    
-    private void showGoogleAccountListDialog() {
+    private void addGoogleAccount (String newUser)
+    {
+        mNewUser = newUser;
         
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.account_select_type);
-        
-        Account[] accounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
-        
-        mAccountList = new String[accounts.length];
-        
-        for (int i = 0; i < mAccountList.length; i++)
-            mAccountList[i] = accounts[i].name;
-        
-        builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int pos) {
-   
-                    mNewUser = mAccountList[pos];                     
-                    Thread thread = new Thread ()
-                    {
-                        public void run ()
-                        {
-                            //get the oauth token
-                            
-                          //don't store anything just make sure it works!
-                           String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
-                   
-                           //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                            showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
-                        }
-                    };
-                    thread.start();
-              
+        Thread thread = new Thread ()
+        {
+            public void run ()
+            {
+                //get the oauth token
+                
+              //don't store anything just make sure it works!
+               String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
+       
+               //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
+                showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
             }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+        };
+        thread.start();
     }
+    
     
     public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle, boolean hideTor)
     {

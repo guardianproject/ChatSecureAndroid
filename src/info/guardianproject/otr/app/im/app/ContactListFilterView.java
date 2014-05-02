@@ -537,7 +537,10 @@ public class ContactListFilterView extends LinearLayout {
             
             if (newCursor.getCount() == 0)
             {
-                mEmptyView.setText(R.string.empty_contact_list);
+                if (mUri.getPath().contains("/contacts/chatting"))
+                        mEmptyView.setText(R.string.empty_conversation_group);
+                else
+                        mEmptyView.setText(R.string.empty_contact_list);
             }
             
         }
