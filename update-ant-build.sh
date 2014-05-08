@@ -12,7 +12,7 @@ android update lib-project --path external/cacheword/cachewordlib --target $targ
 android update lib-project --path external/SlidingMenu/library --target $target
 android update lib-project --path external/AndroidEmojiInput/library --target $target
 
-android update project --path . --name $projectname --target android-17 --subprojects
+android update project --path . --name $projectname --target $target --subprojects
 
 cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar
