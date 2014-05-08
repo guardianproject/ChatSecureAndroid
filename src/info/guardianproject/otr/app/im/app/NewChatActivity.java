@@ -1759,8 +1759,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                   
                   
         Uri.Builder builder = baseUri.buildUpon();
-    //    ContentUris.appendId(builder, mLastProviderId);
-    //    ContentUris.appendId(builder, mLastAccountId);
         
         if (mContactList.mFilterView != null)
             mContactList.mFilterView.doFilter(builder.build(), null);
