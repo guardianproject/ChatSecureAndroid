@@ -1,6 +1,6 @@
 #!/bin/sh
 
-target="android-17"
+target="android-19"
 projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' res/values/strings.xml`
 
 # make sure your Android SDK tools path is set in SDK_BASE
