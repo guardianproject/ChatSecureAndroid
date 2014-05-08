@@ -522,6 +522,10 @@ public class ContactListFilterView extends LinearLayout {
                 buf.append(Imps.Contacts.NICKNAME);
                 buf.append(" LIKE ");
                 DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+                buf.append(" OR ");
+                buf.append(Imps.Contacts.USERNAME);
+                buf.append(" LIKE ");
+                DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
             }
 
             CursorLoader loader = new CursorLoader(getContext(), mUri, ContactView.CONTACT_PROJECTION,
