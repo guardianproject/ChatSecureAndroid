@@ -93,14 +93,16 @@ public class ContactView extends LinearLayout {
         ViewHolder holder = (ViewHolder)getTag();
         
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
-        //String address = cursor.getString(COLUMN_CONTACT_USERNAME);
-        String nickname = cursor.getString(COLUMN_CONTACT_NICKNAME);
+        String address = cursor.getString(COLUMN_CONTACT_USERNAME);
+        String displayName = cursor.getString(COLUMN_CONTACT_NICKNAME);
         int type = cursor.getInt(COLUMN_CONTACT_TYPE);
         String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
         String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
 
+        String nickname = displayName + " (" + address + ")";
+        
         if (!TextUtils.isEmpty(underLineText)) {
             // highlight/underline the word being searched
             String lowercase = nickname.toLowerCase();
