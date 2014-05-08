@@ -172,9 +172,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
      //  requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
         
-        ActionBar actionBar = getSherlock().getActionBar();
-        actionBar.setTitle("");
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ActionBar actionBar = getSherlock().getActionBar();        
+    //    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
         ThemeableActivity.setBackgroundImage(this);
 
@@ -232,9 +231,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                            
                     }
                     
-                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        //           getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                  
-                    
+                        setTitle("");
                 }
                 else
                 {
@@ -249,11 +248,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                    getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+                  //  getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
                     
+                    setTitle(R.string.title_chats);
                    // refreshLastConnection();
-                    setSpinnerState ();
+                   // setSpinnerState ();
 
                 }
             }
@@ -281,7 +281,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
         
         mApp.registerForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
-        
         
         setupSpinners();
         
@@ -339,10 +338,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onDestroy() {
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
-        mAdapter.swapCursor(null);
+    //    mAdapter.swapCursor(null);
         super.onDestroy();
         mChatPagerAdapter = null;
-        mAdapter = null;
+       // mAdapter = null;
     }
     
     @Override
@@ -689,7 +688,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if (mChatPager != null)
                     mChatPager.setCurrentItem(0);
                 
-                setupSpinners();
+               // setupSpinners();
                                
             }
             else
@@ -730,7 +729,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     private Menu mMenu;
-    private AccountAdapter mAdapter;
+   // private AccountAdapter mAdapter;
     protected Long[][] mAccountIds;
     private long mRequestedChatId;
     
@@ -1602,7 +1601,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Provider.CONTENT_URI_WITH_ACCOUNT, ContactListFragment.PROVIDER_PROJECTION,
                         Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL",
                         
-                        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                        new String[] { ImApp.IMPS_CATEGORY } ,
                         Imps.Provider.DEFAULT_SORT_ORDER);
 
                 return loader;
@@ -1622,26 +1621,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     {
                         mAccountIds[i][0] = newCursor.getLong(activeAccountIdColumn);              
                         mAccountIds[i][1] = newCursor.getLong(activeProviderIdColumn);
+                        initConnection(mAccountIds[i][0],mAccountIds[i][1]);
+                        
                         newCursor.moveToNext();
                         
                     }
 
                     newCursor.moveToFirst();
-                    mAdapter.swapCursor(newCursor);
-    
-                    ActionBar ab = getSherlock().getActionBar();
-    
-                    ab.setListNavigationCallbacks(mAdapter, new OnNavigationListener () {
-    
-                       @Override
-                       public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                           initConnection(mAccountIds[itemPosition][0],mAccountIds[itemPosition][1]);
-                           return true;
-                       }
-                        
-                    });
-                    
-                    setSpinnerState ();
+                   
                 
                 }
 
@@ -1651,22 +1638,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
                 mAccountIds = null;
-                mAdapter.swapCursor(null);
+    //            mAdapter.swapCursor(null);
             }
         });
 
-        mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
-        /*
-        mAdapter.setListener(new AccountAdapter.Listener() {
-            @Override
-            public void onPopulate() {
-                setSpinnerState();
-            }
-        });*/
-
+      //  mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
+        
         
     }
-
+    /**
     public void setSpinnerState ()
     {
 
@@ -1699,6 +1679,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
        
     }   
+    */
     
     public void refreshLastConnection ()
     {
@@ -1760,19 +1741,26 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
         QueryMap settingMap = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, false, null);
                   
-                  Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                                                                      : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-                                                 
-                  
-                  if (showChatsOnly)
-                      baseUri =  Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-                  
-                  settingMap.close();
+          Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
+                                                              : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+                                         
+          
+          if (showChatsOnly)
+          {
+              baseUri =  Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
+              setTitle(R.string.title_chats);
+          }
+          else
+          {
+              setTitle(R.string.contacts_picker_title);
+          }
+          
+          settingMap.close();
                   
                   
         Uri.Builder builder = baseUri.buildUpon();
-        ContentUris.appendId(builder, mLastProviderId);
-        ContentUris.appendId(builder, mLastAccountId);
+    //    ContentUris.appendId(builder, mLastProviderId);
+    //    ContentUris.appendId(builder, mLastAccountId);
         
         if (mContactList.mFilterView != null)
             mContactList.mFilterView.doFilter(builder.build(), null);
