@@ -15,8 +15,8 @@ https://guardianproject.info/code/sqlcipher/
 2. Open the file 'BUILD' and follow the instructions
 
 ## Build Instructions
-1. For these instructions, you'll need the Android SDK and Eclipse installed. Follow instructions here: https://developer.android.com/sdk/index.html and here: https://developer.android.com/sdk/installing.html
-2. From the main Gibberbot GitHub project page (https://github.com/guardianproject/Gibberbot) grab the Gibberbot source through your method of choice.
+1. For these instructions, you'll need the 32 bit Android SDK or Eclipse installed. Follow instructions here: https://developer.android.com/sdk/index.html and here: https://developer.android.com/sdk/installing.html
+2. From the main ChatSecure GitHub project page (https://github.com/guardianproject/ChatSecureAndroid) grab the ChatSecure source through your method of choice.
 
 That's it! Generally speaking, this should be an easy project to build locally for anyone who's used Eclipse and/or ADT before. If you have any questions, don't be afraid to jump into IRC for real-time help at #guardianproject on freenode or OFTC.
 
