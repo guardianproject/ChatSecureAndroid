@@ -474,13 +474,9 @@ public class ImpsProvider extends ContentProvider {
                 // This was a no-op upgrade when we added the encrypted DB option
                 return;
             case 103:
-                if (newVersion <= 103) {
-                    return;
-                }
-                
                
                 try {
-                    db.beginTransaction();
+                    db.beginTransaction();                    
                     db.execSQL("ALTER TABLE " + TABLE_MESSAGES
                                + " ADD COLUMN mime_type TEXT;");
                     db.setTransactionSuccessful();

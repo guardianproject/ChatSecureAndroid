@@ -43,17 +43,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import net.java.otr4j.session.SessionStatus;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -62,6 +59,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
@@ -275,8 +273,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 autoLogin();
             }
 
-            mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
-            
             for (ImConnectionAdapter conn : mConnections.values())
             {
                 conn.sendHeartbeat();
@@ -290,7 +286,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public int onStartCommand(Intent intent, int flags, int startId) {
         
         if (intent != null && HeartbeatService.HEARTBEAT_ACTION.equals(intent.getAction())) {
-            Log.d(TAG, "HEARTBEAT");
+          //  Log.d(TAG, "HEARTBEAT");
             try {
                 mWakeLock.acquire();
                 sendHeartbeat();
@@ -305,6 +301,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                     .getParcelableExtra(HeartbeatService.NETWORK_INFO_EXTRA);
             State networkState = State.values()[intent.getIntExtra(HeartbeatService.NETWORK_STATE_EXTRA, 0)];
             // TODO(miron) wakelock?
+            
+
             networkStateChanged(networkInfo, networkState);
             return START_STICKY;
         }
@@ -570,7 +568,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 stopForeground(true);
     }
 
-    private boolean isNetworkAvailable() {
+    boolean isNetworkAvailable ()
+    {
         return mNetworkState == State.CONNECTED;
     }
 

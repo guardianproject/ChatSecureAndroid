@@ -1,11 +1,14 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.app.im.app.NetworkConnectivityListener;
+import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -44,7 +47,10 @@ public class HeartbeatService extends Service {
         this.mPendingIntent = PendingIntent.getService(this, 0, new Intent(HEARTBEAT_ACTION, null,
                 this, HeartbeatService.class), 0);
         this.mRelayIntent = new Intent(HEARTBEAT_ACTION, null, this, RemoteImService.class);
-        startHeartbeat(HEARTBEAT_INTERVAL);
+        
+        long heartBeatInterval = HEARTBEAT_INTERVAL * getGlobalSettings().getHeartbeatInterval();
+        
+        startHeartbeat(heartBeatInterval);
 
         mServiceHandler = new ServiceHandler();
 
@@ -58,7 +64,6 @@ public class HeartbeatService extends Service {
         alarmManager.cancel(mPendingIntent);
         if (interval > 0)
         {
-         
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, interval, mPendingIntent);
         }
     }
@@ -112,12 +117,26 @@ public class HeartbeatService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case EVENT_NETWORK_STATE_CHANGED:
-                Log.d(TAG, "network");
+               // Log.d(TAG, "network");
                 networkStateChanged();
                 break;
 
             default:
             }
         }
+    }
+    
+    private Imps.ProviderSettings.QueryMap getGlobalSettings() {
+       
+            
+            ContentResolver contentResolver = getContentResolver();
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+
+            if (cursor == null)
+                return null;
+            
+           return new Imps.ProviderSettings.QueryMap(cursor, contentResolver, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
+    
     }
 }

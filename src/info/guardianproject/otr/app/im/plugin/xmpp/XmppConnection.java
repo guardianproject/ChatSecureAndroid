@@ -1168,7 +1168,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
                 
         // Don't use smack reconnection - not reliable
-        mConfig.setReconnectionAllowed(true);
+        mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
         
         mConfig.setRosterLoadedAtLogin(true);
