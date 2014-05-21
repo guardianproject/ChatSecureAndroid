@@ -1330,7 +1330,10 @@ public class ChatView extends LinearLayout {
         {
             //no OTR in group chat
             mStatusWarningView.setVisibility(View.GONE);
-            
+
+            // phoenix-nz - we need to update the encryption menu state, 
+            // because it could have been set in another chat view
+            mActivity.updateEncryptionMenuState();
             return;
         }
 
