@@ -24,9 +24,9 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SimpleAlertHandler extends Handler {
 
@@ -87,21 +87,7 @@ public class SimpleAlertHandler extends Handler {
         
         if (!title.equals(message)) //sometimes this reads Attention: Attention!
         {
-        
-            if (Looper.myLooper() == getLooper()) {
-                //new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                  //      .setPositiveButton(R.string.ok, null).show();
-              //  Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
-                
-            } else {
-                post(new Runnable() {
-                    public void run() {
-                    //    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                      //          .setPositiveButton(R.string.ok, null).show();
-                //        Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();           
         }
         
         Log.w(ImApp.LOG_TAG,message.toString());

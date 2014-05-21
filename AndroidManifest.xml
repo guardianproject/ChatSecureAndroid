@@ -338,11 +338,9 @@ android:anyDensity="true"
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.ContactPresenceActivity" 
-              android:uiOptions="splitActionBarWhenNarrow"
+        <activity android:name=".app.ContactPresenceActivity"               
              android:configChanges="orientation|keyboardHidden|screenSize"
-                          android:exported="false"                          
-            android:theme="@android:style/Theme.Dialog"
+                          android:exported="false"                  
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

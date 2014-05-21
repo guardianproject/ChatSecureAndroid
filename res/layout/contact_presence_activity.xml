@@ -1,50 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="10dp"
+    >
 
-        	<LinearLayout 
-          xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/helpscrollview" 
-		android:orientation="vertical"
-		android:layout_width="310dp" 
-		android:layout_height="310dp"
-
-         android:padding="10dip"
-		> 
-		
-            <!-- 
-        <TextView android:id="@+id/labelName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dip"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_username" /> -->
-
-        <TextView android:id="@+id/txtName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            
-                android:fontFamily="sans-serif-light"	
-           />
-            
+    
        <ImageView
             android:id="@+id/avatar"
             android:layout_width="wrap_content"
@@ -52,11 +14,21 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
              android:gravity="right"
+             android:contentDescription="avatar image"
              />
         
        
+        <TextView android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            
+                android:fontFamily="sans-serif-light"	
+           />
+            
+       
  <TextView android:id="@+id/txtAddress"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             
@@ -110,33 +82,27 @@
         	    android:layout_height="wrap_content"
         	    android:layout_gravity="bottom"
         	    android:orientation="horizontal"
-        	    android:padding="0dip" >
+        	    android:padding="3dp" >
 		
         <Button
         	    android:id="@+id/btnVerifyManual"
-        	    style="@style/btn_white"
-        	    android:layout_width="90dp"
-        	    android:layout_height="50dp"
-        	    android:layout_marginTop="3dip"
-        	    android:background="@drawable/btn_green"
+        	    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
         	    android:text="@string/menu_verify_fingerprint" />
         
         	<Button
         	    android:id="@+id/btnVerifyScan"
-        	    style="@style/btn_white"
-        	    android:layout_width="90dp"
-        	    android:layout_height="50dp"
-        	    android:layout_marginTop="3dip"
-        	    android:background="@drawable/btn_green"
+        	    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
         	    android:text="@string/menu_scan" />
         	
         		<Button
         		    android:id="@+id/btnVerifyQuestion"
-        		    style="@style/btn_white"
-        		    android:layout_width="90dp"
-        		    android:layout_height="50dp"
-        		    android:layout_marginTop="3dip"
-        		    android:background="@drawable/btn_green"
+        		    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
         		    android:text="@string/menu_verify_secret" />
 
         </LinearLayout>
