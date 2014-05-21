@@ -299,7 +299,6 @@ android:anyDensity="true"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                android:exported="false"
-               android:launchMode="singleTask"
                 >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
