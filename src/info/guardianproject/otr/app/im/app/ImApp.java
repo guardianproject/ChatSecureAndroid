@@ -254,14 +254,20 @@ public class ImApp extends Application {
         checkLocale();
     }
     
+    private boolean mThemeDark = false;
+    
+    public boolean isThemeDark ()
+    {
+        return mThemeDark;       
+    }
+    
     public void setAppTheme (Activity activity)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         
+        mThemeDark = settings.getBoolean("themeDark", false);
         
-        boolean themeDark = settings.getBoolean("themeDark", false);
-        
-        if (themeDark)
+        if (mThemeDark)
         {            
             setTheme(R.style.AppThemeDark);
             

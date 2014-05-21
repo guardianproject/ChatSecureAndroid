@@ -40,6 +40,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -59,8 +60,6 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.AsyncQueryHandler;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -104,8 +103,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -963,11 +960,11 @@ public class ChatView extends LinearLayout {
        
     }
 
-    /*
+   
     public void bindSubscription(long providerId, String from) {
         mProviderId = providerId;
         
-        mRemoteAddressString = from;
+      //  mRemoteAddressString = from;
 
         setViewType(VIEW_TYPE_SUBSCRIPTION);
 
@@ -977,9 +974,8 @@ public class ChatView extends LinearLayout {
         mActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
-    }*/
+    }
 
-    
 
     private void setViewType(int type) {
         mViewType = type;
@@ -1970,7 +1966,12 @@ public class ChatView extends LinearLayout {
         
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            MessageView messageView = (MessageView) view;
+            MessageView messageView = (MessageView) view;            
+
+            if (mApp.isThemeDark())
+            {
+                messageView.setMessageBackground(getResources().getDrawable(R.drawable.message_view_rounded_dark));                
+            }
             
             mType = cursor.getInt(mTypeColumn);
             

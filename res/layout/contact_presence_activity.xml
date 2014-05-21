@@ -44,6 +44,17 @@
             
                 android:fontFamily="sans-serif-light"	
            />
+            
+       <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+             android:gravity="right"
+             />
+        
+       
  <TextView android:id="@+id/txtAddress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -59,6 +70,8 @@
            
                 android:fontFamily="sans-serif-light"
              />
+        
+        
 
             <TextView android:id="@+id/labelFingerprintRemote"
             android:layout_width="wrap_content"

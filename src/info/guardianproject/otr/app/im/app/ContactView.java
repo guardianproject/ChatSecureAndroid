@@ -101,7 +101,10 @@ public class ContactView extends LinearLayout {
 
         int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
 
-        String nickname = displayName + " (" + address + ")";
+        int subType = cursor.getInt(COLUMN_SUBSCRIPTION_TYPE);
+        int subStatus = cursor.getInt(COLUMN_SUBSCRIPTION_STATUS);
+        
+        String nickname = displayName;
         
         if (!TextUtils.isEmpty(underLineText)) {
             // highlight/underline the word being searched
@@ -145,7 +148,7 @@ public class ContactView extends LinearLayout {
             
             if (holder.mAvatar != null)
             {
-                setBackgroundResource(R.color.holo_blue_bright);
+              //  setBackgroundResource(R.color.holo_blue_bright);
                 holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
                 holder.mLine1.setTextColor(Color.WHITE);
             }
@@ -166,7 +169,6 @@ public class ContactView extends LinearLayout {
                 
                 if (statusText == null || statusText.length() == 0)
                 {
-
                     if (Imps.Contacts.TYPE_GROUP == type) 
                     {
                         statusText = getContext().getString(R.string.menu_new_group_chat);
@@ -183,68 +185,74 @@ public class ContactView extends LinearLayout {
                 
             }
             
-            
-            if (presence == Imps.Presence.AVAILABLE)
-            {
-                if (holder.mAvatar != null)
-                {
-                    setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
-                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-                }
-                else if (holder.mStatusBlock != null)
-                {
-                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                    
-                }
-                
-            }
-            else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
-            {
-                if (holder.mAvatar != null)
-                {
-                    setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
-                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-                }
-                else if (holder.mStatusBlock != null)
-                {
-                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                    
-                }
-                
-            }
-            else if (presence == Imps.Presence.DO_NOT_DISTURB)
-            {
-                if (holder.mAvatar != null)
-                {
-                    setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                    holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
-                    holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-                }
-                else if (holder.mStatusBlock != null)
-                {
-                    holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                    
-                }
-            }   
-            else
-            {
-                if (holder.mAvatar != null)
-                {
-                    setBackgroundColor(Color.LTGRAY);
-                    holder.mLine1.setBackgroundColor(Color.LTGRAY);
-                }
-                else if (holder.mStatusBlock != null)
-                {
-                    holder.mStatusBlock.setBackgroundColor(Color.LTGRAY);
-                    
-                }
-            }
-            
-            
         }
         
+
+        if (subType == Imps.ContactsColumns.SUBSCRIPTION_TYPE_INVITATIONS)
+        {
+            if (holder.mLine2 != null)
+                holder.mLine2.setText("Contact List Request");
+        }
+        
+        if (presence == Imps.Presence.AVAILABLE)
+        {
+            if (holder.mAvatar != null)
+            {
+               // setBackgroundColor(getResources().getColor(R.color.holo_green_light));
+                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
+                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+            }
+            else if (holder.mStatusBlock != null)
+            {
+                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
+                
+            }
+            
+        }
+        else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
+        {
+            if (holder.mAvatar != null)
+            {
+              //  setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
+                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+            }
+            else if (holder.mStatusBlock != null)
+            {
+                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
+                
+            }
+            
+        }
+        else if (presence == Imps.Presence.DO_NOT_DISTURB)
+        {
+            if (holder.mAvatar != null)
+            {
+               // setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
+                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
+            }
+            else if (holder.mStatusBlock != null)
+            {
+                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
+                
+            }
+        }   
+        else
+        {
+            if (holder.mAvatar != null)
+            {
+               // setBackgroundColor(Color.LTGRAY);
+                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_grey_light));
+            }
+            else if (holder.mStatusBlock != null)
+            {
+                holder.mStatusBlock.setBackgroundColor(Color.LTGRAY);
+                
+            }
+        }
+            
+            
        
     }
     

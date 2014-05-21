@@ -27,12 +27,6 @@
          android:showAsAction="never"
          />
      
-         <item android:id="@+id/menu_view_profile"
-        android:title="@string/menu_verify"
-        android:icon="@drawable/ic_nav_preferences"
-         android:showAsAction="always"
-         />
-    
      <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
         
          <item 
@@ -42,6 +36,14 @@
         >
         
              <menu>
+                 
+                 
+         <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_verify"
+        android:icon="@drawable/ic_white_encrypted_not_verified"
+         android:showAsAction="always"
+         />
+                 
                     <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_encrypted_and_verified"

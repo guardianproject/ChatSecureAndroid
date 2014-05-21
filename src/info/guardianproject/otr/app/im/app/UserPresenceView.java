@@ -76,13 +76,14 @@ public class UserPresenceView extends LinearLayout {
 
         if (isInEditMode())
             return;
-        mStatusDialogButton = (ImageButton) findViewById(R.id.statusDropDownButton);
+        /**
+        mStatusDialogButton =  (ImageButton) findViewById(R.id.statusDropDownButton);
         mStatusDialogButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showStatusListDialog();
             }
         });
-        
+        */
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
     }
 
@@ -189,6 +190,7 @@ public class UserPresenceView extends LinearLayout {
 
     private TextView initStatusBar(long providerId, boolean showEdit) {
 
+        /**
         EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
         statusEdit.setVisibility(View.GONE);
         TextView statusView = (TextView) findViewById(R.id.statusView);
@@ -239,7 +241,11 @@ public class UserPresenceView extends LinearLayout {
 
             return statusView;
         }
-
+        
+        */
+        
+        return null;
+        
     }
 
     void updatePresence(int status, String statusText) {

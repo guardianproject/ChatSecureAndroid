@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -82,6 +82,7 @@ public class DatabaseUtils {
         }
         else
         {
+            
             cursor.close();
             return null;
         }
@@ -166,7 +167,7 @@ public class DatabaseUtils {
         options.inSampleSize = calculateInSampleSize(options, width, height);
         options.inJustDecodeBounds = false;
         Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
-        Drawable avatar = new BitmapDrawable(b);
+        Drawable avatar = new RoundedAvatarDrawable(b);
         return avatar;
     }
     

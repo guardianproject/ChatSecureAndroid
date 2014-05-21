@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -53,6 +52,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -172,7 +172,7 @@ public class ContactPresenceActivity extends Activity {
         
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtAddress = (TextView) findViewById(R.id.txtAddress);
-        
+        ImageView imgAvatar = (ImageView) findViewById(R.id.avatar);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
 
         ContentResolver cr = getContentResolver();
@@ -203,15 +203,8 @@ public class ContactPresenceActivity extends Activity {
                     c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*4,ImApp.DEFAULT_AVATAR_HEIGHT*4);
             
             if (avatar != null)
-            {                
-                
-                getWindow().setBackgroundDrawable(avatar);
-                
-                findViewById(R.id.helpscrollview).setBackgroundColor(getResources().getColor(R.color.contact_status_avatar_overlay));
-               
-                
-            }
-
+                imgAvatar.setImageDrawable(avatar);
+            
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             
             if (nickname == null)
