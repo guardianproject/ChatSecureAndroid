@@ -155,6 +155,13 @@
     
     
 
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDDDD"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:orientation="horizontal"></LinearLayout>
     
   <LinearLayout 
 	    android:layout_width="fill_parent"
@@ -163,7 +170,6 @@
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
 	     android:padding="3sp"
-	     android:background="#ffffff"
 	     >
 	<!-- 
         <ImageButton
@@ -195,8 +201,7 @@
             android:imeOptions="actionSend|flagNoEnterAction"
             android:maxLines="4"
             android:hint="@string/compose_hint"
-             android:fontFamily="sans-serif-light"
-             android:textColor="#333333"
+             android:fontFamily="sans-serif-light"             
          android:layout_alignParentLeft="true"
             />
            
@@ -215,60 +220,6 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
-      <!-- 
-   <LinearLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	     android:layout_gravity="fill_vertical"
-	     android:gravity="center"
-	     android:visibility="gone"
-	     android:id="@+id/actionBox"
-	     android:background="#aaaaaa"
-	     
-	     >
-     
-      <ImageView
-        android:id="@+id/btnProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"  
-        android:padding="8dip"
-        android:src="@drawable/ic_menu_view_profile"
-        
-         />
-     <ImageView
-        android:id="@+id/btnSendFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_new_attachment"
-        android:padding="8dip"
-        
-         />
-     <ImageView
-        android:id="@+id/btnSendPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_new_picture"
-        android:padding="8dip"
-        
-         />
-     
-     
-     <ImageView
-        android:id="@+id/btnEndChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:fontFamily="sans-serif-light"      
-        android:src="@drawable/content_discard"
-        android:padding="8dip"
-        
-         />
-     
-      </LinearLayout>
-       -->
        
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"

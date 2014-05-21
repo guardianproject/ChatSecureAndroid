@@ -1,5 +1,7 @@
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
+
 import java.io.File;
 
 import android.app.Activity;
@@ -37,9 +39,23 @@ public class ThemeableActivity extends SherlockActivity {
         boolean themeDark = settings.getBoolean("themeDark", false);
         String themebg = settings.getString("pref_background", "");
         
+        if (themeDark)
+        {            
+            
+            if (activity != null)
+                activity.setTheme(R.style.AppThemeDark);
+        }
+        else
+        {            
+            
+            if (activity != null)
+                activity.setTheme(R.style.AppTheme);
+        }
+        
         
         if (themebg != null && themebg.length() > 0)
         {
+            
 
             File fileThemeBg = new File(themebg);
             if (!fileThemeBg.exists())

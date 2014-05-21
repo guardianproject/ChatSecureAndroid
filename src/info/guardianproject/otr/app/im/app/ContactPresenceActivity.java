@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
@@ -29,7 +28,6 @@ import info.guardianproject.util.LogCleaner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -50,15 +48,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ContactPresenceActivity extends Activity {
+public class ContactPresenceActivity extends ThemeableActivity {
 
     private IChatSession mChatSession;
     private IOtrChatSession mOtrSession;
@@ -80,7 +79,6 @@ public class ContactPresenceActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);   
         
         timer = new Timer();
 
@@ -172,7 +170,7 @@ public class ContactPresenceActivity extends Activity {
         
         TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtAddress = (TextView) findViewById(R.id.txtAddress);
-        
+        ImageView imgAvatar = (ImageView) findViewById(R.id.avatar);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
 
         ContentResolver cr = getContentResolver();
@@ -191,6 +189,9 @@ public class ContactPresenceActivity extends Activity {
                 remoteAddress = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             
             String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+            
+            
+            
             int status = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.PRESENCE_STATUS));
 //            int clientType = c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.CLIENT_TYPE));
             String customStatus = c.getString(c
@@ -200,22 +201,19 @@ public class ContactPresenceActivity extends Activity {
             setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
 
             Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*4,ImApp.DEFAULT_AVATAR_HEIGHT*4);
+                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
             
             if (avatar != null)
-            {                
-                
-                getWindow().setBackgroundDrawable(avatar);
-                
-                findViewById(R.id.helpscrollview).setBackgroundColor(getResources().getColor(R.color.contact_status_avatar_overlay));
-               
-                
-            }
-
+                imgAvatar.setImageDrawable(avatar);
+            else
+                imgAvatar.setVisibility(View.GONE);
+            
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             
             if (nickname == null)
                 nickname = address;
+            
+            getSherlock().getActionBar().setTitle(nickname);
             
             if (nickname != null)
                 txtName.setText(nickname);

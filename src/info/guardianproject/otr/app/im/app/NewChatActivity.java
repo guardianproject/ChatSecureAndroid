@@ -163,19 +163,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+        mApp = (ImApp)getApplication();
+        mApp.maybeInit(this);
+
+        mApp.setAppTheme(this);
+        ThemeableActivity.setBackgroundImage(this);
+        
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setSupportProgressBarIndeterminateVisibility(false);
         
-        mApp = (ImApp)getApplication();
-        mApp.maybeInit(this);
-    
-     //  requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
-        
-        ActionBar actionBar = getSherlock().getActionBar();        
-    //    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
-        ThemeableActivity.setBackgroundImage(this);
 
         mHandler = new MyHandler(this);
         mRequestedChatId = -1;
@@ -233,7 +230,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
         //           getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                  
-                        setTitle("");
                 }
                 else
                 {
@@ -251,7 +247,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                   //  getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
                     
-                    setTitle(R.string.title_chats);
                    // refreshLastConnection();
                    // setSpinnerState ();
 
@@ -357,7 +352,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         if (menu.isMenuShowing())
             menu.toggle();
+
+        mApp.setAppTheme(this);
+        ThemeableActivity.setBackgroundImage(this);
         
+        View vg = findViewById (R.id.chatpager);
+        vg.invalidate();
     }
 
     @Override
@@ -932,8 +932,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
           */  
         case R.id.menu_settings:
             Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
-            startActivity(sintent);
-            
+            startActivityForResult(sintent,REQUEST_SETTINGS);
             return true;
             
         case R.id.menu_otr:
@@ -1518,7 +1517,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
            
             if (position == 0 || mCursor == null)
             {
-                return getString(R.string.contacts);
+                if (mShowChatsOnly)
+                    return getString(R.string.title_chats);
+                else
+                    return getString(R.string.contacts);
             }
             else
             {
@@ -1716,6 +1718,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             }
             
+            /**
             if (mContactList.mPresenceView != null)
             {
                 try {
@@ -1724,7 +1727,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mContactList.mPresenceView.loggingIn(false);
                 //    mHandler.showServiceErrorAlert();
                 }
-            }
+            }*/
             
             updateContactList(mShowChatsOnly);
             
@@ -1748,19 +1751,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
           if (showChatsOnly)
           {
               baseUri =  Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-              setTitle(R.string.title_chats);
-          }
-          else
-          {
-              setTitle(R.string.contacts_picker_title);
           }
           
           settingMap.close();
                   
                   
         Uri.Builder builder = baseUri.buildUpon();
-    //    ContentUris.appendId(builder, mLastProviderId);
-    //    ContentUris.appendId(builder, mLastAccountId);
         
         if (mContactList.mFilterView != null)
             mContactList.mFilterView.doFilter(builder.build(), null);
@@ -1802,7 +1798,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
 
         ContactListFilterView mFilterView = null;
-        UserPresenceView mPresenceView = null;
+   //     UserPresenceView mPresenceView = null;
 
         boolean showGrid = true;
         
@@ -1816,8 +1812,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (mFilterView != null)
                 mFilterView.setConnection(mConn);
             
-            if (mPresenceView != null)
-                mPresenceView.setConnection(mConn);
+         //   if (mPresenceView != null)
+          //      mPresenceView.setConnection(mConn);
         }
 
         private Handler mPresenceHandler = new Handler()
@@ -1827,7 +1823,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void handleMessage(Message msg) {
                
                 
-                mPresenceView.refreshLogginInStatus();
+           //     mPresenceView.refreshLogginInStatus();
 
                 super.handleMessage(msg);
             } 
@@ -1879,7 +1875,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                  mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
               
-             mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
+         //    mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
 
              mFilterView.setListener(this);
              mFilterView.setLoaderManager(getLoaderManager(), CONTACT_LIST_LOADER_ID);

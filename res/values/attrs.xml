@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="messageRoundBackground" format="reference" />
+  <attr name="messageTextPrimary" format="reference|color" />
+  <attr name="messageTextSecondary" format="reference|color" />
+  
+</resources>

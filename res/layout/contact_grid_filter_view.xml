@@ -26,7 +26,7 @@
             android:padding="0dp"
         
      >
-  
+  <!-- 
    
    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
@@ -86,7 +86,7 @@
             android:layout_marginTop="3dp"
              />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
-    
+     -->
    
         <GridView
             
