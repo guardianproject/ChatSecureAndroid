@@ -334,7 +334,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
-        
+
         List<String> listProviders = helper.getProviderNames();
         
         Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
@@ -343,16 +343,15 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         int i = 0;
         
-        for (String providerName : listProviders)
-            mAccountList[i++] = providerName;
+        mAccountList[i++] = "I have an existing XMPP account";        
         
         for (Account account : googleAccounts)
         {
-            mAccountList[i++] = account.name;
+            mAccountList[i++] = "I want to chat using my Google account: " + account.name;
         }
         
-        mAccountList[i++] = getString(R.string.btn_create_account);
-        
+        mAccountList[i++] = "I want to chat on my local wifi network (bonjour/zeroconf)";
+        mAccountList[i++] = "I need a new account";
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
@@ -360,13 +359,13 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                 if (pos == 0) //xmpp
                 {
                     //otherwise support the actual plugin-type
-                    showSetupAccountForm(mAccountList[pos],null, null, false,mAccountList[pos],false);
-                }
-                else if (pos == 1) //zeroconf
+                    showSetupAccountForm(helper.getProviderNames().get(0),null, null, false,helper.getProviderNames().get(0),false);
+                }                
+                else if (pos == mAccountList.length-1) //create account
                 {
                     String username = "";
                     String passwordPlaceholder = "password";//zeroconf doesn't need a password
-                    showSetupAccountForm(mAccountList[pos],username,passwordPlaceholder, false,mAccountList[pos],true);
+                    showSetupAccountForm(helper.getProviderNames().get(1),username,passwordPlaceholder, false,helper.getProviderNames().get(1),true);
                 }
                 else if (pos == mAccountList.length-1) //create account
                 {

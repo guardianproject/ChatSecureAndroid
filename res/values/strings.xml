@@ -121,7 +121,7 @@
 		<string name="account_setup_password">password</string>
 		<string name="account_setup_password_confirm">confirm password</string>
 		<string name="account_setup_advanced_button">Advanced Account Settings</string>
-		<string name="account_select_type">Account Type</string>
+		<string name="account_select_type">Account Setup</string>
 		<string name="btn_create_new_account">Register Account</string>
 		
 		<string name="account_setup_pers_sub">Persistence</string>

@@ -321,7 +321,7 @@ public class AccountActivity extends Activity {
         mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
         
         if (mIsNewAccount)
-            mBtnSignIn.setText(R.string.btn_create_account);
+            mBtnSignIn.setText(R.string.btn_create_new_account);
         
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
         mBtnDelete = (Button) findViewById(R.id.btnDelete);

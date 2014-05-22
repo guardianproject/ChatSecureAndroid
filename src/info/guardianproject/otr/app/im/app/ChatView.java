@@ -181,7 +181,7 @@ public class ChatView extends LinearLayout {
     public void setSelected (boolean isSelected)
     {
         mIsSelected = isSelected;
-        updateWarningView();
+       // updateWarningView();
         mComposeMessage.requestFocus();
     }
     

@@ -26,7 +26,6 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
-import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
@@ -47,7 +46,6 @@ import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -89,7 +87,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -97,13 +94,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -1620,15 +1614,23 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     {
                         mAccountIds[i][0] = newCursor.getLong(activeAccountIdColumn);              
                         mAccountIds[i][1] = newCursor.getLong(activeProviderIdColumn);
-                        initConnection(mAccountIds[i][0],mAccountIds[i][1]);
                         
                         newCursor.moveToNext();
                         
                     }
+                    
+                    initConnection(mAccountIds[0][0],mAccountIds[0][1]);
 
                     newCursor.moveToFirst();
                    
                 
+                }
+                else
+                {
+                    //no configured accounts, prompt to setup
+                    Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
 
@@ -2072,7 +2074,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
 
         public void onSelected(ImApp app) {
-            app.dismissChatNotification(getArguments().getLong("providerId"), getArguments().getString("contactName"));
+            
+            //app.dismissChatNotification(getArguments().getLong("providerId"), getArguments().getString("contactName"));
+            
             if (mChatView != null)
                 mChatView.setSelected(true);
         }
