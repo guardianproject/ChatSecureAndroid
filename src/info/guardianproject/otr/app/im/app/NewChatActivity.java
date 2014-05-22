@@ -139,9 +139,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private MessageContextMenuHandler mMessageContextMenuHandler;
     
     private ContactListFragment mContactList = null;
-    private static final String TAG = "GB.NewChatActivity";
 
-    private SearchView mSearchView = null;
+//    private SearchView mSearchView = null;
 
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
@@ -169,9 +168,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
         
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setSupportProgressBarIndeterminateVisibility(false);
-        
         setContentView(R.layout.chat_pager);
 
         mHandler = new MyHandler(this);
@@ -198,9 +194,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onPageSelected(int pos) {
-                
-                setSupportProgressBarIndeterminateVisibility(false);
-                
+                                
                 if (pos > 0) {
                     
                     if (lastPos != -1)
@@ -220,15 +214,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     if (mMenu != null)
                     {
-                       // mSearchView.clearFocus();
-                       // mSearchView.setIconified(true); 
-                           
+
                         mMenu.setGroupVisible(R.id.menu_group_chats, true);
                         mMenu.setGroupVisible(R.id.menu_group_contacts, false);
                            
                     }
                     
-        //           getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                  
                 }
                 else
@@ -244,11 +235,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                  //  getSherlock().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
-                    
-                   // refreshLastConnection();
-                   // setSpinnerState ();
 
                 }
             }
@@ -807,6 +794,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         MenuInflater inflater = this.getSherlock().getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
+        /**
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         if (mSearchView != null )
@@ -841,7 +829,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         };
         
-        mSearchView.setOnQueryTextListener(queryTextListener);
+        mSearchView.setOnQueryTextListener(queryTextListener);*/
         
         if (mMenu != null)
         {
