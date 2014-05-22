@@ -48,7 +48,12 @@ public class HeartbeatService extends Service {
                 this, HeartbeatService.class), 0);
         this.mRelayIntent = new Intent(HEARTBEAT_ACTION, null, this, RemoteImService.class);
         
-        long heartBeatInterval = HEARTBEAT_INTERVAL * getGlobalSettings().getHeartbeatInterval();
+        Imps.ProviderSettings.QueryMap settings = getGlobalSettings();
+        
+        long heartBeatInterval = HEARTBEAT_INTERVAL;
+        
+        if (settings != null)
+            heartBeatInterval = settings.getHeartbeatInterval();
         
         startHeartbeat(heartBeatInterval);
 
@@ -127,8 +132,7 @@ public class HeartbeatService extends Service {
     }
     
     private Imps.ProviderSettings.QueryMap getGlobalSettings() {
-       
-            
+                   
             ContentResolver contentResolver = getContentResolver();
             
             Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
