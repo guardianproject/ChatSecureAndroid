@@ -16,6 +16,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -25,6 +26,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 
 import java.util.List;
+import java.util.UUID;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -96,6 +98,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     private static final int ACCOUNT_LOADER_ID = 1000;
     
+    private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
+
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -339,7 +343,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         final Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
                 
-        mAccountList = new String[listProviders.size()+googleAccounts.length+1]; //potentialProviders + google + create account
+        mAccountList = new String[listProviders.size()+googleAccounts.length+2]; //potentialProviders + google + create account + burner
         
         int i = 0;
         
@@ -354,6 +358,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         mAccountList[i++] = getString(R.string.i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_);
         
+        mAccountList[i++] = getString(R.string.i_need_a_burner_one_time_throwaway_account_);
+        
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
 
@@ -362,15 +368,19 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                     //otherwise support the actual plugin-type
                     showSetupAccountForm(helper.getProviderNames().get(0),null, null, false,helper.getProviderNames().get(0),false);
                 }                
-                else if (pos == mAccountList.length-1) //create account
+                else if (pos == mAccountList.length-2) //create account
                 {
                     String username = "";
                     String passwordPlaceholder = "password";//zeroconf doesn't need a password
                     showSetupAccountForm(helper.getProviderNames().get(1),username,passwordPlaceholder, false,helper.getProviderNames().get(1),true);
                 }
-                else if (pos == mAccountList.length-2) //create account
+                else if (pos == mAccountList.length-3) //create account
                 {
                     showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
+                }
+                else if (pos == mAccountList.length-1) //create account
+                {
+                    createBurnerAccount();
                 }
                 else
                 {
@@ -443,6 +453,36 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         intent.putExtra("register", createAccount);
         
         startActivity(intent);
+    }
+    
+    public void createBurnerAccount ()
+    {
+        
+        OrbotHelper oh = new OrbotHelper(this);
+        if (!oh.isOrbotInstalled())
+        {
+            oh.promptToInstall(this);
+            return;
+        }
+        else if (!oh.isOrbotRunning())
+        {
+            oh.requestOrbotStart(this);
+            return;
+        }
+        
+        //need to generate proper IMA url for account setup
+        String regUser = java.util.UUID.randomUUID().toString().substring(0,10).replace('-','a');
+        String regPass =  UUID.randomUUID().toString().substring(0,16);
+        String regDomain = "jabber.ccc.de";                
+        Uri uriAccountData = Uri.parse("ima://" + regUser + ':' + regPass + '@' + regDomain);
+        
+        Intent intent = new Intent(this, AccountActivity.class);
+        intent.setAction(Intent.ACTION_INSERT);
+        intent.setData(uriAccountData);
+        intent.putExtra("useTor", true);
+        startActivityForResult(intent,REQUEST_CREATE_ACCOUNT);
+        
+
     }
     
    

@@ -100,14 +100,5 @@
             android:layout_height="wrap_content"/>
          
          
-        <ImageView
-            android:id="@+id/btnSettings"
-            android:src="@drawable/ic_menu_settings"
-            android:scaleType="fitXY"
-            android:layout_weight="0"
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-          
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ProviderListItem>

@@ -176,6 +176,8 @@ public class AccountActivity extends Activity {
             String pass = user_pass[1];
             mDomain = userpass_host[1];
             mPort = 0;
+            final boolean regWithTor = i.getBooleanExtra("useTor", false);
+            
             Cursor cursor = openAccountByUsernameAndDomain(cr);
             boolean exists = cursor.moveToFirst();
             long accountId;
@@ -197,7 +199,7 @@ public class AccountActivity extends Activity {
                 accountId = ImApp.insertOrUpdateAccount(cr, mProviderId, mUserName, pass);
                 mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
                 mSignInHelper.activateAccount(mProviderId, accountId);
-                createNewAccount(mUserName, pass, accountId);
+                createNewAccount(mUserName, pass, accountId, regWithTor);
                 cursor.close();
                 return;
             }
@@ -392,7 +394,8 @@ public class AccountActivity extends Activity {
                 final boolean rememberPass = mRememberPass.isChecked();
                 final boolean isActive = false; // TODO(miron) does this ever need to be true?
                 ContentResolver cr = getContentResolver();
-
+                final boolean useTor =  mUseTor.isChecked();
+                        
                 if (mIsNewAccount)
                 {
                     mDomain = (String)mSpinnerDomains.getSelectedItem();
@@ -435,7 +438,7 @@ public class AccountActivity extends Activity {
                 {
                     if (pass.equals(passConf))
                     {
-                        createNewAccount(mUserName, pass, mAccountId);
+                        createNewAccount(mUserName, pass, mAccountId, useTor);
                         setAccountKeepSignedIn(rememberPass);
                         mSignInHelper.activateAccount(mProviderId, mAccountId);
                        // setResult(RESULT_OK);
@@ -1072,7 +1075,7 @@ public class AccountActivity extends Activity {
         return out.toString();
     }
 
-    public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId)
+    public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId, final boolean useTor)
     {
         if (mCreateAccountTask != null && (!mCreateAccountTask.isCancelled()))
         {
@@ -1102,10 +1105,11 @@ public class AccountActivity extends Activity {
                        pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
 
                 try {
-                                        
+                    settings.setUseTor(useTor);
                     settingsForDomain(mDomain, mPort, settings);
                     
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
+                    
                     xmppConn.initUser(mProviderId, newAccountId);
                     xmppConn.registerAccount(settings, params[0], params[1]);
                     // settings closed in registerAccount
