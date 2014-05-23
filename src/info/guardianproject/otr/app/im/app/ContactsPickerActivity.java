@@ -17,17 +17,18 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.provider.Imps;
-
 import info.guardianproject.otr.app.im.R;
-
+import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.ResourceCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,156 +38,117 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
+import android.database.DatabaseUtils;
+
 
 /** Activity used to pick a contact. */
 public class ContactsPickerActivity extends ListActivity {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
     public final static String EXTRA_RESULT_USERNAME = "result";
+    public final static String EXTRA_RESULT_PROVIDER = "provider";
+    public final static String EXTRA_RESULT_ACCOUNT = "account";    
 
-    private ContactsAdapter mAdapter;
+    private ContactAdapter mAdapter;
     private String mExcludeClause;
     Uri mData;
-    Filter mFilter;
-   // Cursor mCursor; // TODO
+    
+    private EditText mFilterInput;
+    private String mSearchString;
+    
+    private int mLoaderId = 1;
 
-    private static final void log(String msg) {
-        Log.d(ImApp.LOG_TAG, "<ContactsPickerActivity> " + msg);
-    }
-
+    
     @Override
-    protected void onCreate(Bundle icicle) {
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         setContentView(R.layout.contacts_picker_activity);
-        if (!resolveIntent()) {
-            if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                log("no data, finish");
-            }
-            finish();
-            return;
-        }
 
-        EditText filter = (EditText) findViewById(R.id.filter);
-        filter.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        mFilterInput = (EditText) findViewById(R.id.filter);
+        mFilterInput.addTextChangedListener(new TextWatcher() {
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mFilter.filter(s);
-            }
-
+            @Override
             public void afterTextChanged(Editable s) {
+                
+                mSearchString = mFilterInput.getText().toString();
+                doFilter(mSearchString);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+               
+                
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+              
+                
             }
         });
-    }
-
-    private boolean resolveIntent() {
-        Intent intent = getIntent();
-        mData = intent.getData();
-
-        if (mData == null) {
-            return false;
-        }
         
-//        mExcludeClause = buildExcludeClause(intent.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS));
-
-        StringBuilder clause = new StringBuilder();
-        clause.append(Imps.Contacts.USERNAME);
-        clause.append(" NOT IN (");
-        
-        String[] excluded = intent.getStringArrayExtra(EXTRA_EXCLUDED_CONTACTS);
-        if (excluded == null)
-            excluded = new String[0];
-        
-        String[] excludedVals = new String[excluded.length];
-        
-        int len = excluded.length;
-        
-        for (int i = 0; i < len; i++) {
-            clause.append('?');
-            
-            excludedVals[i] = DatabaseUtils.sqlEscapeString(excluded[i]);
-            
-            if (i+1 < len)
-                clause.append(',');
-        }
-        clause.append(')');
-        
-        
-        Cursor cursor = managedQuery(mData, ContactView.CONTACT_PROJECTION, mExcludeClause, excludedVals,
-                Imps.Contacts.DEFAULT_SORT_ORDER);
-        if (cursor == null) {
-            return false;
-        }
-
-        mAdapter = new ContactsAdapter(this, cursor);
-        mFilter = mAdapter.getFilter();
-        setListAdapter(mAdapter);
-        return true;
+        doFilter("");
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(ListView l, View v, int position, long id) {
         Cursor cursor = (Cursor) mAdapter.getItem(position);
         Intent data = new Intent();
         data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
+        data.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+        data.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
+        
         setResult(RESULT_OK, data);
         this.stopManagingCursor(cursor);
         finish();
     }
     
-    Cursor runQuery(CharSequence constraint) {
-        String where;
-        if (constraint == null) {
-            where = mExcludeClause;
-
-            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, null,
-                    Imps.Contacts.DEFAULT_SORT_ORDER);
-        } else {
-            StringBuilder buf = new StringBuilder();
-            if (mExcludeClause != null) {
-                buf.append(mExcludeClause).append(" AND ");
-            }
-
-            buf.append(Imps.Contacts.NICKNAME);
-            buf.append(" LIKE ?");
+    public void doFilter(String filterString) {
+        mSearchString = filterString;
+        if (mAdapter == null) {
             
-            String[] whereVal = { DatabaseUtils.sqlEscapeString("%" + constraint + "%")};          
-            where = buf.toString();
+                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
 
-            return managedQuery(mData, ContactView.CONTACT_PROJECTION, where, whereVal,
-                    Imps.Contacts.DEFAULT_SORT_ORDER);
+                setListAdapter(mAdapter);
+            
+
+            //mLoaderCallbacks = new MyLoaderCallbacks();
+            //mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
+        } else {
+            //mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
         }
+        
+        StringBuilder buf = new StringBuilder();
+
+        if (mSearchString != null) {
+            
+            buf.append(Imps.Contacts.NICKNAME);
+            buf.append(" LIKE ");
+            DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+            buf.append(" OR ");
+            buf.append(Imps.Contacts.USERNAME);
+            buf.append(" LIKE ");
+            DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+            
+        }
+        
+        Cursor c = managedQuery(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
+                    buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        
+        mAdapter.swapCursor(c);
+        
     }
-
-    private class ContactsAdapter extends ResourceCursorAdapter {
-        private String mConstraints;
-       // private Cursor mCursor;
+    
+    private class ContactAdapter extends ResourceCursorAdapter {
         
-        public ContactsAdapter(Context context, Cursor c) {
-            super(context, R.layout.contact_view, c);
+        
+        public ContactAdapter(Context context, int view) {
+            super(context, view, null);
+            
         }
 
-        /*
-        @Override
-        public void changeCursor(Cursor cursor) {
-            if (mCursor != null && mCursor != cursor) {
-                mCursor.close();
-                mCursor = cursor;
-            }
-            super.changeCursor(cursor);
-        }*/
-
-        @Override
-        public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-            mConstraints = constraint.toString();
-
-            return ContactsPickerActivity.this.runQuery(constraint);
-        }
-        
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             
@@ -212,9 +174,11 @@ public class ContactsPickerActivity extends ListActivity {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
-            v.bind(cursor, mConstraints, false);
+            v.bind(cursor, mSearchString, true);
             
         }
     }
 
+
+   
 }

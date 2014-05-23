@@ -33,7 +33,7 @@
         <ListView android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
-
+<!-- 
         <TextView android:id="@android:id/empty"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -42,5 +42,6 @@
             android:focusable="false"
             android:visibility="gone"
             android:text="@string/empty_contact_list" />
+             -->
     </RelativeLayout>
 </LinearLayout>

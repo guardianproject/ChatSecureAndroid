@@ -537,7 +537,7 @@ public class ContactListFilterView extends LinearLayout {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             Log.d("XXX", "swap cursor");
-            mContactAdapter.swapCursor(newCursor);
+            mContactAdapter.changeCursor(newCursor);
             
             if (newCursor.getCount() == 0)
             {
@@ -552,7 +552,7 @@ public class ContactListFilterView extends LinearLayout {
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             Log.d("XXX", "reset cursor");
-            mContactAdapter.swapCursor(null);
+            mContactAdapter.changeCursor(null);
         }
         
     }

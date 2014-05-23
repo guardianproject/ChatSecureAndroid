@@ -403,7 +403,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void onClick(View v) {
                 
                 Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
             
@@ -967,7 +966,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             return true;
             
         case R.id.menu_new_chat:
-            updateContactList(false);
+            startContactPicker();
+
+//            updateContactList(false);
             return true;
             
       
@@ -976,6 +977,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return super.onOptionsItemSelected(item);
     }
     
+    private void startContactPicker() {
+        
+        Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
+        Uri data = builder.build();
+                
+        Intent i = new Intent(Intent.ACTION_PICK, data);
+        startActivityForResult(i, REQUEST_PICK_CONTACTS);
+    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -1172,22 +1182,31 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 startActivity(intent);
             }
             
-/*            if (requestCode == REQUEST_PICK_CONTACTS) {
-                String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
+            if (requestCode == REQUEST_PICK_CONTACTS) {
+                
+                String username = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
+                long providerId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_PROVIDER,-1);
+                long accountId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_ACCOUNT,-1);
+                
                 try {
-                    IChatSession chatSession =  getChatView().getCurrentChatSession();
-                    if (chatSession.isGroupChatSession()) {
+                    
+                    IChatSession chatSession = this.getCurrentChatSession();
+                    if (chatSession != null && chatSession.isGroupChatSession()) {
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
                     } else {
-                        chatSession.convertToGroupChat();
-                        new ContactInvitor(chatSession, username).start();
+                        startChat(providerId, username);
+                        
+                    //    chatSession.convertToGroupChat();
+                     //   new ContactInvitor(chatSession, username).start();
+                        
                     }
                 } catch (RemoteException e) {
-                    mHandler.showServiceErrorAlert();
+                    mHandler.showServiceErrorAlert("Error picking contacts");
+                    Log.d(ImApp.LOG_TAG,"error picking contact",e);
                 }
             }
-*/        }
+        }
     }
     
     private void testSendIntent(Uri uri) {
@@ -1949,10 +1968,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         @Override
         public void startChat(Cursor c) {
             
-            NewChatActivity activity = (NewChatActivity)getActivity();
-            
+            NewChatActivity activity = (NewChatActivity)getActivity();            
             activity.startChat(c);
-            
             
         }
         
@@ -2001,43 +2018,50 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     
     private void startChat(Cursor c) {
+        
         if (c != null && (!  c.isAfterLast())) {
             long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
-            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+            String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));            
+            long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             
-            long providerId = mLastProviderId;//FIXME c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
-            IImConnection conn = mApp.getConnection(providerId);
-            
-            if (conn != null)
-            {
-                try {
-                    IChatSessionManager manager = conn.getChatSessionManager();
-                    IChatSession session = manager.getChatSession(username);
-                    if (session == null) {
-                        // Create session.  Stash requested contact ID for when we get called back. 
-                        mRequestedChatId = chatContactId;
-                        manager.createChatSession(username);
-                    } else {
-                        // Already have session
-                        if (!showChat(chatContactId)) {
-                            // We have a session, but it's not in the cursor yet
-                            mRequestedChatId = chatContactId;
-                        }
-                    }
-                } catch (RemoteException e) {
-                  //  mHandler.showServiceErrorAlert(e.getMessage());
-                    LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
-    
-                }
-           
-            }
-            else
-            {
-                LogCleaner.debug(ImApp.LOG_TAG, "could not start chat as connection was null");
-            }
+            startChat(providerId,username);
         }
         
         updateContactList(true);
+    }
+    
+    private void startChat (long providerId, String username)
+    {
+        IImConnection conn = mApp.getConnection(providerId);            
+        
+        if (conn != null)
+        {
+            try {
+                IChatSessionManager manager = conn.getChatSessionManager();
+                IChatSession session = manager.getChatSession(username);
+                if (session == null) {
+                    // Create session.  Stash requested contact ID for when we get called back.                     
+                    IChatSession ics = manager.createChatSession(username);
+                    mRequestedChatId = ics.getId();
+                    
+                } else {
+                    // Already have session
+                    if (!showChat(session.getId())) {
+                        // We have a session, but it's not in the cursor yet
+                        mRequestedChatId = session.getId();
+                    }
+                }
+            } catch (RemoteException e) {
+              //  mHandler.showServiceErrorAlert(e.getMessage());
+                LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
+
+            }
+       
+        }
+        else
+        {
+            LogCleaner.debug(ImApp.LOG_TAG, "could not start chat as connection was null");
+        }
     }
 
     public static class ChatViewFragment extends Fragment {
