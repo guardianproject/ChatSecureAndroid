@@ -66,8 +66,6 @@ public class ProviderListItem extends LinearLayout {
     private TextView mLoginName;
     private TextView mChatView;
 
-    private ImageView mBtnSettings;
-    
     private int mProviderIdColumn;
     private int mActiveAccountIdColumn;
     private int mActiveAccountUserNameColumn;
@@ -115,8 +113,6 @@ public class ProviderListItem extends LinearLayout {
         mLoginName = (TextView) findViewById(R.id.loginName);
         mChatView = (TextView) findViewById(R.id.conversations);
 
-        mBtnSettings = (ImageView)findViewById(R.id.btnSettings);
-        
         mActiveAccountIdColumn = c.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
         mActiveAccountUserNameColumn = c
                 .getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_USERNAME);
@@ -134,9 +130,10 @@ public class ProviderListItem extends LinearLayout {
                 public void onClick(View v) {
                    
 
-                    Intent intent = new Intent(getContext(), NewChatActivity.class);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                    getContext().startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                            Imps.Account.CONTENT_URI, mAccountId));
+                    intent.addCategory(ImApp.IMPS_CATEGORY);
+                    mActivity.startActivity(intent);
                 }
                 
             });
@@ -147,10 +144,11 @@ public class ProviderListItem extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                    
-
-                    Intent intent = new Intent(getContext(), NewChatActivity.class);
-                    intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                    getContext().startActivity(intent);
+                    
+                    Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                            Imps.Account.CONTENT_URI, mAccountId));
+                    intent.addCategory(ImApp.IMPS_CATEGORY);
+                    mActivity.startActivity(intent);
                 }
                 
             });
@@ -158,22 +156,6 @@ public class ProviderListItem extends LinearLayout {
             mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
          
             
-            if (mBtnSettings != null)
-            {
-                mBtnSettings.setOnClickListener(new OnClickListener()
-                {
-
-                    @Override
-                    public void onClick(View v) {
-                        
-                        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
-                                Imps.Account.CONTENT_URI, mAccountId));
-                        intent.addCategory(ImApp.IMPS_CATEGORY);
-                        mActivity.startActivity(intent);
-                    }
-                    
-                });
-            }
         }
       
 /* 
