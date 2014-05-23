@@ -276,13 +276,18 @@ public class MessageView extends FrameLayout {
         
         String [] proj={MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(uri, proj,  null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        if (cursor.isBeforeFirst())
+        if (cursor != null && (!cursor.isClosed()))
         {
-            cursor.moveToFirst();
-            path = cursor.getString(column_index); 
+            if (cursor.isBeforeFirst())
+            {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);            
+                cursor.moveToFirst();
+                path = cursor.getString(column_index);
+            }
+            
             cursor.close();
         }
+        
         return path;
     }
     
