@@ -186,13 +186,17 @@ public class ChatView extends LinearLayout {
     }
     
     
-    private void checkConnection () throws ImException, RemoteException
+    private boolean checkConnection () throws RemoteException
     {
         if (mConn == null)
+        {
             mConn = mApp.createConnection(mProviderId,mAccountId);
-        
-        if (mConn == null)
-            throw new ImException("unable to get connection");
+            return true;
+        }
+        else
+        {
+            return true;
+        }        
 
     }
     
@@ -1182,9 +1186,7 @@ public class ChatView extends LinearLayout {
         
         try {
             
-            checkConnection ();
-            
-            if (mConn != null) {
+            if ( checkConnection ()) {
                 
                     IChatSessionManager sessionMgr = mConn.getChatSessionManager();
                     if (sessionMgr != null) {
@@ -1203,7 +1205,7 @@ public class ChatView extends LinearLayout {
         } catch (Exception e) {
             
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+            LogCleaner.error(ImApp.LOG_TAG, "error getting chat session",e); 
         }
         
         return null;
@@ -1381,6 +1383,7 @@ public class ChatView extends LinearLayout {
 
             }
 
+            /**
             if (mPresenceStatus == Imps.Presence.OFFLINE)
             {
                 visibility = View.VISIBLE;
@@ -1389,7 +1392,9 @@ public class ChatView extends LinearLayout {
                 message = mContext.getString(R.string.presence_offline);
 
             }
-            else if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
+            else
+            */ 
+            if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
                 
                 visibility = View.GONE;
