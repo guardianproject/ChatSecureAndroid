@@ -337,21 +337,22 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
         List<String> listProviders = helper.getProviderNames();
         
-        Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
+        final Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
                 
         mAccountList = new String[listProviders.size()+googleAccounts.length+1]; //potentialProviders + google + create account
         
         int i = 0;
         
-        mAccountList[i++] = "I have an existing XMPP account";        
+        mAccountList[i++] = getString(R.string.i_have_an_existing_xmpp_account);        
         
         for (Account account : googleAccounts)
         {
-            mAccountList[i++] = "I want to chat using my Google account: " + account.name;
+            mAccountList[i++] = getString(R.string.i_want_to_chat_using_my_google_account) + " '" + account.name + "'";
         }
         
-        mAccountList[i++] = "I want to chat on my local wifi network (bonjour/zeroconf)";
-        mAccountList[i++] = "I need a new account";
+        mAccountList[i++] = getString(R.string.i_need_a_new_account);
+        
+        mAccountList[i++] = getString(R.string.i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
@@ -367,13 +368,13 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                     String passwordPlaceholder = "password";//zeroconf doesn't need a password
                     showSetupAccountForm(helper.getProviderNames().get(1),username,passwordPlaceholder, false,helper.getProviderNames().get(1),true);
                 }
-                else if (pos == mAccountList.length-1) //create account
+                else if (pos == mAccountList.length-2) //create account
                 {
                     showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
                 }
                 else
                 {
-                    addGoogleAccount(mAccountList[pos]);
+                    addGoogleAccount(googleAccounts[pos-1].name);
                 }
             }
         });
@@ -383,18 +384,18 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
     }
     
 
-private Handler mHandlerGoogleAuth = new Handler ()
-{
-
-    @Override
-    public void handleMessage(Message msg) {
-       
-        super.handleMessage(msg);
-        
-        Log.d(TAG,"Got handler callback from auth: " + msg.what);
-    }
-        
-};
+    private Handler mHandlerGoogleAuth = new Handler ()
+    {
+    
+        @Override
+        public void handleMessage(Message msg) {
+           
+            super.handleMessage(msg);
+            
+           // Log.d(TAG,"Got handler callback from auth: " + msg.what);
+        }
+            
+    };
 
     private void addGoogleAccount (String newUser)
     {

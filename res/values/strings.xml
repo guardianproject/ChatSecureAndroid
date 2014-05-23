@@ -650,5 +650,9 @@
 			<item>:-D</item>
 			<item>o_O</item>
 		</string-array>
+			<string name="i_have_an_existing_xmpp_account">I have an existing XMPP account</string>
+			<string name="i_want_to_chat_using_my_google_account">I want to chat using my Google account</string>
+			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">I want to chat on my local wifi network (bonjour/zeroconf)</string>
+			<string name="i_need_a_new_account">I need a new account</string>
 	</resources>
 
