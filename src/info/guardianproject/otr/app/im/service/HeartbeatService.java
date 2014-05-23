@@ -62,6 +62,8 @@ public class HeartbeatService extends Service {
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         NetworkConnectivityListener.registerHandler(mServiceHandler, EVENT_NETWORK_STATE_CHANGED);
         mNetworkConnectivityListener.startListening(this);
+        
+        settings.close();
     }
     
     void startHeartbeat(long interval) {
