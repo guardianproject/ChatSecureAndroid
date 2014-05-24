@@ -85,12 +85,14 @@ public class SimpleAlertHandler extends Handler {
 
     public void showAlert(final CharSequence title, final CharSequence message) {
         
+        if (title == null || message == null)
+            return;
+        
         if (!title.equals(message)) //sometimes this reads Attention: Attention!
         {
             Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();           
         }
         
-        Log.w(ImApp.LOG_TAG,message.toString());
     }
 
     public void showServiceErrorAlert(String msg) {

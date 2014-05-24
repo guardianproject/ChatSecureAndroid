@@ -38,7 +38,6 @@ import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -103,6 +102,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -121,7 +121,10 @@ public class ChatView extends LinearLayout {
                                              Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
                                              Imps.Presence.PRESENCE_STATUS,
                                              Imps.Chats.LAST_UNREAD_MESSAGE, 
-                                             Imps.Chats._ID
+                                             Imps.Chats._ID,
+                                             Imps.Contacts.SUBSCRIPTION_TYPE,
+                                             Imps.Contacts.SUBSCRIPTION_STATUS
+                                             
     };
     
     static final int CONTACT_ID_COLUMN = 0;
@@ -133,7 +136,10 @@ public class ChatView extends LinearLayout {
     static final int PRESENCE_STATUS_COLUMN = 6;
     static final int LAST_UNREAD_MESSAGE_COLUMN = 7;
     static final int CHAT_ID_COLUMN = 8;
-    static final int MIME_TYPE_COLUMN = 9;
+    static final int SUBSCRIPTION_TYPE_COLUMN = 9;
+    static final int SUBSCRIPTION_STATUS_COLUMN = 10;
+    
+    //static final int MIME_TYPE_COLUMN = 9;
 
     static final String[] INVITATION_PROJECT = { Imps.Invitation._ID, Imps.Invitation.PROVIDER,
                                                 Imps.Invitation.SENDER, };
@@ -592,7 +598,36 @@ public class ChatView extends LinearLayout {
                 sendMessage();
             }
         });
+        
+        Button btnApproveSubscription = (Button)findViewById(R.id.btnApproveSubscription);
+        btnApproveSubscription.setOnClickListener(new OnClickListener()
+        {
 
+            @Override
+            public void onClick(View v) {
+                
+                mActivity.approveSubscription(mProviderId, mRemoteAddress);
+                updateContactInfo();
+                
+            }
+            
+        });
+        
+        Button btnDeclineSubscription = (Button)findViewById(R.id.btnDeclineSubscription);
+        btnDeclineSubscription.setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                
+                mActivity.declineSubscription(mProviderId, mRemoteAddress);
+                updateContactInfo();
+                
+                
+            }
+            
+        });
+        
         /*
         mActionBox = (View)findViewById(R.id.actionBox);
         ImageButton btnActionBox = (ImageButton)findViewById(R.id.btnActionBox);
@@ -831,7 +866,15 @@ public class ChatView extends LinearLayout {
         mRemoteNickname = mCursor.getString(NICKNAME_COLUMN);
         mRemoteAddress = mCursor.getString(USERNAME_COLUMN);
         
+        int subscriptionType = mCursor.getInt(SUBSCRIPTION_TYPE_COLUMN);
         
+        int subscriptionStatus = mCursor.getInt(SUBSCRIPTION_STATUS_COLUMN);
+        if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
+            && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
+         
+
+            bindSubscription(mProviderId, mRemoteAddress);
+        }
     }
 
     /*
@@ -934,6 +977,8 @@ public class ChatView extends LinearLayout {
             
             updateChat();
         }
+
+        updateWarningView();
     }
    
     public void bindInvitation(long invitationId) {
@@ -988,12 +1033,14 @@ public class ChatView extends LinearLayout {
             findViewById(R.id.subscription).setVisibility(GONE);
             setChatViewEnabled(true);
         } else if (type == VIEW_TYPE_INVITATION) {
-            setChatViewEnabled(false);
+            //setChatViewEnabled(false);
+            
             findViewById(R.id.invitationPanel).setVisibility(VISIBLE);
             findViewById(R.id.btnAccept).requestFocus();
         } else if (type == VIEW_TYPE_SUBSCRIPTION) {
-            setChatViewEnabled(false);
+            //setChatViewEnabled(false);
             findViewById(R.id.subscription).setVisibility(VISIBLE);
+            
             findViewById(R.id.btnApproveSubscription).requestFocus();
         }
     }
@@ -1375,8 +1422,10 @@ public class ChatView extends LinearLayout {
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
-
+                message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);                
+                mWarningText.setTextColor(Color.WHITE);
+                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+                
             } else {
 
                 visibility = View.GONE;
@@ -1393,7 +1442,7 @@ public class ChatView extends LinearLayout {
 
             }
             else
-            */ 
+            */             
             if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
                 

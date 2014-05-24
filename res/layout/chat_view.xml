@@ -127,13 +127,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:background="@drawable/text_divider_horizontal">
+        android:background="@color/background_light"
+        android:visibility="gone">
 
         <TextView android:id="@+id/txtSubscription"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffad45d6"
             android:text="@string/subscription_prompt" />
 
         <LinearLayout android:layout_width="fill_parent"

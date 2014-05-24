@@ -258,7 +258,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         mApp.registerForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         
-        setupSpinners();
+        initConnections();
         
         getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new MyLoaderCallbacks());
     }
@@ -312,12 +312,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
     @Override
     protected void onDestroy() {
+        unregisterSubListeners ();
+        
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
     //    mAdapter.swapCursor(null);
         super.onDestroy();
         mChatPagerAdapter = null;
        // mAdapter = null;
+        
+        
     }
     
     @Override
@@ -360,11 +364,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mChatPager.setCurrentItem(0);
             return;
         }
-        if (!mShowChatsOnly)
-        {
-            updateContactList(true);
-            return;
-        }
         
         super.onBackPressed();
     }
@@ -392,7 +391,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         Button btnDrawerPanic = (Button) findViewById(R.id.btnDrawerPanic);
         Button btnDrawerGroupChat = (Button) findViewById(R.id.btnDrawerGroupChat);
         Button btnDrawerAddContact = (Button) findViewById(R.id.btnDrawerAddContact);
-        Button btnDrawerFingerprint = (Button) findViewById(R.id.btnDrawerQRCode);
         Button btnDrawerExit = (Button) findViewById(R.id.btnDrawerExit);
 
         
@@ -474,18 +472,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         });
         
         
-        
-        btnDrawerFingerprint.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-               
-                
-                displayQRCode ();
-            }
-            
-        });
         
         btnDrawerExit.setOnClickListener(new OnClickListener ()
         {
@@ -668,12 +654,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if (mChatPager != null)
                     mChatPager.setCurrentItem(0);
                 
-               // setupSpinners();
+
                                
             }
             else
             {
-                refreshLastConnection();
+                refreshConnections();
             }
         }
         
@@ -909,7 +895,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (getCurrentChatView() != null)
                 getCurrentChatView().viewProfile();
             return true;
-         
+        
+        case R.id.menu_show_qr:
+            displayQRCode();
+            return true;
         case R.id.menu_end_conversation:
             if (getCurrentChatView() != null)
                 getCurrentChatView().closeChatSession(false);
@@ -1604,7 +1593,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     
-    private void setupSpinners ()
+    private void initConnections ()
     {
         getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
 
@@ -1638,11 +1627,17 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                    initConnection(mAccountIds[0][0],mAccountIds[0][1]);
+                    IImConnection conn = initConnection(mAccountIds[0][0],mAccountIds[0][1]);
 
+                    if (mContactList != null)
+                    {
+                        mContactList.setConnection(conn);
+                        updateChatList();
+                    }
+                    
                     newCursor.moveToFirst();
                    
-                
+                    
                 }
                 else
                 {
@@ -1666,52 +1661,40 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         
     }
-    /**
-    public void setSpinnerState ()
-    {
-
-        if (mAccountIds == null)
-            return;
-        
-        if (mAccountIds.length == 1) //only one account, hide the spinner
-        {
-            initConnection(mAccountIds[0][0],mAccountIds[0][1]);
-        }
-        else if (mLastAccountId != -1) //multiple accounts, so select a spinner based on user input
-        {
-
-            int selIdx = 0;
-            
-            for (int i = 0; i < mAccountIds.length; i++)
-            {
-                if (mAccountIds[i][0] == getLastAccountId())
-                {
-                    ActionBar actionBar = getSherlock().getActionBar();
-                    if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_LIST)
-                        actionBar.setSelectedNavigationItem(selIdx);
-                    
-                    break;
-                }
-                
-                selIdx++;
-            }
-            
-        }
-       
-    }   
-    */
+   
     
-    public void refreshLastConnection ()
+    public void refreshConnections ()
     {
-        if (mLastAccountId != -1 && mLastProviderId != -1)
-            initConnection(mLastAccountId, mLastProviderId);
-        
+        if (mAccountIds != null)
+        {
+            for (int i = 0; i < mAccountIds.length; i++)
+                initConnection(mAccountIds[i][0],mAccountIds[i][1]);
+    
+            mLastAccountId = mAccountIds[0][0];
+            mLastProviderId = mAccountIds[0][1];
+        }        
     }
     
-    public void initConnection (long accountId, long providerId)
+    public void unregisterSubListeners ()
     {
-        mLastAccountId = accountId;
-        mLastProviderId = providerId;
+        for (int i = 0; i < mAccountIds.length; i++)
+        {
+            IImConnection conn = initConnection(mAccountIds[i][0],mAccountIds[i][1]);
+            if (conn != null)
+            {
+                try {
+                    conn.getContactListManager().unregisterSubscriptionListener(mSubscriptionListener);
+                } catch (RemoteException e1) {
+                    Log.e(ImApp.LOG_TAG,"error registering listener",e1);
+
+                }
+
+            }
+        }
+    }
+    
+    public IImConnection initConnection (long accountId, long providerId)
+    {
         
         IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
       
@@ -1725,53 +1708,29 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         }
         
-        if (conn != null && mContactList != null)
+        if (conn != null)
         {
-            mContactList.setConnection(conn);
-
+            
             try {
                 conn.getContactListManager().registerSubscriptionListener(mSubscriptionListener);
             } catch (RemoteException e1) {
                 Log.e(ImApp.LOG_TAG,"error registering listener",e1);
 
             }
-            
-            /**
-            if (mContactList.mPresenceView != null)
-            {
-                try {
-                    mContactList.mPresenceView.loggingIn(conn.getState() == ImConnection.LOGGING_IN);
-                } catch (RemoteException e) {        
-                    mContactList.mPresenceView.loggingIn(false);
-                //    mHandler.showServiceErrorAlert();
-                }
-            }*/
-            
-            updateContactList(mShowChatsOnly);
+
             
         }        
         
+        return conn;
         
     }
     
-    private void updateContactList (boolean showChatsOnly)
+    private void updateChatList ()
     {
-        mShowChatsOnly = showChatsOnly;
         
         ContentResolver cr = getContentResolver();
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
-        QueryMap settingMap = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, false, null);
-                  
-          Uri baseUri = settingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                                                              : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-                                         
-          
-          if (showChatsOnly)
-          {
-              baseUri =  Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-          }
-          
-          settingMap.close();
+        
+          Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
                   
                   
         Uri.Builder builder = baseUri.buildUpon();
@@ -1907,7 +1866,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 public void onClick(View v) {
                  
                     if (((NewChatActivity)getActivity()).isShowingChats())
-                        ((NewChatActivity)getActivity()).updateContactList(false);
+                        ((NewChatActivity)getActivity()).updateChatList();
                     else
                         ((NewChatActivity)getActivity()).showInviteContactDialog();
                 }
@@ -1918,19 +1877,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
              
              
-            //  QueryMap mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(getContext().getContentResolver(), true, mHandler);
-             
-         //    Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
-                                                                 // : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
-           //   uri = ContentUris.withAppendedId(uri, providerId);
-            //  uri = ContentUris.withAppendedId(uri, accountId);
-         //     mFilterView.doFilter( Imps.Contacts.CONTENT_URI_CONTACTS_BY, null);
-             
-             
-              if (getActivity() != null)
-              {
-                  ((NewChatActivity)getActivity()).refreshLastConnection();
-              }
               return mFilterView;
            
          }
@@ -1946,7 +1892,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
             showGrid = settings.getBoolean("showGrid", false);
 
-            ((NewChatActivity)activity).refreshLastConnection();
         }
 
         @Override
@@ -2027,7 +1972,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             startChat(providerId,username);
         }
         
-        updateContactList(true);
+        updateChatList();
     }
     
     private void startChat (long providerId, String username)
