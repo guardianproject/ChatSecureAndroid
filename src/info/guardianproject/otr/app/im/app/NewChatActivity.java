@@ -231,6 +231,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
 
+                    updateChatList();
                 }
             }
 
