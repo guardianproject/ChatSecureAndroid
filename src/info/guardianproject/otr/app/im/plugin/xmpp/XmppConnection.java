@@ -975,6 +975,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         mRoster = mConnection.getRoster();
         mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+        
         getContactListManager().listenToRoster(mRoster);
 
     }
@@ -1218,49 +1219,49 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     XmppAddress aFrom = new XmppAddress(smackMessage.getFrom());
 
-                    boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
+                    boolean isGroupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
                     
                     ImEntity rContact = null;
-                    if (groupMessage) {
+                    
+                    if (isGroupMessage) {
                         rContact = getChatGroupManager().getChatGroup(aFrom);
                     }
                     else {
                         rContact = mContactListManager.getContact(aFrom);
                     }
-                    if (rContact != null) //if we have not added them as a contact, don't receive message
-                    {
-                        ChatSession session = findOrCreateSession(address, groupMessage);
-                       
-                        Message rec = new Message(body);
-                        rec.setTo(mUser.getAddress());
-                        rec.setFrom(aFrom);
-                        rec.setDateTime(new Date());
+                    
+                    ChatSession session = findOrCreateSession(address, isGroupMessage);
+                   
+                    Message rec = new Message(body);
+                    rec.setTo(mUser.getAddress());
+                    rec.setFrom(aFrom);
+                    rec.setDateTime(new Date());
 
-                        rec.setType(Imps.MessageType.INCOMING);
-                        
-                        // Detect if this was said by us, and mark message as outgoing
-                        if (groupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
-                            rec.setType(Imps.MessageType.OUTGOING);
+                    rec.setType(Imps.MessageType.INCOMING);
+                    
+                    // Detect if this was said by us, and mark message as outgoing
+                    if (isGroupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
+                        rec.setType(Imps.MessageType.OUTGOING);
+                    }
+                    
+                    boolean good = session.onReceiveMessage(rec);
+                    
+                    handlePresenceChanged(mConnection.getRoster().getPresence(smackMessage.getFrom()));
+
+                    if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
+                        if (good) {
+                            debug(TAG, "sending delivery receipt");
+                        // got XEP-0184 request, send receipt
+                            sendReceipt(smackMessage);
+                            session.onReceiptsExpected();
+                        } else {
+                            debug(TAG, "not sending delivery receipt due to processing error");
                         }
                         
-                        boolean good = session.onReceiveMessage(rec);
-                        
-                        handlePresenceChanged(mConnection.getRoster().getPresence(smackMessage.getFrom()));
-    
-                        if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
-                            if (good) {
-                                debug(TAG, "sending delivery receipt");
-                            // got XEP-0184 request, send receipt
-                                sendReceipt(smackMessage);
-                                session.onReceiptsExpected();
-                            } else {
-                                debug(TAG, "not sending delivery receipt due to processing error");
-                            }
-                            
-                         } else if (!good) {
-                             debug(TAG, "packet processing error");
-                         }
-                    }
+                     } else if (!good) {
+                         debug(TAG, "packet processing error");
+                     }
+                    
                 }
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
@@ -1537,7 +1538,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     ImEntity findOrCreateParticipant(String address, boolean groupChat) {
         ImEntity participant = mContactListManager.getContact(address);
         if (participant == null) {
-            if (groupChat) {
+            if (!groupChat) {
                 participant = makeContact(address);
             }
             else {
@@ -2794,6 +2795,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             try
             {
                 mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact, mProviderId, mAccountId);
+                
             }
             catch (RemoteException e)
             {
