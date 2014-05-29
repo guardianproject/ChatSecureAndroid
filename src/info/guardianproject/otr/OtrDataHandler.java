@@ -74,7 +74,7 @@ public class OtrDataHandler implements DataHandler {
 
     private static final byte[] EMPTY_BODY = new byte[0];
 
-    private static final String TAG = "GB.OtrDataHandler";
+    private static final String TAG = "ChatSecure.OtrDataHandler";
     
     private static final ProtocolVersion PROTOCOL_VERSION = new ProtocolVersion("HTTP", 1, 1);
     private static HttpParams params = new BasicHttpParams();

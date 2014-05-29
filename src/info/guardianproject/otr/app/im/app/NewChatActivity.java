@@ -139,7 +139,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private MessageContextMenuHandler mMessageContextMenuHandler;
     
     private ContactListFragment mContactList = null;
-    private static final String TAG = "GB.NewChatActivity";
+    private static final String TAG = "ChatSecure.NewChatActivity";
 
     private SearchView mSearchView = null;
 
@@ -313,7 +313,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-            Log.d("YYY", "reset cursor");
+            Log.d(ImApp.LOG_TAG, "NewChatActivity:onLoaderReset() reset cursor");
             mChatPagerAdapter.swapCursor(null);
         }
     }

@@ -76,7 +76,7 @@ import android.util.Log;
 
 public class ImApp extends Application {
     
-    public static final String LOG_TAG = "GB.ImApp";
+    public static final String LOG_TAG = "ChatSecure.ImApp";
 
     public static final String EXTRA_INTENT_SEND_TO_USER = "Send2_U";
     public static final String EXTRA_INTENT_PASSWORD = "password";
@@ -301,7 +301,8 @@ public class ImApp extends Application {
         
         
         if ("".equals(lang)) {
-            Properties props = AssetUtil.getProperties("gibberbot.properties", this);
+            // read in info/guardianproject/util/AssetUtil.java
+            Properties props = AssetUtil.getProperties("chatsecure.properties", this);
             if (props != null) {
                 String configuredLocale = props.getProperty("locale");
                 if (configuredLocale != null && !"CHOOSE".equals(configuredLocale)) {

@@ -6,7 +6,7 @@ import android.util.Log;
 
 public class OtrDebugLogger {
 
-    private final static String TAG = "Gibberbot.OTR";
+    private final static String TAG = "ChatSecure.OTR";
 
     public static void log(String msg) {
         if (Debug.DEBUG_ENABLED && Log.isLoggable(TAG, Log.DEBUG))
