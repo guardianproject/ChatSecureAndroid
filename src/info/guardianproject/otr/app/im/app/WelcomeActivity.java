@@ -105,7 +105,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (!mDoLock)
         {
             mApp.maybeInit(this);
-            mApp.checkForCrashes(this);            
+            
         }
         
         if (ImApp.mUsingCacheword)
