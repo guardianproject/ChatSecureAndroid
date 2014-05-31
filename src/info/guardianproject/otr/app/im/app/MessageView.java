@@ -196,6 +196,10 @@ public class MessageView extends FrameLayout {
                 
             }
             
+            mHolder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            
+            
+            
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             if (showContact)
@@ -244,28 +248,6 @@ public class MessageView extends FrameLayout {
             //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
            
         }
-
-        /*
-        if (encryption == EncryptionState.NONE)
-        {
-            
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
-               
-        }
-        else if (encryption == EncryptionState.ENCRYPTED)
-        {
-            
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);
-            
-            
-        }
-        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
-        {
-            
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
-                        
-            
-        }*/
        
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
         
@@ -492,6 +474,9 @@ public class MessageView extends FrameLayout {
                 mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
                 
             }
+            
+            mHolder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            
             
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);

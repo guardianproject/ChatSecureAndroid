@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="180dp"
     android:layout_height="match_parent"
     android:orientation="vertical" 
@@ -8,6 +9,21 @@
     android:layout_width="fill_parent"
     android:layout_height="1dp"
     android:background="#33999999"/>
+
+<fragment    
+    android:id="@+id/account_list"
+    android:name="info.guardianproject.otr.app.im.app.AccountsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"  
+    />
+
+
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
+    
+    />
     <Button
         android:id="@+id/btnDrawerAccount"
         android:layout_width="match_parent"
@@ -19,9 +35,7 @@
         android:text="@string/menu_view_accounts"
                 android:textColor="#ffffff"
          android:padding="3sp"
-         />
-    
-    
+         />    
     
     <View
     android:layout_width="fill_parent"
@@ -71,26 +85,7 @@
     
     />
     
-    <Button
-        android:id="@+id/btnDrawerQRCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/sidebar_key"
-        android:gravity="left|center_vertical"
-        android:text="@string/menu_sidebar_qr"
-                android:textColor="#ffffff"
-         android:padding="3sp"
-        
-         />
-    
-   <View
-    android:layout_width="fill_parent"
-    android:layout_height="2dp"
-    android:background="#33dddddd"
-    
-    />
-    
+    <!-- 
     <Button
         android:id="@+id/btnDrawerSettings"
         android:layout_width="match_parent"
@@ -107,9 +102,9 @@
      <View
     android:layout_width="fill_parent"
     android:layout_height="2dp"
-    android:background="#33dddddd"
-    
+    android:background="#33dddddd"    
     />
+     -->
 
 <Button
         android:id="@+id/btnDrawerPanic"

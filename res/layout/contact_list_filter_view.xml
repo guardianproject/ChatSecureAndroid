@@ -91,14 +91,18 @@
              />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
      -->
-   <ListView
-            
-        android:id="@+id/filteredList"
+
+    <ListView  android:id="@+id/filteredList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    android:gravity="top"
-    android:padding="0dp"
-        />
+        android:layout_height="0dip"
+        android:layout_weight="1"                        
+        android:stackFromBottom="false"               
+  		android:layout_margin="0dp"
+        android:padding="0dp"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+         />
+   
    <TextView
 	    android:id="@+id/empty"
 	    android:text="@string/loading"

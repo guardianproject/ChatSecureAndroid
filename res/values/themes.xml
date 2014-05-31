@@ -33,7 +33,7 @@
          <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
          <item name="messageTextPrimary">#333333</item>
-         <item name="messageTextSecondary">#777777</item>
+         <item name="messageTextSecondary">#999999</item>
      </style>
     
    <style name="AppThemeDark" parent="Theme.Sherlock" >

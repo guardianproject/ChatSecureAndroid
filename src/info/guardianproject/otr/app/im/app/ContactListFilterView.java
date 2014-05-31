@@ -332,13 +332,13 @@ public class ContactListFilterView extends LinearLayout {
                 
             holder = new ContactView.ViewHolder();
                 
-            holder.mLine1 = (TextView) view.findViewById(R.id.contactStatus);
+            holder.mLine1 = (TextView) view.findViewById(R.id.line1);
             holder.mLine2 = (TextView) view.findViewById(R.id.line2);
-               
-            holder.mTimeStamp = (TextView) view.findViewById(R.id.timestamp);
-            holder.mAvatar = (ImageView)view.findViewById(R.id.contactAvatar);
-                
-            holder.mStatusBlock = view.findViewById(R.id.status_block);
+                           
+            holder.mAvatar = (ImageView)view.findViewById(R.id.avatar);                
+            holder.mStatusIcon = (ImageView)view.findViewById(R.id.statusIcon);
+            
+            holder.mContainer = view.findViewById(R.id.message_container);
                 
             view.setTag(holder);
             

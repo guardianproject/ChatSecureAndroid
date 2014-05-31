@@ -2029,6 +2029,11 @@ public class ChatView extends LinearLayout {
             {
                 messageView.setMessageBackground(getResources().getDrawable(R.drawable.message_view_rounded_dark));                
             }
+            else
+            {
+                messageView.setMessageBackground(getResources().getDrawable(R.drawable.message_view_rounded_light));                
+
+            }
             
             mType = cursor.getInt(mTypeColumn);
             
@@ -2353,6 +2358,7 @@ public class ChatView extends LinearLayout {
                         
                         mBuilder.setContentIntent(PendingIntent.getActivity(mActivity,0,new Intent(mContext,NewChatActivity.class),0));
                         
+                        mBuilder.setAutoCancel(true);
                     }
                     
                     
@@ -2360,6 +2366,8 @@ public class ChatView extends LinearLayout {
                     mBuilder.setContentText(mContext.getString(R.string.transfer_in_progress) + ": " + progressText);
                     mBuilder.setProgress(100, progressValue, false);
                     
+                    if (progressValue == 100)
+                        mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
                     
                     mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
                     
