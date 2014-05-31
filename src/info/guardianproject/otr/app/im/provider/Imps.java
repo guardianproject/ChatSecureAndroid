@@ -524,7 +524,10 @@ public class Imps {
 
         /** The default sort order for this table */
         public static final String DEFAULT_SORT_ORDER = "subscriptionType DESC, last_message_date DESC,"
-                                                        + " mode DESC, nickname COLLATE UNICODE ASC";
+                                                        + " mode DESC, nickname COLLATE NOCASE ASC";
+        
+        /** The default sort order for this table */
+        public static final String ALPHA_SORT_ORDER = "nickname COLLATE NOCASE ASC";
 
         public static final String CHATS_CONTACT = "chats_contact";
 
