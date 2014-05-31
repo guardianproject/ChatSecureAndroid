@@ -53,7 +53,10 @@ public class HeartbeatService extends Service {
         long heartBeatInterval = HEARTBEAT_INTERVAL;
         
         if (settings != null)
+        {
             heartBeatInterval = settings.getHeartbeatInterval();
+            settings.close();
+        }
         
         startHeartbeat(heartBeatInterval);
 
@@ -63,7 +66,7 @@ public class HeartbeatService extends Service {
         NetworkConnectivityListener.registerHandler(mServiceHandler, EVENT_NETWORK_STATE_CHANGED);
         mNetworkConnectivityListener.startListening(this);
         
-        settings.close();
+        
     }
     
     void startHeartbeat(long interval) {
@@ -110,6 +113,7 @@ public class HeartbeatService extends Service {
         // Callback may be async
         if (mNetworkConnectivityListener == null)
             return;
+        
         Intent intent = new Intent(NETWORK_STATE_ACTION, null, this, RemoteImService.class);
         intent.putExtra(NETWORK_INFO_EXTRA, mNetworkConnectivityListener.getNetworkInfo());
         intent.putExtra(NETWORK_STATE_EXTRA, mNetworkConnectivityListener.getState().ordinal());
