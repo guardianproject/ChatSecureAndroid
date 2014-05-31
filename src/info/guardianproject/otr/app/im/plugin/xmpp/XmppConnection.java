@@ -832,7 +832,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mUserPresence = new Presence(Presence.AVAILABLE, defaultStatus, Presence.CLIENT_TYPE_MOBILE);
 
         try {
-            if (userName.length() == 0)
+            if (userName == null || userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
             initConnectionAndLogin(providerSettings, userName, password);
             

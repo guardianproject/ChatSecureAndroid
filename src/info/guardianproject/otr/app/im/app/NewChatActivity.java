@@ -115,9 +115,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final int REQUEST_SETTINGS = REQUEST_TAKE_PICTURE + 1;
     
     
-    private static final int ACCOUNT_LOADER_ID = 1000;
     private static final int CONTACT_LIST_LOADER_ID = 4444;
-    private static final int CHAT_LIST_LOADER_ID = 4445;
+    private static final int CHAT_LIST_LOADER_ID = CONTACT_LIST_LOADER_ID+1;
+    private static final int CHAT_PAGE_LOADER_ID = CONTACT_LIST_LOADER_ID+2;
 
     private ImApp mApp;
     private ViewPager mChatPager;
@@ -268,8 +268,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-
-            loader.setUpdateThrottle(1000L);
+            //loader.setUpdateThrottle(1000L);            
             return loader;
         }
 
@@ -277,6 +276,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
            // Log.d("YYY", "swap cursor");
             mChatPagerAdapter.swapCursor(newCursor);
+            mChatPager.invalidate();
             
             if (getIntent() != null)
                 resolveIntent(getIntent());
@@ -344,6 +344,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         View vg = findViewById (R.id.chatpager);
         vg.invalidate();
+        
+        mApp.checkForCrashes(this);
     }
 
     @Override
@@ -388,12 +390,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         this.getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
         
         Button btnDrawerAccount = (Button) findViewById(R.id.btnDrawerAccount);
-        Button btnDrawerSettings = (Button) findViewById(R.id.btnDrawerSettings);
+        
         Button btnDrawerPanic = (Button) findViewById(R.id.btnDrawerPanic);
         Button btnDrawerGroupChat = (Button) findViewById(R.id.btnDrawerGroupChat);
         Button btnDrawerAddContact = (Button) findViewById(R.id.btnDrawerAddContact);
         Button btnDrawerExit = (Button) findViewById(R.id.btnDrawerExit);
-
         
         btnDrawerAccount.setOnClickListener(new OnClickListener ()
         {
@@ -408,16 +409,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
         });
         
-        btnDrawerSettings.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-                Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);                
-                startActivityForResult(sintent,REQUEST_SETTINGS);
-            }
-            
-        });
         
         btnDrawerPanic.setOnClickListener(new OnClickListener ()
         {
@@ -929,23 +920,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             return true;
 
-        case R.id.menu_grid:
-            
-            if (mContactList != null)
-            {
-                boolean gridState = mContactList.toggleGrid();
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-                settings.edit().putBoolean("showGrid", gridState).commit();
-                finish();
-                Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);    
-                
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mLastProviderId);
-                intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mLastAccountId);
-                
-                startActivity(intent);
-            }
-            
-            return true;
+      
         case android.R.id.home:
             menu.toggle();
             return true;
@@ -1596,7 +1571,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void initConnections ()
     {
-        getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
+        getSupportLoaderManager().initLoader(CHAT_PAGE_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
 
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -1654,13 +1629,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
                 mAccountIds = null;
-    //            mAdapter.swapCursor(null);
             }
         });
 
-      //  mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view_actionbar);
-        
-        
     }
    
     
@@ -1678,20 +1649,21 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     public void unregisterSubListeners ()
     {
-        for (int i = 0; i < mAccountIds.length; i++)
-        {
-            IImConnection conn = initConnection(mAccountIds[i][0],mAccountIds[i][1]);
-            if (conn != null)
+        if (mAccountIds != null)
+            for (int i = 0; i < mAccountIds.length; i++)
             {
-                try {
-                    conn.getContactListManager().unregisterSubscriptionListener(mSubscriptionListener);
-                } catch (RemoteException e1) {
-                    Log.e(ImApp.LOG_TAG,"error registering listener",e1);
-
+                IImConnection conn = initConnection(mAccountIds[i][0],mAccountIds[i][1]);
+                if (conn != null)
+                {
+                    try {
+                        conn.getContactListManager().unregisterSubscriptionListener(mSubscriptionListener);
+                    } catch (RemoteException e1) {
+                        Log.e(ImApp.LOG_TAG,"error registering listener",e1);
+    
+                    }
+    
                 }
-
             }
-        }
     }
     
     public IImConnection initConnection (long accountId, long providerId)
@@ -1866,10 +1838,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 @Override
                 public void onClick(View v) {
                  
-                    if (((NewChatActivity)getActivity()).isShowingChats())
-                        ((NewChatActivity)getActivity()).updateChatList();
-                    else
-                        ((NewChatActivity)getActivity()).showInviteContactDialog();
+                        ((NewChatActivity)getActivity()).startContactPicker();
                 }
                  
              });
@@ -2412,9 +2381,4 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
     };
     
-    public boolean isShowingChats ()
-    {
-        return mShowChatsOnly;
-    }
-
 }

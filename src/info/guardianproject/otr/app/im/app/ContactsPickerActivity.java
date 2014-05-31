@@ -63,6 +63,8 @@ public class ContactsPickerActivity extends ListActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        
+        ((ImApp)getApplication()).setAppTheme(this);
 
         setContentView(R.layout.contacts_picker_activity);
 
@@ -109,7 +111,7 @@ public class ContactsPickerActivity extends ListActivity {
         mSearchString = filterString;
         if (mAdapter == null) {
             
-                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
+                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view_light);
 
                 setListAdapter(mAdapter);
             
@@ -134,8 +136,8 @@ public class ContactsPickerActivity extends ListActivity {
             
         }
         
-        Cursor c = managedQuery(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
-                    buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+        Cursor c = managedQuery(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION_LIGHT,
+                    buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
         mAdapter.swapCursor(c);
         
@@ -155,21 +157,22 @@ public class ContactsPickerActivity extends ListActivity {
             View view = super.newView(context, cursor, parent);
           
             ContactView.ViewHolder holder = null;
-                
+            
             holder = new ContactView.ViewHolder();
                 
-            holder.mLine1 = (TextView) view.findViewById(R.id.contactStatus);
+            holder.mLine1 = (TextView) view.findViewById(R.id.line1);
             holder.mLine2 = (TextView) view.findViewById(R.id.line2);
-               
-            holder.mTimeStamp = (TextView) view.findViewById(R.id.timestamp);
-            holder.mAvatar = (ImageView)view.findViewById(R.id.contactAvatar);
-                
-            holder.mStatusBlock = view.findViewById(R.id.status_block);
+                           
+            holder.mAvatar = (ImageView)view.findViewById(R.id.avatar);                
+            holder.mStatusIcon = (ImageView)view.findViewById(R.id.statusIcon);
+            
+            holder.mContainer = view.findViewById(R.id.message_container);
                 
             view.setTag(holder);
             
            return view;
         }
+        
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {

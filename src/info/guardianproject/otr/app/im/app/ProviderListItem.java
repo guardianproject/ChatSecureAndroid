@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -46,25 +47,11 @@ public class ProviderListItem extends LinearLayout {
     private SignInManager mSignInManager;
     private ContentResolver mResolver;
     private CompoundButton mSignInSwitch;
-    private OnCheckedChangeListener mCheckedChangeListner = new OnCheckedChangeListener(){
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-           
-            if (isChecked)
-                mSignInManager.signIn(mAccountId);
-            else
-                mSignInManager.signOut(mAccountId);
-            
-            mUserChanged = true;
-        }
-        
-    };
+    
     private boolean mUserChanged = false;
     
     private TextView mProviderName;
     private TextView mLoginName;
-    private TextView mChatView;
 
     private int mProviderIdColumn;
     private int mActiveAccountIdColumn;
@@ -111,7 +98,6 @@ public class ProviderListItem extends LinearLayout {
         mSignInSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
-        mChatView = (TextView) findViewById(R.id.conversations);
 
         mActiveAccountIdColumn = c.getColumnIndexOrThrow(Imps.Provider.ACTIVE_ACCOUNT_ID);
         mActiveAccountUserNameColumn = c
@@ -153,7 +139,20 @@ public class ProviderListItem extends LinearLayout {
                 
             });
             
-            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+            mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                   
+                    if (isChecked)
+                        mSignInManager.signIn(mAccountId);
+                    else
+                        mSignInManager.signOut(mAccountId);
+                    
+                    mUserChanged = true;
+                }
+                
+            });
          
             
         }
@@ -193,8 +192,6 @@ public class ProviderListItem extends LinearLayout {
             
             final int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
             final String presenceString = getPresenceString(cursor, getContext());
-            if (mChatView != null)
-                mChatView.setVisibility(View.GONE);
             runBindTask(r, providerId, activeUserName, connectionStatus, presenceString);
         } 
     }
@@ -309,7 +306,20 @@ public class ProviderListItem extends LinearLayout {
         {
             mSignInSwitch.setOnCheckedChangeListener(null);
             mSignInSwitch.setChecked(switchOn);
-            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+            mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                   
+                    if (isChecked)
+                        mSignInManager.signIn(mAccountId);
+                    else
+                        mSignInManager.signOut(mAccountId);
+                    
+                    mUserChanged = true;
+                }
+                
+            });
         }
 
         if (mLoginName != null)
@@ -427,7 +437,20 @@ public class ProviderListItem extends LinearLayout {
         {
             mSignInSwitch.setOnCheckedChangeListener(null);
             mSignInSwitch.setChecked(switchOn);
-            mSignInSwitch.setOnCheckedChangeListener(mCheckedChangeListner);
+            mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                   
+                    if (isChecked)
+                        mSignInManager.signIn(mAccountId);
+                    else
+                        mSignInManager.signOut(mAccountId);
+                    
+                    mUserChanged = true;
+                }
+                
+            });
         }
         // login name
         if (mLoginName != null)

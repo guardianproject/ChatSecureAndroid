@@ -20,7 +20,7 @@
 <info.guardianproject.otr.app.im.app.ProviderListItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     >
 <!-- 
@@ -33,17 +33,19 @@
         android:layout_width="39dip"
         android:layout_height="32dip"/>
  -->
-
+ 
+        
     <LinearLayout
         android:id="@+id/underBubble"
         android:orientation="horizontal"
         android:layout_weight="1"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-            android:layout_margin="6sp"
+        	android:layout_margin="6sp"    
         
         >    
 
+             
         <LinearLayout
             android:orientation="vertical"
             android:layout_weight="1"
@@ -62,9 +64,10 @@
                     android:singleLine="true"
                     android:layout_weight="1.0"
                     android:ellipsize="marquee"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
                     android:fontFamily="sans-serif-light"
+                    android:textColor="#ffffff"
                     />
             </LinearLayout>
 
@@ -75,15 +78,20 @@
                 android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:fontFamily="sans-serif-light"
+               android:textColor="#ffffff"
                />
         </LinearLayout>
-           <Switch
-                android:id="@+id/statusSwitch"
+       
+             
+         <CheckBox
+            android:id="@+id/statusSwitch"
+            android:paddingRight="6dip"
+            android:paddingLeft="6dip"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
-            android:layout_height="?android:attr/listPreferredItemHeight"
-            
-            />
-           
-      
+            android:layout_height="wrap_content"/>
+         
+         
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ProviderListItem>

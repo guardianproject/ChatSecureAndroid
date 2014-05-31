@@ -34,23 +34,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -60,7 +53,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 
-public class AccountListActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener, ProviderListItem.SignInManager {
+public class AccountListActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -70,34 +63,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     private SignInHelper mSignInHelper;
 
-    private static final String[] PROVIDER_PROJECTION = {
-                                                         Imps.Provider._ID,
-                                                         Imps.Provider.NAME,
-                                                         Imps.Provider.FULLNAME,
-                                                         Imps.Provider.CATEGORY,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
-                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
-                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
-                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
-                                                        };
-
-    static final int PROVIDER_ID_COLUMN = 0;
-    static final int PROVIDER_NAME_COLUMN = 1;
-    static final int PROVIDER_FULLNAME_COLUMN = 2;
-    static final int PROVIDER_CATEGORY_COLUMN = 3;
-    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
-    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
-    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
-    static final int ACTIVE_ACCOUNT_LOCKED = 7;
-    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
-    static final int ACCOUNT_PRESENCE_STATUS = 9;
-    static final int ACCOUNT_CONNECTION_STATUS = 10;
-
-    private static final int ACCOUNT_LOADER_ID = 1000;
-    
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
 
     @Override
@@ -106,9 +71,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
-
         mApp.setAppTheme(this);
-        ThemeableActivity.setBackgroundImage(this);
         
         if (!Imps.isUnlocked(this)) {
             onDBLocked();
@@ -118,7 +81,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
-        initProviderCursor();
         setContentView(R.layout.account_list_activity);
         
         
@@ -158,71 +120,12 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         mHandler.registerForBroadcastEvents();
         
-        mApp.checkForCrashes(this);
+      //  mApp.checkForCrashes(this);
         
     }
     
     
-
-    protected void openAccountAtPosition(int position) {
-        Cursor cursor = mAdapter.getCursor();
-        cursor.moveToPosition(position);
-
-        if (cursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            showExistingAccountListDialog();
-            
-        } else {
-
-            int state = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-            long accountId = cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-           
-            if (state == Imps.ConnectionStatus.OFFLINE) {
-             
-                Intent intent = getEditAccountIntent();
-                startActivity(intent);
-                
-            }
-            else
-            {
-                gotoAccount(accountId);
-            }
-            
-            
-        }
-        
-
-    }
-    
-    public void signIn(long accountId) {
-        if (accountId <= 0) {
-            Log.w(TAG, "signIn: account id is 0, bail");
-            return;
-        }
-        Cursor cursor = mAdapter.getCursor();
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())
-        {
-            long cAccountId = cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-            
-            if (cAccountId == accountId)
-                break;
-            
-            cursor.moveToNext();
-        }
-
-        // Remember that the user signed in.
-        setKeepSignedIn(accountId, true);
-
-        long providerId = cursor.getLong(PROVIDER_ID_COLUMN);
-        String password = cursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
-        
-        boolean isActive = false; // TODO(miron)
-        mSignInHelper.signIn(password, providerId, accountId, isActive);
-        
-        cursor.moveToPosition(-1);
-    }
+  
 
     
     protected void gotoAccount(long accountId)
@@ -272,12 +175,14 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         }
     }
 
+
     private void setKeepSignedIn(final long accountId, boolean signin) {
         Uri mAccountUri = ContentUris.withAppendedId(Imps.Account.CONTENT_URI, accountId);
         ContentValues values = new ContentValues();
         values.put(Imps.Account.KEEP_SIGNED_IN, signin);
         getContentResolver().update(mAccountUri, values, null, null);
     }
+    
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -616,21 +521,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         return intent;
     }*/
 
-    Intent getEditAccountIntent() {
-        Cursor cursor = mAdapter.getCursor();
-        Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
-                Imps.Account.CONTENT_URI, cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
-        intent.addCategory(ImApp.IMPS_CATEGORY);
-        return intent;
-    }
-
-    Intent getViewContactsIntent() {
-        Cursor cursor = mAdapter.getCursor();
-        Intent intent = new Intent(this, ContactListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN));
-        return intent;
-    }
     
     /*
     Intent getViewChatsIntent() {
@@ -649,14 +539,6 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         Log.d(TAG, "[LandingPage]" + msg);
     }
 
-    private class ProviderListItemFactory implements LayoutInflater.Factory {
-        public View onCreateView(String name, Context context, AttributeSet attrs) {
-            if (name != null && name.equals(ProviderListItem.class.getName())) {
-                return new ProviderListItem(context, AccountListActivity.this, AccountListActivity.this);
-            }
-            return null;
-        }
-    }
 
     private final class MyHandler extends SimpleAlertHandler {
 
@@ -714,33 +596,4 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         finish();
     }
 
-    private void initProviderCursor()
-    {
-        final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-        getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
-
-            @Override
-            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                CursorLoader loader = new CursorLoader(AccountListActivity.this, uri, PROVIDER_PROJECTION,
-                        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
-                        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-                        Imps.Provider.DEFAULT_SORT_ORDER);
-
-                return loader;
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-                mAdapter.swapCursor(newCursor);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> loader) {
-                mAdapter.swapCursor(null);
-                
-            }
-        });
-
-        mAdapter = new AccountAdapter(this, new ProviderListItemFactory(), R.layout.account_view);
-    }
 }

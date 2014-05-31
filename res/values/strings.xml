@@ -532,7 +532,7 @@
 		<!-- Other: Slide Menu -->
 		<string name="menu_contact_list">Contact List</string>
 		<string name="menu_settings">Settings</string>
-		<string name="menu_view_accounts">Accounts</string>
+		<string name="menu_view_accounts">Manage Accounts</string>
 		<string name="menu_sign_out">Sign out</string>
 		<string name="menu_view_contact_list">Contact list</string>
 		

@@ -19,27 +19,24 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ContactView extends LinearLayout {
+public class ContactView extends FrameLayout {
     static final String[] CONTACT_PROJECTION = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
@@ -52,6 +49,18 @@ public class ContactView extends LinearLayout {
                                                 Imps.Contacts.AVATAR_DATA
                                                 
     };
+    
+    static final String[] CONTACT_PROJECTION_LIGHT = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
+                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
+                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
+                                                 Imps.Contacts.SUBSCRIPTION_TYPE,
+                                                 Imps.Contacts.SUBSCRIPTION_STATUS,
+                                                 Imps.Presence.PRESENCE_STATUS,
+                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
+                                                 Imps.Chats.LAST_MESSAGE_DATE,
+                                                 Imps.Chats.LAST_UNREAD_MESSAGE
+                                                 
+     };
 
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
@@ -67,30 +76,50 @@ public class ContactView extends LinearLayout {
     static final int COLUMN_LAST_MESSAGE = 11;
     static final int COLUMN_AVATAR_DATA = 12;
 
-   
+    private ImApp app = null;
+    private static Drawable BG_DARK;
+    private static Drawable BG_LIGHT;
+    static Drawable AVATAR_DEFAULT = null;
+    
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
+     
+        app = ((ImApp)((Activity) getContext()).getApplication());
+        
+        if (BG_DARK == null)
+        {
+            BG_DARK = getResources().getDrawable(R.drawable.message_view_rounded_dark);
+            BG_LIGHT = getResources().getDrawable(R.drawable.message_view_rounded_light);
+            
+        }
         
     }
 
     static class ViewHolder 
     {
-        //ImageView mPresence;
+
         TextView mLine1;
         TextView mLine2;
-        TextView mTimeStamp;
         ImageView mAvatar;
-        View mStatusBlock;
-        
+        ImageView mStatusIcon;
+        View mContainer;
     }
 
     public void bind(Cursor cursor, String underLineText, boolean scrolling) {
         bind(cursor, underLineText, true, scrolling);
     }
 
+    
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
         
+
         ViewHolder holder = (ViewHolder)getTag();
+        
+        if (holder.mContainer != null)
+            if (app.isThemeDark())
+            {
+                holder.mContainer.setBackgroundDrawable(BG_DARK);                
+            }
         
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
@@ -105,6 +134,12 @@ public class ContactView extends LinearLayout {
         int subStatus = cursor.getInt(COLUMN_SUBSCRIPTION_STATUS);
         
         String nickname = displayName;
+        
+        if (nickname == null)
+            nickname = address;
+        
+        BrandingResources brandingRes = app.getBrandingResource(providerId);
+
         
         if (!TextUtils.isEmpty(underLineText)) {
             // highlight/underline the word being searched
@@ -125,38 +160,53 @@ public class ContactView extends LinearLayout {
         else
             holder.mLine1.setText(nickname);
         
+        if (holder.mStatusIcon != null)
+        {
+            Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
+            statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
+                    statusIcon.getIntrinsicHeight());
+            holder.mStatusIcon.setImageDrawable(statusIcon);
+        }
+        
         if (holder.mAvatar != null)
         {
             if (Imps.Contacts.TYPE_GROUP == type) {
                 holder.mAvatar.setImageResource(R.drawable.group_chat);
                 
             }
-            else
+            else if (cursor.getColumnIndex(Imps.Contacts.AVATAR_DATA)!=-1)
             {
-            
+                holder.mAvatar.setVisibility(View.GONE);        
+
                 Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                  
                 if (avatar != null)
                     holder.mAvatar.setImageDrawable(avatar);
-                else
-                    holder.mAvatar.setImageDrawable(getContext().getResources().getDrawable(R.drawable.avatar_unknown));
+                else 
+                {
+                    if (AVATAR_DEFAULT == null)
+                    AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                            R.drawable.avatar_unknown));
+                    
+                    holder.mAvatar.setImageDrawable(AVATAR_DEFAULT);
+                    
+                }
+                
+                holder.mAvatar.setVisibility(View.VISIBLE);
+
+            }
+            else
+            {
+                //holder.mAvatar.setImageDrawable(getContext().getResources().getDrawable(R.drawable.avatar_unknown));
+                holder.mAvatar.setVisibility(View.GONE);
+               
+                
+                
             }
         }
         
         if (showChatMsg && lastMsg != null) {
 
-            
-            if (holder.mAvatar != null)
-            {
-              //  setBackgroundResource(R.color.holo_blue_bright);
-                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
-                holder.mLine1.setTextColor(Color.WHITE);
-            }
-            else if (holder.mStatusBlock != null)
-            {
-                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_blue_bright));
-                
-            }
            
             if (holder.mLine2 != null)
                 holder.mLine2.setText(android.text.Html.fromHtml(lastMsg).toString());
@@ -175,8 +225,6 @@ public class ContactView extends LinearLayout {
                     }
                     else
                     {
-                        ImApp app = ((ImApp)((Activity) getContext()).getApplication());
-                        BrandingResources brandingRes = app.getBrandingResource(providerId);
                         statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
                     }
                 }
@@ -190,69 +238,11 @@ public class ContactView extends LinearLayout {
 
         if (subType == Imps.ContactsColumns.SUBSCRIPTION_TYPE_INVITATIONS)
         {
-            if (holder.mLine2 != null)
-                holder.mLine2.setText("Contact List Request");
+        //    if (holder.mLine2 != null)
+          //      holder.mLine2.setText("Contact List Request");
         }
         
-        if (presence == Imps.Presence.AVAILABLE)
-        {
-            if (holder.mAvatar != null)
-            {
-               // setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_green_dark));
-                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-            }
-            else if (holder.mStatusBlock != null)
-            {
-                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_green_light));
-                
-            }
-            
-        }
-        else if (presence == Imps.Presence.AWAY||presence == Imps.Presence.IDLE)
-        {
-            if (holder.mAvatar != null)
-            {
-              //  setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_orange_dark));
-                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-            }
-            else if (holder.mStatusBlock != null)
-            {
-                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_orange_light));
-                
-            }
-            
-        }
-        else if (presence == Imps.Presence.DO_NOT_DISTURB)
-        {
-            if (holder.mAvatar != null)
-            {
-               // setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_red_dark));
-                holder.mLine1.setTextColor(getResources().getColor(R.color.contact_status_fg_light));
-            }
-            else if (holder.mStatusBlock != null)
-            {
-                holder.mStatusBlock.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-                
-            }
-        }   
-        else
-        {
-            if (holder.mAvatar != null)
-            {
-               // setBackgroundColor(Color.LTGRAY);
-                holder.mLine1.setBackgroundColor(getResources().getColor(R.color.holo_grey_light));
-            }
-            else if (holder.mStatusBlock != null)
-            {
-                holder.mStatusBlock.setBackgroundColor(Color.LTGRAY);
-                
-            }
-        }
-            
-            
+        holder.mLine1.setVisibility(View.VISIBLE);
        
     }
     
