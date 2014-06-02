@@ -471,15 +471,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void showInviteContactDialog ()
     {
-        if (mLastProviderId != -1 && mLastAccountId != -1)
-        {
-            Intent i = new Intent(this, AddContactActivity.class);
-            i.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mLastProviderId);
-            i.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mLastAccountId);
-         //   i.putExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME,
-           //         mContactListView.getSelectedContactList());
-            startActivity(i);
-        }
+        
+        Intent i = new Intent(this, AddContactActivity.class);        
+        startActivity(i);
+
     }
     
     private void displayQRCode ()

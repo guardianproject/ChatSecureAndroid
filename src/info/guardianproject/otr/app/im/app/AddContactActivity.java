@@ -18,23 +18,18 @@
 package info.guardianproject.otr.app.im.app;
 
 import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
-
-import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
-import info.guardianproject.otr.app.im.plugin.ImpsConfigNames;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
-import java.util.List;
-
-import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.provider.Imps;
+
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -51,6 +46,8 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.ResourceCursorAdapter;
@@ -65,14 +62,13 @@ public class AddContactActivity extends Activity {
     private static final int CONTACT_LIST_NAME_COLUMN = 1;
 
     private MultiAutoCompleteTextView mAddressList;
-    //private Spinner mListSpinner;
+    private Spinner mListSpinner;
     Button mInviteButton;
     ImApp mApp;
     SimpleAlertHandler mHandler;
 
-    private long mProviderId;
-    private long mAccountId;
-    private String mDefaultDomain;
+    private Cursor mCursorProviders;
+    private long mProviderId, mAccountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,30 +80,49 @@ public class AddContactActivity extends Activity {
 
         setContentView(R.layout.add_contact_activity);
 
-        BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
+        BrandingResources brandingRes = mApp.getBrandingResource(0);
         setTitle(brandingRes.getString(BrandingResourceIDs.STRING_ADD_CONTACT_TITLE));
 
         TextView label = (TextView) findViewById(R.id.input_contact_label);
         label.setText(brandingRes.getString(BrandingResourceIDs.STRING_LABEL_INPUT_CONTACT));
 
         mAddressList = (MultiAutoCompleteTextView) findViewById(R.id.email);
-        mAddressList.setAdapter(new EmailAddressAdapter(this));
         mAddressList.setTokenizer(new Rfc822Tokenizer());
         mAddressList.addTextChangedListener(mTextWatcher);
         
-        /**
         mListSpinner = (Spinner) findViewById(R.id.choose_list);
 
-        Cursor c = queryContactLists();
-        int initSelection = searchInitListPos(c,
-                getIntent().getStringExtra(ImServiceConstants.EXTRA_INTENT_LIST_NAME));
+        mCursorProviders = queryContactLists();
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item, c, new String[] { Imps.ContactList.NAME },
+                android.R.layout.simple_spinner_item, mCursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
                 new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        if (mCursorProviders.getCount() > 0)
+        {   
+            mCursorProviders.moveToFirst();
+            mProviderId = mCursorProviders.getLong(PROVIDER_ID_COLUMN);
+            mAccountId = mCursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+        }
+        
         mListSpinner.setAdapter(adapter);
-        mListSpinner.setSelection(initSelection);
-        **/
+        mListSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                    int arg2, long arg3) {
+                mCursorProviders.moveToPosition(arg2);
+                mProviderId = mCursorProviders.getLong(PROVIDER_ID_COLUMN);
+                mAccountId = mCursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        
         
         mInviteButton = (Button) findViewById(R.id.invite);
         mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
@@ -116,10 +131,13 @@ public class AddContactActivity extends Activity {
     }
 
     private Cursor queryContactLists() {
-        Uri uri = Imps.ContactList.CONTENT_URI;
-        uri = ContentUris.withAppendedId(uri, mProviderId);
-        uri = ContentUris.withAppendedId(uri, mAccountId);
-        Cursor c = managedQuery(uri, CONTACT_LIST_PROJECTION, null, null, null);
+        final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+
+        Cursor c = managedQuery(uri,  PROVIDER_PROJECTION,
+        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+        Imps.Provider.DEFAULT_SORT_ORDER);
+        
         return c;
     }
 
@@ -137,8 +155,12 @@ public class AddContactActivity extends Activity {
     }
 
     private void resolveIntent(Intent intent) {
-        mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
-        mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
+       // mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
+       // mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
+    }
+    
+    private String getDefaultDomain ()
+    {
         //mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
           //      ImpsConfigNames.DEFAULT_DOMAIN);
         ContentResolver cr = getContentResolver();
@@ -147,7 +169,11 @@ public class AddContactActivity extends Activity {
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
         
-        mDefaultDomain = settings.getDomain();//get domain of current user
+        String domain = settings.getDomain();//get domain of current user
+        
+        settings.close();
+        
+        return domain;
     }
 
     void inviteBuddies() {
@@ -163,8 +189,8 @@ public class AddContactActivity extends Activity {
                 boolean fail = false;
                 for (Rfc822Token recipient : recipients) {
                     String username = recipient.getAddress();
-                    if (mDefaultDomain != null && username.indexOf('@') == -1) {
-                        username = username + "@" + mDefaultDomain;
+                    if (username.indexOf('@') == -1) {
+                        username = username + "@" + getDefaultDomain();
                     }
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("addContact:" + username);
@@ -252,49 +278,31 @@ public class AddContactActivity extends Activity {
         Log.d(ImApp.LOG_TAG, "<AddContactActivity> " + msg);
     }
 
-    static class EmailAddressAdapter extends ResourceCursorAdapter {
-        public static final int DATA_INDEX = 1;
+ 
+    
+    private static final String[] PROVIDER_PROJECTION = {
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                        };
 
-        private static final String SORT_ORDER = "people.name, contact_methods.data";
-        private ContentResolver mContentResolver;
-
-        private static final String[] PROJECTION = { ContactMethods._ID, // 0
-                                                    ContactMethods.DATA // 1
-        };
-
-        public EmailAddressAdapter(Context context) {
-            super(context, android.R.layout.simple_dropdown_item_1line, null);
-            mContentResolver = context.getContentResolver();
-        }
-
-        @Override
-        public final String convertToString(Cursor cursor) {
-            return cursor.getString(DATA_INDEX);
-        }
-
-        @Override
-        public final void bindView(View view, Context context, Cursor cursor) {
-            ((TextView) view).setText(cursor.getString(DATA_INDEX));
-        }
-
-        @Override
-        public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-            String where = null;
-
-            if (constraint != null) {
-                String filter = DatabaseUtils.sqlEscapeString(constraint.toString() + '%');
-
-                StringBuilder s = new StringBuilder();
-                s.append("(people.name LIKE ");
-                s.append(filter);
-                s.append(") OR (contact_methods.data LIKE ");
-                s.append(filter);
-                s.append(")");
-
-                where = s.toString();
-            }
-
-            return mContentResolver.query(CONTENT_EMAIL_URI, PROJECTION, where, null, SORT_ORDER);
-        }
-    }
+    static final int PROVIDER_ID_COLUMN = 0;
+    static final int PROVIDER_NAME_COLUMN = 1;
+    static final int PROVIDER_FULLNAME_COLUMN = 2;
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
+    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
+    static final int ACTIVE_ACCOUNT_LOCKED = 7;
+    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
+    static final int ACCOUNT_PRESENCE_STATUS = 9;
+    static final int ACCOUNT_CONNECTION_STATUS = 10;
 }
