@@ -108,7 +108,8 @@ public class AccountAdapter extends CursorAdapter {
         // initialize the widget views (by calling getViewById()) in newView() instead of in
         // bindView(), which can be called more often.
         ProviderListItem view = (ProviderListItem) mInflater.inflate(mResId, parent, false);
-        view.init(cursor, true);
+        boolean showLongName = false;
+        view.init(cursor, showLongName);
         return view;
     }
 
