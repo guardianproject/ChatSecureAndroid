@@ -268,7 +268,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     public void sendMessage(String text) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // connection has been suspended, save the message without send it
-            insertMessageInDb(null, text, -1, Imps.MessageType.POSTPONED);
+            long now = System.currentTimeMillis();
+            insertMessageInDb(null, text, now, Imps.MessageType.POSTPONED);
             return;
         }
 
