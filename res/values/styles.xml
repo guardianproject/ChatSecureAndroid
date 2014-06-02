@@ -93,5 +93,31 @@
     </style>-->
 
     
+
+    <style name="ChatSwitcherDialogTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+    </style>
+    <style name="AppTheme" parent="Theme.Sherlock.Light" >    
+         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+         <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
+         <item name="messageTextPrimary">#333333</item>
+         <item name="messageTextSecondary">#999999</item>
+         <item name="android:background">#dddddd</item>
+     </style>
+    
+   <style name="AppThemeDark" parent="Theme.Sherlock" >
+        <item name="messageTextPrimary">#cccccc</item>
+       <item name="messageRoundBackground">@drawable/message_view_rounded_dark</item>                     
+         <item name="messageTextSecondary">#aaaaaa</item>
+         <item name="android:background">#222222</item>
+         
+    </style>
     
 </resources>

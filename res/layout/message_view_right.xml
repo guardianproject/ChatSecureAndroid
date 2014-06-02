@@ -58,6 +58,8 @@
             android:layout_margin="3dp"
             android:scaleType="centerCrop"
              android:gravity="right"
+			android:background="@android:color/transparent"
+             android:padding="6dp"
              />
         
        

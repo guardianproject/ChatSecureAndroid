@@ -39,6 +39,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -86,8 +87,11 @@ public class MessageView extends FrameLayout {
 
     private ViewHolder mHolder = null;
     
-    private final static DateFormat MESSAGE_DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    private final static DateFormat MESSAGE_DATETIME_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    private final static DateFormat MESSAGE_TIME_FORMAT = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
+    private static final SimpleDateFormat FMT_SAME_DAY = new SimpleDateFormat("yyyyMMdd");;
     
+    private final static Date DATE_NOW = new Date();
 
     private final static char DELIVERED_SUCCESS = '\u2714';
     private final static char DELIVERED_FAIL = '\u2718';
@@ -161,6 +165,9 @@ public class MessageView extends FrameLayout {
 
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         
+        if (nickname == null)
+            nickname = address;
+        
         if (showContact && nickname != null)
         {
             String[] nickParts = nickname.split("/");
@@ -173,47 +180,27 @@ public class MessageView extends FrameLayout {
             lastMessage = formatMessage(body);
             showAvatar(address,true);
         
-        mHolder.resetOnClickListenerMediaThumbnail();     
-        if( mimeType != null ) {
-            mHolder.setOnClickListenerMediaThumbnail(mimeType, Uri.parse(body));     
-            lastMessage = "";
-            // if a new uri, display generic icon first, then set it to the media icon/thumbnail
-            Uri mediaUri = Uri.parse( body ) ;
-            
-            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
-            mHolder.mTextViewForMessages.setText(lastMessage);
-            mHolder.mTextViewForMessages.setVisibility(View.GONE);
-            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
-                setImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
+            mHolder.resetOnClickListenerMediaThumbnail();     
+            if( mimeType != null ) {
+    
+                Uri mediaUri = Uri.parse( body ) ;
+                lastMessage = "";
+                showMediaThumbnail(mimeType, mediaUri, id, mHolder);
+               
+            } else {
+                mHolder.mMediaThumbnail.setVisibility(View.GONE);
+                if (showContact)
+                {
+                    String[] nickParts = nickname.split("/");
+                   
+                    lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
+                    
+                }
+                else
+                {
+                    lastMessage = formatMessage(body);
+                }
             }
-            else if (mimeType.startsWith("audio"))
-            {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);                
-            }
-            else
-            {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-                
-            }
-            
-            mHolder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            
-            
-            
-        } else {
-            mHolder.mMediaThumbnail.setVisibility(View.GONE);
-            if (showContact)
-            {
-                String[] nickParts = nickname.split("/");
-                
-                lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
-                
-            }
-            else
-            {
-                lastMessage = formatMessage(body);
-            }
-        }
 	}	
         
         if (lastMessage.length() > 0)
@@ -235,7 +222,12 @@ public class MessageView extends FrameLayout {
         
         if (date != null)
         {
-         CharSequence tsText = formatTimeStamp(date,MESSAGE_DATE_FORMAT, null, encryption);
+           CharSequence tsText = null;
+            
+           if (isSameDay(date,DATE_NOW))
+               tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, null, encryption);
+           else
+               tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, null, encryption);
          
          mHolder.mTextViewForTimestamp.setText(tsText);
          mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
@@ -251,6 +243,41 @@ public class MessageView extends FrameLayout {
        
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
         
+    }
+    
+    private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
+    {
+        holder.setOnClickListenerMediaThumbnail(mimeType, mediaUri);     
+        
+        holder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
+        holder.mTextViewForMessages.setText(lastMessage);
+        holder.mTextViewForMessages.setVisibility(View.GONE);
+        if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
+            setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri );                
+            holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
+            
+        }
+        else if (mimeType.startsWith("audio"))
+        {
+            holder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
+            holder.mMediaThumbnail.setBackgroundColor(Color.TRANSPARENT);
+        }
+        else
+        {
+            holder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
+            
+        }
+        
+        holder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        
+     
+     
+    }
+    
+    
+    private boolean isSameDay (Date date1, Date date2)
+    {        
+        return FMT_SAME_DAY.format(date1).equals(FMT_SAME_DAY.format(date2));
     }
     
     protected String convertMediaUriToPath(Uri uri) {
@@ -453,30 +480,13 @@ public class MessageView extends FrameLayout {
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
         mHolder.resetOnClickListenerMediaThumbnail();     
         if( mimeType != null ) {
-            mHolder.setOnClickListenerMediaThumbnail(mimeType, Uri.parse(body));  
-
+            
             lastMessage = "";
-            // if a new uri, display generic icon first, then set it to the media icon/thumbnail
             Uri mediaUri = Uri.parse( body ) ;
             
-            mHolder.mTextViewForMessages.setText("");//no message if there is a file mimeType
-            mHolder.mTextViewForMessages.setVisibility(View.GONE);
-            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);            
-            if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
-                setImageThumbnail( getContext().getContentResolver(), id, mHolder, mediaUri );
-            }
-            else if (mimeType.startsWith("audio"))
-            {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
-            }
-            else
-            {
-                mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-                
-            }
+            showMediaThumbnail(mimeType, mediaUri, id, mHolder);
             
-            mHolder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            
+
             
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
@@ -524,7 +534,15 @@ public class MessageView extends FrameLayout {
         if (date != null)
         {
             
-            mHolder.mTextViewForTimestamp.setText(formatTimeStamp(date,MESSAGE_DATE_FORMAT, delivery, encryption));            
+            CharSequence tsText = null;
+            
+            if (isSameDay(date,DATE_NOW))
+                tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, delivery, encryption);
+            else
+                tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, delivery, encryption);
+            
+            mHolder.mTextViewForTimestamp.setText(tsText);    
+            
             mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);            
          
         }

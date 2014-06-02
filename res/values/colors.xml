@@ -34,8 +34,13 @@
     <color name="background_med">#FFBBBBBB</color>
     <color name="background_dark">#EE343434</color>
     
-    <color name="message_background_light">#CCDEDEDE</color>
-    <color name="message_background_dark">#CC565656</color>
+<!--     <color name="message_background_light">#CCDEDEDE</color>
+ -->
+  <color name="chat_background_light">#DEDEDE</color>
+      <color name="message_background_light">#FFFFFF</color>      
+      
+      <color name="chat_background_dark">#333333</color>
+    <color name="message_background_dark">#565656</color>
     
      <!-- A light Holo shade of blue -->
     <color name="holo_blue_light">#cc33b5e5</color>

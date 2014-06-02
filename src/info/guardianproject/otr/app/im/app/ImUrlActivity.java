@@ -100,6 +100,7 @@ public class ImUrlActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     void handleIntent() {
@@ -178,10 +179,15 @@ public class ImUrlActivity extends Activity {
                             accountId = cursorProvider.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
                             mConn = ((ImApp)getApplication()).getConnection(providerId);
                             
+
                             //now sign in
                             signInAccount(accountId, providerId, cursorProvider.getString(ACTIVE_ACCOUNT_PW_COLUMN));
                             
-                            break; //do sign in, the rest of the process will happen later
+
+                            settings.close();
+                            cursorProvider.close();
+                            
+                            return;
                            
                         }
                         
@@ -295,10 +301,6 @@ public class ImUrlActivity extends Activity {
             public void stateChanged(int state, long accountId) {
                 if (state == ImConnection.LOGGED_IN) {
                     handleIntent();
-                }
-                else if (state == ImConnection.LOGGING_IN)
-                {
-                    Toast.makeText(ImUrlActivity.this, R.string.signing_in_wait, Toast.LENGTH_LONG).show();
                 }
                 
             }
@@ -467,7 +469,9 @@ public class ImUrlActivity extends Activity {
                 Intent intent = new Intent(ImUrlActivity.this, NewChatActivity.class);        
                 intent.setData(data);
                 ImUrlActivity.this.startActivityForResult(intent, REQUEST_START_MUC);
-                
+             
+                dialog.dismiss();
+                finish();
             }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -493,8 +497,8 @@ public class ImUrlActivity extends Activity {
         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
              
-              
                 mHandlerRouter.sendEmptyMessage(1);
+                dialog.dismiss();
             }
         })
         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -529,6 +533,7 @@ public class ImUrlActivity extends Activity {
                 intent.setAction(Intent.ACTION_INSERT);
                 intent.setData(uriAccountData);
                 startActivityForResult(intent,REQUEST_CREATE_ACCOUNT);
+                
             }
             else if (msg.what == 2)
             {
@@ -710,6 +715,7 @@ public class ImUrlActivity extends Activity {
       //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("originalIntent", getIntent());
         startActivity(intent);
+        finish();
       
     }
     

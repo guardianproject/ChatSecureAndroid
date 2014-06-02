@@ -80,6 +80,7 @@ public class ContactView extends FrameLayout {
     private static Drawable BG_DARK;
     private static Drawable BG_LIGHT;
     static Drawable AVATAR_DEFAULT = null;
+    static Drawable AVATAR_DEFAULT_GROUP = null;
     
     public ContactView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -102,6 +103,7 @@ public class ContactView extends FrameLayout {
         TextView mLine2;
         ImageView mAvatar;
         ImageView mStatusIcon;
+        ImageView mEncryptionIcon;
         View mContainer;
     }
 
@@ -120,6 +122,11 @@ public class ContactView extends FrameLayout {
             {
                 holder.mContainer.setBackgroundDrawable(BG_DARK);                
             }
+            else
+            {
+                holder.mContainer.setBackgroundDrawable(BG_LIGHT);
+            }
+       
         
         long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         String address = cursor.getString(COLUMN_CONTACT_USERNAME);
@@ -171,7 +178,16 @@ public class ContactView extends FrameLayout {
         if (holder.mAvatar != null)
         {
             if (Imps.Contacts.TYPE_GROUP == type) {
-                holder.mAvatar.setImageResource(R.drawable.group_chat);
+
+                holder.mAvatar.setVisibility(View.VISIBLE);
+
+                if (AVATAR_DEFAULT_GROUP == null)
+                    AVATAR_DEFAULT_GROUP = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                            R.drawable.group_chat));
+                    
+                    holder.mAvatar.setImageDrawable(AVATAR_DEFAULT_GROUP);
+                
+                holder.mStatusIcon.setVisibility(View.GONE);
                 
             }
             else if (cursor.getColumnIndex(Imps.Contacts.AVATAR_DATA)!=-1)

@@ -26,9 +26,9 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -75,7 +75,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
@@ -174,17 +174,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mChatPager.setDrawingCacheEnabled(true);
         mChatPager.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         
-        mChatPager.setOnPageChangeListener(new OnPageChangeListener () {
+        mChatPager.setOnPageChangeListener(new SimpleOnPageChangeListener () {
             
-            private int lastPos = -1;
-            
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
+            private int lastPos = -1;            
 
             @Override
             public void onPageSelected(int pos) {
@@ -261,39 +253,40 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         initConnections();
         
-        getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new MyLoaderCallbacks());
-    }
-    
-    class MyLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor> {
-        @Override
-        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-            CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
-            //loader.setUpdateThrottle(1000L);            
-            return loader;
-        }
+        getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
+            
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);                
+                loader.setUpdateThrottle(1000L);            
+                return loader;
+            }
 
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-           // Log.d("YYY", "swap cursor");
-            mChatPagerAdapter.swapCursor(newCursor);
-            mChatPager.invalidate();
-            
-            if (getIntent() != null)
-                resolveIntent(getIntent());
-            
-            if (mRequestedChatId >= 0) {
-                if (showChat(mRequestedChatId)) {
-                    mRequestedChatId = -1;
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+               // Log.d("YYY", "swap cursor");
+                mChatPagerAdapter.swapCursor(newCursor);
+              //  mChatPager.invalidate();
+                
+                if (getIntent() != null)
+                    resolveIntent(getIntent());
+                
+                if (mRequestedChatId >= 0) {
+                    if (showChat(mRequestedChatId)) {
+                        mRequestedChatId = -1;
+                    }
                 }
             }
-        }
 
-        @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
-            Log.d("YYY", "reset cursor");
-            mChatPagerAdapter.swapCursor(null);
-        }
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                Log.d("YYY", "reset cursor");
+                mChatPagerAdapter.swapCursor(null);
+            }
+        });
     }
+    
+    
     
     /*
      * We must have been thawed and the service was not previously connected, so our ChatViews are showing nothing.
@@ -524,6 +517,46 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     }
     
+    private IImConnection findConnectionForGroupChat (String user, String host)
+    {
+        Collection<IImConnection> connActive = mApp.getActiveConnections();
+        ContentResolver cr = this.getContentResolver();
+        IImConnection result = null;
+        
+        for (IImConnection conn : connActive)
+        {                   
+            try
+            {
+                
+                    Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( conn.getProviderId())},null);            
+
+                    Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
+                            conn.getProviderId(),     false /* keep updated */, mHandler /* no handler */);
+
+                    if (host.contains(settings.getDomain()))
+                    {
+                        if (conn.getState() == ImConnection.LOGGED_IN)
+                        {                     
+                            
+                            result = conn;                        
+                            settings.close();
+                            pCursor.close();
+                            break;
+                        }
+                    }
+                    
+                    settings.close();
+                    pCursor.close();
+                                                       
+            }
+            catch (RemoteException e){//nothing to do here
+            }
+            
+        }
+        
+        return result;
+    }
+    
     private void doResolveIntent(Intent intent) {
         
         if (requireOpenDashboardOnStart(intent)) {
@@ -568,16 +601,24 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                          
                     if (host != null && path != null)
                     {
-                        Collection<IImConnection> connActive = mApp.getActiveConnections();
                         
-                        for (IImConnection conn : connActive)
-                        {                            
-                            startGroupChat (path, host, conn);                        
+                        IImConnection connMUC = findConnectionForGroupChat(user, host);
+                        
+                        if (connMUC != null)
+                        {
+
+                            startGroupChat (path, host, connMUC);                        
                             setResult(RESULT_OK);
-                            break;
+                        }
+                        else
+                        {
+                            mHandler.showAlert("Connection Error", "Unable to find a connection to join a group chat from. Please sign in and try again.");                            
+                            setResult(this.RESULT_CANCELED);
+                            finish();
                         }
                         
-                    }
+                     }
+                    
                     
                     
                 } else {
@@ -1425,7 +1466,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         public Fragment getItem(int position) {
             if (position == 0)
             {
-                return (mContactList = new ContactListFragment());
+                if (mContactList == null)
+                    mContactList = new ContactListFragment();
+                
+                return mContactList;
             }
             else
             {
@@ -1708,7 +1752,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                   
         Uri.Builder builder = baseUri.buildUpon();
         
-        if (mContactList.mFilterView != null)
+        if (mContactList != null && mContactList.mFilterView != null)
             mContactList.mFilterView.doFilter(builder.build(), null);
     }
 
@@ -2102,22 +2146,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void showGroupChatDialog ()
     {
-        ContentResolver cr = getContentResolver();
-
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mLastProviderId)},null);            
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr, mLastProviderId, true, null);
-        
-        String chatDomain = "conference." + settings.getDomain();
-        
-        settings.close();
-        
         
      // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.alert_dialog_group_chat, null);
         final TextView tvServer = (TextView) textEntryView.findViewById(R.id.chat_server);
         
-        tvServer.setText(chatDomain);
+        tvServer.setText("conference.");// need to make this a list
         
         new AlertDialog.Builder(this)            
             .setTitle(R.string.create_or_join_group_chat)
@@ -2138,7 +2173,24 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     chatServer = tv.getText().toString();
                     
-                    startGroupChat (chatRoom, chatServer, ((ImApp)getApplication()).getConnection(mLastProviderId));
+                    for (IImConnection conn : mApp.getActiveConnections())
+                    {
+                                            
+                        try
+                        {                            
+                            if (conn.getState() == ImConnection.LOGGED_IN)
+                                startGroupChat (chatRoom, chatServer, conn);
+                            else
+                            {
+                                //can't start group chat
+                                mHandler.showAlert("Group Chat","Please enable your account to join a group chat");
+                            }
+                        } catch (RemoteException re) {
+                          
+                        }
+                    }
+                    
+                    dialog.dismiss();
                     
                 }
             })
@@ -2146,6 +2198,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     /* User clicked cancel so do some stuff */
+                    dialog.dismiss();
                 }
             })
             .create().show();
@@ -2194,8 +2247,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                             
                         }
                     } else {
-                        long id = session.getId();
-                        publishProgress(id);
+                        mRequestedChatId = session.getId();
+                        publishProgress(mRequestedChatId);
                     }
                     
                     return null;
@@ -2275,12 +2328,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         public void onClick(DialogInterface dialog, int whichButton) {
             
                             approveSubscription(subProviderId, subFrom);
+                            dialog.dismiss();
                         }
                     })
                     .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
             
                             declineSubscription(subProviderId, subFrom);
+                            dialog.dismiss();
                         }
                     })
                     .create().show();
@@ -2354,13 +2409,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             }
         }
         
+        finish();
         Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
         // Request lock
         intent.putExtra("doLock", true);
         // Clear the backstack
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
+        
    }
 
 
