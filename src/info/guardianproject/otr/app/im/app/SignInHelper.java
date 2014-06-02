@@ -20,10 +20,12 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -194,19 +196,51 @@ public class SignInHelper {
         }
     }
 
-    private void signInAccount(String password, long providerId, String providerName, long accountId) {
+    private void signInAccount(final String password, final long providerId, final String providerName, final long accountId) {
+        
+        new AsyncTask<String, Void, String> () {
+            @Override
+            protected String doInBackground(String... params) {
+              
+                try {
+                    signInAccountAsync(password, providerId, providerName, accountId);
+                } catch (RemoteException e) {
+                    Log.d(ImApp.LOG_TAG,"error signing in",e);
+                }
+                
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+            }
+
+            @Override
+            protected void onPreExecute() {
+            }
+
+            @Override
+            protected void onProgressUpdate(Void... values) {
+            }
+        }.execute("");
+        
+    }
+    
+    private void signInAccountAsync(String password, long providerId, String providerName, long accountId) throws RemoteException {
         boolean autoLoadContacts = true;
         boolean autoRetryLogin = true;
         IImConnection conn = null;
         
-        try {
+     
             conn = mApp.getConnection(providerId);
+            
             if (conn != null) {
                 connections.add(conn);
                 conn.registerConnectionListener(mListener);
                 int state = conn.getState();
                 if (mSignInListener != null)
                     mSignInListener.stateChanged(state, accountId);
+                
                 if (state != ImConnection.DISCONNECTED) {
                     // already signed in or in the process
                     if (state == ImConnection.LOGGED_IN) {
@@ -216,6 +250,7 @@ public class SignInHelper {
                     handleConnectionEvent(conn, state, null);
                     return;
                 }
+                
             } else {
                 conn = mApp.createConnection(providerId, accountId);
                 if (conn == null) {
@@ -234,33 +269,7 @@ public class SignInHelper {
                 promptForBackgroundDataSetting(providerName);
                 return;
             }
-        } catch (DeadObjectException e) {
-           
-            try
-            {
-                conn = mApp.createConnection(providerId, accountId);
-                if (conn == null) {
-                    // This can happen when service did not come up for any reason
-                    return;
-                }
-    
-                connections.add(conn);
-                conn.registerConnectionListener(mListener);
-                if (mApp.isNetworkAvailableAndConnected()) {
-                    
-                    conn.login(password, autoLoadContacts, autoRetryLogin);
-                }
-            } catch (RemoteException e2) {
-
-                mHandler.showServiceErrorAlert(e2.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "sign in account",e2);
-            }
-
-        } catch (RemoteException e) {
-
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "sign in account",e);
-        }
+        
     }
 
     private static final String SYNC_SETTINGS_ACTION = "android.settings.SYNC_SETTINGS";

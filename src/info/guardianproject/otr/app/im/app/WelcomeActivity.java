@@ -20,6 +20,7 @@ import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -602,9 +603,17 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             @Override
             protected String doInBackground(String... params) {
               
-
+                
                 while (mApp.getActiveConnections().size() > 0)
                 {
+                   for (IImConnection conn : mApp.getActiveConnections())
+                   {
+                       try{
+                           conn.logout();
+                           
+                       }catch(Exception e){}
+                   }
+                   
                     try{Thread.sleep(200);}catch (Exception e){}
                 }
                 
@@ -619,7 +628,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 super.onPostExecute(result);
 
                 if (dialog != null)
-                    dialog.hide();
+                    dialog.dismiss();
 
                 mApp.forceStopImService();
                 
