@@ -20,8 +20,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="6dp"
+    >
 
+        <TextView android:id="@+id/choose_list_label"
+        android:layout_marginTop="10dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_list_label" />
+
+    <Spinner android:id="@+id/choose_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/choose_list_label" />
+    
+    
     <TextView android:id="@+id/input_contact_label"
         android:layout_marginTop="10dip"
         android:layout_width="fill_parent"
@@ -33,26 +48,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress" />
+    
 
-    <!-- 
-    <TextView android:id="@+id/choose_list_label"
-        android:layout_marginTop="10dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/choose_list_label" />
-
-    <Spinner android:id="@+id/choose_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/choose_list_label" />
-
-    <TextView android:layout_marginTop="10dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="@string/invite_instruction" />
- -->
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="right">

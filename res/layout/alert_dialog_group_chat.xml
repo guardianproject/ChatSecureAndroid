@@ -20,9 +20,6 @@
     android:orientation="vertical">
 
 
-            
-    
-            
     <EditText
         android:id="@+id/chat_room"
         android:hint="name of room to create or join"

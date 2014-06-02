@@ -230,10 +230,10 @@
 		<string name="empty_chat_list">No active chats.</string>
 		
 		<string name="add_contact_title">Add contact</string>
-		<string name="input_contact_label">Email address of person you wish to invite:</string>
-		<string name="choose_list_label">Choose a list:</string>
+		<string name="input_contact_label">Username or JabberID of person to add:</string>
+		<string name="choose_list_label">Account to add to:</string>
 		<string name="invite_instruction">Type a name to add from Contacts.</string>
-		<string name="invite_label">Send invitation</string>
+		<string name="invite_label">Send Invite</string>
 		
 		<string name="contact_profile_title">Contact profile</string>
 		<string name="label_status">Status:</string>
