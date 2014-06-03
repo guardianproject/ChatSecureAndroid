@@ -411,7 +411,6 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String domain = providerSettings.getDomain();
         String xmppName = userName + '@' + domain + '/' + providerSettings.getXmppResource();    
-        providerSettings.close();
         
         return new Contact(new XmppAddress(xmppName), userName);
     }
