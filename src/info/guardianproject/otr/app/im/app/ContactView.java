@@ -17,9 +17,12 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
+import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -33,7 +36,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ContactView extends FrameLayout {
@@ -128,17 +130,18 @@ public class ContactView extends FrameLayout {
             }
        
         
-        long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
-        String address = cursor.getString(COLUMN_CONTACT_USERNAME);
-        String displayName = cursor.getString(COLUMN_CONTACT_NICKNAME);
-        int type = cursor.getInt(COLUMN_CONTACT_TYPE);
+        final long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
+        final String address = cursor.getString(COLUMN_CONTACT_USERNAME);
+        final String displayName = cursor.getString(COLUMN_CONTACT_NICKNAME);
+        final int type = cursor.getInt(COLUMN_CONTACT_TYPE);
+        final String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
+
+        final int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
+
+        final int subType = cursor.getInt(COLUMN_SUBSCRIPTION_TYPE);
+        final int subStatus = cursor.getInt(COLUMN_SUBSCRIPTION_STATUS);
+        
         String statusText = cursor.getString(COLUMN_CONTACT_CUSTOM_STATUS);
-        String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
-
-        int presence = cursor.getInt(COLUMN_CONTACT_PRESENCE_STATUS);
-
-        int subType = cursor.getInt(COLUMN_SUBSCRIPTION_TYPE);
-        int subStatus = cursor.getInt(COLUMN_SUBSCRIPTION_STATUS);
         
         String nickname = displayName;
         
@@ -260,8 +263,45 @@ public class ContactView extends FrameLayout {
         
         holder.mLine1.setVisibility(View.VISIBLE);
        
+        getEncryptionState (providerId, address, holder);
     }
     
+    private void getEncryptionState (long providerId, String address, ViewHolder holder)
+    {
+        
+         try {
+            IChatSession chatSession = app.getConnection(providerId).getChatSessionManager().getChatSession(address);
+            
+            if (chatSession != null)
+            {
+                IOtrChatSession otrChatSession = chatSession.getOtrChatSession();
+                if (otrChatSession != null)
+                {
+                    SessionStatus chatStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
+                    
+                    if (chatStatus == SessionStatus.ENCRYPTED)
+                    {
+                        boolean isVerified = otrChatSession.isKeyVerified(address);
+                        
+                        if (isVerified)
+                            holder.mStatusIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_black_encrypted_and_verified));
+                        else
+                            holder.mStatusIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_black_encrypted_not_verified));
+
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+         
+         
+                //mCurrentChatSession.getOtrChatSession();
+
+    }
     /*
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };
