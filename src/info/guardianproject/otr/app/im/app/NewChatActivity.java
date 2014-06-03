@@ -264,10 +264,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-               // Log.d("YYY", "swap cursor");
+           
                 mChatPagerAdapter.swapCursor(newCursor);
-              //  mChatPager.invalidate();
-                
+           
                 if (getIntent() != null)
                     resolveIntent(getIntent());
                 
@@ -276,11 +275,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         mRequestedChatId = -1;
                     }
                 }
+                
+                updateChatList();
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                Log.d("YYY", "reset cursor");
                 mChatPagerAdapter.swapCursor(null);
             }
         });
@@ -335,8 +335,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
         
-        View vg = findViewById (R.id.chatpager);
-        vg.invalidate();
+        //View vg = findViewById (R.id.chatpager);
+        //vg.invalidate();
         
         mApp.checkForCrashes(this);
     }
@@ -1464,6 +1464,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if (mContactList == null)
                     mContactList = new ContactListFragment();
                 
+
                 return mContactList;
             }
             else
@@ -1737,23 +1738,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    private void updateChatList ()
+    public void updateChatList ()
     {
-        
-        ContentResolver cr = getContentResolver();
-        
-          Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-                  
-                  
-        Uri.Builder builder = baseUri.buildUpon();
-        
+
         if (mContactList != null && mContactList.mFilterView != null)
-            mContactList.mFilterView.doFilter(builder.build(), null);
+        {
+            ContentResolver cr = getContentResolver();
+            
+              Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
+                      
+                      
+              Uri.Builder builder = baseUri.buildUpon();
+            
+              mContactList.mFilterView.doFilter(builder.build(), null);
+        }
     }
 
 
     
-    public static class ContactListFragment extends Fragment implements ContactListListener, ProviderListItem.SignInManager
+    public static class ContactListFragment extends Fragment implements ContactListListener
     {
         
 
@@ -1787,9 +1790,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
 
         ContactListFilterView mFilterView = null;
-   //     UserPresenceView mPresenceView = null;
-
-        boolean showGrid = true;
         
         ImApp mApp = null;
         IImConnection mConn = null;
@@ -1801,8 +1801,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             if (mFilterView != null)
                 mFilterView.setConnection(mConn);
             
-         //   if (mPresenceView != null)
-          //      mPresenceView.setConnection(mConn);
         }
 
         private Handler mPresenceHandler = new Handler()
@@ -1818,36 +1816,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             } 
         };
 
-       
-        public ContactListFragment() {
-        }
-
-        /**
-          * When creating, retrieve this instance's number from its arguments.
-          */
-         @Override
-         public void onCreate(Bundle savedInstanceState) {
-           
-
-             super.onCreate(savedInstanceState);
-
-             
-         }
-
-         
-         
-         public boolean toggleGrid ()
-         {
-             showGrid = !showGrid;
-             
-          
-          
-         //   getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-          //   getFragmentManager().beginTransaction().replace(getId(),this).commit();
-                 
-                 return showGrid;
-             
-         }
 
         /**
           * The Fragment's UI is just a simple text view showing its
@@ -1857,14 +1825,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
          public View onCreateView(LayoutInflater inflater, ViewGroup container,
                  Bundle savedInstanceState) {
             
-             if (showGrid)
-                 mFilterView = (ContactListFilterView) inflater.inflate(
-                         R.layout.contact_grid_filter_view, null);
-             else
-                 mFilterView = (ContactListFilterView) inflater.inflate(
+              mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
-              
-         //    mPresenceView = (UserPresenceView) mFilterView.findViewById(R.id.userPresence);
 
              mFilterView.setListener(this);
              mFilterView.setLoaderManager(getLoaderManager(), CONTACT_LIST_LOADER_ID);
@@ -1898,8 +1860,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mApp = ((ImApp)activity.getApplication()); 
             mApp.registerForConnEvents(mPresenceHandler);
 
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            showGrid = settings.getBoolean("showGrid", false);
 
         }
 
@@ -1950,20 +1910,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              
             }
         }
-        
-        
-        @Override
-        public void signIn(long accountId) {
-           throw new UnsupportedOperationException("not implemented");
-            
-        }
-
-        @Override
-        public void signOut(long accountId) {
-
-            throw new UnsupportedOperationException("not implemented");
-        }
-        
         
     
     }
