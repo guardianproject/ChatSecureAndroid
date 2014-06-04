@@ -490,7 +490,7 @@ public class MessageView extends FrameLayout {
             
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
-            lastMessage = body;//formatMessage(body);
+            lastMessage = formatMessage(body);
          
              try {
 

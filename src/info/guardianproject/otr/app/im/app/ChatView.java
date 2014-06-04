@@ -82,6 +82,7 @@ import android.os.RemoteException;
 import android.provider.Browser;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -1279,7 +1280,7 @@ public class ChatView extends LinearLayout {
         mEmojiPager.setVisibility(View.GONE);
         //mActionBox.setVisibility(View.GONE);
         
-        String msg = mComposeMessage.getText().toString();
+        String msg = android.text.Html.escapeHtml(mComposeMessage.getText().toString());
 
         if (TextUtils.isEmpty(msg.trim())) {
             return;
