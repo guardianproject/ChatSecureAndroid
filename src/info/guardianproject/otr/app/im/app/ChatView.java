@@ -1372,22 +1372,8 @@ public class ChatView extends LinearLayout {
         String message = null;
         boolean isConnected;
 
-       // if (overrideUserTouch)
-         //   mOtrSwitchTouched = false;
-
-        if (this.isGroupChat())
-        {
-            //no OTR in group chat
-            mStatusWarningView.setVisibility(View.GONE);
-
-            // phoenix-nz - we need to update the encryption menu state, 
-            // because it could have been set in another chat view
-            mActivity.updateEncryptionMenuState();
-            return;
-        }
 
         try {
-            //IImConnection conn = mApp.getConnection(mProviderId);
             checkConnection();
             isConnected = (mConn == null) ? false : mConn.getState() == ImConnection.LOGGED_IN;
            
@@ -1396,8 +1382,20 @@ public class ChatView extends LinearLayout {
             isConnected = false;
         }
 
-        
-        if (isConnected && mCurrentChatSession != null) {
+        if (this.isGroupChat())
+        {
+            //anything to do here?
+            visibility = View.VISIBLE;
+            message = getContext().getString(R.string.this_is_a_group_chat);                
+            mWarningText.setTextColor(Color.WHITE);
+            mStatusWarningView.setBackgroundColor(Color.LTGRAY);
+            
+
+            mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+            mComposeMessage.setHint(R.string.compose_hint);
+      
+        }
+        else if (isConnected && mCurrentChatSession != null) {
 
             try {
                 IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
@@ -1417,7 +1415,6 @@ public class ChatView extends LinearLayout {
             }
             
             if (mType == Imps.Contacts.TYPE_GROUP) {
-                visibility = View.GONE;
                 message = "";
             }
             else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
@@ -1432,35 +1429,19 @@ public class ChatView extends LinearLayout {
 
             }
 
-            /**
-            if (mPresenceStatus == Imps.Presence.OFFLINE)
-            {
-                visibility = View.VISIBLE;
-                mWarningText.setTextColor(Color.WHITE);
-                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-                message = mContext.getString(R.string.presence_offline);
-
-            }
-            else
-            */             
+            
             if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
-                
-                visibility = View.GONE;
                 
                     mSendButton.setImageResource(R.drawable.ic_send_holo_light);
                     mComposeMessage.setHint(R.string.compose_hint);
                     
-                    mWarningText.setTextColor(Color.WHITE);
-                    mStatusWarningView.setBackgroundResource(R.color.otr_red);
-                    message = mContext.getString(R.string.otr_session_status_plaintext);
             }
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
 
-                visibility = View.GONE;
                 
                 mComposeMessage.setHint(R.string.compose_hint_secure);
-
+                visibility = View.GONE;
                 
                 mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
@@ -1483,23 +1464,19 @@ public class ChatView extends LinearLayout {
     
                         if (rFingerprint != null) {
                             if (!mIsVerified) {
-                                message = mContext.getString(R.string.otr_session_status_encrypted);
-    
-                                mWarningText.setTextColor(Color.BLACK);
+                                message = mContext.getString(R.string.otr_session_status_encrypted);    
                                 mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
                                 
                                 
                                 
                             } else {
-                                message = mContext.getString(R.string.otr_session_status_verified);
-    
-                                mWarningText.setTextColor(Color.BLACK);
+                                message = mContext.getString(R.string.otr_session_status_verified);    
                                 mStatusWarningView.setBackgroundResource(R.color.otr_green);
                                 
                                 
                             }
                         } else {
-                            mWarningText.setTextColor(Color.WHITE);
+                            
                             mStatusWarningView.setBackgroundResource(R.color.otr_red);
                             message = mContext.getString(R.string.otr_session_status_plaintext);
                             
@@ -1525,18 +1502,12 @@ public class ChatView extends LinearLayout {
             }  
 
         } else {
-            
 
-            mSendButton.setImageResource(R.drawable.ic_send_holo_light);
-            mComposeMessage.setHint(R.string.compose_hint);
-            
-            /*
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-            message = mContext.getString(R.string.disconnected_warning);
-            */
+            message = mContext.getString(R.string.disconnected_warning);            
             
         }
         
