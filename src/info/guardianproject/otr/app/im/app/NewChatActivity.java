@@ -253,12 +253,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         initConnections();
         
-        getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
+        LoaderManager lMgr =getSupportLoaderManager(); 
+        lMgr.initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
             
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);                
-                loader.setUpdateThrottle(1000L);            
+              //  loader.setUpdateThrottle(1000L);            
                 return loader;
             }
 
@@ -281,7 +282,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                mChatPagerAdapter.swapCursor(null);
+             //   mChatPagerAdapter.swapCursor(null);
             }
         });
     }
@@ -928,8 +929,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             displayQRCode();
             return true;
         case R.id.menu_end_conversation:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().closeChatSession(false);
+            endCurrentChat();
+            
             return true;
         /*
         case R.id.menu_delete_conversation:
@@ -976,6 +977,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void endCurrentChat ()
+    {
+        if (getCurrentChatView() != null)
+            getCurrentChatView().closeChatSession(true);
+        
+        updateChatList();
     }
     
     private void startContactPicker() {
