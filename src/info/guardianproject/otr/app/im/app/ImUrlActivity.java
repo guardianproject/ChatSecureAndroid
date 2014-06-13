@@ -30,9 +30,9 @@ import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
@@ -351,22 +351,42 @@ public class ImUrlActivity extends Activity {
         return false;
     }
     
+    private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
+
     private boolean resolveIntent(Intent intent) {
         Uri data = intent.getData();
         mHost = data.getHost();
         
         if (data.getScheme().equals("immu")) {
             mFromAddress = data.getUserInfo();
+            
+            //remove username non-letters
+            mFromAddress = mFromAddress.replaceAll("[\\d[^\\w]]+", "");
+            
+            if (!Pattern.compile(USERNAME_PATTERN).matcher(mFromAddress).matches())
+            {
+                Log.w(ImApp.LOG_TAG, "resolveIntent: invalid username string: "+ mFromAddress);
+                return false;
+            }
+            
             String chatRoom = null;
             
             if (data.getPathSegments().size() > 0)
+            {
                 chatRoom = data.getPathSegments().get(0);
+                
+                //replace chat room name non-letters with underscores
+                chatRoom = chatRoom.replaceAll("[\\d[^\\w]]+", "_");
            
-            mToAddress = chatRoom + '@' + mHost;
+                mToAddress = chatRoom + '@' + mHost;
             
-            mProviderName = findMatchingProvider(mHost);
+                mProviderName = findMatchingProvider(mHost);
+                
+                return true;
+            }
             
-            return true;
+            return false;
+            
         }
 
         if (data.getScheme().equals("otr-in-band")) {
