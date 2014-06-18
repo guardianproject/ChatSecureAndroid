@@ -440,18 +440,21 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             }
 
             updateAccountStatusInDb();
+            
+            synchronized (mRemoteConnListeners) {
 
-            final int N = mRemoteConnListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IConnectionListener listener = mRemoteConnListeners.getBroadcastItem(i);
-                try {
-                    listener.onStateChanged(ImConnectionAdapter.this, state, error);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
+                final int N = mRemoteConnListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    IConnectionListener listener = mRemoteConnListeners.getBroadcastItem(i);
+                    try {
+                        listener.onStateChanged(ImConnectionAdapter.this, state, error);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
                 }
+                mRemoteConnListeners.finishBroadcast();
             }
-            mRemoteConnListeners.finishBroadcast();
             
             if (state == ImConnection.DISCONNECTED) {
                 // NOTE: if this logic is changed, the logic in ImApp.MyConnListener must be changed to match
