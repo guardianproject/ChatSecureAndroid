@@ -145,11 +145,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
 
         super.onResume();
 
-        ThemeableActivity.setBackgroundImage(this);
-        
         mHandler.registerForBroadcastEvents();
-        
-      //  mApp.checkForCrashes(this);
         
     }
     
@@ -157,14 +153,11 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
   
 
     
-    protected void gotoAccount(long accountId)
+    protected void gotoChats()
     {
 
         Intent intent = new Intent(this, NewChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
-        
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);       
         startActivity(intent);
     
     }
@@ -402,7 +395,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         
         intent.putExtra("register", createAccount);
         
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CREATE_ACCOUNT);
     }
     
     public void createBurnerAccount ()
@@ -629,6 +622,13 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
     
             }
             
+        }
+        else if (requestCode == REQUEST_CREATE_ACCOUNT)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                gotoChats();
+            }
         }
     }
 

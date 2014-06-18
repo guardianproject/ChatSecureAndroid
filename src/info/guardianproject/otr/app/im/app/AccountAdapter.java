@@ -26,7 +26,6 @@ public class AccountAdapter extends CursorAdapter {
     private int mResId;
     private Cursor mStashCursor;
     private AsyncTask<Void, Void, List<AccountSetting>> mBindTask;
-    private List<AccountSetting> mAccountSettingList;
     private Listener mListener;
 
     public AccountAdapter(Activity context,
@@ -117,8 +116,6 @@ public class AccountAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ((ProviderListItem) view).bindView(cursor);
         
-        if (mAccountSettingList != null)
-            ((ProviderListItem) view).applyView(mAccountSettingList.get(cursor.getPosition()));
     }
 
     private void runBindTask( final Activity context, final List<AccountInfo> accountInfoList ) {
@@ -131,7 +128,6 @@ public class AccountAdapter extends CursorAdapter {
             mBindTask.cancel(false);
         // 
         
-        mAccountSettingList = null;
         
         mBindTask = new AsyncTask<Void, Void, List<AccountSetting>>() {
             
@@ -178,7 +174,6 @@ public class AccountAdapter extends CursorAdapter {
             @Override
             protected void onPostExecute(List<AccountSetting> result) {
                 // store 
-                mAccountSettingList = result ;
                 mBindTask = null;
                 // swap
                 AccountAdapter.super.swapCursor(mStashCursor);
