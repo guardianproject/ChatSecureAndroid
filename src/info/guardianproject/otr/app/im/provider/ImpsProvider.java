@@ -1639,6 +1639,9 @@ public class ImpsProvider extends ContentProvider {
         }
         net.sqlcipher.Cursor c = null;
 
+        if (!db.isOpen())
+            return null;
+        
         try {
             c = qb.query(db, projectionIn, whereClause.toString(), selectionArgs, groupBy, null,
                     sort, limit);
@@ -1661,16 +1664,21 @@ public class ImpsProvider extends ContentProvider {
                 
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
+            
+
+            c = new MyCrossProcessCursorWrapper(c);
+            return c;
+            
         } catch (Exception ex) {
             LogCleaner.error(LOG_TAG, "query exc db caught ", ex);
+            return null;
         }
         catch (Error ex) {
             LogCleaner.error(LOG_TAG, "query error db caught ", ex);
+            return null;
         }
         
 
-        c = new MyCrossProcessCursorWrapper(c);
-        return c;
     }
     
     static class MyCrossProcessCursorWrapper extends net.sqlcipher.CrossProcessCursorWrapper {

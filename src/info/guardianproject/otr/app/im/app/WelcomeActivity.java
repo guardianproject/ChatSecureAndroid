@@ -24,6 +24,9 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
+
+import java.util.ArrayList;
+
 import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -603,23 +606,19 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             @Override
             protected String doInBackground(String... params) {
               
+                ArrayList<IImConnection> listConn = new ArrayList<IImConnection>();
+                listConn.addAll(mApp.getActiveConnections());
                 
-                while (mApp.getActiveConnections().size() > 0)
+                for (IImConnection conn : listConn)
                 {
-                   for (IImConnection conn : mApp.getActiveConnections())
-                   {
-                       try{
-                           conn.logout();
-                           
-                       }catch(Exception e){}
-                   }
                    
-                    try{Thread.sleep(200);}catch (Exception e){}
+                   try{
+                       conn.logout();
+                       
+                   }catch(Exception e){}
+                 
                 }
-                
-                //wait another half second just in case
-                try{Thread.sleep(500);}catch (Exception e){}
-              
+                   
                 return "";
               }
 
