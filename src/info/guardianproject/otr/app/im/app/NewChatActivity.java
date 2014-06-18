@@ -253,12 +253,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         initConnections();
         
-        getSupportLoaderManager().initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
+        LoaderManager lMgr =getSupportLoaderManager(); 
+        lMgr.initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
             
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);                
-                loader.setUpdateThrottle(1000L);            
+              //  loader.setUpdateThrottle(1000L);            
                 return loader;
             }
 
@@ -281,7 +282,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                mChatPagerAdapter.swapCursor(null);
+             //   mChatPagerAdapter.swapCursor(null);
             }
         });
     }
@@ -329,8 +330,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     protected void onResume() {     
         super.onResume();
         
-        if (menu.isMenuShowing())
-            menu.toggle();
+      //  if (menu.isMenuShowing())
+        //    menu.toggle();
 
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
@@ -381,42 +382,14 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         menu.setMenu(R.layout.fragment_drawer);
         
         this.getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
-        
-        Button btnDrawerAccount = (Button) findViewById(R.id.btnDrawerAccount);
-        
-        Button btnDrawerPanic = (Button) findViewById(R.id.btnDrawerPanic);
-        Button btnDrawerGroupChat = (Button) findViewById(R.id.btnDrawerGroupChat);
-        Button btnDrawerAddContact = (Button) findViewById(R.id.btnDrawerAddContact);
-        Button btnDrawerExit = (Button) findViewById(R.id.btnDrawerExit);
-        
-        btnDrawerAccount.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-                
-                Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
-                startActivity(intent);
-            }
-            
-            
-        });
-        
-        
+         
+        /*
         btnDrawerPanic.setOnClickListener(new OnClickListener ()
         {
 
             @Override
             public void onClick(View v) {
                
-                /*
-                Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
-                intent.putExtra("EXIT", true);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                */
-                
-                
                 Uri packageURI = Uri.parse("package:info.guardianproject.otr.app.im");
 
                 Intent intent = new Intent(Intent.ACTION_DELETE, packageURI);
@@ -425,8 +398,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 
             }
             
-        });
+        });*/
         
+        /*
         btnDrawerGroupChat.setOnClickListener(new OnClickListener ()
         {
 
@@ -440,24 +414,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 
             }
             
-        });
+        });*/
         
 
-        btnDrawerAddContact.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-               
-                showInviteContactDialog();
-                        
-                
-            }
-            
-        });
         
-        
-        
+        /*
         btnDrawerExit.setOnClickListener(new OnClickListener ()
         {
             @Override
@@ -466,7 +427,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 doHardShutdown();
             }
             
-        });
+        });*/
     }
     
     private void showInviteContactDialog ()
@@ -928,8 +889,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             displayQRCode();
             return true;
         case R.id.menu_end_conversation:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().closeChatSession(false);
+            endCurrentChat();
+            
             return true;
         /*
         case R.id.menu_delete_conversation:
@@ -963,19 +924,32 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
         case R.id.menu_view_accounts:
             startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-          //  finish();
+         
             return true;
             
         case R.id.menu_new_chat:
             startContactPicker();
-
-//            updateContactList(false);
             return true;
             
+        case R.id.menu_exit:
+            doHardShutdown();
+            return true;
+            
+        case R.id.menu_add_contact:
+            showInviteContactDialog();
+            return true;
       
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void endCurrentChat ()
+    {
+        if (getCurrentChatView() != null)
+            getCurrentChatView().closeChatSession(true);
+        
+        updateChatList();
     }
     
     private void startContactPicker() {
@@ -1658,7 +1632,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 else
                 {
                     //no configured accounts, prompt to setup
-                    Intent intent = new Intent(NewChatActivity.this, AccountListActivity.class);
+                    Intent intent = new Intent(NewChatActivity.this, AccountWizardActivity.class);
                     startActivity(intent);
                     finish();
                 }

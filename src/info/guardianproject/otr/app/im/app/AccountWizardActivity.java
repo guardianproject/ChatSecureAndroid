@@ -31,29 +31,37 @@ import java.util.UUID;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.viewpagerindicator.PageIndicator;
 
-public class AccountListActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
+public class AccountWizardActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -65,6 +73,18 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
 
+
+    /**
+     * The pager widget, which handles animation and allows swiping horizontally to access previous
+     * and next wizard steps.
+     */
+    private ViewPager mPager;
+
+    /**
+     * The pager adapter, which provides the pages to the view pager widget.
+     */
+    private PagerAdapter mPagerAdapter;
+    
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -81,8 +101,17 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         mHandler = new MyHandler(this);
         mSignInHelper = new SignInHelper(this);
 
+        buildAccountList();
+        
         setContentView(R.layout.account_list_activity);
         
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new WizardPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        
+        PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
+        titleIndicator.setViewPager(mPager);
         
     }
 
@@ -116,11 +145,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
         super.onResume();
 
-        ThemeableActivity.setBackgroundImage(this);
-        
         mHandler.registerForBroadcastEvents();
-        
-      //  mApp.checkForCrashes(this);
         
     }
     
@@ -128,14 +153,11 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
   
 
     
-    protected void gotoAccount(long accountId)
+    protected void gotoChats()
     {
 
         Intent intent = new Intent(this, NewChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, accountId);
-        
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);       
         startActivity(intent);
     
     }
@@ -192,8 +214,8 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
-        inflater.inflate(R.menu.accounts_menu, menu);
+        //MenuInflater inflater = getSupportMenuInflater();
+       // inflater.inflate(R.menu.accounts_menu, menu);
         return true;
     }
 
@@ -204,7 +226,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
             doHardShutdown();
             return true;
         case R.id.menu_add_account:
-            showExistingAccountListDialog();
+         //   showExistingAccountListDialog();
             return true;
         case R.id.menu_settings:
             Intent sintent = new Intent(this, SettingActivity.class);
@@ -221,7 +243,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         return super.onOptionsItemSelected(item);
     }
 
-    private String[] mAccountList;
+    private String[][] mAccountList;
     private String mNewUser;
     
     private ImPluginHelper helper = ImPluginHelper.getInstance(this);
@@ -238,32 +260,48 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
 
     }
     
+    Account[] mGoogleAccounts;
+    
+    private void buildAccountList ()
+    {
+        List<String> listProviders = helper.getProviderNames();
+        
+        mGoogleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
+                
+        mAccountList = new String[listProviders.size()+mGoogleAccounts.length+2][2]; //potentialProviders + google + create account + burner
+        
+        int i = 0;
+        
+        mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);       
+        mAccountList[i++][1] = getString(R.string.account_existing_full);       
+        
+        
+        for (Account account : mGoogleAccounts)
+        {
+            mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account) + " '" + account.name + "'";
+            mAccountList[i++][1] = getString(R.string.account_google_full);       
+            
+        }
+        
+        mAccountList[i][0] = getString(R.string.i_need_a_new_account);
+        mAccountList[i++][1] = getString(R.string.account_new_full);  
+        
+        mAccountList[i][0] = getString(R.string.i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_);
+        mAccountList[i++][1] = getString(R.string.account_wifi_full);  
+
+        mAccountList[i][0] = getString(R.string.i_need_a_burner_one_time_throwaway_account_);
+        mAccountList[i++][1] = getString(R.string.account_burner_full);  
+
+    }
+    
     /* CHANGE phoenix_nz - add "Create Account" to List */
+    /**
     void showExistingAccountListDialog() {
       
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.account_select_type);
 
-        List<String> listProviders = helper.getProviderNames();
         
-        final Account[] googleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
-                
-        mAccountList = new String[listProviders.size()+googleAccounts.length+2]; //potentialProviders + google + create account + burner
-        
-        int i = 0;
-        
-        mAccountList[i++] = getString(R.string.i_have_an_existing_xmpp_account);        
-        
-        for (Account account : googleAccounts)
-        {
-            mAccountList[i++] = getString(R.string.i_want_to_chat_using_my_google_account) + " '" + account.name + "'";
-        }
-        
-        mAccountList[i++] = getString(R.string.i_need_a_new_account);
-        
-        mAccountList[i++] = getString(R.string.i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_);
-        
-        mAccountList[i++] = getString(R.string.i_need_a_burner_one_time_throwaway_account_);
         
         builder.setItems(mAccountList, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int pos) {
@@ -289,7 +327,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                 }
                 else
                 {
-                    addGoogleAccount(googleAccounts[pos-1].name);
+                    addGoogleAccount(mGoogleAccounts[pos-1].name);
                 }
             }
         });
@@ -297,7 +335,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         dialog.show();
 
     }
-    
+    */
 
     private Handler mHandlerGoogleAuth = new Handler ()
     {
@@ -323,7 +361,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
                 //get the oauth token
                 
               //don't store anything just make sure it works!
-               String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountListActivity.this,mHandlerGoogleAuth);
+               String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountWizardActivity.this,mHandlerGoogleAuth);
        
                //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
                 showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
@@ -357,7 +395,7 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         
         intent.putExtra("register", createAccount);
         
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CREATE_ACCOUNT);
     }
     
     public void createBurnerAccount ()
@@ -585,6 +623,13 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
             }
             
         }
+        else if (requestCode == REQUEST_CREATE_ACCOUNT)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                gotoChats();
+            }
+        }
     }
 
 
@@ -596,4 +641,99 @@ public class AccountListActivity extends SherlockFragmentActivity implements Vie
         finish();
     }
 
+    public static class WizardPageFragment extends Fragment {
+
+        private TextView mAccountInfo = null;
+        private TextView mAccountDetail = null;
+        
+        private Button mButtonAddAccount = null;
+        private String mAccountInfoText = null;
+        private String mAccountDetailText = null;
+        private OnClickListener mOcl = null;
+        
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            ViewGroup rootView = (ViewGroup) inflater.inflate(
+                    R.layout.account_wizard_slider, container, false);
+
+            mAccountInfo = (TextView)rootView.findViewById(R.id.lblAccountTypeInfo);
+            mAccountDetail = (TextView)rootView.findViewById(R.id.lblAccountTypeDetail);
+            
+            mButtonAddAccount = (Button)rootView.findViewById(R.id.btnAddAccount);
+            
+            mAccountInfo.setText(mAccountInfoText);
+            mAccountDetail.setText(mAccountDetailText);
+            mButtonAddAccount.setOnClickListener(mOcl);
+
+            return rootView;
+        }
+        
+        public void setAccountInfo (String accountInfoText, String accountDetailText)
+        {
+            mAccountInfoText = accountInfoText;
+            mAccountDetailText = accountDetailText;
+        }
+        
+        public void setOnClickListener(OnClickListener ocl)
+        {
+            mOcl = ocl;
+        }
+    
+    }
+    
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private class WizardPagerAdapter extends FragmentStatePagerAdapter {
+        public WizardPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(final int pos) {
+            WizardPageFragment wpf = new WizardPageFragment();
+            wpf.setAccountInfo(mAccountList[pos][0],mAccountList[pos][1]);
+            wpf.setOnClickListener(new OnClickListener()
+            {
+
+                @Override
+                public void onClick(View v) {
+                    
+                    if (pos == 0) //xmpp
+                    {
+                        //otherwise support the actual plugin-type
+                        showSetupAccountForm(helper.getProviderNames().get(0),null, null, false,helper.getProviderNames().get(0),false);
+                    }                
+                    else if (pos == mAccountList.length-2) //create account
+                    {
+                        String username = "";
+                        String passwordPlaceholder = "password";//zeroconf doesn't need a password
+                        showSetupAccountForm(helper.getProviderNames().get(1),username,passwordPlaceholder, false,helper.getProviderNames().get(1),true);
+                    }
+                    else if (pos == mAccountList.length-3) //create account
+                    {
+                        showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
+                    }
+                    else if (pos == mAccountList.length-1) //create account
+                    {
+                        createBurnerAccount();
+                    }
+                    else
+                    {
+                        addGoogleAccount(mGoogleAccounts[pos-1].name);
+                    }
+                }
+                
+            });
+            
+            return wpf;
+        }
+
+        @Override
+        public int getCount() {
+            return mAccountList.length;
+        }
+    }
 }

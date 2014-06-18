@@ -22,7 +22,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="3dp"	
-    android:layout_margin="6dp"
      >
      
 			
@@ -34,7 +33,6 @@
         android:layout_marginLeft="24dp"        
         android:paddingLeft="16dp"
         android:orientation="vertical"
-        android:background="@drawable/message_view_rounded_light"
         >
         
                 <TextView
@@ -42,8 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:padding="3dp"
-           		    android:layout_gravity="left"
+                    android:layout_gravity="left"
               		android:gravity="left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginLeft="24dp"
@@ -59,7 +56,7 @@
                 android:layout_marginRight="12dp"
                 
                  android:layout_marginBottom="1dp"
-                 android:padding="3dp"
+                 
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 />
                   
@@ -72,8 +69,8 @@
             android:scaleType="centerCrop" 
             android:padding="3dp"
             android:layout_marginTop="-32dp"
-              android:layout_gravity="right"
-              android:gravity="right"
+              android:layout_gravity="right|bottom"
+              
             />	
             
                    
@@ -83,12 +80,12 @@
     
 		<ImageView
             android:id="@+id/avatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:scaleType="centerCrop" 
             android:padding="0dp"
             android:visibility="gone"            
-            
+            android:layout_gravity="center_vertical"
             />	
 	        	
 	        	

@@ -144,11 +144,17 @@ public class AccountActivity extends Activity {
             public void connectedToService() {
             }
             public void stateChanged(int state, long accountId) {
-                if (state == ImConnection.LOGGING_IN || state == ImConnection.LOGGED_IN)
+                if (state == ImConnection.LOGGED_IN)
                 {
-                    mSignInHelper.goToAccount(accountId);
-                    finish();
+                  //  mSignInHelper.goToAccount(accountId);
+                   // finish();
+                    isSignedIn = true;
                 }
+                else
+                {
+                    isSignedIn = false;
+                }
+                
             }
         };
         
@@ -614,15 +620,17 @@ public class AccountActivity extends Activity {
     }*/
 
     private void checkUserChanged() {
-        String username = mEditUserAccount.getText().toString().trim();
-
-        if ((!username.equals(mOriginalUserAccount)) && parseAccount(username)) {
-            //Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
-            settingsForDomain(mDomain, mPort);
-            mOriginalUserAccount = username;
-            
-        }
-        
+        if (mEditUserAccount != null)
+        {
+            String username = mEditUserAccount.getText().toString().trim();
+    
+            if ((!username.equals(mOriginalUserAccount)) && parseAccount(username)) {
+                //Log.i(TAG, "Username changed: " + mOriginalUserAccount + " != " + username);
+                settingsForDomain(mDomain, mPort);
+                mOriginalUserAccount = username;
+                
+            }
+        }        
         
         
     }
@@ -935,6 +943,10 @@ public class AccountActivity extends Activity {
         if (!isSignedIn) {
             mBtnSignIn.setEnabled(hasNameAndPassword);
             mBtnSignIn.setFocusable(hasNameAndPassword);
+        }
+        else
+        {
+            
         }
     }
 

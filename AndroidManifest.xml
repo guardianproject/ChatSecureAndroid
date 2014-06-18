@@ -227,7 +227,7 @@ android:anyDensity="true"
             
         </activity>
 
-        <activity android:name="info.guardianproject.otr.app.im.app.AccountListActivity"
+        <activity android:name="info.guardianproject.otr.app.im.app.AccountWizardActivity"
             android:exported="false"
            android:configChanges="orientation|keyboardHidden|screenSize"
             

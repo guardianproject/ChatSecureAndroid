@@ -353,7 +353,7 @@ public class ContactListManagerAdapter extends
 
     private long insertTemporary(Contact c) {
         synchronized (mTemporaryContacts) {
-            mTemporaryContacts.put(mAdaptee.normalizeAddress(c.getAddress().getBareAddress()), c);
+            mTemporaryContacts.put(mAdaptee.normalizeAddress(c.getAddress().getAddress()), c);
         }
         Uri uri = insertContactContent(c, FAKE_TEMPORARY_LIST_ID);
         return ContentUris.parseId(uri);
@@ -538,8 +538,8 @@ public class ContactListManagerAdapter extends
                     
                     boolean exists = updateContact(contact, listId);
                     
-                    if (!exists)
-                           insertContactContent(contact, listId);
+                    //if (!exists)
+                      //     insertContactContent(contact, listId);
                 }
                 notificationText = mContext.getResources().getString(R.string.add_contact_success,
                         contact.getName());

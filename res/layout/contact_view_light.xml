@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:padding="0dp"  
         android:orientation="vertical"
-        android:background="@drawable/message_view_rounded_light"
         >
         
                 <TextView

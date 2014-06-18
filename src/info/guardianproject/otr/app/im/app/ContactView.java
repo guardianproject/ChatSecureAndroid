@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
@@ -79,8 +80,6 @@ public class ContactView extends FrameLayout {
     static final int COLUMN_AVATAR_DATA = 12;
 
     private ImApp app = null;
-    private static Drawable BG_DARK;
-    private static Drawable BG_LIGHT;
     static Drawable AVATAR_DEFAULT = null;
     static Drawable AVATAR_DEFAULT_GROUP = null;
     
@@ -89,13 +88,7 @@ public class ContactView extends FrameLayout {
      
         app = ((ImApp)((Activity) getContext()).getApplication());
         
-        if (BG_DARK == null)
-        {
-            BG_DARK = getResources().getDrawable(R.drawable.message_view_rounded_dark);
-            BG_LIGHT = getResources().getDrawable(R.drawable.message_view_rounded_light);
-            
-        }
-        
+       
     }
 
     static class ViewHolder 
@@ -118,16 +111,6 @@ public class ContactView extends FrameLayout {
         
 
         ViewHolder holder = (ViewHolder)getTag();
-        
-        if (holder.mContainer != null)
-            if (app.isThemeDark())
-            {
-                holder.mContainer.setBackgroundDrawable(BG_DARK);                
-            }
-            else
-            {
-                holder.mContainer.setBackgroundDrawable(BG_LIGHT);
-            }
        
         
         final long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
@@ -146,7 +129,13 @@ public class ContactView extends FrameLayout {
         String nickname = displayName;
         
         if (nickname == null)
-            nickname = address;
+        {
+            nickname = address.split("@")[0];
+        }
+        else if (nickname.indexOf('@')!=-1)
+        {
+            nickname = nickname.split("@")[0];
+        }
         
         BrandingResources brandingRes = app.getBrandingResource(providerId);
 
@@ -173,8 +162,8 @@ public class ContactView extends FrameLayout {
         if (holder.mStatusIcon != null)
         {
             Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
-            statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
-                    statusIcon.getIntrinsicHeight());
+            //statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
+              //      statusIcon.getIntrinsicHeight());
             holder.mStatusIcon.setImageDrawable(statusIcon);
         }
         
@@ -231,28 +220,30 @@ public class ContactView extends FrameLayout {
                 holder.mLine2.setText(android.text.Html.fromHtml(lastMsg).toString());
                         
         }
-        else 
+        else if (holder.mLine2 != null)                
         {
-            if (holder.mLine2 != null)                
+         
+            /*
+            if (statusText == null || statusText.length() == 0)
             {
-                
-                if (statusText == null || statusText.length() == 0)
+                if (Imps.Contacts.TYPE_GROUP == type) 
                 {
-                    if (Imps.Contacts.TYPE_GROUP == type) 
-                    {
-                        statusText = getContext().getString(R.string.menu_new_group_chat);
-                    }
-                    else
-                    {
-                        statusText = brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
-                    }
+                    statusText = getContext().getString(R.string.menu_new_group_chat);
                 }
-                
-                holder.mLine2.setText(statusText);
-                
+                else
+                {
+                    statusText = address;//brandingRes.getString(PresenceUtils.getStatusStringRes(presence));
+                }
             }
             
+            holder.mLine2.setText(statusText);
+            */
+            
+            statusText = address;
+            holder.mLine2.setText(statusText);
         }
+            
+        
         
 
         if (subType == Imps.ContactsColumns.SUBSCRIPTION_TYPE_INVITATIONS)
@@ -270,7 +261,11 @@ public class ContactView extends FrameLayout {
     {
         
          try {
-            IChatSession chatSession = app.getConnection(providerId).getChatSessionManager().getChatSession(address);
+             IImConnection conn = app.getConnection(providerId);
+             if (conn == null || conn.getChatSessionManager() == null)
+                 return;
+             
+            IChatSession chatSession = conn.getChatSessionManager().getChatSession(address);
             
             if (chatSession != null)
             {

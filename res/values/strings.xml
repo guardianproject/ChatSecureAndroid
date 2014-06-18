@@ -99,9 +99,9 @@
 		
 		<!-- Views: Account list -->
 		<string name="menu_new_account">New Account</string>
-		<string name="menu_add_account">Add account</string>
-		<string name="menu_edit_account">Edit account</string>
-		<string name="menu_remove_account">Remove account</string>
+		<string name="menu_add_account">Add Account</string>
+		<string name="menu_edit_account">Edit Account</string>
+		<string name="menu_remove_account">Remove Account</string>
 		<string name="menu_use_existing_account">Existing Account</string>
 		
 		<!-- Views: Setup: Account -->
@@ -193,9 +193,9 @@
 		<string name="no_messages">No conversations.\n\nTap here to start one!</string>
 		<string name="empty_account_message">You have no\naccounts configured.\n\nTap here to add one!</string>
 		<string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
-		<string name="menu_add_contact">Add contact</string>
-		<string name="menu_remove_contact">Delete contact</string>
-		<string name="menu_block_contact">Block contact</string>
+		<string name="menu_add_contact">Add Contact</string>
+		<string name="menu_remove_contact">Delete Contact</string>
+		<string name="menu_block_contact">Block Contact</string>
 		<string name="menu_contact_nickname">Contact nickname</string>
 		<string name="menu_view_blocked">Blocked</string>
 		
@@ -485,7 +485,7 @@
 		<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
 		<string name="otr_keysync_warning_message">Please copy the \'otr_keystore.ofcaes\' file from the desktop OtrFileConverter tool to the root directory of your device storage</string>
 		<string name="msg_sent_failed">This message could not be sent.</string>
-		<string name="disconnected_warning">Messages will be sent on reconnect</string>
+		<string name="disconnected_warning">You are disconnected. Messages will be sent when you reconnect.</string>
 		<string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>
 		<string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> is not in your Contact list.</string>
 		<string name="error_account_password_mismatch">Your passwords do not match</string>
@@ -647,10 +647,25 @@
 			<item>:-D</item>
 			<item>o_O</item>
 		</string-array>
-			<string name="i_have_an_existing_xmpp_account">I have an existing XMPP account</string>
-			<string name="i_want_to_chat_using_my_google_account">I want to use</string>
-			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">I want to chat on my local wifi network (bonjour/zeroconf)</string>
+			<string name="i_have_an_existing_xmpp_account">I have an existing account</string>
+			<string name="account_existing_full">Select this if you have an existing account on a Jabber or XMPP server.</string>
+			
+			<string name="i_want_to_chat_using_my_google_account">Use my Google account </string>
+			<string name="account_google_full">Select this if you want to connect with other Google Talk, Google+ or Hangouts users.</string>
+			
+			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">I want to use WiFi chat</string>
+			<string name="account_wifi_full">Chat with others on the same local WiFi network or mesh - no Internet or server required!</string>
+			<string name="account_wifi_button">Enable WiFi Chat</string>
+						
 			<string name="i_need_a_new_account">I need a new chat account</string>
-			<string name="i_need_a_burner_one_time_throwaway_account_">I need a burner (a short use, throwaway account)</string>
+			<string name="account_new_full">Select this to register a new free account with your choice of server</string>
+			<string name="account_new_button">Create New Account</string>
+			
+			
+			<string name="i_need_a_burner_one_time_throwaway_account_">I need a new secret identity!</string>
+			<string name="account_burner_full">Select this to create an anonymous, disposable \"burner\" chat account in one, simple tap (requires Orbot: Tor for Android)</string>
+			<string name="account_burner_button">Generate Identity</string>
+			
+			<string name="this_is_a_group_chat">This is a group chat</string>
 	</resources>
 

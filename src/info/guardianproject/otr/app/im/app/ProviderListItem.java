@@ -44,12 +44,13 @@ import android.widget.TextView;
 
 public class ProviderListItem extends LinearLayout {
     private Activity mActivity;
-    private SignInManager mSignInManager;
+    //private SignInManager mSignInManager;
     private ContentResolver mResolver;
-    private CompoundButton mSignInSwitch;
+  //  private CompoundButton mSignInSwitch;
     
-    private boolean mUserChanged = false;
-    
+    //private boolean mUserChanged = false;
+    private boolean mIsSignedIn;
+
     private TextView mProviderName;
     private TextView mLoginName;
 
@@ -80,7 +81,7 @@ public class ProviderListItem extends LinearLayout {
     public ProviderListItem(Context context, Activity activity, SignInManager signInManager) {
         super(context);
         mActivity = activity;
-        mSignInManager = signInManager;
+        //mSignInManager = signInManager;
         
         mApp = (ImApp)activity.getApplication();
         
@@ -95,7 +96,7 @@ public class ProviderListItem extends LinearLayout {
         
         mProviderIdColumn = c.getColumnIndexOrThrow(Imps.Provider._ID);
 
-        mSignInSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
+        //mSignInSwitch = (CompoundButton) findViewById(R.id.statusSwitch);
         mProviderName = (TextView) findViewById(R.id.providerName);
         mLoginName = (TextView) findViewById(R.id.loginName);
 
@@ -107,6 +108,25 @@ public class ProviderListItem extends LinearLayout {
         mAccountConnectionStatusColumn = c
                 .getColumnIndexOrThrow(Imps.Provider.ACCOUNT_CONNECTION_STATUS);
 
+        setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+               
+                
+                Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
+                        Imps.Account.CONTENT_URI, mAccountId));
+                intent.addCategory(ImApp.IMPS_CATEGORY);
+                
+                intent.putExtra("isSignedIn", mIsSignedIn);
+                
+                mActivity.startActivity(intent);
+            }
+            
+        });
+        
+        /*
         if (mSignInSwitch != null)
         {
             mProviderName.setOnClickListener(new OnClickListener ()
@@ -156,7 +176,8 @@ public class ProviderListItem extends LinearLayout {
          
             
         }
-      
+      */
+        
 /* 
         mStatusSwitch.setOnClickListener(new OnClickListener (){
 
@@ -212,7 +233,6 @@ public class ProviderListItem extends LinearLayout {
         mBindTask = new AsyncTask<Void, Void, Void>() {
             private String mProviderNameText;
             private String mSecondRowText;
-            private boolean mSwitchOn;
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -257,25 +277,26 @@ public class ProviderListItem extends LinearLayout {
                         case ImConnection.SUSPENDING:
                         case ImConnection.SUSPENDED:
                             mSecondRowText = r.getString(R.string.signing_in_wait);
-                            mSwitchOn = true;
+                            mIsSignedIn = true;
+                            
                             break;
         
                         case ImConnection.LOGGED_IN:
-                            mSwitchOn = true;
+                            mIsSignedIn = true;
                             mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
         
                             break;
         
                         case ImConnection.LOGGING_OUT:
-                            mSwitchOn = false;
+                            mIsSignedIn = false;
                             mSecondRowText = r.getString(R.string.signing_out_wait);
         
                             break;
                             
                         default:
         
-                            mSwitchOn = false;
-                            mSecondRowText = computeSecondRowText(presenceString, r, settings, false);
+                            mIsSignedIn = false;
+                            mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
                             break;
                         }
         
@@ -294,36 +315,67 @@ public class ProviderListItem extends LinearLayout {
             protected void onPostExecute(Void result) {
                 
                 if (mProviderNameText != null)
-                    applyView(mProviderNameText, mSwitchOn, mSecondRowText);
+                    applyView(mProviderNameText, mIsSignedIn, mSecondRowText);
             }
         };
         mBindTask.execute();
     }
 
-    private void applyView(String providerNameText, boolean switchOn, String secondRowText) {
-        mProviderName.setText(providerNameText);
-        if (mSignInSwitch != null && (!mUserChanged))
+    private void applyView(String providerNameText, boolean isSignedIn, String secondRowText) {
+        
+        if (isSignedIn)
         {
-            mSignInSwitch.setOnCheckedChangeListener(null);
-            mSignInSwitch.setChecked(switchOn);
-            mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                   
-                    if (isChecked)
-                        mSignInManager.signIn(mAccountId);
-                    else
-                        mSignInManager.signOut(mAccountId);
-                    
-                    mUserChanged = true;
-                }
-                
-            });
+            setBackgroundColor(getResources().getColor(R.color.holo_blue_dark));
         }
+        else
+        {
+            setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        if (mLoginName != null)
-            mLoginName.setText(secondRowText);
+        }
+        
+        if (mProviderName != null)
+        {
+            mProviderName.setText(providerNameText);
+            
+            if (isSignedIn)
+                mProviderName.setTextColor(Color.WHITE);
+            else
+                mProviderName.setTextColor(Color.LTGRAY);
+            
+            /**
+            if (mSignInSwitch != null && (!mUserChanged))
+            {
+                mSignInSwitch.setOnCheckedChangeListener(null);
+                mSignInSwitch.setChecked(switchOn);
+                mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+    
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                       
+                        if (isChecked)
+                            mSignInManager.signIn(mAccountId);
+                        else
+                            mSignInManager.signOut(mAccountId);
+                        
+                        mUserChanged = true;
+                    }
+                    
+                });
+            }*/
+    
+            if (mLoginName != null)
+            {
+                mLoginName.setText(secondRowText);
+                
+                if (isSignedIn)
+                    mLoginName.setTextColor(Color.WHITE);
+                else
+                    mLoginName.setTextColor(Color.LTGRAY);
+                
+                
+            }
+        }
+            
     }
 
     private String computeSecondRowText(String presenceString, Resources r,
@@ -332,7 +384,7 @@ public class ProviderListItem extends LinearLayout {
         StringBuffer secondRowTextBuffer = new StringBuffer();
 
 
-        if (showPresence)
+        if (showPresence && presenceString.length() > 0)
         {
             secondRowTextBuffer.append(presenceString);
             secondRowTextBuffer.append(" - ");
@@ -341,11 +393,12 @@ public class ProviderListItem extends LinearLayout {
         
         if (settings.getServer() != null && settings.getServer().length() > 0)
         {
+            
             secondRowTextBuffer.append(settings.getServer());
 
         }
-        else
-        {
+        else if (settings.getDomain() != null & settings.getDomain().length() > 0)
+        {            
             secondRowTextBuffer.append(settings.getDomain());
         }
 
@@ -393,7 +446,7 @@ public class ProviderListItem extends LinearLayout {
             return context.getString(R.string.presence_invisible);
 
         default:
-            return context.getString(R.string.presence_offline);
+            return "";
         }
     }
 
@@ -403,110 +456,8 @@ public class ProviderListItem extends LinearLayout {
         public void signOut (long accountId);
     }
 
-    public void applyView( AccountAdapter.AccountSetting accountSetting ) {
-        // provide name
-        String providerNameText = accountSetting.activeUserName;
-        if (mShowLongName)
-            providerNameText += '@' + accountSetting.domain;
-        mProviderName.setText(providerNameText);
-        // switch
-        boolean switchOn = false;
-        String secondRowText;
-        
-        switch (accountSetting.connectionStatus) {
-        
-        case ImConnection.LOGGING_IN:
-        case ImConnection.SUSPENDING:
-        case ImConnection.SUSPENDED:
-            switchOn = true;
-            secondRowText = getResources().getString(R.string.signing_in_wait);
-            break;
-
-        case ImConnection.LOGGED_IN:
-            switchOn = true;
-            secondRowText = computeSecondRowText(accountSetting, true);
-            break;
-
-        default:
-            switchOn = false;
-            secondRowText = computeSecondRowText(accountSetting, false);
-            break;
-        }
-        
-        if (mSignInSwitch != null && (!mUserChanged))
-        {
-            mSignInSwitch.setOnCheckedChangeListener(null);
-            mSignInSwitch.setChecked(switchOn);
-            mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                   
-                    if (isChecked)
-                        mSignInManager.signIn(mAccountId);
-                    else
-                        mSignInManager.signOut(mAccountId);
-                    
-                    mUserChanged = true;
-                }
-                
-            });
-        }
-        // login name
-        if (mLoginName != null)
-            mLoginName.setText(secondRowText);
-
-    };
     
-    private String getPresenceString( Context context, int presenceStatus) {
-
-        switch (presenceStatus) {
-        case Imps.Presence.AVAILABLE:
-            return context.getString(R.string.presence_available);
-
-        case Imps.Presence.IDLE:
-            return context.getString(R.string.presence_idle);
-            
-        case Imps.Presence.AWAY:
-            return context.getString(R.string.presence_away);
-
-        case Imps.Presence.DO_NOT_DISTURB:
-
-            return context.getString(R.string.presence_busy);
-
-        case Imps.Presence.INVISIBLE:
-            return context.getString(R.string.presence_invisible);
-
-        default:
-            return context.getString(R.string.presence_offline);
-        }
-    }
     
-    private String computeSecondRowText( AccountAdapter.AccountSetting accountSetting, boolean showPresence ) {
-        StringBuffer secondRowTextBuffer = new StringBuffer();
-
-        if (showPresence)
-        {
-            secondRowTextBuffer.append( getPresenceString(mActivity, accountSetting.connectionStatus));
-            secondRowTextBuffer.append(" - ");
-        }
-            
-        if (accountSetting.host != null && accountSetting.host.length() > 0) {
-            secondRowTextBuffer.append(accountSetting.host);
-        } else {
-            secondRowTextBuffer.append(accountSetting.domain);
-        }
-
-        if (accountSetting.port != 5222 && accountSetting.port != 0)
-            secondRowTextBuffer.append(':').append(accountSetting.port);
-
-        if (accountSetting.isTor) {
-            secondRowTextBuffer.append(" - ");
-            secondRowTextBuffer.append(mActivity.getString(R.string._via_orbot));
-        }
-
-        return secondRowTextBuffer.toString();
-    }
 
 }
 

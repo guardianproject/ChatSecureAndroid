@@ -28,9 +28,6 @@ import android.widget.ListView;
 public class AccountsFragment extends ListFragment implements ProviderListItem.SignInManager {
     
         private FragmentActivity mActivity;
-    
-        private View mEmptyView;
-        
         private int mAccountLayoutView;
         
         @Override
@@ -38,7 +35,6 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
             super.onAttach(activity);
             
             mActivity = (FragmentActivity)activity;
-            
 
             mAccountLayoutView = R.layout.account_view;
             if (mActivity instanceof NewChatActivity)
@@ -46,14 +42,6 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
                 
             
             initProviderCursor();
-            
-            
-        }
-        
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-
             
         }
 
@@ -67,34 +55,21 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
         public void onListItemClick(ListView l, View v, int position, long id) {
         }
 
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            mEmptyView = inflater.inflate(R.layout.empty_account_view, container, false);
-
-            mEmptyView.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View arg0) {
-
-                    if (getListView().getCount() == 0)
-                    {
-                        if (mActivity instanceof AccountListActivity)
-                         ((AccountListActivity)mActivity).showExistingAccountListDialog();
-                        
-                    }
-                }
-
-            });
-
+                
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            
+            
             return super.onCreateView(inflater, container, savedInstanceState);
         }
-        
+
+        @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
-
-            ((ViewGroup)getListView().getParent()).addView(mEmptyView);
-            getListView().setEmptyView(mEmptyView);
-
+            // TODO Auto-generated method stub
+            super.onViewCreated(view, savedInstanceState);
         }
-        
+
         private void initProviderCursor()
         {
             final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
