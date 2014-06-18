@@ -531,7 +531,7 @@ public class ContactListFilterView extends LinearLayout {
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             mContactAdapter.changeCursor(newCursor);
             
-            if (newCursor.getCount() == 0)
+            if (newCursor != null && newCursor.getCount() == 0)
             {
                 if (mUri.getPath().contains("/contacts/chatting"))
                         mEmptyView.setText(R.string.empty_conversation_group);

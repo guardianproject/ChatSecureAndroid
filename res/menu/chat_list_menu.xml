@@ -32,6 +32,7 @@
         android:icon="@drawable/ic_menu_sign_in"
                 android:showAsAction="never"
         />
+  
       <item android:id="@+id/menu_new_group_chat"
         android:title="@string/menu_new_group_chat" 
               android:icon="@drawable/ic_menu_msg_compose"

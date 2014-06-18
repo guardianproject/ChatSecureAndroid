@@ -98,8 +98,6 @@
         android:stackFromBottom="false"               
   		android:layout_margin="0dp"
         android:padding="0dp"
-        android:divider="#00000000"
-        android:dividerHeight="10dp"
          />
    
    <TextView

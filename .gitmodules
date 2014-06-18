@@ -22,3 +22,6 @@
 [submodule "external/AndroidEmojiInput"]
 	path = external/AndroidEmojiInput
 	url = https://github.com/n8fr8/AndroidEmojiInput.git
+[submodule "external/ViewPagerIndicator"]
+	path = external/ViewPagerIndicator
+	url = git@github.com:JakeWharton/Android-ViewPagerIndicator.git

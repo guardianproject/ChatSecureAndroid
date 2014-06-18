@@ -1,7 +1,7 @@
 package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.AccountListActivity;
+import info.guardianproject.otr.app.im.app.AccountWizardActivity;
 import info.guardianproject.otr.app.im.app.ThemeableActivity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -49,7 +49,7 @@ public class AboutActivity extends ThemeableActivity implements OnClickListener 
         @Override
         public void onClick(View v) {
             finish();
-            Intent intent = new Intent(getBaseContext(), AccountListActivity.class);
+            Intent intent = new Intent(getBaseContext(), AccountWizardActivity.class);
             startActivity(intent);
         }
     } },

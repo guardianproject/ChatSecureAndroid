@@ -60,13 +60,14 @@
                android:textColor="@android:color/white"
                />
         </LinearLayout>
+        <!-- 
            <Switch
                 android:id="@+id/statusSwitch"
             android:layout_width="wrap_content"
             android:layout_height="?android:attr/listPreferredItemHeight"
             android:textColor="@android:color/white"
             />
-           
+            -->
       
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ProviderListItem>

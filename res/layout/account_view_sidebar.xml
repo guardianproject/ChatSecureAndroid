@@ -21,7 +21,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     >
 <!-- 
     <ImageView
@@ -44,14 +44,6 @@
         	android:layout_margin="6sp"    
         
         >    
-
-             
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">    
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -80,9 +72,7 @@
                android:fontFamily="sans-serif-light"
                android:textColor="#ffffff"
                />
-        </LinearLayout>
-       
-             
+        <!--  
          <CheckBox
             android:id="@+id/statusSwitch"
             android:paddingRight="6dip"
@@ -91,7 +81,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-         
+          -->    
          
     </LinearLayout>
 </info.guardianproject.otr.app.im.app.ProviderListItem>
