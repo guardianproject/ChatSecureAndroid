@@ -11,6 +11,7 @@ android update lib-project --path external/AndroidPinning --target $target
 android update lib-project --path external/cacheword/cachewordlib --target $target
 android update lib-project --path external/SlidingMenu/library --target $target
 android update lib-project --path external/AndroidEmojiInput/library --target $target
+android update lib-project --path external/ViewPagerIndicator/library --target $target
 
 android update project --path . --name $projectname --target $target --subprojects
 
