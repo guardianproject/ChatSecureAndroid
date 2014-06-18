@@ -40,8 +40,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -59,7 +62,6 @@ import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.PacketListener;
-import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -75,7 +77,6 @@ import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
-import org.jivesoftware.smack.packet.PacketExtension;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.provider.PrivacyProvider;
@@ -150,7 +151,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private boolean mRetryLogin;
     private ThreadPoolExecutor mExecutor;
-
+    private Timer mTimerPresence;
+    
     private ProxyInfo mProxyInfo = null;
 
     private long mAccountId = -1;
@@ -254,6 +256,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private void createExecutor() {
         mExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>());
+        
     }
 
     private boolean execute(Runnable runnable) {
@@ -1574,7 +1577,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (rEntry != null)
         {
-            XmppAddress xAddress = new XmppAddress(rEntry.getUser());
+            XmppAddress xAddress = new XmppAddress(address);
 
             String name = rEntry.getName();
             if (name == null)
@@ -1849,7 +1852,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (mUser.getAddress().getBareAddress().equals(address)) //don't load a roster for yourself
                     continue;
 
-                Contact contact = mContactListManager.getContact(address);
+                Contact contact = getContact(address);
 
                 if (contact == null)
                 {
@@ -1923,6 +1926,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             roster.addRosterListener(rListener);
         }
 
+        LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
 
         RosterListener rListener = new RosterListener() {
 
@@ -1930,8 +1934,28 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
-                handlePresenceChanged(presence);
+                qPresence.push(presence);
+                
+                if (mTimerPresence == null)
+                {
 
+                    mTimerPresence = new Timer();
+
+                    mTimerPresence.scheduleAtFixedRate(new TimerTask() {
+
+                        synchronized public void run() {
+                            
+                            while (qPresence.size()>0)
+                            {
+
+                                handlePresenceChanged(qPresence.pop());
+                            }
+                            
+                         }
+
+                      }, 1000, 10000);
+                }
+                
             }
 
             @Override
@@ -1939,7 +1963,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
                 execute(new UpdateContactsRunnable(mContactListManager,addresses));
-
+                Log.d(ImApp.LOG_TAG,"got entries updated - length=" + addresses.size());
             }
 
             @Override
@@ -2708,8 +2732,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
-        if (mConnection == null)
-            return; //sometimes presence changes are queued, and get called after we sign off
 
         XmppAddress xaddress = new XmppAddress(presence.getFrom());
 
@@ -2718,8 +2740,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         String status = presence.getStatus();
 
-        // Get presence from the Roster to handle priorities and such
-
+        // Get presence from the Roster to handle priorities and such 
+        // TODO: this causes bad network and performance issues
         //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
         //presence = roster.getPresence(xaddress.getBareAddress());       
 
