@@ -291,7 +291,9 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     public void doFilter(String filterString) {
+        
         mSearchString = filterString;
+        
         if (mContactAdapter == null) {
             
             mContactAdapter = new ContactAdapter(mContext, R.layout.contact_view);
@@ -302,6 +304,7 @@ public class ContactListFilterView extends LinearLayout {
             mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
         } else {
             mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
+            
         }
     }
 
@@ -523,13 +526,13 @@ public class ContactListFilterView extends LinearLayout {
 
             CursorLoader loader = new CursorLoader(getContext(), mUri, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
-            loader.setUpdateThrottle(1000L);
+           // loader.setUpdateThrottle(1000L);
             return loader;
         }
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-            mContactAdapter.changeCursor(newCursor);
+            mContactAdapter.swapCursor(newCursor);
             
             if (newCursor != null && newCursor.getCount() == 0)
             {
@@ -543,12 +546,11 @@ public class ContactListFilterView extends LinearLayout {
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-            mContactAdapter.changeCursor(null);
             
-            if (mUri.getPath().contains("/contacts/chatting"))
-                mEmptyView.setText(R.string.empty_conversation_group);
-            else
-                mEmptyView.setText(R.string.empty_contact_list);
+            mContactAdapter.swapCursor(null);
+            
+            
+           
         }
         
     }
