@@ -362,6 +362,7 @@ public class ImApp extends Application {
         return true;
     }
     
+    /**
     @Override
     public void onTerminate() {
         stopImServiceIfInactive();
@@ -375,7 +376,7 @@ public class ImApp extends Application {
 
         Imps.clearPassphrase(this);
         super.onTerminate();
-    }
+    }*/
 
     public synchronized void startImServiceIfNeed() {
         startImServiceIfNeed(false);
@@ -931,7 +932,7 @@ public class ImApp extends Application {
                     what = EVENT_CONNECTION_DISCONNECTED;                    
                     mConnections.remove(providerId);                    
                     // stop the service if there isn't an active connection anymore.
-                    //stopImServiceIfInactive();
+                    stopImServiceIfInactive();
                     
                     break;
 
