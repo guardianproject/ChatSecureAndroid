@@ -20,26 +20,22 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.ListActivity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.database.DatabaseUtils;
 
 
 /** Activity used to pick a contact. */
@@ -126,6 +122,7 @@ public class ContactsPickerActivity extends ListActivity {
 
         if (mSearchString != null) {
             
+            buf.append('(');
             buf.append(Imps.Contacts.NICKNAME);
             buf.append(" LIKE ");
             DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
@@ -133,11 +130,31 @@ public class ContactsPickerActivity extends ListActivity {
             buf.append(Imps.Contacts.USERNAME);
             buf.append(" LIKE ");
             DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
-            
+            buf.append(')');
+            buf.append(" AND ");
         }
         
-        Cursor c = managedQuery(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION_LIGHT,
+        //normal types not temporary
+        buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
+        
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+        Imps.ProviderSettings.QueryMap globalSettings = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
+
+        boolean hideOffline = globalSettings.getHideOfflineContacts();
+        
+        globalSettings.close();
+       
+        if(hideOffline)
+        {
+            buf.append(" AND ");
+            buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
+           
+        }
+        
+        Cursor c = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION_LIGHT,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
+        
         
         mAdapter.swapCursor(c);
         

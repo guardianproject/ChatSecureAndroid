@@ -76,13 +76,13 @@
           android:summary="@string/pref_theme_dark_summary"
           android:defaultValue="false" />
  
-  
+  <!-- 
   <CheckBoxPreference
           android:key="showGrid"
           android:title="@string/pref_show_grid"
           android:summary="@string/pref_show_grid_summary"
           android:defaultValue="false" />
-  
+   -->
  
    <EditTextPreference 
           android:key="pref_background"
@@ -104,7 +104,7 @@
           android:key="pref_foreground_enable"
           android:title="@string/foreground_service_title"
           android:summary="@string/foreground_service_summary"
-          android:defaultValue="false" />
+          android:defaultValue="true" />
 
   <EditTextPreference 
           android:key="pref_heartbeat_interval"

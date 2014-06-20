@@ -355,7 +355,7 @@ public class ContactListManagerAdapter extends
         synchronized (mTemporaryContacts) {
             mTemporaryContacts.put(mAdaptee.normalizeAddress(c.getAddress().getAddress()), c);
         }
-        Uri uri = insertContactContent(c, FAKE_TEMPORARY_LIST_ID);
+        Uri uri = insertContactContent(c, FAKE_TEMPORARY_LIST_ID, Imps.Contacts.TYPE_TEMPORARY);
         return ContentUris.parseId(uri);
     }
 
@@ -1097,9 +1097,9 @@ public class ContactListManagerAdapter extends
         }
     }
 
-    Uri insertContactContent(Contact contact, long listId) {
+    Uri insertContactContent(Contact contact, long listId, int type) {
         ContentValues values = getContactContentValues(contact, listId);
-
+        values.put(Imps.Contacts.TYPE, type);
         Uri uri = mResolver.insert(mContactUrl, values);
 
         ContentValues presenceValues = getPresenceValues(ContentUris.parseId(uri),

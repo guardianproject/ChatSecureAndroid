@@ -128,7 +128,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (mOtrChatManager == null) {
 
-            try {
+            try
+            {
                 OtrKeyManager otrKeyManager = OtrAndroidKeyManagerImpl.getInstance(this);
                 
                 if (otrKeyManager != null)
@@ -156,13 +157,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         }
                     });
                 }
-                else
-                {
-                    throw new RuntimeException("could not instantiate OTR manager");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
+            catch (Exception e)
+            {
+                OtrDebugLogger.log("unable to init OTR manager", e);
+            }
+             
         } else {
             mOtrChatManager.setPolicy(otrPolicy);
         }
@@ -252,15 +252,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private void startForegroundCompat() {
         Notification notification = new Notification(R.drawable.notify_chatsecure, getString(R.string.app_name),
                 System.currentTimeMillis());
-        Intent notificationIntent = new Intent(this, NewChatActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent notificationIntent = new Intent(this, NewChatActivity.class);        
         PendingIntent launchIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
         notification.setLatestEventInfo(getApplicationContext(),
                 getString(R.string.app_name),
                 getString(R.string.app_unlocked),
                 launchIntent);
         
-        stopForeground(true);
         startForeground(1000, notification);
     }
 

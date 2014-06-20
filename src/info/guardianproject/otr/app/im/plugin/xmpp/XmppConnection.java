@@ -28,6 +28,7 @@ import info.guardianproject.util.Debug;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -197,7 +198,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private int heartbeatSequence = 0;
 
 
-    LinkedBlockingQueue<String> qAvatar = new LinkedBlockingQueue <String>();
+    LinkedList<String> qAvatar = new LinkedList <String>();
+    LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
 
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -355,11 +357,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     try
                     {
-                        while ((jid = qAvatar.poll(1, TimeUnit.SECONDS)) != null)
+                        while (qAvatar.size()>0)
                         {
 
-                            loadVCard (resolver, jid, null);
-
+                            loadVCard (resolver, qAvatar.pop(), null);
 
                         }
                     }
@@ -423,8 +424,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);               
                         options.inSampleSize = DatabaseUtils.calculateInSampleSize(options, width, height);
                         options.inJustDecodeBounds = false;
+                        
                         Bitmap b = BitmapFactory.decodeByteArray(avatarBytes, 0, avatarBytes.length,options);     
-
+                        b = Bitmap.createScaledBitmap(b, ImApp.DEFAULT_AVATAR_WIDTH, ImApp.DEFAULT_AVATAR_HEIGHT, false);
+                        
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         b.compress(Bitmap.CompressFormat.JPEG, 80, stream);
                         byte[] avatarBytesCompressed = stream.toByteArray();
@@ -843,19 +846,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             setState(LOGGED_IN, null);
             debug(TAG, "logged in");
 
-        } catch (Exception e) {
-            debug(TAG, "login failed: " + e.getLocalizedMessage());
+        } catch (XMPPException e) {
+            debug(TAG, "login failed",e);
             //mConnection = null;
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
 
-            if (e == null || e.getMessage() == null) {
-                debug(TAG, "NPE: " + e.getMessage());
-                Log.e(TAG,"login error",e);
-                info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "unknown error");
-                disconnected(info);
-                mRetryLogin = false;
-            } else if (e.getMessage().contains("not-authorized")
-                    || e.getMessage().contains("authentication failed")) {
+            if (e == null || e.getMessage() == null) {               
+                info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "unknown error");
+                mRetryLogin = true; //not sure what this error is so will try again
+                
+            } else if (mConnection != null && (!mConnection.isAuthenticated())) {
 
                 if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
@@ -864,7 +864,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     password = refreshGoogleToken (userName, password,providerSettings.getDomain());
 
                     mRetryLogin = true;
-                    setState(LOGGING_IN, info);
 
                 }
                 else
@@ -874,7 +873,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     disconnected(info);
                     mRetryLogin = false;
                 }
-            } else if (mRetryLogin) {
+            } 
+            
+            
+            if (mRetryLogin) {
                 debug(TAG, "will retry");
                 setState(LOGGING_IN, info);
             } else {
@@ -885,6 +887,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             return;
 
+        } catch (KeyManagementException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            mRetryLogin = true;
+            debug(TAG, "will retry");
+            ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "keymanagement exception");
+            setState(LOGGING_IN, info);
+            
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             mNeedReconnect = false;
             providerSettings.close();
@@ -941,7 +954,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         setState(state, null);
     }
 
-    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws Exception
+    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
 
@@ -950,13 +963,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             password = mPasswordTemp;
 
         mIsGoogleAuth = password.startsWith(GTalkOAuth2.NAME);
-        String domain = providerSettings.getDomain();
-        String server = providerSettings.getServer();
 
         if (mIsGoogleAuth)
         {            
 
-            password = refreshGoogleToken(userName, password, domain);
             password = password.split(":")[1];            
         }
 
@@ -983,7 +993,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Runs in executor thread
-    private void initConnection(Imps.ProviderSettings.QueryMap providerSettings, String userName) throws Exception {
+    private void initConnection(Imps.ProviderSettings.QueryMap providerSettings, String userName) throws NoSuchAlgorithmException, KeyManagementException, XMPPException  {
 
 
         boolean allowPlainAuth = providerSettings.getAllowPlainAuth();
@@ -1248,7 +1258,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     boolean good = session.onReceiveMessage(rec);
 
-                    handlePresenceChanged(mConnection.getRoster().getPresence(smackMessage.getFrom()));
+                    qPresence.push(mConnection.getRoster().getPresence(smackMessage.getFrom()));
 
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {
@@ -1274,8 +1284,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             public void processPacket(Packet packet) {
 
                 org.jivesoftware.smack.packet.Presence presence = (org.jivesoftware.smack.packet.Presence) packet;
-
-                handlePresenceChanged(presence);
+                qPresence.push(presence);
 
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
@@ -1642,12 +1651,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public synchronized ChatSession createChatSession(ImEntity participant) {
             
-
-            try {
-                qAvatar.put(participant.getAddress().getAddress());
-                loadVCardsAsync();
-            } catch (InterruptedException e) {}
-            
+            qAvatar.push(participant.getAddress().getAddress());
 
             return super.createChatSession(participant);
         }
@@ -1926,7 +1930,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             roster.addRosterListener(rListener);
         }
 
-        LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
 
         RosterListener rListener = new RosterListener() {
 
@@ -1951,9 +1954,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                                 handlePresenceChanged(qPresence.pop());
                             }
                             
+                            loadVCardsAsync();
+                            
                          }
 
-                      }, 1000, 10000);
+                      }, 1000, 5000);
                 }
                 
             }
@@ -2468,6 +2473,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //  if (Log.isLoggable(TAG, Log.DEBUG)) {
         if (Debug.DEBUG_ENABLED) {
             Log.d(tag, "" + mGlobalId + " : " + msg);
+        }
+    }
+    
+    public void debug(String tag, String msg, Exception e) {
+        //  if (Log.isLoggable(TAG, Log.DEBUG)) {
+        if (Debug.DEBUG_ENABLED) {
+            Log.e(tag, "" + mGlobalId + " : " + msg,e);
         }
     }
 

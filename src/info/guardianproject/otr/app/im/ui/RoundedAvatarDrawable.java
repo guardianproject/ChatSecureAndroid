@@ -15,9 +15,11 @@
  */
 package info.guardianproject.otr.app.im.ui;
  
+import info.guardianproject.otr.app.im.app.ImApp;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -36,24 +38,42 @@ public class RoundedAvatarDrawable extends Drawable {
   private final int mBitmapWidth;
   private final int mBitmapHeight;
  
+  private Paint mPaintBorder;
+  private int mBorderWidth = 6;
+  
   public RoundedAvatarDrawable(Bitmap bitmap) {
     mBitmap = bitmap;
     mRectF = new RectF();
     mPaint = new Paint();
     mPaint.setAntiAlias(true);
     mPaint.setDither(true);
-    final BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+    
+    BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
     mPaint.setShader(shader);
  
     // NOTE: we assume bitmap is properly scaled to current density
     mBitmapWidth = mBitmap.getWidth();
     mBitmapHeight = mBitmap.getHeight();
+    
+    mPaintBorder = new Paint();
+    mPaintBorder.setColor(Color.LTGRAY);
+    mPaintBorder.setStyle(Paint.Style.STROKE);
+    mPaintBorder.setAntiAlias(true);
+    mPaintBorder.setStrokeWidth(mBorderWidth);
+    
   }
  
+  public void setBorderColor (int borderColor)
+  {
+      mPaintBorder.setColor(borderColor);
+  }
+  
   @Override
   public void draw(Canvas canvas) {
     canvas.drawOval(mRectF, mPaint);
-    
+  
+    float halfWidth = mRectF.width()/2;
+    canvas.drawCircle(halfWidth, halfWidth, halfWidth-mBorderWidth/2, mPaintBorder);
   }
  
   @Override

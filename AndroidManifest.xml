@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="13.2.0-alpha-4"
-     android:versionCode="115"
+     android:versionName="13.2.0-alpha-5"
+     android:versionCode="116"
      android:installLocation="auto"    
     
      >     
@@ -153,7 +153,6 @@ android:anyDensity="true"
         
         <service android:name=".plugin.xmpp.XmppImPlugin"
                android:exported="false"
-               android:process=":remote"
         	>
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.plugin" />
@@ -167,7 +166,6 @@ android:anyDensity="true"
         </service>
 
         <service android:name=".plugin.xmpp.LLXmppImPlugin"
-                 android:process=":remote"
                 android:exported="false"
         	>
             <intent-filter>
@@ -197,22 +195,21 @@ android:anyDensity="true"
             
            <!--  android:process="info.guardianproject.otr.app.process.im"-->
         <service android:name=".service.RemoteImService"
-            android:exported="false"
-              android:process=":remote"            
+            android:exported="false"       
             android:permission="info.guardianproject.otr.app.im.permission.IM_SERVICE">
             <intent-filter>
                 <action android:name="info.guardianproject.otr.app.im.IRemoteImService" />
                 <action android:name="info.guardianproject.otr.app.im.SERVICE" />
             </intent-filter>
         </service>
-        <service android:name=".service.HeartbeatService" android:exported="false" />
+        <service android:name=".service.HeartbeatService" 
+            android:exported="false" />
         
         <provider
             android:name=".provider.ImpsProvider"
             android:authorities="info.guardianproject.otr.app.im.provider.Imps"
             android:exported="false"
             android:grantUriPermissions="true"
-            android:process=":remote"
             android:readPermission="info.guardianproject.otr.app.providers.imps.permission.READ_ONLY"
             android:writePermission="info.guardianproject.otr.app.providers.imps.permission.WRITE_ONLY" />
 
@@ -401,7 +398,6 @@ android:anyDensity="true"
           <receiver android:name=".app.NetworkConnectivityListener" 
               android:exported="true"
               android:enabled="true"
-                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -410,7 +406,6 @@ android:anyDensity="true"
           <receiver android:name=".app.BootCompletedListener" 
               android:exported="true"
               android:enabled="true"
-                android:process=":remote"
               >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>

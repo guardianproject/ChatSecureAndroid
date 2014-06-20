@@ -1643,6 +1643,7 @@ public class ImpsProvider extends ContentProvider {
             return null;
         
         try {
+            qb.setDistinct(true);
             c = qb.query(db, projectionIn, whereClause.toString(), selectionArgs, groupBy, null,
                     sort, limit);
             if (c != null) {
