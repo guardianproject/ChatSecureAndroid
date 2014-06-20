@@ -53,7 +53,7 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
+    public static RoundedAvatarDrawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
         String hexData = cursor.getString(dataColumn);
         if (hexData.equals("NULL")) {
             return null;
@@ -62,7 +62,7 @@ public class DatabaseUtils {
         return decodeAvatar(data, width, height);
     }
 
-    public static Drawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) {
+    public static RoundedAvatarDrawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) {
         
         String[] projection =  {Imps.Contacts.AVATAR_DATA};
         String[] args = {address};
@@ -159,7 +159,7 @@ public class DatabaseUtils {
     }
     
 
-    private static Drawable decodeAvatar(byte[] data, int width, int height) {
+    private static RoundedAvatarDrawable decodeAvatar(byte[] data, int width, int height) {
         
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -167,7 +167,7 @@ public class DatabaseUtils {
         options.inSampleSize = calculateInSampleSize(options, width, height);
         options.inJustDecodeBounds = false;
         Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
-        Drawable avatar = new RoundedAvatarDrawable(b);
+        RoundedAvatarDrawable avatar = new RoundedAvatarDrawable(b);
         return avatar;
     }
     
