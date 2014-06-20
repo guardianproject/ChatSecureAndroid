@@ -416,10 +416,17 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private InetAddress getMyAddress(final String serviceName, boolean doLock) {
+        
+        if (mServiceName == null)
+            return null;
+        
         WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 
         WifiInfo connectionInfo = wifi.getConnectionInfo();
         if (connectionInfo == null || connectionInfo.getBSSID() == null) {
+            //not on wifi, nothing to do
+            return null;
+            /*
             Log.w(TAG, "Not connected to wifi.  This may not work.");
             // Get the IP the usual Java way
             try {
@@ -437,7 +444,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
             } catch (SocketException e) {
                 Log.e(TAG, "while enumerating interfaces", e);
                 return null;
-            }
+            }*/
         }
 
         int ip = connectionInfo.getIpAddress();
@@ -823,7 +830,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void sendHeartbeat(long heartbeatInterval) {
         InetAddress newAddress = getMyAddress(mServiceName, false);
-        if (!ipAddress.equals(newAddress)) {
+        if (newAddress != null && !ipAddress.equals(newAddress)) {
             debug(TAG, "new address, reconnect");
             execute(new Runnable() {
                 public void run() {
