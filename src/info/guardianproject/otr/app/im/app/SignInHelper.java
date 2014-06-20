@@ -272,32 +272,16 @@ public class SignInHelper {
         
     }
 
-    private static final String SYNC_SETTINGS_ACTION = "android.settings.SYNC_SETTINGS";
-    private static final String SYNC_SETTINGS_CATEGORY = "android.intent.category.DEFAULT";
-
     /**
      * Popup a dialog to ask the user whether he/she wants to enable background
      * connection to continue. If yes, enable the setting and broadcast the
      * change. Otherwise, quit the signing in window immediately.
      */
     private void promptForBackgroundDataSetting(String providerName) {
-        new AlertDialog.Builder(mContext)
-                .setTitle(R.string.bg_data_prompt_title)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(mContext.getString(R.string.bg_data_prompt_message, providerName))
-                .setPositiveButton(R.string.bg_data_prompt_ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Intent intent = new Intent(SYNC_SETTINGS_ACTION);
-                                intent.addCategory(SYNC_SETTINGS_CATEGORY);
-                                mContext.startActivity(intent);
-                            }
-                        })
-                .setNegativeButton(R.string.bg_data_prompt_cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        }).show();
+        
+        Toast.makeText(mContext, mContext.getString(R.string.bg_data_prompt_message, providerName), Toast.LENGTH_LONG).show();
+        
+        
     }
 
     public void activateAccount(long providerId, long accountId) {
