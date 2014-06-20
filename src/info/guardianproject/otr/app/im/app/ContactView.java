@@ -21,6 +21,7 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import net.java.otr4j.session.SessionStatus;
@@ -80,7 +81,6 @@ public class ContactView extends FrameLayout {
     static final int COLUMN_AVATAR_DATA = 12;
 
     private ImApp app = null;
-    static Drawable AVATAR_DEFAULT = null;
     static Drawable AVATAR_DEFAULT_GROUP = null;
     
     public ContactView(Context context, AttributeSet attrs) {
@@ -159,13 +159,17 @@ public class ContactView extends FrameLayout {
         else
             holder.mLine1.setText(nickname);
         
+        /*
         if (holder.mStatusIcon != null)
         {
             Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
             //statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
               //      statusIcon.getIntrinsicHeight());
             holder.mStatusIcon.setImageDrawable(statusIcon);
-        }
+        }*/
+        
+        
+        holder.mStatusIcon.setVisibility(View.GONE);
         
         if (holder.mAvatar != null)
         {
@@ -177,26 +181,29 @@ public class ContactView extends FrameLayout {
                     AVATAR_DEFAULT_GROUP = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
                             R.drawable.group_chat));
                     
-                    holder.mAvatar.setImageDrawable(AVATAR_DEFAULT_GROUP);
                 
-                holder.mStatusIcon.setVisibility(View.GONE);
+                    holder.mAvatar.setImageDrawable(AVATAR_DEFAULT_GROUP);
+
                 
             }
             else if (cursor.getColumnIndex(Imps.Contacts.AVATAR_DATA)!=-1)
             {
                 holder.mAvatar.setVisibility(View.GONE);        
 
-                Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-                 
+                RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                
                 if (avatar != null)
+                {
+                    setAvatarBorder(presence,avatar);
                     holder.mAvatar.setImageDrawable(avatar);
+                }
                 else 
                 {
-                    if (AVATAR_DEFAULT == null)
-                    AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                    avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
                             R.drawable.avatar_unknown));
-                    
-                    holder.mAvatar.setImageDrawable(AVATAR_DEFAULT);
+
+                    setAvatarBorder(presence,avatar);
+                    holder.mAvatar.setImageDrawable(avatar);
                     
                 }
                 
@@ -283,6 +290,7 @@ public class ContactView extends FrameLayout {
                         else
                             holder.mStatusIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_black_encrypted_not_verified));
 
+                        holder.mStatusIcon.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -296,6 +304,33 @@ public class ContactView extends FrameLayout {
          
                 //mCurrentChatSession.getOtrChatSession();
 
+    }
+    
+    public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            break;
+            
+        case Imps.Presence.IDLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            break;
+        
+        case Imps.Presence.AWAY:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            break;
+            
+        case Imps.Presence.DO_NOT_DISTURB:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            break;
+            
+        case Imps.Presence.OFFLINE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            break;
+
+
+        default:
+        }
     }
     /*
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
