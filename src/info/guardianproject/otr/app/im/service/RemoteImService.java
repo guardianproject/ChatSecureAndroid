@@ -128,7 +128,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         if (mOtrChatManager == null) {
 
-            try {
+            try
+            {
                 OtrKeyManager otrKeyManager = OtrAndroidKeyManagerImpl.getInstance(this);
                 
                 if (otrKeyManager != null)
@@ -156,13 +157,12 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         }
                     });
                 }
-                else
-                {
-                    throw new RuntimeException("could not instantiate OTR manager");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
+            catch (Exception e)
+            {
+                OtrDebugLogger.log("unable to init OTR manager", e);
+            }
+             
         } else {
             mOtrChatManager.setPolicy(otrPolicy);
         }
@@ -260,7 +260,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 getString(R.string.app_unlocked),
                 launchIntent);
         
-        stopForeground(true);
+        //stopForeground(true);
         startForeground(1000, notification);
     }
 
