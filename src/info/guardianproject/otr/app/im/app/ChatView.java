@@ -197,12 +197,14 @@ public class ChatView extends LinearLayout {
         if (mConn == null)
         {
             mConn = mApp.createConnection(mProviderId,mAccountId);
-            return true;
+            
+            if (mConn != null)
+                return false;
+            
         }
-        else
-        {
-            return true;
-        }        
+        
+        return true;
+                
 
     }
     
@@ -818,8 +820,11 @@ public class ChatView extends LinearLayout {
     }
 
     public void unbind() {
-        mCursor.close();
-        mCursor = null;
+        if (mCursor != null)
+        {
+            mCursor.close();
+            mCursor = null;
+        }
         mMessageAdapter.changeCursor(null);
     }
     
@@ -981,7 +986,6 @@ public class ChatView extends LinearLayout {
             updateChat();
         }
 
-        updateWarningView();
     }
    
     public void bindInvitation(long invitationId) {
@@ -1225,8 +1229,8 @@ public class ChatView extends LinearLayout {
             
         } catch (Exception e) {
             
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
+            //mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            LogCleaner.error(ImApp.LOG_TAG, "issue getting chat session",e); 
         }
     
         return null;
@@ -1238,6 +1242,8 @@ public class ChatView extends LinearLayout {
             
             if ( checkConnection ()) {
                 
+                if (mConn != null)
+                {
                     IChatSessionManager sessionMgr = mConn.getChatSessionManager();
                     if (sessionMgr != null) {
                        
@@ -1249,12 +1255,12 @@ public class ChatView extends LinearLayout {
                             return session;
                         
                     }
-        
+                }
             }
             
         } catch (Exception e) {
             
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            //mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "error getting chat session",e); 
         }
         
@@ -1298,11 +1304,11 @@ public class ChatView extends LinearLayout {
                 requeryCursor();
             } catch (RemoteException e) {
                 
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+              //  mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             } catch (Exception e) {
                 
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+              //  mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "send message error",e); 
             }
         }
