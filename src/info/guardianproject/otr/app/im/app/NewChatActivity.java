@@ -223,7 +223,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     
                     mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
 
-                    updateChatList();
                 }
             }
 
@@ -260,6 +259,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);                
               //  loader.setUpdateThrottle(1000L);            
+                
                 return loader;
             }
 
@@ -267,7 +267,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
            
                 mChatPagerAdapter.swapCursor(newCursor);
-           
+                updateChatList();
+                
                 if (getIntent() != null)
                     resolveIntent(getIntent());
                 
@@ -277,12 +278,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     }
                 }
                 
-                updateChatList();
+                
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-             //   mChatPagerAdapter.swapCursor(null);
+                mChatPagerAdapter.swapCursor(null);
             }
         });
     }
@@ -1622,7 +1623,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     if (mContactList != null)
                     {
                         mContactList.setConnection(conn);
-                        updateChatList();
+                        
                     }
                     
                     newCursor.moveToFirst();
@@ -1717,11 +1718,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
         if (mContactList != null && mContactList.mFilterView != null)
         {
-            ContentResolver cr = getContentResolver();
             
               Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
-                      
-                      
               Uri.Builder builder = baseUri.buildUpon();
             
               mContactList.mFilterView.doFilter(builder.build(), null);
@@ -1801,6 +1799,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
               mFilterView = (ContactListFilterView) inflater.inflate(
                      R.layout.contact_list_filter_view, null);
+              
 
              mFilterView.setListener(this);
              mFilterView.setLoaderManager(getLoaderManager(), CONTACT_LIST_LOADER_ID);
@@ -1820,7 +1819,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
              
              ((AbsListView)mFilterView.findViewById(R.id.filteredList)).setEmptyView(txtEmpty);
 
-             
+             Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
+             Uri.Builder builder = baseUri.buildUpon();
+             mFilterView.doFilter(builder.build(), null);
              
               return mFilterView;
            
@@ -1859,11 +1860,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             NewChatActivity activity = (NewChatActivity)getActivity();            
             activity.startChat(c);
             
-        }
-        
-        public void filterContacts (String query)
-        {
-            mFilterView.doFilter(query);
         }
         
         public void showProfile (Cursor c)
@@ -1913,10 +1909,15 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             try {
                 IChatSessionManager manager = conn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
-                if (session == null) {
+                if (session == null && manager != null) {
                     // Create session.  Stash requested contact ID for when we get called back.                     
-                    IChatSession ics = manager.createChatSession(username);
-                    mRequestedChatId = ics.getId();
+                    IChatSession iChatSession = manager.createChatSession(username);
+                    if (iChatSession != null)
+                        mRequestedChatId = iChatSession.getId();
+                    else
+                    {
+                        //could not create session
+                    }
                     
                 } else {
                     // Already have session
@@ -1925,6 +1926,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         mRequestedChatId = session.getId();
                     }
                 }
+                
+                updateChatList();
             } catch (RemoteException e) {
               //  mHandler.showServiceErrorAlert(e.getMessage());
                 LogCleaner.debug(ImApp.LOG_TAG, "remote exception starting chat");
@@ -2020,7 +2023,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             super.onResume();
             
             mChatView.startListening();
-//            Log.d(TAG, "CVF resume " + getArguments().getString("contactName") + " " + this);
         }
         
         @Override
@@ -2028,14 +2030,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             super.onPause();
             
             mChatView.stopListening();
-//            Log.d(TAG, "CVF pause " + getArguments().getString("contactName") + " " + this);
         }
 
         @Override
         public void onDestroy() {
             mChatView.unbind();
             super.onDestroy();
-//            Log.d(TAG, "CVF destroy " + getArguments().getString("contactName") + " " + this);
         }
         
         public ChatView getChatView() {
