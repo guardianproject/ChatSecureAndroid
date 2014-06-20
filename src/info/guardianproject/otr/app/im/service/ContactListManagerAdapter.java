@@ -1099,13 +1099,12 @@ public class ContactListManagerAdapter extends
 
     Uri insertContactContent(Contact contact, long listId, int type) {
         ContentValues values = getContactContentValues(contact, listId);
-
+        values.put(Imps.Contacts.TYPE, type);
         Uri uri = mResolver.insert(mContactUrl, values);
 
         ContentValues presenceValues = getPresenceValues(ContentUris.parseId(uri),
                 contact.getPresence());
 
-        presenceValues.put(Imps.Contacts.TYPE, type);
         mResolver.insert(Imps.Presence.CONTENT_URI, presenceValues);
    
         
