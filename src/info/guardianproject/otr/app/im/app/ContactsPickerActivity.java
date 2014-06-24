@@ -19,7 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
-import android.app.ListActivity;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,18 +28,20 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.ResourceCursorAdapter;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 
 /** Activity used to pick a contact. */
-public class ContactsPickerActivity extends ListActivity {
+public class ContactsPickerActivity extends SherlockListActivity {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
     public final static String EXTRA_RESULT_USERNAME = "result";
@@ -50,7 +52,6 @@ public class ContactsPickerActivity extends ListActivity {
     private String mExcludeClause;
     Uri mData;
     
-    private EditText mFilterInput;
     private String mSearchString;
     
     private int mLoaderId = 1;
@@ -64,31 +65,65 @@ public class ContactsPickerActivity extends ListActivity {
 
         setContentView(R.layout.contacts_picker_activity);
 
-        mFilterInput = (EditText) findViewById(R.id.filter);
-        mFilterInput.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                
-                mSearchString = mFilterInput.getText().toString();
-                doFilter(mSearchString);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-               
-                
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-              
-                
-            }
-        });
         
         doFilter("");
     }
+    
+    SearchView mSearchView = null;
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.contact_list_menu, menu);
+        
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        if (mSearchView != null )
+        {
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            mSearchView.setIconifiedByDefault(false);   
+        }
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() 
+        {
+            public boolean onQueryTextChange(String newText) 
+            {
+                mSearchString = newText;
+                doFilter(mSearchString);
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) 
+            {
+                mSearchString = query;
+                doFilter(mSearchString);
+                
+                return true;
+            }
+        };
+        
+        mSearchView.setOnQueryTextListener(queryTextListener);
+        
+       
+
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+        case R.id.menu_invite_user:
+            Intent i = new Intent(ContactsPickerActivity.this, AddContactActivity.class);
+         
+            startActivity(i);
+            return true;
+
+       
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -152,13 +187,19 @@ public class ContactsPickerActivity extends ListActivity {
            
         }
         
-        Cursor c = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
+        if (mCursor != null)
+            mCursor.close();
+        
+        mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
         
-        mAdapter.swapCursor(c);
-        
+        mAdapter.swapCursor(mCursor);
     }
+    
+    private Cursor mCursor;
+
+    
     
     private class ContactAdapter extends ResourceCursorAdapter {
         
@@ -188,6 +229,9 @@ public class ContactsPickerActivity extends ListActivity {
             view.setTag(holder);
             
            return view;
+           
+        
+               
         }
         
 
