@@ -310,22 +310,29 @@ public class ContactView extends FrameLayout {
         switch (status) {
         case Imps.Presence.AVAILABLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            avatar.setAlpha(255);
             break;
             
         case Imps.Presence.IDLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            avatar.setAlpha(255);
+
             break;
         
         case Imps.Presence.AWAY:
             avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            avatar.setAlpha(255);
             break;
             
         case Imps.Presence.DO_NOT_DISTURB:
             avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            avatar.setAlpha(255);
+
             break;
             
         case Imps.Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            avatar.setAlpha(100);
             break;
 
 
