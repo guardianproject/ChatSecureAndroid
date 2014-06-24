@@ -824,7 +824,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 cursor, contentResolver, mProviderId, false, null);
 
 
-
         // providerSettings is closed in initConnection();
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
         String password = Imps.Account.getPassword(contentResolver, mAccountId);
@@ -850,12 +849,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "login failed",e);
             //mConnection = null;
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
-
-            if (e == null || e.getMessage() == null) {               
-                info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "unknown error");
-                mRetryLogin = true; //not sure what this error is so will try again
-                
-            } else if (mConnection != null && (!mConnection.isAuthenticated())) {
+            mRetryLogin = true; // our default behvaior is to retry
+            
+            if (mConnection != null && (!mConnection.isAuthenticated())) {
 
                 if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
@@ -870,7 +866,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     debug(TAG, "not authorized - will not retry");
                     info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
-                    disconnected(info);
                     mRetryLogin = false;
                 }
             } 
@@ -889,15 +884,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         } catch (KeyManagementException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            debug(TAG, "login failed: key management",e);
             mRetryLogin = true;
             debug(TAG, "will retry");
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "keymanagement exception");
             setState(LOGGING_IN, info);
             
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            debug(TAG, "login failed: no such algo",e);
+
         } finally {
             mNeedReconnect = false;
             providerSettings.close();
@@ -912,12 +907,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         //request a new one
         String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
-
-        password = GTalkOAuth2.NAME + ':' + password;
-        //now store the new one, for future use until it expires
-        final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                password );
-
+        
+        if (password != null)
+        {
+            password = GTalkOAuth2.NAME + ':' + password;
+            //now store the new one, for future use until it expires
+            final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                    password );
+        }
+        
         return password;
 
     }
