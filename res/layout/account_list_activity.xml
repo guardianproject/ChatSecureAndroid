@@ -16,7 +16,7 @@
         android:layout_height="40sp"
         android:layout_width="match_parent"
         app:radius="8dp"
-        app:fillColor="#FF999999"
+        app:fillColor="@color/holo_blue_light"
         app:pageColor="#FFCCCCCC"
         app:strokeColor="#FF000000"
         app:strokeWidth="2dp"
