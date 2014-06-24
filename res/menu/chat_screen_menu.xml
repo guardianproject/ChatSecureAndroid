@@ -153,7 +153,7 @@
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
-         android:showAsAction="always"
+         android:showAsAction="never"
         
          />
     
@@ -178,32 +178,7 @@
         
         />
      
-     
-     
-     <item android:id="@+id/menu_add_contact"
-        android:title="@string/menu_add_contact" 
-              android:icon="@drawable/social_add_person"
-                android:showAsAction="always"
-        
-        />
-     
-     
-     <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings" 
-        android:icon="@android:drawable/ic_menu_preferences"
-         android:showAsAction="never"
-         />
-     
-      <item android:id="@+id/menu_view_accounts"
-        android:title="@string/menu_add_account"
-                android:showAsAction="never"
-        />
-      
-      <item android:id="@+id/menu_exit"
-        android:title="@string/menu_exit"
-                android:showAsAction="never"
-        />
-  
+    
      
      <!-- 
      <item
@@ -223,6 +198,37 @@
    
       -->
         </group>
+        
+ 
+     
+     
+     <item android:id="@+id/menu_add_contact"
+        android:title="@string/menu_add_contact" 
+              android:icon="@drawable/social_add_person"
+                android:showAsAction="never"
+        
+        />
+     
+     
+        
+      <item android:id="@+id/menu_view_accounts"
+        android:title="@string/menu_add_account"
+                android:showAsAction="never"
+        />
+      
+      
+  <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" 
+        android:icon="@android:drawable/ic_menu_preferences"
+         android:showAsAction="never"
+         />
+     
+      
+      <item android:id="@+id/menu_exit"
+        android:title="@string/menu_exit"
+                android:showAsAction="never"
+        />
+  
 <!--
 
     <item android:id="@+id/menu_block_contact"
