@@ -264,7 +264,6 @@ public class ChatView extends LinearLayout {
     private DataAdapter mDataListenerAdapter = new DataAdapter();
    
     long mLastChatId=-1;
-    int mType;
     String mRemoteNickname;
     String mRemoteAddress;
     
@@ -861,12 +860,14 @@ public class ChatView extends LinearLayout {
         updateWarningView();
     }
 
+    int mContactType = -1;
+    
     private void updateContactInfo() {
        
         mProviderId = mCursor.getLong(PROVIDER_COLUMN);
         mAccountId = mCursor.getLong(ACCOUNT_COLUMN);
         mPresenceStatus = mCursor.getInt(PRESENCE_STATUS_COLUMN);
-        mType = mCursor.getInt(TYPE_COLUMN);
+        mContactType = mCursor.getInt(TYPE_COLUMN);
         
         mRemoteNickname = mCursor.getString(NICKNAME_COLUMN);
         mRemoteAddress = mCursor.getString(USERNAME_COLUMN);
@@ -935,7 +936,7 @@ public class ChatView extends LinearLayout {
     
     
     private void setStatusIcon() {
-        if (mType == Imps.Contacts.TYPE_GROUP) {
+        if (mContactType == Imps.Contacts.TYPE_GROUP) {
             // hide the status icon for group chat.
          //   mStatusIcon.setVisibility(GONE);
         } else {
@@ -1423,10 +1424,10 @@ public class ChatView extends LinearLayout {
                 LogCleaner.error(ImApp.LOG_TAG, "error getting OTR session in ChatView", e);
             }
             
-            if (mType == Imps.Contacts.TYPE_GROUP) {
+            if (mContactType == Imps.Contacts.TYPE_GROUP) {
                 message = "";
             }
-            else if (mType == Imps.Contacts.TYPE_TEMPORARY) {
+            else if (mContactType == Imps.Contacts.TYPE_TEMPORARY) {
                 visibility = View.VISIBLE;
                 message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);                
                 mWarningText.setTextColor(Color.WHITE);
@@ -2015,7 +2016,7 @@ public class ChatView extends LinearLayout {
 
             }
             
-            mType = cursor.getInt(mTypeColumn);
+            int messageType = cursor.getInt(mTypeColumn);
             
             String nickname = isGroupChat() ? cursor.getString(mNicknameColumn) : mRemoteNickname;
             String mimeType = cursor.getString(mMimeTypeColumn);
@@ -2041,28 +2042,28 @@ public class ChatView extends LinearLayout {
             }
             
             EncryptionState encState = EncryptionState.NONE;
-            if (mType == Imps.MessageType.INCOMING_ENCRYPTED)
+            if (messageType == Imps.MessageType.INCOMING_ENCRYPTED)
             {
-                mType = Imps.MessageType.INCOMING;
+                messageType = Imps.MessageType.INCOMING;
                 encState = EncryptionState.ENCRYPTED;
             }
-            else if (mType == Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED)
+            else if (messageType == Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED)
             {
-                 mType = Imps.MessageType.INCOMING;
+                messageType = Imps.MessageType.INCOMING;
                  encState = EncryptionState.ENCRYPTED_AND_VERIFIED;
             }
-            else if (mType == Imps.MessageType.OUTGOING_ENCRYPTED)
+            else if (messageType == Imps.MessageType.OUTGOING_ENCRYPTED)
             {
-                mType = Imps.MessageType.OUTGOING;
+                messageType = Imps.MessageType.OUTGOING;
                 encState = EncryptionState.ENCRYPTED;
             }
-            else if (mType == Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED)
+            else if (messageType == Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED)
             {
-                 mType = Imps.MessageType.OUTGOING;
+                messageType = Imps.MessageType.OUTGOING;
                  encState = EncryptionState.ENCRYPTED_AND_VERIFIED;
             }
             
-            switch (mType) {
+            switch (messageType) {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
@@ -2085,7 +2086,7 @@ public class ChatView extends LinearLayout {
                 break;
 
             default:
-                messageView.bindPresenceMessage(mRemoteAddress, mType, isGroupChat(), isScrolling());
+                messageView.bindPresenceMessage(mRemoteAddress, messageType, isGroupChat(), isScrolling());
             }
 
            // updateWarningView();
