@@ -259,7 +259,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
             Intent sintent = new Intent(this, SettingActivity.class);
             startActivity(sintent);
             return true;
-
+/**
         case R.id.menu_view_groups:
             if (mIsFiltering)
                 showContactListView();
@@ -267,6 +267,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                 showFilterView();
 
             return true;
+            **/
         }
         return super.onOptionsItemSelected(item);
     }
