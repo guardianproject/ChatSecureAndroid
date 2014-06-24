@@ -107,7 +107,7 @@ public class ContactsPickerActivity extends ListActivity {
         mSearchString = filterString;
         if (mAdapter == null) {
             
-                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view_light);
+                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
 
                 setListAdapter(mAdapter);
             
@@ -152,7 +152,7 @@ public class ContactsPickerActivity extends ListActivity {
            
         }
         
-        Cursor c = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION_LIGHT,
+        Cursor c = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
         
