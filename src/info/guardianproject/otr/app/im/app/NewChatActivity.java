@@ -905,6 +905,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             return true;
             
         case R.id.menu_otr:
+        case R.id.menu_otr_stop:
             
             if (getCurrentChatView() != null)
             {
@@ -1980,6 +1981,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             if (mChatView != null)
                 mChatView.setSelected(true);
+            
+            
         }
         
         public void onDeselected(ImApp app) {
