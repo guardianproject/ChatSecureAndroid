@@ -1002,89 +1002,9 @@ public class AccountActivity extends Activity {
         case android.R.id.home:
             finish();
             return true;
-            
-        case R.id.menu_gen_key:
-            otrGenKey();
-            return true;
-
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    ProgressDialog pbarDialog;
-
-    private void otrGenKey() {
-
-        pbarDialog = new ProgressDialog(this);
-
-        pbarDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pbarDialog.setMessage(getString(R.string.otr_gen_key));
-        pbarDialog.show();
-
-        KeyGenThread kgt = new KeyGenThread();
-        kgt.start();
-
-    }
-
-    private class KeyGenThread extends Thread {
-
-        public KeyGenThread() {
-
-        }
-
-        @Override
-        public void run() {
-
-            try {
-                if (mOtrChatSession != null) {
-                    mOtrChatSession.generateLocalKeyPair();
-
-                } else {
-                    Toast.makeText(AccountActivity.this, "OTR is not initialized yet",
-                            Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e) {
-                Log.e("OTR", "could not gen local key pair", e);
-            } finally {
-                handler.sendEmptyMessage(0);
-            }
-
-        }
-
-        private Handler handler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-
-                pbarDialog.dismiss();
-
-                try {
-                    if (mOtrChatSession != null) {
-                        String lFingerprint = mOtrChatSession.getLocalFingerprint();
-                        mTxtFingerprint.setText(processFingerprint(lFingerprint));
-                    }
-
-                } catch (Exception e) {
-                    Log.e("OTR", "could not gen local key pair", e);
-                }
-
-            }
-        };
-    }
-
-    private String processFingerprint(String fingerprint) {
-        StringBuffer out = new StringBuffer();
-
-        for (int n = 0; n < fingerprint.length(); n++) {
-            for (int i = n; n < i + 4; n++) {
-                out.append(fingerprint.charAt(n));
-            }
-
-            out.append(' ');
-        }
-
-        return out.toString();
     }
 
     public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId, final boolean useTor)
