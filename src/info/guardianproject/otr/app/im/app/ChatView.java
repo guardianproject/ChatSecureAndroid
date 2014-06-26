@@ -187,8 +187,15 @@ public class ChatView extends LinearLayout {
     public void setSelected (boolean isSelected)
     {
         mIsSelected = isSelected;
-        updateWarningView();
-        mComposeMessage.requestFocus();
+        
+        if (mIsSelected)
+        {
+            bindChat(mLastChatId);
+            updateWarningView();
+            mComposeMessage.requestFocus();
+        }
+        
+        
     }
     
     
@@ -1405,15 +1412,16 @@ public class ChatView extends LinearLayout {
             mComposeMessage.setHint(R.string.compose_hint);
       
         }
-        else if (isConnected && mCurrentChatSession != null) {
-
+        else if (mCurrentChatSession != null) {
+            IOtrChatSession otrChatSession = null;
+            
             try {
-                IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
+                otrChatSession = mCurrentChatSession.getOtrChatSession();
                                 
                 //check if the chat is otr or not
-                if (OtrChatSession != null) {
+                if (otrChatSession != null) {
                     try {
-                        mLastSessionStatus = SessionStatus.values()[OtrChatSession.getChatStatus()];
+                        mLastSessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                     } catch (RemoteException e) {
                         Log.w("Gibber", "Unable to call remote OtrChatSession from ChatView", e);
                     }
@@ -1455,48 +1463,33 @@ public class ChatView extends LinearLayout {
                 
                 mActivity.setSupportProgressBarIndeterminateVisibility(false);
 
-                    mSendButton.setImageResource(R.drawable.ic_send_secure);
-               
-                    try {
-                        IOtrChatSession OtrChatSession = mCurrentChatSession.getOtrChatSession();
-                                        
-                        //check if the chat is otr or not
-                        if (OtrChatSession != null) {
-                            try {
-                                mLastSessionStatus = SessionStatus.values()[OtrChatSession.getChatStatus()];
-                            } catch (RemoteException e) {
-                                Log.w("Gibber", "Unable to call remote OtrChatSession from ChatView", e);
-                            }
-                        }
+                mSendButton.setImageResource(R.drawable.ic_send_secure);
+           
+                try
+                {
+                    String rFingerprint = otrChatSession.getRemoteFingerprint();
+                    mIsVerified = otrChatSession.isKeyVerified(mRemoteAddress);
 
-                        String rFingerprint = OtrChatSession.getRemoteFingerprint();
-                        mIsVerified = OtrChatSession.isKeyVerified(mRemoteAddress);
-    
-                        if (rFingerprint != null) {
-                            if (!mIsVerified) {
-                                message = mContext.getString(R.string.otr_session_status_encrypted);    
-                                mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
-                                
-                                
-                                
-                            } else {
-                                message = mContext.getString(R.string.otr_session_status_verified);    
-                                mStatusWarningView.setBackgroundResource(R.color.otr_green);
-                                
-                                
-                            }
+                    if (rFingerprint != null) {
+                        if (!mIsVerified) {
+                            message = mContext.getString(R.string.otr_session_status_encrypted);    
+                            mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
+                            
                         } else {
+                            message = mContext.getString(R.string.otr_session_status_verified);    
+                            mStatusWarningView.setBackgroundResource(R.color.otr_green);
                             
-                            mStatusWarningView.setBackgroundResource(R.color.otr_red);
-                            message = mContext.getString(R.string.otr_session_status_plaintext);
                             
                         }
+                    } else {
                         
-
-                    
-                    } catch (RemoteException e) {
-                        LogCleaner.error(ImApp.LOG_TAG, "error getting OTR session in ChatView", e);
+                        mStatusWarningView.setBackgroundResource(R.color.otr_red);
+                        message = mContext.getString(R.string.otr_session_status_plaintext);
+                        
                     }
+                }
+                catch (RemoteException re){}
+
                     
             } else if (mLastSessionStatus == SessionStatus.FINISHED) {
           
@@ -1511,8 +1504,10 @@ public class ChatView extends LinearLayout {
                 visibility = View.VISIBLE;
             }  
 
-        } else {
-
+        } 
+        
+        if (!isConnected)
+        {
             visibility = View.VISIBLE;
             iconVisibility = View.VISIBLE;
             mWarningText.setTextColor(Color.WHITE);
@@ -2067,7 +2062,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat());
+                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat(), mPresenceStatus);
                 }
 
                 break;
