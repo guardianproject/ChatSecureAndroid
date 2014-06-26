@@ -271,6 +271,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 autoLogin();
             }
 
+            mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
+            
             for (ImConnectionAdapter conn : mConnections.values())
             {
                 conn.sendHeartbeat();
@@ -283,34 +285,41 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         
-        if (intent != null && HeartbeatService.HEARTBEAT_ACTION.equals(intent.getAction())) {
-          //  Log.d(TAG, "HEARTBEAT");
-            try {
-                mWakeLock.acquire();
-                sendHeartbeat();
-            } finally {
-                mWakeLock.release();
-            }
-            return START_STICKY;
-        }
+        Log.d(TAG, "ChatSecure: RemoteImService started");
         
-        if (intent != null && HeartbeatService.NETWORK_STATE_ACTION.equals(intent.getAction())) {
-            NetworkInfo networkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(HeartbeatService.NETWORK_INFO_EXTRA);
-            State networkState = State.values()[intent.getIntExtra(HeartbeatService.NETWORK_STATE_EXTRA, 0)];
-            // TODO(miron) wakelock?
-            
+        if (intent != null)
+        {
+            if (HeartbeatService.HEARTBEAT_ACTION.equals(intent.getAction())) {
+              //  Log.d(TAG, "HEARTBEAT");
+                if (!mWakeLock.isHeld())
+                {
+                    try {                    
+                        mWakeLock.acquire();
+                        sendHeartbeat();
+                    } finally {
+                        mWakeLock.release();
+                    }
+                }
+                return START_STICKY;
+            }
+        
+            if (HeartbeatService.NETWORK_STATE_ACTION.equals(intent.getAction())) {
+                NetworkInfo networkInfo = (NetworkInfo) intent
+                        .getParcelableExtra(HeartbeatService.NETWORK_INFO_EXTRA);
+                State networkState = State.values()[intent.getIntExtra(HeartbeatService.NETWORK_STATE_EXTRA, 0)];
+                // TODO(miron) wakelock?
+                
+    
+                networkStateChanged(networkInfo, networkState);
+                return START_STICKY;
+            }
 
-            networkStateChanged(networkInfo, networkState);
-            return START_STICKY;
+
+            if (intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
+                mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
+                    false);
+        
         }
-
-
-        if (intent != null && intent.hasExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN))
-            mNeedCheckAutoLogin = intent.getBooleanExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN,
-                false);
-        else
-            mNeedCheckAutoLogin = true;
         
         debug("ImService.onStart, checkAutoLogin=" + mNeedCheckAutoLogin + " intent =" + intent
               + " startId =" + startId);
@@ -763,6 +772,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void sessionStatusChanged(SessionID sessionID) {
 
         //this method does nothing!
+        Log.d(TAG,"OTR session status changed: " + sessionID.getRemoteUserId());
     }
     
     public void onTaskRemoved(Intent rootIntent) {
