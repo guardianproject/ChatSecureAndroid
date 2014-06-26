@@ -32,7 +32,7 @@ public class OtrEngineImpl implements OtrEngine {
     }
 
     private OtrEngineHost host;
-    private Map<SessionID, Session> sessions;
+    private Map<String, Session> sessions;
 
     public Session getSession(SessionID sessionID) {
 
@@ -40,11 +40,11 @@ public class OtrEngineImpl implements OtrEngine {
             throw new IllegalArgumentException();
 
         if (sessions == null)
-            sessions = new Hashtable<SessionID, Session>();
+            sessions = new Hashtable<String, Session>();
 
-        if (!sessions.containsKey(sessionID)) {
+        if (!sessions.containsKey(sessionID.getSessionId())) {
             Session session = new SessionImpl(sessionID, getHost());
-            sessions.put(sessionID, session);
+            sessions.put(sessionID.getSessionId(), session);
 
             session.addOtrEngineListener(new OtrEngineListener() {
 
@@ -55,7 +55,7 @@ public class OtrEngineImpl implements OtrEngine {
             });
             return session;
         } else
-            return sessions.get(sessionID);
+            return sessions.get(sessionID.getSessionId());
     }
 
     public SessionStatus getSessionStatus(SessionID sessionID) {

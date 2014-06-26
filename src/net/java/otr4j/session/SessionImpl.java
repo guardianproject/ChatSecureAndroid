@@ -6,6 +6,7 @@
 
 package net.java.otr4j.session;
 
+import info.guardianproject.otr.app.im.R;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -189,41 +190,48 @@ public class SessionImpl implements Session {
         return buff.array();
     }
 
-    private void setSessionStatus(SessionStatus sessionStatus) throws OtrException {
+    private void setSessionStatus(SessionStatus sessionStatusNew) throws OtrException {
 
+        boolean sessionStatusChanged = (sessionStatus != sessionStatusNew);
+        
+        sessionStatus = sessionStatusNew;
+        
         switch (sessionStatus) {
-        case ENCRYPTED:
-            AuthContext auth = this.getAuthContext();
-            ess = auth.getS();
-            logger.finest("Setting most recent session keys from auth.");
-            for (int i = 0; i < this.getSessionKeys()[0].length; i++) {
-                SessionKeys current = getSessionKeysByIndex(0, i);
-                current.setLocalPair(auth.getLocalDHKeyPair(), 1);
-                current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
-                current.setS(auth.getS());
-            }
-
-            KeyPair nextDH = new OtrCryptoEngineImpl().generateDHKeyPair();
-            for (int i = 0; i < this.getSessionKeys()[1].length; i++) {
-                SessionKeys current = getSessionKeysByIndex(1, i);
-                current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
-                current.setLocalPair(nextDH, 2);
-            }
-
-            this.setRemotePublicKey(auth.getRemoteLongTermPublicKey());
-
-            auth.reset();
-            
-            break;
+            case ENCRYPTED:
+                AuthContext auth = this.getAuthContext();
+                ess = auth.getS();
+                logger.finest("Setting most recent session keys from auth.");
+                for (int i = 0; i < this.getSessionKeys()[0].length; i++) {
+                    SessionKeys current = getSessionKeysByIndex(0, i);
+                    current.setLocalPair(auth.getLocalDHKeyPair(), 1);
+                    current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
+                    current.setS(auth.getS());
+                }
+    
+                KeyPair nextDH = new OtrCryptoEngineImpl().generateDHKeyPair();
+                for (int i = 0; i < this.getSessionKeys()[1].length; i++) {
+                    SessionKeys current = getSessionKeysByIndex(1, i);
+                    current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
+                    current.setLocalPair(nextDH, 2);
+                }
+    
+                this.setRemotePublicKey(auth.getRemoteLongTermPublicKey());
+    
+                auth.reset();
+                
+                break;
+            case PLAINTEXT:
+                //nothing here
+                break;
+                
+            default:
+                //do nothing;
         }
 
-        SessionStatus oldSessionStatus = this.sessionStatus;
-        
-        // This must be set correctly for transformSending
-        this.sessionStatus = sessionStatus;
         
         if (sessionStatus == SessionStatus.ENCRYPTED && doTransmitLastMessage && lastSentMessage != null) {
-            String msg = this.transformSending((isLastMessageRetransmit ? "[resent] " : "") + lastSentMessage, null);
+            String retransmit = (isLastMessageRetransmit ? "[resent] " : "");
+            String msg = transformSending(retransmit + lastSentMessage, null);
             getHost().injectMessage(getSessionID(), msg);
         }
 
@@ -231,10 +239,13 @@ public class SessionImpl implements Session {
         isLastMessageRetransmit = false;
         lastSentMessage = null;
         
-        if (sessionStatus != oldSessionStatus) {
+        if (sessionStatusChanged) {
+            
             for (OtrEngineListener l : this.listeners)
                 l.sessionStatusChanged(getSessionID());
         }
+        
+        
     }
 
     /*
