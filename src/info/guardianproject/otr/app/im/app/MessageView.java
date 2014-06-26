@@ -159,7 +159,7 @@ public class MessageView extends FrameLayout {
     }
     
     public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
-            boolean scrolling, EncryptionState encryption, boolean showContact) {
+            boolean scrolling, EncryptionState encryption, boolean showContact, int presenceStatus) {
       
         mHolder = (ViewHolder)getTag();
 
@@ -178,7 +178,7 @@ public class MessageView extends FrameLayout {
         else
         {
             lastMessage = formatMessage(body);
-            showAvatar(address,true);
+            showAvatar(address,true,presenceStatus);
         
             mHolder.resetOnClickListenerMediaThumbnail();     
             if( mimeType != null ) {
@@ -557,9 +557,9 @@ public class MessageView extends FrameLayout {
         
     }
 
-    private static Drawable AVATAR_DEFAULT;
+    private static RoundedAvatarDrawable AVATAR_DEFAULT;
     
-    private void showAvatar (String address, boolean isLeft)
+    private void showAvatar (String address, boolean isLeft, int encryptionState)
     {
 
         mHolder.mAvatar.setVisibility(View.GONE);        
@@ -567,7 +567,7 @@ public class MessageView extends FrameLayout {
         if (address != null)
         {
             
-            Drawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
     
             if (avatar != null)
             {
@@ -591,7 +591,7 @@ public class MessageView extends FrameLayout {
                 
             }
                 
-            
+            setAvatarBorder(encryptionState, avatar);
         }    
     }
 
@@ -702,6 +702,40 @@ public class MessageView extends FrameLayout {
             spanText.setSpan(new RelativeSizeSpan((float) 0.8), 0, len,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return spanText;
+        }
+    }
+    
+    public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.IDLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            avatar.setAlpha(255);
+
+            break;
+        
+        case Imps.Presence.AWAY:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.DO_NOT_DISTURB:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            avatar.setAlpha(255);
+
+            break;
+            
+        case Imps.Presence.OFFLINE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            avatar.setAlpha(100);
+            break;
+
+
+        default:
         }
     }
 }
