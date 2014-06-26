@@ -23,10 +23,13 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import net.java.otr4j.session.SessionStatus;
 
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -35,6 +38,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,6 +58,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -85,8 +92,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
         mApp = (ImApp)getApplication();
 
         setContentView(R.layout.contact_presence_activity);
-
-        enableButtons (false);
         
         Intent i = getIntent();
         mUri = i.getData();
@@ -125,6 +130,38 @@ public class ContactPresenceActivity extends ThemeableActivity {
         super.onDestroy();
         
         timer.cancel();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        
+        MenuInflater inflater = this.getSherlock().getMenuInflater();
+        inflater.inflate(R.menu.contact_info_menu, menu);
+        
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.menu_scan:
+                startScan();
+                break;
+            
+            case R.id.menu_verify_secret:
+                initSmpUI();
+                break;
+            
+            case R.id.menu_verify_fingerprint:
+                confirmVerify();
+                break;
+                
+                default:
+                    return false;
+        }
+        
+        return true;
     }
 
     private void updateOtrStatus ()
@@ -167,8 +204,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
         
         
 
-        
-        TextView txtName = (TextView) findViewById(R.id.txtName);
         TextView txtAddress = (TextView) findViewById(R.id.txtAddress);
         ImageView imgAvatar = (ImageView) findViewById(R.id.avatar);
         TextView txtStatus = (TextView) findViewById(R.id.txtStatus);
@@ -197,16 +232,19 @@ public class ContactPresenceActivity extends ThemeableActivity {
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
             
-            BrandingResources brandingRes = mApp.getBrandingResource(providerId);
-            setTitle(brandingRes.getString(BrandingResourceIDs.STRING_CONTACT_INFO_TITLE));
-
-            Drawable avatar = DatabaseUtils.getAvatarFromCursor(c,
+            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(c,
                     c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
             
-            if (avatar != null)
-                imgAvatar.setImageDrawable(avatar);
-            else
-                imgAvatar.setVisibility(View.GONE);
+            if (avatar == null)
+            {
+                avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.avatar_unknown));
+            }
+            
+            setAvatarBorder(status, avatar);
+            
+            getSherlock().getActionBar().setIcon(avatar);
+
             
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
             
@@ -215,23 +253,19 @@ public class ContactPresenceActivity extends ThemeableActivity {
             
             getSherlock().getActionBar().setTitle(nickname);
             
-            if (nickname != null)
-                txtName.setText(nickname);
 
-            if (address != null)
+            if (address != null && (!nickname.equals(address)))
                 txtAddress.setText(address);
             
-            String statusString = brandingRes.getString(PresenceUtils.getStatusStringRes(status));
+            String statusString = null;
+            
             if (!TextUtils.isEmpty(customStatus)) {
                 statusString = "\"" + customStatus + "\"";
             } 
             
-            SpannableString s = new SpannableString("+ " + statusString);
-            Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(status));
-            statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
-                    statusIcon.getIntrinsicHeight());
-            s.setSpan(new ImageSpan(statusIcon), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-            txtStatus.setText(s);
+            
+            if (statusString != null)
+                txtStatus.setText(statusString);
 
             
            
@@ -242,6 +276,9 @@ public class ContactPresenceActivity extends ThemeableActivity {
         TextView txtFingerprintRemote = (TextView) findViewById(R.id.txtFingerprintRemote);
 
         updateOtrStatus ();
+        
+        getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_red_dark));
+
         
         try
         {
@@ -258,24 +295,29 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 
                 if (remoteFingerprintVerified) {
                     lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
-                    txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_green));
+                    
+                    this.getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_green_dark));
+                    
                 } else
-                    txtFingerprintRemote.setBackgroundColor(getResources().getColor(R.color.otr_yellow));
+                {
+                    this.getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_orange_light));
+
+                }
+
     
 
-                enableButtons(true);
                 
             } else {
                 txtFingerprintRemote.setVisibility(View.GONE);
                 lblFingerprintRemote.setVisibility(View.GONE);
-                enableButtons(false);
+          
             }
         }
         catch (RemoteException re)
         {
             txtFingerprintRemote.setVisibility(View.GONE);
             lblFingerprintRemote.setVisibility(View.GONE);
-            enableButtons(false);
+          
         }
         
 
@@ -388,64 +430,6 @@ public class ContactPresenceActivity extends ThemeableActivity {
         }
     }
 
-
-    private void enableButtons (boolean showOtrOptions)
-    {
-        Button btnVerifyManual = (Button)findViewById(R.id.btnVerifyManual);
-        Button btnVerifyScan = (Button)findViewById(R.id.btnVerifyScan);
-        Button btnVerifyQuestion = (Button)findViewById(R.id.btnVerifyQuestion);
-        View viewVerifyLabel = findViewById(R.id.labelFingerprintActions);
-        
-        if (!showOtrOptions)
-        {
-            btnVerifyManual.setVisibility(View.GONE);
-            btnVerifyScan.setVisibility(View.GONE);
-            btnVerifyQuestion.setVisibility(View.GONE);
-            viewVerifyLabel.setVisibility(View.GONE);
-            
-        }
-        else
-        {
-            btnVerifyManual.setVisibility(View.VISIBLE);
-            btnVerifyScan.setVisibility(View.VISIBLE);
-            btnVerifyQuestion.setVisibility(View.VISIBLE);
-            viewVerifyLabel.setVisibility(View.VISIBLE);
-            
-            btnVerifyManual.setOnClickListener(new OnClickListener (){
-    
-                @Override
-                public void onClick(View v) {
-                  
-                        confirmVerify();
-                    
-                }
-                
-                
-            });
-            
-            
-            btnVerifyScan.setOnClickListener(new OnClickListener (){
-    
-                @Override
-                public void onClick(View v) {
-                    startScan();
-                }
-                
-                
-            });
-            
-            btnVerifyQuestion.setOnClickListener(new OnClickListener (){
-    
-                @Override
-                public void onClick(View v) {
-                    if (mOtrSession != null)
-                        initSmpUI();
-                }
-                
-                
-            });
-        } 
-     }
         
     private void initSmpUI() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -484,6 +468,40 @@ public class ContactPresenceActivity extends ThemeableActivity {
         } catch (RemoteException e) {
             Log.e(TAG, "error init SMP", e);
 
+        }
+    }
+    
+    public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.IDLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            avatar.setAlpha(255);
+
+            break;
+        
+        case Imps.Presence.AWAY:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.DO_NOT_DISTURB:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            avatar.setAlpha(255);
+
+            break;
+            
+        case Imps.Presence.OFFLINE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            avatar.setAlpha(100);
+            break;
+
+
+        default:
         }
     }
 }

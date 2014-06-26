@@ -6,27 +6,6 @@
     android:padding="10dp"
     >
 
-    
-       <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:scaleType="centerCrop"
-             android:gravity="right"
-             android:contentDescription="avatar image"
-             />
-        
-       
-        <TextView android:id="@+id/txtName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            
-                android:fontFamily="sans-serif-light"	
-           />
-            
-       
  <TextView android:id="@+id/txtAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +45,7 @@
              />
         
         
+        	    <!-- 
         
         <TextView android:id="@+id/labelFingerprintActions"
             android:layout_width="wrap_content"
@@ -76,6 +56,7 @@
             
                 android:fontFamily="sans-serif-light"
              />
+        
         
         	<LinearLayout
         	    android:layout_width="match_parent"
@@ -106,5 +87,6 @@
         		    android:text="@string/menu_verify_secret" />
 
         </LinearLayout>
+        		-->
         		
     </LinearLayout>

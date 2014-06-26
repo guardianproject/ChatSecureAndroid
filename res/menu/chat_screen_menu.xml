@@ -27,6 +27,7 @@
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
+           android:id="@+id/menu_otr"
         >
         
              
@@ -58,7 +59,7 @@
          android:showAsAction="always"
          />
          
-        <item android:id="@+id/menu_otr"
+        <item android:id="@+id/menu_otr_stop"
         android:title="@string/menu_otr_stop"
          android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
@@ -224,15 +225,6 @@
         android:title="@string/menu_exit"
                 android:showAsAction="never"
         />
-  
-<!--
-
-    <item android:id="@+id/menu_block_contact"
-        android:title="@string/menu_block_contact" />
-
-    <item android:id="@+id/menu_invite_contact"
-        android:title="@string/menu_invite_contact" />
- -->
   
   
 </menu>

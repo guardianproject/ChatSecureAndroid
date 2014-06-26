@@ -66,9 +66,9 @@
      <!-- A light Holo shade of gray -->
     <color name="holo_grey_light">#88555555</color>
     
-    <color name="otr_red">#aaffcaca</color>
-    <color name="otr_yellow">#aaffecc0</color>
-    <color name="otr_green">#aae2f0b6</color>
+    <color name="otr_red">#ffcaca</color>
+    <color name="otr_yellow">#ffecc0</color>
+    <color name="otr_green">#e2f0b6</color>
     
     <!-- 
     <color name="otr_red">#FF4444</color>

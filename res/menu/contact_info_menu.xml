@@ -19,20 +19,20 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+         <group android:enabled="true" android:id="@+id/menu_group_verify">
+    
+                <item 
+        android:title="@string/menu_verify"
+         android:icon="@drawable/ic_menu_verify"
+          android:showAsAction="always|withText"
+        > 
+        
+        <menu>
     <item android:id="@+id/menu_scan"
         android:title="@string/menu_scan"
         android:icon="@drawable/ic_menu_barcode"
          android:showAsAction="always|withText"
          />
-
-    <item android:id="@+id/menu_fingerprint"
-        android:title="@string/menu_fingerprint"
-         android:icon="@drawable/ic_menu_fingerprint"
-          android:showAsAction="always|withText"
-         />
-
-    
-
     <item android:id="@+id/menu_verify_secret"
         android:title="@string/menu_verify_secret"
          android:icon="@android:drawable/ic_menu_help"
@@ -44,4 +44,8 @@
          android:icon="@drawable/ic_menu_verify"
           android:showAsAction="always|withText"
          />
+    </menu>
+    </item>
+    
+    </group>
 </menu>
