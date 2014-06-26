@@ -54,7 +54,6 @@ public class ContactsPickerActivity extends SherlockListActivity {
     
     private String mSearchString;
     
-    private int mLoaderId = 1;
 
     
     @Override
@@ -134,7 +133,6 @@ public class ContactsPickerActivity extends SherlockListActivity {
         data.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
         
         setResult(RESULT_OK, data);
-        this.stopManagingCursor(cursor);
         finish();
     }
     
@@ -187,19 +185,12 @@ public class ContactsPickerActivity extends SherlockListActivity {
            
         }
         
-        if (mCursor != null)
-            mCursor.close();
-        
-        mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
+        Cursor cursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
         
-        mAdapter.swapCursor(mCursor);
+        mAdapter.changeCursor(cursor);
     }
-    
-    private Cursor mCursor;
-
-    
     
     private class ContactAdapter extends ResourceCursorAdapter {
         
