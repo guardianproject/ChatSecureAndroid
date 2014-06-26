@@ -1,7 +1,5 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.otr.app.im.ImService;
-import info.guardianproject.otr.app.im.app.SmpResponseActivity;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
@@ -20,7 +18,7 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
-import android.content.Intent;
+import android.content.Context;
 import android.widget.Toast;
 
 /*
@@ -33,13 +31,13 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     private OtrKeyManager mOtrKeyManager;
 
-    private ImService mContext;
+    private Context mContext;
 
     private Hashtable<SessionID, String> mSessionResources;
     
     private RemoteImService mImService;
     
-    public OtrEngineHostImpl(OtrPolicy policy, ImService context, OtrKeyManager otrKeyManager, RemoteImService imService) throws IOException {
+    public OtrEngineHostImpl(OtrPolicy policy, Context context, OtrKeyManager otrKeyManager, RemoteImService imService) throws IOException {
         mPolicy = policy;
         mContext = context;
 
@@ -111,7 +109,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         mPolicy = policy;
     }
 
-    private void sendMessage(SessionID sessionID, String body) {
+    private boolean sendMessage(SessionID sessionID, String body) {
         ImConnectionAdapter connection = findConnection(sessionID);
         if (connection != null)
         {
@@ -128,13 +126,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 msg.setFrom(connection.getLoginUser().getAddress());
                 final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
                 msg.setTo(appendSessionResource(sessionID, to));
-                //msg.setTo(to);
                 msg.setDateTime(new Date());
                 
                 // msg ID is set by plugin
                 // msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
                 
                 chatSessionManagerAdapter.getChatSessionManager().sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
+                
+                return true;
             }
             else
             {
@@ -147,6 +146,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
             OtrDebugLogger.log(sessionID.toString() + ": could not find ImConnection");
             
         }
+        
+        return false;
     }
 
     public void injectMessage(SessionID sessionID, String text) {

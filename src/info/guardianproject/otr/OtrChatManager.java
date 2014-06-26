@@ -4,7 +4,6 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
-import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -27,6 +26,7 @@ import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
+import android.content.Context;
 import android.content.Intent;
 
 /*
@@ -42,12 +42,14 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     private Hashtable<String, SessionID> mSessions;
     private Hashtable<SessionID, OtrSm> mOtrSms;
 
-    private ImService mContext;
+    private Context mContext;
     
     private OtrChatManager(int otrPolicy, RemoteImService imService, OtrKeyManager otrKeyManager) throws Exception {
+
+        mContext = (Context)imService;
         
         mOtrEngineHost = new OtrEngineHostImpl(new OtrPolicyImpl(otrPolicy),
-                imService, otrKeyManager, imService);
+                mContext, otrKeyManager, imService);
 
         mOtrEngine = new OtrEngineImpl(mOtrEngineHost);
         mOtrEngine.addOtrEngineListener(this);
@@ -55,7 +57,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mSessions = new Hashtable<String, SessionID>();
         mOtrSms = new Hashtable<SessionID, OtrSm>();
 
-        mContext = imService;
         
         
     }
@@ -267,7 +268,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         final Session session = mOtrEngine.getSession(sessionID);
         OtrSm otrSm = mOtrSms.get(sessionID);
 
-        
         if (sStatus == SessionStatus.ENCRYPTED) {
 
             PublicKey remoteKey = mOtrEngine.getRemotePublicKey(sessionID);

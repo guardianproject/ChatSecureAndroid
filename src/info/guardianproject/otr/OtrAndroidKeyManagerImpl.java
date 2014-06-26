@@ -61,8 +61,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements OtrKeyManager {
 
-    private static final boolean REGENERATE_LOCAL_PUBLIC_KEY = false;
-
     private SimplePropertiesStore store;
 
     private OtrCryptoEngineImpl cryptoEngine;
@@ -679,10 +677,6 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             keyFactory = KeyFactory.getInstance(KEY_ALG);
             privateKey = keyFactory.generatePrivate(privateKeySpec);
 
-            if (REGENERATE_LOCAL_PUBLIC_KEY) {
-                regenerateLocalPublicKey(keyFactory, userId, (DSAPrivateKey)privateKey);
-            }
-            
             // Load Public Key.
             byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
             if (b64PubKey == null)
