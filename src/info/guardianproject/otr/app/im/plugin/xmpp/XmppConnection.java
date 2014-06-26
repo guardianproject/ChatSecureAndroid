@@ -2201,7 +2201,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         });
 
         if (!success) {
-            debug(TAG, "failed to schedule heartbeat state = " + getState());
+          //  debug(TAG, "failed to schedule heartbeat state = " + getState());
         }
     }
 
