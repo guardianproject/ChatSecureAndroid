@@ -1772,7 +1772,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             mConn = conn;
             
             if (mFilterView != null)
-                mFilterView.setConnection(mConn);
+                mFilterView.setActivity(getActivity());
             
         }
 
