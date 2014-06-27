@@ -2,22 +2,21 @@
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="bottom"
     android:orientation="vertical" 
      android:background="@drawable/csbackground"
     >
 
+    
     <LinearLayout
         android:id="@+id/frameRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            >
+        android:orientation="vertical"
+        android:layout_gravity="bottom"        
+       	android:background="#aaffffff"
+        >
 
             <LinearLayout
                 android:id="@+id/llCreatePassphrase"
@@ -136,7 +135,6 @@
                     android:text="@string/sign_in" />
 
             </LinearLayout>
-        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>

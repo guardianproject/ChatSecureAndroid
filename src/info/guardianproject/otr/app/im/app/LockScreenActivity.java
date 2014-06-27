@@ -9,6 +9,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import java.security.GeneralSecurityException;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -56,6 +57,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
+
         
         mApp = (ImApp)getApplication();
         
@@ -219,7 +223,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                 }
                 else if (!newEqualsConfirmation()) {
                     showInequalityError();
-                } else {
+                }
+               else if (!isConfirmationFieldEmpty() && !isPasswordFieldEmpty())
+               {
                     initializeWithPassphrase();
                 }
             }
