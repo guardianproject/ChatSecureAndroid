@@ -192,6 +192,13 @@ public class ContactsPickerActivity extends SherlockListActivity {
         mAdapter.changeCursor(cursor);
     }
     
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        mAdapter.getCursor().close();
+    }
+
     private class ContactAdapter extends ResourceCursorAdapter {
         
         
