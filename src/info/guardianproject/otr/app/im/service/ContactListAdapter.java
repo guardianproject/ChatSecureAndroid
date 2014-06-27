@@ -53,7 +53,7 @@ public class ContactListAdapter extends info.guardianproject.otr.app.im.IContact
         } catch (IllegalArgumentException e) {
             return ImErrorInfo.ILLEGAL_CONTACT_ADDRESS;
         } catch (ImException e) {
-            return e.getImError().getCode();
+            return ImErrorInfo.NETWORK_ERROR;
         }
 
         return ImErrorInfo.NO_ERROR;
