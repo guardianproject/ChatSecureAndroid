@@ -966,6 +966,9 @@ public class ChatView extends LinearLayout {
         log("bind " + this + " " + chatId);
         mLastChatId = chatId;
         
+        if (mCursor != null && !mCursor.isClosed())
+            mCursor.close();
+        
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         mCursor = mActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
         
