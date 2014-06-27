@@ -20,8 +20,6 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ContactView.ViewHolder;
-import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.LogCleaner;
@@ -41,7 +39,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +48,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -69,39 +65,26 @@ public class ContactListFilterView extends LinearLayout {
     private Uri mUri;
     private final Context mContext;
     private final SimpleAlertHandler mHandler;
-    private final ConnectionListenerAdapter mConnectionListener;
 
-    private IImConnection mConn;
     private MyLoaderCallbacks mLoaderCallbacks;
-  //  private EditText mEtSearch;
+
+    private ContactListListener mListener = null;
+    private LoaderManager mLoaderManager;
+    private int mLoaderId;
+    private ImApp mApp;
     
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mContext = context;
         mHandler = new SimpleAlertHandler((Activity)context);
-        mConnectionListener = new ConnectionListenerAdapter(mHandler) {
-            @Override
-            public void onConnectionStateChange(IImConnection connection, int state,
-                    ImErrorInfo error) {
-                
-                
-            }
-
-            @Override
-            public void onUpdateSelfPresenceError(IImConnection connection, ImErrorInfo error) {
-                super.onUpdateSelfPresenceError(connection, error);
-            }
-
-            @Override
-            public void onSelfPresenceUpdated(IImConnection connection) {
-                super.onSelfPresenceUpdated(connection);
-            }  
-            
-            
-        };
+    
     }
     
+    public void setActivity (Activity a)
+    {
+        mApp = (ImApp) a.getApplication();
+    }
 
     @Override
     public boolean isInEditMode() {
@@ -238,49 +221,6 @@ public class ContactListFilterView extends LinearLayout {
         return (Cursor) mContactAdapter.getItem(position);
     }
 
-    public void setConnection(IImConnection conn) {
-       
-        if (mConn != conn) {
-            if (mConn != null) {
-                unregisterListeners();
-            }
-            
-            mConn = conn;
-
-            if (conn != null) {
-                /*
-                try {
-                    //mPresenceView.loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
-                } catch (RemoteException e) {
-                    //mPresenceView.loggingIn(false);
-                    mHandler.showServiceErrorAlert();
-                }
-                */
-                
-                registerListeners();
-            }
-        }
-    }
-
-    private void registerListeners() {
-        try {
-            mConn.registerConnectionListener(mConnectionListener);
-        } catch (RemoteException e) {
-
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
-        }
-    }
-
-    private void unregisterListeners() {
-        try {
-            mConn.unregisterConnectionListener(mConnectionListener);
-        } catch (RemoteException e) {
-
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
-        }
-    }
 
     
     public void doFilter(Uri uri, String filterString) {
@@ -356,10 +296,6 @@ public class ContactListFilterView extends LinearLayout {
     }
     
     
-    private ContactListListener mListener = null;
-    private LoaderManager mLoaderManager;
-    private int mLoaderId;
-    
     public void setListener (ContactListListener listener)
     {
         mListener = listener;
@@ -367,10 +303,8 @@ public class ContactListFilterView extends LinearLayout {
     
     private void setContactNickname(int aPosition) {
         Cursor cursor = (Cursor)mFilterList.getItemAtPosition(aPosition);
-        if (cursor == null || mConn == null) {
-            mHandler.showAlert(R.string.error, R.string.select_contact);
-            return ;
-        }
+        final IImConnection conn = getConnection (cursor);
+
         final String address = cursor.getString(cursor.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
         final String nickname = cursor.getString(cursor.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
         final View view = LayoutInflater.from(mContext).inflate(R.layout.alert_dialog_contact_nickname, null);
@@ -389,7 +323,7 @@ public class ContactListFilterView extends LinearLayout {
                 new Handler().postDelayed(new Runnable() {                    
                     @Override
                     public void run() {
-                        setContactNickname( address, newNickname ) ;
+                        setContactNickname( address, newNickname, conn) ;
                     }
                 }, 500);
             }
@@ -400,9 +334,10 @@ public class ContactListFilterView extends LinearLayout {
     /**
      * @param value
      */
-    protected void setContactNickname(String aAddress, String aNickname) {
+    protected void setContactNickname(String aAddress, String aNickname, IImConnection conn) {
         try {
-            IContactListManager listManager = mConn.getContactListManager();
+
+            IContactListManager listManager = conn.getContactListManager();
             int result = listManager.setContactName(aAddress, aNickname); 
             if( result != ImErrorInfo.NO_ERROR ) {
                 Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + result, Toast.LENGTH_LONG); // TODO -LS error handling
@@ -421,85 +356,87 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     void removeContact(Cursor c) {
-        if (c == null || mConn == null) {
-            mHandler.showAlert(R.string.error, R.string.select_contact);
-        } else {
+        final IImConnection conn = getConnection (c);
+
             
-            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
-            final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    try {
-                        IContactListManager manager = mConn.getContactListManager();
-                        int res = manager.removeContact(address);
-                        if (res != ImErrorInfo.NO_ERROR) {
-                            mHandler.showAlert(R.string.error,
-                                    ErrorResUtils.getErrorRes(getResources(), res, address));
-                        }
-                    } catch (RemoteException e) {
-                        
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
+        String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+        final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                try {
+                    IContactListManager manager = conn.getContactListManager();
+                    int res = manager.removeContact(address);
+                    if (res != ImErrorInfo.NO_ERROR) {
+                        mHandler.showAlert(R.string.error,
+                                ErrorResUtils.getErrorRes(getResources(), res, address));
                     }
+                } catch (RemoteException e) {
+                    
+        mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+        LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                 }
-            };
-            Resources r = getResources();
+            }
+        };
+        Resources r = getResources();
 
-            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
-                    .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
-                    .setPositiveButton(R.string.yes, confirmListener) // default button
-                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
+        new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                .setMessage(r.getString(R.string.confirm_delete_contact, nickname))
+                .setPositiveButton(R.string.yes, confirmListener) // default button
+                .setNegativeButton(R.string.no, null).setCancelable(false).show();
 
 
-        }
+        
     }
 
-    
+    private IImConnection getConnection (Cursor c)
+    {
+        return mApp.getConnection(c.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+    }
 
     public void blockContactAtPosition(int packedPosition) {
         blockContact((Cursor)mFilterList.getItemAtPosition(packedPosition));
     }
 
     void blockContact(Cursor c) {
-        if (c == null || mConn == null) {
-            mHandler.showAlert(R.string.error, R.string.select_contact);
-        } else {
-            String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
-            final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    try {
-                        IContactListManager manager = mConn.getContactListManager();
+        
+        final IImConnection conn = getConnection (c);
+        
+        String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
+        final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
+        DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                try {
+                    IContactListManager manager = conn.getContactListManager();
+                    
+                    int res = -1;
+                    
+                    if (manager.isBlocked(address))
+                        res = manager.unBlockContact(address);
+                    else
+                    {
+                        res = manager.blockContact(address);
                         
-                        int res = -1;
-                        
-                        if (manager.isBlocked(address))
-                            res = manager.unBlockContact(address);
-                        else
-                        {
-                            res = manager.blockContact(address);
-                            
-                            if (res != ImErrorInfo.NO_ERROR) {
-                                mHandler.showAlert(R.string.error,
-                                        ErrorResUtils.getErrorRes(getResources(), res, address));
-                            }
+                        if (res != ImErrorInfo.NO_ERROR) {
+                            mHandler.showAlert(R.string.error,
+                                    ErrorResUtils.getErrorRes(getResources(), res, address));
                         }
-                    } catch (RemoteException e) {
-                        
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                     }
+                } catch (RemoteException e) {
+                    
+        mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+        LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                 }
-            };
+            }
+        };
 
-            Resources r = getResources();
+        Resources r = getResources();
 
-            new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
-                    .setMessage(r.getString(R.string.confirm_block_contact, nickname))
-                    .setPositiveButton(R.string.yes, confirmListener) // default button
-                    .setNegativeButton(R.string.no, null).setCancelable(false).show();
+        new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
+                .setMessage(r.getString(R.string.confirm_block_contact, nickname))
+                .setPositiveButton(R.string.yes, confirmListener) // default button
+                .setNegativeButton(R.string.no, null).setCancelable(false).show();
             
-        }
+        
     }
 
 
