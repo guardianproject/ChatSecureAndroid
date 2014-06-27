@@ -699,46 +699,58 @@ public class AccountActivity extends Activity {
     }
 
     private void settingsForDomain(String domain, int port, Imps.ProviderSettings.QueryMap settings) {
+        
+
+        settings.setRequireTls(true);
+        settings.setTlsCertVerify(true);
+        settings.setAllowPlainAuth(false);
+        settings.setPort(DEFAULT_PORT);
+        
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
             // http://code.google.com/apis/talk/open_communications.html
             
-            settings.setDoDnsSrv(false);
-            settings.setServer(DEFAULT_SERVER_GOOGLE);            
+            if (settings.getUseTor())
+            {
+                // this is not @gmail but IS a google account
+                settings.setDoDnsSrv(false);
+                settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
+            }
+            
             settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
         } 
         //mEditPass can be NULL if this activity is used in "headless" mode for auto account setup
         else if (mEditPass != null && mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
-            //this is not @gmail but IS a google account
-            settings.setDoDnsSrv(false);
-            settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
+            if (settings.getUseTor())
+            {
+                // this is not @gmail but IS a google account
+                settings.setDoDnsSrv(false);
+                settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
+            }
+            
             settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
         }
         else if (domain.equals("jabber.org")) {
-            settings.setDoDnsSrv(false);
-            settings.setServer(DEFAULT_SERVER_JABBERORG);            
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);            
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            
+            if (settings.getUseTor())
+            {
+                settings.setDoDnsSrv(false);
+                settings.setServer(DEFAULT_SERVER_JABBERORG);
+            }
+            
+            settings.setDomain(domain);         
+            
         } else if (domain.equals("facebook.com")) {
-            settings.setDoDnsSrv(false);
+            
+            if (settings.getUseTor())
+            {
+                settings.setDoDnsSrv(false);
+                settings.setServer(DEFAULT_SERVER_FACEBOOK);
+                
+            }
+            
             settings.setDomain(DEFAULT_SERVER_FACEBOOK);
-            settings.setPort(DEFAULT_PORT);
-            settings.setServer(DEFAULT_SERVER_FACEBOOK);
-            settings.setRequireTls(true); //facebook TLS now seems to be on
-            settings.setTlsCertVerify(true); //but cert verify can still be funky - off by default
-            settings.setAllowPlainAuth(false);
         } 
         else if (domain.equals("jabber.calyxinstitute.org")) {
             
@@ -753,11 +765,7 @@ public class AccountActivity extends Activity {
                 settings.setServer("");
             }
             
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);            
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            settings.setDomain(domain);  
         } 
         else if (domain.equals("jabber.ccc.de")) {
             
@@ -772,11 +780,7 @@ public class AccountActivity extends Activity {
                 settings.setServer("");
             }
             
-            settings.setDomain(domain);
-            settings.setPort(DEFAULT_PORT);            
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
+            settings.setDomain(domain);     
         }        
         else {
           
@@ -799,9 +803,6 @@ public class AccountActivity extends Activity {
                 settings.setServer("");
             }
             
-            settings.setRequireTls(true);
-            settings.setTlsCertVerify(true);
-            settings.setAllowPlainAuth(false);
         }
         
         settings.requery();
