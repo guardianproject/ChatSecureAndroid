@@ -1162,18 +1162,21 @@ public class ImpsProvider extends ContentProvider {
         {
             SQLiteDatabase db = getDBHelper().getWritableDatabase();
             
-            if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
+            synchronized (db)
             {
-                db.beginTransaction();
-                try {
-                    result = deleteInternal(url, selection, selectionArgs);
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-                if (result > 0) {
-                    getContext().getContentResolver()
-                            .notifyChange(url, null /* observer */, false /* sync */);
+                if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
+                {
+                    db.beginTransaction();
+                    try {
+                        result = deleteInternal(url, selection, selectionArgs);
+                        db.setTransactionSuccessful();
+                    } finally {
+                        db.endTransaction();
+                    }
+                    if (result > 0) {
+                        getContext().getContentResolver()
+                                .notifyChange(url, null /* observer */, false /* sync */);
+                    }
                 }
             }
         }
