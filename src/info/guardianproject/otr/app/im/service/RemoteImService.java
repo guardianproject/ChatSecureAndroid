@@ -36,6 +36,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
@@ -59,7 +60,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
@@ -513,9 +513,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     
     IImConnection do_createConnection(long providerId, long accountId) {
         
+        QueryMap gSettings = getGlobalSettings();
+        
+        if (gSettings == null)
+            return null;
+        
         if (mConnections.size() == 0)
         {
-            mUseForeground = getGlobalSettings().getUseForegroundPriority();
+            mUseForeground = gSettings.getUseForegroundPriority();
             
             if (mUseForeground)
                 startForegroundCompat();

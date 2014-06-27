@@ -1166,13 +1166,17 @@ public class ImpsProvider extends ContentProvider {
             {
                 if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
                 {
-                    db.beginTransaction();
                     try {
+                        db.beginTransaction();                    
                         result = deleteInternal(url, selection, selectionArgs);
                         db.setTransactionSuccessful();
-                    } finally {
                         db.endTransaction();
                     }
+                    catch (Exception e)
+                    {
+                        //could not delete
+                    }
+                    
                     if (result > 0) {
                         getContext().getContentResolver()
                                 .notifyChange(url, null /* observer */, false /* sync */);

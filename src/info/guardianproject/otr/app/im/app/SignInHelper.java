@@ -136,7 +136,7 @@ public class SignInHelper {
                 String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
                         error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
                 
-                Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
+               // Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
                 /*
                 new AlertDialog.Builder(mContext).setTitle(R.string.error)
                         .setMessage()

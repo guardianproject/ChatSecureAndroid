@@ -565,7 +565,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         } else {
             showLockScreen();
         }
-        
         finish();
     }
 
@@ -606,17 +605,17 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             @Override
             protected String doInBackground(String... params) {
               
-                ArrayList<IImConnection> listConn = new ArrayList<IImConnection>();
-                listConn.addAll(mApp.getActiveConnections());
-                
-                for (IImConnection conn : listConn)
+                while (mApp.getActiveConnections().size() > 0)
                 {
-                   
-                   try{
-                       conn.logout();
-                       
-                   }catch(Exception e){}
-                 
+
+                       try{
+                           IImConnection conn = mApp.getActiveConnections().iterator().next();
+                           conn.logout();
+                      
+                           Thread.sleep(1000);
+                       }catch(Exception e){}
+                    
+                  
                 }
                    
                 return "";
@@ -638,12 +637,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                     mCacheWord.manuallyLock();
                 }
                 
-
                 Intent cacheWordIntent = CacheWordService
                         .getBlankServiceIntent(getApplicationContext());
-                WelcomeActivity.this.stopService(cacheWordIntent);
-                
-                WelcomeActivity.this.finish();
+                stopService(cacheWordIntent);                
+                finish();
             }
         }.execute();
         
