@@ -379,8 +379,8 @@ android:anyDensity="true"
          
            <activity
             android:name=".LockScreenActivity"
-            android:label="@string/title_activity_lock_screen"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:screenOrientation="portrait"            
+            android:label="@string/title_activity_lock_screen" >
         </activity>
          
            <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
