@@ -170,7 +170,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
                         }
                     }
                   //  mFilterView.mPresenceView.setConnection(mConn);
-                    mFilterView.setConnection(mConn);
+                    mFilterView.setActivity(ContactListActivity.this);
                     mContactListView.setConnection(mConn);
                     mContactListView.setHideOfflineContacts(mGlobalSettingMap
                             .getHideOfflineContacts());
@@ -450,7 +450,7 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         mDestroyed = true;
         // set connection to null to unregister listeners.
         mContactListView.setConnection(null);
-        mFilterView.setConnection(null);
+
         if (mGlobalSettingMap != null) {
             mGlobalSettingMap.close();
         }
