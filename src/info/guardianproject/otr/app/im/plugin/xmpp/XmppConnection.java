@@ -846,12 +846,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "logged in");
 
         } catch (XMPPException e) {
-            debug(TAG, "login failed",e);
-            //mConnection = null;
+            debug(TAG, "exception thrown on connection",e);
+
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
-            mRetryLogin = true; // our default behvaior is to retry
+            mRetryLogin = true; // our default behavior is to retry
             
-            if (mConnection != null && (!mConnection.isAuthenticated())) {
+            if (mConnection != null && mConnection.isConnected() && (!mConnection.isAuthenticated())) {
 
                 if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
                 {
@@ -983,7 +983,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         sendPresencePacket();
 
-        mRoster = mConnection.getRoster();
+        mRoster = mConnection.getRoster();        
         mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
 
         getContactListManager().listenToRoster(mRoster);
@@ -1484,7 +1484,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Usually runs in executor thread, unless called from logout()
-    private void do_logout() {
+    private void do_logout() {        
         setState(LOGGING_OUT, null);
         disconnect();
         disconnected(null);
@@ -2042,24 +2042,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             Roster roster = mConnection.getRoster();
             String address = contact.getAddress().getAddress();
             try {
-                RosterGroup group = roster.getGroup(list.getName());
-                if (group == null) {
-                    debug(TAG, "could not find group " + list.getName() + " in roster");
-                    return;
-                }
                 RosterEntry entry = roster.getEntry(address);
-                if (entry == null) {
-                    debug(TAG, "could not find entry " + address + " in group " + list.getName());
-                    //just ignore it then
+                RosterGroup group = roster.getGroup(list.getName());
+                
+                if (group == null) {
+                    debug(TAG, "could not find group " + list.getName() + " in roster");                   
+                    roster.removeEntry(entry);
                 }
                 else
                 {
                     group.removeEntry(entry);
-
+                    entry = roster.getEntry(address);
                     // Remove from Roster if this is the last group
-                    if (entry.getGroups().size() <= 1)
+                    if (entry != null && entry.getGroups().size() <= 1)
                         roster.removeEntry(entry);
-
 
                 }                                
 
@@ -2103,22 +2099,38 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribe);
             response.setTo(contact.getAddress().getBareAddress());
-
             sendPacket(response, mConnection);
 
             Roster roster = mConnection.getRoster();
             String[] groups = new String[] { list.getName() };
             try {
-                roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
-
+                RosterEntry rEntry = roster.getEntry(contact.getAddress().getBareAddress());            
+                RosterGroup rGroup = roster.getGroup(list.getName());                
+                
+                if (rGroup == null)
+                {
+                    if (rEntry == null)
+                        roster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
+                
+                }
+                else
+                {
+                
+                    if (rEntry == null)
+                        roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
+                    else
+                        rGroup.addEntry(rEntry);
+                }
+                    
                 // If contact exists locally, don't create another copy
-
                 if (!list.containsContact(contact))
                     notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
                 else
                     debug(TAG, "skip adding existing contact locally " + contact.getName());
             } catch (XMPPException e) {
-                throw new RuntimeException(e);
+             
+                debug(TAG,"error updating remote roster",e);
+                throw new ImException("error updating remote roster");
             }
         }
 
