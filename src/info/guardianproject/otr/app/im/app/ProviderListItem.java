@@ -301,6 +301,7 @@ public class ProviderListItem extends LinearLayout {
                         }
         
                         settings.close();
+                        pCursor.close();
                     }
                     catch (NullPointerException npe)
                     {
