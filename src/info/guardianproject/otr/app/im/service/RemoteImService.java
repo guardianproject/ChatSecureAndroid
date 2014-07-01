@@ -285,7 +285,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         
-        Log.d(TAG, "ChatSecure: RemoteImService started");
+       // Log.d(TAG, "ChatSecure: RemoteImService started");
         
         if (intent != null)
         {
