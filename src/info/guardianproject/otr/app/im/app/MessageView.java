@@ -89,7 +89,7 @@ public class MessageView extends FrameLayout {
     
     private final static DateFormat MESSAGE_DATETIME_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
     private final static DateFormat MESSAGE_TIME_FORMAT = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
-    private static final SimpleDateFormat FMT_SAME_DAY = new SimpleDateFormat("yyyyMMdd");;
+    private static final SimpleDateFormat FMT_SAME_DAY = new SimpleDateFormat("yyyyMMdd");
     
     private final static Date DATE_NOW = new Date();
 
@@ -183,6 +183,9 @@ public class MessageView extends FrameLayout {
             mHolder.resetOnClickListenerMediaThumbnail();     
             if( mimeType != null ) {
     
+                mHolder.mTextViewForMessages.setVisibility(View.GONE);
+                mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
+
                 Uri mediaUri = Uri.parse( body ) ;
                 lastMessage = "";
                 showMediaThumbnail(mimeType, mediaUri, id, mHolder);
@@ -252,12 +255,13 @@ public class MessageView extends FrameLayout {
         holder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
         holder.mTextViewForMessages.setText(lastMessage);
         holder.mTextViewForMessages.setVisibility(View.GONE);
-        if( mimeType.startsWith("image/")||mimeType.startsWith("video/") ) {
+        
+        if( mimeType.startsWith("image/") ) {
             setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri );                
             holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
             
         }
-        else if (mimeType.startsWith("audio"))
+        else if (mimeType.startsWith("audio") || mimeType.startsWith("video"))
         {
             holder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
             holder.mMediaThumbnail.setBackgroundColor(Color.TRANSPARENT);
@@ -380,31 +384,8 @@ public class MessageView extends FrameLayout {
         // pair this holder to the uri. if the holder is recycled, the pairing is broken
         aHolder.mMediaUri = mediaUri;
         // if a content uri - already scanned
-        if( mediaUri.getScheme() != null ) {
-            setThumbnail(contentResolver, aHolder, mediaUri);
-            return;
-        }
         
-        // new file - scan
-        File file = new File(mediaUri.getPath());
-        final Handler handler = new Handler();
-        MediaScannerConnection.scanFile(
-                getContext(), new String[] { file.toString() }, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, final Uri uri) {
-                        // write the uri into the db
-                        Imps.updateMessageBody(contentResolver, id, uri.toString() );
-                        handler.post( new Runnable() {
-                            @Override
-                            public void run() {
-                                // confirm the holder is still paired to this uri
-                                if( aHolder.mMediaUri == mediaUri ) {
-                                    setThumbnail(contentResolver, aHolder, uri);
-                                }
-                            }
-                        });
-                    }
-                });
+        setThumbnail(contentResolver, aHolder, mediaUri);
         
                 
     }
@@ -451,20 +432,31 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
+    private final static int THUMBNAIL_SIZE = 800;
+    
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
-        String[] projection = {MediaStore.Images.Media._ID};
-        Cursor cursor = cr.query( uri, projection, null, null, null);
-        if( cursor == null || cursor.getCount() == 0 ) {
-            return null ;
-        }
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(projection[0]);
-        int id = cursor.getInt(columnIndex);
-        cursor.close();
         
-        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null );
-        return bitmap;
-    }    
+        File image = new File(uri.getPath());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+
+        BitmapFactory.decodeFile(image.getPath(), options);
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            return null;
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
+
+        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+
+        return scaledBitmap;     
+    }
     
 
     private String formatMessage (String body)
@@ -487,6 +479,8 @@ public class MessageView extends FrameLayout {
             showMediaThumbnail(mimeType, mediaUri, id, mHolder);
             
 
+            mHolder.mTextViewForMessages.setVisibility(View.GONE);
+            mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
             
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
@@ -637,13 +631,21 @@ public class MessageView extends FrameLayout {
 
         SpannableString spanText = null;
         
-        if (encryptionState == EncryptionState.ENCRYPTED || encryptionState == EncryptionState.ENCRYPTED_AND_VERIFIED)
+        if (encryptionState == EncryptionState.ENCRYPTED)
         {
             deliveryText.append('X');
             spanText = new SpannableString(deliveryText.toString());
             int len = spanText.length();
             
-        //    spanText.setSpan(new ImageSpan(getContext(), entry.getValue()), index, index + length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanText.setSpan(new ImageSpan(getContext(), R.drawable.lock16), len-1,len,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            
+        }
+        else if (encryptionState == EncryptionState.ENCRYPTED_AND_VERIFIED)
+        {
+            deliveryText.append('X');
+            spanText = new SpannableString(deliveryText.toString());
+            int len = spanText.length();
+            
             spanText.setSpan(new ImageSpan(getContext(), R.drawable.lock16), len-1,len,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             
         }

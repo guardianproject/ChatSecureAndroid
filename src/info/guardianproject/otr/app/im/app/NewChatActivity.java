@@ -121,7 +121,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
     private ImApp mApp;
     private ViewPager mChatPager;
-    private android.support.v4.view.PagerTabStrip mChatPagerTitleStrip;
     private ChatViewPagerAdapter mChatPagerAdapter;
     
     private SimpleAlertHandler mHandler;
@@ -168,9 +167,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mRequestedChatId = -1;
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
-        mChatPagerTitleStrip = (PagerTabStrip)findViewById(R.id.pager_title_strip);
         //mChatPager.setSaveEnabled(false);
-        mChatPager.setOffscreenPageLimit(3);
+        //mChatPager.setOffscreenPageLimit(3);
         mChatPager.setDrawingCacheEnabled(true);
         mChatPager.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         
@@ -221,8 +219,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
-
+                    getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
+                    getSherlock().getActionBar().setIcon(R.drawable.ic_launcher);
+                    setTitle(R.string.app_name);
                 }
             }
 
@@ -708,7 +707,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
                 }
                 else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED && cView.isOtrSessionVerified())
                 {
@@ -716,8 +714,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
                     
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_green_dark);
-                        
                 }
                 else if (cView.getOtrSessionStatus() == SessionStatus.ENCRYPTED)
                 {
@@ -725,7 +721,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
    
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_orange_light);
+                    
                     
                 }
                 else if (cView.getOtrSessionStatus() == SessionStatus.FINISHED)
@@ -734,8 +730,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
    
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_dark);
-                    
+
                 }
                 else
                 {
@@ -744,12 +739,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
-                    mChatPagerTitleStrip.setBackgroundResource(R.color.holo_red_dark);
                 }
-            }
-            else
-            {
-                mChatPagerTitleStrip.setBackgroundResource(R.color.background_dark);
             }
           
          }

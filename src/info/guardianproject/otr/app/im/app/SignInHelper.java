@@ -266,7 +266,7 @@ public class SignInHelper {
                
                 conn.login(password, autoLoadContacts, autoRetryLogin);
             } else {
-                promptForBackgroundDataSetting(providerName);
+             //   promptForBackgroundDataSetting(providerName);
                 return;
             }
         

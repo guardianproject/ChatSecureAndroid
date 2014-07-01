@@ -41,6 +41,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.Scanner;
@@ -70,6 +71,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.DataSetObserver;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -123,7 +125,8 @@ public class ChatView extends LinearLayout {
                                              Imps.Chats.LAST_UNREAD_MESSAGE, 
                                              Imps.Chats._ID,
                                              Imps.Contacts.SUBSCRIPTION_TYPE,
-                                             Imps.Contacts.SUBSCRIPTION_STATUS
+                                             Imps.Contacts.SUBSCRIPTION_STATUS,
+                                             Imps.Contacts.AVATAR_DATA
                                              
     };
     
@@ -138,6 +141,7 @@ public class ChatView extends LinearLayout {
     static final int CHAT_ID_COLUMN = 8;
     static final int SUBSCRIPTION_TYPE_COLUMN = 9;
     static final int SUBSCRIPTION_STATUS_COLUMN = 10;
+    static final int AVATAR_COLUMN = 11;
     
     //static final int MIME_TYPE_COLUMN = 9;
 
@@ -193,6 +197,8 @@ public class ChatView extends LinearLayout {
             bindChat(mLastChatId);
             updateWarningView();
             mComposeMessage.requestFocus();
+            
+            setTitle();
         }
         
         
@@ -887,6 +893,27 @@ public class ChatView extends LinearLayout {
          
 
             bindSubscription(mProviderId, mRemoteAddress);
+        }
+        
+       
+    }
+    
+    public void setTitle ()
+    {
+        if (mIsSelected)
+        {
+            mActivity.setTitle(mRemoteNickname);
+            
+            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(mCursor, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+            
+            if (avatar == null)
+            {
+                avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.avatar_unknown));
+    
+            }
+            
+            mActivity.getSupportActionBar().setIcon(avatar);
         }
     }
 

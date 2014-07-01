@@ -83,7 +83,8 @@ public class ContactListFilterView extends LinearLayout {
     
     public void setActivity (Activity a)
     {
-        mApp = (ImApp) a.getApplication();
+        if (a != null)
+            mApp = (ImApp) a.getApplication();
     }
 
     @Override
@@ -340,10 +341,10 @@ public class ContactListFilterView extends LinearLayout {
             IContactListManager listManager = conn.getContactListManager();
             int result = listManager.setContactName(aAddress, aNickname); 
             if( result != ImErrorInfo.NO_ERROR ) {
-                Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + result, Toast.LENGTH_LONG); // TODO -LS error handling
+                Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + result, Toast.LENGTH_LONG).show(); // TODO -LS error handling
             }
         } catch( Exception e ) {
-            Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + e.getMessage(), Toast.LENGTH_LONG); // TODO -LS error handling
+            Toast.makeText(mContext, mContext.getString(R.string.error_prefix) + e.getMessage(), Toast.LENGTH_LONG).show(); // TODO -LS error handling
         }
         mFilterList.invalidate();
         final InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -358,7 +359,6 @@ public class ContactListFilterView extends LinearLayout {
     void removeContact(Cursor c) {
         final IImConnection conn = getConnection (c);
 
-            
         String nickname = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.NICKNAME));
         final String address = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
         DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
@@ -377,6 +377,7 @@ public class ContactListFilterView extends LinearLayout {
                 }
             }
         };
+        
         Resources r = getResources();
 
         new AlertDialog.Builder(mContext).setTitle(R.string.confirm)
@@ -390,7 +391,10 @@ public class ContactListFilterView extends LinearLayout {
 
     private IImConnection getConnection (Cursor c)
     {
-        return mApp.getConnection(c.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+        if (mApp != null)
+            return mApp.getConnection(c.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+        else
+            return null;
     }
 
     public void blockContactAtPosition(int packedPosition) {
