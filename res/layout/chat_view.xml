@@ -25,58 +25,8 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"   
         android:padding="0dp"
-	android:background="@android:color/transparent"   
  >
 
-
-    <LinearLayout android:id="@+id/warning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView android:id="@+id/warningIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_im_message_not_sent" />
-
-        <TextView android:id="@+id/warningText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="3sp"
-            android:textColor="#aaff0000"
-            android:text="@string/disconnected_warning"
-            android:fontFamily="sans-serif-light"
-             />
-        
-        <!-- 
-         <Switch
-                android:id="@+id/otrSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            
-            />
- 
-        <ImageView android:id="@+id/deliveryIcon"            
-            android:layout_width="16dip"
-            android:layout_height="16dip"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_chat_msg_status_ok"
-             />
-         -->
-        
-    </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#aaaaaa"
-        android:layout_margin="0dp"
-        android:padding="0dp"
-        android:orientation="horizontal"></LinearLayout>
     
 
     <ListView android:id="@+id/history"
@@ -92,77 +42,6 @@
         android:transcriptMode="normal"
          />
 
-    <LinearLayout android:id="@+id/invitationPanel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:background="@drawable/text_divider_horizontal">
-
-        <TextView android:id="@+id/txtInvitation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ffad45d6"
-            android:text="@string/invitation_prompt" />
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button android:id="@+id/btnAccept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accept_invitation" />
-
-            <Button android:id="@+id/btnDecline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/decline_invitation" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/subscription"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:background="@color/background_light"
-        android:visibility="gone">
-
-        <TextView android:id="@+id/txtSubscription"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/subscription_prompt" />
-
-        <LinearLayout android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button android:id="@+id/btnApproveSubscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/approve_subscription" />
-
-            <Button android:id="@+id/btnDeclineSubscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
-                android:text="@string/decline_subscription" />
-        </LinearLayout>
-    </LinearLayout>
-    
-    
-
-       <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDDDD"
-        android:layout_margin="0dp"
-        android:padding="0dp"
-        android:orientation="horizontal"></LinearLayout>
-    
   <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -239,5 +118,95 @@
         android:textColor="#dddddd"
         />
     </android.support.v4.view.ViewPager>
+    
+   
+    <LinearLayout android:id="@+id/invitationPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:background="@drawable/text_divider_horizontal">
+
+        <TextView android:id="@+id/txtInvitation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffad45d6"
+            android:text="@string/invitation_prompt" />
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnAccept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accept_invitation" />
+
+            <Button android:id="@+id/btnDecline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:text="@string/decline_invitation" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/subscription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="@color/background_light"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/txtSubscription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/subscription_prompt" />
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button android:id="@+id/btnApproveSubscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/approve_subscription" />
+
+            <Button android:id="@+id/btnDeclineSubscription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:text="@string/decline_subscription" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    
+
+    <LinearLayout android:id="@+id/warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView android:id="@+id/warningIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_im_message_not_sent" />
+
+        <TextView android:id="@+id/warningText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="3sp"
+            android:textColor="#aaff0000"
+            android:text="@string/disconnected_warning"
+            android:fontFamily="sans-serif-light"
+             />
+        
+        
+    </LinearLayout>
       
 </info.guardianproject.otr.app.im.app.ChatView>
