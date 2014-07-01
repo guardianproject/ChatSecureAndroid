@@ -46,6 +46,10 @@ public class AccountAdapter extends CursorAdapter {
             mBindTask.cancel(false);
             mBindTask = null ;
         }
+        
+        if (mStashCursor != null && (!mStashCursor.isClosed()))
+                mStashCursor.close();
+        
         mStashCursor = newCursor;
         
         if (mStashCursor != null) {
