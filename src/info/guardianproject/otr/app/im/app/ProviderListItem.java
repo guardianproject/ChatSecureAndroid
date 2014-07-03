@@ -273,13 +273,20 @@ public class ProviderListItem extends LinearLayout {
         
                         switch (connectionStatus) {
                         
-                        case ImConnection.LOGGING_IN:
-                        case ImConnection.SUSPENDING:
-                        case ImConnection.SUSPENDED:
+                        case ImConnection.LOGGING_IN:                        
                             mSecondRowText = r.getString(R.string.signing_in_wait);
                             mIsSignedIn = true;
                             
                             break;
+                        
+                        case ImConnection.SUSPENDING:
+                        case ImConnection.SUSPENDED:                        
+                            mSecondRowText = r.getString(R.string.error_suspended_connection);
+                            mIsSignedIn = true;
+                            
+                            break;
+                        
+                        
         
                         case ImConnection.LOGGED_IN:
                             mIsSignedIn = true;
