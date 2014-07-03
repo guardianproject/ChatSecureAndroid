@@ -29,7 +29,6 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -42,7 +41,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.text.Editable;
@@ -52,21 +50,24 @@ import android.text.TextWatcher;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AccountActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class AccountActivity extends SherlockActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -100,7 +101,7 @@ public class AccountActivity extends Activity {
     CheckBox mUseTor;
     Button mBtnSignIn;
     Button mBtnDelete;
-    Spinner mSpinnerDomains;
+    AutoCompleteTextView mSpinnerDomains;
     
     Button mBtnAdvanced;
     TextView mTxtFingerprint;
@@ -313,13 +314,18 @@ public class AccountActivity extends Activity {
         mEditPass = (EditText) findViewById(R.id.edtPass);
         
         mEditPassConfirm = (EditText) findViewById(R.id.edtPassConfirm);
-        mSpinnerDomains = (Spinner) findViewById(R.id.spinnerDomains);
+        mSpinnerDomains = (AutoCompleteTextView) findViewById(R.id.spinnerDomains);
         
         if (mIsNewAccount)
         {
             mEditPassConfirm.setVisibility(View.VISIBLE);
             mSpinnerDomains.setVisibility(View.VISIBLE);
             mEditUserAccount.setHint(R.string.account_setup_new_username);
+            
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.account_domains));
+            mSpinnerDomains.setAdapter(adapter);
+            
         }
         
         mRememberPass = (CheckBox) findViewById(R.id.rememberPassword);
@@ -404,7 +410,7 @@ public class AccountActivity extends Activity {
                         
                 if (mIsNewAccount)
                 {
-                    mDomain = (String)mSpinnerDomains.getSelectedItem();
+                    mDomain = mSpinnerDomains.getText().toString();
                     String fullUser = mEditUserAccount.getText().toString();
                     
                     if (fullUser.indexOf("@")==-1)
@@ -525,6 +531,7 @@ public class AccountActivity extends Activity {
         {
             mUseTor.setVisibility(View.GONE);
         }
+        
     }
 
     private Cursor openAccountByUsernameAndDomain(ContentResolver cr) {
@@ -986,7 +993,7 @@ public class AccountActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = this.getSherlock().getMenuInflater();
         inflater.inflate(R.menu.account_settings_menu, menu);
 
         if (isEdit) {

@@ -40,13 +40,13 @@
 	        android:cursorVisible="true"
 	        android:inputType="textEmailAddress"/>
 	
-	    <Spinner android:id="@+id/spinnerDomains"
+	    <info.guardianproject.otr.app.im.ui.InstantAutoCompleteTextView android:id="@+id/spinnerDomains"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:drawSelectorOnTop="true"
 		    android:visibility="gone"
-		    android:entries="@array/account_domains"
-		    android:prompt="@string/select_domain_new_account"
+		    android:hint="@string/select_domain_new_account"
+		    android:completionThreshold="1"
 		/>
 	    
 	    <EditText android:id="@+id/edtPass"
@@ -102,13 +102,10 @@
 	   android:textAppearance="?android:attr/textAppearanceSmall"
 	
 	         />
-	  
-	  <LinearLayout 	    android:orientation="vertical"
-	       android:layout_width="fill_parent" android:id="@+id/linearLayout2" android:layout_height="20dip"></LinearLayout>
 	
 	  <Button android:id="@+id/btnAdvanced"
 	                android:layout_height="wrap_content"
-	                android:layout_marginTop="3dip"
+	                android:layout_marginTop="20dip"
 	                android:text="@string/account_setup_advanced_button" android:layout_width="fill_parent"/>
 	 
 	 
@@ -129,6 +126,7 @@
 			android:layout_marginTop="3dip"
 			android:layout_width="fill_parent"
 			android:layout_gravity="bottom" 
+			android:visibility="gone"
 			/>
 	</LinearLayout>
 </ScrollView>
