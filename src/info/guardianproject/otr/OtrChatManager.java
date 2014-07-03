@@ -174,6 +174,35 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
         return null;
     }
+    
+
+    /**
+     * Start a new OTR encryption session for the chat session represented by a
+     * local user address and a remote user address.
+     * 
+     * @param localUserId i.e. the account of the user of this phone
+     * @param remoteUserId i.e. the account that this user is talking to
+     */
+    public SessionID startSession(SessionID sessionId) {
+
+        try {
+            
+            mOtrEngine.startSession(sessionId);
+
+            
+            
+            return sessionId;
+
+        } catch (OtrException e) {
+            OtrDebugLogger.log("startSession", e);
+            
+            showError(sessionId,"Unable to start OTR session: " + e.getLocalizedMessage());
+            
+        }
+
+        return null;
+    }
+    
 
     public void endSession(String localUserId, String remoteUserId) {
 
