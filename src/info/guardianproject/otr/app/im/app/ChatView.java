@@ -115,6 +115,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -230,7 +231,8 @@ public class ChatView extends LinearLayout {
          
             if (isConnected)
             {
-                mCurrentChatSession = mConn.getChatSessionManager().getChatSession(mRemoteAddress);
+                if (mCurrentChatSession == null)
+                    mCurrentChatSession = mConn.getChatSessionManager().getChatSession(mRemoteAddress);
                 
                 if (mCurrentChatSession != null)
                 {
@@ -913,7 +915,43 @@ public class ChatView extends LinearLayout {
     
             }
             
+            setAvatarBorder(mPresenceStatus, avatar);
+            
             mActivity.getSupportActionBar().setIcon(avatar);
+        }
+    }
+    
+    public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.IDLE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            avatar.setAlpha(255);
+
+            break;
+        
+        case Imps.Presence.AWAY:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            avatar.setAlpha(255);
+            break;
+            
+        case Imps.Presence.DO_NOT_DISTURB:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            avatar.setAlpha(255);
+
+            break;
+            
+        case Imps.Presence.OFFLINE:
+            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            avatar.setAlpha(100);
+            break;
+
+
+        default:
         }
     }
 
@@ -1194,6 +1232,9 @@ public class ChatView extends LinearLayout {
         if (getChatId() == -1)
             return;
         
+        showVerifyDialog();
+        /**
+        
         Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, getChatId());
 
         Intent intent = new Intent(Intent.ACTION_VIEW, data);
@@ -1204,7 +1245,143 @@ public class ChatView extends LinearLayout {
                 intent.putExtra("jid", mRemoteAddress);
         
         mActivity.startActivity(intent);
+        */
 
+    }
+    
+    public void verifyScannedFingerprint (String scannedFingerprint)
+    {
+        try
+        {
+            IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
+    
+            if (scannedFingerprint != null && scannedFingerprint.equalsIgnoreCase(otrChatSession.getRemoteFingerprint())) {
+                verifyRemoteFingerprint();
+            }
+        }
+        catch (RemoteException e)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "unable to perform manual key verification", e);
+        }
+    }
+    
+    private void showVerifyDialog() {
+
+        try
+        {
+            IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
+            
+            String localFingerprint = otrChatSession.getLocalFingerprint();
+            String remoteFingerprint = otrChatSession.getRemoteFingerprint();
+            
+            if (localFingerprint == null || remoteFingerprint == null)
+            {
+                //show a message
+            }
+            else
+            {
+                StringBuffer message = new StringBuffer();      
+                message.append(mContext.getString(R.string.fingerprint_for_you)).append("\n").append(prettyPrintFingerprint(localFingerprint)).append("\n\n");
+                message.append(mContext.getString(R.string.fingerprint_for_)).append(mRemoteAddress).append("\n").append(prettyPrintFingerprint(otrChatSession.getRemoteFingerprint())).append("\n\n");
+                
+                message.append(mContext.getString(R.string.are_you_sure_you_want_to_confirm_this_key_));
+                
+                new AlertDialog.Builder(mContext).setTitle(R.string.verify_key_).setMessage(message.toString())
+                        .setPositiveButton(R.string.menu_verify_fingerprint, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                verifyRemoteFingerprint();
+                            }
+                        }).setNegativeButton(R.string.menu_verify_secret, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                initSmpUI();
+                            }
+                        })
+                        .setNeutralButton(R.string.menu_scan, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                new IntentIntegrator(mActivity).initiateScan();
+    
+                            }
+                        })
+                        .show();
+            }
+        }
+        catch (RemoteException e)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "unable to perform manual key verification", e);
+        }
+    }
+    
+    private void initSmpUI() {
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View viewSmp = inflater.inflate(R.layout.smp_question_dialog, null, false);
+
+        if (viewSmp != null)
+        {
+            new AlertDialog.Builder(mContext).setTitle(mContext.getString(R.string.otr_qa_title)).setView(viewSmp)
+                    .setPositiveButton(mContext.getString(R.string.otr_qa_send), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+    
+                            EditText eiQuestion = (EditText) viewSmp.findViewById(R.id.editSmpQuestion);
+                            EditText eiAnswer = (EditText) viewSmp.findViewById(R.id.editSmpAnswer);
+                            String question = eiQuestion.getText().toString();
+                            String answer = eiAnswer.getText().toString();
+                            initSmp(question, answer);
+                        }
+                    }).setNegativeButton(mContext.getString(R.string.otr_qa_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Do nothing.
+                        }
+                    }).show();
+        }
+    }
+
+    private void initSmp(String question, String answer) {
+        try {
+            
+            if (mCurrentChatSession != null)
+            {
+                IOtrChatSession iOtrSession = mCurrentChatSession.getOtrChatSession();
+                iOtrSession.initSmpVerification(question, answer);
+            }
+            
+        } catch (RemoteException e) {
+            Log.e(ImApp.LOG_TAG, "error init SMP", e);
+
+        }
+    }
+    
+    private void verifyRemoteFingerprint() {
+
+
+        try {
+            
+            IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
+            otrChatSession.verifyKey(mRemoteAddress);
+
+           
+            
+        } catch (RemoteException e) {
+            Log.e(ImApp.LOG_TAG, "error init otr", e);
+
+        }
+        
+        updateWarningView();
+            
+
+    }
+
+
+    private static String prettyPrintFingerprint (String fingerprint)
+    {
+        StringBuffer spacedFingerprint = new StringBuffer();
+        
+        for (int i = 0; i + 8 <= fingerprint.length(); i+=8)
+        {
+            spacedFingerprint.append(fingerprint.subSequence(i,i+8));
+            spacedFingerprint.append(' ');
+        }
+        
+        return spacedFingerprint.toString();
     }
 
     public void blockContact() {
