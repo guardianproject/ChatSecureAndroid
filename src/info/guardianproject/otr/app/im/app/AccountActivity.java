@@ -29,6 +29,7 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -1086,7 +1087,7 @@ public class AccountActivity extends SherlockActivity {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
                 }
                 
-                AccountActivity.this.setResult(RESULT_OK);
+                AccountActivity.this.setResult(Activity.RESULT_CANCELED);
                 AccountActivity.this.finish();
                 
                
