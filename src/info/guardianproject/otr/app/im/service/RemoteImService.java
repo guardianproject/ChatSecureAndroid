@@ -307,10 +307,17 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 NetworkInfo networkInfo = (NetworkInfo) intent
                         .getParcelableExtra(HeartbeatService.NETWORK_INFO_EXTRA);
                 State networkState = State.values()[intent.getIntExtra(HeartbeatService.NETWORK_STATE_EXTRA, 0)];
-                // TODO(miron) wakelock?
                 
-    
-                networkStateChanged(networkInfo, networkState);
+                if (!mWakeLock.isHeld())
+                {
+                    try {                    
+                        mWakeLock.acquire();
+                        networkStateChanged(networkInfo, networkState);
+                        
+                    } finally {
+                        mWakeLock.release();
+                    }
+                }
                 return START_STICKY;
             }
 
