@@ -647,23 +647,23 @@
 			<item>:-D</item>
 			<item>o_O</item>
 		</string-array>
-			<string name="i_have_an_existing_xmpp_account">I have an existing account</string>
-			<string name="account_existing_full">Select this if you have an existing account on a Jabber or XMPP server.</string>
+			<string name="i_have_an_existing_xmpp_account">Existing Account</string>
+			<string name="account_existing_full">Connect to my existing account on a specific Jabber / XMPP server.</string>
 			
-			<string name="i_want_to_chat_using_my_google_account">Use my Google account </string>
-			<string name="account_google_full">Select this if you want to connect with other Google Talk, Google+ or Hangouts users.</string>
+			<string name="i_want_to_chat_using_my_google_account">Google Account </string>
+			<string name="account_google_full">Chat securely with other Google Talk, Google+ or Hangouts users.</string>
 			
-			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">I want to use WiFi chat</string>
+			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Mesh Chat</string>
 			<string name="account_wifi_full">Chat with others on the same local WiFi network or mesh - no Internet or server required!</string>
 			<string name="account_wifi_button">Enable WiFi Chat</string>
 						
-			<string name="i_need_a_new_account">I need a new chat account</string>
-			<string name="account_new_full">Select this to register a new free account with your choice of server</string>
+			<string name="i_need_a_new_account">New Account</string>
+			<string name="account_new_full">Register a new, free account on a service from our built-in list, or any you choose.</string>
 			<string name="account_new_button">Create New Account</string>
 			
 			
-			<string name="i_need_a_burner_one_time_throwaway_account_">I need a new secret identity!</string>
-			<string name="account_burner_full">Select this to create an anonymous, disposable \"burner\" chat account in one, simple tap (requires Orbot: Tor for Android)</string>
+			<string name="i_need_a_burner_one_time_throwaway_account_">Secret Identity!</string>
+			<string name="account_burner_full">Create an anonymous, disposable \"burner\" chat account in one, simple tap (requires Orbot: Tor for Android)</string>
 			<string name="account_burner_button">Generate Identity</string>
 			
 			<string name="this_is_a_group_chat">This is a group chat</string>
