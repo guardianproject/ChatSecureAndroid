@@ -27,7 +27,7 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.startSession(_localUser, _remoteUser);
+                _chatManager.startSession(_sessionId);
             }
         });
     }

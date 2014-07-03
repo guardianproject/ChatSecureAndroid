@@ -351,8 +351,12 @@ public class ImUrlActivity extends Activity {
         return false;
     }
     
-    private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
+   // private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
 
+    //private static final String USERNAME_NON_LETTERS_UNICODE = "[^\\p{L}\\p{Nd}]+";
+    //private static final String USERNAME_NON_LETTERS_ALPHANUM = "[\\d[^\\w]]+";
+    private static final String USERNAME_ONLY_ALPHANUM = "[^A-Za-z0-9]";
+    
     private boolean resolveIntent(Intent intent) {
         Uri data = intent.getData();
         mHost = data.getHost();
@@ -361,13 +365,7 @@ public class ImUrlActivity extends Activity {
             mFromAddress = data.getUserInfo();
             
             //remove username non-letters
-            mFromAddress = mFromAddress.replaceAll("[\\d[^\\w]]+", "");
-            
-            if (!Pattern.compile(USERNAME_PATTERN).matcher(mFromAddress).matches())
-            {
-                Log.w(ImApp.LOG_TAG, "resolveIntent: invalid username string: "+ mFromAddress);
-                return false;
-            }
+            mFromAddress = mFromAddress.replaceAll(USERNAME_ONLY_ALPHANUM, "");
             
             String chatRoom = null;
             

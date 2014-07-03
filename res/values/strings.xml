@@ -115,7 +115,7 @@
 		<string name="check_auto_sign_in">This option automatically signs you in every time you open this application. To disable the option, sign out, then clear the \"Sign me in automatically\" check box.</string>
 		<string name="use_tor">Connect via Tor (Requires Orbot app)</string>
 
-		<string name="account_setup_example_email_address">user@domain.com</string>
+		<string name="account_setup_example_email_address">user@domain</string>
 		<string name="account_setup_new_username">new username</string>
 		<string name="account_setup_service_provider">service provider (dukgo.com, jabber.ccc.de)</string>
 		<string name="account_setup_password">password</string>
@@ -161,10 +161,10 @@
 		<string name="account_wizard_ready_body">ChatSecure has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
 		
 		<string name="_via_orbot">"Orbot (Tor)"</string>
-		<string name="select_domain_new_account">Choose a domain</string>
+		<string name="select_domain_new_account">Chat service domain</string>
 		<string name="registering_new_account_">Registering new account...</string>
 		
-		<string name="signing_in_to">getting the ChatSecure going...</string>
+		<string name="signing_in_to">getting going...</string>
 		<string name="menu_cancel_signin">Cancel signin</string>
 		<string name="signing_in_wait">Signing in\u2026</string>
 		<string name="signing_out_wait">Signing out\u2026</string>
@@ -467,7 +467,7 @@
 		<string name="account_setup_error_keypair">ChatSecure encountered an error while generating a keypair.</string>
 		<string name="account_setup_error_server">ChatSecure encountered an error while connecting to the chat server - please check your configuration and try again.</string>
 		<string name="account_setup_error_connectivity">ChatSecure encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
-		<string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
+		<string name="error_suspended_connection">Network is offline</string>
 		<string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
 		<string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
 		<string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
@@ -647,23 +647,23 @@
 			<item>:-D</item>
 			<item>o_O</item>
 		</string-array>
-			<string name="i_have_an_existing_xmpp_account">I have an existing account</string>
-			<string name="account_existing_full">Select this if you have an existing account on a Jabber or XMPP server.</string>
+			<string name="i_have_an_existing_xmpp_account">Existing Account</string>
+			<string name="account_existing_full">Connect to my existing account on a specific Jabber / XMPP server.</string>
 			
-			<string name="i_want_to_chat_using_my_google_account">Use my Google account </string>
-			<string name="account_google_full">Select this if you want to connect with other Google Talk, Google+ or Hangouts users.</string>
+			<string name="i_want_to_chat_using_my_google_account">Google Account </string>
+			<string name="account_google_full">Chat securely with other Google Talk, Google+ or Hangouts users.</string>
 			
-			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">I want to use WiFi chat</string>
+			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Mesh Chat</string>
 			<string name="account_wifi_full">Chat with others on the same local WiFi network or mesh - no Internet or server required!</string>
 			<string name="account_wifi_button">Enable WiFi Chat</string>
 						
-			<string name="i_need_a_new_account">I need a new chat account</string>
-			<string name="account_new_full">Select this to register a new free account with your choice of server</string>
+			<string name="i_need_a_new_account">New Account</string>
+			<string name="account_new_full">Register a new, free account on a service from our built-in list, or any you choose.</string>
 			<string name="account_new_button">Create New Account</string>
 			
 			
-			<string name="i_need_a_burner_one_time_throwaway_account_">I need a new secret identity!</string>
-			<string name="account_burner_full">Select this to create an anonymous, disposable \"burner\" chat account in one, simple tap (requires Orbot: Tor for Android)</string>
+			<string name="i_need_a_burner_one_time_throwaway_account_">Secret Identity!</string>
+			<string name="account_burner_full">Create an anonymous, disposable \"burner\" chat account in one, simple tap (requires Orbot: Tor for Android)</string>
 			<string name="account_burner_button">Generate Identity</string>
 			
 			<string name="this_is_a_group_chat">This is a group chat</string>

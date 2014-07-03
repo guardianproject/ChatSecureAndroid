@@ -104,12 +104,15 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.7</item>
     </style>
-    <style name="AppTheme" parent="Theme.Sherlock.Light" >    
-         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+    
+        
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" >    
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
          <item name="messageTextPrimary">#333333</item>
          <item name="messageTextSecondary">#999999</item>
          <item name="android:background">#dddddd</item>
+         
+         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
      </style>
     
    <style name="AppThemeDark" parent="Theme.Sherlock" >
@@ -118,6 +121,8 @@
          <item name="messageTextSecondary">#aaaaaa</item>
          <item name="android:background">#222222</item>
          
+             <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+        
     </style>
     
 </resources>

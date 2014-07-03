@@ -99,6 +99,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class NewChatActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
@@ -1172,6 +1173,23 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mHandler.showServiceErrorAlert("Error picking contacts");
                     Log.d(ImApp.LOG_TAG,"error picking contact",e);
                 }
+            }
+            
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
+                    resultIntent);
+
+            if (scanResult != null) {
+
+                
+                String otherFingerprint = scanResult.getContents();
+                if (getCurrentChatView()!=null)
+                    getCurrentChatView().verifyScannedFingerprint(otherFingerprint);
+                else
+                {
+                    //add new contact?
+                }
+                    
+                
             }
         }
     }

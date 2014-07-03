@@ -1,5 +1,6 @@
 package info.guardianproject.otr;
 
+import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
@@ -67,6 +68,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     }
 
     public ImConnectionAdapter findConnection(SessionID session) {
+        
         return mImService.getConnection(Address.stripResource(session.getLocalUserId()));
     }
 
@@ -117,7 +119,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                     .getChatSessionManager();
             ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
                     .getChatSession(Address.stripResource(sessionID.getRemoteUserId()));
-            
+           
             if (chatSessionAdapter != null)
             {
                 
