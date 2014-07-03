@@ -857,8 +857,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     debug (TAG, "google failed; may need to refresh");
 
-                    password = refreshGoogleToken (userName, password,providerSettings.getDomain());
+                    String newPassword = refreshGoogleToken (userName, password,providerSettings.getDomain());
 
+                    if (newPassword != null)
+                        password = newPassword;
+                    
                     mRetryLogin = true;
 
                 }
