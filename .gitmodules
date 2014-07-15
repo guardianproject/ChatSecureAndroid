@@ -24,4 +24,4 @@
 	url = https://github.com/n8fr8/AndroidEmojiInput.git
 [submodule "external/ViewPagerIndicator"]
 	path = external/ViewPagerIndicator
-	url = git@github.com:JakeWharton/Android-ViewPagerIndicator.git
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
