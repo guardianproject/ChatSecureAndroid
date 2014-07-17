@@ -369,18 +369,18 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
 
-    private void autoLogin() {
+    private boolean autoLogin() {
         // Try empty passphrase.  We can't autologin if this fails.
         if (!Imps.setEmptyPassphrase(this, true)) {
             debug("Cannot autologin with non-empty passphrase");
-            return;
+            return false;
         }
         
         if (!mConnections.isEmpty()) {
             // This can happen because the UI process may be restarted and may think that we need
             // to autologin, while we (the Service process) are already up.
             debug("Got autoLogin request, but we have one or more connections");
-            return;
+            return false;
         }
 
         debug("Scanning accounts and login automatically");
@@ -392,7 +392,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 null);
         if (cursor == null) {
             Log.w(TAG, "Can't query account!");
-            return;
+            return false;
         }
         while (cursor.moveToNext()) {
             long accountId = cursor.getLong(ACCOUNT_ID_COLUMN);
@@ -405,6 +405,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 {
                     try {
                         conn.login(null, true, true);
+                    
                     } catch (RemoteException e) {
                         Log.w(TAG, "Logging error while automatically login!");
                     }
@@ -415,6 +416,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
         cursor.close();
+        
+        return true;
     }
 
     private Map<String, String> loadProviderSettings(long providerId) {
@@ -612,12 +615,16 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         NetworkInfo.State state = networkInfo != null ? networkInfo.getState() : NetworkInfo.State.DISCONNECTED;
         switch (state) {
         case CONNECTED:
-            if (mNeedCheckAutoLogin) {
-                mNeedCheckAutoLogin = false;
-                autoLogin();
-                break;
+            boolean reConnd = reestablishConnections();
+            
+            if (!reConnd)
+            {
+                if (mNeedCheckAutoLogin) {
+                    mNeedCheckAutoLogin = false;
+                    autoLogin();             
+                }
             }
-            reestablishConnections();
+            
             break;
 
         case DISCONNECTED:
@@ -632,10 +639,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     // package private for inner class access
-    void reestablishConnections() {
+    boolean reestablishConnections() {
+        /**
         if (!isNetworkAvailable()) {
             return;
-        }
+        }*/
 
         for (ImConnectionAdapter conn : mConnections.values()) {
             int connState = conn.getState();
@@ -644,13 +652,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
         }
 
+        return mConnections.values().size() > 0;
     }
 
     private void suspendConnections() {
         for (ImConnectionAdapter conn : mConnections.values()) {
-            if (conn.getState() != ImConnection.LOGGED_IN) {
-                continue;
-            }
+            //if (conn.getState() != ImConnection.LOGGED_IN) {
+            //    continue;
+            //}
             conn.suspend();
 
         }
