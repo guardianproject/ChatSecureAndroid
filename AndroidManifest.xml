@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="13.2.0-alpha-9"
-     android:versionCode="118"
+     android:versionName="13.2.0-alpha-10"
+     android:versionCode="132010"
      android:installLocation="auto"    
     
      >     
@@ -58,7 +58,6 @@ android:anyDensity="true"
              android:icon="@drawable/ic_launcher"
              android:theme="@style/AppTheme"
              android:allowBackup="false"
-              android:hardwareAccelerated="true" 
 			>
          <activity android:name=".app.WelcomeActivity"
          	>

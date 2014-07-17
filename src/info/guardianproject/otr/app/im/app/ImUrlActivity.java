@@ -617,6 +617,7 @@ public class ImUrlActivity extends Activity {
             }
             else if (requestCode == REQUEST_SIGNIN_ACCOUNT || requestCode == REQUEST_CREATE_ACCOUNT)
             {
+                
                 mHandlerRouter.postDelayed(new Runnable()
                 {
                     public void run ()

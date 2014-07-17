@@ -874,7 +874,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             } 
             
             
-            if (mRetryLogin) {
+            if (mRetryLogin && getState() != SUSPENDED) {
                 debug(TAG, "will retry");
                 setState(LOGGING_IN, info);
             } else {
@@ -1344,9 +1344,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         @Override
                         public void run() {
                             if (getState() == LOGGED_IN)
+                            {
                                 setState(LOGGING_IN,
                                         new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-                            maybe_reconnect();
+                                maybe_reconnect();
+                            }
                         }
                     });
                 }
@@ -1947,12 +1949,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     mTimerPresence.scheduleAtFixedRate(new TimerTask() {
 
-                        synchronized public void run() {
+                        public void run() {
                             
-                            while (qPresence.size()>0)
+                            try
                             {
+                                org.jivesoftware.smack.packet.Presence p = null;
+                                
+                                while ((p = qPresence.poll())!=null)
+                                {
+                                    handlePresenceChanged(p);
+                                }
 
-                                handlePresenceChanged(qPresence.pop());
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(ImApp.LOG_TAG,"error processing presence",e);
                             }
                             
                             loadVCardsAsync();
@@ -2313,19 +2324,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
         public void shutdown() {
-
-            try {
-                // Be forceful in shutting down since SSL can get stuck
+            if (socket != null)
+            {
                 try {
-                    socket.shutdownInput();
-                } catch (Exception e) {
-                }
-                socket.close();
-                shutdown(new org.jivesoftware.smack.packet.Presence(
+                    // Be forceful in shutting down since SSL can get stuck
+                    try {
+                        socket.shutdownInput();                                      
+                     } catch (Exception e) {   }
+                        
+                    socket.close();
+                    shutdown(new org.jivesoftware.smack.packet.Presence(
                         org.jivesoftware.smack.packet.Presence.Type.unavailable));
-
-            } catch (Exception e) {
-                Log.e(TAG, "error on shutdown()", e);
+         
+    
+                } catch (Exception e) {
+                    Log.e(TAG, "error on shutdown()", e);
+                }
             }
         }
     }
@@ -2333,8 +2347,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void networkTypeChanged() {
         super.networkTypeChanged();
+        
+        execute(new Runnable() {
+            @Override
+            public void run() {
+        
+                if (getState() == LOGGING_IN || getState() == LOGGED_IN)
+                {
+                    debug(TAG, "reestablish");
+                    setState(LOGGING_IN, null);
+                    force_reconnect();
+                }
+        
+            }
+        });
 
-        this.maybe_reconnect();
+        
     }
 
     /*

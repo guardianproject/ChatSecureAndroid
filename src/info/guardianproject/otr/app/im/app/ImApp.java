@@ -388,7 +388,7 @@ public class ImApp extends Application {
         
         Intent serviceIntent = new Intent();
         serviceIntent.setComponent(ImServiceConstants.IM_SERVICE_COMPONENT);
-        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, isBoot);
+        serviceIntent.putExtra(ImServiceConstants.EXTRA_CHECK_AUTO_LOGIN, true);
         
         if (mImService == null)
         {

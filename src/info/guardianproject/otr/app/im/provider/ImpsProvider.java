@@ -1135,13 +1135,20 @@ public class ImpsProvider extends ContentProvider {
             {
                 if (db.isOpen())
                 {
-                    db.beginTransaction();
                     try {
+                        db.beginTransaction();
+                    
                         result = updateInternal(url, values, selection, selectionArgs);
                         db.setTransactionSuccessful();
-                    } finally {
                         db.endTransaction();
                     }
+                    catch (Exception e){
+                        
+                        if (db.isOpen() && db.inTransaction())
+                            db.endTransaction();
+                    }
+                    
+                    
                     if (result > 0) {
                         getContext().getContentResolver()
                                 .notifyChange(url, null /* observer */, false /* sync */);
