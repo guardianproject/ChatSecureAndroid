@@ -1534,7 +1534,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mNeedReconnect = false;
                 clearPing();
                 // Do not try to reconnect anymore if we were asked to suspend
-                mStreamHandler.quickShutdown();
+                
+                if (mStreamHandler != null)
+                    mStreamHandler.quickShutdown();
             }
         });
     }
@@ -1955,10 +1957,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                             {
                                 org.jivesoftware.smack.packet.Presence p = null;
                                 
-                                while ((p = qPresence.poll())!=null)
-                                {
-                                    handlePresenceChanged(p);
-                                }
+                                if (qPresence.size() > 0)
+                                    while ((p = qPresence.poll())!=null)
+                                    {
+                                        handlePresenceChanged(p);
+                                    }
 
                             }
                             catch (Exception e)
