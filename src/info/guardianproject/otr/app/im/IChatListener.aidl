@@ -68,4 +68,7 @@ interface IChatListener {
 
 	/** This method is called when OTR status changes */
 	void onStatusChanged(IChatSession ses);
+	
+	/** this is called when there is a incoming file transfer request **/
+	void onIncomingFileTransfer (String from, String file);
 }

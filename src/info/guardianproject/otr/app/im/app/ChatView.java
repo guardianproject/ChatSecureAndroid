@@ -276,8 +276,6 @@ public class ChatView extends LinearLayout {
     private boolean isServiceUp;
     private IChatSession mCurrentChatSession;
 
-    private DataAdapter mDataListenerAdapter = new DataAdapter();
-   
     long mLastChatId=-1;
     String mRemoteNickname;
     String mRemoteAddress;
@@ -427,12 +425,77 @@ public class ChatView extends LinearLayout {
         
         @Override
         public void onIncomingData(IChatSession ses, byte[] data) {
-            try {
-                Log.i("OTR_DATA", "incoming data " + new String(data, "UTF8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+           
+        //    Log.d("OTR_DATA", "incoming data; length=" + data.length);
+           
         };
+        
+
+        @Override
+        public void onIncomingFileTransfer(String transferFrom, String transferUrl) throws RemoteException {
+         
+            String[] path = transferUrl.split("/"); 
+            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+
+            builder.setTitle(mContext.getString(R.string.file_transfer));
+            builder.setMessage(transferFrom + ' ' + mActivity.getString(R.string.wants_to_send_you_the_file) 
+            + " '" + sanitizedPath + "'. " + mActivity.getString(R.string.accept_transfer_));
+
+            builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    
+                    try {
+                        mCurrentChatSession.setIncomingFileResponse(true, true);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                    dialog.dismiss();
+                }
+
+            });
+            
+            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    try {
+                        mCurrentChatSession.setIncomingFileResponse(true, false);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                    dialog.dismiss();
+                }
+
+            });
+
+            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    
+                    try {
+                        mCurrentChatSession.setIncomingFileResponse(false, false);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                    
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            
+        }
     };
 
 
@@ -1553,7 +1616,6 @@ public class ChatView extends LinearLayout {
         try {
             if (getChatSession() != null) {
                 getChatSession().registerChatListener(mChatListener);
-                getChatSession().setDataListener(mDataListenerAdapter);
             }
         
             checkConnection();
@@ -1575,7 +1637,6 @@ public class ChatView extends LinearLayout {
         }
         try {
             if (getChatSession() != null) {
-              //  getChatSession().setDataListener(null);
                 getChatSession().unregisterChatListener(mChatListener);
             }
             checkConnection ();
@@ -2360,293 +2421,6 @@ public class ChatView extends LinearLayout {
 
     EditText getComposedMessage() {
         return mComposeMessage;
-    }
-  
-    // FIXME this must be moved out of the UI and mostly into the remote process
-    class DataAdapter extends IDataListener.Stub {
-        
-        @Override
-        public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
-            
-            File file = new File(filePath);
-            
-            try {
-                
-                Message msg = Message.obtain(mTransferHandler, 3);            
-                msg.getData().putString("path", file.getCanonicalPath());
-                msg.getData().putString("type", mimeType);
-                
-                if (outgoing) {
-                    Imps.updateConfirmInDb(mActivity.getContentResolver(), offerId, true);
-                } else {
-                    int type = isOtrSessionVerified() ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
-                    Imps.insertMessageInDb(getContext().getContentResolver(),
-                            false, mLastChatId,
-                            true, null,
-                            file.getCanonicalPath(), System.currentTimeMillis(), type,
-                            0, offerId, mimeType);
-                }
-                
-                mTransferHandler.sendMessage(msg);
-            } catch (IOException e) {
-                mHandler.showAlert(mContext.getString(R.string.error_chat_file_transfer_title), mContext.getString(R.string.error_chat_file_transfer_body));
-                OtrDebugLogger.log("error reading file", e);
-            }
-            
-
-        }
-
-        @Override
-        public void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason) {
-            
-
-            String[] path = url.split("/"); 
-            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-         
-
-            Message msg = Message.obtain(mTransferHandler, 2);
-            msg.getData().putInt("progress", (int)0);
-            msg.getData().putString("status", sanitizedPath + " transfer failed: " + reason);
-            
-            mTransferHandler.sendMessage(msg);
-        }
-
-        @Override
-        public void onTransferProgress(boolean outgoing, String offerId, String from, String url, float percentF) {
-            
-            long percent = (long)(100.00*percentF);
-            
-            String[] path = url.split("/"); 
-            String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-            
-
-            Message msg = Message.obtain(mTransferHandler, 2);
-            msg.getData().putInt("progress", (int)percent);
-            msg.getData().putString("status", sanitizedPath);
-            
-            mTransferHandler.sendMessage(msg);
-        }
-
-        private boolean mAcceptTransfer = false;
-        private boolean mWaitingForResponse = false;
-        private boolean mAcceptAllTransfer = false;
-
-        @Override
-        public boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
-            
-            mAcceptTransfer = false;            
-            mWaitingForResponse = true;
-            
-            Message msg = Message.obtain(mTransferHandler, 1);
-            msg.getData().putString("from", from);
-            msg.getData().putString("url", transferUrl);
-            
-            mTransferHandler.sendMessage(msg);
-            
-            while (mWaitingForResponse)
-            {
-                // FIXME
-                try { Thread.sleep(500);} catch (Exception e){}
-            }
-            
-            return mAcceptTransfer;
-            
-        }
-        
-        private Handler mTransferHandler = new Handler ()
-        {
-
-            @Override
-            public void handleMessage(Message msg) {
-            
-                if (msg.what == 1)
-                {
-                    if (mAcceptAllTransfer)
-                    {
-                        mAcceptTransfer = true;
-                        mWaitingForResponse = false;
-                        NOTIFY_DOWNLOAD_ID++;
-                    }
-                    else
-                    {
-                        String transferUrl = msg.getData().getString("url");
-                        String transferFrom = msg.getData().getString("from");
-        
-                        String[] path = transferUrl.split("/"); 
-                        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-                        
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        
-                        builder.setTitle(mContext.getString(R.string.file_transfer));
-                        builder.setMessage(transferFrom + ' ' + mContext.getString(R.string.wants_to_send_you_the_file) 
-                        + " '" + sanitizedPath + "'. " + mContext.getString(R.string.accept_transfer_));
-        
-                        builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
-        
-                            public void onClick(DialogInterface dialog, int which) {
-                                mAcceptAllTransfer = true;
-                                mAcceptTransfer = true;
-                                mWaitingForResponse = false;
-                                NOTIFY_DOWNLOAD_ID++;
-                                
-                                dialog.dismiss();
-                            }
-        
-                        });
-                        
-                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-        
-                            public void onClick(DialogInterface dialog, int which) {
-                                mAcceptTransfer = true;
-                                mWaitingForResponse = false;
-                                NOTIFY_DOWNLOAD_ID++;
-                                
-                                dialog.dismiss();
-                            }
-        
-                        });
-        
-                        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-        
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mAcceptTransfer = false;
-                                mWaitingForResponse = false;
-        
-                                
-                                // Do nothing
-                                dialog.dismiss();
-                            }
-                        });
-        
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    }
-                }
-                else if (msg.what == 2) //progress update
-                {
-                    int progressValue = msg.getData().getInt("progress");
-                    String progressText = msg.getData().getString("status");
-                    
-                    if (mNotifyManager == null)
-                    {
-                        mNotifyManager =
-                                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                        mBuilder = new NotificationCompat.Builder(mContext);
-                    
-                        mBuilder.setContentTitle(mContext.getString(R.string.file_transfer));
-                        mBuilder.setTicker(mContext.getString(R.string.transfer_in_progress) + ": " + progressText);
-                   
-                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);                   
-                        
-                        mBuilder.setContentIntent(PendingIntent.getActivity(mActivity,0,new Intent(mContext,NewChatActivity.class),0));
-                        
-                        mBuilder.setAutoCancel(true);
-                    }
-                    
-                    
-                   
-                    mBuilder.setContentText(mContext.getString(R.string.transfer_in_progress) + ": " + progressText);
-                    mBuilder.setProgress(100, progressValue, false);
-                    
-                    if (progressValue == 100)
-                        mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
-                    
-                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
-                    
-                }
-                else if (msg.what == 3)
-                {
-                    String filePath = msg.getData().getString("path");
-                    String fileType = msg.getData().getString("type");
-                    
-                    if (fileType != null && fileType.startsWith("audio"))
-                    {
-                        MediaPlayer mp = new MediaPlayer();
-                        try {
-                            mp.setDataSource(filePath);
-                       
-                            mp.prepare();
-                            mp.start();
-                        
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    
-                    if (mNotifyManager == null)
-                    {
-                        mNotifyManager =
-                                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                        mBuilder = new NotificationCompat.Builder(mContext);
-                        mBuilder.setContentTitle(mContext.getString(R.string.file_transfer));
-                   
-                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);  
-                        
-                    }
-
-                    String[] path = filePath.split("/"); 
-                    String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-                   
-                    Uri fileUri = Scanner.scan(mContext, filePath);
-                    
-                    if (fileType == null)
-                    {
-                        String fileExt = null;
-                        String[] fileParts = filePath.split("\\.");
-                        
-                        if (fileParts.length > 0)
-                        {
-                        
-                            fileExt = fileParts[fileParts.length-1];
-                            
-                            MimeTypeMap mimeTypeMap =
-                                MimeTypeMap.getSingleton();
-
-                            fileType = mimeTypeMap.getMimeTypeFromExtension(fileExt);
-                        }
-                    }
-                    
-                    Intent intentView = new Intent(Intent.ACTION_VIEW);                    
-                    
-                    if (fileType != null)
-                    {
-                       // String generalType = fileType.split("/")[0] + "/*";                        
-                        intentView.setDataAndType(fileUri,fileType);                        
-                    }
-                    else
-                        intentView.setDataAndType(fileUri,"*/*");
-                    
-                    PendingIntent contentIntent = 
-                            PendingIntent.getActivity(mActivity, 0, intentView, 0);
-                  
-                    mBuilder.setContentIntent(contentIntent);
-                    mBuilder.setLights(0xff00ff00, 300, 1000);
-                    
-                    String status = mContext.getString(R.string.transfer_complete) + ": " + sanitizedPath;
-                    
-                    mBuilder.setContentText(status)                    
-                    // Removes the progress bar
-                            .setProgress(0,0,false)
-                            .setTicker(status)
-                              .setWhen(System.currentTimeMillis());                              
-             
-                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
-                    
-                }
-                
-                super.handleMessage(msg);
-            }
-            
-        };
-        
-        NotificationManager mNotifyManager;
-        NotificationCompat.Builder mBuilder;
-        int NOTIFY_DOWNLOAD_ID = 898989;
-        
-        
-        
     }
 
     public void onServiceConnected() {

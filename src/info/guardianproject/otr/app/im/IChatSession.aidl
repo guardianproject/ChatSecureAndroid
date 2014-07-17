@@ -103,4 +103,9 @@ interface IChatSession {
     * set class for handling incoming data transfers
     */
     void setDataListener (IDataListener dataListener);
+    
+    /**
+    * respond to incoming data request
+    */
+    void setIncomingFileResponse (boolean acceptThis, boolean acceptAll);
 }

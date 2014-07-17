@@ -90,4 +90,11 @@ public class ChatListenerAdapter extends IChatListener.Stub {
             LogCleaner.debug(TAG, "onStatusChanged(" + ses + ")");
         }
     }
+
+    @Override
+    public void onIncomingFileTransfer(String from, String file) throws RemoteException {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            LogCleaner.debug(TAG, "onIncomingFileTransfer(" + from + "," + file + ")");
+        }
+    }
 }
