@@ -901,7 +901,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String[] path = url.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             
-
             Message msg = Message.obtain(mTransferHandler, 2);
             msg.getData().putInt("progress", (int)percent);
             msg.getData().putString("status", sanitizedPath);
@@ -985,21 +984,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                         mBuilder.setAutoCancel(true);
                     }
                     
-                    
-                   
                     mBuilder.setContentText(service.getString(R.string.transfer_in_progress) + ": " + progressText);
                     mBuilder.setProgress(100, progressValue, false);
-                    
-                    if (progressValue == 100)
-                        mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
                     
                     mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
                     
                 }
                 else if (msg.what == 3) //transfer complete
                 {
-                    if (mNotifyManager == null)
-                        mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
+                    
+                    mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
                     
                     String filePath = msg.getData().getString("path");
                     String fileType = msg.getData().getString("type");
