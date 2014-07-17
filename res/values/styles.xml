@@ -110,7 +110,7 @@
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
          <item name="messageTextPrimary">#333333</item>
          <item name="messageTextSecondary">#999999</item>
-         <item name="android:background">#dddddd</item>
+         <item name="android:background">#ababab</item>
          
          <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
      </style>
