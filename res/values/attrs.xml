@@ -4,5 +4,5 @@
   <attr name="messageTextPrimary" format="color" />
   <attr name="messageTextSecondary" format="color" />
     <attr name="chatBackground" format="color" />
-    
+      <attr name="listBackground" format="color" />
 </resources>

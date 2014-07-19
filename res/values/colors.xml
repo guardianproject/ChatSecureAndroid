@@ -30,9 +30,9 @@
     <color name="honeycombish_blue">#cc58BAED</color>
     <color name="soft_grey">#FF777777</color>
     
-    <color name="background_light">#EEDEDEDE</color>
-    <color name="background_med">#FFBBBBBB</color>
-    <color name="background_dark">#EE343434</color>
+    <color name="background_light">#DDDEDEDE</color>
+    <color name="background_med">#DDABABAB</color>
+    <color name="background_dark">#DD343434</color>
     
 <!--     <color name="message_background_light">#CCDEDEDE</color>
  -->

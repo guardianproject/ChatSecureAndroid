@@ -43,6 +43,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -267,7 +268,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             createExecutor (); //if we disconnected, will need to recreate executor here, because join() made it null
 
         try {
-            mExecutor.execute(runnable);
+            mExecutor.execute(runnable);            
         } catch (RejectedExecutionException ex) {
             return false;
         }
@@ -1197,6 +1198,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void processPacket(Packet packet) {
                 debug(TAG, "receive message: " + packet.getFrom() + " to " + packet.getTo());
+                
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
                 String address = smackMessage.getFrom();
                 String body = smackMessage.getBody();
@@ -1345,12 +1347,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         public void run() {
                             if (getState() == LOGGED_IN)
                             {
-                                setState(LOGGING_IN,
-                                        new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-                                maybe_reconnect();
+                                //was logged in, so let's try again
+                             //   try { Thread.sleep(1000);}catch(Exception e){}//after a few seconds
+                              //  setState(LOGGING_IN,
+                                //        new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+                               // maybe_reconnect();
+                                setState(SUSPENDED,
+                                            new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
                             }
                         }
                     });
+                    
+                    
                 }
             }
 
@@ -1547,6 +1555,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (session == null) {
             ImEntity participant = findOrCreateParticipant(address, groupChat);
             session = mSessionManager.createChatSession(participant);
+            
         }
 
         return session;
@@ -1963,6 +1972,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                                         handlePresenceChanged(p);
                                     }
 
+                            
+                            }
+                            catch (NoSuchElementException e)
+                            {
+                                //annoying, but just ignore
                             }
                             catch (Exception e)
                             {
@@ -2355,7 +2369,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void run() {
         
-                if (getState() == LOGGING_IN || getState() == LOGGED_IN)
+                if (getState() != LOGGED_IN)
                 {
                     debug(TAG, "reestablish");
                     setState(LOGGING_IN, null);
@@ -2455,18 +2469,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             try {
                 if (mStreamHandler.isResumePossible()) {
                     // Connect without binding, will automatically trigger a resume
-                    debug(TAG, "resume");
+                    debug(TAG, "resume");                    
                     mConnection.connect(false);
                     initServiceDiscovery();
                 } else {
 
-                    //mConnection.disconnect();
-
                     mConnection = null;
+                    mNeedReconnect = true;
 
-                    do_login();
+                    debug(TAG, "reconnection on network change failed");
+
+                    setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
+                            "reconnection on network change failed"));
                     /*
-                    debug(TAG, "no resume");
+                    
                     mConnection.connect();
 
                     if (!mConnection.isAuthenticated()) {
@@ -2491,8 +2507,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                      */
                 }
             } catch (Exception e) {
-                mStreamHandler.quickShutdown();
-                Log.w(TAG, "reconnection attempt failed", e);
+                if (mStreamHandler != null)
+                    mStreamHandler.quickShutdown();
+                
+                debug(TAG, "reconnection attempt failed", e);
                 // Smack incorrectly notified us that reconnection was successful, reset in case it fails
                 mNeedReconnect = true;
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
@@ -2788,7 +2806,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
-
+        if (presence == null)
+            return;
+        
         XmppAddress xaddress = new XmppAddress(presence.getFrom());
 
         if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself

@@ -17,8 +17,10 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
+
 import java.util.Hashtable;
-import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -28,13 +30,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class ChatSessionManager {
 
     private CopyOnWriteArrayList<ChatSessionListener> mListeners;
-
+    private ChatSessionManagerAdapter mAdapter;
+    
     /** Map session to the participant communicate with. */
     protected Hashtable<String,ChatSession> mSessions;
 
     protected ChatSessionManager() {
         mListeners = new CopyOnWriteArrayList<ChatSessionListener>();
         mSessions = new Hashtable<String,ChatSession>();
+    }
+    
+    public void setChatSessionManagerAdapter (ChatSessionManagerAdapter adapter)
+    {
+        mAdapter = adapter;
     }
 
     /**
@@ -70,7 +78,9 @@ public abstract class ChatSessionManager {
 
         if (session == null)
         {
-            session = new ChatSession(participant, this);
+            session = new ChatSession(participant, this);                        
+            mAdapter.getChatSessionAdapter(session);
+            
             mSessions.put(participant.getAddress().getBareAddress(),session);
     
             for (ChatSessionListener listener : mListeners) {

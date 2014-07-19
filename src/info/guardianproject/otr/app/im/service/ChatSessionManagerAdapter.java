@@ -17,7 +17,6 @@
 
 package info.guardianproject.otr.app.im.service;
 
-import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionListener;
 import info.guardianproject.otr.app.im.app.ImApp;
@@ -55,7 +54,10 @@ public class ChatSessionManagerAdapter extends
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
         mConnection = connection;
         ImConnection connAdaptee = connection.getAdaptee();
+        
         mChatSessionManager = connAdaptee.getChatSessionManager();
+        mChatSessionManager.setChatSessionManagerAdapter(this);
+        
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();
         mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
@@ -71,6 +73,7 @@ public class ChatSessionManagerAdapter extends
     }
 
     public IChatSession createChatSession(String contactAddress) {
+        
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
         
@@ -178,17 +181,15 @@ public class ChatSessionManagerAdapter extends
         }
     }
 
-    public ChatSessionAdapter getChatSessionAdapter(ChatSession session) {
-        synchronized (mActiveChatSessionAdapters) {
-            Address participantAddress = session.getParticipant().getAddress();
-            String key = participantAddress.getAddress();
-            ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
-            if (adapter == null) {
-                adapter = new ChatSessionAdapter(session, mConnection);
-                mActiveChatSessionAdapters.put(key, adapter);
-            }
-            return adapter;
+    public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session) {
+        Address participantAddress = session.getParticipant().getAddress();
+        String key = participantAddress.getAddress();
+        ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
+        if (adapter == null) {
+            adapter = new ChatSessionAdapter(session, mConnection);
+            mActiveChatSessionAdapters.put(key, adapter);
         }
+        return adapter;        
     }
 
     class ChatSessionListenerAdapter implements ChatSessionListener {

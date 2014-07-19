@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import net.java.otr4j.session.SessionStatus;
 
@@ -313,6 +314,17 @@ public class OtrDataHandler implements DataHandler {
         }
     }
 
+    public void acceptTransfer (String url)
+    {
+        Transfer transfer = transferCache.getIfPresent(url);
+        if (transfer != null)
+        {
+            transfer.perform();
+            
+        }
+        
+    }
+    
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
         if (start != is.skip(start)) {

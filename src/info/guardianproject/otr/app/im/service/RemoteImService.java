@@ -134,7 +134,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 
                 if (otrKeyManager != null)
                 {
-                    // TODO OTRCHAT add support for more than one connection type (this is a kludge)
                     mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this, otrKeyManager);
                     mOtrChatManager.addOtrEngineListener(this);
                     
@@ -490,7 +489,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     public OtrChatManager getOtrChatManager() {
-        initOtr() ;
+        initOtr(); //this will reset policy if it has changed
         return mOtrChatManager;
     }
 
@@ -508,6 +507,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     IImConnection createConnection(final long providerId, final long accountId) {
+        
         final IImConnection[] results = new IImConnection[1];
         Debug.wrapExceptions(new Runnable() {
             @Override
@@ -522,6 +522,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private boolean mUseForeground = false;
     
     IImConnection do_createConnection(long providerId, long accountId) {
+        
+        //make sure OTR is init'd before you create your first connection
+        initOtr();
         
         QueryMap gSettings = getGlobalSettings();
         

@@ -273,7 +273,7 @@
 		<string name="compose_hint_secure">Send secure message</string>
 		<string name="menu_resend">Resend</string>
 		<string name="menu_end_conversation">End chat</string>
-		<string name="menu_clear_chat">Clear Chat</string>
+		<string name="menu_clear_chat">Clear chat</string>
 		
 		<string name="menu_insert_smiley">Insert smiley</string>
 		<string name="menu_switch_chats">Switch chats</string>
@@ -508,7 +508,7 @@
 	<string name="_open_conversations">" open conversation(s)"</string>
 	 
 	 
-	<string name="menu_exit">Exit</string>
+	<string name="menu_exit">Shutdown &amp; Exit</string>
 			    
 	<string name="menu_panic">Panic</string>
 	<string name="buddies">Buddies</string>

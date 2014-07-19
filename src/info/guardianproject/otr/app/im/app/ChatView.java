@@ -387,6 +387,8 @@ public class ChatView extends LinearLayout {
             }
         }
     };
+    
+    private final static int PROMPT_FOR_DATA_TRANSFER = 9999;
 
     private IChatListener mChatListener = new ChatListenerAdapter() {
         @Override
@@ -437,67 +439,77 @@ public class ChatView extends LinearLayout {
             String[] path = transferUrl.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             
-            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-
-            builder.setTitle(mContext.getString(R.string.file_transfer));
-            builder.setMessage(transferFrom + ' ' + mActivity.getString(R.string.wants_to_send_you_the_file) 
-            + " '" + sanitizedPath + "'. " + mActivity.getString(R.string.accept_transfer_));
-
-            builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    
-                    try {
-                        mCurrentChatSession.setIncomingFileResponse(true, true);
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
-                    dialog.dismiss();
-                }
-
-            });
+            android.os.Message message = android.os.Message.obtain(null, PROMPT_FOR_DATA_TRANSFER, (int) (mProviderId >> 32),
+                    (int) mProviderId, -1);
+            message.getData().putString("from", transferFrom);
+            message.getData().putString("file", sanitizedPath);
+            mHandler.sendMessage(message);
             
-            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    try {
-                        mCurrentChatSession.setIncomingFileResponse(true, false);
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
-                    dialog.dismiss();
-                }
-
-            });
-
-            builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    
-                    try {
-                        mCurrentChatSession.setIncomingFileResponse(false, false);
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
-                    
-                    // Do nothing
-                    dialog.dismiss();
-                }
-            });
-
-            AlertDialog alert = builder.create();
-            alert.show();
-            
+                        
         }
     };
 
+    private void showPromptForData (String transferFrom, String filePath)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+
+        builder.setTitle(mContext.getString(R.string.file_transfer));
+        builder.setMessage(transferFrom + ' ' + mActivity.getString(R.string.wants_to_send_you_the_file) 
+        + " '" + filePath + "'. " + mActivity.getString(R.string.accept_transfer_));
+
+        builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                
+                try {
+                    mCurrentChatSession.setIncomingFileResponse(true, true);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+                dialog.dismiss();
+            }
+
+        });
+        
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    mCurrentChatSession.setIncomingFileResponse(true, false);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+                dialog.dismiss();
+            }
+
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                
+                try {
+                    mCurrentChatSession.setIncomingFileResponse(false, false);
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+                
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
 
     private Runnable mUpdateChatCallback = new Runnable() {
         public void run() {
@@ -1845,6 +1857,7 @@ public class ChatView extends LinearLayout {
         }
     }
 
+    
     private final class ChatViewHandler extends SimpleAlertHandler {
       
 
@@ -1866,6 +1879,9 @@ public class ChatView extends LinearLayout {
                 updateWarningView();
                 promptDisconnectedEvent(msg);
                 return;
+            case PROMPT_FOR_DATA_TRANSFER:
+                showPromptForData(msg.getData().getString("from"),msg.getData().getString("file"));
+                break;
              default:
                  updateWarningView();
             }
