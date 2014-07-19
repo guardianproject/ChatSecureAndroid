@@ -4,10 +4,12 @@ import info.guardianproject.otr.app.im.R;
 
 import java.io.File;
 
+import android.R.color;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -100,6 +102,10 @@ public class ThemeableActivity extends SherlockActivity {
         boolean themeDark = settings.getBoolean("themeDark", false);
         String themebg = settings.getString("pref_background", "");
         
+        if(themeDark)
+            view.setBackgroundColor(activity.getResources().getColor(R.color.background_dark));
+        else
+            view.setBackgroundColor(activity.getResources().getColor(R.color.background_light));
         
         if (themebg != null && themebg.length() > 0)
         {

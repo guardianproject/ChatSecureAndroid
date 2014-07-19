@@ -118,7 +118,7 @@ public class ChatSession {
 
         if (message.getTo() == null)
           message.setTo(mParticipant.getAddress());
-        
+
      // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession - ??? NF 8/2013 still needs to be done?       
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getFrom().getAddress(),message.getTo().getAddress());
 
@@ -188,25 +188,28 @@ public class ChatSession {
     public boolean onReceiveMessage(Message message) {
         mHistoryMessages.add(message);
 
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
-
-        SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());            
-
-        if (otrStatus == SessionStatus.ENCRYPTED)
+        if (mOtrChatManager != null)
         {
-            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
-            
-            if (verified)
+            SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
+    
+            SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());            
+    
+            if (otrStatus == SessionStatus.ENCRYPTED)
             {
-                message.setType(Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED);
-            }
-            else
-            {
-                message.setType(Imps.MessageType.INCOMING_ENCRYPTED);
-            }
+                boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
                 
-        }
+                if (verified)
+                {
+                    message.setType(Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED);
+                }
+                else
+                {
+                    message.setType(Imps.MessageType.INCOMING_ENCRYPTED);
+                }
+                    
+            }
         
+        }
         
         //  BUG it only seems to find the most recently added listener.
         boolean good = true;

@@ -88,7 +88,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     ImConnectionAdapter mConnection;
     ChatSessionManagerAdapter mChatSessionManager;
 
-    OtrChatSessionAdapter mOtrChatSession;
 
     ChatSession mChatSession;
     ListenerAdapter mListenerAdapter;
@@ -109,9 +108,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private boolean mHasUnreadMessages;
 
     private RemoteImService service = null;
-    private DataHandler mDataHandler;
-
+    
+    OtrChatSessionAdapter mOtrChatSession;
+    private OtrDataHandler mDataHandler;
     private IDataListener mDataListener;
+
+    private boolean mAcceptTransfer = false;
+    private boolean mWaitingForResponse = false;
+    private boolean mAcceptAllTransfer = false;
+    private String mLastFileUrl = null;
+    
 
     private long mContactId;
 
@@ -138,23 +144,23 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
     }
 
-    public void initOtrChatSession ()
+    private void initOtrChatSession ()
     {
 
         mDataHandler = new OtrDataHandler(mChatSession);
         mDataHandler.setDataListener(new DataHandlerListenerImpl());
         
-        mOtrChatSession = new OtrChatSessionAdapter(mConnection.getLoginUser().getAddress().getAddress(), mChatSession.getParticipant().getAddress().getAddress(), service.getOtrChatManager());
+        String localUser = mConnection.getLoginUser().getAddress().getAddress();
+        String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
+        mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, service.getOtrChatManager());
+    
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
         mChatSession.addMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
         mChatSession.setOtrChatManager(service.getOtrChatManager());
     }
 
-    public IOtrChatSession getOtrChatSession() {
+    public synchronized IOtrChatSession getOtrChatSession() {
 
-        if (mOtrChatSession == null)
-            initOtrChatSession();
-        
         return mOtrChatSession;
     }
 
@@ -834,14 +840,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mAcceptTransfer = acceptThis;
         mAcceptAllTransfer = acceptAll;
         mWaitingForResponse = false;
+        
+        mDataHandler.acceptTransfer(mLastFileUrl);
 
     }
 
-
-    private boolean mAcceptTransfer = false;
-    private boolean mWaitingForResponse = false;
-    private boolean mAcceptAllTransfer = false;
-    
     // FIXME this must be moved out of the UI and mostly into the remote process
     class DataHandlerListenerImpl extends IDataListener.Stub {
         
@@ -852,10 +855,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             try {
                 
-                Message msg = Message.obtain(mTransferHandler, 3);            
-                msg.getData().putString("path", file.getCanonicalPath());
-                msg.getData().putString("type", mimeType);
-                
+               
                 if (outgoing) {
                     Imps.updateConfirmInDb(service.getContentResolver(), offerId, true);
                 } else {
@@ -869,7 +869,21 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                             0, offerId, mimeType);
                 }
                 
-                mTransferHandler.sendMessage(msg);
+                if (mimeType != null && mimeType.startsWith("audio"))
+                {
+                    MediaPlayer mp = new MediaPlayer();
+                    try {
+                        mp.setDataSource(file.getCanonicalPath());
+                   
+                        mp.prepare();
+                        mp.start();
+                    
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                    
             } catch (Exception e) {
              //   mHandler.showAlert(service.getString(R.string.error_chat_file_transfer_title), service.getString(R.string.error_chat_file_transfer_body));
                 OtrDebugLogger.log("error reading file", e);
@@ -885,12 +899,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String[] path = url.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
          
-
-            Message msg = Message.obtain(mTransferHandler, 2);
-            msg.getData().putInt("progress", (int)0);
-            msg.getData().putString("status", sanitizedPath + " transfer failed: " + reason);
-            
-            mTransferHandler.sendMessage(msg);
         }
 
         @Override
@@ -901,11 +909,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             String[] path = url.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             
-            Message msg = Message.obtain(mTransferHandler, 2);
-            msg.getData().putInt("progress", (int)percent);
-            msg.getData().putString("status", sanitizedPath);
-            
-            mTransferHandler.sendMessage(msg);
         }
 
 
@@ -914,119 +917,40 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             
             mAcceptTransfer = false;            
             mWaitingForResponse = true;
+            mLastFileUrl = transferUrl;
             
-            Message msg = Message.obtain(mTransferHandler, 1);
-            msg.getData().putString("from", from);
-            msg.getData().putString("url", transferUrl);
-            
-            mTransferHandler.sendMessage(msg);
-            
-            while (mWaitingForResponse)
+            if (mAcceptAllTransfer)
             {
-                // FIXME
-                try { Thread.sleep(500);} catch (Exception e){}
+                mAcceptTransfer = true;
+                mWaitingForResponse = false;
+                
+            }
+            else
+            {
+                final int N = mRemoteListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                    try {
+                        listener.onIncomingFileTransfer(from, transferUrl);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
+                }
+                mRemoteListeners.finishBroadcast();
+                
+                mAcceptTransfer = false; //for now, wait for the user callback
             }
             
             return mAcceptTransfer;
             
         }
         
-        private Handler mTransferHandler = new Handler ()
-        {
-
-            @Override
-            public void handleMessage(Message msg) {
-            
-                if (msg.what == 1)
-                {
-                    if (mAcceptAllTransfer)
-                    {
-                        mAcceptTransfer = true;
-                        mWaitingForResponse = false;
-                        NOTIFY_DOWNLOAD_ID++;
-                    }
-                    else
-                    {
-                        String transferUrl = msg.getData().getString("url");
-                        String transferFrom = msg.getData().getString("from");
-
-                        final int N = mRemoteListeners.beginBroadcast();
-                        for (int i = 0; i < N; i++) {
-                            IChatListener listener = mRemoteListeners.getBroadcastItem(i);
-                            try {
-                                listener.onIncomingFileTransfer(transferFrom, transferUrl);
-                            } catch (RemoteException e) {
-                                // The RemoteCallbackList will take care of removing the
-                                // dead listeners.
-                            }
-                        }
-                        mRemoteListeners.finishBroadcast();
-                    }
-                }
-                else if (msg.what == 2) //progress update
-                {
-                    int progressValue = msg.getData().getInt("progress");
-                    String progressText = msg.getData().getString("status");
-                    
-                    if (mNotifyManager == null)
-                    {
-                        mNotifyManager =
-                                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
-                        mBuilder = new NotificationCompat.Builder(service);
-                    
-                        mBuilder.setContentTitle(service.getString(R.string.file_transfer));
-                        mBuilder.setTicker(service.getString(R.string.transfer_in_progress) + ": " + progressText);
-                   
-                        mBuilder .setSmallIcon(R.drawable.ic_secure_xfer);                   
-                        
-                        mBuilder.setContentIntent(PendingIntent.getActivity(service,0,new Intent(service,NewChatActivity.class),0));
-                        
-                        mBuilder.setAutoCancel(true);
-                    }
-                    
-                    mBuilder.setContentText(service.getString(R.string.transfer_in_progress) + ": " + progressText);
-                    mBuilder.setProgress(100, progressValue, false);
-                    
-                    mNotifyManager.notify(NOTIFY_DOWNLOAD_ID, mBuilder.build());
-                    
-                }
-                else if (msg.what == 3) //transfer complete
-                {
-                    
-                    mNotifyManager.cancel(NOTIFY_DOWNLOAD_ID);
-                    
-                    String filePath = msg.getData().getString("path");
-                    String fileType = msg.getData().getString("type");
-                    
-                    if (fileType != null && fileType.startsWith("audio"))
-                    {
-                        MediaPlayer mp = new MediaPlayer();
-                        try {
-                            mp.setDataSource(filePath);
-                       
-                            mp.prepare();
-                            mp.start();
-                        
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                  
-                  //  Uri fileUri = Scanner.scan(service, filePath);
-                    
-                }
-                
-                super.handleMessage(msg);
-            }
-            
-        };
-        
-        NotificationManager mNotifyManager;
-        NotificationCompat.Builder mBuilder;
-        int NOTIFY_DOWNLOAD_ID = 898989;
-        
-        
+       
         
     }
+    
+    
+    
+    
 }

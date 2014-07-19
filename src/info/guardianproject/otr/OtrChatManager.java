@@ -71,6 +71,12 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return mInstance;
     }
 
+    public static OtrChatManager getInstance()
+    {
+        return mInstance;
+    }
+
+    
     public void addOtrEngineListener(OtrEngineListener oel) {
         mOtrEngine.addOtrEngineListener(oel);
     }
