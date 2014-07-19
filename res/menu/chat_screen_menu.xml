@@ -149,7 +149,7 @@
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
-         android:showAsAction="always"
+         android:showAsAction="never"
         
          />
     
