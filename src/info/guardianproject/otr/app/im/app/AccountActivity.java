@@ -29,6 +29,9 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -1049,10 +1052,12 @@ public class AccountActivity extends SherlockActivity {
                     settings.setUseTor(useTor);
                     settingsForDomain(mDomain, mPort, settings);
                     
+                    HashMap<String,String> aParams = new HashMap<String,String>();
+                    
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
                     
                     xmppConn.initUser(mProviderId, newAccountId);
-                    xmppConn.registerAccount(settings, params[0], params[1]);
+                    xmppConn.registerAccount(settings, params[0], params[1], aParams);
                     // settings closed in registerAccount
                 } catch (Exception e) {
                     LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);

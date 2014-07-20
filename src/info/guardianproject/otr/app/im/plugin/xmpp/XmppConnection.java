@@ -2785,14 +2785,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
 
-    public boolean registerAccount (Imps.ProviderSettings.QueryMap providerSettings, String username, String password) throws Exception
+    public boolean registerAccount (Imps.ProviderSettings.QueryMap providerSettings, String username, String password, Map<String,String> params) throws Exception
     {
 
         initConnection(providerSettings, username);
 
         if (mConnection.getAccountManager().supportsAccountCreation())
         {
-            mConnection.getAccountManager().createAccount(username, password);
+            mConnection.getAccountManager().createAccount(username, password, params);
+            
             return true;
 
         }

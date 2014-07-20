@@ -416,7 +416,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         //need to generate proper IMA url for account setup
         String regUser = java.util.UUID.randomUUID().toString().substring(0,10).replace('-','a');
         String regPass =  UUID.randomUUID().toString().substring(0,16);
-        String regDomain = "jabber.ccc.de";                
+        String regDomain = "jabber.calyxinstitute.org";    
         Uri uriAccountData = Uri.parse("ima://" + regUser + ':' + regPass + '@' + regDomain);
         
         Intent intent = new Intent(this, AccountActivity.class);
