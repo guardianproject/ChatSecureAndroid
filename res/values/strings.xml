@@ -49,7 +49,7 @@
 		<string name="lock_screen_passphrase_not_set_enter">Enter New Password</string>
 		<string name="lock_screen_passphrase_not_set_confirm">Confirm New Password</string>
 		<string name="lock_screen_passphrases_not_matching">Password did not match, please try again</string>
-		<string name="lock_screen_skip">Continue &gt;&gt;</string>
+		<string name="lock_screen_skip">Skip &gt;&gt;</string>
 		<string name="app_passphrase_view_title_dialog">Information Prompt</string>
 		<string name="app_passphrase_view_password_question">Enter Password Please</string>
 		
