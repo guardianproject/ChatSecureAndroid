@@ -74,14 +74,14 @@ public abstract class ChatSessionManager {
      */
     public synchronized ChatSession createChatSession(ImEntity participant) {
         
-        ChatSession session = mSessions.get(participant.getAddress().getBareAddress());
+        String sessionKey = participant.getAddress().getBareAddress();
+        ChatSession session = mSessions.get(sessionKey);
 
         if (session == null)
         {
             session = new ChatSession(participant, this);                        
             mAdapter.getChatSessionAdapter(session);
-            
-            mSessions.put(participant.getAddress().getBareAddress(),session);
+            mSessions.put(sessionKey,session);
     
             for (ChatSessionListener listener : mListeners) {
                 listener.onChatSessionCreated(session);

@@ -105,17 +105,17 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public SessionID getSessionId(String localUserId, String remoteUserId) {
-        String sessionIdKey = processUserId(localUserId) + "+" + processUserId(remoteUserId);
-
-        SessionID sessionId = mSessions.get(sessionIdKey);
+        SessionID sIdTemp = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
+        
+        SessionID sessionId = mSessions.get(sIdTemp.getSessionId());
         if (sessionId == null ||
-                (!sessionId.getRemoteUserId().equals(remoteUserId) &&
+                ((!sessionId.getRemoteUserId().equals(remoteUserId)) &&
                         remoteUserId.contains("/"))) {
             // Remote has changed (either different presence, or from generic JID to specific presence),
             // or we didn't have a session yet.
             // Create or replace sessionId with one that is specific to the new presence.
-            sessionId = new SessionID(processUserId(localUserId), remoteUserId, "XMPP");
-            mSessions.put(sessionIdKey, sessionId);
+            sessionId = sIdTemp;
+            mSessions.put(sessionId.getSessionId(), sIdTemp);
         }
         return sessionId;
     }
@@ -159,7 +159,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
      * @param localUserId i.e. the account of the user of this phone
      * @param remoteUserId i.e. the account that this user is talking to
      */
-    public SessionID startSession(String localUserId, String remoteUserId) {
+    private SessionID startSession(String localUserId, String remoteUserId) {
 
         SessionID sessionId = getSessionId(localUserId, remoteUserId);
 
@@ -194,8 +194,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         try {
             
             mOtrEngine.startSession(sessionId);
-
-            
             
             return sessionId;
 

@@ -183,7 +183,7 @@ public class ChatSessionManagerAdapter extends
 
     public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session) {
         Address participantAddress = session.getParticipant().getAddress();
-        String key = participantAddress.getAddress();
+        String key = Address.stripResource(participantAddress.getAddress());
         ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
         if (adapter == null) {
             adapter = new ChatSessionAdapter(session, mConnection);
