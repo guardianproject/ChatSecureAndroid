@@ -1633,10 +1633,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 msg.setBody(message.getBody());
 
                 debug(TAG, "sending packet ID " + msg.getPacketID());
-                // msg.setPacketID(message.getID());
-                message.setID(msg.getPacketID());
+              //   msg.setPacketID(message.getID());
 
                 sendPacket(msg, mConnection);
+                
+                message.setID(msg.getPacketID());
+
             }
             else
             {
@@ -1646,14 +1648,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 msg.setBody(message.getBody());
 
-                debug(TAG, "sending packet ID " + msg.getPacketID());
-                message.setID(msg.getPacketID());
-
-                //msg.setPacketID(message.getID())
+                //debug(TAG, "sending packet ID " + msg.getPacketID());
+                //message.setID(msg.getPacketID());
+                
+//                msg.setPacketID(message.getID());
 
                 sendPacket(msg, mConnection);
+                
+                message.setID(msg.getPacketID());
+
             }
 
+            
             
         }
 
@@ -1667,7 +1673,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             qAvatar.push(participant.getAddress().getAddress());
 
-            return super.createChatSession(participant);
+            ChatSession session = super.createChatSession(participant);
+            
+         //   mSessions.put(Address.stripResource(participant.getAddress().getAddress()),session);
+            return session;
         }
 
     }
@@ -1997,7 +2006,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
                 execute(new UpdateContactsRunnable(mContactListManager,addresses));
-                Log.d(ImApp.LOG_TAG,"got entries updated - length=" + addresses.size());
+              //  Log.d(ImApp.LOG_TAG,"got entries updated - length=" + addresses.size());
             }
 
             @Override
