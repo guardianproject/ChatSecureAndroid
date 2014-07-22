@@ -59,7 +59,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.viewpagerindicator.PageIndicator;
+//import com.viewpagerindicator.PageIndicator;
 
 public class AccountWizardActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
 
@@ -110,8 +110,8 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         mPagerAdapter = new WizardPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         
-        PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
-        titleIndicator.setViewPager(mPager);
+//        PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
+//        titleIndicator.setViewPager(mPager);
         
     }
 
