@@ -27,6 +27,7 @@ The Eclipse project name does not affect the project's directory structure.
     * external/MemorizingTrustManager
     * external/AndroidEmojiInput/library
     * external/SlidingMenu/library
+    * external/IOCipher
 
 2. If project imports with name 'library': Right-click project 'library' --> Refactor --> Rename... and
    give it a descriptive name. 
