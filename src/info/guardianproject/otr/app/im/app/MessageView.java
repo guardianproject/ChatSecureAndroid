@@ -18,12 +18,16 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.emoji.EmojiManager;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 
-import java.io.File;
+//import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -434,7 +438,14 @@ public class MessageView extends FrameLayout {
 
     private final static int THUMBNAIL_SIZE = 800;
     
+    private static IocVfs vfs;
+    
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
+        
+        if (vfs == null) {
+            vfs = new IocVfs();
+            vfs.mount();
+        }
         
         File image = new File(uri.getPath());
 
@@ -442,8 +453,16 @@ public class MessageView extends FrameLayout {
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
+        
+//        BitmapFactory.decodeFile(image.getPath(), options);
+        try {
+            FileInputStream fis = new FileInputStream(new File(image.getPath()));
+            BitmapFactory.decodeStream(fis, null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        BitmapFactory.decodeFile(image.getPath(), options);
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
 
@@ -453,9 +472,16 @@ public class MessageView extends FrameLayout {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
 
-        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+//        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+        try {
+            FileInputStream fis = new FileInputStream(new File(image.getPath()));
+            Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
+            return scaledBitmap;     
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        return scaledBitmap;     
     }
     
 

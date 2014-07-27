@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.emoji.EmojiGroup;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.emoji.EmojiPagerAdapter;
+import info.guardianproject.iocipher.File;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
@@ -46,7 +47,7 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.Scanner;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -2365,10 +2366,18 @@ public class ChatView extends LinearLayout {
     // FIXME this must be moved out of the UI and mostly into the remote process
     class DataAdapter extends IDataListener.Stub {
         
+        IocVfs vfs ;
+        
         @Override
         public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
+            if (vfs == null) {
+                vfs = new IocVfs();
+                vfs.mount();
+            }
+            
             File file = new File(filePath);
+            log("filePath:" + filePath);
             
             try {
                 

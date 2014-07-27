@@ -2,6 +2,7 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.app.IocVfs;
 import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.DataHandler;
@@ -12,9 +13,12 @@ import info.guardianproject.util.SystemServices;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -87,6 +91,8 @@ public class OtrDataHandler implements DataHandler {
 
     private IDataListener mDataListener;
     private SessionStatus mOtrStatus;
+    
+    private IocVfs vfs;
 
     public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
@@ -154,8 +160,13 @@ public class OtrDataHandler implements DataHandler {
             return outputStream.toByteArray();
         }
     }
-    
+        
     public void onIncomingRequest(Address requestThem, Address requestUs, byte[] value) {
+        Log.e( TAG, "onIncomingRequest:" + requestThem);
+        if (vfs == null) {
+            vfs = new IocVfs();
+            vfs.mount();
+        }
         
         SessionInputBuffer inBuf = new MemorySessionInputBuffer(value); 
         HttpRequestParser parser = new HttpRequestParser(inBuf, lineParser, requestFactory, params);
@@ -315,6 +326,7 @@ public class OtrDataHandler implements DataHandler {
 
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
+        Log.e( TAG, "readIntoByteBuffer:" + (end-start));
         if (start != is.skip(start)) {
             return;
         }
@@ -334,6 +346,7 @@ public class OtrDataHandler implements DataHandler {
 
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, SessionInputBuffer sib)
             throws IOException {
+        Log.e( TAG, "readIntoByteBuffer:");
         int buffersize = 1024;
         byte[] buffer = new byte[buffersize];
 
@@ -365,6 +378,7 @@ public class OtrDataHandler implements DataHandler {
     }
 
     public void onIncomingResponse(Address from, Address to, byte[] value) {
+        Log.e( TAG, "onIncomingResponse:" + value.length);
         SessionInputBuffer buffer = new MemorySessionInputBuffer(value); 
         HttpResponseParser parser = new HttpResponseParser(buffer, lineParser, responseFactory, params);
         HttpResponse res;
@@ -410,11 +424,13 @@ public class OtrDataHandler implements DataHandler {
                 }
                 transfer.chunkReceived(request, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
+                    Log.e( TAG, "onIncomingResponse: isDone");
                     byte[] data = transfer.getData();
                     debug("Transfer complete for " + request.url);
                     if (transfer.checkSum()) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
+                        Log.e( TAG, "onIncomingResponse: writing");
                         File fileShare = writeDataToStorage(transfer.url, data);
                         
                         if (mDataListener != null)
@@ -453,17 +469,20 @@ public class OtrDataHandler implements DataHandler {
     
     private File writeDataToStorage (String url, byte[] data)
     {
+        Log.e( TAG, "writeDataToStorage:" + url + " " + data.length);
         //String nickname = getNickName(username);
-        File sdCard = Environment.getExternalStorageDirectory();
+        //File sdCard = Environment.getExternalStorageDirectory();
         
         String[] path = url.split("/"); 
         //String sanitizedPeer = SystemServices.sanitize(username);
         String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
         
-        File fileDownloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//        File fileDownloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File fileDownloadsDir = new File(Environment.DIRECTORY_DOWNLOADS);
         fileDownloadsDir.mkdirs();
         
         File file = new File(fileDownloadsDir, sanitizedPath);
+        Log.e( TAG, "writeDataToStorage:" + file.getAbsolutePath() );
         
         try {
             OutputStream output = (new FileOutputStream(file));
@@ -474,7 +493,6 @@ public class OtrDataHandler implements DataHandler {
             OtrDebugLogger.log("error writing file", e);
             return null;
         }
-    
     }
 
     @Override
@@ -628,10 +646,12 @@ public class OtrDataHandler implements DataHandler {
         }
 
         public boolean isDone() {
+            Log.e( TAG, "isDone:" + chunksReceived + " " + chunks);
             return chunksReceived == chunks;
         }
         
         public void chunkReceived(Request request, byte[] bs) {
+            Log.e( TAG, "chunkReceived:" + bs.length);
             chunksReceived++;
             System.arraycopy(bs, 0, buffer, request.start, bs.length);
             outstanding.remove(request);
@@ -703,7 +723,7 @@ public class OtrDataHandler implements DataHandler {
 
     private void debug (String msg)
     {
-        if (Debug.DEBUG_ENABLED)
+        if (true || Debug.DEBUG_ENABLED)
             Log.d(ImApp.LOG_TAG,msg);
     }
 }
