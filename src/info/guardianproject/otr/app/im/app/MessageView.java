@@ -438,14 +438,9 @@ public class MessageView extends FrameLayout {
 
     private final static int THUMBNAIL_SIZE = 800;
     
-    private static IocVfs vfs;
-    
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
         
-        if (vfs == null) {
-            vfs = new IocVfs();
-            vfs.mount();
-        }
+        IocVfs.init();
         
         File image = new File(uri.getPath());
 

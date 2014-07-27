@@ -92,8 +92,6 @@ public class OtrDataHandler implements DataHandler {
     private IDataListener mDataListener;
     private SessionStatus mOtrStatus;
     
-    private IocVfs vfs;
-
     public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
     }
@@ -163,10 +161,7 @@ public class OtrDataHandler implements DataHandler {
         
     public void onIncomingRequest(Address requestThem, Address requestUs, byte[] value) {
         Log.e( TAG, "onIncomingRequest:" + requestThem);
-        if (vfs == null) {
-            vfs = new IocVfs();
-            vfs.mount();
-        }
+        IocVfs.init();
         
         SessionInputBuffer inBuf = new MemorySessionInputBuffer(value); 
         HttpRequestParser parser = new HttpRequestParser(inBuf, lineParser, requestFactory, params);

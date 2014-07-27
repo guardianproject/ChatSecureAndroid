@@ -2366,15 +2366,10 @@ public class ChatView extends LinearLayout {
     // FIXME this must be moved out of the UI and mostly into the remote process
     class DataAdapter extends IDataListener.Stub {
         
-        IocVfs vfs ;
-        
         @Override
         public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
-            if (vfs == null) {
-                vfs = new IocVfs();
-                vfs.mount();
-            }
+            IocVfs.init();
             
             File file = new File(filePath);
             log("filePath:" + filePath);

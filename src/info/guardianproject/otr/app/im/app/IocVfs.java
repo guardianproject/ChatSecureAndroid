@@ -17,35 +17,39 @@ import android.util.Log;
  */
 public class IocVfs {
     public static final String TAG = IocVfs.class.getName();
-    private String dbFile;
-    private String root = "/";
-    private VirtualFileSystem vfs;
+    private static String dbFile;
+    private static VirtualFileSystem vfs;
     private static final String BLOB_NAME = "blob.db";
     private static String password;
     
-    public IocVfs( Context context ) {
+    public static void init( Context context ) {
         password = "password";
         dbFile = context.getDir("vfs", Context.MODE_PRIVATE).getAbsolutePath() + "/" + BLOB_NAME;
-        Log.e(TAG, "construct:" + dbFile);
+        Log.e(TAG, "init:" + dbFile);
     }
     
-    public IocVfs() {
+    public static void init() {
+        if (vfs != null) 
+            return;
+        
         password = "password";
         dbFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + BLOB_NAME;
-        Log.e(TAG, "construct:" + dbFile);
+        vfs = new VirtualFileSystem(dbFile);
+        Log.e(TAG, "init:" + dbFile);
+        mount();
     }
     
-    public void mount() {
+    public static void mount() {
         Log.e(TAG, "mount:" + dbFile);
-        vfs = new VirtualFileSystem(dbFile);
         vfs.mount(password);
     }
     
-    public void unmount() {
+    public static void unmount() {
+        Log.e(TAG, "unmount:" + dbFile);
         vfs.unmount();
     }
     
-    public void list() {
+    public static void list() {
         File file = new File( "/Download");
         String[] list = file.list();
         Log.e(TAG, "list:" + list.length);
@@ -54,16 +58,4 @@ public class IocVfs {
         }
     }
     
-    public static void test() {
-        String dbFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/myfiles.db";
-        VirtualFileSystem vfs = new VirtualFileSystem(dbFile);
-        // TODO don't use a hard-coded password! prompt for the password
-        vfs.mount("my fake password");
-        
-        File file = new File("/");
-        String[] dirList = file.list();
-        Log.e( "VFS", ""+dirList.length);
-        
-    }
-
 }
