@@ -436,5 +436,7 @@ android:anyDensity="true"
              android:noHistory="true"
              android:stateNotNeeded="true"
              android:theme="@android:style/Theme.NoDisplay" />
+        
+        <activity android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity" />
 </application>
 </manifest>

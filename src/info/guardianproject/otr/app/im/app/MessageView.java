@@ -22,6 +22,7 @@ import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 
@@ -84,9 +85,11 @@ public class MessageView extends FrameLayout {
     }
     private CharSequence lastMessage = null;
     
+    private Context context;
+    
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
+        this.context = context;
     }
 
     private ViewHolder mHolder = null;
@@ -315,6 +318,14 @@ public class MessageView extends FrameLayout {
      * @param body
      */
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
+        
+        if (mimeType.startsWith("image")) {
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra( "filename", mediaUri.toString());
+            context.startActivity(intent);
+            return;
+        }
+        
         
         String body = convertMediaUriToPath(mediaUri);
         
