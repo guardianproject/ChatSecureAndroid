@@ -37,6 +37,9 @@ public class IocVfs {
         vfs = new VirtualFileSystem(dbFile);
         Log.e(TAG, "init:" + dbFile);
         mount();
+        
+        list("/");
+        
     }
     
     public static void mount() {
@@ -49,12 +52,18 @@ public class IocVfs {
         vfs.unmount();
     }
     
-    public static void list() {
-        File file = new File( "/Download");
+    public static void list(String parent) {
+        File file = new File(parent);
         String[] list = file.list();
-        Log.e(TAG, "list:" + list.length);
+        Log.e(TAG, file.getAbsolutePath());
         for (int i = 0 ; i < list.length ; i++) {
-            Log.e(TAG, list[i]);
+            String fullname = parent + list[i];
+            File child = new File(fullname);
+            if (child.isDirectory()) {
+                list(fullname+"/");
+            } else {
+                Log.e(TAG, fullname);
+            }
         }
     }
     
