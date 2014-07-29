@@ -1412,7 +1412,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
 
-            mTrustManager = new MemorizingTrustManager(aContext, trustPinning, null);
+            mTrustManager = new MemorizingTrustManager(aContext, trustPinning);
 
 
         }
