@@ -20,7 +20,7 @@
         android:text="title text goes here"
          />
     
-     <TextView style="?android:textAppearanceMedium"
+     <TextView style="?android:textAppearanceLarge"
         android:id="@+id/lblAccountTypeDetail"
         android:padding="16dp"
         android:lineSpacingMultiplier="1.2"
