@@ -19,6 +19,7 @@ import info.guardianproject.iocipher.FileOutputStream;
 //import java.io.File;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -179,6 +180,13 @@ public class OtrDataHandler implements DataHandler {
         String requestMethod = req.getRequestLine().getMethod();
         String uid = req.getFirstHeader("Request-Id").getValue();
         String url = req.getRequestLine().getUri();
+        
+        try {
+            vfsOpenFile( url );
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
 
         if (requestMethod.equals("OFFER")) {
             debug("incoming OFFER " + url);
@@ -319,6 +327,49 @@ public class OtrDataHandler implements DataHandler {
         }
     }
 
+    
+    private File vfsTmpFile;
+    private FileOutputStream vfsTmpFileOutputStream;
+    
+    private void vfsOpenFile(String url) throws FileNotFoundException {
+        Log.e(TAG, "vfsOpenFile: url " + url) ;
+        String filename = getFilenameFromUrl(url);
+        String localFilename = Environment.DIRECTORY_DOWNLOADS + "/" + System.currentTimeMillis() + "_" + filename ;//+ ".tmp" ;
+        Log.e(TAG, "vfsOpenFile: localFilename " + localFilename) ;
+        vfsTmpFile = new File(localFilename);
+        vfsTmpFileOutputStream = new FileOutputStream(vfsTmpFile);
+    }
+    
+    private void vfsChunkReceived(byte[] buffer, int offset, int count) throws IOException {
+        Log.e(TAG, "vfsChunkReceived: count " + count) ;
+        vfsTmpFileOutputStream.write(buffer, offset, count) ;
+    }
+
+    private String vfsCloseFile() throws IOException {
+        Log.e(TAG, "vfsCloseFile") ;
+        vfsTmpFileOutputStream.close();
+        String newPath = vfsTmpFile.getCanonicalPath();
+        if(true) return newPath;
+        
+        
+        newPath = newPath.substring(0,newPath.length()-4); // remove the .tmp
+        newPath = "test.jpg";
+        Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
+        File newPathFile = new File(newPath);
+        boolean success = vfsTmpFile.renameTo(newPathFile);
+        if (!success) {
+            throw new IOException("Rename error " + newPath );
+        }
+        return newPath;
+    }
+    
+    private String vfsChecksum(String filename) throws IOException {
+        FileInputStream fis = new FileInputStream(new File(filename));
+        String sum = sha1sum(fis);
+        fis.close();
+        return sum;
+    }
+    
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
         Log.e( TAG, "readIntoByteBuffer:" + (end-start));
@@ -422,11 +473,15 @@ public class OtrDataHandler implements DataHandler {
                     Log.e( TAG, "onIncomingResponse: isDone");
                     byte[] data = transfer.getData();
                     debug("Transfer complete for " + request.url);
-                    if (transfer.checkSum()) {
+                    Log.e(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
+//                    if (transfer.checkSum()) {
+                    String filename = vfsCloseFile();
+                    String vfsChecksum = vfsChecksum(filename);
+                    if (transfer.checkSum(vfsChecksum)) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
                         Log.e( TAG, "onIncomingResponse: writing");
-                        File fileShare = writeDataToStorage(transfer.url, data);
+//                        File fileShare = writeDataToStorage(transfer.url, data);
                         
                         if (mDataListener != null)
                             mDataListener.onTransferComplete(
@@ -435,7 +490,7 @@ public class OtrDataHandler implements DataHandler {
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
-                                fileShare.getCanonicalPath());
+                                filename);
                     } else {
                         if (mDataListener != null)
                             mDataListener.onTransferFailed(
@@ -460,6 +515,12 @@ public class OtrDataHandler implements DataHandler {
             debug("Could not read remote exception");
         }
         
+    }
+    
+    private String getFilenameFromUrl(String url) {
+        String[] path = url.split("/"); 
+        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+        return sanitizedPath;
     }
     
     private File writeDataToStorage (String url, byte[] data)
@@ -617,6 +678,9 @@ public class OtrDataHandler implements DataHandler {
         public boolean checkSum() {
             return sum.equals(sha1sum(buffer));
         }
+        public boolean checkSum( String externalSum ) {
+            return sum.equals(externalSum);
+        }
 
         public boolean perform() {
             // TODO global throttle rather than this local hack
@@ -648,7 +712,15 @@ public class OtrDataHandler implements DataHandler {
         public void chunkReceived(Request request, byte[] bs) {
             Log.e( TAG, "chunkReceived:" + bs.length);
             chunksReceived++;
-            System.arraycopy(bs, 0, buffer, request.start, bs.length);
+            if (true) {
+                try {
+                    vfsChunkReceived(bs, request.start, bs.length);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.arraycopy(bs, 0, buffer, request.start, bs.length);
+            }
             outstanding.remove(request);
         }
 
@@ -709,6 +781,28 @@ public class OtrDataHandler implements DataHandler {
             throw new RuntimeException(e);
         }
         digest.update(bytes, 0, bytes.length);
+        byte[] sha1sum = digest.digest();
+        String display = "";
+        for(byte b : sha1sum)
+            display += toHex(b);
+        return display;
+    }
+    
+    private String sha1sum(FileInputStream fis) throws IOException {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        int read;
+        int SIZE = 1024;
+        byte[] bytes = new byte[SIZE];
+
+        while ((read = fis.read(bytes)) != -1) {
+            digest.update(bytes, 0, read);
+        }
+        
         byte[] sha1sum = digest.digest();
         String display = "";
         for(byte b : sha1sum)
