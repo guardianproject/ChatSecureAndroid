@@ -181,13 +181,6 @@ public class OtrDataHandler implements DataHandler {
         String uid = req.getFirstHeader("Request-Id").getValue();
         String url = req.getRequestLine().getUri();
         
-        try {
-            vfsOpenFile( url );
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
         if (requestMethod.equals("OFFER")) {
             debug("incoming OFFER " + url);
             if (!url.startsWith(URI_PREFIX_OTR_IN_BAND)) {
@@ -214,7 +207,13 @@ public class OtrDataHandler implements DataHandler {
             }
             debug("Incoming sha1sum " + sum);
             
-            Transfer transfer = new Transfer(url, type, length, requestUs, sum);
+            VfsTransfer transfer;
+            try {
+                transfer = new VfsTransfer(url, type, length, requestUs, sum);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
             transferCache.put(url, transfer);
             
             // Handle offer
@@ -328,48 +327,6 @@ public class OtrDataHandler implements DataHandler {
     }
 
     
-    private File vfsTmpFile;
-    private FileOutputStream vfsTmpFileOutputStream;
-    
-    private void vfsOpenFile(String url) throws FileNotFoundException {
-        Log.e(TAG, "vfsOpenFile: url " + url) ;
-        String filename = getFilenameFromUrl(url);
-        String localFilename = Environment.DIRECTORY_DOWNLOADS + "/" + System.currentTimeMillis() + "_" + filename ;//+ ".tmp" ;
-        Log.e(TAG, "vfsOpenFile: localFilename " + localFilename) ;
-        vfsTmpFile = new File(localFilename);
-        vfsTmpFileOutputStream = new FileOutputStream(vfsTmpFile);
-    }
-    
-    private void vfsChunkReceived(byte[] buffer, int offset, int count) throws IOException {
-        Log.e(TAG, "vfsChunkReceived: count " + count) ;
-        vfsTmpFileOutputStream.write(buffer, offset, count) ;
-    }
-
-    private String vfsCloseFile() throws IOException {
-        Log.e(TAG, "vfsCloseFile") ;
-        vfsTmpFileOutputStream.close();
-        String newPath = vfsTmpFile.getCanonicalPath();
-        if(true) return newPath;
-        
-        
-        newPath = newPath.substring(0,newPath.length()-4); // remove the .tmp
-        newPath = "test.jpg";
-        Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
-        File newPathFile = new File(newPath);
-        boolean success = vfsTmpFile.renameTo(newPathFile);
-        if (!success) {
-            throw new IOException("Rename error " + newPath );
-        }
-        return newPath;
-    }
-    
-    private String vfsChecksum(String filename) throws IOException {
-        FileInputStream fis = new FileInputStream(new File(filename));
-        String sum = sha1sum(fis);
-        fis.close();
-        return sum;
-    }
-    
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
         Log.e( TAG, "readIntoByteBuffer:" + (end-start));
@@ -463,7 +420,7 @@ public class OtrDataHandler implements DataHandler {
             readIntoByteBuffer(byteBuffer, buffer);
             debug("Received sha1 @" + request.start + " is " + sha1sum(byteBuffer.toByteArray()));
             if (request.method.equals("GET")) {
-                Transfer transfer = transferCache.getIfPresent(request.url);
+                VfsTransfer transfer = transferCache.getIfPresent(request.url);
                 if (transfer == null) {
                     debug("Transfer expired for url " + request.url);
                     return;
@@ -474,10 +431,8 @@ public class OtrDataHandler implements DataHandler {
                     byte[] data = transfer.getData();
                     debug("Transfer complete for " + request.url);
                     Log.e(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
-//                    if (transfer.checkSum()) {
-                    String filename = vfsCloseFile();
-                    String vfsChecksum = vfsChecksum(filename);
-                    if (transfer.checkSum(vfsChecksum)) {
+                    String filename = transfer.closeFile();
+                    if (transfer.checkSum()) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
                         Log.e( TAG, "onIncomingResponse: writing");
@@ -649,6 +604,7 @@ public class OtrDataHandler implements DataHandler {
     }
     
     public class Transfer {
+        public final String TAG = Transfer.class.getSimpleName();
         public String url;
         public String type;
         public int chunks = 0;
@@ -656,9 +612,9 @@ public class OtrDataHandler implements DataHandler {
         private int length = 0;
         private int current = 0;
         private Address us;
-        private Set<Request> outstanding; 
+        protected Set<Request> outstanding; 
         private byte[] buffer;
-        private String sum;
+        protected String sum;
         
         public Transfer(String url, String type, int length, Address us, String sum) {
             this.url = url;
@@ -666,6 +622,8 @@ public class OtrDataHandler implements DataHandler {
             this.length = length;
             this.us = us;
             this.sum = sum;
+            
+            Log.e(TAG, "url:"+url + " type:"+ type + " length:"+length) ;
             
             if (length > MAX_TRANSFER_LENGTH || length <= 0) {
                 throw new RuntimeException("Invalid transfer size " + length);
@@ -677,9 +635,6 @@ public class OtrDataHandler implements DataHandler {
         
         public boolean checkSum() {
             return sum.equals(sha1sum(buffer));
-        }
-        public boolean checkSum( String externalSum ) {
-            return sum.equals(externalSum);
         }
 
         public boolean perform() {
@@ -712,15 +667,7 @@ public class OtrDataHandler implements DataHandler {
         public void chunkReceived(Request request, byte[] bs) {
             Log.e( TAG, "chunkReceived:" + bs.length);
             chunksReceived++;
-            if (true) {
-                try {
-                    vfsChunkReceived(bs, request.start, bs.length);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                System.arraycopy(bs, 0, buffer, request.start, bs.length);
-            }
+            System.arraycopy(bs, 0, buffer, request.start, bs.length);
             outstanding.remove(request);
         }
 
@@ -729,9 +676,88 @@ public class OtrDataHandler implements DataHandler {
         }
     }
     
+    public class VfsTransfer extends Transfer {
+        private File file;
+        private FileOutputStream fos;
+        
+        public VfsTransfer(String url, String type, int length, Address us, String sum) throws FileNotFoundException {
+            super(url, type, length, us, sum);
+          openFile(url);
+        }
+        
+        @Override
+        public void chunkReceived(Request request, byte[] bs) {
+            Log.e(TAG, "chunkReceived: length " + bs.length) ;
+            chunksReceived++;
+            try {
+                fos.write(bs) ;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            outstanding.remove(request);
+        }
+
+        @Override
+        public boolean checkSum() {
+            try {
+                return sum.equals( checkSum(file.getAbsolutePath()) );
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        
+        private void openFile(String url) throws FileNotFoundException {
+            Log.e(TAG, "vfsOpenFile: url " + url) ;
+            String filename = getFilenameFromUrl(url);
+            String localFilename = Environment.DIRECTORY_DOWNLOADS + "/" + System.currentTimeMillis() + "_" + filename ;//+ ".tmp" ;
+            Log.e(TAG, "vfsOpenFile: localFilename " + localFilename) ;
+            file = new File(localFilename);
+            fos = new FileOutputStream(file);
+        }
+        
+//        @Override
+//        public boolean perform() {
+//            boolean result = super.perform();
+//            if (result) {
+//                try {
+//                    openFile(url);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                    return false;
+//                }
+//            }
+//            return result;
+//        }
+        
+        public String closeFile() throws IOException {
+            Log.e(TAG, "vfsCloseFile") ;
+            fos.close();
+            String newPath = file.getCanonicalPath();
+            if(true) return newPath;
+            
+            newPath = newPath.substring(0,newPath.length()-4); // remove the .tmp
+            newPath = "test.jpg";
+            Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
+            File newPathFile = new File(newPath);
+            boolean success = file.renameTo(newPathFile);
+            if (!success) {
+                throw new IOException("Rename error " + newPath );
+            }
+            return newPath;
+        }
+        
+        private String checkSum(String filename) throws IOException {
+            FileInputStream fis = new FileInputStream(new File(filename));
+            String sum = sha1sum(fis);
+            fis.close();
+            return sum;
+        }
+    }
+    
     Cache<String, Offer> offerCache = CacheBuilder.newBuilder().maximumSize(100).build();
     Cache<String, Request> requestCache = CacheBuilder.newBuilder().maximumSize(100).build();
-    Cache<String, Transfer> transferCache = CacheBuilder.newBuilder().maximumSize(100).build();
+    Cache<String, VfsTransfer> transferCache = CacheBuilder.newBuilder().maximumSize(100).build();
     
     private void sendRequest(Request request) {
         MemorySessionOutputBuffer outBuf = new MemorySessionOutputBuffer();
