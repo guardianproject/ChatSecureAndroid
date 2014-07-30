@@ -438,5 +438,7 @@ android:anyDensity="true"
              android:theme="@android:style/Theme.NoDisplay" />
         
         <activity android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity" />
+        
+        <activity android:name="info.guardianproject.otr.app.im.ui.AudioPlayerActivity" />
 </application>
 </manifest>

@@ -682,7 +682,6 @@ public class OtrDataHandler implements DataHandler {
         
         public VfsTransfer(String url, String type, int length, Address us, String sum) throws FileNotFoundException {
             super(url, type, length, us, sum);
-          openFile(url);
         }
         
         @Override
@@ -707,31 +706,31 @@ public class OtrDataHandler implements DataHandler {
             }
         }
         
+        @Override
+        public boolean perform() {
+            boolean result = super.perform();
+            try {
+                if (file == null) {
+                    openFile(url);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return result;
+        }
+        
         private void openFile(String url) throws FileNotFoundException {
-            Log.e(TAG, "vfsOpenFile: url " + url) ;
+            Log.e(TAG, "openFile: url " + url) ;
             String filename = getFilenameFromUrl(url);
             String localFilename = Environment.DIRECTORY_DOWNLOADS + "/" + System.currentTimeMillis() + "_" + filename ;//+ ".tmp" ;
-            Log.e(TAG, "vfsOpenFile: localFilename " + localFilename) ;
+            Log.e(TAG, "openFile: localFilename " + localFilename) ;
             file = new File(localFilename);
             fos = new FileOutputStream(file);
         }
         
-//        @Override
-//        public boolean perform() {
-//            boolean result = super.perform();
-//            if (result) {
-//                try {
-//                    openFile(url);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                    return false;
-//                }
-//            }
-//            return result;
-//        }
-        
         public String closeFile() throws IOException {
-            Log.e(TAG, "vfsCloseFile") ;
+            Log.e(TAG, "closeFile") ;
             fos.close();
             String newPath = file.getCanonicalPath();
             if(true) return newPath;

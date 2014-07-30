@@ -22,6 +22,7 @@ import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
 import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
@@ -321,6 +322,12 @@ public class MessageView extends FrameLayout {
         
         if (mimeType.startsWith("image")) {
             Intent intent = new Intent(context, ImageViewActivity.class);
+            intent.putExtra( "filename", mediaUri.toString());
+            context.startActivity(intent);
+            return;
+        }
+        if (mimeType.startsWith("audio")) {
+            Intent intent = new Intent(context, AudioPlayerActivity.class);
             intent.putExtra( "filename", mediaUri.toString());
             context.startActivity(intent);
             return;
