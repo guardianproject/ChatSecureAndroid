@@ -69,7 +69,8 @@ public class IocVfs {
             if (child.isDirectory()) {
                 list(fullname+"/");
             } else {
-                Log.e(TAG, fullname);
+                File full = new File(fullname);
+                Log.e(TAG, fullname + "  " + full.exists());
             }
         }
     }

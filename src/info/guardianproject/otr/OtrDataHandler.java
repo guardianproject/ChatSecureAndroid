@@ -429,13 +429,10 @@ public class OtrDataHandler implements DataHandler {
                 transfer.chunkReceived(request, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
                     Log.e( TAG, "onIncomingResponse: isDone");
-                    byte[] data = transfer.getData();
                     debug("Transfer complete for " + request.url);
-                    Log.e(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
                     String filename = transfer.closeFile();
                     Uri vfsUri = IocVfs.vfsUri(filename);
                     if (transfer.checkSum()) {
-                        debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
                         Log.e( TAG, "onIncomingResponse: writing");
 //                        File fileShare = writeDataToStorage(transfer.url, data);
@@ -456,7 +453,7 @@ public class OtrDataHandler implements DataHandler {
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 "checksum");
-                        Log.e(TAG, "Wrong checksum for file len= " + data.length + " sha1=" + sha1sum(data));
+                        Log.e(TAG, "Wrong checksum for file");
                     }
                 } else {
                     if (mDataListener != null)
@@ -656,11 +653,6 @@ public class OtrDataHandler implements DataHandler {
             return true;
         }
         
-        public byte[] getData() {
-            // TODO Auto-generated method stub
-            return buffer;
-        }
-
         public boolean isDone() {
             Log.e( TAG, "isDone:" + chunksReceived + " " + chunks);
             return chunksReceived == chunks;
@@ -725,10 +717,22 @@ public class OtrDataHandler implements DataHandler {
         private void openFile(String url) throws FileNotFoundException {
             Log.e(TAG, "openFile: url " + url) ;
             String filename = getFilenameFromUrl(url);
-            String localFilename = Environment.DIRECTORY_DOWNLOADS + "/" + System.currentTimeMillis() + "_" + filename ;//+ ".tmp" ;
+            String localFilename = getLocalFilename(filename);
             Log.e(TAG, "openFile: localFilename " + localFilename) ;
             file = new File(localFilename);
             fos = new FileOutputStream(file);
+        }
+        
+        private String getLocalFilename(String filename) {
+            int count = 0 ;
+            String localFilename;
+            File file;
+            do {
+                localFilename = "/" + Environment.DIRECTORY_DOWNLOADS + "/" + (count++) + "_" + filename ;
+                file = new File(localFilename);
+            } while(file.exists());
+            
+            return localFilename;
         }
         
         public String closeFile() throws IOException {
@@ -738,7 +742,6 @@ public class OtrDataHandler implements DataHandler {
             if(true) return newPath;
             
             newPath = newPath.substring(0,newPath.length()-4); // remove the .tmp
-            newPath = "test.jpg";
             Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
             File newPathFile = new File(newPath);
             boolean success = file.renameTo(newPathFile);
