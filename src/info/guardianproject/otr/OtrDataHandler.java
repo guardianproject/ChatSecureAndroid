@@ -60,6 +60,7 @@ import org.apache.http.message.LineParser;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.util.Log;
@@ -432,6 +433,7 @@ public class OtrDataHandler implements DataHandler {
                     debug("Transfer complete for " + request.url);
                     Log.e(TAG, "Received file len=" + data.length + " sha1=" + sha1sum(data));
                     String filename = transfer.closeFile();
+                    Uri vfsUri = IocVfs.vfsUri(filename);
                     if (transfer.checkSum()) {
                         debug("Received file len=" + data.length + " sha1=" + sha1sum(data));
 
@@ -445,7 +447,7 @@ public class OtrDataHandler implements DataHandler {
                                 mChatSession.getParticipant().getAddress().getAddress(),
                                 transfer.url,
                                 transfer.type,
-                                filename);
+                                vfsUri.toString());
                     } else {
                         if (mDataListener != null)
                             mDataListener.onTransferFailed(

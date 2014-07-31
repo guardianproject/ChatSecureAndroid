@@ -18,8 +18,6 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.emoji.EmojiManager;
-import info.guardianproject.iocipher.File;
-import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
@@ -28,6 +26,7 @@ import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 
 //import java.io.File;
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -320,19 +319,21 @@ public class MessageView extends FrameLayout {
      */
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
         
-        if (mimeType.startsWith("image")) {
-            Intent intent = new Intent(context, ImageViewActivity.class);
-            intent.putExtra( "filename", mediaUri.toString());
-            context.startActivity(intent);
+        if (IocVfs.isVfsScheme(mediaUri.getScheme())) {
+            if (mimeType.startsWith("image")) {
+                Intent intent = new Intent(context, ImageViewActivity.class);
+                intent.putExtra( ImageViewActivity.FILENAME, mediaUri.getPath());
+                context.startActivity(intent);
+                return;
+            }
+            if (mimeType.startsWith("audio")) {
+                Intent intent = new Intent(context, AudioPlayerActivity.class);
+                intent.putExtra( AudioPlayerActivity.FILENAME, mediaUri.getPath());
+                context.startActivity(intent);
+                return;
+            }
             return;
         }
-        if (mimeType.startsWith("audio")) {
-            Intent intent = new Intent(context, AudioPlayerActivity.class);
-            intent.putExtra( "filename", mediaUri.toString());
-            context.startActivity(intent);
-            return;
-        }
-        
         
         String body = convertMediaUriToPath(mediaUri);
         
@@ -454,11 +455,16 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
-    private final static int THUMBNAIL_SIZE = 800;
+    public final static int THUMBNAIL_SIZE = 800;
     
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
-        
-        IocVfs.init();
+        if (IocVfs.isVfsScheme(uri.getScheme())) {
+            return IocVfs.getThumbnailVfs(cr, uri);
+        }
+        return getThumbnailFile(cr, uri);
+    }
+    
+    public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
         
         File image = new File(uri.getPath());
 
@@ -466,16 +472,8 @@ public class MessageView extends FrameLayout {
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-        
-//        BitmapFactory.decodeFile(image.getPath(), options);
-        try {
-            FileInputStream fis = new FileInputStream(new File(image.getPath()));
-            BitmapFactory.decodeStream(fis, null, options);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
 
+        BitmapFactory.decodeFile(image.getPath(), options);
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
 
@@ -485,19 +483,11 @@ public class MessageView extends FrameLayout {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
 
-//        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
-        try {
-            FileInputStream fis = new FileInputStream(new File(image.getPath()));
-            Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
-            return scaledBitmap;     
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
 
+        return scaledBitmap;     
     }
     
-
     private String formatMessage (String body)
     {
         return android.text.Html.fromHtml(body).toString();

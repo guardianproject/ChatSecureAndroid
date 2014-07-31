@@ -3,9 +3,16 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import java.io.FileNotFoundException;
+
 import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -67,4 +74,53 @@ public class IocVfs {
         }
     }
     
+    private static final String VFS_SCHEME = "vfs";
+
+    public static Uri vfsUri(String filename) {
+        return Uri.parse(VFS_SCHEME + ":" + filename);
+    }
+    
+    public static boolean isVfsScheme(String scheme) {
+        return VFS_SCHEME.equals(scheme);
+    }
+    
+    public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
+        
+        IocVfs.init();
+        
+        File image = new File(uri.getPath());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+        
+//        BitmapFactory.decodeFile(image.getPath(), options);
+        try {
+            FileInputStream fis = new FileInputStream(new File(image.getPath()));
+            BitmapFactory.decodeStream(fis, null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            return null;
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / MessageView.THUMBNAIL_SIZE;
+
+//        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+        try {
+            FileInputStream fis = new FileInputStream(new File(image.getPath()));
+            Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
+            return scaledBitmap;     
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

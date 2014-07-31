@@ -2370,14 +2370,14 @@ public class ChatView extends LinearLayout {
         public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
             IocVfs.init();
-            
-            File file = new File(filePath);
+
+//            File file = new File(filePath);
             log("filePath:" + filePath);
             
-            try {
+//            try {
                 
                 Message msg = Message.obtain(mTransferHandler, 3);            
-                msg.getData().putString("path", file.getCanonicalPath());
+                msg.getData().putString("path", filePath);
                 msg.getData().putString("type", mimeType);
                 
                 if (outgoing) {
@@ -2387,15 +2387,15 @@ public class ChatView extends LinearLayout {
                     Imps.insertMessageInDb(getContext().getContentResolver(),
                             false, mLastChatId,
                             true, null,
-                            file.getCanonicalPath(), System.currentTimeMillis(), type,
+                            filePath, System.currentTimeMillis(), type,
                             0, offerId, mimeType);
                 }
                 
                 mTransferHandler.sendMessage(msg);
-            } catch (IOException e) {
-                mHandler.showAlert(mContext.getString(R.string.error_chat_file_transfer_title), mContext.getString(R.string.error_chat_file_transfer_body));
-                OtrDebugLogger.log("error reading file", e);
-            }
+//            } catch (IOException e) {
+//                mHandler.showAlert(mContext.getString(R.string.error_chat_file_transfer_title), mContext.getString(R.string.error_chat_file_transfer_body));
+//                OtrDebugLogger.log("error reading file", e);
+//            }
             
 
         }
