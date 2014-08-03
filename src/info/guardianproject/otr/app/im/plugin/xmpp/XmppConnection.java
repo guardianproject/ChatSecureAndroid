@@ -126,6 +126,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.util.Log;
+import ch.boye.httpclientandroidlib.conn.ssl.StrictHostnameVerifier;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
@@ -980,6 +981,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
 
+        mConfig.setHostnameVerifier(new StrictHostnameVerifier() );
+        
         mConnection.login(mUsername, mPassword, mResource);
 
         mStreamHandler.notifyInitialLogin();
@@ -993,6 +996,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         getContactListManager().listenToRoster(mRoster);
 
     }
+    
 
     // Runs in executor thread
     private void initConnection(Imps.ProviderSettings.QueryMap providerSettings, String userName) throws NoSuchAlgorithmException, KeyManagementException, XMPPException  {
@@ -1168,6 +1172,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setNotMatchingDomainCheckEnabled(false);
             mConfig.setSelfSignedCertificateEnabled(true);
         }
+        
+      //  mConfig.setHostnameVerifier();
 
         if (mIsGoogleAuth)
         {
