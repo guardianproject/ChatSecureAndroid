@@ -1,6 +1,5 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
@@ -42,6 +41,7 @@ import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 
 import org.jivesoftware.smack.util.Base64;
+import org.spongycastle.util.encoders.Hex;
 
 import android.app.Activity;
 import android.app.AlertDialog;

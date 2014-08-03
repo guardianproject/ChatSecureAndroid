@@ -1,8 +1,6 @@
 package info.guardianproject.otr.app.im.plugin.xmpp.auth;
 
 
-import info.guardianproject.bouncycastle.util.encoders.Base64;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 
@@ -11,6 +9,7 @@ import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.sasl.SASLMechanism;
+import org.spongycastle.util.encoders.Base64;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,7 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 

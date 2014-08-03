@@ -1,7 +1,5 @@
 package net.java.otr4j;
 
-import info.guardianproject.bouncycastle.util.encoders.Base64;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +24,8 @@ import java.util.Vector;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
+
+import org.spongycastle.util.encoders.Base64;
 
 public class OtrKeyManagerImpl implements OtrKeyManager {
 

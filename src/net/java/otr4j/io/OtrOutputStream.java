@@ -1,7 +1,5 @@
 package net.java.otr4j.io;
 
-import info.guardianproject.bouncycastle.util.BigIntegers;
-
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,9 +10,11 @@ import java.security.interfaces.DSAPublicKey;
 
 import javax.crypto.interfaces.DHPublicKey;
 
-import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.MysteriousT;
+import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.SignatureX;
+
+import org.spongycastle.util.BigIntegers;
 
 public class OtrOutputStream extends FilterOutputStream implements SerializationConstants {
 

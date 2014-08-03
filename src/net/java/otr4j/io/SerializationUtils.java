@@ -5,7 +5,6 @@
  */
 package net.java.otr4j.io;
 
-import info.guardianproject.bouncycastle.util.encoders.Base64;
 import info.guardianproject.otr.OtrConstants;
 
 import java.io.ByteArrayInputStream;
@@ -35,6 +34,8 @@ import net.java.otr4j.io.messages.RevealSignatureMessage;
 import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.SignatureMessage;
 import net.java.otr4j.io.messages.SignatureX;
+
+import org.spongycastle.util.encoders.Base64;
 
 /** @author George Politis */
 public class SerializationUtils {
