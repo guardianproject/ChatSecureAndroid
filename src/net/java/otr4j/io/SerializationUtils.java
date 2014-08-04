@@ -34,8 +34,7 @@ import net.java.otr4j.io.messages.RevealSignatureMessage;
 import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.SignatureMessage;
 import net.java.otr4j.io.messages.SignatureX;
-
-import org.spongycastle.util.encoders.Base64;
+import android.util.Base64;
 
 /** @author George Politis */
 public class SerializationUtils {
@@ -206,7 +205,7 @@ public class SerializationUtils {
             }
 
             writer.write(SerializationConstants.HEAD_ENCODED);
-            writer.write(new String(Base64.encode(o.toByteArray())));
+            writer.write(Base64.encodeToString(o.toByteArray(),Base64.NO_WRAP));
             writer.write(".");
             break;
         default:
@@ -262,8 +261,7 @@ public class SerializationUtils {
             String content = s.substring(SerializationConstants.HEAD.length() + 1);
             switch (contentType) {
             case SerializationConstants.HEAD_ENCODED:
-                ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(content
-                        .getBytes()));
+                ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(content,Base64.NO_WRAP));
                 OtrInputStream otr = new OtrInputStream(bin);
                 // We have an encoded message.
                 int protocolVersion = otr.readShort();

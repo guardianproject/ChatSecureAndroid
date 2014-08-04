@@ -17,6 +17,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -24,8 +25,9 @@ import java.util.Vector;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
+import android.util.Base64;
 
-import org.spongycastle.util.encoders.Base64;
+
 
 public class OtrKeyManagerImpl implements OtrKeyManager {
 
@@ -76,7 +78,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         }
 
         public void setProperty(String id, byte[] value) {
-            properties.setProperty(id, new String(Base64.encode(value)));
+            properties.setProperty(id, Base64.encodeToString(value,Base64.NO_WRAP));
             try {
                 this.store();
             } catch (Exception e) {
@@ -91,7 +93,7 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
 
         public byte[] getPropertyBytes(String id) {
             String value = properties.getProperty(id);
-            return Base64.decode(value);
+            return Base64.decode(value,Base64.NO_WRAP);
         }
 
         public boolean getPropertyBoolean(String id, boolean defaultValue) {
@@ -256,11 +258,17 @@ public class OtrKeyManagerImpl implements OtrKeyManager {
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String userID = sessionID.getRemoteUserId();
-        this.store.setProperty(userID + ".publicKey", x509EncodedKeySpec.getEncoded());
-
-        this.store.removeProperty(userID + ".publicKey.verified");
         
-
+        byte[] keyEnc = x509EncodedKeySpec.getEncoded();
+        String keyString = userID + ".publicKey";
+        
+        byte[] keyExisting = store.getPropertyBytes(keyString);
+        
+        if (keyExisting != null && (!Arrays.equals(keyEnc, keyExisting)))
+        {
+            store.removeProperty(userID + ".publicKey.verified"); //remove any verified state
+            store.setProperty(userID + ".publicKey", keyEnc);
+        }
     }
 
     public void unverify(SessionID sessionID) {

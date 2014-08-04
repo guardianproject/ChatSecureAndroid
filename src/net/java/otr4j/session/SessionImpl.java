@@ -307,7 +307,7 @@ public class SessionImpl implements Session {
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
-    public synchronized String transformReceiving(String msgText, List<TLV> tlvs) throws OtrException {
+    public String transformReceiving(String msgText, List<TLV> tlvs) throws OtrException, NullPointerException {
         OtrPolicy policy = getSessionPolicy();
         if (!policy.getAllowV1() && !policy.getAllowV2()) {
             logger.finest("Policy does not allow neither V1 not V2, ignoring message.");
@@ -537,14 +537,14 @@ public class SessionImpl implements Session {
     }
 
     private String handlePlainTextMessage(PlainTextMessage plainTextMessage) throws OtrException {
-        logger.finest(getSessionID().getLocalUserId() + " received a plaintext message from "
-                      + getSessionID().getRemoteUserId() + " throught "
-                      + getSessionID().getProtocolName() + ".");
+      //  logger.finest(getSessionID().getLocalUserId() + " received a plaintext message from "
+        //              + getSessionID().getRemoteUserId() + " throught "
+          //            + getSessionID().getProtocolName() + ".");
 
         OtrPolicy policy = getSessionPolicy();
         List<Integer> versions = plainTextMessage.versions;
         if (versions == null || versions.size() < 1) {
-            logger.finest("Received plaintext message without the whitespace tag.");
+            //logger.finest("Received plaintext message without the whitespace tag.");
             switch (this.getSessionStatus()) {
             case ENCRYPTED:
             case FINISHED:
@@ -728,13 +728,12 @@ public class SessionImpl implements Session {
      * 
      * @see net.java.otr4j.session.ISession#endSession()
      */
-    public synchronized void endSession() throws OtrException {
+    public void endSession() throws OtrException {
         SessionStatus status = this.getSessionStatus();
         switch (status) {
         case ENCRYPTED:
             Vector<TLV> tlvs = new Vector<TLV>();
             tlvs.add(new TLV(1, null));
-
             String msg = this.transformSending(null, tlvs);
             getHost().injectMessage(getSessionID(), msg);
             this.setSessionStatus(SessionStatus.PLAINTEXT);
