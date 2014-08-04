@@ -29,6 +29,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -733,7 +734,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         // and is useful for transferring rosters to other apps.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            String verifiedToken = buildPublicKeyVerifiedId(sessionID.getRemoteUserId(), fingerprintString.toLowerCase());
+            String verifiedToken = buildPublicKeyVerifiedId(sessionID.getRemoteUserId(), fingerprintString);
             if (!this.store.hasProperty(verifiedToken))
                 this.store.setProperty(verifiedToken, false);
             
@@ -792,7 +793,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         if (fingerprint == null)
             return null;
 
-        return Address.stripResource(userId) + "." + fingerprint + ".publicKey.verified";
+        return (Address.stripResource(userId) + "." + fingerprint + ".publicKey.verified");
     }
 
     public void verifyUser(String userId) {
