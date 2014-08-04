@@ -722,7 +722,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
                     }
                     else
                     {
-                        addGoogleAccount(mGoogleAccounts[pos-1].name);
+                        addGoogleAccount(mGoogleAccounts[pos].name);
                     }
                 }
                 
