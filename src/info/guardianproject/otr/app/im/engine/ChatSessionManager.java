@@ -74,7 +74,7 @@ public abstract class ChatSessionManager {
      */
     public synchronized ChatSession createChatSession(ImEntity participant) {
         
-        String sessionKey = participant.getAddress().getBareAddress();
+        String sessionKey = participant.getAddress().getAddress();
         ChatSession session = mSessions.get(sessionKey);
 
         if (session == null)
@@ -100,7 +100,7 @@ public abstract class ChatSessionManager {
      * @param session the ChatSession to close.
      */
     public void closeChatSession(ChatSession session) {
-        mSessions.remove(session.getParticipant().getAddress().getBareAddress());
+        mSessions.remove(session.getParticipant().getAddress().getAddress());
     }
 
     /**

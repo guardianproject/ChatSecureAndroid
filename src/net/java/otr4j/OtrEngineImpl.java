@@ -89,6 +89,7 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformSending(msgText, tlvs);
     }
 
+    
     public void endSession(SessionID sessionID) throws OtrException {
         this.getSession(sessionID).endSession();
     }

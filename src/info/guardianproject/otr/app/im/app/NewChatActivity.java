@@ -84,6 +84,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -151,6 +152,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
 
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
@@ -220,6 +223,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     getSherlock().getActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
+                
+                setSupportProgressBarIndeterminateVisibility(false);
+
             }
 
             
@@ -737,6 +743,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     mMenu.setGroupVisible(R.id.menu_group_otr_unverified,false);
 
                 }
+                
+              //  setSupportProgressBarIndeterminateVisibility(false);
+                
             }
           
          }
@@ -896,11 +905,20 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             if (getCurrentChatView() != null)
             {
+                
                 boolean isEnc = (getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED || 
                         getCurrentChatView().getOtrSessionStatus() == SessionStatus.FINISHED
                         );
                 
+                if (!isEnc)
+                {
+                    setSupportProgressBarIndeterminateVisibility(true);
+                    
+                }
+                
                 getCurrentChatView().setOTRState(!isEnc);
+                
+
             
             }
             

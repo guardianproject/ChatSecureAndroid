@@ -152,6 +152,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         
         String localUser = mConnection.getLoginUser().getAddress().getAddress();
         String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
+        
         mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, service.getOtrChatManager());
     
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
@@ -282,6 +283,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mContentResolver.delete(mChatURI, null, null);
         mStatusBarNotifier.dismissChatNotification(mConnection.getProviderId(), getAddress());
         mChatSessionManager.closeChatSession(this);
+        
+        
     }
 
     public void leaveIfInactive() {

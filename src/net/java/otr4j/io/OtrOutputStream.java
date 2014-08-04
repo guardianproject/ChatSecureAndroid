@@ -12,9 +12,10 @@ import java.security.interfaces.DSAPublicKey;
 
 import javax.crypto.interfaces.DHPublicKey;
 
-import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.MysteriousT;
+import net.java.otr4j.io.messages.SignatureM;
 import net.java.otr4j.io.messages.SignatureX;
+
 
 public class OtrOutputStream extends FilterOutputStream implements SerializationConstants {
 

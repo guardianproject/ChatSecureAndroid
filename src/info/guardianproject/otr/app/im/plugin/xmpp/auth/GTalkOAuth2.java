@@ -1,11 +1,10 @@
 package info.guardianproject.otr.app.im.plugin.xmpp.auth;
 
 
-import info.guardianproject.bouncycastle.util.encoders.Base64;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPException;
@@ -22,7 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 
@@ -76,7 +74,7 @@ protected void authenticate() throws IOException, XMPPException
     stanza.append( "<auth mechanism=\"" ).append( getName() );
     stanza.append( "\" xmlns=\"urn:ietf:params:xml:ns:xmpp-sasl\">" );
     
-    stanza.append( new String(Base64.encode( jidAndToken.getBytes( "UTF-8" ) ) ));
+    stanza.append( new String(Base64.encodeBase64( jidAndToken.getBytes( "UTF-8" ) ) ));
     stanza.append( "</auth>" );
 
     getSASLAuthentication().send( new Auth2Mechanism(stanza.toString()) );

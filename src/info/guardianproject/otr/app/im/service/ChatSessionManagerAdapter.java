@@ -147,13 +147,13 @@ public class ChatSessionManagerAdapter extends
     public void updateChatSession(String oldAddress, ChatSessionAdapter adapter) {
         synchronized (mActiveChatSessionAdapters) {
             mActiveChatSessionAdapters.remove(oldAddress);
-            mActiveChatSessionAdapters.put(adapter.getAddress(), adapter);
+            mActiveChatSessionAdapters.put(Address.stripResource(adapter.getAddress()), adapter);
         }
     }
 
     public IChatSession getChatSession(String address) {
         synchronized (mActiveChatSessionAdapters) {
-            return mActiveChatSessionAdapters.get(address);
+            return mActiveChatSessionAdapters.get(Address.stripResource(address));
         }
     }
 

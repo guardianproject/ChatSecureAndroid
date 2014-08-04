@@ -27,12 +27,22 @@
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_unencrypted"
           android:showAsAction="always"
-           android:id="@+id/menu_otr"
         >
+        <menu>
+         <item 
+        android:title="@string/menu_otr_start"
+         android:icon="@drawable/ic_white_unencrypted"
+          android:showAsAction="always"
+           android:id="@+id/menu_otr"
+        />
         
+             <item android:id="@+id/menu_view_profile"
+        android:title="@string/menu_verify"
+        android:icon="@drawable/ic_white_encrypted_not_verified"
+         android:showAsAction="always"
+         />
              
-        
-             
+        </menu>
          </item>
          
          
@@ -154,15 +164,6 @@
          />
     
     
-    
-    <!-- 
-     <item android:id="@+id/menu_delete_conversation"
-        android:title="@string/menu_clear_chat" 
-        android:icon="@drawable/ic_menu_trash"
-         android:showAsAction="never"
-        
-         />
-          -->
     </group>
     
  <group android:enabled="true" android:id="@+id/menu_group_contacts" android:visible="true">
@@ -184,28 +185,15 @@
      
     
      
-     <!-- 
-     <item
-    android:id="@+id/menu_search"
-    android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-    android:icon="@drawable/ic_menu_search"
-    android:showAsAction="ifRoom|collapseActionView"
-    android:title="@string/menu_search_contacts"/>
-          -->
-          <!-- 
-     <item android:id="@+id/menu_grid"
-        android:title="@string/menu_show_grid" 
-        android:icon="@drawable/ic_menu_grid"
-         android:showAsAction="always"/>
-    
-    
-   
-      -->
         </group>
         
  
      
-     
+  <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" 
+        android:icon="@android:drawable/ic_menu_preferences"
+         android:showAsAction="never"
+         />
      
         
       <item android:id="@+id/menu_view_accounts"
@@ -214,12 +202,6 @@
         />
       
       
-  <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings" 
-        android:icon="@android:drawable/ic_menu_preferences"
-         android:showAsAction="never"
-         />
-     
       
       <item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"

@@ -243,14 +243,12 @@ public class ChatView extends LinearLayout {
                             
                         if (otrEnabled) {
                             otrChatSession.startChatEncryption();
-                            mActivity.setSupportProgressBarIndeterminateVisibility(true);
                             
 
                         }
                         else
                         {
                             otrChatSession.stopChatEncryption();    
-                            mActivity.setSupportProgressBarIndeterminateVisibility(false);
                             
                         }   
                         
