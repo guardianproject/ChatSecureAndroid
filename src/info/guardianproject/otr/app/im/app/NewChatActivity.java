@@ -946,6 +946,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             showInviteContactDialog();
             return true;
       
+        case R.id.menu_group_chat:
+            showGroupChatDialog();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

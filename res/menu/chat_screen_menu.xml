@@ -183,7 +183,16 @@
         
         />
      
+      <item android:id="@+id/menu_group_chat"
+        android:title="@string/menu_new_group_chat" 
+              android:icon="@drawable/social_add_person"
+                android:showAsAction="never"
+        
+        />
+     
     
+     
+     
      
         </group>
         
