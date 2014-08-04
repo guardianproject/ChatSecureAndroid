@@ -53,12 +53,13 @@
                     android:color="?messageTextPrimary"
                      />
          
-         <ImageView
+        
+     <ImageView
             android:id="@+id/media_thumbnail"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"                                
-            android:layout_margin="3dp"
-             android:padding="6dp"
+            android:layout_height="wrap_content"     
+             android:scaleType="centerCrop"
+         android:visibility="gone"  
              />
                   <TextView
                 android:id="@+id/messagets"
@@ -70,13 +71,11 @@
             	android:textSize="10dp"                 
             	   android:color="?messageTextSecondary"
                 />
-                  
-                  
-                  
                    
         
           	</LinearLayout>
           	
+     
 		<ImageView
             android:id="@+id/avatar"
             android:layout_width="48dp"

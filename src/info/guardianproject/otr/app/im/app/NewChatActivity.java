@@ -154,6 +154,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         super.onCreate(icicle);
         
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
+//        requestWindowFeature(Window.FEATURE_PROGRESS);  
 
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);

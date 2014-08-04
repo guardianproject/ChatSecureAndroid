@@ -71,4 +71,12 @@ interface IChatListener {
 	
 	/** this is called when there is a incoming file transfer request **/
 	void onIncomingFileTransfer (String from, String file);
+	
+	
+	/** this is called when there is a incoming file transfer request **/
+	void onIncomingFileTransferProgress (String file, float percent);
+	
+	/** this is called when there is a incoming file transfer request **/
+	void onIncomingFileTransferError (String file, String message);
+	
 }

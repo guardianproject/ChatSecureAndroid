@@ -25,13 +25,11 @@ import info.guardianproject.otr.OtrDataHandler.Transfer;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IDataListener;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.NewChatActivity;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.Contact;
-import info.guardianproject.otr.app.im.engine.DataHandler;
 import info.guardianproject.otr.app.im.engine.GroupListener;
 import info.guardianproject.otr.app.im.engine.GroupMemberListener;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -41,7 +39,6 @@ import info.guardianproject.otr.app.im.engine.MessageListener;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.SystemServices;
-import info.guardianproject.util.SystemServices.Scanner;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,25 +50,16 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.jivesoftware.smack.packet.Packet;
 
-import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
-import android.support.v4.app.NotificationCompat;
-import android.webkit.MimeTypeMap;
+import android.util.Log;
 
 import com.google.common.collect.Maps;
 
@@ -848,7 +836,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     }
 
-    // FIXME this must be moved out of the UI and mostly into the remote process
     class DataHandlerListenerImpl extends IDataListener.Stub {
         
         @Override
@@ -862,14 +849,25 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 if (outgoing) {
                     Imps.updateConfirmInDb(service.getContentResolver(), offerId, true);
                 } else {
-                    boolean isVerified = mOtrChatSession.isKeyVerified(from);
-
-                    int type = isVerified ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
-                    Imps.insertMessageInDb(service.getContentResolver(),
-                            false, getId(),
-                            true, null,
-                            file.getCanonicalPath(), System.currentTimeMillis(), type,
-                            0, offerId, mimeType);
+                    
+                    try
+                    {
+                        boolean isVerified = mOtrChatSession.isKeyVerified(from);
+            
+                        int type = isVerified ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
+                        
+                        Uri messageUri = Imps.insertMessageInDb(service.getContentResolver(),
+                                false, getId(),
+                                true, null,
+                                file.getCanonicalPath(), System.currentTimeMillis(), type,
+                                0, offerId, mimeType);
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(ImApp.LOG_TAG,"Error updating file transfer progress",e);
+                    }
+                    
                 }
                 
                 if (mimeType != null && mimeType.startsWith("audio"))
@@ -883,7 +881,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                     
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
                 }
                     
@@ -896,27 +894,59 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         @Override
-        public void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason) {
+        public synchronized void onTransferFailed(boolean outgoing, String offerId, String from, String url, String reason) {
             
 
             String[] path = url.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
-         
+            
+            final int N = mRemoteListeners.beginBroadcast();
+            for (int i = 0; i < N; i++) {
+                IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                try {
+                    listener.onIncomingFileTransferError(sanitizedPath, reason);
+                } catch (RemoteException e) {
+                    // The RemoteCallbackList will take care of removing the
+                    // dead listeners.
+                }
+            }
+            mRemoteListeners.finishBroadcast();
         }
 
         @Override
-        public void onTransferProgress(boolean outgoing, String offerId, String from, String url, float percentF) {
+        public synchronized void onTransferProgress(boolean outgoing, String offerId, String from, String url, float percentF) {
             
-            long percent = (long)(100.00*percentF);
+            int percent = (int)(100*percentF);
             
             String[] path = url.split("/"); 
             String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
             
+            try
+            {
+                final int N = mRemoteListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                    try {
+                        listener.onIncomingFileTransferProgress(sanitizedPath, percent);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.e(ImApp.LOG_TAG,"error broadcasting progress",e);
+            }
+            finally
+            {
+                mRemoteListeners.finishBroadcast();
+            }
         }
 
 
         @Override
-        public boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
+        public synchronized boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
             
             mAcceptTransfer = false;            
             mWaitingForResponse = true;
@@ -930,17 +960,23 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             else
             {
-                final int N = mRemoteListeners.beginBroadcast();
-                for (int i = 0; i < N; i++) {
-                    IChatListener listener = mRemoteListeners.getBroadcastItem(i);
-                    try {
-                        listener.onIncomingFileTransfer(from, transferUrl);
-                    } catch (RemoteException e) {
-                        // The RemoteCallbackList will take care of removing the
-                        // dead listeners.
+                try
+                {
+                    final int N = mRemoteListeners.beginBroadcast();
+                    for (int i = 0; i < N; i++) {
+                        IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                        try {
+                            listener.onIncomingFileTransfer(from, transferUrl);
+                        } catch (RemoteException e) {
+                            // The RemoteCallbackList will take care of removing the
+                            // dead listeners.
+                        }
                     }
                 }
-                mRemoteListeners.finishBroadcast();
+                finally
+                {
+                    mRemoteListeners.finishBroadcast();
+                }
                 
                 mAcceptTransfer = false; //for now, wait for the user callback
             }
