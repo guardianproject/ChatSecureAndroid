@@ -208,6 +208,18 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
     
 
+    public void removeSession(String localUserId, String remoteUserId) {
+
+        try {
+            SessionID sessionId = getSessionId(localUserId, remoteUserId);
+
+            mOtrEngine.endSession(sessionId);
+
+        } catch (OtrException e) {
+            OtrDebugLogger.log("endSession", e);
+        }
+    }
+    
     public void endSession(String localUserId, String remoteUserId) {
 
         try {

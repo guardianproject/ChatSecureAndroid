@@ -282,6 +282,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mContentResolver.delete(mChatURI, null, null);
         mStatusBarNotifier.dismissChatNotification(mConnection.getProviderId(), getAddress());
         mChatSessionManager.closeChatSession(this);
+        
+        
     }
 
     public void leaveIfInactive() {

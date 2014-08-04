@@ -40,7 +40,6 @@ import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 
-import org.jivesoftware.smack.util.Base64;
 import org.spongycastle.util.encoders.Hex;
 
 import android.app.Activity;
@@ -53,6 +52,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -274,7 +274,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             {
 
                 //might be a unicode character in the password
-                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, Base64.encodeBytes(password.getBytes()).toCharArray());
+                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, Base64.encodeToString(password.getBytes(),Base64.NO_WRAP).toCharArray());
                 mProperties.store(encOS, null);
                 encOS.flush();
                 
@@ -324,7 +324,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             catch (IllegalArgumentException iae)
             {
                 //might be a unicode character in the password
-                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, Base64.encodeBytes(password.getBytes()).toCharArray());                
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, (Base64.encodeToString(password.getBytes(),Base64.NO_WRAP)).toCharArray());                
                 mProperties.load(encIS);
             
             } catch (FileNotFoundException fnfe) {
@@ -337,7 +337,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         }
         
         public void setProperty(String id, byte[] value) {
-            mProperties.setProperty(id, new String(Base64.encodeBytes(value)));
+            mProperties.setProperty(id, (Base64.encodeToString(value,Base64.NO_WRAP)));
 
         }
 
@@ -360,7 +360,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             String value = mProperties.getProperty(id);
 
             if (value != null)
-                return Base64.decode(value);
+                return Base64.decode(value.getBytes(),Base64.NO_WRAP);
             return null;
         }
 
