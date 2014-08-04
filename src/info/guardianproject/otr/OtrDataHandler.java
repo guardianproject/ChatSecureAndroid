@@ -272,12 +272,10 @@ public class OtrDataHandler implements DataHandler {
                 {
                     float percent = ((float)end) / ((float)fileGet.length());
                     
-                    if (percent < .98f)
-                    {
-                        mDataListener.onTransferProgress(true, offer.getId(), requestThem.getAddress(), offer.getUri(), 
-                            percent);
-                    }
-                    else
+                    mDataListener.onTransferProgress(true, offer.getId(), requestThem.getAddress(), offer.getUri(), 
+                        percent);
+                
+                    if (percent > .98f)
                     {
                         String mimeType = null;
                         if (req.getFirstHeader("Mime-Type") != null)

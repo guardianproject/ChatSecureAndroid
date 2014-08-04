@@ -257,8 +257,9 @@ public class MessageView extends FrameLayout {
         holder.mTextViewForMessages.setVisibility(View.GONE);
         
         if( mimeType.startsWith("image/") ) {
-            setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri );                
-            holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
+            setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri ); 
+            holder.mMediaThumbnail.setBackgroundColor(Color.TRANSPARENT);
+           // holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
             
         }
         else if (mimeType.startsWith("audio") || mimeType.startsWith("video"))
@@ -452,7 +453,7 @@ public class MessageView extends FrameLayout {
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
-
+        
         Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
 
         return scaledBitmap;     

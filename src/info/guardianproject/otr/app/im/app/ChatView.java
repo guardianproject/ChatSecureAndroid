@@ -21,14 +21,12 @@ import info.guardianproject.emoji.EmojiGroup;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.emoji.EmojiPagerAdapter;
 import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
-import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
@@ -44,11 +42,8 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
-import info.guardianproject.util.SystemServices.Scanner;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -57,8 +52,6 @@ import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -74,15 +67,12 @@ import android.database.DataSetObserver;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.Browser;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -97,7 +87,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -114,6 +103,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Window;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -157,7 +147,7 @@ public class ChatView extends LinearLayout {
 
     Markup mMarkup;
 
-    NewChatActivity mActivity;
+    NewChatActivity mNewChatActivity;
     ImApp mApp;
     SimpleAlertHandler mHandler;
     Cursor mCursor;
@@ -357,9 +347,9 @@ public class ChatView extends LinearLayout {
                 for (URLSpan u : links) {
                     linkUrls.add(u.getURL());
                 }
-                ArrayAdapter<String> a = new ArrayAdapter<String>(mActivity,
+                ArrayAdapter<String> a = new ArrayAdapter<String>(mNewChatActivity,
                         android.R.layout.select_dialog_item, linkUrls);
-                AlertDialog.Builder b = new AlertDialog.Builder(mActivity);
+                AlertDialog.Builder b = new AlertDialog.Builder(mNewChatActivity);
                 b.setTitle(R.string.select_link_title);
                 b.setCancelable(true);
                 b.setAdapter(a, new DialogInterface.OnClickListener() {
@@ -368,8 +358,8 @@ public class ChatView extends LinearLayout {
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
                         intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, mActivity.getPackageName());
-                        mActivity.startActivity(intent);
+                        intent.putExtra(Browser.EXTRA_APPLICATION_ID, mNewChatActivity.getPackageName());
+                        mNewChatActivity.startActivity(intent);
                     }
                 });
                 b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -387,6 +377,7 @@ public class ChatView extends LinearLayout {
     };
     
     private final static int PROMPT_FOR_DATA_TRANSFER = 9999;
+    private final static int SHOW_DATA_PROGRESS = 99998;
 
     private IChatListener mChatListener = new ChatListenerAdapter() {
         @Override
@@ -423,13 +414,6 @@ public class ChatView extends LinearLayout {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
         };
         
-        @Override
-        public void onIncomingData(IChatSession ses, byte[] data) {
-           
-        //    Log.d("OTR_DATA", "incoming data; length=" + data.length);
-           
-        };
-        
 
         @Override
         public void onIncomingFileTransfer(String transferFrom, String transferUrl) throws RemoteException {
@@ -445,15 +429,38 @@ public class ChatView extends LinearLayout {
             
                         
         }
+
+        @Override
+        public void onIncomingFileTransferProgress(String file, float percent)
+                throws RemoteException {
+            
+            int percentInt = (int)(100*percent);
+          
+            android.os.Message message = android.os.Message.obtain(null, SHOW_DATA_PROGRESS, (int) (mProviderId >> 32),
+                    (int) mProviderId, -1);
+            message.getData().putString("file", file);
+            message.getData().putInt("progress", percentInt);
+            
+            mHandler.sendMessage(message);
+            
+        }
+
+        @Override
+        public void onIncomingFileTransferError(String file, String message) throws RemoteException {
+           
+            mHandler.showAlert(mNewChatActivity.getString(R.string.error_chat_file_transfer_title), message);
+        }
+        
+        
     };
 
     private void showPromptForData (String transferFrom, String filePath)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mNewChatActivity);
 
         builder.setTitle(mContext.getString(R.string.file_transfer));
-        builder.setMessage(transferFrom + ' ' + mActivity.getString(R.string.wants_to_send_you_the_file) 
-        + " '" + filePath + "'. " + mActivity.getString(R.string.accept_transfer_));
+        builder.setMessage(transferFrom + ' ' + mNewChatActivity.getString(R.string.wants_to_send_you_the_file) 
+        + " '" + filePath + "'. " + mNewChatActivity.getString(R.string.accept_transfer_));
 
         builder.setNeutralButton(R.string.button_yes_accept_all,new DialogInterface.OnClickListener() {
 
@@ -551,12 +558,12 @@ public class ChatView extends LinearLayout {
 
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mActivity = (NewChatActivity) context;
-        mApp = (ImApp)mActivity.getApplication();
-        mHandler = new ChatViewHandler(mActivity);
+        mNewChatActivity = (NewChatActivity) context;
+        mApp = (ImApp)mNewChatActivity.getApplication();
+        mHandler = new ChatViewHandler(mNewChatActivity);
         mContext = context;
 
-        ThemeableActivity.setBackgroundImage(this, mActivity);
+        ThemeableActivity.setBackgroundImage(this, mNewChatActivity);
     }
     
     void registerForConnEvents() {
@@ -598,15 +605,15 @@ public class ChatView extends LinearLayout {
                  
                  int sdk = android.os.Build.VERSION.SDK_INT;
                  if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                     android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mNewChatActivity.getSystemService(Context.CLIPBOARD_SERVICE);
                      clipboard.setText(textToCopy); // 
                  } else {
-                     android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE); 
+                     android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mNewChatActivity.getSystemService(Context.CLIPBOARD_SERVICE); 
                      android.content.ClipData clip = android.content.ClipData.newPlainText("chat",textToCopy);
                      clipboard.setPrimaryClip(clip); // 
                  }
                  
-                 Toast.makeText(mActivity, mContext.getString(R.string.toast_chat_copied_to_clipboard), Toast.LENGTH_SHORT).show();
+                 Toast.makeText(mNewChatActivity, mContext.getString(R.string.toast_chat_copied_to_clipboard), Toast.LENGTH_SHORT).show();
                  
                  return true;
                  
@@ -695,7 +702,7 @@ public class ChatView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 
-                mActivity.approveSubscription(mProviderId, mRemoteAddress);
+                mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
                 updateContactInfo();
                 
             }
@@ -709,7 +716,7 @@ public class ChatView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 
-                mActivity.declineSubscription(mProviderId, mRemoteAddress);
+                mNewChatActivity.declineSubscription(mProviderId, mRemoteAddress);
                 updateContactInfo();
                 
                 
@@ -770,7 +777,7 @@ public class ChatView extends LinearLayout {
                 
                 if (mLastSessionStatus != null && mLastSessionStatus == SessionStatus.ENCRYPTED)
                 {
-                    mActivity.startImagePicker();
+                    mNewChatActivity.startImagePicker();
                 }
                 else
                 {
@@ -789,7 +796,7 @@ public class ChatView extends LinearLayout {
                 
                 if (mLastSessionStatus != null && mLastSessionStatus == SessionStatus.ENCRYPTED)
                 {
-                    mActivity.startFilePicker();
+                    mNewChatActivity.startFilePicker();
                 }
                 else
                 {
@@ -804,7 +811,7 @@ public class ChatView extends LinearLayout {
         initEmoji();
         
         
-        mMessageAdapter = new MessageAdapter(mActivity, null);
+        mMessageAdapter = new MessageAdapter(mNewChatActivity, null);
         mHistory.setAdapter(mMessageAdapter);
     }
 
@@ -849,7 +856,7 @@ public class ChatView extends LinearLayout {
         }
         else
         {
-            EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
+            EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mNewChatActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
           
             mEmojiPager.setAdapter(emojiPagerAdapter);
             
@@ -977,7 +984,7 @@ public class ChatView extends LinearLayout {
     {
         if (mIsSelected)
         {
-            mActivity.setTitle(mRemoteNickname);
+            mNewChatActivity.setTitle(mRemoteNickname);
             
             RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(mCursor, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
             
@@ -990,7 +997,7 @@ public class ChatView extends LinearLayout {
             
             setAvatarBorder(mPresenceStatus, avatar);
             
-            mActivity.getSupportActionBar().setIcon(avatar);
+            mNewChatActivity.getSupportActionBar().setIcon(avatar);
         }
     }
     
@@ -1034,7 +1041,7 @@ public class ChatView extends LinearLayout {
         if (mType == Imps.Contacts.TYPE_GROUP) {
             final String[] projection = { Imps.GroupMembers.NICKNAME };
             Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, mChatId);
-            ContentResolver cr = mActivity.getContentResolver();
+            ContentResolver cr = mNewChatActivity.getContentResolver();
             Cursor c = cr.query(memberUri, projection, null, null, null);
             StringBuilder buf = new StringBuilder();
             BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
@@ -1055,7 +1062,7 @@ public class ChatView extends LinearLayout {
               
             }
             
-            mActivity.setTitle(buf.toString());
+            mNewChatActivity.setTitle(buf.toString());
             
         } else {
             
@@ -1069,12 +1076,12 @@ public class ChatView extends LinearLayout {
             buf.append(brandingRes.getString(PresenceUtils.getStatusStringRes(this.mPresenceStatus)));
             buf.append(")");
             
-            mActivity.setTitle(buf.toString());
+            mNewChatActivity.setTitle(buf.toString());
        
             Drawable avatar = loadAvatar(mUserName);
             
            // if (avatar != null)
-           // mActivity.setHomeIcon(avatar);
+           // mNewChatActivity.setHomeIcon(avatar);
             
        // }
     }*/
@@ -1096,7 +1103,7 @@ public class ChatView extends LinearLayout {
     private void deleteChat ()
     {
         Uri chatUri = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mLastChatId);
-        mActivity.getContentResolver().delete(chatUri,null,null);
+        mNewChatActivity.getContentResolver().delete(chatUri,null,null);
         
     }
     
@@ -1108,7 +1115,7 @@ public class ChatView extends LinearLayout {
             mCursor.close();
         
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
-        mCursor = mActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
+        mCursor = mNewChatActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
         
         if (mCursor == null)
             return;
@@ -1139,14 +1146,14 @@ public class ChatView extends LinearLayout {
    
     public void bindInvitation(long invitationId) {
         Uri uri = ContentUris.withAppendedId(Imps.Invitation.CONTENT_URI, invitationId);
-        ContentResolver cr = mActivity.getContentResolver();
+        ContentResolver cr = mNewChatActivity.getContentResolver();
         Cursor cursor = cr.query(uri, INVITATION_PROJECT, null, null, null);
         try {
             if (!cursor.moveToFirst()) {
                 if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                     log("Failed to query invitation: " + invitationId);
                 }
-                //  mActivity.finish();
+                //  mNewChatActivity.finish();
             } else {
                 setViewType(VIEW_TYPE_INVITATION);
 
@@ -1156,7 +1163,7 @@ public class ChatView extends LinearLayout {
 
                 TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
                 mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
-                mActivity.setTitle(mContext.getString(R.string.chat_with, sender));
+                mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, sender));
             }
         } finally {
             cursor.close();
@@ -1176,7 +1183,7 @@ public class ChatView extends LinearLayout {
         TextView text = (TextView) findViewById(R.id.txtSubscription);
         String displayableAddr = ImpsAddressUtils.getDisplayableAddress(from);
         text.setText(mContext.getString(R.string.subscription_prompt, displayableAddr));
-        mActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
+        mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
     }
@@ -1317,7 +1324,7 @@ public class ChatView extends LinearLayout {
             if (mRemoteAddress != null)
                 intent.putExtra("jid", mRemoteAddress);
         
-        mActivity.startActivity(intent);
+        mNewChatActivity.startActivity(intent);
         */
 
     }
@@ -1371,7 +1378,7 @@ public class ChatView extends LinearLayout {
                         })
                         .setNeutralButton(R.string.menu_scan, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                new IntentIntegrator(mActivity).initiateScan();
+                                new IntentIntegrator(mNewChatActivity).initiateScan();
     
                             }
                         })
@@ -1466,7 +1473,7 @@ public class ChatView extends LinearLayout {
                     mConn = mApp.getConnection(mProviderId);
                     IContactListManager manager = mConn.getContactListManager();
                     manager.blockContact(Address.stripResource(mRemoteAddress));
-                  //  mActivity.finish();
+                  //  mNewChatActivity.finish();
                 } catch (Exception e) {
 
                     mHandler.showServiceErrorAlert(e.getLocalizedMessage());
@@ -1739,7 +1746,7 @@ public class ChatView extends LinearLayout {
                 mComposeMessage.setHint(R.string.compose_hint_secure);
                 visibility = View.GONE;
                 
-                mActivity.setSupportProgressBarIndeterminateVisibility(false);
+                mNewChatActivity.setSupportProgressBarIndeterminateVisibility(false);
 
                 mSendButton.setImageResource(R.drawable.ic_send_secure);
            
@@ -1801,7 +1808,7 @@ public class ChatView extends LinearLayout {
             mWarningText.setText(message);
         }
         
-        mActivity.updateEncryptionMenuState();
+        mNewChatActivity.updateEncryptionMenuState();
 
     }
 
@@ -1879,6 +1886,22 @@ public class ChatView extends LinearLayout {
                 return;
             case PROMPT_FOR_DATA_TRANSFER:
                 showPromptForData(msg.getData().getString("from"),msg.getData().getString("file"));
+                break;
+            case SHOW_DATA_PROGRESS:
+                
+
+                /**
+                int progress = (Window.PROGRESS_END - Window.PROGRESS_START) / 100 * msg.getData().getInt("progress");
+      
+                mNewChatActivity.setSupportProgressBarVisibility(true);
+                mNewChatActivity.setSupportProgress(progress);
+                
+                if (progress == 100)
+                {
+                    mNewChatActivity.setSupportProgressBarVisibility(false);
+                }
+                **/
+                
                 break;
              default:
                  updateWarningView();

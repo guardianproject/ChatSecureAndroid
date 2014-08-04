@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.java.otr4j.OtrException;
+import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
 
@@ -37,6 +38,7 @@ public class OtrChatListener implements MessageListener {
         
         body = Debug.injectErrors(body);
 
+        SessionID sessionID = mOtrChatManager.getSessionId(to, from);
         SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
 
 //        OtrDebugLogger.log("session status: " + otrStatus.name());
@@ -58,7 +60,9 @@ public class OtrChatListener implements MessageListener {
             
             OtrDebugLogger.log("error decrypting message", e);            
             msg.setBody("[You received an unreadable encrypted message]");
-          //  mMessageListener.onIncomingMessage(session, msg);
+            mMessageListener.onIncomingMessage(session, msg);
+            
+            mOtrChatManager.injectMessage(sessionID, "I could not decrypt the message you sent");
         }
         
         for (TLV tlv : tlvs) {

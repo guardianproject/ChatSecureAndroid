@@ -2575,13 +2575,15 @@ public class Imps {
         return resolver.insert(isEncrypted ? Messages.getOtrMessagesContentUriByThreadId(contactId) : Messages.getContentUriByThreadId(contactId), values);
     }
 
-    public static int updateMessageBody(ContentResolver resolver, int id, String body) {
+    public static int updateMessageBody(ContentResolver resolver, String id, String body, String mimeType) {
         
         Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI.buildUpon();
-        builder.appendPath(String.valueOf(id));
+        builder.appendPath(id);
         
         ContentValues values = new ContentValues();
         values.put(Imps.Messages.BODY, body);
+        values.put(Imps.Messages.MIME_TYPE, mimeType);
+        
         return resolver.update(builder.build(), values, null, null);
     }
 
