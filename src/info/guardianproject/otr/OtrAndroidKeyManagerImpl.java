@@ -40,8 +40,6 @@ import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
 
-import org.spongycastle.util.encoders.Hex;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -341,11 +339,6 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         }
 
-        // Store as hex bytes
-        public void setPropertyHex(String id, byte[] value) {
-            mProperties.setProperty(id, new String(Hex.encode(value)));
-
-        }
 
         public void removeProperty(String id) {
             mProperties.remove(id);
@@ -363,14 +356,10 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 return Base64.decode(value.getBytes(),Base64.NO_WRAP);
             return null;
         }
-
-        // Load from hex bytes
-        public byte[] getPropertyHexBytes(String id) {
-            String value = mProperties.getProperty(id);
-
-            if (value != null)
-                return Hex.decode(value);
-            return null;
+        
+        public String getProperty (String id)
+        {
+            return mProperties.getProperty(id);
         }
 
         public boolean getPropertyBoolean(String id, boolean defaultValue) {
@@ -481,7 +470,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         // Stash fingerprint for consistency.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setProperty(userId + ".fingerprint", fingerprintString);
         } catch (OtrCryptoException e) {
             e.printStackTrace();
         }
@@ -564,13 +553,13 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
     public String getRemoteFingerprint(String fullUserId) {
 
-        //if (!Address.hasResource(fullUserId))
-          //  return null;
+        if (!Address.hasResource(fullUserId))
+          return null;
         
-        byte[] fingerprint = this.store.getPropertyHexBytes(fullUserId + ".fingerprint");
+        String fingerprint = this.store.getProperty(fullUserId + ".fingerprint");
         if (fingerprint != null) {
             // If we have a fingerprint stashed, assume it is correct.
-            return new String(Hex.encode(fingerprint, 0, fingerprint.length));
+            return fingerprint;
         }
         
         PublicKey remotePublicKey = loadRemotePublicKeyFromStore(fullUserId);
@@ -579,7 +568,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         try {
             // Store the fingerprint, for posterity.
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
-            this.store.setPropertyHex(fullUserId + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setProperty(fullUserId + ".fingerprint", fingerprintString);
 
             store.save();
             return fingerprintString;
@@ -595,17 +584,19 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         
         ArrayList<String> results = new ArrayList<String>();
         
+        String baseUserId = Address.stripResource(userId);
+        
         while (keys.hasMoreElements())
         {
             String key = (String)keys.nextElement();
             
-            if (key.startsWith(userId + '/') && key.endsWith(".fingerprint"))
+            if (key.startsWith(baseUserId + '/') && key.endsWith(".fingerprint"))
             {
             
-                byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
+                String fingerprint = this.store.getProperty(userId + ".fingerprint");
                 if (fingerprint != null) {
                     // If we have a fingerprint stashed, assume it is correct.
-                    results.add(new String(Hex.encode(fingerprint, 0, fingerprint.length)));
+                    results.add(fingerprint);
                 }
                 
             }
@@ -702,8 +693,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
     private PublicKey loadRemotePublicKeyFromStore(String fullUserId) {
 
-      //  if (!Address.hasResource(fullUserId))
-        //    return null;
+        if (!Address.hasResource(fullUserId))
+          return null;
         
         byte[] b64PubKey = this.store.getPropertyBytes(fullUserId + ".publicKey");
         if (b64PubKey == null) {
@@ -734,8 +725,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
-      //  if (!Address.hasResource(fullUserId))
-        //    return;
+        if (!Address.hasResource(sessionID.getRemoteUserId()))
+            return;
         
         this.store.setProperty(sessionID.getRemoteUserId() + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
@@ -746,7 +737,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             if (!this.store.hasProperty(verifiedToken))
                 this.store.setProperty(verifiedToken, false);
             
-            this.store.setPropertyHex(sessionID.getRemoteUserId() + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setProperty(sessionID.getRemoteUserId() + ".fingerprint", fingerprintString);
             store.save();
         } catch (OtrCryptoException e) {
             e.printStackTrace();

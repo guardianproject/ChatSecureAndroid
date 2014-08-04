@@ -223,6 +223,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     getSherlock().getActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
+                
+                setSupportProgressBarIndeterminateVisibility(false);
+
             }
 
             

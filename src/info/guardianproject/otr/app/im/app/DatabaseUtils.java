@@ -17,13 +17,12 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 
 import java.util.Map;
-
-import org.spongycastle.util.encoders.Hex;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

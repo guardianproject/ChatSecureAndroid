@@ -4,6 +4,7 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -89,13 +90,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return mOtrEngineHost.getKeyManager();
     }
 
-    public static String processUserId(String userId) {
-        String result = userId.split(":")[0]; //remove any port indication in the username
-        result = userId.split("/")[0];
-
-        return result;
-    }
-
     public static String processResource(String userId) {
         String[] splits = userId.split("/", 2);
         if (splits.length > 1)
@@ -105,9 +99,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public SessionID getSessionId(String localUserId, String remoteUserId) {
-        SessionID sIdTemp = new SessionID(processUserId(localUserId), processUserId(remoteUserId), "XMPP");
         
+        SessionID sIdTemp = new SessionID(localUserId, remoteUserId, "XMPP");
         SessionID sessionId = mSessions.get(sIdTemp.getSessionId());
+        
         if (sessionId == null ||
                 ((!sessionId.getRemoteUserId().equals(remoteUserId)) &&
                         remoteUserId.contains("/"))) {
@@ -115,7 +110,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             // or we didn't have a session yet.
             // Create or replace sessionId with one that is specific to the new presence.
             sessionId = sIdTemp;
-            mSessions.put(sessionId.getSessionId(), sIdTemp);
+            mSessions.put(sessionId.getSessionId(), sessionId);
         }
         return sessionId;
     }

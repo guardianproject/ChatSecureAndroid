@@ -259,8 +259,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private void createExecutor() {
         mExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>());
-        
+              new LinkedBlockingQueue<Runnable>());
+      //  mExecutor = Executors.newCachedThreadPool();
+                
     }
 
     private boolean execute(Runnable runnable) {
@@ -281,6 +282,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mExecutor.getActiveCount() + mExecutor.getQueue().size() == 0) {
             return execute(runnable);
         }
+        
         return false;
     }
 
