@@ -272,17 +272,17 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         
         int i = 0;
         
-        mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);       
-        mAccountList[i++][1] = getString(R.string.account_existing_full);       
-        
         
         for (Account account : mGoogleAccounts)
         {
-            mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account) + " '" + account.name + "'";
-            mAccountList[i++][1] = getString(R.string.account_google_full);       
+            mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
+            mAccountList[i++][1] = getString(R.string.account_google_full) + "\n\nAccount: " + account.name; 
             
         }
-        
+       
+        mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);       
+        mAccountList[i++][1] = getString(R.string.account_existing_full);       
+       
         mAccountList[i][0] = getString(R.string.i_need_a_new_account);
         mAccountList[i++][1] = getString(R.string.account_new_full);  
         
@@ -701,7 +701,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
                 @Override
                 public void onClick(View v) {
                     
-                    if (pos == 0) //xmpp
+                    if (pos == mAccountList.length-4) //xmpp
                     {
                         //otherwise support the actual plugin-type
                         showSetupAccountForm(helper.getProviderNames().get(0),null, null, false,helper.getProviderNames().get(0),false);
