@@ -329,6 +329,7 @@ public class MessageView extends FrameLayout {
             if (mimeType.startsWith("audio")) {
                 Intent intent = new Intent(context, AudioPlayerActivity.class);
                 intent.putExtra( AudioPlayerActivity.FILENAME, mediaUri.getPath());
+                intent.putExtra( AudioPlayerActivity.MIMETYPE, mimeType);
                 context.startActivity(intent);
                 return;
             }
