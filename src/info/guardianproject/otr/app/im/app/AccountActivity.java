@@ -721,25 +721,16 @@ public class AccountActivity extends SherlockActivity {
             // Google only supports a certain configuration for XMPP:
             // http://code.google.com/apis/talk/open_communications.html
             
-            if (settings.getUseTor())
-            {
-                // this is not @gmail but IS a google account
-                settings.setDoDnsSrv(false);
-                settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
-            }
-            
+            settings.setDoDnsSrv(false);
+            settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
             settings.setDomain(domain);
         } 
         //mEditPass can be NULL if this activity is used in "headless" mode for auto account setup
         else if (mEditPass != null && mEditPass.getText().toString().startsWith(GTalkOAuth2.NAME))
         {
-            if (settings.getUseTor())
-            {
-                // this is not @gmail but IS a google account
-                settings.setDoDnsSrv(false);
-                settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server
-            }
-            
+            // this is not @gmail but IS a google account
+            settings.setDoDnsSrv(false);
+            settings.setServer(DEFAULT_SERVER_GOOGLE); //set the google connect server    
             settings.setDomain(domain);
         }
         else if (domain.equals("jabber.org")) {
