@@ -25,13 +25,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class AudioPlayerActivity extends Activity {
-    
+
+    private static final String TAG = AudioPlayerActivity.class.getSimpleName();
+
     public static final String FILENAME = "filename";
     public static final String MIMETYPE = "mimeType";
-    
+
     String filename;
     String mimeType;
-    
+
     private TextView filenameTextView;
     private Button playButton;
     private boolean playState = false;
@@ -39,15 +41,15 @@ public class AudioPlayerActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        filename = getIntent().getStringExtra(FILENAME);
+        mimeType = getIntent().getStringExtra(MIMETYPE);
         // vfs
         IocVfs.init();
         // ui
         setContentView(R.layout.audio_player_activity);
-        filename = getIntent().getStringExtra(FILENAME);
-        mimeType = getIntent().getStringExtra(MIMETYPE);
         filenameTextView = (TextView) findViewById(R.id.audio_player_text);
-        filenameTextView.setText(filename) ;
-        
+        filenameTextView.setText(filename);
+
         playButton = (Button) findViewById(R.id.audio_player_play);
         playButton.setOnClickListener(onClickPlay);
     }
@@ -55,36 +57,36 @@ public class AudioPlayerActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        
+
         try {
             Uri uri = httpStream(filename, mimeType);
-            initPlayer( uri );
+            initPlayer(uri);
         } catch (Exception e) {
+            // TODO error
             e.printStackTrace();
         }
     }
-    
-    
+
     private OnClickListener onClickPlay = new OnClickListener() {
-        
+
         @Override
         public void onClick(View v) {
             if (playState)
-                pause() ;
+                pause();
             else
                 play();
         }
     };
-    
+
     private void play() {
         playState = true;
-        mMediaPlayer.start();
+        mediaPlayer.start();
         refreshUi();
     }
-    
+
     private void pause() {
         playState = false;
-        mMediaPlayer.stop();
+        mediaPlayer.stop();
         refreshUi();
     }
 
@@ -95,109 +97,99 @@ public class AudioPlayerActivity extends Activity {
             playButton.setText("Play");
         }
     }
-    
-    MediaPlayer mMediaPlayer ;
-    private void initPlayer( Uri uri ) throws Exception {
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(new OnPreparedListener() {
-            
+
+    private MediaPlayer mediaPlayer;
+
+    private void initPlayer(Uri uri) throws Exception {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
+
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
             }
         });
-        mMediaPlayer.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
-            
+        mediaPlayer.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
+
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
                 return;
             }
         });
-        mMediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-            
+        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mMediaPlayer.stop();
+                mediaPlayer.stop();
             }
         });
-        
-        mMediaPlayer.setDataSource(this, uri);
-        mMediaPlayer.prepare();
+
+        mediaPlayer.setDataSource(this, uri);
+        mediaPlayer.prepare();
     }
-    
-    
-    private ServerSocket ss = null;
-    
-    private Uri httpStream(final String filename, final String mimeType) throws IOException
-    {
-        final File f = new File( filename );
-        if (!f.exists()) {
+
+    private ServerSocket serverSocket = null;
+
+    private Uri httpStream(final String filename, final String mimeType) throws IOException {
+        final File file = new File(filename);
+        if (!file.exists()) {
             throw new IOException("File not found " + filename);
         }
-        
+
         final int port = 8080;
-        boolean keepServerRunning = false;
-        
-        final String shareMimeType = "application/mpegts";
-        
-        try
-        {
-            if (ss != null)
-                ss.close();
+
+        try {
+            if (serverSocket != null)
+                serverSocket.close();
+        } catch (Exception e) {
         }
-        catch (Exception e){}
-        
-        new Thread ()
-        {
-            public void run ()
-            {
+
+        new Thread() {
+            public void run() {
                 try {
-                    
-                    ss = new ServerSocket(port);
-                    Socket socket = ss.accept();
-                    
+
+                    serverSocket = new ServerSocket(port);
+                    Socket socket = serverSocket.accept();
+
                     StringBuilder sb = new StringBuilder();
-                    sb.append( "HTTP/1.1 200\r\n");
-                    sb.append( "Content-Type: " + mimeType + "\r\n");
-                    sb.append( "Content-Length: " + f.length() + "\r\n\r\n" );
-                    
+                    sb.append("HTTP/1.1 200\r\n");
+                    sb.append("Content-Type: " + mimeType + "\r\n");
+                    sb.append("Content-Length: " + file.length() + "\r\n\r\n");
+
                     BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
-                    
+
                     bos.write(sb.toString().getBytes());
-                    
+
                     int len = -1;
-                    FileInputStream fis = new FileInputStream(f);
-                    
+                    FileInputStream fis = new FileInputStream(file);
+
                     int idx = 0;
-                    
+
                     byte[] b = new byte[8096];
-                    while ((len = fis.read(b)) != -1)
-                    {
-                        bos.write(b,0,len);
-                        idx+=len;
-                        Log.d("TAG","sharing via stream: " + idx);
+                    while ((len = fis.read(b)) != -1) {
+                        bos.write(b, 0, len);
+                        idx += len;
+                        Log.d(TAG, "sharing via stream: " + idx);
                     }
 
                     fis.close();
                     bos.flush();
                     bos.close();
-                    
+
                     socket.close();
-                    ss.close();
-                    ss = null;
-                    
+                    serverSocket.close();
+                    serverSocket = null;
+
                 } catch (IOException e) {
-                    Log.d("ServerShare","web share error",e);
+                    Log.d(TAG, "web share error", e);
                 }
             }
         }.start();
-        
-        Uri uri = Uri.parse("http://localhost:" + port + f.getAbsolutePath());
+
+        Uri uri = Uri.parse("http://localhost:" + port + file.getAbsolutePath());
         return uri;
-        
-    }       
-    
-        
-    
+
+    }
+
 }
