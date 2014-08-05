@@ -64,9 +64,8 @@ public class ProviderListItem extends LinearLayout {
 
     private boolean mShowLongName = false;
     private ImApp mApp = null;
-    private AsyncTask<Void, Void, Void> mBindTask;
     
-    private Handler mHandler = new Handler()
+    private static Handler mHandler = new Handler()
     {
 
         @Override
@@ -219,29 +218,24 @@ public class ProviderListItem extends LinearLayout {
     
     @Override
     protected void onDetachedFromWindow() {
-        if (mBindTask != null)
-            mBindTask.cancel(false);
-        mBindTask = null;
+       
         super.onDetachedFromWindow();
     }
 
     private void runBindTask(final Resources r, final int providerId, final String activeUserName,
             final int dbConnectionStatus, final String presenceString) {
-        if (mBindTask != null)
-            mBindTask.cancel(false);
+       
+        Runnable runTask = new Runnable ()
+        {
+            
+            public void run ()
+            {
         
-        mBindTask = new AsyncTask<Void, Void, Void>() {
-            private String mProviderNameText;
-            private String mSecondRowText;
-
-            @Override
-            protected Void doInBackground(Void... params) {
+                String mProviderNameText;
+                String mSecondRowText;
                 
-                if (providerId != -1)
+                try
                 {
-                    try
-                    {
-        
                         Cursor pCursor = mResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( providerId)},null);            
 
                         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, mResolver,
@@ -309,24 +303,19 @@ public class ProviderListItem extends LinearLayout {
         
                         settings.close();
                         pCursor.close();
+                        
+                        applyView(mProviderNameText, mIsSignedIn, mSecondRowText);
                     }
                     catch (NullPointerException npe)
                     {
                         Log.d(ImApp.LOG_TAG,"null on QueryMap (this shouldn't happen anymore, but just in case)",npe);
                     }
-                }
                 
-                return null;
-            }
-            
-            @Override
-            protected void onPostExecute(Void result) {
-                
-                if (mProviderNameText != null)
-                    applyView(mProviderNameText, mIsSignedIn, mSecondRowText);
             }
         };
-        mBindTask.execute();
+        
+        mHandler.post(runTask);
+
     }
 
     private void applyView(String providerNameText, boolean isSignedIn, String secondRowText) {
