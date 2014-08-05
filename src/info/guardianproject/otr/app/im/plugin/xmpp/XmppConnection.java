@@ -1113,6 +1113,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
 
 
+        //  if (mIsGoogleAuth)
+         // {
+
+              SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+              SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
+         // }
+         // else
+         // {
+             // SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME);
+           //   SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
+         // }
+
+
         if (requireTls) { 
 
             mConfig.setSecurityMode(SecurityMode.required);
@@ -1173,21 +1186,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setExpiredCertificatesCheckEnabled(false);
             mConfig.setNotMatchingDomainCheckEnabled(false);
             mConfig.setSelfSignedCertificateEnabled(true);
-        }
-        
-      //  mConfig.setHostnameVerifier();
-
-        if (mIsGoogleAuth)
-        {
-            mConfig.setSASLAuthenticationEnabled(true);
-
-            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
-        }
-        else
-        {
-            SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME);
-            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         }
 
         // Don't use smack reconnection - not reliable
