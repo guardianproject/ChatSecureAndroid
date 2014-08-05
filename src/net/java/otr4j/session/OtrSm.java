@@ -99,7 +99,12 @@ public class OtrSm implements OtrTlvHandler {
          * responder fingerprint (20 bytes), secure session id, input secret
          */
         byte[] our_fp = Hex.decode(keyManager.getLocalFingerprint(sessionID));
-        byte[] their_fp = Hex.decode(keyManager.getRemoteFingerprint(sessionID));
+        
+        String remoteFingerprint = keyManager.getRemoteFingerprint(sessionID);
+        if (remoteFingerprint == null)
+            throw new OtrException("no fingerprint for remote user");
+        
+        byte[] their_fp = Hex.decode(remoteFingerprint);
 
         byte[] sessionId;
         try {
