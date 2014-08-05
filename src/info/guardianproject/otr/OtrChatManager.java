@@ -109,6 +109,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             // Remote has changed (either different presence, or from generic JID to specific presence),
             // or we didn't have a session yet.
             // Create or replace sessionId with one that is specific to the new presence.
+            
             sessionId = sIdTemp;
             mSessions.put(sessionId.getSessionId(), sessionId);
         }
@@ -202,11 +203,30 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return null;
     }
     
+    public void removeSession(SessionID sessionId) {
 
+        try {
+            mOtrEngine.endSession(sessionId);
+
+        } catch (OtrException e) {
+            OtrDebugLogger.log("endSession", e);
+        }
+    }
     public void removeSession(String localUserId, String remoteUserId) {
 
         try {
             SessionID sessionId = getSessionId(localUserId, remoteUserId);
+
+            mOtrEngine.endSession(sessionId);
+
+        } catch (OtrException e) {
+            OtrDebugLogger.log("endSession", e);
+        }
+    }
+    
+    public void endSession(SessionID sessionId) {
+
+        try {
 
             mOtrEngine.endSession(sessionId);
 

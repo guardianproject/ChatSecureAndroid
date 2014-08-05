@@ -12,15 +12,12 @@ public class OtrChatSessionAdapter extends Stub {
     private OtrChatManager _chatManager;
     private String _localUser;
     private String _remoteUser;
-    private SessionID _sessionId;
     
     public OtrChatSessionAdapter(String localUser, String remoteUser, OtrChatManager chatManager) {
 
         _chatManager = chatManager;
         _localUser = localUser;
         _remoteUser = remoteUser;
-
-        _sessionId = chatManager.getSessionId(localUser, remoteUser);
     }
     
     public void end () throws RemoteException 
@@ -29,7 +26,7 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.removeSession(_localUser, _remoteUser);
+                _chatManager.removeSession(_chatManager.getSessionId(_localUser, _remoteUser));
             }
         });
     }
@@ -38,7 +35,7 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.startSession(_sessionId);
+                _chatManager.startSession(_chatManager.getSessionId(_localUser, _remoteUser));
             }
         });
     }
@@ -48,7 +45,7 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.endSession(_localUser, _remoteUser);
+                _chatManager.endSession(_chatManager.getSessionId(_localUser, _remoteUser));
             }
         });
     }
@@ -56,14 +53,14 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public boolean isChatEncrypted() throws RemoteException {
 
-        return _chatManager.getSessionStatus(_localUser, _remoteUser) == SessionStatus.ENCRYPTED;
+        return _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser)) == SessionStatus.ENCRYPTED;
 
     }
 
 
     @Override
     public int getChatStatus() throws RemoteException {
-        SessionStatus sessionStatus = _chatManager.getSessionStatus(_localUser, _remoteUser);
+        SessionStatus sessionStatus = _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser));
         if (sessionStatus == null)
             sessionStatus = SessionStatus.PLAINTEXT;
         return sessionStatus.ordinal();
@@ -96,39 +93,34 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public void verifyKey(String address) throws RemoteException {
         
-        SessionID sessionId = _chatManager.getSessionId(_localUser, address);
-        _chatManager.getKeyManager().verify(sessionId);
+        _chatManager.getKeyManager().verify(_chatManager.getSessionId(_localUser, _remoteUser));
         
     }
 
     @Override
     public void unverifyKey(String address) throws RemoteException {
-        SessionID sessionId = _chatManager.getSessionId(_localUser, address);
-        _chatManager.getKeyManager().unverify(sessionId);
+        _chatManager.getKeyManager().unverify(_chatManager.getSessionId(_localUser, _remoteUser));
     }
 
     @Override
     public boolean isKeyVerified(String address) throws RemoteException {
-        SessionID sessionId = _chatManager.getSessionId(_localUser, address);
-        return _chatManager.getKeyManager().isVerified(sessionId);
+        return _chatManager.getKeyManager().isVerified(_chatManager.getSessionId(_localUser, _remoteUser));
     }
 
     @Override
     public String getLocalFingerprint() throws RemoteException {
-        return _chatManager.getKeyManager().getLocalFingerprint(_sessionId);
+        return _chatManager.getKeyManager().getLocalFingerprint(_chatManager.getSessionId(_localUser, _remoteUser));
         
     }
 
     @Override
     public String getRemoteFingerprint() throws RemoteException {
-        SessionID sessionId = _chatManager.getSessionId(_localUser, _remoteUser);
-
-        return _chatManager.getKeyManager().getRemoteFingerprint(sessionId);
+        return _chatManager.getKeyManager().getRemoteFingerprint(_chatManager.getSessionId(_localUser, _remoteUser));
     }
 
     @Override
     public void generateLocalKeyPair() throws RemoteException {
-        _chatManager.getKeyManager().generateLocalKeyPair(_sessionId);
+        _chatManager.getKeyManager().generateLocalKeyPair(_chatManager.getSessionId(_localUser, _remoteUser));
     }
 
 }

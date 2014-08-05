@@ -2,10 +2,7 @@ package info.guardianproject.otr.app.im.ui;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ThemeableActivity;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;

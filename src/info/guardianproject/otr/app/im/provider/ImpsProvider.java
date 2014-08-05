@@ -504,6 +504,7 @@ public class ImpsProvider extends ContentProvider {
                 }
 
                 return;
+                
             case 1:
                 if (newVersion <= 100) {
                     return;
