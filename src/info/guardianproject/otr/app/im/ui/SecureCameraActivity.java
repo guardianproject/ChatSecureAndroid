@@ -20,58 +20,51 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class SecureCameraActivity extends SurfaceGrabberActivity {
-	
-	private final static String TAG = "SecureCameraActivity";
+
+    private final static String TAG = SecureCameraActivity.class.getSimpleName();
 
     public static final String FILENAME = "filename";
     public static final String MIMETYPE = "mimeType";
-	
-	private String filename = null;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		filename = getIntent().getStringExtra(FILENAME);
 
-		
-	}
+    private String filename = null;
 
-	@Override
-	protected int getLayout()
-	{
-		return R.layout.secure_camera;
-	}
-	
-	@Override
-	protected int getCameraDirection() {
-		//return CameraInfo.CAMERA_FACING_FRONT;
-		return CameraInfo.CAMERA_FACING_BACK;
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        filename = getIntent().getStringExtra(FILENAME);
+    }
 
-	@Override
-	public void onPictureTaken(final byte[] data, Camera camera) {		
-		File fileSecurePicture;
-		try {
-			long mTime = System.currentTimeMillis();
-			fileSecurePicture = new File(filename);
+    @Override
+    protected int getLayout() {
+        return R.layout.secure_camera;
+    }
 
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileSecurePicture));
-			out.write(data);
-			out.flush();
-			out.close();
-			
-			Intent intent = new Intent();
-                        intent.putExtra(FILENAME, filename) ;
-                        intent.putExtra(MIMETYPE, "image/*") ;
+    @Override
+    protected int getCameraDirection() {
+        //return CameraInfo.CAMERA_FACING_FRONT;
+        return CameraInfo.CAMERA_FACING_BACK;
+    }
 
-			setResult(Activity.RESULT_OK, intent);
+    @Override
+    public void onPictureTaken(final byte[] data, Camera camera) {
+        try {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(filename)));
+            out.write(data);
+            out.flush();
+            out.close();
 
-			finish();
-		} catch (Exception e) {
-			e.printStackTrace();
-			setResult(Activity.RESULT_CANCELED);
-			finish();
-		}
-		finish();
-	}
+            Intent intent = new Intent();
+            intent.putExtra(FILENAME, filename);
+            intent.putExtra(MIMETYPE, "image/*");
+
+            setResult(Activity.RESULT_OK, intent);
+
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        }
+        finish();
+    }
 }
