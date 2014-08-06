@@ -24,7 +24,8 @@ android:anyDensity="true"
        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="info.guardianproject.otr.app.im.permission.IM_SERVICE" />
 
@@ -440,5 +441,8 @@ android:anyDensity="true"
         <activity android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity" />
         
         <activity android:name="info.guardianproject.otr.app.im.ui.AudioPlayerActivity" />
+        
+        <activity android:name="info.guardianproject.otr.app.im.ui.SecureCameraActivity" />
+        
 </application>
 </manifest>

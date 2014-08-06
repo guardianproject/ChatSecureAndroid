@@ -36,7 +36,6 @@ public class AudioPlayerActivity extends Activity {
 
     private TextView filenameTextView;
     private Button playButton;
-    private boolean playState = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +51,7 @@ public class AudioPlayerActivity extends Activity {
 
         playButton = (Button) findViewById(R.id.audio_player_play);
         playButton.setOnClickListener(onClickPlay);
+        findViewById(R.id.audio_player_rewind).setOnClickListener(onClickRewind);
     }
 
     @Override
@@ -68,30 +68,35 @@ public class AudioPlayerActivity extends Activity {
     }
 
     private OnClickListener onClickPlay = new OnClickListener() {
-
         @Override
         public void onClick(View v) {
-            if (playState)
+            if (mediaPlayer.isPlaying())
                 pause();
             else
                 play();
         }
     };
+    
+    private OnClickListener onClickRewind = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mediaPlayer.stop();
+            refreshUi();
+        }
+    };
 
     private void play() {
-        playState = true;
         mediaPlayer.start();
         refreshUi();
     }
 
     private void pause() {
-        playState = false;
         mediaPlayer.stop();
         refreshUi();
     }
 
     private void refreshUi() {
-        if (playState) {
+        if (mediaPlayer.isPlaying()) {
             playButton.setText("Pause");
         } else {
             playButton.setText("Play");

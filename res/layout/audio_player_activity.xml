@@ -23,5 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Play" />
-
+    
+    <Button
+        android:id="@+id/audio_player_rewind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Rewind" />
+    
 </LinearLayout>
