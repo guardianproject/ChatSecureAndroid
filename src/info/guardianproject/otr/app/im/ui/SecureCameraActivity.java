@@ -4,14 +4,20 @@ import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.IocVfs;
+import info.guardianproject.otr.app.im.app.MessageView;
 
 import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.ExifInterface;
@@ -24,14 +30,18 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
     private final static String TAG = SecureCameraActivity.class.getSimpleName();
 
     public static final String FILENAME = "filename";
+    public static final String THUMBNAIL = "thumbnail";
     public static final String MIMETYPE = "mimeType";
 
     private String filename = null;
+    private String thumbnail = null;
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         filename = getIntent().getStringExtra(FILENAME);
+        thumbnail = getIntent().getStringExtra(THUMBNAIL);
     }
 
     @Override
@@ -52,9 +62,16 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
             out.write(data);
             out.flush();
             out.close();
+            
+            if (thumbnail != null) {
+                Bitmap thumbnailBitmap = getThumbnail(getContentResolver(), filename);
+                FileOutputStream fos = new FileOutputStream(thumbnail);
+                thumbnailBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            }
 
             Intent intent = new Intent();
             intent.putExtra(FILENAME, filename);
+            intent.putExtra(THUMBNAIL, thumbnail);
             intent.putExtra(MIMETYPE, "image/*");
 
             setResult(Activity.RESULT_OK, intent);
@@ -67,4 +84,33 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
         }
         finish();
     }
+    
+    public final static int THUMBNAIL_SIZE = 800;
+    
+    public Bitmap getThumbnail(ContentResolver cr, String filename) throws IOException {
+        
+        File file = new File(filename);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+        
+        FileInputStream fis = new FileInputStream(file);
+        BitmapFactory.decodeStream(fis, null, options);
+        fis.close();
+
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            throw new IOException("Bad image " + file);
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
+
+        fis = new FileInputStream(file);
+        Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
+        return scaledBitmap;     
+    }
+    
 }

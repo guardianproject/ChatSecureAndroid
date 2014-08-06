@@ -1074,8 +1074,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(this, SecureCameraActivity.class);
-        String filename = "/" + Environment.DIRECTORY_DCIM + "/" +  "cs_" + new Date().getTime() + ".jpg";
+        String time = ""+new Date().getTime();
+        String filename = "/" + Environment.DIRECTORY_DCIM + "/" +  "cs_" + time + ".jpg";
+        String thumbnail = "/" + Environment.DIRECTORY_DCIM + "/" +  "cs_" + time + "_thumb.jpg";
         intent.putExtra(SecureCameraActivity.FILENAME, filename ) ;
+        intent.putExtra(SecureCameraActivity.THUMBNAIL, thumbnail ) ;
         
         // start the secure image capture Intent
         startActivityForResult(intent, REQUEST_TAKE_PICTURE_SECURE);

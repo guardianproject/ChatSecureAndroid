@@ -56,7 +56,6 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
         holder = view.getHolder();
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
     }
 
     protected int getLayout() {
@@ -96,8 +95,7 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
     }
 
     private int getOtherDirection(int facing) {
-        return (facing == CameraInfo.CAMERA_FACING_BACK) ? CameraInfo.CAMERA_FACING_FRONT
-                                                        : CameraInfo.CAMERA_FACING_BACK;
+        return (facing == CameraInfo.CAMERA_FACING_BACK) ? CameraInfo.CAMERA_FACING_FRONT : CameraInfo.CAMERA_FACING_BACK;
     }
 
     private boolean tryCreateCamera(int facing) {
@@ -107,13 +105,13 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
             if (info.facing == facing) {
                 camera = Camera.open(nCam);
                 cameraInfo = info;
-                //	 Size size = choosePictureSize(camera.getParameters().getSupportedPictureSizes());
+                //Size size = choosePictureSize(camera.getParameters().getSupportedPictureSizes());
 
                 Camera.Parameters params = camera.getParameters();
                 params.setPictureFormat(ImageFormat.JPEG);
                 //params.setPictureSize(size.width,size.height);
                 //params.setJpegThumbnailSize(128,128);
-                //					params.setPreviewSize(size.width/2,size.height/2); 
+                //params.setPreviewSize(size.width/2,size.height/2); 
 
                 if (this.getCameraDirection() == CameraInfo.CAMERA_FACING_BACK) {
                     params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -160,9 +158,7 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         try {
-
             camera.setPreviewDisplay(holder);
-
         } catch (IOException e) {
             Log.e(LOG, e.toString());
         }

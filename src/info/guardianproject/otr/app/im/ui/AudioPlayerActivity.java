@@ -137,12 +137,12 @@ public class AudioPlayerActivity extends Activity {
     private ServerSocket serverSocket = null;
 
     private Uri httpStream(final String filename, final String mimeType) throws IOException {
+        
+        // FIXME generate a random token for security
         final File file = new File(filename);
         if (!file.exists()) {
             throw new IOException("File not found " + filename);
         }
-
-        final int port = 8080;
 
         try {
             if (serverSocket != null)
@@ -154,7 +154,7 @@ public class AudioPlayerActivity extends Activity {
             public void run() {
                 try {
 
-                    serverSocket = new ServerSocket(port);
+                    serverSocket = new ServerSocket(0); // use random free port
                     Socket socket = serverSocket.accept();
 
                     StringBuilder sb = new StringBuilder();
@@ -192,9 +192,7 @@ public class AudioPlayerActivity extends Activity {
             }
         }.start();
 
-        Uri uri = Uri.parse("http://localhost:" + port + file.getAbsolutePath());
+        Uri uri = Uri.parse("http://localhost:" + serverSocket.getLocalPort() + file.getAbsolutePath());
         return uri;
-
     }
-
 }
