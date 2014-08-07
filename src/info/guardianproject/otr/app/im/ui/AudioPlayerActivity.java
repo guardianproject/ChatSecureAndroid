@@ -50,7 +50,6 @@ public class AudioPlayerActivity extends Activity {
 
         playButton = (Button) findViewById(R.id.audio_player_play);
         playButton.setOnClickListener(onClickPlay);
-        findViewById(R.id.audio_player_rewind).setOnClickListener(onClickRewind);
     }
 
     @Override
@@ -58,8 +57,7 @@ public class AudioPlayerActivity extends Activity {
         super.onStart();
 
         try {
-            Uri uri = httpStream(filename, mimeType);
-            initPlayer(uri);
+            initPlayer(filename, mimeType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +66,10 @@ public class AudioPlayerActivity extends Activity {
     private OnClickListener onClickPlay = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (mediaPlayer == null) {
+                play();
+                return;
+            }
             if (mediaPlayer.isPlaying())
                 pause();
             else
@@ -75,43 +77,58 @@ public class AudioPlayerActivity extends Activity {
         }
     };
     
-    private OnClickListener onClickRewind = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mediaPlayer.stop();
-            refreshUi();
-        }
-    };
-
     private void play() {
-        mediaPlayer.stop();
-        mediaPlayer.start();
-        refreshUi();
+        try {
+            initPlayer(filename, mimeType);
+            refreshUi();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void pause() {
-        mediaPlayer.pause();
-        refreshUi();
+        killPlayer();
     }
 
     private void refreshUi() {
+        if (mediaPlayer == null) {
+            Log.e(TAG, "refreshUi: No player");
+            playButton.setText("Play");
+            return;
+        }
+        // TODO use string resources
         if (mediaPlayer.isPlaying()) {
-            playButton.setText("Pause");
+            Log.e(TAG, "refreshUi: Stop");
+            playButton.setText("Stop");
         } else {
+            Log.e(TAG, "refreshUi: Play");
             playButton.setText("Play");
         }
     }
 
     private MediaPlayer mediaPlayer;
-
-    private void initPlayer(Uri uri) throws Exception {
+    
+    private void killPlayer() {
+        if (mediaPlayer == null) {
+            return;
+        }
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer = null;
+        refreshUi();
+    }
+    
+    private void initPlayer(String filename, String mimeType) throws Exception {
+        Uri uri = httpStream(filename, mimeType);
+        
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
 
             @Override
             public void onPrepared(MediaPlayer mp) {
-                mp.start();
+                mediaPlayer.start();
+                refreshUi();
             }
         });
         mediaPlayer.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
@@ -125,7 +142,7 @@ public class AudioPlayerActivity extends Activity {
 
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.stop();
+                killPlayer();
             }
         });
 
