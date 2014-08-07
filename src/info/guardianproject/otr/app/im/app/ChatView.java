@@ -42,6 +42,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -2563,16 +2564,25 @@ public class ChatView extends LinearLayout {
                     
                     if (fileType != null && fileType.startsWith("audio"))
                     {
-                        MediaPlayer mp = new MediaPlayer();
-                        try {
-                            mp.setDataSource(filePath);
-                       
-                            mp.prepare();
-                            mp.start();
-                        
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        Uri uri = Uri.parse(filePath);
+                        if (IocVfs.isVfsScheme(uri.getScheme())) {
+                            try {
+                                AudioPlayerActivity.playOnce(mContext, uri.getPath(), fileType);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            MediaPlayer mp = new MediaPlayer();
+                            try {
+                                mp.setDataSource(filePath);
+                           
+                                mp.prepare();
+                                mp.start();
+                            
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
                     }
                     

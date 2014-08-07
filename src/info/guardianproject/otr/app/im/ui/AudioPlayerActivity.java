@@ -1,9 +1,12 @@
 package info.guardianproject.otr.app.im.ui;
 
+import java.io.IOException;
+
 import info.guardianproject.iocipher.File;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.util.HttpMediaStreamer;
 import android.app.Activity;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
@@ -139,6 +142,34 @@ public class AudioPlayerActivity extends Activity {
         });
 
         mediaPlayer.setDataSource(this, uri);
+        mediaPlayer.prepare();
+    }
+
+
+    public static void playOnce(Context context, String filename, String mimeType) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException {
+        
+        Uri uri = new HttpMediaStreamer(filename, mimeType).getUri();
+        
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
+        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
+        });
+
+        mediaPlayer.setDataSource(context, uri);
         mediaPlayer.prepare();
     }
 }

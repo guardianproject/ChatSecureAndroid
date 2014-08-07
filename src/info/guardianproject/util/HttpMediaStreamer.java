@@ -63,7 +63,7 @@ public class HttpMediaStreamer {
                     len = is.read(b);
                     isb.append(new String(b));
                     
-                    Log.i(TAG, "request: " + isb.toString());
+                    //Log.i(TAG, "request: " + isb.toString());
                     
                     StringBuilder sb = new StringBuilder();
                     sb.append("HTTP/1.1 200\r\n");
