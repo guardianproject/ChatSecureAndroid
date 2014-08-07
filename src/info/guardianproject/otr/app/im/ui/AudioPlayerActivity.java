@@ -7,6 +7,7 @@ import info.guardianproject.otr.app.im.app.IocVfs;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -83,12 +84,13 @@ public class AudioPlayerActivity extends Activity {
     };
 
     private void play() {
+        mediaPlayer.stop();
         mediaPlayer.start();
         refreshUi();
     }
 
     private void pause() {
-        mediaPlayer.stop();
+        mediaPlayer.pause();
         refreshUi();
     }
 
@@ -151,9 +153,19 @@ public class AudioPlayerActivity extends Activity {
         new Thread() {
             public void run() {
                 try {
-
+                    while (true) {
                     Socket socket = serverSocket.accept();
 
+                    byte[] b = new byte[8192];
+                    int len;
+                    
+                    InputStream is = socket.getInputStream();
+                    StringBuilder isb = new StringBuilder();
+                    len = is.read(b);
+                    isb.append(new String(b));
+                    
+                    Log.i(TAG, "request: " + isb.toString());
+                    
                     StringBuilder sb = new StringBuilder();
                     sb.append("HTTP/1.1 200\r\n");
                     sb.append("Content-Type: " + mimeType + "\r\n");
@@ -163,12 +175,10 @@ public class AudioPlayerActivity extends Activity {
 
                     bos.write(sb.toString().getBytes());
 
-                    int len = -1;
                     FileInputStream fis = new FileInputStream(file);
 
                     int idx = 0;
 
-                    byte[] b = new byte[8096];
                     while ((len = fis.read(b)) != -1) {
                         bos.write(b, 0, len);
                         idx += len;
@@ -180,9 +190,7 @@ public class AudioPlayerActivity extends Activity {
                     bos.close();
 
                     socket.close();
-                    serverSocket.close();
-                    serverSocket = null;
-
+                    }
                 } catch (IOException e) {
                     Log.d(TAG, "web share error", e);
                 }
