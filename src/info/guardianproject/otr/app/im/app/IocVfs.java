@@ -39,9 +39,7 @@ public class IocVfs {
         vfs = new VirtualFileSystem(dbFile);
         Log.e(TAG, "init:" + dbFile);
         mount();
-        
-        list("/");
-        
+        //list("/");
     }
     
     public static void mount() {

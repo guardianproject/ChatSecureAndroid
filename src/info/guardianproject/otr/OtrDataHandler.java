@@ -727,11 +727,22 @@ public class OtrDataHandler implements DataHandler {
             String localFilename;
             File file;
             do {
-                localFilename = "/" + Environment.DIRECTORY_DOWNLOADS + "/" + (count++) + "_" + filename ;
+                localFilename = getLocalFilename(filename, count++);
                 file = new File(localFilename);
             } while(file.exists());
             
             return localFilename;
+        }
+        
+        private String getLocalFilename(String filename, int count) {
+            String root = "/" + Environment.DIRECTORY_DOWNLOADS + "/";
+            if (count == 0 ) {
+                return root + filename ;
+            }
+            int lastDot = filename.lastIndexOf(".");
+            String name = filename.substring(0,lastDot);
+            String ext = filename.substring(lastDot);
+            return root + name + "(" + count + ")" + ext;
         }
         
         public String closeFile() throws IOException {
