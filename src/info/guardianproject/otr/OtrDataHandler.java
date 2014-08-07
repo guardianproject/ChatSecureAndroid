@@ -16,9 +16,6 @@ import java.io.ByteArrayOutputStream;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -162,7 +159,7 @@ public class OtrDataHandler implements DataHandler {
     }
         
     public void onIncomingRequest(Address requestThem, Address requestUs, byte[] value) {
-        Log.e( TAG, "onIncomingRequest:" + requestThem);
+        //Log.e( TAG, "onIncomingRequest:" + requestThem);
         
         SessionInputBuffer inBuf = new MemorySessionInputBuffer(value); 
         HttpRequestParser parser = new HttpRequestParser(inBuf, lineParser, requestFactory, params);
@@ -329,7 +326,7 @@ public class OtrDataHandler implements DataHandler {
     
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
-        Log.e( TAG, "readIntoByteBuffer:" + (end-start));
+        //Log.e( TAG, "readIntoByteBuffer:" + (end-start));
         if (start != is.skip(start)) {
             return;
         }
@@ -349,7 +346,7 @@ public class OtrDataHandler implements DataHandler {
 
     private void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, SessionInputBuffer sib)
             throws IOException {
-        Log.e( TAG, "readIntoByteBuffer:");
+        //Log.e( TAG, "readIntoByteBuffer:");
         int buffersize = 1024;
         byte[] buffer = new byte[buffersize];
 
@@ -381,7 +378,7 @@ public class OtrDataHandler implements DataHandler {
     }
 
     public void onIncomingResponse(Address from, Address to, byte[] value) {
-        Log.e( TAG, "onIncomingResponse:" + value.length);
+        //Log.e( TAG, "onIncomingResponse:" + value.length);
         SessionInputBuffer buffer = new MemorySessionInputBuffer(value); 
         HttpResponseParser parser = new HttpResponseParser(buffer, lineParser, responseFactory, params);
         HttpResponse res;
@@ -427,15 +424,13 @@ public class OtrDataHandler implements DataHandler {
                 }
                 transfer.chunkReceived(request, byteBuffer.toByteArray());
                 if (transfer.isDone()) {
-                    Log.e( TAG, "onIncomingResponse: isDone");
+                    //Log.e( TAG, "onIncomingResponse: isDone");
                     debug("Transfer complete for " + request.url);
                     String filename = transfer.closeFile();
                     Uri vfsUri = IocVfs.vfsUri(filename);
                     if (transfer.checkSum()) {
 
-                        Log.e( TAG, "onIncomingResponse: writing");
-//                        File fileShare = writeDataToStorage(transfer.url, data);
-                        
+                        //Log.e( TAG, "onIncomingResponse: writing");                        
                         if (mDataListener != null)
                             mDataListener.onTransferComplete(
                                     false,
@@ -621,7 +616,7 @@ public class OtrDataHandler implements DataHandler {
             this.us = us;
             this.sum = sum;
             
-            Log.e(TAG, "url:"+url + " type:"+ type + " length:"+length) ;
+            //Log.e(TAG, "url:"+url + " type:"+ type + " length:"+length) ;
             
             if (length > MAX_TRANSFER_LENGTH || length <= 0) {
                 throw new RuntimeException("Invalid transfer size " + length);
@@ -653,12 +648,12 @@ public class OtrDataHandler implements DataHandler {
         }
         
         public boolean isDone() {
-            Log.e( TAG, "isDone:" + chunksReceived + " " + chunks);
+            //Log.e( TAG, "isDone:" + chunksReceived + " " + chunks);
             return chunksReceived == chunks;
         }
         
         public void chunkReceived(Request request, byte[] bs) {
-            Log.e( TAG, "chunkReceived:" + bs.length);
+            //Log.e( TAG, "chunkReceived:" + bs.length);
             chunksReceived++;
             System.arraycopy(bs, 0, buffer, request.start, bs.length);
             outstanding.remove(request);
@@ -679,7 +674,7 @@ public class OtrDataHandler implements DataHandler {
         
         @Override
         public void chunkReceived(Request request, byte[] bs) {
-            Log.e(TAG, "chunkReceived: length " + bs.length) ;
+            //Log.e(TAG, "chunkReceived: length " + bs.length) ;
             chunksReceived++;
             try {
                 fos.write(bs) ;
@@ -714,10 +709,10 @@ public class OtrDataHandler implements DataHandler {
         }
         
         private void openFile(String url) throws FileNotFoundException {
-            Log.e(TAG, "openFile: url " + url) ;
+            //Log.e(TAG, "openFile: url " + url) ;
             String filename = getFilenameFromUrl(url);
             String localFilename = getLocalFilename(filename);
-            Log.e(TAG, "openFile: localFilename " + localFilename) ;
+            //Log.e(TAG, "openFile: localFilename " + localFilename) ;
             file = new File(localFilename);
             fos = new FileOutputStream(file);
         }
@@ -746,13 +741,13 @@ public class OtrDataHandler implements DataHandler {
         }
         
         public String closeFile() throws IOException {
-            Log.e(TAG, "closeFile") ;
+            //Log.e(TAG, "closeFile") ;
             fos.close();
             String newPath = file.getCanonicalPath();
             if(true) return newPath;
             
             newPath = newPath.substring(0,newPath.length()-4); // remove the .tmp
-            Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
+            //Log.e(TAG, "vfsCloseFile: rename " + newPath) ;
             File newPathFile = new File(newPath);
             boolean success = file.renameTo(newPathFile);
             if (!success) {
@@ -852,7 +847,7 @@ public class OtrDataHandler implements DataHandler {
 
     private void debug (String msg)
     {
-        if (true || Debug.DEBUG_ENABLED)
+        if (Debug.DEBUG_ENABLED)
             Log.d(ImApp.LOG_TAG,msg);
     }
 }
