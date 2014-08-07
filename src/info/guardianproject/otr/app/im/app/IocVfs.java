@@ -5,6 +5,8 @@ package info.guardianproject.otr.app.im.app;
 
 import java.io.FileNotFoundException;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
@@ -26,21 +28,14 @@ public class IocVfs {
     public static final String TAG = IocVfs.class.getName();
     private static String dbFile;
     private static VirtualFileSystem vfs;
-    private static final String BLOB_NAME = "blob.db";
+    private static final String BLOB_NAME = "media.db";
     private static String password;
     
-    public static void init( Context context ) {
-        password = "password";
-        dbFile = context.getDir("vfs", Context.MODE_PRIVATE).getAbsolutePath() + "/" + BLOB_NAME;
-        Log.e(TAG, "init:" + dbFile);
-    }
-    
-    public static void init() {
+    private static void init(Context context) {
         if (vfs != null) 
             return;
         
-        password = "password";
-        dbFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + BLOB_NAME;
+        dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
         vfs = new VirtualFileSystem(dbFile);
         Log.e(TAG, "init:" + dbFile);
         mount();
@@ -87,8 +82,6 @@ public class IocVfs {
     
     public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
         
-        IocVfs.init();
-        
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -123,5 +116,16 @@ public class IocVfs {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * @param mCacheWord
+     */
+    public static void init(Context context, String password) {
+        Log.w(TAG, "init with password of length " + password.length());
+        if (password.length() > 32)
+            password = password.substring(0, 32);
+        IocVfs.password = password;
+        init(context);
     }
 }

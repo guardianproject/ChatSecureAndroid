@@ -163,7 +163,6 @@ public class OtrDataHandler implements DataHandler {
         
     public void onIncomingRequest(Address requestThem, Address requestUs, byte[] value) {
         Log.e( TAG, "onIncomingRequest:" + requestThem);
-        IocVfs.init();
         
         SessionInputBuffer inBuf = new MemorySessionInputBuffer(value); 
         HttpRequestParser parser = new HttpRequestParser(inBuf, lineParser, requestFactory, params);

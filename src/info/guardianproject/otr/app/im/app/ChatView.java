@@ -2369,9 +2369,6 @@ public class ChatView extends LinearLayout {
         @Override
         public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
-            IocVfs.init();
-
-//            File file = new File(filePath);
             log("filePath:" + filePath);
             
 //            try {

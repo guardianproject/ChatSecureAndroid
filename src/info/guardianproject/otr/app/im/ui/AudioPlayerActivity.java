@@ -42,8 +42,6 @@ public class AudioPlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         filename = getIntent().getStringExtra(FILENAME);
         mimeType = getIntent().getStringExtra(MIMETYPE);
-        // vfs
-        IocVfs.init();
         // ui
         setContentView(R.layout.audio_player_activity);
         filenameTextView = (TextView) findViewById(R.id.audio_player_text);
@@ -62,8 +60,7 @@ public class AudioPlayerActivity extends Activity {
             Uri uri = httpStream(filename, mimeType);
             initPlayer(uri);
         } catch (Exception e) {
-            // TODO error
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -150,11 +147,11 @@ public class AudioPlayerActivity extends Activity {
         } catch (Exception e) {
         }
 
+        serverSocket = new ServerSocket(0); // use random free port
         new Thread() {
             public void run() {
                 try {
 
-                    serverSocket = new ServerSocket(0); // use random free port
                     Socket socket = serverSocket.accept();
 
                     StringBuilder sb = new StringBuilder();

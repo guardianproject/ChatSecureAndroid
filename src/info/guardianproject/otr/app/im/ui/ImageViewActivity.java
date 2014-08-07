@@ -27,7 +27,6 @@ public class ImageViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_view_activity);
-        IocVfs.init();
     }
 
     @Override

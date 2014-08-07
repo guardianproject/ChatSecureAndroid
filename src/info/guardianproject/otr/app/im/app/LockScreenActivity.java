@@ -3,10 +3,13 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.security.GeneralSecurityException;
+
+import org.apache.commons.codec.binary.Hex;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -152,8 +155,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
+                    IocVfs.init(this, "");
                     // Simulate cacheword opening
-                    onCacheWordOpened();
+                    afterCacheWordOpened();
                 }  else {
                     // TODO failed
                 }
@@ -403,6 +407,14 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
     @Override
     public void onCacheWordOpened() {
+        afterCacheWordOpened();
+        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
+    }
+
+    /**
+     * 
+     */
+    private void afterCacheWordOpened() {
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
         
         if (intent != null)
