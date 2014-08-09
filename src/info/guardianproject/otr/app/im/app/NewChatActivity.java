@@ -839,8 +839,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         case R.id.menu_take_picture:
             if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
             {
-                //startPhotoTaker();
-                startPhotoTakerSecure();
+                startPhotoTaker();
             }
             else
             {
