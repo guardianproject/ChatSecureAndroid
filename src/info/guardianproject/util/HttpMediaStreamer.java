@@ -34,6 +34,14 @@ public class HttpMediaStreamer {
         return uri;
     }
     
+    public void destroy() {
+        try {
+            if (serverSocket != null)
+                serverSocket.close();
+        } catch (Exception e) {
+        }
+    }
+    
     private Uri create(final String filename, final String mimeType) throws IOException {
         
         // FIXME generate a random token for security

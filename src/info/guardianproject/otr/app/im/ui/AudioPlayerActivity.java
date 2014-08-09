@@ -57,6 +57,13 @@ public class AudioPlayerActivity extends Activity {
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    protected void onDestroy() {
+        if (streamer != null) {
+            streamer.destroy();
+        }
+    }
 
     private OnClickListener onClickPlay = new OnClickListener() {
         @Override
@@ -102,19 +109,26 @@ public class AudioPlayerActivity extends Activity {
     }
 
     private MediaPlayer mediaPlayer;
+    private HttpMediaStreamer streamer;
     
     private void killPlayer() {
+        if (streamer != null) {
+            streamer.destroy();
+        }
+        
         if (mediaPlayer == null) {
             return;
         }
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
+        
         refreshUi();
     }
     
     private void initPlayer(String filename, String mimeType) throws Exception {
-        Uri uri = new HttpMediaStreamer(filename, mimeType).getUri();
+        streamer = new HttpMediaStreamer(filename, mimeType);
+        Uri uri = streamer.getUri();
         
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -148,7 +162,8 @@ public class AudioPlayerActivity extends Activity {
 
     public static void playOnce(Context context, String filename, String mimeType) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException {
         
-        Uri uri = new HttpMediaStreamer(filename, mimeType).getUri();
+        final HttpMediaStreamer streamer = new HttpMediaStreamer(filename, mimeType);
+        Uri uri = streamer.getUri();
         
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -166,6 +181,7 @@ public class AudioPlayerActivity extends Activity {
                 mp.stop();
                 mp.release();
                 mp = null;
+                streamer.destroy();
             }
         });
 
