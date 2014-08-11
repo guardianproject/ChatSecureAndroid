@@ -494,7 +494,7 @@ public class ImApp extends Application {
         if (nInfo != null)
         {
             Log.d(LOG_TAG,"network state: available=" + nInfo.isAvailable() + " connected/connecting=" + nInfo.isConnectedOrConnecting());
-            return nInfo.isAvailable() && nInfo.isConnectedOrConnecting();
+            return nInfo.isAvailable() && nInfo.isConnected();
         }
         else
             return false; //no network info is a bad idea
