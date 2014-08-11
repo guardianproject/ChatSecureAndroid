@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
+import info.guardianproject.iocipher.RandomAccessFile;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -665,8 +667,8 @@ public class OtrDataHandler implements DataHandler {
     }
     
     public class VfsTransfer extends Transfer {
-        private File file;
-        private FileOutputStream fos;
+        String localFilename;
+        private RandomAccessFile raf;
         
         public VfsTransfer(String url, String type, int length, Address us, String sum) throws FileNotFoundException {
             super(url, type, length, us, sum);
@@ -677,16 +679,18 @@ public class OtrDataHandler implements DataHandler {
             //Log.e(TAG, "chunkReceived: length " + bs.length) ;
             chunksReceived++;
             try {
-                fos.write(bs) ;
+                raf.seek( request.start );
+                raf.write(bs) ;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             outstanding.remove(request);
         }
-
+        
         @Override
         public boolean checkSum() {
             try {
+                File file = new File(localFilename);
                 return sum.equals( checkSum(file.getAbsolutePath()) );
             } catch (IOException e) {
                 e.printStackTrace();
@@ -698,8 +702,8 @@ public class OtrDataHandler implements DataHandler {
         public boolean perform() {
             boolean result = super.perform();
             try {
-                if (file == null) {
-                    openFile(url);
+                if (raf == null) {
+                    raf = openFile(url);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -708,13 +712,13 @@ public class OtrDataHandler implements DataHandler {
             return result;
         }
         
-        private void openFile(String url) throws FileNotFoundException {
+        private RandomAccessFile openFile(String url) throws FileNotFoundException {
             //Log.e(TAG, "openFile: url " + url) ;
             String filename = getFilenameFromUrl(url);
-            String localFilename = getLocalFilename(filename);
+            localFilename = getLocalFilename(filename);
             //Log.e(TAG, "openFile: localFilename " + localFilename) ;
-            file = new File(localFilename);
-            fos = new FileOutputStream(file);
+            RandomAccessFile ras = new RandomAccessFile(localFilename, "rw");
+            return ras;
         }
         
         private String getLocalFilename(String filename) {
@@ -742,7 +746,8 @@ public class OtrDataHandler implements DataHandler {
         
         public String closeFile() throws IOException {
             //Log.e(TAG, "closeFile") ;
-            fos.close();
+            raf.close();
+            File file = new File(localFilename);
             String newPath = file.getCanonicalPath();
             if(true) return newPath;
             
