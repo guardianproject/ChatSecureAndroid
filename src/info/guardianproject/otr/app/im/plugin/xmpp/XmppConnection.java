@@ -29,7 +29,6 @@ import info.guardianproject.util.Debug;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -53,7 +52,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
@@ -114,16 +112,14 @@ import org.jivesoftware.smackx.provider.StreamInitiationProvider;
 import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
-import org.thoughtcrime.ssl.pinning.PinningTrustManager;
-import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 
 import android.accounts.AccountManager;
+import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.util.Log;
 import ch.boye.httpclientandroidlib.conn.ssl.BrowserCompatHostnameVerifier;
@@ -174,15 +170,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
     private SSLContext sslContext;
-    private MemorizingTrustManager mTrustManager;
-
-    private KeyStore ks = null;
-    private KeyManager[] kms = null;
     private Context aContext;
 
     private final static String IS_GOOGLE = "google";
 
-    private final static int SOTIMEOUT = 15000;
+    private final static int SOTIMEOUT = 60000;
 
     private PacketCollector mPingCollector;
     private String mUsername;
@@ -347,39 +339,32 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     {
         if (!mLoadingAvatars)
         {
-            // Using an AsyncTask to load the slow images in a background thread
-            new AsyncTask<String, Void, String>() {
+            execute(new AvatarLoader());
+        }
+    }
+    
+    private class AvatarLoader implements Runnable
+    {
+        @Override
+        public void run () {
 
-                @Override
-                protected String doInBackground(String... params) {
+            mLoadingAvatars = true;
 
-                    mLoadingAvatars = true;
+            String jid = null;
+            ContentResolver resolver = mContext.getContentResolver();
 
-                    String jid = null;
-                    ContentResolver resolver = mContext.getContentResolver();
+            try
+            {
+                while (qAvatar.size()>0)
+                {
 
-                    try
-                    {
-                        while (qAvatar.size()>0)
-                        {
-
-                            loadVCard (resolver, qAvatar.pop(), null);
-
-                        }
-                    }
-                    catch (Exception e) {}
-
-                    return "";
-                }
-
-                @Override
-                protected void onPostExecute(String result) {
-                    super.onPostExecute(result);
-
-                    mLoadingAvatars = false;
+                    loadVCard (resolver, qAvatar.pop(), null);
 
                 }
-            }.execute("");
+            }
+            catch (Exception e) {}
+
+            mLoadingAvatars = false;
         }
     }
 
@@ -882,7 +867,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 setState(LOGGING_IN, info);
             } else {
                 debug(TAG, "will not retry");
-                mConnection = null;
+                disconnect();                               
                 disconnected(info);
             }
 
@@ -1007,16 +992,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         boolean useSASL = true;//!allowPlainAuth;
 
-
         String domain = providerSettings.getDomain();
-        String requestedServer = providerSettings.getServer();
-        if ("".equals(requestedServer))
-            requestedServer = null;
+        
         mPriority = providerSettings.getXmppResourcePrio();
         int serverPort = providerSettings.getPort();
 
-        String server = requestedServer;
-
+        String server = providerSettings.getServer();
+        if ("".equals(server))
+            server = null;
+        
         debug(TAG, "TLS required? " + requireTls);
         debug(TAG, "cert verification? " + tlsCertVerify);
 
@@ -1033,7 +1017,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mProxyInfo = ProxyInfo.forNoProxy();
 
         // If user did not specify a server, and SRV requested then lookup SRV
-        if (doDnsSrv && requestedServer == null) {
+        if (doDnsSrv) {
 
             //java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
             //java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -1048,9 +1032,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "(DNS SRV) resolved: " + domain + "=" + server + ":" + serverPort);
 
 
-
         }
-
+        
         if (server != null && server.contains("google.com"))
         {
             mUsername = userName + '@' + domain;
@@ -1090,9 +1073,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             String serviceName = domain;
             
-            if (requestedServer != null && (!requestedServer.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
-                serviceName = requestedServer;
-
+            if (server != null && (!server.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
+                serviceName = server;
+            
             if (mProxyInfo == null)
                 mConfig = new ConnectionConfiguration(server, serverPort, serviceName);
             else
@@ -1120,21 +1103,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (requireTls) { 
 
-            
-            mTrustManager = getTrustManager();
+            MemorizingTrustManager trustManager = ((ImApp)((Service)aContext).getApplication()).getTrustManager();
             
             if (sslContext == null)
             {
+                
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
                 SecureRandom secureRandom = new java.security.SecureRandom();
-                sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
+                sslContext.init(null, new javax.net.ssl.TrustManager[] { trustManager },
                         secureRandom);
                 sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
-                mTrustManager = getTrustManager ();
+
             }
 
             BrowserCompatHostnameVerifier hostVerifier = new BrowserCompatHostnameVerifier();
-            mConfig.setHostnameVerifier(mTrustManager.wrapHostnameVerifier(hostVerifier));
+            mConfig.setHostnameVerifier(trustManager.wrapHostnameVerifier(hostVerifier));
             
             mConfig.setCustomSSLContext(sslContext);
             
@@ -1406,12 +1389,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
 
-    private MemorizingTrustManager getTrustManager ()
-    {
-        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
-        return new MemorizingTrustManager(aContext, trustPinning);
-
-    }
 
     public X509TrustManager getDummyTrustManager ()
     {
