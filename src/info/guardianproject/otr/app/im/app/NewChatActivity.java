@@ -340,10 +340,20 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
         
+        mApp.getTrustManager().bindDisplayActivity(this);
+        
         //View vg = findViewById (R.id.chatpager);
         //vg.invalidate();
         
         mApp.checkForCrashes(this);
+    }
+
+    @Override
+    protected void onPause() {     
+        super.onPause();
+
+        mApp.getTrustManager().unbindDisplayActivity(this);
+        
     }
 
     @Override

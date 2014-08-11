@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.plugin.ImPlugin;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
+import info.guardianproject.otr.app.im.plugin.xmpp.XMPPCertPins;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
@@ -44,6 +45,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+
+import org.thoughtcrime.ssl.pinning.PinningTrustManager;
+import org.thoughtcrime.ssl.pinning.SystemKeyStore;
+
+import de.duenndns.ssl.MemorizingTrustManager;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
@@ -116,6 +122,8 @@ public class ImApp extends Application {
     HashMap<Long, ProviderDef> mProviders;
 
     Broadcaster mBroadcaster;
+    
+    public MemorizingTrustManager mTrustManager;
     
     public static boolean mUsingCacheword = false;
 
@@ -211,19 +219,6 @@ public class ImApp extends Application {
         return mApplicationContext.getContentResolver();
     }
 
-    public ImApp() {
-        super();
-        mConnections = new HashMap<Long, IImConnection>();
-        mApplicationContext = this;
-        sImApp = this;
-    }
-
-    public ImApp(Context context) {
-        super();
-        mConnections = new HashMap<Long, IImConnection>();
-        mApplicationContext = context;
-        sImApp = this;
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -243,9 +238,16 @@ public class ImApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
         Debug.onAppStart();
         
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+        
+        mConnections = new HashMap<Long, IImConnection>();        
+        mApplicationContext = this;
+        sImApp = this;
+        
+        initTrustManager();
         
         mBroadcaster = new Broadcaster();
 
@@ -494,7 +496,7 @@ public class ImApp extends Application {
         if (nInfo != null)
         {
             Log.d(LOG_TAG,"network state: available=" + nInfo.isAvailable() + " connected/connecting=" + nInfo.isConnectedOrConnecting());
-            return nInfo.isAvailable() && nInfo.isConnectedOrConnecting();
+            return nInfo.isAvailable() && nInfo.isConnected();
         }
         else
             return false; //no network info is a bad idea
@@ -1016,5 +1018,18 @@ public class ImApp extends Application {
                 return Debug.getTrail(activity);
             }
         });
+    }
+    
+
+    private void initTrustManager ()
+    {
+        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(this),XMPPCertPins.getPinList(), 0);
+        mTrustManager = new MemorizingTrustManager(this, trustPinning);
+
+    }
+    
+    public MemorizingTrustManager getTrustManager ()
+    {
+        return mTrustManager;
     }
 }

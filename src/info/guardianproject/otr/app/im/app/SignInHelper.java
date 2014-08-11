@@ -198,31 +198,20 @@ public class SignInHelper {
 
     private void signInAccount(final String password, final long providerId, final String providerName, final long accountId) {
         
-        new AsyncTask<String, Void, String> () {
-            @Override
-            protected String doInBackground(String... params) {
-              
+        Runnable runnable = new Runnable ()
+        {
+            public void run ()
+            {
                 try {
                     signInAccountAsync(password, providerId, providerName, accountId);
                 } catch (RemoteException e) {
                     Log.d(ImApp.LOG_TAG,"error signing in",e);
                 }
                 
-                return null;
+             
             }
-
-            @Override
-            protected void onPostExecute(String result) {
-            }
-
-            @Override
-            protected void onPreExecute() {
-            }
-
-            @Override
-            protected void onProgressUpdate(Void... values) {
-            }
-        }.execute("");
+        };
+        new Thread(runnable).start();
         
     }
     
@@ -262,13 +251,15 @@ public class SignInHelper {
                 conn.registerConnectionListener(mListener);
             }
 
+            conn.login(password, autoLoadContacts, autoRetryLogin);
+            
+            /*
             if (mApp.isNetworkAvailableAndConnected()) {
                
-                conn.login(password, autoLoadContacts, autoRetryLogin);
             } else {
              //   promptForBackgroundDataSetting(providerName);
                 return;
-            }
+            }*/
         
     }
 
