@@ -10,7 +10,6 @@
      android:layout_height="0dp"
         android:layout_weight="1" />
 
-<!-- 
  <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
         android:padding="10dip"
@@ -22,5 +21,4 @@
         app:strokeColor="#FF000000"
         app:strokeWidth="2dp"
         />
- -->
 </LinearLayout>
