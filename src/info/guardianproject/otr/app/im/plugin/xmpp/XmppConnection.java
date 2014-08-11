@@ -1121,6 +1121,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (requireTls) { 
 
             
+            mTrustManager = getTrustManager();
+            
             if (sslContext == null)
             {
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
