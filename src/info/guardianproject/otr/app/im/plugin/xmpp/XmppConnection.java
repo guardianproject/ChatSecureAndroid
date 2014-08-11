@@ -172,10 +172,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
      */
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-    private X509TrustManager mTrustManager;
-    //private StrongTrustManager mStrongTrustManager;
 
     private SSLContext sslContext;
+    private MemorizingTrustManager mTrustManager;
 
     private KeyStore ks = null;
     private KeyManager[] kms = null;
@@ -1091,7 +1090,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             String serviceName = domain;
             
-            if (requestedServer != null) //if a connect server was manually entered
+            if (requestedServer != null && (!requestedServer.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
                 serviceName = requestedServer;
 
             if (mProxyInfo == null)
@@ -1121,24 +1120,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (requireTls) { 
 
+            
             if (sslContext == null)
             {
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
-
-                mTrustManager = getTrustManager ();
-
                 SecureRandom secureRandom = new java.security.SecureRandom();
-
                 sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
                         secureRandom);
-
                 sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
+                mTrustManager = getTrustManager ();
             }
 
-            mConfig.setCustomSSLContext(sslContext);
-            
             BrowserCompatHostnameVerifier hostVerifier = new BrowserCompatHostnameVerifier();
-            mConfig.setHostnameVerifier( hostVerifier);
+            mConfig.setHostnameVerifier(mTrustManager.wrapHostnameVerifier(hostVerifier));
+            
+            mConfig.setCustomSSLContext(sslContext);
             
             mConfig.setSecurityMode(SecurityMode.required);
 
@@ -1148,7 +1144,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setNotMatchingDomainCheckEnabled(true);
             mConfig.setSelfSignedCertificateEnabled(false);
             
-
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH){
                 mConfig.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);   
@@ -1164,11 +1159,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             {
                 sslContext = SSLContext.getInstance(SSLCONTEXT_TYPE);
 
-                mTrustManager = getDummyTrustManager ();
-
                 SecureRandom mSecureRandom = new java.security.SecureRandom();
 
-                sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
+                sslContext.init(null, new javax.net.ssl.TrustManager[] {  getDummyTrustManager () },
                         mSecureRandom);
 
                 sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
@@ -1345,20 +1338,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         }
                     });
                 } else if (!mNeedReconnect) {
+                    
                     execute(new Runnable() {
-                        @Override
+                        
                         public void run() {
                             if (getState() == LOGGED_IN)
                             {
                                 //was logged in, so let's try again
                              //   try { Thread.sleep(1000);}catch(Exception e){}//after a few seconds
-                              //  setState(LOGGING_IN,
-                                //        new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-                               // maybe_reconnect();
-                                setState(SUSPENDED,
-                                            new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+                                setState(LOGGING_IN,
+                                        new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network error"));
+                                force_reconnect();
+                               // setState(SUSPENDED,
+                                 //           new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
                             }
                         }
+                        
                     });
                     
                     
@@ -1409,23 +1404,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
 
-    public synchronized X509TrustManager getTrustManager ()
+    private MemorizingTrustManager getTrustManager ()
     {
-        if (mTrustManager == null)
-        {
-            PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
-            mTrustManager = new MemorizingTrustManager(aContext, trustPinning);
+        PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
+        return new MemorizingTrustManager(aContext, trustPinning);
 
-        }
-
-        return mTrustManager;
     }
 
-    public synchronized X509TrustManager getDummyTrustManager ()
+    public X509TrustManager getDummyTrustManager ()
     {
-        if (mTrustManager == null)
-        {
-            mTrustManager = new X509TrustManager() {
+        
+        return new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] arg0, String arg1)
                         throws CertificateException {
@@ -1441,9 +1430,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     return new X509Certificate[0];
                 }
             };
-        }
+        
 
-        return mTrustManager;
     }
 
 
