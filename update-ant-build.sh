@@ -1,17 +1,17 @@
 #!/bin/sh
 
-target="android-20"
+target="android-19"
 projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' res/values/strings.xml`
 
 # make sure your Android SDK tools path is set in SDK_BASE
-android update lib-project --target $target --path external/ActionBarSherlock/actionbarsherlock
-android update lib-project --target $target --path external/MemorizingTrustManager
-android update lib-project --target $target --path external/OnionKit/libnetcipher
-android update lib-project --target $target --path external/AndroidPinning
-android update lib-project --target $target --path external/cacheword/cachewordlib
-android update lib-project --target $target --path external/SlidingMenu/library
-android update lib-project --target $target --path external/AndroidEmojiInput/library
-android update lib-project --target $target --path external/ViewPagerIndicator/library
+android update lib-project --path external/ActionBarSherlock/actionbarsherlock
+android update lib-project --path external/MemorizingTrustManager
+android update lib-project --path external/OnionKit/libnetcipher
+android update lib-project --path external/AndroidPinning
+android update lib-project --path external/cacheword/cachewordlib
+android update lib-project --path external/SlidingMenu/library
+android update lib-project --path external/AndroidEmojiInput/library
+android update lib-project --path external/ViewPagerIndicator/library
 
 android update project --path . --name $projectname --target $target --subprojects
 
