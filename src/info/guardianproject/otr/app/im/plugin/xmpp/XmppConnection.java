@@ -126,7 +126,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.util.Log;
-import ch.boye.httpclientandroidlib.conn.ssl.StrictHostnameVerifier;
+import ch.boye.httpclientandroidlib.conn.ssl.BrowserCompatHostnameVerifier;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
@@ -887,7 +887,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 disconnected(info);
             }
 
-            return;
 
         } catch (KeyManagementException e) {
             // TODO Auto-generated catch block
@@ -983,8 +982,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
 
-        mConfig.setHostnameVerifier(new StrictHostnameVerifier() );
-        
         mConnection.login(mUsername, mPassword, mResource);
 
         mStreamHandler.notifyInitialLogin();
@@ -1091,15 +1088,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         } else {
             debug(TAG, "(use server) ConnectionConfiguration(" + server + ", " + serverPort + ", "
                     + domain + ", mProxyInfo);");
+            
+            String serviceName = domain;
+            
+            if (requestedServer != null) //if a connect server was manually entered
+                serviceName = requestedServer;
 
             if (mProxyInfo == null)
-                mConfig = new ConnectionConfiguration(server, serverPort, domain);
+                mConfig = new ConnectionConfiguration(server, serverPort, serviceName);
             else
-                mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
+                mConfig = new ConnectionConfiguration(server, serverPort, serviceName, mProxyInfo);
         }
 
 
-        // mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+        
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
         // Android has no support for Kerberos or GSSAPI, so disable completely
@@ -1111,30 +1114,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
-
-
-        //  if (mIsGoogleAuth)
-         // {
-
-              SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-              SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
-         // }
-         // else
-         // {
-             // SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME);
-           //   SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
-         // }
+        
+          SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+          SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
 
 
         if (requireTls) { 
-
-            mConfig.setSecurityMode(SecurityMode.required);
-
-            mConfig.setVerifyChainEnabled(true);
-            mConfig.setVerifyRootCAEnabled(true);
-            mConfig.setExpiredCertificatesCheckEnabled(true);
-            mConfig.setNotMatchingDomainCheckEnabled(true);
-            mConfig.setSelfSignedCertificateEnabled(false);
 
             if (sslContext == null)
             {
@@ -1142,15 +1127,27 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 mTrustManager = getTrustManager ();
 
-                SecureRandom mSecureRandom = new java.security.SecureRandom();
+                SecureRandom secureRandom = new java.security.SecureRandom();
 
                 sslContext.init(null, new javax.net.ssl.TrustManager[] { mTrustManager },
-                        mSecureRandom);
+                        secureRandom);
 
                 sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
             }
 
             mConfig.setCustomSSLContext(sslContext);
+            
+            BrowserCompatHostnameVerifier hostVerifier = new BrowserCompatHostnameVerifier();
+            mConfig.setHostnameVerifier( hostVerifier);
+            
+            mConfig.setSecurityMode(SecurityMode.required);
+
+            mConfig.setVerifyChainEnabled(true);
+            mConfig.setVerifyRootCAEnabled(true);
+            mConfig.setExpiredCertificatesCheckEnabled(true);
+            mConfig.setNotMatchingDomainCheckEnabled(true);
+            mConfig.setSelfSignedCertificateEnabled(false);
+            
 
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH){
@@ -1192,7 +1189,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
 
-        mConfig.setRosterLoadedAtLogin(true);
+        //mConfig.setRosterLoadedAtLogin(true);
 
         mConnection = new MyXMPPConnection(mConfig);
 
@@ -1417,9 +1414,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mTrustManager == null)
         {
             PinningTrustManager trustPinning = new PinningTrustManager(SystemKeyStore.getInstance(aContext),XMPPCertPins.getPinList(), 0);
-
             mTrustManager = new MemorizingTrustManager(aContext, trustPinning);
-
 
         }
 
@@ -2384,7 +2379,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void run() {
         
-                if (getState() != LOGGED_IN)
+                if (getState() == LOGGED_IN)
                 {
                     debug(TAG, "reestablish");
                     setState(LOGGING_IN, null);
