@@ -242,8 +242,7 @@ android:anyDensity="true"
       
         <activity android:name=".app.AccountActivity"
             android:windowSoftInputMode="stateUnchanged"
-            android:exported="false"
-            android:theme="@android:style/Theme.Dialog">            
+            android:exported="false"    
             >
             <intent-filter>
                 <action android:name="android.intent.action.EDIT" />
@@ -382,11 +381,6 @@ android:anyDensity="true"
             android:label="@string/title_activity_lock_screen" >
         </activity>
          
-           <activity android:name="info.guardianproject.onionkit.ui.CertDisplayActivity"
-            android:configChanges="locale|screenSize|orientation"
-         	android:theme="@android:style/Theme.Dialog"
-         	 android:exported="false"
-            />
           
           <activity
               android:name="de.duenndns.ssl.MemorizingActivity"
@@ -394,7 +388,7 @@ android:anyDensity="true"
               android:theme="@android:style/Theme.Translucent.NoTitleBar"
               android:exported="false"
                />
-          
+                    
           <receiver android:name=".app.NetworkConnectivityListener" 
               android:exported="true"
               android:enabled="true"
