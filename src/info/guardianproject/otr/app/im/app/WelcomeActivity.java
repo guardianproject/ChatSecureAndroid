@@ -27,6 +27,8 @@ import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
 
+import org.apache.commons.codec.binary.Hex;
+
 import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -116,9 +118,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             connectToCacheWord();
         else 
         {
-           
-           if (!openEncryptedStores(null, false))
+           if (openEncryptedStores(null, false)) {
+               IocVfs.init(this, "");
+           } else {
                connectToCacheWord(); //first time setup
+           }
         }
     }
 
@@ -581,7 +585,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
 
        mCacheWord.setTimeoutMinutes(defaultTimeout);
-       
+       IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
     }
 
     private void completeShutdown ()

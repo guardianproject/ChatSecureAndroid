@@ -21,5 +21,4 @@
         app:strokeColor="#FF000000"
         app:strokeWidth="2dp"
         />
-
 </LinearLayout>

@@ -20,6 +20,8 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
+import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 
@@ -44,10 +46,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.text.Spannable;
@@ -80,9 +80,11 @@ public class MessageView extends FrameLayout {
     }
     private CharSequence lastMessage = null;
     
+    private Context context;
+    
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
+        this.context = context;
     }
 
     private ViewHolder mHolder = null;
@@ -313,6 +315,23 @@ public class MessageView extends FrameLayout {
      */
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
         
+        if (IocVfs.isVfsScheme(mediaUri.getScheme())) {
+            if (mimeType.startsWith("image")) {
+                Intent intent = new Intent(context, ImageViewActivity.class);
+                intent.putExtra( ImageViewActivity.FILENAME, mediaUri.getPath());
+                context.startActivity(intent);
+                return;
+            }
+            if (mimeType.startsWith("audio")) {
+                Intent intent = new Intent(context, AudioPlayerActivity.class);
+                intent.putExtra( AudioPlayerActivity.FILENAME, mediaUri.getPath());
+                intent.putExtra( AudioPlayerActivity.MIMETYPE, mimeType);
+                context.startActivity(intent);
+                return;
+            }
+            return;
+        }
+        
         String body = convertMediaUriToPath(mediaUri);
         
         if (body == null)
@@ -433,9 +452,16 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
-    private final static int THUMBNAIL_SIZE = 800;
+    public final static int THUMBNAIL_SIZE = 800;
     
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
+        if (IocVfs.isVfsScheme(uri.getScheme())) {
+            return IocVfs.getThumbnailVfs(cr, uri);
+        }
+        return getThumbnailFile(cr, uri);
+    }
+    
+    public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
         
         File image = new File(uri.getPath());
 
@@ -459,7 +485,6 @@ public class MessageView extends FrameLayout {
         return scaledBitmap;     
     }
     
-
     private String formatMessage (String body)
     {
         return android.text.Html.fromHtml(body).toString();

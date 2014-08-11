@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.SecureCameraActivity;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
@@ -111,7 +112,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private static final int REQUEST_SEND_AUDIO = REQUEST_SEND_FILE + 1;
     private static final int REQUEST_TAKE_PICTURE = REQUEST_SEND_AUDIO + 1;
     private static final int REQUEST_SETTINGS = REQUEST_TAKE_PICTURE + 1;
-    
+    private static final int REQUEST_TAKE_PICTURE_SECURE = REQUEST_SETTINGS + 1;
     
     private static final int CONTACT_LIST_LOADER_ID = 4444;
     private static final int CHAT_LIST_LOADER_ID = CONTACT_LIST_LOADER_ID+1;
@@ -854,7 +855,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         case R.id.menu_take_picture:
             if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
             {
-               startPhotoTaker();
+                startPhotoTaker();
             }
             else
             {
@@ -1096,6 +1097,20 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         startActivityForResult(intent, REQUEST_TAKE_PICTURE);
     }
     
+    void startPhotoTakerSecure() {
+        
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(this, SecureCameraActivity.class);
+        String time = ""+new Date().getTime();
+        String filename = "/" + Environment.DIRECTORY_DCIM + "/" +  "cs_" + time + ".jpg";
+        String thumbnail = "/" + Environment.DIRECTORY_DCIM + "/" +  "cs_" + time + "_thumb.jpg";
+        intent.putExtra(SecureCameraActivity.FILENAME, filename ) ;
+        intent.putExtra(SecureCameraActivity.THUMBNAIL, thumbnail ) ;
+        
+        // start the secure image capture Intent
+        startActivityForResult(intent, REQUEST_TAKE_PICTURE_SECURE);
+    }
+    
     void startFilePicker() {
         Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
         selectFile.setType("file/*");
@@ -1170,6 +1185,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         });
                 
               
+            }
+            else if (requestCode == REQUEST_TAKE_PICTURE_SECURE)
+            {
+                String filename = resultIntent.getStringExtra(SecureCameraActivity.FILENAME);
+                String mimeType = resultIntent.getStringExtra(SecureCameraActivity.MIMETYPE);
+                Uri uri = Uri.parse("file:" + filename);
+                handleSend(uri,mimeType);                
             }
             else if (requestCode == REQUEST_SETTINGS)
             {
