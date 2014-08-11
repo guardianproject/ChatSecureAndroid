@@ -609,7 +609,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         // Notify the connection that network type has changed. Note that this
         // only work for connected connections, we need to reestablish if it's
         // suspended.
-        if (mNetworkType != oldType && isNetworkAvailable()) {
+        if (mNetworkType != oldType) {
             for (ImConnectionAdapter conn : mConnections.values()) {
                 conn.networkTypeChanged();
             }
@@ -630,12 +630,11 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             
             break;
 
-        case DISCONNECTED:
-            if (!isNetworkAvailable()) {
+        case DISCONNECTED:        
                 suspendConnections();
-            }
+            
             break;
-            // TODO(miron) what about DISCONNECTING?
+            
         default:
             break;
         }
@@ -643,10 +642,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     // package private for inner class access
     boolean reestablishConnections() {
-        /**
+        
         if (!isNetworkAvailable()) {
-            return;
-        }*/
+            return false;
+        }
 
         for (ImConnectionAdapter conn : mConnections.values()) {
             int connState = conn.getState();
@@ -660,11 +659,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     private void suspendConnections() {
         for (ImConnectionAdapter conn : mConnections.values()) {
-            //if (conn.getState() != ImConnection.LOGGED_IN) {
-            //    continue;
-            //}
+            if (conn.getState() != ImConnection.LOGGED_IN) {
+                continue;
+            }
             conn.suspend();
-
         }
 
     }
