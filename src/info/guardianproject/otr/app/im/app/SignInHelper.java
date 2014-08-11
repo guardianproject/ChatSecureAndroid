@@ -262,13 +262,15 @@ public class SignInHelper {
                 conn.registerConnectionListener(mListener);
             }
 
+            conn.login(password, autoLoadContacts, autoRetryLogin);
+            
+            /*
             if (mApp.isNetworkAvailableAndConnected()) {
                
-                conn.login(password, autoLoadContacts, autoRetryLogin);
             } else {
              //   promptForBackgroundDataSetting(providerName);
                 return;
-            }
+            }*/
         
     }
 
