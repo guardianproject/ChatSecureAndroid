@@ -331,58 +331,61 @@ public class MessageView extends FrameLayout {
             }
             return;
         }
-        
-        String body = convertMediaUriToPath(mediaUri);
-        
-        if (body == null)
-            body = new File(mediaUri.getPath()).getAbsolutePath();
-        
-        if (mimeType.startsWith("audio") || (body.endsWith("3gp")||body.endsWith("3gpp")||body.endsWith("amr")))
+        else
         {
-           
-            if (mMediaPlayer != null)
-                mMediaPlayer.release();
             
-            try
+        
+            String body = convertMediaUriToPath(mediaUri);
+            
+            if (body == null)
+                body = new File(mediaUri.getPath()).getAbsolutePath();
+            
+            if (mimeType.startsWith("audio") || (body.endsWith("3gp")||body.endsWith("3gpp")||body.endsWith("amr")))
             {
-                mMediaPlayer = new  MediaPlayer();
-                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mMediaPlayer.setDataSource(body);
-                mMediaPlayer.prepare();
-                mMediaPlayer.start();
+               
+                if (mMediaPlayer != null)
+                    mMediaPlayer.release();
                 
-                return;
-            } catch (IOException e) {
-                Log.e(ImApp.LOG_TAG,"error playing audio: " + body,e);
+                try
+                {
+                    mMediaPlayer = new  MediaPlayer();
+                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mMediaPlayer.setDataSource(body);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                    
+                    return;
+                } catch (IOException e) {
+                    Log.e(ImApp.LOG_TAG,"error playing audio: " + body,e);
+                }
+                
+                
             }
             
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+          
+            //set a general mime type not specific
+            if (mimeType != null)
+            {
+                intent.setDataAndType(Uri.parse( body ), mimeType);
+            }
+            else
+            {
+                intent.setData(Uri.parse( body ));
+            }
             
-        }
-        
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-      
-        //set a general mime type not specific
-        if (mimeType != null)
-        {
-            intent.setDataAndType(Uri.parse( body ), mimeType);
-        }
-        else
-        {
-            intent.setData(Uri.parse( body ));
-        }
-        
-        Context context = getContext().getApplicationContext();
-        
-        if (isIntentAvailable(context,intent))
-        {        
-            context.startActivity(intent);
-        }
-        else
-        {
-            Toast.makeText(getContext(), R.string.there_is_no_viewer_available_for_this_file_format, Toast.LENGTH_LONG).show();
-        }
-        
+            Context context = getContext().getApplicationContext();
+            
+            if (isIntentAvailable(context,intent))
+            {        
+                context.startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(getContext(), R.string.there_is_no_viewer_available_for_this_file_format, Toast.LENGTH_LONG).show();
+            }
+        }     
     }
     
     public static boolean isIntentAvailable(Context context, Intent intent) {  
@@ -463,13 +466,21 @@ public class MessageView extends FrameLayout {
     
     public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
         
-        File image = new File(uri.getPath());
+        java.io.File image = new java.io.File(uri.getPath());
 
+        if (!image.exists())
+        {
+            image = new info.guardianproject.iocipher.File(uri.getPath());
+            if (!image.exists())
+                return null;
+        }
+        
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
 
+        
         BitmapFactory.decodeFile(image.getPath(), options);
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
