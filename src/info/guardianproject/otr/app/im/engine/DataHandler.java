@@ -2,6 +2,7 @@ package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.app.im.IDataListener;
 
+import java.io.IOException;
 import java.util.Map;
 
 import net.java.otr4j.session.SessionStatus;
@@ -29,7 +30,7 @@ public interface DataHandler {
      * @param localUri URI of data
      * @param headers extra headrs or null
      */
-    void offerData(String offerId, Address us, String localUri, Map<String, String> headers);
+    void offerData(String offerId, Address us, String localUri, Map<String, String> headers) throws IOException;
     
     void setDataListener(IDataListener dataListener);
 
