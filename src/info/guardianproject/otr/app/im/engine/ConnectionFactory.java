@@ -70,7 +70,7 @@ public class ConnectionFactory {
         	return new SMSConnection();
         } */
         else {
-            throw new ImException("Unsupported protocol");
+            throw new ImException("Unsupported protocol: " + settings.get("im.protocol"));
         }
     }
 }
