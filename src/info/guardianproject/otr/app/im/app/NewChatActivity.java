@@ -1325,7 +1325,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
-            if (info != null && info.path != null)
+            if (info != null && info.path != null && new File(info.path).exists())
             {
                 IChatSession session = getCurrentChatSession();
            
