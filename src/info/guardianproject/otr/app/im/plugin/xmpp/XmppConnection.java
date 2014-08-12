@@ -1065,21 +1065,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             else
                 mConfig = new ConnectionConfiguration(domain, serverPort, mProxyInfo);
 
-            server = domain;
+            //server = domain;
 
         } else {
             debug(TAG, "(use server) ConnectionConfiguration(" + server + ", " + serverPort + ", "
                     + domain + ", mProxyInfo);");
             
-            String serviceName = domain;
+            //String serviceName = domain;
             
-            if (server != null && (!server.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
-                serviceName = server;
+            //if (server != null && (!server.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
+              //  serviceName = server;
             
             if (mProxyInfo == null)
-                mConfig = new ConnectionConfiguration(server, serverPort, serviceName);
+                mConfig = new ConnectionConfiguration(server, serverPort, domain);
             else
-                mConfig = new ConnectionConfiguration(server, serverPort, serviceName, mProxyInfo);
+                mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
         }
 
 
