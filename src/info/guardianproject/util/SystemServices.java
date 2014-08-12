@@ -157,9 +157,12 @@ public class SystemServices {
                     }
                 }
                 
-                cursor.close();
+               
             }
         }
+        
+        if (cursor != null)
+            cursor.close();
         
         return info;
     }
