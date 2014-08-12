@@ -1103,7 +1103,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (requireTls) { 
 
-            MemorizingTrustManager trustManager = ((ImApp)((Service)aContext).getApplication()).getTrustManager();
+            MemorizingTrustManager trustManager = ImApp.sImApp.getTrustManager();
             
             if (sslContext == null)
             {
