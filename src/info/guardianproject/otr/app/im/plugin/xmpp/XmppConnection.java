@@ -966,17 +966,26 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
 
-        mConnection.login(mUsername, mPassword, mResource);
-
-        mStreamHandler.notifyInitialLogin();
-        initServiceDiscovery();
-
-        sendPresencePacket();
-
-        mRoster = mConnection.getRoster();        
-        mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
-
-        getContactListManager().listenToRoster(mRoster);
+        if (mConnection.isConnected())
+        {
+            mConnection.login(mUsername, mPassword, mResource);
+    
+            mStreamHandler.notifyInitialLogin();
+            initServiceDiscovery();
+    
+            sendPresencePacket();
+    
+            mRoster = mConnection.getRoster();        
+            mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+    
+            getContactListManager().listenToRoster(mRoster);
+        }
+        else
+        {
+            disconnect();
+            disconnected(new ImErrorInfo(ImpsErrorInfo.SERVER_UNAVAILABLE,
+                    "not connected on login"));
+        }
 
     }
     
@@ -1065,21 +1074,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             else
                 mConfig = new ConnectionConfiguration(domain, serverPort, mProxyInfo);
 
-            server = domain;
+            //server = domain;
 
         } else {
             debug(TAG, "(use server) ConnectionConfiguration(" + server + ", " + serverPort + ", "
                     + domain + ", mProxyInfo);");
             
-            String serviceName = domain;
+            //String serviceName = domain;
             
-            if (server != null && (!server.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
-                serviceName = server;
+            //if (server != null && (!server.endsWith(".onion"))) //if a connect server was manually entered, and is not an .onion address
+              //  serviceName = server;
             
             if (mProxyInfo == null)
-                mConfig = new ConnectionConfiguration(server, serverPort, serviceName);
+                mConfig = new ConnectionConfiguration(server, serverPort, domain);
             else
-                mConfig = new ConnectionConfiguration(server, serverPort, serviceName, mProxyInfo);
+                mConfig = new ConnectionConfiguration(server, serverPort, domain, mProxyInfo);
         }
 
 

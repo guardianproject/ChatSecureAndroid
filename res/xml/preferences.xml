@@ -146,14 +146,13 @@
                 android:defaultValue="false"
                  />
         
-         <CheckBoxPreference
+         <Preference
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:dependency="pref_enable_notification"
-                android:key="pref_enable_custom_notification"
+                android:key="pref_notification_ringtone"
                 android:title="@string/notification_ringtone_title"
                 android:defaultValue="false"
                  />
-
          
          
 <!-- 
