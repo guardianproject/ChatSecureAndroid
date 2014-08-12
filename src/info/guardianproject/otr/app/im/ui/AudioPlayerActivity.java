@@ -60,6 +60,9 @@ public class AudioPlayerActivity extends Activity {
     
     @Override
     protected void onDestroy() {
+        
+        super.onDestroy();
+        
         if (streamer != null) {
             streamer.destroy();
         }
