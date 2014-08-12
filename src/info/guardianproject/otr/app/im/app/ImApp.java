@@ -113,7 +113,7 @@ public class ImApp extends Application {
     
     private Locale locale = null;
 
-    private static ImApp sImApp;
+    public static ImApp sImApp;
 
     IRemoteImService mImService;
 
@@ -239,13 +239,14 @@ public class ImApp extends Application {
     public void onCreate() {
         super.onCreate();
         
+        sImApp = this;
+        
         Debug.onAppStart();
         
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
         
         mConnections = new HashMap<Long, IImConnection>();        
         mApplicationContext = this;
-        sImApp = this;
         
         initTrustManager();
         
