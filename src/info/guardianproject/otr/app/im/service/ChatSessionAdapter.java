@@ -99,8 +99,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     
     OtrChatSessionAdapter mOtrChatSession;
     private OtrDataHandler mDataHandler;
+    
     private IDataListener mDataListener;
-
+    private DataHandlerListenerImpl mDataHandlerListener;
+    
     private boolean mAcceptTransfer = false;
     private boolean mWaitingForResponse = false;
     private boolean mAcceptAllTransfer = false;
@@ -136,7 +138,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     {
 
         mDataHandler = new OtrDataHandler(mChatSession);
-        mDataHandler.setDataListener(new DataHandlerListenerImpl());
+        mDataHandlerListener = new DataHandlerListenerImpl();
+        mDataHandler.setDataListener(mDataHandlerListener);
         
         String localUser = mConnection.getLoginUser().getAddress().getAddress();
         String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
@@ -302,10 +305,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
-    public void offerData(String offerId, String url, String type) {
+    public boolean offerData(String offerId, String url, String type) {
         if (mConnection.getState() == ImConnection.SUSPENDED) {
             // TODO send later
-            return;
+            return false;
         }
         
         HashMap<String, String> headers = null;
@@ -314,7 +317,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             headers.put("Mime-Type", type);
         }
         
-        mDataHandler.offerData(offerId, mConnection.getLoginUser().getAddress(), url, headers);
+        try
+        {
+            mDataHandler.offerData(offerId, mConnection.getLoginUser().getAddress(), url, headers);
+            return true;
+        }
+        catch (IOException ioe)
+        {
+            Log.w(ImApp.LOG_TAG,"unable to offer data",ioe);
+            return false;
+        }
     }
 
     /**
@@ -365,6 +377,9 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     public void registerChatListener(IChatListener listener) {
         if (listener != null) {
             mRemoteListeners.register(listener);
+            
+            if (mDataHandlerListener != null)
+                mDataHandlerListener.checkLastTransferRequest ();
         }
     }
 
@@ -841,7 +856,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         @Override
         public void onTransferComplete(boolean outgoing, String offerId, String from, String url, String mimeType, String filePath) {
             
-            File file = new File(filePath);
             
             try {
                 
@@ -859,7 +873,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                         Uri messageUri = Imps.insertMessageInDb(service.getContentResolver(),
                                 false, getId(),
                                 true, null,
-                                file.getCanonicalPath(), System.currentTimeMillis(), type,
+                                filePath, System.currentTimeMillis(), type,
                                 0, offerId, mimeType);
                         
                     }
@@ -869,7 +883,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                     }
                     
                 }
-                
+            
+                /**
                 if (mimeType != null && mimeType.startsWith("audio"))
                 {
                     MediaPlayer mp = new MediaPlayer();
@@ -883,7 +898,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                         // TODO Auto-generated catch block
                         //e.printStackTrace();
                     }
-                }
+                }*/
                     
             } catch (Exception e) {
              //   mHandler.showAlert(service.getString(R.string.error_chat_file_transfer_title), service.getString(R.string.error_chat_file_transfer_body));
@@ -945,6 +960,19 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
 
+        private String mLastTransferFrom;
+        private String mLastTransferUrl;
+        
+        public void checkLastTransferRequest ()
+        {
+            if (mLastTransferFrom != null)
+            {
+                onTransferRequested(mLastTransferUrl,mLastTransferFrom,mLastTransferFrom,mLastTransferUrl);
+                mLastTransferFrom = null;
+                mLastTransferUrl = null;
+            }
+        }
+        
         @Override
         public synchronized boolean onTransferRequested(String offerId, String from, String to, String transferUrl) {
             
@@ -963,14 +991,27 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                 try
                 {
                     final int N = mRemoteListeners.beginBroadcast();
-                    for (int i = 0; i < N; i++) {
-                        IChatListener listener = mRemoteListeners.getBroadcastItem(i);
-                        try {
-                            listener.onIncomingFileTransfer(from, transferUrl);
-                        } catch (RemoteException e) {
-                            // The RemoteCallbackList will take care of removing the
-                            // dead listeners.
+                    
+                    if (N > 0)
+                    {
+                        for (int i = 0; i < N; i++) {
+                            IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                            try {
+                                listener.onIncomingFileTransfer(from, transferUrl);
+                            } catch (RemoteException e) {
+                                // The RemoteCallbackList will take care of removing the
+                                // dead listeners.
+                            }
                         }
+                    }
+                    else
+                    {
+                        mLastTransferFrom = from;
+                        mLastTransferUrl = transferUrl;
+                        
+                        //reinstated body display here in the notification; perhaps add preferences to turn that off
+                        mStatusBarNotifier.notifyChat(mConnection.getProviderId(), mConnection.getAccountId(),
+                                getId(), from, from, "Incoming file request", false);
                     }
                 }
                 finally
