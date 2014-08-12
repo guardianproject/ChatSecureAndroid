@@ -966,17 +966,26 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
 
-        mConnection.login(mUsername, mPassword, mResource);
-
-        mStreamHandler.notifyInitialLogin();
-        initServiceDiscovery();
-
-        sendPresencePacket();
-
-        mRoster = mConnection.getRoster();        
-        mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
-
-        getContactListManager().listenToRoster(mRoster);
+        if (mConnection.isConnected())
+        {
+            mConnection.login(mUsername, mPassword, mResource);
+    
+            mStreamHandler.notifyInitialLogin();
+            initServiceDiscovery();
+    
+            sendPresencePacket();
+    
+            mRoster = mConnection.getRoster();        
+            mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
+    
+            getContactListManager().listenToRoster(mRoster);
+        }
+        else
+        {
+            disconnect();
+            disconnected(new ImErrorInfo(ImpsErrorInfo.SERVER_UNAVAILABLE,
+                    "not connected on login"));
+        }
 
     }
     
