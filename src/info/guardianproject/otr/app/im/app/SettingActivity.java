@@ -19,7 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -49,6 +50,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     EditTextPreference mHeartbeatInterval;
     
     EditTextPreference mThemeBackground;
+    Preference mNotificationRingtone;
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();        
@@ -89,18 +91,20 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         } else if (key.equals("pref_notification_vibrate")) {
             settings.setVibrate(prefs.getBoolean(key, true));
         } else if (key.equals("pref_notification_sound")) {
+            /**
             // TODO sort out notification sound pref
             if (prefs.getBoolean(key, true)) {
                 settings.setRingtoneURI("android.resource://" + getPackageName() + "/" + R.raw.notify);
             } else {
                 settings.setRingtoneURI(null);
-            }
+            }*/
         } else if (key.equals("pref_enable_custom_notification")) {
+            /*
             if (prefs.getBoolean(key, false)) {
                 settings.setRingtoneURI("android.resource://" + getPackageName() + "/" + R.raw.notify);
             } else {
                 settings.setRingtoneURI(ProviderSettings.RINGTONE_DEFAULT);
-            }
+            }*/
         }
         else if (key.equals("pref_foreground_enable")) {
             settings.setUseForegroundPriority(prefs.getBoolean(key, false));
@@ -139,12 +143,31 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
         mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
-        // TODO re-enable Ringtone preference
-        //mNotificationRingtone = (CheckBoxPreference) findPreference("pref_notification_ringtone");
+        
+        mNotificationRingtone = (EditTextPreference) findPreference("pref_notification_ringtone");
+        
+
+        mNotificationRingtone.setOnPreferenceClickListener(new OnPreferenceClickListener()
+        {
+
+            @Override
+            public boolean onPreferenceClick(Preference arg0) {
+              
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.notification_ringtone_title));
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                startActivityForResult(intent, 5);
+                return true;
+            }
+            
+        });
+        
         mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_enable");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
         
         mThemeBackground = (EditTextPreference) findPreference("pref_background");
+        
         
         mThemeBackground.setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
@@ -178,11 +201,35 @@ public class SettingActivity extends SherlockPreferenceActivity implements
                     mThemeBackground.getDialog().cancel();
                 }
             }
+           
+        }
+        else if (resultCode == Activity.RESULT_OK && requestCode == 5)
+        {
+            Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            ContentResolver cr = getContentResolver();        
+            Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+
+            Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
+                    Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
+
+            if (uri != null)
+            {
+
+                settings.setRingtoneURI(uri.toString());
+                
+            }
+            else
+            {
+                settings.setRingtoneURI(null);
+            }
+            
+            settings.close();
         }
         super.onActivityResult(requestCode, resultCode, data);
         
     }
 
+    
     private void showThemeChooserDialog ()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

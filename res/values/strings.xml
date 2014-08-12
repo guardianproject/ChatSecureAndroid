@@ -391,7 +391,7 @@
 		<string name="notification_vibrate_summary">Also vibrate when IM arrives</string>
 		<string name="notification_sound_title">Sound</string>
 		<string name="notification_sound_summary">Also play ringtone when IM arrives</string>
-		<string name="notification_ringtone_title">Use ChatSecure custom ringtone</string>
+		<string name="notification_ringtone_title">Select Custom Ringtone</string>
 		
 		<!-- Actions: Settings: General: Developer -->
 		<string name="pref_debug_title">Enable Debug Logs</string>
