@@ -430,9 +430,14 @@ android:anyDensity="true"
              android:stateNotNeeded="true"
              android:theme="@android:style/Theme.NoDisplay" />
         
-        <activity android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity" />
+        <activity android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity" 
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            />
         
-        <activity android:name="info.guardianproject.otr.app.im.ui.AudioPlayerActivity" />
+        <activity android:name="info.guardianproject.otr.app.im.ui.AudioPlayerActivity"
+            
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"
+             />
         
         <activity android:name="info.guardianproject.otr.app.im.ui.SecureCameraActivity" />
         
