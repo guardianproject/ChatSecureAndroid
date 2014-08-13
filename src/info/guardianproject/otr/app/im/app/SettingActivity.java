@@ -144,7 +144,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
         
-        mNotificationRingtone = (EditTextPreference) findPreference("pref_notification_ringtone");
+        mNotificationRingtone = findPreference("pref_notification_ringtone");
         
 
         mNotificationRingtone.setOnPreferenceClickListener(new OnPreferenceClickListener()
