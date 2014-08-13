@@ -27,6 +27,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 
 /** Activity used to pick a contact. */
-public class ContactsPickerActivity extends SherlockListActivity {
+public class ContactsPickerActivity extends SherlockListActivity  {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
     public final static String EXTRA_RESULT_USERNAME = "result";
@@ -53,8 +56,18 @@ public class ContactsPickerActivity extends SherlockListActivity {
     Uri mData;
     
     private String mSearchString;
-    
 
+    SearchView mSearchView = null;
+
+
+    // The loader's unique id. Loader ids are specific to the Activity or
+    // Fragment in which they reside.
+    private static final int LOADER_ID = 1;
+
+    // The callbacks through which we will interact with the LoaderManager.
+    private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
+    
+    private boolean mHideOffline = false;
     
     @Override
     public void onCreate(Bundle icicle) {
@@ -64,12 +77,21 @@ public class ContactsPickerActivity extends SherlockListActivity {
 
         setContentView(R.layout.contacts_picker_activity);
 
+        mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
+        setListAdapter(mAdapter);
+       
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+        Imps.ProviderSettings.QueryMap globalSettings = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
+        mHideOffline = globalSettings.getHideOfflineContacts();
         
-        doFilter("");
+        globalSettings.close();
+       
+        doFilterAsync("");
     }
     
-    SearchView mSearchView = null;
     
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
@@ -88,14 +110,14 @@ public class ContactsPickerActivity extends SherlockListActivity {
             public boolean onQueryTextChange(String newText) 
             {
                 mSearchString = newText;
-                doFilter(mSearchString);
+                doFilterAsync(mSearchString);
                 return true;
             }
 
             public boolean onQueryTextSubmit(String query) 
             {
                 mSearchString = query;
-                doFilter(mSearchString);
+                doFilterAsync(mSearchString);
                 
                 return true;
             }
@@ -136,20 +158,15 @@ public class ContactsPickerActivity extends SherlockListActivity {
         finish();
     }
     
+    public void doFilterAsync (final String query)
+    {
+        new Thread(new Runnable () { public void run () {
+            doFilter(query);
+        }}).start();
+    }
+    
     public void doFilter(String filterString) {
         mSearchString = filterString;
-        if (mAdapter == null) {
-            
-                mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
-
-                setListAdapter(mAdapter);
-            
-
-            //mLoaderCallbacks = new MyLoaderCallbacks();
-            //mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
-        } else {
-            //mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
-        }
         
         StringBuilder buf = new StringBuilder();
 
@@ -170,27 +187,23 @@ public class ContactsPickerActivity extends SherlockListActivity {
         //normal types not temporary
         buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
         
-        ContentResolver cr = getContentResolver();
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
-        Imps.ProviderSettings.QueryMap globalSettings = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
-
-        boolean hideOffline = globalSettings.getHideOfflineContacts();
-        
-        globalSettings.close();
        
-        if(hideOffline)
+        if(mHideOffline)
         {
             buf.append(" AND ");
             buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
            
         }
         
-        Cursor cursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
+        
+        mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
+        mHandlerCursorUpdater.sendEmptyMessage(0);
         
-        mAdapter.changeCursor(cursor);
     }
+    
+    private Cursor mCursor;
     
     @Override
     protected void onDestroy() {
@@ -240,7 +253,15 @@ public class ContactsPickerActivity extends SherlockListActivity {
             
         }
     }
+    
 
+    private Handler mHandlerCursorUpdater = new Handler ()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            mAdapter.changeCursor(mCursor);
 
+        }    
+    };
    
 }
