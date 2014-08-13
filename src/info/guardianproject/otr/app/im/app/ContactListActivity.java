@@ -42,7 +42,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.widget.SearchViewCompat;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -50,18 +49,17 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.CursorAdapter;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class ContactListActivity extends ThemeableActivity implements View.OnCreateContextMenuListener, ContactListListener {
+public class ContactListActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -116,15 +114,18 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         }
         
         mApp = (ImApp)getApplication();
+        mHandler = new MyHandler(this);
         
     }
     
     private void initAccount ()
     {
 
-
+        
         
         ContentResolver cr = getContentResolver();
+        
+        /**
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
         if (c == null) {
@@ -138,15 +139,15 @@ public class ContactListActivity extends ThemeableActivity implements View.OnCre
         }
 
         mProviderId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
-        mHandler = new MyHandler(this);
+       */
 
-        String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
+       // String username = c.getString(c.getColumnIndexOrThrow(Imps.Account.USERNAME));
 
         //c.close();
 
        // BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
        // setTitle(brandingRes.getString(BrandingResourceIDs.STRING_BUDDY_LIST_TITLE, username));
-        setTitle(username);
+       // setTitle(username);
        // getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
          //       brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 

@@ -122,6 +122,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     private ViewPager mChatPager;
     private ChatViewPagerAdapter mChatPagerAdapter;
     
+    private SlidingMenu mDrawer;
+    
     private SimpleAlertHandler mHandler;
     
     private long mLastAccountId = -1;
@@ -367,8 +369,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        if (menu.isMenuShowing()) {
-            menu.showContent();
+        if (mDrawer.isMenuShowing()) {
+            mDrawer.showContent();
             return;
         }
         int currentPos = mChatPager.getCurrentItem();
@@ -379,70 +381,25 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         super.onBackPressed();
     }
-
-    private SlidingMenu menu = null;
     
     private void initSideBar ()
     {
         
-        menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);        
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        menu.setShadowWidthRes(R.dimen.shadow_width);
-        menu.setShadowDrawable(R.drawable.shadow);
-        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        menu.setFadeDegree(0.35f);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        mDrawer = new SlidingMenu(this);
+        mDrawer.setMode(SlidingMenu.LEFT);        
+        mDrawer.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        mDrawer.setShadowWidthRes(R.dimen.shadow_width);
+        mDrawer.setShadowDrawable(R.drawable.shadow);
+        mDrawer.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        mDrawer.setFadeDegree(0.35f);
+        mDrawer.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
      
-        menu.setMenu(R.layout.fragment_drawer);
+        mDrawer.setMenu(R.layout.fragment_drawer);
         
-        this.getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
-         
-        /*
-        btnDrawerPanic.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-               
-                Uri packageURI = Uri.parse("package:info.guardianproject.otr.app.im");
-
-                Intent intent = new Intent(Intent.ACTION_DELETE, packageURI);
-                startActivity(intent);
-                  
-                
-            }
-            
-        });*/
+        mDrawer.showMenu();
         
-        /*
-        btnDrawerGroupChat.setOnClickListener(new OnClickListener ()
-        {
-
-            @Override
-            public void onClick(View v) {
-               
-                showGroupChatDialog();
-                        
-                if (menu.isMenuShowing())
-                    menu.toggle();
-                
-            }
-            
-        });*/
-        
-
-        
-        /*
-        btnDrawerExit.setOnClickListener(new OnClickListener ()
-        {
-            @Override
-            public void onClick(View v) {
-               
-                doHardShutdown();
-            }
-            
-        });*/
+        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+     
     }
     
     private void showInviteContactDialog ()
@@ -936,9 +893,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             
             return true;
 
-      
         case android.R.id.home:
-            menu.toggle();
+            mDrawer.toggle();
             return true;
             
         case R.id.menu_view_accounts:

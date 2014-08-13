@@ -38,13 +38,19 @@ public class AudioPlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         filename = getIntent().getStringExtra(FILENAME);
         mimeType = getIntent().getStringExtra(MIMETYPE);
-        // ui
+        
+        // TODO; we will make this an invisible activity for now
+        
+        /**
         setContentView(R.layout.audio_player_activity);
         filenameTextView = (TextView) findViewById(R.id.audio_player_text);
         filenameTextView.setText(new File(filename).getName());
 
         playButton = (Button) findViewById(R.id.audio_player_play);
         playButton.setOnClickListener(onClickPlay);
+        */
+        
+        play();
     }
 
     @Override
@@ -96,6 +102,7 @@ public class AudioPlayerActivity extends Activity {
     }
 
     private void refreshUi() {
+        /**
         if (mediaPlayer == null) {
             Log.e(TAG, "refreshUi: No player");
             playButton.setText("Play");
@@ -108,7 +115,7 @@ public class AudioPlayerActivity extends Activity {
         } else {
             Log.e(TAG, "refreshUi: Play");
             playButton.setText("Play");
-        }
+        }*/
     }
 
     private MediaPlayer mediaPlayer;
@@ -155,6 +162,7 @@ public class AudioPlayerActivity extends Activity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 killPlayer();
+                finish();
             }
         });
 

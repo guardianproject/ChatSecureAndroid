@@ -454,14 +454,10 @@ public class AccountActivity extends SherlockActivity {
                 {
                     if (pass.equals(passConf))
                     {
-                        createNewAccount(mUserName, pass, mAccountId, useTor);
                         setAccountKeepSignedIn(rememberPass);
-                        mSignInHelper.activateAccount(mProviderId, mAccountId);
-                       // setResult(RESULT_OK);
-                        //mSignInHelper.signIn(pass, mProviderId, accountId, isActive);
-                        //isSignedIn = true;
-                        //updateWidgetState();
-                       // finish();
+                        
+                        createNewAccount(mUserName, pass, mAccountId, useTor);
+                        
                     }
                     else
                     {
@@ -1081,10 +1077,20 @@ public class AccountActivity extends SherlockActivity {
                 if (result != null)
                 {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
-                }
+                    //AccountActivity.this.setResult(Activity.RESULT_CANCELED);
+                    //AccountActivity.this.finish();
+                    
+                    
                 
-                AccountActivity.this.setResult(Activity.RESULT_CANCELED);
-                AccountActivity.this.finish();
+                }
+                else
+                {
+
+                    mSignInHelper.activateAccount(mProviderId, mAccountId);
+                    
+                    AccountActivity.this.setResult(Activity.RESULT_OK);
+                    AccountActivity.this.finish();
+                }
                 
                
             }

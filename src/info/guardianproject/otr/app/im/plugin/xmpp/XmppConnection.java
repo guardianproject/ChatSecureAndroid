@@ -1271,6 +1271,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
 
+        initPresenceProcessor ();
+        
         mConnection.addPacketListener(new PacketListener() {
 
             @Override
@@ -1937,53 +1939,35 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
+                /*
                 qPresence.push(presence);
                 
                 if (mTimerPresence == null)
                 {
 
-                    mTimerPresence = new Timer();
-
-                    mTimerPresence.scheduleAtFixedRate(new TimerTask() {
-
-                        public void run() {
-                            
-                            try
-                            {
-                                org.jivesoftware.smack.packet.Presence p = null;
-                                
-                                if (qPresence.size() > 0)
-                                    while ((p = qPresence.poll())!=null)
-                                    {
-                                        handlePresenceChanged(p);
-                                    }
-
-                            
-                            }
-                            catch (NoSuchElementException e)
-                            {
-                                //annoying, but just ignore
-                            }
-                            catch (Exception e)
-                            {
-                                Log.e(ImApp.LOG_TAG,"error processing presence",e);
-                            }
-                            
-                            loadVCardsAsync();
-                            
-                         }
-
-                      }, 1000, 5000);
-                }
+                    
+                }*/
                 
             }
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
+                /*
+                Collection<Contact> contacts = new ArrayList<Contact>();
 
-                execute(new UpdateContactsRunnable(mContactListManager,addresses));
-              //  Log.d(ImApp.LOG_TAG,"got entries updated - length=" + addresses.size());
+                for (String address :addresses)
+                {
+                    Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
+
+                    if (contact != null)
+                        contacts.add(contact);
+
+
+                }
+
+                mContactListManager.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
+              */
             }
 
             @Override
@@ -1995,7 +1979,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     for (String address : addresses)
                     {
-                        Contact contact = makeContact(address);
+                        Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
                         mContactListManager.notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_REMOVED, contact);
                     }
 
@@ -2009,41 +1993,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-                loadContactListsAsync();
+             //   loadContactListsAsync();
             }
         };
 
-        class UpdateContactsRunnable implements Runnable {
-
-            private ContactListManager mConMgr;
-            private Collection<String> mAddresses;
-
-            public UpdateContactsRunnable (ContactListManager conMgr, Collection<String> addresses)
-            {
-                mConMgr = conMgr;
-                mAddresses = addresses;
-            }
-
-            public void run ()
-            {
-                Collection<Contact> contacts = new ArrayList<Contact>();
-
-                for (String address :mAddresses)
-                {
-                    Contact contact = mConMgr.getContact(XmppAddress.stripResource(address));
-
-                    if (contact != null)
-                        contacts.add(contact);
-
-
-                }
-
-                mConMgr.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
-
-            }
-
-
-        }
+      
 
 
         @Override
@@ -2905,5 +2859,40 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
 
+    private void initPresenceProcessor ()
+    {
+        mTimerPresence = new Timer();
+
+        mTimerPresence.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+                
+                try
+                {
+                    org.jivesoftware.smack.packet.Presence p = null;
+                    
+                    if (qPresence.size() > 0)
+                        while ((p = qPresence.poll())!=null)
+                        {
+                            handlePresenceChanged(p);
+                        }
+
+                
+                }
+                catch (NoSuchElementException e)
+                {
+                    //annoying, but just ignore
+                }
+                catch (Exception e)
+                {
+                    Log.e(ImApp.LOG_TAG,"error processing presence",e);
+                }
+                
+                loadVCardsAsync();
+                
+             }
+
+          }, 1000, 3000);
+    }
 
 }

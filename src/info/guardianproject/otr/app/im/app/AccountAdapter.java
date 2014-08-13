@@ -149,29 +149,33 @@ public class AccountAdapter extends CursorAdapter {
                 
                 
                 Cursor pCursor = resolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(ai.providerId)},null);
-                Imps.ProviderSettings.QueryMap settings =
-                        new Imps.ProviderSettings.QueryMap(pCursor, resolver, ai.providerId, false , null);
-                
-                as.connectionStatus = ai.dbConnectionStatus;
-                as.activeUserName = ai.activeUserName;
-                as.domain = settings.getDomain();
-                as.host = settings.getServer();
-                as.port = settings.getPort();
-                as.isTor = settings.getUseTor();
-                
-                IImConnection conn = mApp.getConnection(ai.providerId);
-                if (conn == null) {
-                    as.connectionStatus = ImConnection.DISCONNECTED;
-                } else {
-                    try {
-                        as.connectionStatus = conn.getState();
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+               
+                if (pCursor != null)
+                {
+                    Imps.ProviderSettings.QueryMap settings =
+                            new Imps.ProviderSettings.QueryMap(pCursor, resolver, ai.providerId, false , null);
+                    
+                    as.connectionStatus = ai.dbConnectionStatus;
+                    as.activeUserName = ai.activeUserName;
+                    as.domain = settings.getDomain();
+                    as.host = settings.getServer();
+                    as.port = settings.getPort();
+                    as.isTor = settings.getUseTor();
+                    
+                    IImConnection conn = mApp.getConnection(ai.providerId);
+                    if (conn == null) {
+                        as.connectionStatus = ImConnection.DISCONNECTED;
+                    } else {
+                        try {
+                            as.connectionStatus = conn.getState();
+                        } catch (RemoteException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
+    
+                    settings.close();
                 }
-
-                settings.close();
                 return as;
             }
             

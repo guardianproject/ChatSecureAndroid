@@ -149,10 +149,7 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         
     }
     
-    
-  
 
-    
     protected void gotoChats()
     {
 
@@ -625,10 +622,10 @@ public class AccountWizardActivity extends SherlockFragmentActivity implements V
         }
         else if (requestCode == REQUEST_CREATE_ACCOUNT)
         {
-            if (resultCode == RESULT_OK)
-            {
+           // if (resultCode == RESULT_OK)
+           // {
                 gotoChats();
-            }
+           // }
         }
     }
 
