@@ -27,6 +27,7 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -1107,7 +1108,34 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return list.size() > 0;
     }
     
-    private void handleSend( Uri contentUri, String mimeType, boolean autoDelete ) {
+    private void handleSendDelete( final Uri contentUri, final String mimeType, boolean promptDelete ) {
+        // prompt to delete original
+        if (promptDelete) {
+            new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("Delete Original?")
+            .setMessage("This file will be copied into the secured storage before being sent.  Would you like to delete the original file from the device's unsecured storage?")
+            .setPositiveButton("Delete Original", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // send - delete original
+                    handleSend( contentUri, mimeType, true );
+                }
+            })
+            .setNegativeButton("Keep Original", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // send - o not delete original
+                    handleSend( contentUri, mimeType, false );
+                }
+            })
+            .show();
+        } else {
+            // send - do not delete original
+            handleSend( contentUri, mimeType, false );
+        }
+    }
+        
+    private void handleSend( Uri contentUri, String mimeType, boolean delete ) {
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
@@ -1119,7 +1147,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 return;
             }
             // autu delete
-            if (autoDelete) {
+            if (delete) {
                 boolean deleted = delete(contentUri);
                 if (!deleted) {
                     throw new IOException("Error deleting " + contentUri);
@@ -1151,8 +1179,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if( uri == null ) {
                     return ;
                 }
-                boolean autoDelete = (requestCode == REQUEST_SEND_AUDIO); // auto delete audio 
-                handleSend(uri, null, autoDelete);
+                boolean promptDelete = (requestCode == REQUEST_SEND_AUDIO); // prompt to delete original 
+                handleSendDelete(uri, null, promptDelete);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
@@ -1172,7 +1200,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSend(mLastPhoto, "image/*", true);
+                                        handleSendDelete(mLastPhoto, "image/*", true);
                                     }
                                 });
                             }
