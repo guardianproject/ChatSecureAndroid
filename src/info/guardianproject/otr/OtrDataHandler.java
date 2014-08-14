@@ -279,7 +279,7 @@ public class OtrDataHandler implements DataHandler {
                 
                 
                 File fileGet = new File(offer.getUri());
-                java.io.FileInputStream is = new java.io.FileInputStream(fileGet);                
+                FileInputStream is = new FileInputStream(fileGet);                
                 readIntoByteBuffer(byteBuffer, is, start, end);
                 is.close();
                 
@@ -338,7 +338,7 @@ public class OtrDataHandler implements DataHandler {
         
     }
     
-    private static void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, java.io.FileInputStream is, int start, int end)
+    private static void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
         //Log.e( TAG, "readIntoByteBuffer:" + (end-start));
         if (start != is.skip(start)) {
@@ -514,7 +514,7 @@ public class OtrDataHandler implements DataHandler {
     @Override
     public void offerData(String id, Address us, String localUri, Map<String, String> headers) throws IOException {
         // TODO stash localUri and intended recipient
-        long length = new java.io.File(localUri).length();
+        long length = new File(localUri).length();
         if (length > MAX_TRANSFER_LENGTH) {
             throw new IOException("Length too large: " + length);
         }
@@ -523,7 +523,7 @@ public class OtrDataHandler implements DataHandler {
         headers.put("File-Length", String.valueOf(length));
        
         try {
-            java.io.FileInputStream is = new java.io.FileInputStream(localUri);
+            FileInputStream is = new FileInputStream(localUri);
             headers.put("File-Hash-SHA1", sha1sum(is));
             is.close();
             
@@ -862,7 +862,7 @@ public class OtrDataHandler implements DataHandler {
     
     }
     
-    private String sha1sum(java.io.FileInputStream fis) throws IOException {
+    private String sha1sum(FileInputStream fis) throws IOException {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA1");

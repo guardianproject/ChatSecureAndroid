@@ -36,6 +36,7 @@ import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -1104,7 +1105,43 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 
             PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
-}
+    }
+    
+    private void handleSend( Uri contentUri, String mimeType, boolean autoDelete ) {
+        try {
+            // import
+            FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
+            Uri vfsUri = IocVfs.importContent(info.path);
+            // send
+            boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
+            if (!sent) {
+                // not deleting if not sent
+                return;
+            }
+            // autu delete
+            if (autoDelete) {
+                boolean deleted = delete(contentUri);
+                if (!deleted) {
+                    throw new IOException("Error deleting " + contentUri);
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
+            e.printStackTrace();
+        }
+    }
+    
+    private boolean delete(Uri uri) {
+        if (uri.getScheme().equals("content")) {
+            int deleted = getContentResolver().delete(uri,null,null);
+            return deleted == 1;
+        }
+        if (uri.getScheme().equals("file")) {
+            java.io.File file = new java.io.File(uri.toString().substring(5));
+            return file.delete();
+        }
+        return false;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
@@ -1114,7 +1151,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if( uri == null ) {
                     return ;
                 }
-                handleSend(uri,null);
+                boolean autoDelete = (requestCode == REQUEST_SEND_AUDIO); // auto delete audio 
+                handleSend(uri, null, autoDelete);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
@@ -1134,7 +1172,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSend(mLastPhoto,"image/*");
+                                        handleSend(mLastPhoto, "image/*", true);
                                     }
                                 });
                             }
@@ -1277,11 +1315,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
     }
     
-    private void handleSend(Uri uri, String mimeType) {
+    private boolean handleSend(Uri uri, String mimeType) {
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
-            if (info != null && info.path != null && new File(info.path).exists())
+            if (info != null && info.path != null && IocVfs.exists(info.path))
             {
                 IChatSession session = getCurrentChatSession();
            
@@ -1297,9 +1335,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     ChatView cView = getCurrentChatView();
                     int type = cView.isOtrSessionVerified() ? Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED : Imps.MessageType.OUTGOING_ENCRYPTED;
                     Imps.insertMessageInDb(
-                            getContentResolver(), false, session.getId(), true, null, this.getRealPathFromURI(uri),
+                            getContentResolver(), false, session.getId(), true, null, uri.toString(),
                             System.currentTimeMillis(), type,
                             0, offerId, info.type);
+                    return true; // sent 
                 }
             }
             else
@@ -1309,6 +1348,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         } catch (RemoteException e) {
            Log.e(ImApp.LOG_TAG,"error sending file",e);
         }
+        return false; // was not sent
     }
 
     void showInvitationHasSent(String contact) {

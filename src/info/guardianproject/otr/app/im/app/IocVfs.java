@@ -4,11 +4,13 @@
 package info.guardianproject.otr.app.im.app;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,6 +31,7 @@ public class IocVfs {
     private static String dbFile;
     private static VirtualFileSystem vfs;
     private static final String BLOB_NAME = "media.db";
+    private static final String CONTENT_PATH = "/Content";
     private static String password;
     
     private static void init(Context context) {
@@ -79,7 +82,6 @@ public class IocVfs {
     }
     
     public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
-        
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -125,5 +127,56 @@ public class IocVfs {
             password = password.substring(0, 32);
         IocVfs.password = password;
         init(context);
+    }
+
+    /**
+     * Copy device content into vfs. 
+     * All imported content is stored under CONTENT_PATH, retaining the original full path.
+     * @param sourcePath
+     * @return vfs uri
+     * @throws IOException 
+     */
+    public static Uri importContent(String sourcePath) throws IOException {
+        list("/");
+        String targetPath = CONTENT_PATH + sourcePath;
+        copyToVfs( sourcePath, targetPath );
+        list("/");
+        return vfsUri(targetPath);
+    }
+    
+    public static void copyToVfs(String sourcePath, String targetPath) throws IOException {
+        // create the target directories tree
+        mkdirs( targetPath );
+        // copy
+        java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(sourcePath));
+        FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
+        
+        byte[] b = new byte[8*1024];
+        int length;
+
+        while ((length = fis.read(b)) != -1) {
+            fos.write(b, 0, length);
+        }
+
+        fos.close();
+        fis.close();
+    }
+    
+    private static void mkdirs(String targetPath) throws IOException {
+        File targetFile = new File(targetPath);
+        if (!targetFile.exists()) {
+            String dirPath = targetFile.getAbsolutePath().substring(0, targetFile.getAbsolutePath().lastIndexOf(File.separator));
+            File dirFile = new File(dirPath);
+            if (!dirFile.exists()) {
+                boolean created = dirFile.mkdirs();
+                if (!created) {
+                    throw new IOException("Error creating " + targetPath);
+                }
+            }
+        }
+    }
+
+    public static boolean exists(String path) {
+        return new File(path).exists();
     }
 }
