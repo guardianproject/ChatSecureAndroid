@@ -926,10 +926,46 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void endCurrentChat ()
     {
-        if (getCurrentChatView() != null)
+        if (getCurrentChatView() != null) {
+            try {
+                deleteSessionVfs();
+            } catch (RemoteException e) {
+                // TODO error
+                e.printStackTrace();
+            }
             getCurrentChatView().closeChatSession(true);
-        
+        }
         updateChatList();
+        
+    }
+    
+    private void deleteSessionVfs() throws RemoteException {
+        // get session name
+        IChatSession session = getCurrentChatSession();
+        final String sessionName = session.getName();
+        // prompt
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle("Delete Chat Secured Storage?")
+        .setMessage("All the session's upload and download files will be permanently deleted. Warning: this operation can not be undone!")
+        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // delete session's storage
+                try {
+                    IocVfs.delete( "/" + sessionName);
+                } catch (IOException e) {
+                    // TODO error handling ?
+                    e.printStackTrace();
+                }
+            }
+        })
+        .setNegativeButton("Keep Files", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        })
+        .show();        
     }
     
     private void startContactPicker() {

@@ -65,9 +65,28 @@ public class IocVfs {
                 list(fullname+"/");
             } else {
                 File full = new File(fullname);
-                Log.e(TAG, fullname + "  " + full.exists());
+                Log.e(TAG, fullname + " " + full.length());
             }
         }
+    }
+    
+    public static void delete(String parentName) throws IOException {
+        File parent = new File(parentName);
+        // if a file or an empty directory - delete it
+        if (!parent.isDirectory()  ||  parent.list().length == 0 ) {
+            Log.e(TAG, "delete:" + parent );
+            if (!parent.delete()) {
+                throw new IOException("Error deleting " + parent);
+            }
+            return;
+        }
+        // directory - recurse
+        String[] list = parent.list();
+        for (int i = 0 ; i < list.length ; i++) {
+            String childName = parentName + "/" + list[i];
+            delete( childName );
+        }
+        delete( parentName );
     }
     
     private static final String VFS_SCHEME = "vfs";
