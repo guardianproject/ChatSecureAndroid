@@ -31,7 +31,6 @@ public class IocVfs {
     private static String dbFile;
     private static VirtualFileSystem vfs;
     private static final String BLOB_NAME = "media.db";
-    private static final String CONTENT_PATH = "/Content";
     private static String password;
     
     private static void init(Context context) {
@@ -131,14 +130,16 @@ public class IocVfs {
 
     /**
      * Copy device content into vfs. 
-     * All imported content is stored under CONTENT_PATH, retaining the original full path.
+     * All imported content is stored under /SESSION_NAME/
+     * The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over 
      * @param sourcePath
      * @return vfs uri
      * @throws IOException 
      */
-    public static Uri importContent(String sourcePath) throws IOException {
+    public static Uri importContent(String sessionName, String sourcePath) throws IOException {
         list("/");
-        String targetPath = CONTENT_PATH + sourcePath;
+        String targetPath = "/" + sessionName + "/" + sourcePath;
         copyToVfs( sourcePath, targetPath );
         list("/");
         return vfsUri(targetPath);

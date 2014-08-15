@@ -1139,7 +1139,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
-            Uri vfsUri = IocVfs.importContent(info.path);
+            IChatSession session = getCurrentChatSession();
+            if (session == null) {
+                throw new Exception("Error getting current session");
+            }
+            Uri vfsUri = IocVfs.importContent(session.getName(), info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {

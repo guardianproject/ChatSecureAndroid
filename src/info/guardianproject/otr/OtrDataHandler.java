@@ -2,7 +2,6 @@ package info.guardianproject.otr;
 
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
-import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.RandomAccessFile;
 import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.app.ImApp;
@@ -19,7 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -62,7 +60,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
 import android.net.Uri;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -726,27 +723,34 @@ public class OtrDataHandler implements DataHandler {
         
         private RandomAccessFile openFile(String url) throws FileNotFoundException {
             debug( "openFile: url " + url) ;
+            String sessionName = mChatSession.getParticipant().getAddress().getUser();
             String filename = getFilenameFromUrl(url);
-            localFilename = getLocalFilename(filename);
+            localFilename = getLocalFilename(sessionName, filename);
             debug( "openFile: localFilename " + localFilename) ;
             info.guardianproject.iocipher.RandomAccessFile ras = new info.guardianproject.iocipher.RandomAccessFile(localFilename, "rw");
             return ras;
         }
         
-        private String getLocalFilename(String filename) {
+        /*
+         * Create a local file name. 
+         * If the filename exists, iterate using a counter, to avoid overwrite
+         */
+        private String getLocalFilename(String sessionName, String filename) {
             int count = 0 ;
             String localFilename;
             File file;
             do {
-                localFilename = getLocalFilename(filename, count++);
+                localFilename = getLocalFilename(sessionName, filename, count++);
                 file = new File(localFilename);
             } while(file.exists());
             
             return localFilename;
         }
-        
-        private String getLocalFilename(String filename, int count) {
-            String root = "/" + Environment.DIRECTORY_DOWNLOADS + "/";
+        /*
+         * create a filename with a counter d:  filename(d).ext
+         */
+        private String getLocalFilename(String sessionName, String filename, int count) {
+            String root = "/" + sessionName + "/download/";
             if (count == 0 ) {
                 return root + filename ;
             }
