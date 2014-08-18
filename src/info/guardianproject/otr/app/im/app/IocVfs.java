@@ -70,7 +70,18 @@ public class IocVfs {
         }
     }
     
-    public static void delete(String parentName) throws IOException {
+    public static void deleteSession( String username ) throws IOException {
+        String dirName = strip(username);
+        File file = new File(dirName);
+        // if the session doesnt have any ul/dl files - bail
+        if (!file.exists()) {
+            return;
+        }
+        // delete recursive 
+        delete( dirName );
+    }
+    
+    private static void delete(String parentName) throws IOException {
         File parent = new File(parentName);
         // if a file or an empty directory - delete it
         if (!parent.isDirectory()  ||  parent.list().length == 0 ) {
@@ -156,9 +167,11 @@ public class IocVfs {
      * @return vfs uri
      * @throws IOException 
      */
-    public static Uri importContent(String sessionName, String sourcePath) throws IOException {
+    public static Uri importContent(String username, String sourcePath) throws IOException {
         list("/");
-        String targetPath = "/" + sessionName + "/" + sourcePath;
+        File sourceFile = new File(sourcePath);
+        String targetPath = "/" + strip(username) + "/upload/" + sourceFile.getName();
+        targetPath = createUniqueFilename(targetPath);
         copyToVfs( sourcePath, targetPath );
         list("/");
         return vfsUri(targetPath);
@@ -199,4 +212,37 @@ public class IocVfs {
     public static boolean exists(String path) {
         return new File(path).exists();
     }
+    
+    private static String createUniqueFilename( String filename ) {
+        if (!exists(filename)) {
+            return filename;
+        }
+        int count = 1;
+        String uniqueName;
+        File file;
+        do {
+            uniqueName = formatUnique(filename, count++);
+            file = new File(uniqueName);
+        } while(file.exists());
+        
+        return uniqueName;
+    }
+    
+    private static String formatUnique(String filename, int counter) {
+        int lastDot = filename.lastIndexOf(".");
+        String name = filename.substring(0,lastDot);
+        String ext = filename.substring(lastDot);
+        return name + "(" + counter + ")" + ext;
+    }
+    
+    public static String strip(String string) {
+        return string.replace("@", "_").replace(".", "_");
+    }
+
+    public static String getDownloadFilename(String username, String filenameFromUrl) {
+        String filename = "/" + strip(username) + "/download/" + filenameFromUrl;
+        String uniqueFilename = createUniqueFilename(filename);
+        return uniqueFilename;
+    }
+
 }

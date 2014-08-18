@@ -929,7 +929,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         if (getCurrentChatView() != null) {
             try {
                 deleteSessionVfs();
-            } catch (RemoteException e) {
+            } catch (Exception e) {
                 // TODO error
                 e.printStackTrace();
             }
@@ -939,10 +939,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    private void deleteSessionVfs() throws RemoteException {
+    private void deleteSessionVfs() throws Exception {
         // get session name
-        IChatSession session = getCurrentChatSession();
-        final String sessionName = session.getName();
+        final String username = getCurrentChatUsername();
         // prompt
         new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
         .setTitle("Delete Chat Secured Storage?")
@@ -952,7 +951,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void onClick(DialogInterface dialog, int which) {
                 // delete session's storage
                 try {
-                    IocVfs.delete( "/" + sessionName);
+                    IocVfs.deleteSession("/" + username);
                 } catch (IOException e) {
                     // TODO error handling ?
                     e.printStackTrace();
@@ -1175,11 +1174,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
-            IChatSession session = getCurrentChatSession();
-            if (session == null) {
-                throw new Exception("Error getting current session");
-            }
-            Uri vfsUri = IocVfs.importContent(session.getName(), info.path);
+            String username = getCurrentChatUsername();
+            Uri vfsUri = IocVfs.importContent(username, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1245,8 +1241,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                                 });
                             }
                         });
-                
-              
             }
             else if (requestCode == REQUEST_TAKE_PICTURE_SECURE)
             {
@@ -1342,6 +1336,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
 
         return null;
+    }
+    
+    private String getCurrentChatUsername() throws Exception {
+        int currentPos = mChatPager.getCurrentItem();
+        if (currentPos == 0)
+            throw new Exception("Error getting user name");
+        Cursor cursorChats = mChatPagerAdapter.getCursor();
+        cursorChats.moveToPosition(currentPos - 1);
+        String username = cursorChats.getString(ChatView.USERNAME_COLUMN);
+        return username;
     }
     
     private IChatSessionManager getChatSessionManager(long providerId) {

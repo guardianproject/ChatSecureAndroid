@@ -723,41 +723,12 @@ public class OtrDataHandler implements DataHandler {
         
         private RandomAccessFile openFile(String url) throws FileNotFoundException {
             debug( "openFile: url " + url) ;
-            String sessionName = mChatSession.getParticipant().getAddress().getUser();
+            String username = mChatSession.getParticipant().getAddress().getAddress();
             String filename = getFilenameFromUrl(url);
-            localFilename = getLocalFilename(sessionName, filename);
+            localFilename = IocVfs.getDownloadFilename( username, filename );
             debug( "openFile: localFilename " + localFilename) ;
             info.guardianproject.iocipher.RandomAccessFile ras = new info.guardianproject.iocipher.RandomAccessFile(localFilename, "rw");
             return ras;
-        }
-        
-        /*
-         * Create a local file name. 
-         * If the filename exists, iterate using a counter, to avoid overwrite
-         */
-        private String getLocalFilename(String sessionName, String filename) {
-            int count = 0 ;
-            String localFilename;
-            File file;
-            do {
-                localFilename = getLocalFilename(sessionName, filename, count++);
-                file = new File(localFilename);
-            } while(file.exists());
-            
-            return localFilename;
-        }
-        /*
-         * create a filename with a counter d:  filename(d).ext
-         */
-        private String getLocalFilename(String sessionName, String filename, int count) {
-            String root = "/" + sessionName + "/download/";
-            if (count == 0 ) {
-                return root + filename ;
-            }
-            int lastDot = filename.lastIndexOf(".");
-            String name = filename.substring(0,lastDot);
-            String ext = filename.substring(lastDot);
-            return root + name + "(" + count + ")" + ext;
         }
         
         public String closeFile() throws IOException {
