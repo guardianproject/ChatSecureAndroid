@@ -3,21 +3,19 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 /**

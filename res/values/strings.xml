@@ -284,7 +284,10 @@
         <string name="keep_files">Keep Files</string>
         <string name="delete_chat_session_secured_storage">Delete Chat Session Secured Storage?</string>
         <string name="all_files_will_be_deleted">All the session\'s upload and download files will be permanently deleted. Warning: this operation can not be undone!</string>
-	
+        <string name="delete_original">Delete Original?</string>
+        <string name="this_file_will_be_copied">This file will be copied into the secured storage before being sent.  Would you like to delete the original file from the device\'s unsecured storage?</string>
+        <string name="keep">Keep</string>
+        	
 		<!-- Views: Chat: Group -->
 		<string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to join a group chat.</string>
 		<string name="invitation_sent_prompt"> Invitation has been sent to <xliff:g id="user">%1$s</xliff:g>.</string>

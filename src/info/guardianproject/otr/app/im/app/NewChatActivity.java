@@ -27,7 +27,6 @@ import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListList
 import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -1150,16 +1149,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         // prompt to delete original
         if (promptDelete) {
             new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle("Delete Original?")
-            .setMessage("This file will be copied into the secured storage before being sent.  Would you like to delete the original file from the device's unsecured storage?")
-            .setPositiveButton("Delete Original", new DialogInterface.OnClickListener() {
+            .setTitle(getString(R.string.delete_original))
+            .setMessage(getString(R.string.this_file_will_be_copied))
+            .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // send - delete original
                     handleSend( contentUri, mimeType, true );
                 }
             })
-            .setNegativeButton("Keep Original", new DialogInterface.OnClickListener() {
+            .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // send - o not delete original
