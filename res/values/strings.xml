@@ -39,7 +39,7 @@
 		<string name="btn_next">Next</string>
 		<string name="btn_back">Back</string>
 		<string name="connect">Connect</string>
-		
+
 		<!-- Views -->
 		<string name="lock_screen_open">Open</string>
 		<string name="title_activity_lock_screen">ChatSecure Locked</string>
@@ -280,6 +280,11 @@
 		<string name="menu_plus">Menu+</string>
 		<string name="select_link_title">Select link</string>
 		
+        <string name="delete">Delete</string>
+        <string name="keep_files">Keep Files</string>
+        <string name="delete_chat_session_secured_storage">Delete Chat Session Secured Storage?</string>
+        <string name="all_files_will_be_deleted">All the session\'s upload and download files will be permanently deleted. Warning: this operation can not be undone!</string>
+	
 		<!-- Views: Chat: Group -->
 		<string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to join a group chat.</string>
 		<string name="invitation_sent_prompt"> Invitation has been sent to <xliff:g id="user">%1$s</xliff:g>.</string>

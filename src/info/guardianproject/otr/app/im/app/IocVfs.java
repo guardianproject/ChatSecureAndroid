@@ -213,6 +213,10 @@ public class IocVfs {
         return new File(path).exists();
     }
     
+    public static boolean userExists(String username) {
+        return exists( "/" + strip(username) );
+    }
+    
     private static String createUniqueFilename( String filename ) {
         if (!exists(filename)) {
             return filename;

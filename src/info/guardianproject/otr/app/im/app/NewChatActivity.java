@@ -928,7 +928,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     {
         if (getCurrentChatView() != null) {
             try {
-                deleteSessionVfs();
+                // delete the chat session's files if any
+                deleteSessionVfs( getCurrentChatUsername() );
             } catch (Exception e) {
                 // TODO error
                 e.printStackTrace();
@@ -939,14 +940,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    private void deleteSessionVfs() throws Exception {
-        // get session name
-        final String username = getCurrentChatUsername();
+    private void deleteSessionVfs( final String username ) throws Exception {
+        // if no files to delete - bail
+        if (!IocVfs.userExists(username)) {
+            return;
+        }
         // prompt
         new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle("Delete Chat Secured Storage?")
-        .setMessage("All the session's upload and download files will be permanently deleted. Warning: this operation can not be undone!")
-        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        .setTitle(getString(R.string.delete_chat_session_secured_storage))
+        .setMessage(getString(R.string.all_files_will_be_deleted))
+        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // delete session's storage
@@ -958,7 +961,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 }
             }
         })
-        .setNegativeButton("Keep Files", new DialogInterface.OnClickListener() {
+        .setNegativeButton(getString(R.string.keep_files), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 return;
