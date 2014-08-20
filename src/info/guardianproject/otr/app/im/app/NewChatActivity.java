@@ -396,8 +396,6 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
      
         mDrawer.setMenu(R.layout.fragment_drawer);
         
-        mDrawer.showMenu();
-        
         getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
      
     }
