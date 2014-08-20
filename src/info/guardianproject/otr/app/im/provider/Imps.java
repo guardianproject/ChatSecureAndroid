@@ -1386,6 +1386,8 @@ public class Imps {
          * hid.
          */
         public static final String HIDE_OFFLINE_CONTACTS = "hide_offline_contacts";
+        
+        public static final String DELETE_UNSECURED_MEDIA = "delete_unsecured_media";
 
         /** Global setting which controls whether enable the IM notification */
         public static final String ENABLE_NOTIFICATION = "enable_notification";
@@ -1775,6 +1777,11 @@ public class Imps {
                 boolean hideOfflineContacts) {
             putBooleanValue(contentResolver, providerId, HIDE_OFFLINE_CONTACTS, hideOfflineContacts);
         }
+        
+        public static void setDeleteUnsecuredMedia(ContentResolver contentResolver, long providerId,
+                boolean deleteUnsecuredMedia) {
+            putBooleanValue(contentResolver, providerId, DELETE_UNSECURED_MEDIA, deleteUnsecuredMedia);
+        }
 
         public static void setUseForegroundPriority(ContentResolver contentResolver,
                 long providerId, boolean flag) {
@@ -2060,6 +2067,14 @@ public class Imps {
              */
             public boolean getHideOfflineContacts() {
                 return getBoolean(HIDE_OFFLINE_CONTACTS, false /* default*/);
+            }
+
+            public void setDeleteUnsecuredMedia(boolean deleteUnsecuredMedia) {
+                ProviderSettings.setDeleteUnsecuredMedia(mContentResolver, mProviderId, deleteUnsecuredMedia);
+            }
+
+            public boolean getDeleteUnsecuredMedia() {
+                return getBoolean(DELETE_UNSECURED_MEDIA, false /* default */);
             }
 
             public void setUseForegroundPriority(boolean flag) {
