@@ -53,6 +53,7 @@ import de.duenndns.ssl.MemorizingTrustManager;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
+import net.sqlcipher.database.SQLiteDatabase;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -244,6 +245,9 @@ public class ImApp extends Application {
         Debug.onAppStart();
         
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+        
+        SQLiteDatabase.loadLibs(getApplicationContext());
+        IocVfs.init(this);
         
         mConnections = new HashMap<Long, IImConnection>();        
         mApplicationContext = this;
