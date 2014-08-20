@@ -294,6 +294,7 @@ android:anyDensity="true"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateUnchanged"
                android:exported="false"
+               android:launchMode="singleTop"
                 >
             
             <intent-filter>
