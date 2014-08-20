@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#33333333" >
+    android:background="#333333" >
 
     <ImageView
         android:id="@+id/pzs_broken_image_view"
