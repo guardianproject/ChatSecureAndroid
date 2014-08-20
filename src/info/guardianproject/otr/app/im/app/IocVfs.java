@@ -31,12 +31,14 @@ public class IocVfs {
     private static final String BLOB_NAME = "media.db";
     private static String password;
     
+    //maybe called multiple times to remount
     public static void init(Context context) {
-        if (vfs != null) 
-            return;
         
-        dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
-        vfs = new VirtualFileSystem(dbFile);
+        if (dbFile == null)
+            dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
+        
+        if (vfs == null)
+            vfs = new VirtualFileSystem(dbFile);
        
         if (password != null)
             mount();
@@ -44,19 +46,19 @@ public class IocVfs {
     }
     
     public static void mount() {
-        Log.e(TAG, "mount:" + dbFile);
+   //     Log.e(TAG, "mount:" + dbFile);
         vfs.mount(password);
     }
     
     public static void unmount() {
-        Log.e(TAG, "unmount:" + dbFile);
+   //     Log.e(TAG, "unmount:" + dbFile);
         vfs.unmount();
     }
     
     public static void list(String parent) {
         File file = new File(parent);
         String[] list = file.list();
-        Log.e(TAG, file.getAbsolutePath());
+     //  Log.e(TAG, file.getAbsolutePath());
         for (int i = 0 ; i < list.length ; i++) {
             String fullname = parent + list[i];
             File child = new File(fullname);
@@ -64,7 +66,7 @@ public class IocVfs {
                 list(fullname+"/");
             } else {
                 File full = new File(fullname);
-                Log.e(TAG, fullname + " " + full.length());
+         //       Log.e(TAG, fullname + " " + full.length());
             }
         }
     }
@@ -84,7 +86,7 @@ public class IocVfs {
         File parent = new File(parentName);
         // if a file or an empty directory - delete it
         if (!parent.isDirectory()  ||  parent.list().length == 0 ) {
-            Log.e(TAG, "delete:" + parent );
+        //    Log.e(TAG, "delete:" + parent );
             if (!parent.delete()) {
                 throw new IOException("Error deleting " + parent);
             }
@@ -197,8 +199,7 @@ public class IocVfs {
     private static void mkdirs(String targetPath) throws IOException {
         File targetFile = new File(targetPath);
         if (!targetFile.exists()) {
-            String dirPath = targetFile.getAbsolutePath().substring(0, targetFile.getAbsolutePath().lastIndexOf(File.separator));
-            File dirFile = new File(dirPath);
+            File dirFile = targetFile.getParentFile();
             if (!dirFile.exists()) {
                 boolean created = dirFile.mkdirs();
                 if (!created) {
