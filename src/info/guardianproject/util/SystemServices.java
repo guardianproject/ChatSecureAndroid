@@ -4,6 +4,7 @@
 package info.guardianproject.util;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.IocVfs;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -101,6 +102,10 @@ public class SystemServices {
     
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
+        if (IocVfs.isVfsScheme(uri.getScheme())) {
+            info.path = uri.getPath();
+            return info;
+        }
         if (uri.getScheme() != null && uri.getScheme().equals("file")) {
             info.path = uri.getPath();
             return info;

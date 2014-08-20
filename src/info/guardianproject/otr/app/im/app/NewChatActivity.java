@@ -36,6 +36,7 @@ import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -922,10 +923,48 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     
     private void endCurrentChat ()
     {
-        if (getCurrentChatView() != null)
+        if (getCurrentChatView() != null) {
+            try {
+                // delete the chat session's files if any
+                deleteSessionVfs( getCurrentChatUsername() );
+            } catch (Exception e) {
+                // TODO error
+                e.printStackTrace();
+            }
             getCurrentChatView().closeChatSession(true);
-        
+        }
         updateChatList();
+        
+    }
+    
+    private void deleteSessionVfs( final String username ) throws Exception {
+        // if no files to delete - bail
+        if (!IocVfs.userExists(username)) {
+            return;
+        }
+        // prompt
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(getString(R.string.delete_chat_session_secured_storage))
+        .setMessage(getString(R.string.all_files_will_be_deleted))
+        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // delete session's storage
+                try {
+                    IocVfs.deleteSession("/" + username);
+                } catch (IOException e) {
+                    // TODO error handling ?
+                    e.printStackTrace();
+                }
+            }
+        })
+        .setNegativeButton(getString(R.string.keep_files), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        })
+        .show();        
     }
     
     private void startContactPicker() {
@@ -1102,7 +1141,71 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 
             PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
-}
+    }
+    
+    private void handleSendDelete( final Uri contentUri, final String mimeType, boolean promptDelete ) {
+        // prompt to delete original
+        if (promptDelete) {
+            new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle(getString(R.string.delete_original))
+            .setMessage(getString(R.string.this_file_will_be_copied))
+            .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // send - delete original
+                    handleSend( contentUri, mimeType, true );
+                }
+            })
+            .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // send - o not delete original
+                    handleSend( contentUri, mimeType, false );
+                }
+            })
+            .show();
+        } else {
+            // send - do not delete original
+            handleSend( contentUri, mimeType, false );
+        }
+    }
+        
+    private void handleSend( Uri contentUri, String mimeType, boolean delete ) {
+        try {
+            // import
+            FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
+            String username = getCurrentChatUsername();
+            Uri vfsUri = IocVfs.importContent(username, info.path);
+            // send
+            boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
+            if (!sent) {
+                // not deleting if not sent
+                return;
+            }
+            // autu delete
+            if (delete) {
+                boolean deleted = delete(contentUri);
+                if (!deleted) {
+                    throw new IOException("Error deleting " + contentUri);
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
+            e.printStackTrace();
+        }
+    }
+    
+    private boolean delete(Uri uri) {
+        if (uri.getScheme().equals("content")) {
+            int deleted = getContentResolver().delete(uri,null,null);
+            return deleted == 1;
+        }
+        if (uri.getScheme().equals("file")) {
+            java.io.File file = new java.io.File(uri.toString().substring(5));
+            return file.delete();
+        }
+        return false;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
@@ -1112,7 +1215,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 if( uri == null ) {
                     return ;
                 }
-                handleSend(uri,null);
+                boolean promptDelete = (requestCode == REQUEST_SEND_AUDIO); // prompt to delete original 
+                handleSendDelete(uri, null, promptDelete);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
@@ -1132,13 +1236,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSend(mLastPhoto,"image/*");
+                                        handleSendDelete(mLastPhoto, "image/*", true);
                                     }
                                 });
                             }
                         });
-                
-              
             }
             else if (requestCode == REQUEST_TAKE_PICTURE_SECURE)
             {
@@ -1236,6 +1338,16 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return null;
     }
     
+    private String getCurrentChatUsername() throws Exception {
+        int currentPos = mChatPager.getCurrentItem();
+        if (currentPos == 0)
+            throw new Exception("Error getting user name");
+        Cursor cursorChats = mChatPagerAdapter.getCursor();
+        cursorChats.moveToPosition(currentPos - 1);
+        String username = cursorChats.getString(ChatView.USERNAME_COLUMN);
+        return username;
+    }
+    
     private IChatSessionManager getChatSessionManager(long providerId) {
         IImConnection conn = mApp.getConnection(providerId);
 
@@ -1275,11 +1387,11 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         }
     }
     
-    private void handleSend(Uri uri, String mimeType) {
+    private boolean handleSend(Uri uri, String mimeType) {
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
             
-            if (info != null && info.path != null && new File(info.path).exists())
+            if (info != null && info.path != null && IocVfs.exists(info.path))
             {
                 IChatSession session = getCurrentChatSession();
            
@@ -1295,9 +1407,10 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                     ChatView cView = getCurrentChatView();
                     int type = cView.isOtrSessionVerified() ? Imps.MessageType.OUTGOING_ENCRYPTED_VERIFIED : Imps.MessageType.OUTGOING_ENCRYPTED;
                     Imps.insertMessageInDb(
-                            getContentResolver(), false, session.getId(), true, null, this.getRealPathFromURI(uri),
+                            getContentResolver(), false, session.getId(), true, null, uri.toString(),
                             System.currentTimeMillis(), type,
                             0, offerId, info.type);
+                    return true; // sent 
                 }
             }
             else
@@ -1307,6 +1420,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         } catch (RemoteException e) {
            Log.e(ImApp.LOG_TAG,"error sending file",e);
         }
+        return false; // was not sent
     }
 
     void showInvitationHasSent(String contact) {

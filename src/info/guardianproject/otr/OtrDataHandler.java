@@ -2,7 +2,6 @@ package info.guardianproject.otr;
 
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
-import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.RandomAccessFile;
 import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.app.ImApp;
@@ -19,7 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -62,7 +60,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
 import android.net.Uri;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -279,7 +276,7 @@ public class OtrDataHandler implements DataHandler {
                 
                 
                 File fileGet = new File(offer.getUri());
-                java.io.FileInputStream is = new java.io.FileInputStream(fileGet);                
+                FileInputStream is = new FileInputStream(fileGet);                
                 readIntoByteBuffer(byteBuffer, is, start, end);
                 is.close();
                 
@@ -338,7 +335,7 @@ public class OtrDataHandler implements DataHandler {
         
     }
     
-    private static void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, java.io.FileInputStream is, int start, int end)
+    private static void readIntoByteBuffer(ByteArrayOutputStream byteBuffer, FileInputStream is, int start, int end)
             throws IOException {
         //Log.e( TAG, "readIntoByteBuffer:" + (end-start));
         if (start != is.skip(start)) {
@@ -514,7 +511,7 @@ public class OtrDataHandler implements DataHandler {
     @Override
     public void offerData(String id, Address us, String localUri, Map<String, String> headers) throws IOException {
         // TODO stash localUri and intended recipient
-        long length = new java.io.File(localUri).length();
+        long length = new File(localUri).length();
         if (length > MAX_TRANSFER_LENGTH) {
             throw new IOException("Length too large: " + length);
         }
@@ -523,7 +520,7 @@ public class OtrDataHandler implements DataHandler {
         headers.put("File-Length", String.valueOf(length));
        
         try {
-            java.io.FileInputStream is = new java.io.FileInputStream(localUri);
+            FileInputStream is = new FileInputStream(localUri);
             headers.put("File-Hash-SHA1", sha1sum(is));
             is.close();
             
@@ -726,34 +723,12 @@ public class OtrDataHandler implements DataHandler {
         
         private RandomAccessFile openFile(String url) throws FileNotFoundException {
             debug( "openFile: url " + url) ;
+            String username = mChatSession.getParticipant().getAddress().getAddress();
             String filename = getFilenameFromUrl(url);
-            localFilename = getLocalFilename(filename);
+            localFilename = IocVfs.getDownloadFilename( username, filename );
             debug( "openFile: localFilename " + localFilename) ;
             info.guardianproject.iocipher.RandomAccessFile ras = new info.guardianproject.iocipher.RandomAccessFile(localFilename, "rw");
             return ras;
-        }
-        
-        private String getLocalFilename(String filename) {
-            int count = 0 ;
-            String localFilename;
-            File file;
-            do {
-                localFilename = getLocalFilename(filename, count++);
-                file = new File(localFilename);
-            } while(file.exists());
-            
-            return localFilename;
-        }
-        
-        private String getLocalFilename(String filename, int count) {
-            String root = "/" + Environment.DIRECTORY_DOWNLOADS + "/";
-            if (count == 0 ) {
-                return root + filename ;
-            }
-            int lastDot = filename.lastIndexOf(".");
-            String name = filename.substring(0,lastDot);
-            String ext = filename.substring(lastDot);
-            return root + name + "(" + count + ")" + ext;
         }
         
         public String closeFile() throws IOException {
@@ -862,7 +837,7 @@ public class OtrDataHandler implements DataHandler {
     
     }
     
-    private String sha1sum(java.io.FileInputStream fis) throws IOException {
+    private String sha1sum(FileInputStream fis) throws IOException {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA1");

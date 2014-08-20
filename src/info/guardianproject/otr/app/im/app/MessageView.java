@@ -426,7 +426,7 @@ public class MessageView extends FrameLayout {
                 
                 Bitmap result = mBitmapCache.get(uri.toString());
                 
-                if (result == null)                
+                if (result == null)
                     return getThumbnail( contentResolver, uri );
                 else
                     return result;
@@ -458,6 +458,7 @@ public class MessageView extends FrameLayout {
     public final static int THUMBNAIL_SIZE = 800;
     
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
+        Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
         if (IocVfs.isVfsScheme(uri.getScheme())) {
             return IocVfs.getThumbnailVfs(cr, uri);
         }

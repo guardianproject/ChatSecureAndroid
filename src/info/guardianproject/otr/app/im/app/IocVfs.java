@@ -3,19 +3,19 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import java.io.FileNotFoundException;
-
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -64,9 +64,39 @@ public class IocVfs {
                 list(fullname+"/");
             } else {
                 File full = new File(fullname);
-                Log.e(TAG, fullname + "  " + full.exists());
+                Log.e(TAG, fullname + " " + full.length());
             }
         }
+    }
+    
+    public static void deleteSession( String username ) throws IOException {
+        String dirName = strip(username);
+        File file = new File(dirName);
+        // if the session doesnt have any ul/dl files - bail
+        if (!file.exists()) {
+            return;
+        }
+        // delete recursive 
+        delete( dirName );
+    }
+    
+    private static void delete(String parentName) throws IOException {
+        File parent = new File(parentName);
+        // if a file or an empty directory - delete it
+        if (!parent.isDirectory()  ||  parent.list().length == 0 ) {
+            Log.e(TAG, "delete:" + parent );
+            if (!parent.delete()) {
+                throw new IOException("Error deleting " + parent);
+            }
+            return;
+        }
+        // directory - recurse
+        String[] list = parent.list();
+        for (int i = 0 ; i < list.length ; i++) {
+            String childName = parentName + "/" + list[i];
+            delete( childName );
+        }
+        delete( parentName );
     }
     
     private static final String VFS_SCHEME = "vfs";
@@ -80,7 +110,6 @@ public class IocVfs {
     }
     
     public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
-        
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -127,4 +156,96 @@ public class IocVfs {
         IocVfs.password = password;
         init(context);
     }
+
+    /**
+     * Copy device content into vfs. 
+     * All imported content is stored under /SESSION_NAME/
+     * The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over 
+     * @param sourcePath
+     * @return vfs uri
+     * @throws IOException 
+     */
+    public static Uri importContent(String username, String sourcePath) throws IOException {
+        list("/");
+        File sourceFile = new File(sourcePath);
+        String targetPath = "/" + strip(username) + "/upload/" + sourceFile.getName();
+        targetPath = createUniqueFilename(targetPath);
+        copyToVfs( sourcePath, targetPath );
+        list("/");
+        return vfsUri(targetPath);
+    }
+    
+    public static void copyToVfs(String sourcePath, String targetPath) throws IOException {
+        // create the target directories tree
+        mkdirs( targetPath );
+        // copy
+        java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(sourcePath));
+        FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
+        
+        byte[] b = new byte[8*1024];
+        int length;
+
+        while ((length = fis.read(b)) != -1) {
+            fos.write(b, 0, length);
+        }
+
+        fos.close();
+        fis.close();
+    }
+    
+    private static void mkdirs(String targetPath) throws IOException {
+        File targetFile = new File(targetPath);
+        if (!targetFile.exists()) {
+            String dirPath = targetFile.getAbsolutePath().substring(0, targetFile.getAbsolutePath().lastIndexOf(File.separator));
+            File dirFile = new File(dirPath);
+            if (!dirFile.exists()) {
+                boolean created = dirFile.mkdirs();
+                if (!created) {
+                    throw new IOException("Error creating " + targetPath);
+                }
+            }
+        }
+    }
+
+    public static boolean exists(String path) {
+        return new File(path).exists();
+    }
+    
+    public static boolean userExists(String username) {
+        return exists( "/" + strip(username) );
+    }
+    
+    private static String createUniqueFilename( String filename ) {
+        if (!exists(filename)) {
+            return filename;
+        }
+        int count = 1;
+        String uniqueName;
+        File file;
+        do {
+            uniqueName = formatUnique(filename, count++);
+            file = new File(uniqueName);
+        } while(file.exists());
+        
+        return uniqueName;
+    }
+    
+    private static String formatUnique(String filename, int counter) {
+        int lastDot = filename.lastIndexOf(".");
+        String name = filename.substring(0,lastDot);
+        String ext = filename.substring(lastDot);
+        return name + "(" + counter + ")" + ext;
+    }
+    
+    public static String strip(String string) {
+        return string.replace("@", "_").replace(".", "_");
+    }
+
+    public static String getDownloadFilename(String username, String filenameFromUrl) {
+        String filename = "/" + strip(username) + "/download/" + filenameFromUrl;
+        String uniqueFilename = createUniqueFilename(filename);
+        return uniqueFilename;
+    }
+
 }
