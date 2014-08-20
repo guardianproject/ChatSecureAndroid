@@ -1146,30 +1146,35 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
     }
     
     private void handleSendDelete( final Uri contentUri, final String mimeType, boolean promptDelete ) {
-        // prompt to delete original
-        if (promptDelete) {
-            new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle(getString(R.string.delete_original))
-            .setMessage(getString(R.string.this_file_will_be_copied))
-            .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // send - delete original
-                    handleSend( contentUri, mimeType, true );
-                }
-            })
-            .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // send - o not delete original
-                    handleSend( contentUri, mimeType, false );
-                }
-            })
-            .show();
-        } else {
-            // send - do not delete original
+        // if no prompt needed - do not delete original
+        if (!promptDelete) {
             handleSend( contentUri, mimeType, false );
+            return;
         }
+        // if 'delete_unsecured_media' preference is true
+        if (SettingActivity.getDeleteUnsecuredMedia(this)) {
+            handleSend( contentUri, mimeType, false );
+            return;
+        }
+        // prompt to delete original
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(getString(R.string.delete_original))
+        .setMessage(getString(R.string.this_file_will_be_copied))
+        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // send - delete original
+                handleSend( contentUri, mimeType, true );
+            }
+        })
+        .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // send - do not delete original
+                handleSend( contentUri, mimeType, false );
+            }
+        })
+        .show();
     }
         
     private void handleSend( Uri contentUri, String mimeType, boolean delete ) {

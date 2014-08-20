@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +44,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
     private static final int DEFAULT_HEARTBEAT_INTERVAL = 1;
     ListPreference mOtrMode;
     CheckBoxPreference mHideOfflineContacts;
+    CheckBoxPreference mDeleteUnsecuredMedia;
     CheckBoxPreference mEnableNotification;
     CheckBoxPreference mNotificationVibrate;
     CheckBoxPreference mNotificationSound;
@@ -60,6 +62,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements
                 Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
         mOtrMode.setValue(settings.getOtrMode());
         mHideOfflineContacts.setChecked(settings.getHideOfflineContacts());
+        mDeleteUnsecuredMedia.setChecked(settings.getDeleteUnsecuredMedia());
         mEnableNotification.setChecked(settings.getEnableNotification());
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
@@ -72,6 +75,33 @@ public class SettingActivity extends SherlockPreferenceActivity implements
 
         settings.close();
     }
+    
+    /*
+     * Warning: must call settings.close() after usage!
+     */
+    private static Imps.ProviderSettings.QueryMap getSettings(Context context) {
+        ContentResolver cr = context.getContentResolver();        
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,
+                new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},
+                Imps.ProviderSettings.PROVIDER + "=?",
+                new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},
+                null);            
+
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, 
+                cr,
+                Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
+                false /* keep updated */, 
+                null /* no handler */);
+        return settings;
+    }
+    
+    public static boolean getDeleteUnsecuredMedia(Context context) {
+        Imps.ProviderSettings.QueryMap settings = getSettings(context);
+        boolean value = settings.getDeleteUnsecuredMedia();
+        settings.close();
+        return value;
+    }
+    
 
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
@@ -86,7 +116,10 @@ public class SettingActivity extends SherlockPreferenceActivity implements
             settings.setOtrMode(prefs.getString(key, "auto"));
         } else if (key.equals("pref_hide_offline_contacts")) {
             settings.setHideOfflineContacts(prefs.getBoolean(key, false));
-        } else if (key.equals("pref_enable_notification")) {
+        } else if (key.equals("pref_delete_unsecured_media")) {
+            boolean test = prefs.getBoolean(key, false);
+            settings.setDeleteUnsecuredMedia(prefs.getBoolean(key, false));            
+        }else if (key.equals("pref_enable_notification")) {
             settings.setEnableNotification(prefs.getBoolean(key, true));
         } else if (key.equals("pref_notification_vibrate")) {
             settings.setVibrate(prefs.getBoolean(key, true));
@@ -139,11 +172,12 @@ public class SettingActivity extends SherlockPreferenceActivity implements
         addPreferencesFromResource(R.xml.preferences);
 
         mHideOfflineContacts = (CheckBoxPreference) findPreference("pref_hide_offline_contacts");
+        mDeleteUnsecuredMedia = (CheckBoxPreference) findPreference("pref_delete_unsecured_media");
         mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
         mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
         mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
-        
+
         mNotificationRingtone = findPreference("pref_notification_ringtone");
         
 
