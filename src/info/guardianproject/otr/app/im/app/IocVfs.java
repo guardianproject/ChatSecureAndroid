@@ -31,15 +31,16 @@ public class IocVfs {
     private static final String BLOB_NAME = "media.db";
     private static String password;
     
-    private static void init(Context context) {
+    public static void init(Context context) {
         if (vfs != null) 
             return;
         
         dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
         vfs = new VirtualFileSystem(dbFile);
-        Log.e(TAG, "init:" + dbFile);
-        mount();
-        //list("/");
+       
+        if (password != null)
+            mount();
+        
     }
     
     public static void mount() {
@@ -91,8 +92,8 @@ public class IocVfs {
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
             BitmapFactory.decodeStream(fis, null, options);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(ImApp.LOG_TAG,"unable to read vfs thumbnail",e);
             return null;
         }
 
