@@ -32,8 +32,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -119,6 +121,14 @@ public class MessageView extends FrameLayout {
                 @Override
                 public void onClick(View v) {
                     onClickMediaIcon( mimeType, mediaUri );
+                }
+            });
+            mMediaThumbnail.setOnLongClickListener( new OnLongClickListener() {
+                
+                @Override
+                public boolean onLongClick(View v) {
+                    onLongClickMediaIcon( mimeType, mediaUri );
+                    return false;
                 }
             });
         }
@@ -386,6 +396,30 @@ public class MessageView extends FrameLayout {
                 Toast.makeText(getContext(), R.string.there_is_no_viewer_available_for_this_file_format, Toast.LENGTH_LONG).show();
             }
         }     
+    }
+    
+    protected void onLongClickMediaIcon(final String mimeType, final Uri mediaUri) {
+        
+        new AlertDialog.Builder(context)            
+        .setTitle(context.getString(R.string.export_media))
+        .setMessage(context.getString(R.string.export_media_file_to, IocVfs.exportPath(mimeType, mediaUri)))
+        .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                try {
+                    IocVfs.exportContent(mimeType, mediaUri);
+                } catch (IOException e) {
+                    Toast.makeText(getContext(), "Export Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                return;
+            }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                return;
+            }
+        })
+        .create().show();
     }
     
     public static boolean isIntentAvailable(Context context, Intent intent) {  

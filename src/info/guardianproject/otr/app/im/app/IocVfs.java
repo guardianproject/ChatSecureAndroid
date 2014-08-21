@@ -16,6 +16,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -178,12 +179,47 @@ public class IocVfs {
         return vfsUri(targetPath);
     }
     
+    public static void exportContent(String mimeType, Uri mediaUri) throws IOException {
+        String targetPath = exportPath(mimeType, mediaUri);
+        String sourcePath = mediaUri.getPath();
+        copyToExternal( sourcePath, targetPath);
+    }
+    
+    public static String exportPath(String mimeType, Uri mediaUri) {
+        String targetFilename;
+        if (mimeType.startsWith("image")) {
+            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +"/" + mediaUri.getLastPathSegment();
+        } else if (mimeType.startsWith("audio")) {
+            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) +"/" + mediaUri.getLastPathSegment();
+        } else {
+            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +"/" + mediaUri.getLastPathSegment();
+        }
+        String targetUniqueFilename = createUniqueFilenameExternal(targetFilename);
+        return targetUniqueFilename;
+    }
+    
     public static void copyToVfs(String sourcePath, String targetPath) throws IOException {
         // create the target directories tree
         mkdirs( targetPath );
         // copy
         java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(sourcePath));
         FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
+        
+        byte[] b = new byte[8*1024];
+        int length;
+
+        while ((length = fis.read(b)) != -1) {
+            fos.write(b, 0, length);
+        }
+
+        fos.close();
+        fis.close();
+    }
+    
+    public static void copyToExternal(String sourcePath, String targetPath) throws IOException {
+        // copy
+        FileInputStream fis = new FileInputStream(new File(sourcePath));
+        java.io.FileOutputStream fos = new java.io.FileOutputStream(new java.io.File(targetPath), false);
         
         byte[] b = new byte[8*1024];
         int length;
@@ -248,5 +284,22 @@ public class IocVfs {
         String uniqueFilename = createUniqueFilename(filename);
         return uniqueFilename;
     }
+    
+    private static String createUniqueFilenameExternal( String filename ) {
+        if (!(new java.io.File(filename)).exists()) {
+            return filename;
+        }
+        int count = 1;
+        String uniqueName;
+        java.io.File file;
+        do {
+            uniqueName = formatUnique(filename, count++);
+            file = new java.io.File(uniqueName);
+        } while(file.exists());
+        
+        return uniqueName;
+    }
+    
+    
 
 }
