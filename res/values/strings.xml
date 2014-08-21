@@ -287,6 +287,9 @@
         <string name="delete_original">Delete Original?</string>
         <string name="this_file_will_be_copied">This file will be copied into the secured storage before being sent.  Would you like to delete the original file from the device\'s unsecured storage?</string>
         <string name="keep">Keep</string>
+        <string name="export">Export</string>
+        <string name="export_media">Export Media File?</string>
+        <string name="export_media_file_to">This media file will be exported to %1$s</string>
         	
 		<!-- Views: Chat: Group -->
 		<string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to join a group chat.</string>
