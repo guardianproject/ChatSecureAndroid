@@ -928,7 +928,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         if (getCurrentChatView() != null) {
             try {
                 // delete the chat session's files if any
-                deleteSessionVfs( getCurrentChatUsername() );
+                deleteSessionVfs( getCurrentSessionId() );
             } catch (Exception e) {
                 // TODO error
                 e.printStackTrace();
@@ -939,9 +939,9 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    private void deleteSessionVfs( final String username ) throws Exception {
+    private void deleteSessionVfs( final String sessionId ) throws Exception {
         // if no files to delete - bail
-        if (!IocVfs.userExists(username)) {
+        if (!IocVfs.sessionExists(sessionId)) {
             return;
         }
         // prompt
@@ -953,7 +953,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             public void onClick(DialogInterface dialog, int which) {
                 // delete session's storage
                 try {
-                    IocVfs.deleteSession("/" + username);
+                    IocVfs.deleteSession("/" + sessionId);
                 } catch (IOException e) {
                     // TODO error handling ?
                     e.printStackTrace();
@@ -1181,8 +1181,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
-            String username = getCurrentChatUsername();
-            Uri vfsUri = IocVfs.importContent(username, info.path);
+            String sessionId = getCurrentSessionId();
+            Uri vfsUri = IocVfs.importContent(sessionId, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1345,14 +1345,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return null;
     }
     
-    private String getCurrentChatUsername() throws Exception {
-        int currentPos = mChatPager.getCurrentItem();
-        if (currentPos == 0)
-            throw new Exception("Error getting user name");
-        Cursor cursorChats = mChatPagerAdapter.getCursor();
-        cursorChats.moveToPosition(currentPos - 1);
-        String username = cursorChats.getString(ChatView.USERNAME_COLUMN);
-        return username;
+    private String getCurrentSessionId() throws Exception {
+        return ""+getCurrentChatSession().getId();
     }
     
     private IChatSessionManager getChatSessionManager(long providerId) {
