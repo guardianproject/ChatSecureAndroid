@@ -856,7 +856,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             displayQRCode();
             return true;
         case R.id.menu_end_conversation:
-            endCurrentChat();
+            try {
+                endCurrentChatPrompt( getCurrentSessionId());
+            } catch (Exception e) {
+                Toast.makeText(this, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show(); // TODO i18n
+                e.printStackTrace();
+            }
             
             return true;
         /*
@@ -923,7 +928,31 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return super.onOptionsItemSelected(item);
     }
     
-    private void endCurrentChat ()
+    private void endCurrentChatPrompt( final String sessionId ) {
+        // if no files to delete - just end the session
+        if (!IocVfs.sessionExists(sessionId)) {
+            endCurrentChat();
+            return;
+        }
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(getString(R.string.end_chat_title))
+        .setMessage(getString(R.string.end_chat_summary))
+        .setPositiveButton(getString(R.string.end_chat_and_delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                endCurrentChat();
+            }
+        })
+        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        })
+        .show();        
+    }
+    
+    private void endCurrentChat()
     {
         if (getCurrentChatView() != null) {
             try {
@@ -944,29 +973,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         if (!IocVfs.sessionExists(sessionId)) {
             return;
         }
-        // prompt
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(getString(R.string.delete_chat_session_secured_storage))
-        .setMessage(getString(R.string.all_files_will_be_deleted))
-        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // delete session's storage
-                try {
-                    IocVfs.deleteSession("/" + sessionId);
-                } catch (IOException e) {
-                    // TODO error handling ?
-                    e.printStackTrace();
-                }
-            }
-        })
-        .setNegativeButton(getString(R.string.keep_files), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        })
-        .show();        
+        // delete
+        IocVfs.deleteSession(sessionId);
     }
     
     private void startContactPicker() {

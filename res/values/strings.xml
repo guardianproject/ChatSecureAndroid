@@ -290,6 +290,9 @@
         <string name="export">Export</string>
         <string name="export_media">Export Media File?</string>
         <string name="export_media_file_to">This media file will be exported to %1$s</string>
+        <string name="end_chat_title">End chat?</string>
+        <string name="end_chat_summary">All secured media items of this session will be deleted.  Export a media item using a long click on the thumbnail icon.</string>
+        <string name="end_chat_and_delete">End Chat and Delete Files</string>
         	
 		<!-- Views: Chat: Group -->
 		<string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> has invited you to join a group chat.</string>

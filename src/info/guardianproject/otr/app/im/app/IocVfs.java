@@ -176,6 +176,9 @@ public class IocVfs {
         return vfsUri(targetPath);
     }
     
+    public static void exportAll(String sessionId ) throws IOException {
+    }
+    
     public static void exportContent(String mimeType, Uri mediaUri) throws IOException {
         String targetPath = exportPath(mimeType, mediaUri);
         String sourcePath = mediaUri.getPath();
