@@ -132,6 +132,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         } else {
             init((Contact) participant);
         }
+        mDataHandler.setChatId(getId());
     }
 
     private void initOtrChatSession ()

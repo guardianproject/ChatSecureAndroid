@@ -88,12 +88,17 @@ public class OtrDataHandler implements DataHandler {
     private LineParser lineParser = new BasicLineParser(PROTOCOL_VERSION);
     private LineFormatter lineFormatter = new BasicLineFormatter();
     private ChatSession mChatSession;
+    private long mChatId;
 
     private IDataListener mDataListener;
     private SessionStatus mOtrStatus;
     
     public OtrDataHandler(ChatSession chatSession) {
         this.mChatSession = chatSession;
+    }
+    
+    public void setChatId(long chatId) {
+        this.mChatId = chatId;
     }
 
     public void onOtrStatusChanged(SessionStatus status) {
@@ -723,9 +728,9 @@ public class OtrDataHandler implements DataHandler {
         
         private RandomAccessFile openFile(String url) throws FileNotFoundException {
             debug( "openFile: url " + url) ;
-            String username = mChatSession.getParticipant().getAddress().getAddress();
+            String sessionId = ""+ mChatId;
             String filename = getFilenameFromUrl(url);
-            localFilename = IocVfs.getDownloadFilename( username, filename );
+            localFilename = IocVfs.getDownloadFilename( sessionId, filename );
             debug( "openFile: localFilename " + localFilename) ;
             info.guardianproject.iocipher.RandomAccessFile ras = new info.guardianproject.iocipher.RandomAccessFile(localFilename, "rw");
             return ras;

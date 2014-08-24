@@ -72,8 +72,8 @@ public class IocVfs {
         }
     }
     
-    public static void deleteSession( String username ) throws IOException {
-        String dirName = strip(username);
+    public static void deleteSession( String sessionId ) throws IOException {
+        String dirName = "/" + sessionId;
         File file = new File(dirName);
         // if the session doesnt have any ul/dl files - bail
         if (!file.exists()) {
@@ -169,14 +169,17 @@ public class IocVfs {
      * @return vfs uri
      * @throws IOException 
      */
-    public static Uri importContent(String username, String sourcePath) throws IOException {
+    public static Uri importContent(String sessionId, String sourcePath) throws IOException {
         list("/");
         File sourceFile = new File(sourcePath);
-        String targetPath = "/" + strip(username) + "/upload/" + sourceFile.getName();
+        String targetPath = "/" + sessionId + "/upload/" + sourceFile.getName();
         targetPath = createUniqueFilename(targetPath);
         copyToVfs( sourcePath, targetPath );
         list("/");
         return vfsUri(targetPath);
+    }
+    
+    public static void exportAll(String sessionId ) throws IOException {
     }
     
     public static void exportContent(String mimeType, Uri mediaUri) throws IOException {
@@ -249,8 +252,8 @@ public class IocVfs {
         return new File(path).exists();
     }
     
-    public static boolean userExists(String username) {
-        return exists( "/" + strip(username) );
+    public static boolean sessionExists(String sessionId) {
+        return exists( "/" + sessionId );
     }
     
     private static String createUniqueFilename( String filename ) {
@@ -275,12 +278,8 @@ public class IocVfs {
         return name + "(" + counter + ")" + ext;
     }
     
-    public static String strip(String string) {
-        return string.replace("@", "_").replace(".", "_");
-    }
-
-    public static String getDownloadFilename(String username, String filenameFromUrl) {
-        String filename = "/" + strip(username) + "/download/" + filenameFromUrl;
+    public static String getDownloadFilename(String sessionId, String filenameFromUrl) {
+        String filename = "/" + sessionId + "/download/" + filenameFromUrl;
         String uniqueFilename = createUniqueFilename(filename);
         return uniqueFilename;
     }

@@ -854,7 +854,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
             displayQRCode();
             return true;
         case R.id.menu_end_conversation:
-            endCurrentChat();
+            try {
+                endCurrentChatPrompt( getCurrentSessionId());
+            } catch (Exception e) {
+                Toast.makeText(this, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show(); // TODO i18n
+                e.printStackTrace();
+            }
             
             return true;
         /*
@@ -921,12 +926,36 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return super.onOptionsItemSelected(item);
     }
     
-    private void endCurrentChat ()
+    private void endCurrentChatPrompt( final String sessionId ) {
+        // if no files to delete - just end the session
+        if (!IocVfs.sessionExists(sessionId)) {
+            endCurrentChat();
+            return;
+        }
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(getString(R.string.end_chat_title))
+        .setMessage(getString(R.string.end_chat_summary))
+        .setPositiveButton(getString(R.string.end_chat_and_delete), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                endCurrentChat();
+            }
+        })
+        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        })
+        .show();        
+    }
+    
+    private void endCurrentChat()
     {
         if (getCurrentChatView() != null) {
             try {
                 // delete the chat session's files if any
-                deleteSessionVfs( getCurrentChatUsername() );
+                deleteSessionVfs( getCurrentSessionId() );
             } catch (Exception e) {
                 // TODO error
                 e.printStackTrace();
@@ -937,34 +966,13 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
     }
     
-    private void deleteSessionVfs( final String username ) throws Exception {
+    private void deleteSessionVfs( final String sessionId ) throws Exception {
         // if no files to delete - bail
-        if (!IocVfs.userExists(username)) {
+        if (!IocVfs.sessionExists(sessionId)) {
             return;
         }
-        // prompt
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(getString(R.string.delete_chat_session_secured_storage))
-        .setMessage(getString(R.string.all_files_will_be_deleted))
-        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // delete session's storage
-                try {
-                    IocVfs.deleteSession("/" + username);
-                } catch (IOException e) {
-                    // TODO error handling ?
-                    e.printStackTrace();
-                }
-            }
-        })
-        .setNegativeButton(getString(R.string.keep_files), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        })
-        .show();        
+        // delete
+        IocVfs.deleteSession(sessionId);
     }
     
     private void startContactPicker() {
@@ -1179,8 +1187,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
-            String username = getCurrentChatUsername();
-            Uri vfsUri = IocVfs.importContent(username, info.path);
+            String sessionId = getCurrentSessionId();
+            Uri vfsUri = IocVfs.importContent(sessionId, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1343,14 +1351,8 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         return null;
     }
     
-    private String getCurrentChatUsername() throws Exception {
-        int currentPos = mChatPager.getCurrentItem();
-        if (currentPos == 0)
-            throw new Exception("Error getting user name");
-        Cursor cursorChats = mChatPagerAdapter.getCursor();
-        cursorChats.moveToPosition(currentPos - 1);
-        String username = cursorChats.getString(ChatView.USERNAME_COLUMN);
-        return username;
+    private String getCurrentSessionId() throws Exception {
+        return ""+getCurrentChatSession().getId();
     }
     
     private IChatSessionManager getChatSessionManager(long providerId) {
