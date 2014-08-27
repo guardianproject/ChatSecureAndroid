@@ -659,10 +659,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     private void suspendConnections() {
         for (ImConnectionAdapter conn : mConnections.values()) {
-            if (conn.getState() != ImConnection.LOGGED_IN) {
-                continue;
+            if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN) {
+             
+                conn.suspend();
             }
-            conn.suspend();
         }
 
     }
