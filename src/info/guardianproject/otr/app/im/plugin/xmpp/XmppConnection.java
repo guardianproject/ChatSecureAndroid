@@ -1176,7 +1176,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mConfig.setReconnectionAllowed(false);
         mConfig.setSendPresence(true);
 
-        //mConfig.setRosterLoadedAtLogin(true);
+        mConfig.setRosterLoadedAtLogin(true);
 
         mConnection = new MyXMPPConnection(mConfig);
 
@@ -1871,8 +1871,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 }
 
-                org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());                
-                contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
+            //    org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());                
+                
+                //contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
 
                 if (!cl.containsContact(contact))
                 {
@@ -1888,7 +1889,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             notifyContactListLoaded(cl);            
             notifyContactListsLoaded();
 
-            notifyContactsPresenceUpdated(cl.getContacts().toArray(new Contact[cl.getContacts().size()]));
+            //notifyContactsPresenceUpdated(cl.getContacts().toArray(new Contact[cl.getContacts().size()]));
 
         }
 
