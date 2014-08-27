@@ -219,97 +219,88 @@ public class ProviderListItem extends LinearLayout {
 
     private void runBindTask(final Resources r, final int providerId, final String activeUserName,
             final int dbConnectionStatus, final String presenceString) {
-       
-        Runnable runTask = new Runnable ()
-        {
+     
+            String mProviderNameText;
+            String mSecondRowText;
             
-            public void run ()
+            try
             {
-        
-                String mProviderNameText;
-                String mSecondRowText;
-                
-                try
-                {
-                        Cursor pCursor = mResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( providerId)},null);            
+                    Cursor pCursor = mResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( providerId)},null);            
 
-                        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, mResolver,
-                                providerId,     false /* keep updated */, mHandler /* no handler */);
-
-                        
-                        String userDomain = settings.getDomain();
-                        int connectionStatus = dbConnectionStatus;
-                        
-                        IImConnection conn = mApp.getConnection(providerId);
-                        if (conn == null)
-                        {
-                            connectionStatus = ImConnection.DISCONNECTED;
-                        }
-                        else
-                        {
-                            try {
-                                connectionStatus = conn.getState();
-                            } catch (RemoteException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                        }
-        
-                        if (mShowLongName)
-                            mProviderNameText = activeUserName + '@' + userDomain;
-                        else
-                            mProviderNameText = activeUserName;
-        
-                        switch (connectionStatus) {
-                        
-                        case ImConnection.LOGGING_IN:                        
-                            mSecondRowText = r.getString(R.string.signing_in_wait);
-                            mIsSignedIn = true;
-                            
-                            break;
-                        
-                        case ImConnection.SUSPENDING:
-                        case ImConnection.SUSPENDED:                        
-                            mSecondRowText = r.getString(R.string.error_suspended_connection);
-                            mIsSignedIn = true;
-                            
-                            break;
-                        
-                        
-        
-                        case ImConnection.LOGGED_IN:
-                            mIsSignedIn = true;
-                            mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
-        
-                            break;
-        
-                        case ImConnection.LOGGING_OUT:
-                            mIsSignedIn = false;
-                            mSecondRowText = r.getString(R.string.signing_out_wait);
-        
-                            break;
-                            
-                        default:
-        
-                            mIsSignedIn = false;
-                            mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
-                            break;
-                        }
-        
-                        settings.close();
-                        pCursor.close();
-                        
-                        applyView(mProviderNameText, mIsSignedIn, mSecondRowText);
-                    }
-                    catch (NullPointerException npe)
+                    Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, mResolver,
+                            providerId,     false /* keep updated */, mHandler /* no handler */);
+               
+                    String userDomain = settings.getDomain();
+                    int connectionStatus = dbConnectionStatus;
+                    
+                    IImConnection conn = mApp.getConnection(providerId);
+                    if (conn == null)
                     {
-                        Log.d(ImApp.LOG_TAG,"null on QueryMap (this shouldn't happen anymore, but just in case)",npe);
+                        connectionStatus = ImConnection.DISCONNECTED;
                     }
+                    else
+                    {
+                        try {
+                            connectionStatus = conn.getState();
+                        } catch (RemoteException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+    
+                    if (mShowLongName)
+                        mProviderNameText = activeUserName + '@' + userDomain;
+                    else
+                        mProviderNameText = activeUserName;
+    
+                    switch (connectionStatus) {
+                    
+                    case ImConnection.LOGGING_IN:                        
+                        mSecondRowText = r.getString(R.string.signing_in_wait);
+                        mIsSignedIn = true;
+                        
+                        break;
+                    
+                    case ImConnection.SUSPENDING:
+                    case ImConnection.SUSPENDED:                        
+                        mSecondRowText = r.getString(R.string.error_suspended_connection);
+                        mIsSignedIn = true;
+                        
+                        break;
+                    
+                    
+    
+                    case ImConnection.LOGGED_IN:
+                        mIsSignedIn = true;
+                        mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
+    
+                        break;
+    
+                    case ImConnection.LOGGING_OUT:
+                        mIsSignedIn = false;
+                        mSecondRowText = r.getString(R.string.signing_out_wait);
+    
+                        break;
+                        
+                    default:
+    
+                        mIsSignedIn = false;
+                        mSecondRowText = computeSecondRowText(presenceString, r, settings, true);
+                        break;
+                    }
+    
+                    settings.close();
+                    pCursor.close();
+                    
+                    applyView(mProviderNameText, mIsSignedIn, mSecondRowText);
+                }
+                catch (NullPointerException npe)
+                {
+                    Log.d(ImApp.LOG_TAG,"null on QueryMap (this shouldn't happen anymore, but just in case)",npe);
+                }
                 
-            }
-        };
-        
-        mHandler.post(runTask);
+            
+       
 
     }
 
