@@ -620,7 +620,10 @@ public class ImUrlActivity extends Activity {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = resultIntent.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
-                sendOtrInBand(username);
+                long providerId = resultIntent.getExtras().getLong(ContactsPickerActivity.EXTRA_RESULT_PROVIDER);
+                long accountId  = resultIntent.getExtras().getLong(ContactsPickerActivity.EXTRA_RESULT_ACCOUNT);
+                
+                sendOtrInBand(username, providerId, accountId);
                 finish();
             }
             else if (requestCode == REQUEST_SIGNIN_ACCOUNT || requestCode == REQUEST_CREATE_ACCOUNT)
@@ -641,13 +644,18 @@ public class ImUrlActivity extends Activity {
         }
     }
     
-    private void sendOtrInBand(String username) {
-        
-        IChatSession session = getChatSession(username);
-        
+    private void sendOtrInBand(String username, long providerId, long accountId) {
+
         try
         {
-            if (session.getOtrChatSession() != null)
+            IImConnection conn = ((ImApp)getApplication()).getConnection(providerId);
+            mChatSessionManager = conn.getChatSessionManager();
+    
+            IChatSession session = getChatSession(username);
+        
+            if (mSendText != null)
+                session.sendMessage(mSendText);
+            else if (mSendUrl != null && session.getOtrChatSession() != null)
             {
             
                 if (session.getOtrChatSession().getChatStatus() != SessionStatus.ENCRYPTED.ordinal())
@@ -659,23 +667,27 @@ public class ImUrlActivity extends Activity {
                 {
                     try {
                     
-                        if (mSendUrl != null) {
                             String offerId = UUID.randomUUID().toString();
-                            session.offerData(offerId, mSendUrl, mSendType );
+                            
+                            //String sessionId = getCurrentSessionId();
+                            
+                            Uri vfsUri = IocVfs.importContent(session.getId()+"", mSendUrl);
+                            
+                            FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
+                            session.offerData(offerId, info.path, mSendType );
                             
                             
                             Imps.insertMessageInDb(
                                     getContentResolver(), false, session.getId(), true, null, mSendUrl.toString(),
                                     System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
                                     0, offerId, mSendType);
-                        }
-                        else if (mSendText != null)
-                            session.sendMessage(mSendText);
                         
                         
+                    } catch (Exception e) {
                         
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        Toast.makeText(this, R.string.unable_to_securely_share_this_file, Toast.LENGTH_LONG).show();
+
+                        e.printStackTrace();
                     }
                 }
             }
@@ -688,13 +700,12 @@ public class ImUrlActivity extends Activity {
     }
     
     private IChatSession getChatSession(String username) {
-        IChatSessionManager sessionMgr = mChatSessionManager;
-        if (sessionMgr != null) {
+        if (mChatSessionManager != null) {
             try {
-                IChatSession session = sessionMgr.getChatSession(username);
+                IChatSession session = mChatSessionManager.getChatSession(username);
                 
                 if (session == null)
-                    session = sessionMgr.createChatSession(username);
+                    session = mChatSessionManager.createChatSession(username);
               
                 return session;
             } catch (RemoteException e) {

@@ -242,14 +242,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         }
             
         Intent intent = getIntent();
-        Uri intentData = intent.getData();
         
-        if (intentData == null && intent.getExtras() != null && intent.getExtras().containsKey(Intent.EXTRA_STREAM))
-            intentData = (Uri)intent.getExtras().get(Intent.EXTRA_STREAM);
-        
-        if (intent != null && intentData != null)
+        if (intent != null)
         {
-            handleIntentAPILaunch(intent, intentData);
+            handleIntentAPILaunch(intent);
         }
         else
         {
@@ -468,15 +464,20 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         finish();
     }
     
-    void handleIntentAPILaunch (Intent srcIntent, Uri intentData)
+    void handleIntentAPILaunch (Intent srcIntent)
     {
         Intent intent = new Intent(this, ImUrlActivity.class);
         intent.setAction(srcIntent.getAction());
-        intent.setData(intentData);
+        
+        if (srcIntent.getData() != null)
+            intent.setData(srcIntent.getData());
+        
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);    
         if (srcIntent.getExtras()!= null)
             intent.putExtras(srcIntent.getExtras());
         startActivity(intent);
+        
+        setIntent(null);
         finish();
     }
     

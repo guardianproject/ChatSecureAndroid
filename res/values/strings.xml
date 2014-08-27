@@ -687,5 +687,7 @@
 			<string name="_resent_">"[resent] "</string>
 			
 			<string name="resent">"[resent] "</string>
+			
+			<string name="unable_to_securely_share_this_file">Unable to securely share this file</string>
 	</resources>
 
