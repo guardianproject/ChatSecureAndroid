@@ -1086,7 +1086,7 @@ public class AccountActivity extends SherlockActivity {
                 else
                 {
 
-                    mSignInHelper.activateAccount(mProviderId, mAccountId);
+                    mSignInHelper.activateAccount(mProviderId, newAccountId);
                     
                     AccountActivity.this.setResult(Activity.RESULT_OK);
                     AccountActivity.this.finish();

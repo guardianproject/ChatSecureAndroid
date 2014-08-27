@@ -300,7 +300,15 @@ public class ImUrlActivity extends Activity {
             }
             public void stateChanged(int state, long accountId) {
                 if (state == ImConnection.LOGGED_IN) {
-                    handleIntent();
+                    
+                    mHandlerRouter.post(new Runnable()
+                    {
+                       public void run ()
+                       {
+                           handleIntent();
+                       }
+                    });
+                    
                 }
                 
             }
