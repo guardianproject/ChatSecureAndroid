@@ -942,10 +942,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         setState(state, null);
     }
 
-    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException
+    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException, IllegalStateException
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
-
 
         if (mPasswordTemp != null)
             password = mPasswordTemp;
