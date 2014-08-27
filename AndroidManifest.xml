@@ -2,7 +2,7 @@
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
      android:versionName="14.0.0-alpha-1"
-     android:versionCode="140001"
+     android:versionCode="1400002"
      android:installLocation="auto"    
     
      >     
