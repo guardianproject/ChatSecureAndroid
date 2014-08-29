@@ -33,7 +33,7 @@ public class IocVfs {
     private static String password;
     
     //maybe called multiple times to remount
-    public static void init(Context context) {
+    public static void init(Context context)  throws IllegalArgumentException {
         
         if (dbFile == null)
             dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
@@ -46,7 +46,7 @@ public class IocVfs {
         
     }
     
-    public static void mount() {
+    public static void mount() throws IllegalArgumentException {
    //     Log.e(TAG, "mount:" + dbFile);
         vfs.mount(password);
     }
@@ -152,11 +152,14 @@ public class IocVfs {
     /**
      * @param mCacheWord
      */
-    public static void init(Context context, String password) {
+    public static void init(Context context, String password)  throws IllegalArgumentException {
+        
+        
         Log.w(TAG, "init with password of length " + password.length());
         if (password.length() > 32)
             password = password.substring(0, 32);
         IocVfs.password = password;
+    
         init(context);
     }
 
