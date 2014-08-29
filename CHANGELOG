@@ -1,6 +1,11 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+14.0.0-alpha-1 / 2014-08-27 / 12c39dab38fb5458f01829bce2f9b659f7395647
+* fixes for network suspend / resume
+* fixes for sharing of files/media from external apps
+* efficiency improvements for presence loading
+
 13.2.0-beta-2 / 2014-08-13 / dd8d4f6fa091439f3e55217ee85a7f24e6145c6b
 
 13.1.3-beta-4 / 2014-02-26 / 24a447d0ee0807b75a45a385b870f6f532328480
