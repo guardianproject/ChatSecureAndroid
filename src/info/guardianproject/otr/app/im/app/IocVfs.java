@@ -154,8 +154,7 @@ public class IocVfs {
      */
     public static void init(Context context, String password)  throws IllegalArgumentException {
         
-        
-        Log.w(TAG, "init with password of length " + password.length());
+      //  Log.w(TAG, "init with password of length " + password.length());
         if (password.length() > 32)
             password = password.substring(0, 32);
         IocVfs.password = password;
