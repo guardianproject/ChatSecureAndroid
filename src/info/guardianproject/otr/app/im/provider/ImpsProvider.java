@@ -88,7 +88,7 @@ public class ImpsProvider extends ContentProvider {
     private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
     private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
 
-    private static final int DATABASE_VERSION = 104;
+    private static final int DATABASE_VERSION = 105;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
@@ -504,7 +504,11 @@ public class ImpsProvider extends ContentProvider {
                 }
 
                 return;
+            case 104:
                 
+                db.rawExecSQL("PRAGMA cipher_migrate;");
+
+                return;
             case 1:
                 if (newVersion <= 100) {
                     return;
