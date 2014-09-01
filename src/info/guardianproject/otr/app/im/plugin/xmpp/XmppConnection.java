@@ -52,6 +52,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
@@ -114,7 +115,6 @@ import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 
 import android.accounts.AccountManager;
-import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -122,7 +122,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.RemoteException;
 import android.util.Log;
-import ch.boye.httpclientandroidlib.conn.ssl.BrowserCompatHostnameVerifier;
 import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
@@ -1124,8 +1123,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             }
 
-            BrowserCompatHostnameVerifier hostVerifier = new BrowserCompatHostnameVerifier();
-            mConfig.setHostnameVerifier(trustManager.wrapHostnameVerifier(hostVerifier));
+            
+            mConfig.setHostnameVerifier(trustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             
             mConfig.setCustomSSLContext(sslContext);
             
