@@ -48,43 +48,6 @@
     
   
 
-    
-    <style name="MyActionBarStyleLight" parent="Widget.Sherlock.ActionBar">
-    <item name="android:background">#bbcccccc</item>
-    <item name="background">#bbcccccc</item>
-</style>
-    
-    <style name="MyActionBarStyle" parent="Widget.Sherlock.ActionBar">
-    <item name="android:background">#bb333333</item>
-    <item name="background">#bb333333</item>
-</style>
-    
-    <!-- style the overflow menu -->
-    <style name="MyPopupMenu" parent="Widget.Sherlock.PopupMenu">
-        <item name="android:popupBackground">@drawable/ad_menu_dropdown_panel_holo_light</item>
-    </style>
-
-    <!-- style the items within the overflow menu -->
-    <style name="MyDropDownListView" parent="Widget.Sherlock.ListView.DropDown">
-        <item name="android:listSelector">@drawable/ad_selectable_background</item>
-    </style>
-
-    <!-- style for the tabs -->
-    <style name="MyActionBarTabStyle" parent="Widget.Sherlock.ActionBar.TabBar">
-        <item name="android:background">@drawable/actionbar_tab_bg</item>
-        <item name="android:paddingLeft">32dp</item>
-        <item name="android:paddingRight">32dp</item>
-    </style>
-
-    <!-- style the list navigation -->
-    <style name="MyDropDownNav" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
-        <!-- 
-        <item name="android:background">@drawable/ad_spinner_background_holo_light</item>
-        <item name="android:popupBackground">@drawable/ad_menu_dropdown_panel_holo_light</item>
-        <item name="android:dropDownSelector">@drawable/ad_selectable_background</item>
-         -->
-    </style>
-
     <!-- the following can be used to style the overflow menu button
          only do this if you have an *extremely* good reason to!! -->
     <!--<style name="MyOverflowButton" parent="Widget.Sherlock.ActionButton.Overflow">
@@ -106,20 +69,20 @@
     </style>
     
         
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar" >    
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" >    
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
          <item name="messageTextPrimary">#333333</item>
          <item name="messageTextSecondary">#999999</item>
          <item name="listBackground">#ababab</item>
-         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+         <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item> 
      </style>
     
-   <style name="AppThemeDark" parent="Theme.Sherlock" >
+   <style name="AppThemeDark" parent="android:Theme.Holo" >
         <item name="messageTextPrimary">#cccccc</item>
        <item name="messageRoundBackground">@drawable/message_view_rounded_dark</item>                     
          <item name="messageTextSecondary">#aaaaaa</item>
          <item name="listBackground">#222222</item>
-             <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+             <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
         
     </style>
     

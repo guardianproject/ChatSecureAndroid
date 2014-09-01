@@ -4,12 +4,10 @@ import info.guardianproject.otr.app.im.R;
 
 import java.io.File;
 
-import android.R.color;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,9 +15,7 @@ import android.preference.PreferenceManager;
 import android.view.Display;
 import android.view.View;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
-public class ThemeableActivity extends SherlockActivity {
+public class ThemeableActivity extends Activity {
 
     private static String mThemeBg = null;
     private static Drawable mThemeDrawable = null;

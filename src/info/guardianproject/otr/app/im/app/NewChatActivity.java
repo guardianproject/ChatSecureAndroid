@@ -67,6 +67,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -93,15 +94,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class NewChatActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
@@ -224,12 +224,12 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                         
                     }
                     
-                    getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
-                    getSherlock().getActionBar().setIcon(R.drawable.ic_launcher);
+                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
+                    getActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
                 
-                setSupportProgressBarIndeterminateVisibility(false);
+                setProgressBarIndeterminateVisibility(false);
 
             }
 
@@ -397,7 +397,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
      
         mDrawer.setMenu(R.layout.fragment_drawer);
         
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
      
     }
     
@@ -724,7 +724,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
         
         mMenu = menu;
         
-        MenuInflater inflater = this.getSherlock().getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_screen_menu, menu);
 
         /**
@@ -885,7 +885,7 @@ public class NewChatActivity extends SherlockFragmentActivity implements View.On
                 
                 if (!isEnc)
                 {
-                    setSupportProgressBarIndeterminateVisibility(true);
+                    setProgressBarIndeterminateVisibility(true);
                     
                 }
                 

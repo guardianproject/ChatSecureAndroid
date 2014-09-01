@@ -19,17 +19,15 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
-
-import java.util.ArrayList;
+import info.guardianproject.otr.app.im.provider.SQLCipherOpenHelper;
+import net.hockeyapp.android.UpdateManager;
 
 import org.apache.commons.codec.binary.Hex;
 
-import net.hockeyapp.android.UpdateManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -46,11 +44,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
     
@@ -101,7 +98,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         
-        this.getSupportActionBar().hide();
+        getActionBar().hide();
         
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
@@ -301,7 +298,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_list_menu, menu);
 
         return true;
@@ -583,9 +580,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        byte[] encryptionKey = mCacheWord.getEncryptionKey();
        openEncryptedStores(encryptionKey, true);
 
-       int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
-
-       mCacheWord.setTimeoutMinutes(defaultTimeout);
+       int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));              
+       mCacheWord.setTimeoutSeconds(defaultTimeout);
        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
     }
 
@@ -654,7 +650,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     }
     
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
-        String pkey = (key != null) ? SQLCipherOpenHelper.encodeRawKey(key) : "";
+        String pkey = (key != null) ? new String(SQLCipherOpenHelper.encodeRawKey(key)) : "";
         
         if (cursorUnlocked(pkey, allowCreate)) {
             

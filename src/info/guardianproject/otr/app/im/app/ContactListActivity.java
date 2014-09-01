@@ -54,12 +54,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-public class ContactListActivity extends SherlockFragmentActivity implements View.OnCreateContextMenuListener, ContactListListener {
+import android.support.v4.app.FragmentActivity;
+
+public class ContactListActivity extends FragmentActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -103,8 +104,8 @@ public class ContactListActivity extends SherlockFragmentActivity implements Vie
 
         mFilterView.getListView().setOnCreateContextMenuListener(this);
         
-        getSherlock().getActionBar().setHomeButtonEnabled(true);
-        getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
@@ -200,7 +201,7 @@ public class ContactListActivity extends SherlockFragmentActivity implements Vie
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
         
         mSearchView = SearchViewCompat.newSearchView(this);
@@ -545,7 +546,7 @@ public class ContactListActivity extends SherlockFragmentActivity implements Vie
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
-    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener, OnMenuItemClickListener {
+    final class ContextMenuHandler implements MenuItem.OnMenuItemClickListener {
         long mPosition;
 
         public boolean onMenuItemClick(MenuItem item) {
@@ -582,40 +583,7 @@ public class ContactListActivity extends SherlockFragmentActivity implements Vie
             return true;
         }
 
-        @Override
-        public boolean onMenuItemClick(android.view.MenuItem item) {
-            Cursor c;
-            if (mIsFiltering) {
-                c = mFilterView.getContactAtPosition((int) mPosition);
-            } else {
-                c = mContactListView.getContactAtPosition(mPosition);
-            }
-
-            switch (item.getItemId()) {
-            case MENU_START_CONVERSATION:
-                mContactListView.startChat(c);
-                break;
-            case MENU_VIEW_PROFILE:
-                mContactListView.viewContactPresence(c);
-                break;
-            case MENU_BLOCK_CONTACT:
-                mContactListView.blockContact(c);
-                break;
-            case MENU_DELETE_CONTACT:
-                mContactListView.removeContact(c);
-                break;
-            case MENU_END_CONVERSATION:
-                mContactListView.endChat(c);
-                break;
-            default:
-                return false;
-            }
-
-            if (mIsFiltering) {
-                showContactListView();
-            }
-            return true;
-        }
+       
     }
 
     final class MyHandler extends SimpleAlertHandler {

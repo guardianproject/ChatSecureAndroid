@@ -20,7 +20,6 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.emoji.EmojiGroup;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.emoji.EmojiPagerAdapter;
-import info.guardianproject.iocipher.File;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.otr.app.im.IChatSession;
@@ -40,7 +39,6 @@ import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
@@ -105,7 +103,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Window;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -999,7 +996,7 @@ public class ChatView extends LinearLayout {
             
             setAvatarBorder(mPresenceStatus, avatar);
             
-            mNewChatActivity.getSupportActionBar().setIcon(avatar);
+            mNewChatActivity.getActionBar().setIcon(avatar);
         }
     }
     
@@ -1748,7 +1745,7 @@ public class ChatView extends LinearLayout {
                 mComposeMessage.setHint(R.string.compose_hint_secure);
                 visibility = View.GONE;
                 
-                mNewChatActivity.setSupportProgressBarIndeterminateVisibility(false);
+                mNewChatActivity.setProgressBarIndeterminateVisibility(false);
 
                 mSendButton.setImageResource(R.drawable.ic_send_secure);
            

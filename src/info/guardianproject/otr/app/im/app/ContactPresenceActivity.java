@@ -20,7 +20,6 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
@@ -28,8 +27,6 @@ import info.guardianproject.util.LogCleaner;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import net.java.otr4j.session.SessionStatus;
 
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -39,28 +36,22 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -135,7 +126,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
-        MenuInflater inflater = this.getSherlock().getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_info_menu, menu);
         
         return true;
@@ -243,7 +234,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             
             setAvatarBorder(status, avatar);
             
-            getSherlock().getActionBar().setIcon(avatar);
+            getActionBar().setIcon(avatar);
 
             
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
@@ -251,7 +242,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             if (nickname == null)
                 nickname = address;
             
-            getSherlock().getActionBar().setTitle(nickname);
+            getActionBar().setTitle(nickname);
             
 
             if (address != null && (!nickname.equals(address)))
@@ -277,7 +268,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         updateOtrStatus ();
         
-        getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_red_dark));
+        getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_red_dark));
 
         
         try
@@ -296,11 +287,11 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 if (remoteFingerprintVerified) {
                     lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
                     
-                    this.getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_green_dark));
+                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_green_dark));
                     
                 } else
                 {
-                    this.getSherlock().getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_orange_light));
+                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_orange_light));
 
                 }
 

@@ -3,7 +3,6 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 
@@ -11,6 +10,7 @@ import java.security.GeneralSecurityException;
 
 import org.apache.commons.codec.binary.Hex;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -32,9 +32,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
-public class LockScreenActivity extends SherlockActivity implements ICacheWordSubscriber {
+public class LockScreenActivity extends Activity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
     private final static int MIN_PASS_LENGTH = 4;
@@ -69,7 +67,7 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         ThemeableActivity.setBackgroundImage(this);
 
         
-        getSherlock().getActionBar().hide();
+        getActionBar().hide();
         
         setContentView(R.layout.activity_lock_screen);
         

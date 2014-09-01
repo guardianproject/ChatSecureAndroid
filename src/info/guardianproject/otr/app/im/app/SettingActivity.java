@@ -36,10 +36,9 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
-public class SettingActivity extends SherlockPreferenceActivity implements
+public class SettingActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
     private static final int DEFAULT_HEARTBEAT_INTERVAL = 1;
     ListPreference mOtrMode;

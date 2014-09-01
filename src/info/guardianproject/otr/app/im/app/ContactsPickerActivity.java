@@ -37,14 +37,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SearchView;
+import android.app.ListActivity;
 
 /** Activity used to pick a contact. */
-public class ContactsPickerActivity extends SherlockListActivity  {
+public class ContactsPickerActivity extends ListActivity  {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
     public final static String EXTRA_RESULT_USERNAME = "result";
@@ -94,7 +94,7 @@ public class ContactsPickerActivity extends SherlockListActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
         
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
