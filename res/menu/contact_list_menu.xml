@@ -17,21 +17,20 @@
  * limitations under the License.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    
     <item android:id="@+id/menu_invite_user"
         android:title="@string/menu_add_contact" 
         android:icon="@drawable/ic_menu_add_contact"
-        		        android:showAsAction="always"
-        
+        		        app:showAsAction="always"        
          />
      <item
     android:id="@+id/menu_search"
-    android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+    app:actionViewClass="android.support.v7.widget.SearchView"
     android:icon="@drawable/ic_menu_search"
-    android:showAsAction="ifRoom|collapseActionView"
+    app:showAsAction="ifRoom|collapseActionView"
     android:title="@string/menu_search_contacts"/>
     <!-- 
 

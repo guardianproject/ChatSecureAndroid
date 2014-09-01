@@ -17,32 +17,35 @@
  * limitations under the License.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto">
+     
          <group android:enabled="true" android:id="@+id/menu_group_verify">
     
                 <item 
         android:title="@string/menu_verify"
          android:icon="@drawable/ic_menu_verify"
-          android:showAsAction="always|withText"
+          app:showAsAction="always|withText"
         > 
         
         <menu>
     <item android:id="@+id/menu_scan"
         android:title="@string/menu_scan"
         android:icon="@drawable/ic_menu_barcode"
-         android:showAsAction="always|withText"
+         app:showAsAction="always|withText"
          />
     <item android:id="@+id/menu_verify_secret"
         android:title="@string/menu_verify_secret"
          android:icon="@android:drawable/ic_menu_help"
-          android:showAsAction="always|withText"
+          app:showAsAction="always|withText"
          />
     
     <item android:id="@+id/menu_verify_fingerprint"
         android:title="@string/menu_verify_fingerprint"
          android:icon="@drawable/ic_menu_verify"
-          android:showAsAction="always|withText"
+          app:showAsAction="always|withText"
          />
     </menu>
     </item>

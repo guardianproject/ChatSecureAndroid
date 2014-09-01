@@ -18,28 +18,29 @@
  */
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto">
      
      <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
         
          <item 
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_unencrypted"
-          android:showAsAction="always"
+          app:showAsAction="always"
         >
         <menu>
          <item 
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_unencrypted"
-          android:showAsAction="always"
+          app:showAsAction="always"
            android:id="@+id/menu_otr"
         />
         
              <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
-         android:showAsAction="always"
+         app:showAsAction="always"
          />
              
         </menu>
@@ -53,26 +54,26 @@
          <item 
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_encrypted_not_verified"
-          android:showAsAction="always"
+          app:showAsAction="always"
         > <menu>
             
             
          <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
-         android:showAsAction="always"
+         app:showAsAction="always"
          />
          
          <item android:id="@+id/menu_show_qr"
         android:title="@string/menu_sidebar_qr"
         android:icon="@drawable/ic_white_encrypted_not_verified"
-         android:showAsAction="always"
+         app:showAsAction="always"
          />
          
         <item android:id="@+id/menu_otr_stop"
         android:title="@string/menu_otr_stop"
          android:icon="@drawable/ic_white_unencrypted"
-          android:showAsAction="always"
+          app:showAsAction="always"
         />
         
             </menu>
@@ -88,26 +89,26 @@
          <item 
         android:title="@string/menu_otr_stop"
          android:icon="@drawable/ic_white_encrypted_and_verified"
-          android:showAsAction="always"
+          app:showAsAction="always"
         >
               <menu>
          <item android:id="@+id/menu_view_profile"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_white_encrypted_and_verified"
-         android:showAsAction="always"
+         app:showAsAction="always"
          />
     
          
          <item android:id="@+id/menu_show_qr"
         android:title="@string/menu_sidebar_qr"
         android:icon="@drawable/ic_white_encrypted_and_verified"
-         android:showAsAction="always"
+         app:showAsAction="always"
          />
          
         <item android:id="@+id/menu_otr"
         android:title="@string/menu_otr_stop"
          android:icon="@drawable/ic_white_unencrypted"
-          android:showAsAction="always"
+          app:showAsAction="always"
         />
         
             </menu>
@@ -123,7 +124,7 @@
   
     <item 
         android:title="@string/menu_send_file"
-         android:showAsAction="always"
+         app:showAsAction="always"
          android:icon="@drawable/content_new_attachment"
         >
         <menu>
@@ -135,21 +136,21 @@
             
                <item android:id="@+id/menu_send_image"
         android:title="@string/menu_send_image"
-         android:showAsAction="always"
+         app:showAsAction="always"
          
          android:icon="@drawable/content_new_picture"
         />
                
                   <item android:id="@+id/menu_take_picture"
         android:title="@string/menu_take_picture"
-         android:showAsAction="always"
+         app:showAsAction="always"
          
          android:icon="@drawable/content_take_picture"
         />
                
                   <item android:id="@+id/menu_send_audio"
         android:title="@string/menu_send_audio"
-         android:showAsAction="always"
+         app:showAsAction="always"
          
          android:icon="@drawable/content_new_audio"
         />
@@ -159,7 +160,7 @@
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
-         android:showAsAction="never"
+         app:showAsAction="never"
         
          />
     
@@ -171,7 +172,7 @@
      <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
               android:icon="@drawable/ic_menu_msg_compose"
-                android:showAsAction="always"
+                app:showAsAction="always"
         
         />
      
@@ -179,14 +180,14 @@
      <item android:id="@+id/menu_add_contact"
         android:title="@string/menu_add_contact" 
               android:icon="@drawable/social_add_person"
-                android:showAsAction="never"
+                app:showAsAction="never"
         
         />
      
       <item android:id="@+id/menu_group_chat"
         android:title="@string/menu_new_group_chat" 
               android:icon="@drawable/social_add_person"
-                android:showAsAction="never"
+                app:showAsAction="never"
         
         />
      
@@ -201,20 +202,20 @@
   <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
         android:icon="@android:drawable/ic_menu_preferences"
-         android:showAsAction="never"
+         app:showAsAction="never"
          />
      
         
       <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_add_account"
-                android:showAsAction="never"
+                app:showAsAction="never"
         />
       
       
       
       <item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
-                android:showAsAction="never"
+                app:showAsAction="never"
         />
   
   
