@@ -24,27 +24,28 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.ResourceCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.SearchView;
-import android.app.ListActivity;
-
 /** Activity used to pick a contact. */
-public class ContactsPickerActivity extends ListActivity  {
+public class ContactsPickerActivity extends ActionBarActivity  {
     public final static String EXTRA_EXCLUDED_CONTACTS = "excludes";
 
     public final static String EXTRA_RESULT_USERNAME = "result";
@@ -58,7 +59,7 @@ public class ContactsPickerActivity extends ListActivity  {
     private String mSearchString;
 
     SearchView mSearchView = null;
-
+    ListView mListView = null;
 
     // The loader's unique id. Loader ids are specific to the Activity or
     // Fragment in which they reside.
@@ -78,7 +79,27 @@ public class ContactsPickerActivity extends ListActivity  {
         setContentView(R.layout.contacts_picker_activity);
 
         mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
-        setListAdapter(mAdapter);
+        mListView = (ListView)findViewById(R.id.contactsList);
+        mListView.setAdapter(mAdapter);
+        
+        mListView.setOnItemClickListener(new OnItemClickListener ()
+        {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                
+                Cursor cursor = (Cursor) mAdapter.getItem(position);
+                Intent data = new Intent();
+                data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
+                data.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+                data.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
+                
+                setResult(RESULT_OK, data);
+                finish();
+            }
+            
+        });
+        
        
         ContentResolver cr = getContentResolver();
         Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
@@ -98,32 +119,33 @@ public class ContactsPickerActivity extends ListActivity  {
         inflater.inflate(R.menu.contact_list_menu, menu);
         
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
+        
         if (mSearchView != null )
         {
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             mSearchView.setIconifiedByDefault(false);   
-        }
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() 
-        {
-            public boolean onQueryTextChange(String newText) 
-            {
-                mSearchString = newText;
-                doFilterAsync(mSearchString);
-                return true;
-            }
-
-            public boolean onQueryTextSubmit(String query) 
-            {
-                mSearchString = query;
-                doFilterAsync(mSearchString);
-                
-                return true;
-            }
-        };
         
-        mSearchView.setOnQueryTextListener(queryTextListener);
+            SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() 
+            {
+                public boolean onQueryTextChange(String newText) 
+                {
+                    mSearchString = newText;
+                    doFilterAsync(mSearchString);
+                    return true;
+                }
+    
+                public boolean onQueryTextSubmit(String query) 
+                {
+                    mSearchString = query;
+                    doFilterAsync(mSearchString);
+                    
+                    return true;
+                }
+            };
+            
+            mSearchView.setOnQueryTextListener(queryTextListener);
+        }
         
        
 
@@ -146,18 +168,6 @@ public class ContactsPickerActivity extends ListActivity  {
     }
 
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Cursor cursor = (Cursor) mAdapter.getItem(position);
-        Intent data = new Intent();
-        data.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
-        data.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
-        data.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
-        
-        setResult(RESULT_OK, data);
-        finish();
-    }
-    
     public void doFilterAsync (final String query)
     {
         new Thread(new Runnable () { public void run () {
@@ -175,11 +185,11 @@ public class ContactsPickerActivity extends ListActivity  {
             buf.append('(');
             buf.append(Imps.Contacts.NICKNAME);
             buf.append(" LIKE ");
-            DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+            android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
             buf.append(" OR ");
             buf.append(Imps.Contacts.USERNAME);
             buf.append(" LIKE ");
-            DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+            android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
             buf.append(')');
             buf.append(" AND ");
         }

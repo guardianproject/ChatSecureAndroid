@@ -67,7 +67,6 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -76,6 +75,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
@@ -84,6 +84,9 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -94,14 +97,11 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends ActionBarActivity implements View.OnCreateContextMenuListener {
 
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
@@ -224,8 +224,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         
                     }
                     
-                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
-                    getActionBar().setIcon(R.drawable.ic_launcher);
+                    getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
+                    getSupportActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
                 
@@ -397,7 +397,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
      
         mDrawer.setMenu(R.layout.fragment_drawer);
         
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
      
     }
     
