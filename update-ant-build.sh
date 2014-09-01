@@ -20,5 +20,6 @@ cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs
 cp libs/android-support-v4.jar external/SlidingMenu/library/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/ViewPagerIndicator/library/libs/android-support-v4.jar
+cp libs/android-support-v4.jar external/AndroidEmojiInput/library/libs/android-support-v4.jar
 
 cp libs/sqlcipher.jar external/cacheword/cachewordlib/libs/sqlcipher.jar
