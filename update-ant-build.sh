@@ -10,6 +10,7 @@ android update lib-project --path external/cacheword/cachewordlib
 android update lib-project --path external/SlidingMenu/library
 android update lib-project --path external/AndroidEmojiInput/library
 android update lib-project --path external/ViewPagerIndicator/library
+android update lib-project --path external/appcompat
 
 android update project --path . --name $projectname --target $target --subprojects
 
