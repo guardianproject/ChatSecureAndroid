@@ -456,12 +456,16 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     void insertOrUpdateChat(String message) {
-        ContentValues values = new ContentValues(2);
-
-        values.put(Imps.Chats.LAST_MESSAGE_DATE, System.currentTimeMillis());
-        values.put(Imps.Chats.LAST_UNREAD_MESSAGE, message);
-        // ImProvider.insert() will replace the chat if it already exist.
-        mContentResolver.insert(mChatURI, values);
+        
+        if (message != null && message.length() > 0)
+        {
+            ContentValues values = new ContentValues(2);
+    
+            values.put(Imps.Chats.LAST_MESSAGE_DATE, System.currentTimeMillis());
+            values.put(Imps.Chats.LAST_UNREAD_MESSAGE, message);
+            // ImProvider.insert() will replace the chat if it already exist.
+            mContentResolver.insert(mChatURI, values);
+        }
     }
 
     private long insertGroupContactInDb(ChatGroup group) {
