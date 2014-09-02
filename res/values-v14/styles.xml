@@ -75,6 +75,7 @@
          <item name="messageTextSecondary">#999999</item>
          <item name="listBackground">#ababab</item>
          <item name="homeAsUpIndicator">@null</item> 
+         <item name="android:homeAsUpIndicator">@null</item>
      </style>
     
    <style name="AppThemeDark" parent="@style/Theme.AppCompat" >
@@ -83,6 +84,7 @@
          <item name="messageTextSecondary">#aaaaaa</item>
          <item name="listBackground">#222222</item>
          <item name="homeAsUpIndicator">@null</item>
+        <item name="android:homeAsUpIndicator">@null</item>
     </style>
     
 </resources>
