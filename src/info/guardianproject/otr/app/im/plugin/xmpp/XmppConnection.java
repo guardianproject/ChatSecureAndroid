@@ -632,10 +632,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         protected void addGroupMemberAsync(ChatGroup group, Contact contact) {
-            // TODO Auto-generated method stub
+            
+            String chatRoomJid = group.getAddress().getAddress();
 
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);  
+             
+            }
 
-
+            
         }
 
         @Override
@@ -699,7 +705,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 String reason = ""; //no reason for now
                 muc.invite(invitee.getAddress().getAddress(),reason);
-
+                
             }
 
         }
