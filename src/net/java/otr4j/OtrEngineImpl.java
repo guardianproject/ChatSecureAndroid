@@ -55,7 +55,11 @@ public class OtrEngineImpl implements OtrEngine {
             });
             return session;
         } else
-            return sessions.get(sessionID.getSessionId());
+        {
+            SessionImpl session = (SessionImpl)sessions.get(sessionID.getSessionId());
+            session.setSessionID(sessionID);//make sure latest instance is stored in session (in case JIDs get updated)
+            return session;
+        }
     }
 
     public SessionStatus getSessionStatus(SessionID sessionID) {

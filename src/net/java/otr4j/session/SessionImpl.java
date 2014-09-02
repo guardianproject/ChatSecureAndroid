@@ -258,7 +258,7 @@ public class SessionImpl implements Session {
         return sessionStatus;
     }
 
-    private void setSessionID(SessionID sessionID) {
+    public void setSessionID(SessionID sessionID) {
         this.sessionID = sessionID;
     }
 
