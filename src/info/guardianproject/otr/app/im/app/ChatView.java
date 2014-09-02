@@ -996,7 +996,7 @@ public class ChatView extends LinearLayout {
             
             setAvatarBorder(mPresenceStatus, avatar);
             
-            mNewChatActivity.getActionBar().setIcon(avatar);
+            mNewChatActivity.getSupportActionBar().setIcon(avatar);
         }
     }
     

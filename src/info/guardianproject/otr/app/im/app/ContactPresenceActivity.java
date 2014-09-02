@@ -234,7 +234,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             
             setAvatarBorder(status, avatar);
             
-            getActionBar().setIcon(avatar);
+            getSupportActionBar().setIcon(avatar);
 
             
             String address = ImpsAddressUtils.getDisplayableAddress(remoteAddress);
@@ -242,7 +242,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
             if (nickname == null)
                 nickname = address;
             
-            getActionBar().setTitle(nickname);
+            getSupportActionBar().setTitle(nickname);
             
 
             if (address != null && (!nickname.equals(address)))
@@ -268,7 +268,7 @@ public class ContactPresenceActivity extends ThemeableActivity {
 
         updateOtrStatus ();
         
-        getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_red_dark));
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_red_dark));
 
         
         try
@@ -287,11 +287,11 @@ public class ContactPresenceActivity extends ThemeableActivity {
                 if (remoteFingerprintVerified) {
                     lblFingerprintRemote.setText(R.string.their_fingerprint_verified_);
                     
-                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_green_dark));
+                    getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_green_dark));
                     
                 } else
                 {
-                    getActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_orange_light));
+                    getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.holo_orange_light));
 
                 }
 

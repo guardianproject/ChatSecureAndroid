@@ -137,7 +137,6 @@ public class ContactView extends FrameLayout {
             nickname = nickname.split("@")[0];
         }
         
-        BrandingResources brandingRes = app.getBrandingResource(providerId);
 
         
         if (!TextUtils.isEmpty(underLineText)) {

@@ -165,6 +165,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
+        getSupportActionBar().setLogo(R.drawable.ic_drawer); //for ActionBarCompat
         
         setContentView(R.layout.chat_pager);
 
@@ -209,7 +210,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                            
                     }
                     
-                 
+                    getSupportActionBar().setLogo(R.drawable.abc_ic_ab_back_holo_dark); //for ActionBarCompat
                 }
                 else
                 {
@@ -224,7 +225,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         
                     }
                     
-                    getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.background_dark));   
+                    getSupportActionBar().setLogo(R.drawable.ic_drawer); //for ActionBarCompat
                     getSupportActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
@@ -897,8 +898,14 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             
             return true;
 
-        case android.R.id.home:
-            mDrawer.toggle();
+        case android.R.id.home:            
+            int currentPos = mChatPager.getCurrentItem();
+            if (currentPos > 0) {
+                mChatPager.setCurrentItem(0);
+             
+            }
+            else                
+                mDrawer.toggle();
             return true;
             
         case R.id.menu_view_accounts:

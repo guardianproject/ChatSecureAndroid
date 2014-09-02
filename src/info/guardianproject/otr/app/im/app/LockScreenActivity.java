@@ -10,12 +10,12 @@ import java.security.GeneralSecurityException;
 
 import org.apache.commons.codec.binary.Hex;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,7 +32,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class LockScreenActivity extends Activity implements ICacheWordSubscriber {
+public class LockScreenActivity extends ActionBarActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
     private final static int MIN_PASS_LENGTH = 4;
@@ -66,8 +66,7 @@ public class LockScreenActivity extends Activity implements ICacheWordSubscriber
         
         ThemeableActivity.setBackgroundImage(this);
 
-        
-        getActionBar().hide();
+        getSupportActionBar().hide();
         
         setContentView(R.layout.activity_lock_screen);
         

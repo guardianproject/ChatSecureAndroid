@@ -42,25 +42,22 @@ import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.widget.SearchViewCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
-import android.support.v4.app.FragmentActivity;
-
-public class ContactListActivity extends FragmentActivity implements View.OnCreateContextMenuListener, ContactListListener {
+public class ContactListActivity extends ActionBarActivity implements View.OnCreateContextMenuListener, ContactListListener {
 
     private static final int MENU_START_CONVERSATION = Menu.FIRST;
     private static final int MENU_VIEW_PROFILE = Menu.FIRST + 1;
@@ -104,8 +101,8 @@ public class ContactListActivity extends FragmentActivity implements View.OnCrea
 
         mFilterView.getListView().setOnCreateContextMenuListener(this);
         
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
@@ -205,7 +202,7 @@ public class ContactListActivity extends FragmentActivity implements View.OnCrea
         inflater.inflate(R.menu.contact_list_menu, menu);
         
         mSearchView = SearchViewCompat.newSearchView(this);
-        
+        /**
         if (mSearchView != null)
         {
             MenuItem item = menu.add("Search")
@@ -231,7 +228,7 @@ public class ContactListActivity extends FragmentActivity implements View.OnCrea
             });
         
             
-        }
+        }*/
 
         return true;
     }
