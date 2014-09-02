@@ -412,7 +412,6 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         
         String userId = Address.stripResource(fullUserId);
 
-        
         BigInteger x = privKey.getX();
         DSAParams params = privKey.getParams();
         BigInteger y = params.getG().modPow(x, params.getP());
@@ -566,11 +565,11 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         PublicKey remotePublicKey = loadRemotePublicKeyFromStore(fullUserId);
         if (remotePublicKey == null)
             return null;
+        
         try {
             // Store the fingerprint, for posterity.
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
             this.store.setProperty(fullUserId + ".fingerprint", fingerprintString);
-
             store.save();
             return fingerprintString;
         } catch (OtrCryptoException e) {
