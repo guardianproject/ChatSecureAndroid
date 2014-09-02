@@ -169,7 +169,6 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                         }
                     }
                   //  mFilterView.mPresenceView.setConnection(mConn);
-                    mFilterView.setActivity(ContactListActivity.this);
                     mContactListView.setConnection(mConn);
                     mContactListView.setHideOfflineContacts(mGlobalSettingMap
                             .getHideOfflineContacts());

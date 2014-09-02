@@ -71,7 +71,6 @@ public class ContactListFilterView extends LinearLayout {
     private ContactListListener mListener = null;
     private LoaderManager mLoaderManager;
     private int mLoaderId;
-    private ImApp mApp;
     
     public ContactListFilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -81,12 +80,6 @@ public class ContactListFilterView extends LinearLayout {
     
     }
     
-    public void setActivity (Activity a)
-    {
-        if (a != null)
-            mApp = (ImApp) a.getApplication();
-    }
-
     @Override
     public boolean isInEditMode() {
         return true;
@@ -391,10 +384,8 @@ public class ContactListFilterView extends LinearLayout {
 
     private IImConnection getConnection (Cursor c)
     {
-        if (mApp != null)
-            return mApp.getConnection(c.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
-        else
-            return null;
+        return ImApp.sImApp.getConnection(c.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+        
     }
 
     public void blockContactAtPosition(int packedPosition) {

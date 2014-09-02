@@ -1911,9 +1911,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         {
             mConn = conn;
             
-            if (mFilterView != null)
-                mFilterView.setActivity(getActivity());
-            
         }
 
         private Handler mPresenceHandler = new Handler()
