@@ -35,8 +35,10 @@ public class IocVfs {
     //maybe called multiple times to remount
     public static void init(Context context)  throws IllegalArgumentException {
         
-        if (dbFile == null)
-            dbFile = context.getExternalFilesDir(null) + "/" + BLOB_NAME;
+        if (dbFile == null &&  context.getExternalFilesDir(null) != null)
+            dbFile = new File(context.getExternalFilesDir(null),BLOB_NAME).getAbsolutePath();
+        else
+            dbFile = new File(context.getFilesDir(),BLOB_NAME).getAbsolutePath();
         
         if (vfs == null)
             vfs = new VirtualFileSystem(dbFile);
