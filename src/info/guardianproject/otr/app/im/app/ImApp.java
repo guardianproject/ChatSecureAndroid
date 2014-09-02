@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.cacheword.PRNGFixes;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -35,7 +36,6 @@ import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.AssetUtil;
 import info.guardianproject.util.Debug;
-import info.guardianproject.util.PRNGFixes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,14 +46,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.thoughtcrime.ssl.pinning.PinningTrustManager;
-import org.thoughtcrime.ssl.pinning.SystemKeyStore;
-
-import de.duenndns.ssl.MemorizingTrustManager;
-
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
 import net.sqlcipher.database.SQLiteDatabase;
+
+import org.thoughtcrime.ssl.pinning.PinningTrustManager;
+import org.thoughtcrime.ssl.pinning.SystemKeyStore;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -73,13 +72,13 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import de.duenndns.ssl.MemorizingTrustManager;
 
 public class ImApp extends Application {
     
