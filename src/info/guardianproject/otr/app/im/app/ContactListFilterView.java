@@ -119,10 +119,10 @@ public class ContactListFilterView extends LinearLayout {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
                 
                 String[] contactOptions = {
-                                           mContext.getString(R.string.contact_profile_title),
+                                   //        mContext.getString(R.string.menu_verify),
                                            mContext.getString(R.string.menu_contact_nickname),
-                                           mContext.getString(R.string.menu_remove_contact),
-                                           mContext.getString(R.string.menu_block_contact)};
+                                           mContext.getString(R.string.menu_remove_contact)};
+                                     //      mContext.getString(R.string.menu_block_contact)};
                 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setItems(contactOptions, new DialogInterface.OnClickListener() {
@@ -131,13 +131,13 @@ public class ContactListFilterView extends LinearLayout {
                            // of the selected item
                                
                                if (which == 0)
-                                   mListener.showProfile((Cursor)mFilterList.getItemAtPosition(position));
-                               else if (which == 1)
+                               //    mListener.showProfile((Cursor)mFilterList.getItemAtPosition(position));
+                               //else if (which == 1)
                                    setContactNickname(position);
                                else if (which == 2)
                                    removeContactAtPosition(position);
-                               else if (which == 3)
-                                   blockContactAtPosition(position);
+                              // else if (which == 3)
+                                //   blockContactAtPosition(position);
                        }
 
                 });
