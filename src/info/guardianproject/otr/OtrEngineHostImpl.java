@@ -163,16 +163,15 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
         if (mImService != null)
-            mImService.showToast("Encryption Error: " + error,Toast.LENGTH_SHORT);
-        
-        
+            mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),error);
+     
     }
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
-       
-        if (mImService != null)
-            mImService.showToast("Encryption Warning: " + warning,Toast.LENGTH_SHORT);
+        
+      //  if (mImService != null)
+        //    mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),warning);
         
     }
 

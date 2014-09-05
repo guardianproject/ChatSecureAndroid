@@ -88,6 +88,12 @@ public class StatusBarNotifier {
         notify(username, title, snippet, msg, providerId, accountId, intent, lightWeightNotify, R.drawable.ic_stat_status);
     }
 
+    public void notifyError(String username, String error) {
+        
+        Intent intent = new Intent(mContext, NewChatActivity.class);
+        notify(username, error, error, error, -1, -1, intent, true, R.drawable.ic_stat_status);
+    }
+    
     public void notifySubscriptionRequest(long providerId, long accountId, long contactId,
             String username, String nickname) {
         if (!isNotificationEnabled(providerId)) {
