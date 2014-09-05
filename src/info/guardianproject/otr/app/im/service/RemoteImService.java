@@ -107,7 +107,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     final RemoteCallbackList<IConnectionCreationListener> mRemoteListeners = new RemoteCallbackList<IConnectionCreationListener>();
     public long mHeartbeatInterval;
     private WakeLock mWakeLock;
-    private State mNetworkState;
+    private NetworkInfo.State mNetworkState;
+    
 
     private static final String TAG = "GB.ImService";
 
@@ -116,7 +117,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     public static void debug(String msg) {
-        LogCleaner.debug(TAG, msg);
+        //LogCleaner.debug(TAG, msg);
+        Log.d(TAG, msg);
+        
     }
 
     public static void debug(String msg, Exception e) {
@@ -264,7 +267,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void sendHeartbeat() {
         Debug.onHeartbeat();
         try {
-            if (mNeedCheckAutoLogin && mNetworkState != State.NOT_CONNECTED) {
+            if (mNeedCheckAutoLogin && mNetworkState != NetworkInfo.State.DISCONNECTED) {
                 debug("autoLogin from heartbeat");
                 mNeedCheckAutoLogin = false;
                 autoLogin();
@@ -332,7 +335,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         // Check and login accounts if network is ready, otherwise it's checked
         // when the network becomes available.
-        if (mNeedCheckAutoLogin && mNetworkState != State.NOT_CONNECTED) {
+        if (mNeedCheckAutoLogin && mNetworkState != NetworkInfo.State.DISCONNECTED) {
             mNeedCheckAutoLogin = false;
             autoLogin();
         }
@@ -595,49 +598,58 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     boolean isNetworkAvailable ()
     {
-        return mNetworkState == State.CONNECTED;
+        return mNetworkState == NetworkInfo.State.CONNECTED;
     }
 
     void networkStateChanged(NetworkInfo networkInfo, State networkState) {
-        mNetworkState = networkState;
 
-        debug("networkStateChanged:" + mNetworkState);
-
+        
+        //mNetworkState = networkState;
         int oldType = mNetworkType;
+        NetworkInfo.State oldState = mNetworkState;
+        
         mNetworkType = networkInfo != null ? networkInfo.getType() : -1;
+        mNetworkState = networkInfo != null ? networkInfo.getState() : NetworkInfo.State.DISCONNECTED;
 
+        debug("networkStateChanged: type=" + mNetworkType + " state=" + mNetworkState);
+        
         // Notify the connection that network type has changed. Note that this
         // only work for connected connections, we need to reestablish if it's
         // suspended.
         if (mNetworkType != oldType) {
+            
             for (ImConnectionAdapter conn : mConnections.values()) {
-                conn.networkTypeChanged();
-            }
-        }
-
-        NetworkInfo.State state = networkInfo != null ? networkInfo.getState() : NetworkInfo.State.DISCONNECTED;
-        switch (state) {
-        case CONNECTED:
-            boolean reConnd = reestablishConnections();
-            
-            if (!reConnd)
-            {
-                if (mNeedCheckAutoLogin) {
-                    mNeedCheckAutoLogin = false;
-                    autoLogin();             
+                if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN) {
+                 
+               //     conn.networkTypeChanged();
                 }
-            }
-            
-            break;
-
-        case DISCONNECTED:        
-                suspendConnections();
-            
-            break;
-            
-        default:
-            break;
+            }               
         }
+        
+        switch (mNetworkState) {
+            case CONNECTED:
+                boolean reConnd = reestablishConnections();
+                
+                if (!reConnd)
+                {
+                    if (mNeedCheckAutoLogin) {
+                        mNeedCheckAutoLogin = false;
+                        autoLogin();             
+                    }
+                }
+                
+                break;
+    
+            case DISCONNECTED:        
+                    suspendConnections();
+                
+                break;
+                
+            default:
+                break;
+         
+        }
+       
     }
 
     // package private for inner class access
