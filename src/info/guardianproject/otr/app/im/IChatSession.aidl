@@ -108,4 +108,10 @@ interface IChatSession {
     * respond to incoming data request
     */
     void setIncomingFileResponse (boolean acceptThis, boolean acceptAll);
+    
+    /**
+    * reinit chatsession if we are starting a new chat
+    */
+    void reInit();
 }
+
