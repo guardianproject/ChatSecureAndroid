@@ -491,15 +491,15 @@ public class ImApp extends Application {
     }
 
  //   public boolean isBackgroundDataEnabled() { //"background data" is a deprectaed concept
-    public boolean isNetworkAvailableAndConnected () {
-        ConnectivityManager manager = (ConnectivityManager) mApplicationContext
+    public static boolean isNetworkAvailableAndConnected (Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context
                 .getSystemService(CONNECTIVITY_SERVICE);
       
         NetworkInfo nInfo = manager.getActiveNetworkInfo();
 
         if (nInfo != null)
         {
-            Log.d(LOG_TAG,"network state: available=" + nInfo.isAvailable() + " connected/connecting=" + nInfo.isConnectedOrConnecting());
+            Log.d(LOG_TAG,"isNetworkAvailableAndConnected? available=" + nInfo.isAvailable() + " connected=" + nInfo.isConnected());
             return nInfo.isAvailable() && nInfo.isConnected();
         }
         else
