@@ -51,7 +51,7 @@ public abstract class ChatSessionManager {
      * 
      * @param listener the listener
      */
-    public synchronized void addChatSessionListener(ChatSessionListener listener) {
+    public void addChatSessionListener(ChatSessionListener listener) {
         if ((listener != null) && !mListeners.contains(listener)) {
             mListeners.add(listener);
         }
@@ -62,7 +62,7 @@ public abstract class ChatSessionManager {
      * 
      * @param listener the listener to remove.
      */
-    public synchronized void removeChatSessionListener(ChatSessionListener listener) {
+    public void removeChatSessionListener(ChatSessionListener listener) {
         mListeners.remove(listener);
     }
 
@@ -72,7 +72,7 @@ public abstract class ChatSessionManager {
      * @param participant the participant.
      * @return the created ChatSession.
      */
-    public synchronized ChatSession createChatSession(ImEntity participant) {
+    public ChatSession createChatSession(ImEntity participant, boolean isNewSession) {
         
         String sessionKey = participant.getAddress().getAddress();
         ChatSession session = mSessions.get(sessionKey);
@@ -80,7 +80,7 @@ public abstract class ChatSessionManager {
         if (session == null)
         {
             session = new ChatSession(participant, this);                        
-            mAdapter.getChatSessionAdapter(session);
+            mAdapter.getChatSessionAdapter(session, isNewSession);
             mSessions.put(sessionKey,session);
     
             for (ChatSessionListener listener : mListeners) {
