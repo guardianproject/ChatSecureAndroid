@@ -72,7 +72,7 @@ public class ChatSessionManagerAdapter extends
         return mChatSessionManager;
     }
 
-    public IChatSession createChatSession(String contactAddress) {
+    public IChatSession createChatSession(String contactAddress, boolean isNewSession) {
         
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
@@ -90,9 +90,9 @@ public class ChatSessionManagerAdapter extends
             }
         }
         
-        ChatSession session = mChatSessionManager.createChatSession(contact);
+        ChatSession session = mChatSessionManager.createChatSession(contact, isNewSession);
         
-        return getChatSessionAdapter(session);
+        return getChatSessionAdapter(session, isNewSession);
     }
     
     public IChatSession createMultiUserChatSession(String roomAddress) 
@@ -110,9 +110,9 @@ public class ChatSessionManagerAdapter extends
             
             if (chatGroup != null)
             {
-                ChatSession session = mChatSessionManager.createChatSession(chatGroup);
+                ChatSession session = mChatSessionManager.createChatSession(chatGroup,true);
     
-                return getChatSessionAdapter(session);
+                return getChatSessionAdapter(session, true);
             }
             else
             {
@@ -130,7 +130,9 @@ public class ChatSessionManagerAdapter extends
         synchronized (mActiveChatSessionAdapters) {
             ChatSession session = adapter.getAdaptee();
             mChatSessionManager.closeChatSession(session);
-            mActiveChatSessionAdapters.remove(adapter.getAddress());
+            
+            String key = Address.stripResource(adapter.getAddress());
+            mActiveChatSessionAdapters.remove(key);
         }
     }
 
@@ -181,12 +183,13 @@ public class ChatSessionManagerAdapter extends
         }
     }
 
-    public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session) {
+    public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session, boolean isNewSession) {
         Address participantAddress = session.getParticipant().getAddress();
         String key = Address.stripResource(participantAddress.getAddress());
         ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
+        
         if (adapter == null) {
-            adapter = new ChatSessionAdapter(session, mConnection);
+            adapter = new ChatSessionAdapter(session, mConnection, isNewSession);
             mActiveChatSessionAdapters.put(key, adapter);
         }
         return adapter;        
@@ -195,7 +198,7 @@ public class ChatSessionManagerAdapter extends
     class ChatSessionListenerAdapter implements ChatSessionListener {
 
         public void onChatSessionCreated(ChatSession session) {
-            final IChatSession sessionAdapter = getChatSessionAdapter(session);
+            final IChatSession sessionAdapter = getChatSessionAdapter(session, false);
             final int N = mRemoteListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
                 IChatSessionListener listener = mRemoteListeners.getBroadcastItem(i);
@@ -239,7 +242,7 @@ public class ChatSessionManagerAdapter extends
         }
 
         public void onJoinedGroup(ChatGroup group) {
-            mChatSessionManager.createChatSession(group);
+            mChatSessionManager.createChatSession(group,false);
         }
 
         public void onLeftGroup(ChatGroup group) {
