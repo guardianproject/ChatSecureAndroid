@@ -40,9 +40,14 @@ public abstract class ChatSessionManager {
         mSessions = new Hashtable<String,ChatSession>();
     }
     
-    public void setChatSessionManagerAdapter (ChatSessionManagerAdapter adapter)
+    public void setAdapter (ChatSessionManagerAdapter adapter)
     {
         mAdapter = adapter;
+    }
+    
+    public ChatSessionManagerAdapter getAdapter ()
+    {
+        return mAdapter;
     }
 
     /**

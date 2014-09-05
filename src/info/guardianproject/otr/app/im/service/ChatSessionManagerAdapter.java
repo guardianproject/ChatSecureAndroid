@@ -47,16 +47,17 @@ public class ChatSessionManagerAdapter extends
     ImConnectionAdapter mConnection;
     ChatSessionManager mChatSessionManager;
     ChatGroupManager mGroupManager;
-    HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
     ChatSessionListenerAdapter mSessionListenerAdapter;
     final RemoteCallbackList<IChatSessionListener> mRemoteListeners = new RemoteCallbackList<IChatSessionListener>();
 
+    static HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
+    
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
         mConnection = connection;
         ImConnection connAdaptee = connection.getAdaptee();
         
         mChatSessionManager = connAdaptee.getChatSessionManager();
-        mChatSessionManager.setChatSessionManagerAdapter(this);
+        mChatSessionManager.setAdapter(this);
         
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();

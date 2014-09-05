@@ -1547,7 +1547,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (session == null) {
             ImEntity participant = findOrCreateParticipant(address, groupChat);
-            session = mSessionManager.createChatSession(participant,true);
+            session = mSessionManager.createChatSession(participant,false);
             
         }
 
