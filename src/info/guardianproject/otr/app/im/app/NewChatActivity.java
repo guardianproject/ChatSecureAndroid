@@ -1345,7 +1345,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                 IChatSession session = sessionMgr.getChatSession(username);
                 
                 if (session == null)
-                    session = sessionMgr.createChatSession(username);
+                    session = sessionMgr.createChatSession(username, false);
               
                 return session;
             } catch (RemoteException e) {
@@ -2028,14 +2028,13 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     private void startChat(Cursor c) {
         
         if (c != null && (!  c.isAfterLast())) {
-            long chatContactId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));            
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             
             startChat(providerId,username);
         }
-        
-        updateChatList();
+        else
+            updateChatList();
     }
     
     private void startChat (long providerId, String username)
@@ -2049,9 +2048,9 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                 IChatSession session = manager.getChatSession(username);
                 if (session == null && manager != null) {
                     // Create session.  Stash requested contact ID for when we get called back.                     
-                    IChatSession iChatSession = manager.createChatSession(username);
-                    if (iChatSession != null)
-                        mRequestedChatId = iChatSession.getId();
+                    session = manager.createChatSession(username, true);
+                    if (session != null)
+                        mRequestedChatId = session.getId();
                     else
                     {
                         //could not create session
@@ -2061,8 +2060,10 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     // Already have session
                     if (!showChat(session.getId())) {
                         // We have a session, but it's not in the cursor yet
-                        mRequestedChatId = session.getId();
-                    }
+                        mRequestedChatId = session.getId(); 
+                        session.reInit();
+                    }                    
+                    
                 }
                 
                 updateChatList();
