@@ -28,34 +28,29 @@ import android.util.Log;
 public class IocVfs {
     public static final String TAG = IocVfs.class.getName();
     private static String dbFile;
-    private static VirtualFileSystem vfs;
     private static final String BLOB_NAME = "media.db";
     private static String password;
     
     //maybe called multiple times to remount
     public static void init(Context context)  throws IllegalArgumentException {
         
-        if (dbFile == null &&  context.getExternalFilesDir(null) != null)
+        if (context.getExternalFilesDir(null) != null)
             dbFile = new File(context.getExternalFilesDir(null),BLOB_NAME).getAbsolutePath();
         else
             dbFile = new File(context.getFilesDir(),BLOB_NAME).getAbsolutePath();
-        
-        if (vfs == null)
-            vfs = new VirtualFileSystem(dbFile);
        
         if (password != null)
             mount();
         
     }
     
-    public static void mount() throws IllegalArgumentException {
-   //     Log.e(TAG, "mount:" + dbFile);
-        vfs.mount(password);
+    public static void mount() throws IllegalArgumentException {        
+        if (!VirtualFileSystem.get().isMounted())
+            VirtualFileSystem.get().mount(dbFile, password);               
     }
     
-    public static void unmount() {
-   //     Log.e(TAG, "unmount:" + dbFile);
-        vfs.unmount();
+    public static void unmount() {     
+        VirtualFileSystem.get().unmount();
     }
     
     public static void list(String parent) {
