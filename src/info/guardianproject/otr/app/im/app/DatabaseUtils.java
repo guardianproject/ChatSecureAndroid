@@ -17,12 +17,15 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
+
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -52,16 +55,17 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static RoundedAvatarDrawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
+    public static RoundedAvatarDrawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) throws DecoderException {
         String hexData = cursor.getString(dataColumn);
         if (hexData.equals("NULL")) {
             return null;
         }
-        byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
+        
+        byte[] data = Hex.decodeHex(hexData.substring(2, hexData.length() - 1).toCharArray());
         return decodeAvatar(data, width, height);
     }
 
-    public static RoundedAvatarDrawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) {
+    public static RoundedAvatarDrawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) throws DecoderException {
         
         String[] projection =  {Imps.Contacts.AVATAR_DATA};
         String[] args = {address};
@@ -76,7 +80,9 @@ public class DatabaseUtils {
             if (hexData.equals("NULL")) {
                 return null;
             }
-            byte[] data = Hex.decode(hexData.substring(2, hexData.length() - 1));
+            
+            byte[] data = Hex.decodeHex(hexData.substring(2, hexData.length() - 1).toCharArray());
+            
             return decodeAvatar(data, width, height);
         }
         else
