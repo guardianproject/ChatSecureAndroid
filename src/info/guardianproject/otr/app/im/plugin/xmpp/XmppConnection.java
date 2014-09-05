@@ -47,6 +47,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -173,7 +174,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private final static String IS_GOOGLE = "google";
 
-    private final static int SOTIMEOUT = 60000;
+    //private final static int SOTIMEOUT = 60000;
 
     private PacketCollector mPingCollector;
     private String mUsername;
@@ -205,7 +206,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Debug.onConnectionStart();
 
         //setup SSL managers
-        SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
+       // SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
         // Create a single threaded executor.  This will serialize actions on the underlying connection.
         createExecutor();
@@ -248,9 +249,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private void createExecutor() {
-        mExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+       mExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
               new LinkedBlockingQueue<Runnable>());
-      //  mExecutor = Executors.newCachedThreadPool();
                 
     }
 
@@ -271,9 +271,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private boolean executeIfIdle(Runnable runnable) {
         if (mExecutor.getActiveCount() + mExecutor.getQueue().size() == 0) {
             return execute(runnable);
-        }
+       }
         
-        return false;
+       return false;
     }
 
     // This runs in executor thread, and since there is only one such thread, we will definitely
@@ -349,7 +349,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             mLoadingAvatars = true;
 
-            String jid = null;
             ContentResolver resolver = mContext.getContentResolver();
 
             try
@@ -1503,16 +1502,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void reestablishSessionAsync(Map<String, String> sessionContext) {
-        execute(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                if (getState() == SUSPENDED) {
+                //if (getState() == SUSPENDED) {
                     debug(TAG, "reestablish");
                     setState(LOGGING_IN, null);
-                    maybe_reconnect();
-                }
+                    //maybe_reconnect();
+                    force_reconnect();
+                //}
             }
-        });
+        }).start();
     }
 
     @Override
@@ -1537,7 +1537,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (session == null) {
             ImEntity participant = findOrCreateParticipant(address, groupChat);
-            session = mSessionManager.createChatSession(participant);
+            session = mSessionManager.createChatSession(participant,true);
             
         }
 
@@ -1652,11 +1652,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public synchronized ChatSession createChatSession(ImEntity participant) {
+        public ChatSession createChatSession(ImEntity participant, boolean isNewSession) {
             
             qAvatar.push(participant.getAddress().getAddress());
 
-            ChatSession session = super.createChatSession(participant);
+            ChatSession session = super.createChatSession(participant,isNewSession);
             
          //   mSessions.put(Address.stripResource(participant.getAddress().getAddress()),session);
             return session;
@@ -2197,6 +2197,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     public void doHeartbeat(long heartbeatInterval) {
         heartbeatSequence++;
 
+        if (getState() == SUSPENDED) {
+            debug(TAG, "heartbeat during suspend");
+            return;
+        }
+
         if (mConnection == null && mRetryLogin) {
             debug(TAG, "reconnect with login");
             do_login();
@@ -2204,11 +2209,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (mConnection == null)
             return;
-
-        if (getState() == SUSPENDED) {
-            debug(TAG, "heartbeat during suspend");
-            return;
-        }
 
         if (mNeedReconnect) {
             reconnect();
@@ -2280,8 +2280,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         public MyXMPPConnection(ConnectionConfiguration config) {
             super(config);
 
-            //this.getConfiguration().setSocketFactory(arg0)
-
         }
 
 
@@ -2308,6 +2306,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void networkTypeChanged() {
+        
+        suspend();
+        
+        /*
         super.networkTypeChanged();
         
         execute(new Runnable() {
@@ -2323,7 +2325,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
             }
         });
-
+        */
         
     }
 
@@ -2387,11 +2389,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             return;
         }
 
-        try {
-            Thread.sleep(2000); // Wait for network to settle
-        } catch (InterruptedException e) { /* ignore */
-        }
-
         if (mConnection != null) {
             // It is safe to ask mConnection whether it is connected, because either:
             // - We detected an error using ping and called force_reconnect, which did a shutdown
@@ -2403,14 +2400,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // The analysis above is incorrect in the case where Smack loses connectivity
             // while trying to log in.  This case is handled in a future heartbeat
             // by checking ping responses.
+            clearPing();
             if (mConnection.isConnected()) {
-                Log.w(TAG, "reconnect while already connected, assuming good");
+                debug(TAG,"reconnect while already connected, assuming good");
                 mNeedReconnect = false;
                 setState(LOGGED_IN, null);
                 return;
             }
-            Log.i(TAG, "reconnect");
-            clearPing();
+            debug(TAG, "reconnect");
+            
             try {
                 if (mStreamHandler.isResumePossible()) {
                     // Connect without binding, will automatically trigger a resume
@@ -2423,9 +2421,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     mNeedReconnect = true;
 
                     debug(TAG, "reconnection on network change failed");
-
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
                             "reconnection on network change failed"));
+                   
                     /*
                     
                     mConnection.connect();
@@ -2467,6 +2465,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
                     "reconnection on network change failed"));
+            
         }
     }
 

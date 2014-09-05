@@ -564,7 +564,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         if (session == null) {
             Contact contact = findOrCreateContact(parseAddressName(address), address);
-            session = mSessionManager.createChatSession(contact);
+            session = mSessionManager.createChatSession(contact,true);
         }
         return session;
     }
@@ -611,7 +611,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     public ChatSession createChatSession(Contact contact) {
-        return mSessionManager.createChatSession(contact);
+        return mSessionManager.createChatSession(contact,true);
     }
 
     public class XmppContactListManager extends ContactListManager {
