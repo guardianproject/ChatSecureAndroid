@@ -331,7 +331,7 @@ public class ImUrlActivity extends Activity {
             IChatSessionManager manager = mConn.getChatSessionManager();
             IChatSession session = manager.getChatSession(mToAddress);
             if (session == null) {
-                session = manager.createChatSession(mToAddress);
+                session = manager.createChatSession(mToAddress,false);
             }
 
             Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, session.getId());
@@ -705,7 +705,7 @@ public class ImUrlActivity extends Activity {
                 IChatSession session = mChatSessionManager.getChatSession(username);
                 
                 if (session == null)
-                    session = mChatSessionManager.createChatSession(username);
+                    session = mChatSessionManager.createChatSession(username,false);
               
                 return session;
             } catch (RemoteException e) {
