@@ -163,7 +163,7 @@ public class ActiveChatListView extends LinearLayout {
                         IChatSessionManager manager = conn.getChatSessionManager();
                         IChatSession session = manager.getChatSession(username);
                         if (session == null) {
-                            manager.createChatSession(username);
+                            manager.createChatSession(username, false);
                         }
                     }
     

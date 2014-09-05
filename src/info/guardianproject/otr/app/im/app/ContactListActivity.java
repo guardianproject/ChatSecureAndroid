@@ -660,7 +660,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                 IChatSessionManager manager = mConn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
                 if (session == null) {
-                    manager.createChatSession(username);
+                    manager.createChatSession(username, false);
                 }
 
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);

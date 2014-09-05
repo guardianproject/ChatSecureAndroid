@@ -985,7 +985,10 @@ public class ChatView extends LinearLayout {
         {
             mNewChatActivity.setTitle(mRemoteNickname);
             
-            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(mCursor, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+            RoundedAvatarDrawable avatar = null;
+            
+            try {avatar =DatabaseUtils.getAvatarFromCursor(mCursor, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+            catch (Exception e){}
             
             if (avatar == null)
             {
@@ -1514,7 +1517,7 @@ public class ChatView extends LinearLayout {
                     IChatSessionManager sessionMgr = mConn.getChatSessionManager();
                     if (sessionMgr != null) {
                        
-                        IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
+                        IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress),false);
                       
                         return session;
                         

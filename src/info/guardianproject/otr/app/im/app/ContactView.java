@@ -21,7 +21,6 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import net.java.otr4j.session.SessionStatus;
@@ -35,6 +34,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -189,7 +189,17 @@ public class ContactView extends FrameLayout {
             {
                 holder.mAvatar.setVisibility(View.GONE);        
 
-                RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                RoundedAvatarDrawable avatar = null;
+                
+                try
+                {
+                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                }
+                catch (Exception e)
+                {
+                    //problem decoding avatar
+                    Log.e(ImApp.LOG_TAG,"error decoding avatar",e);
+                }
                 
                 if (avatar != null)
                 {

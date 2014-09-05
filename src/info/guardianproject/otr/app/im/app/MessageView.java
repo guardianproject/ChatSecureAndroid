@@ -633,8 +633,11 @@ public class MessageView extends FrameLayout {
         if (address != null)
         {
             
-            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
-    
+            RoundedAvatarDrawable avatar = null;
+            
+            try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+            catch (Exception e){}
+            
             if (avatar != null)
             {
                 if (isLeft)

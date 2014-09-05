@@ -223,8 +223,17 @@ public class ContactPresenceActivity extends ThemeableActivity {
             String customStatus = c.getString(c
                     .getColumnIndexOrThrow(Imps.Contacts.PRESENCE_CUSTOM_STATUS));
             
-            RoundedAvatarDrawable avatar = DatabaseUtils.getAvatarFromCursor(c,
-                    c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
+            RoundedAvatarDrawable avatar = null;
+            
+            try
+            {
+                avatar = DatabaseUtils.getAvatarFromCursor(c,
+                        c.getColumnIndexOrThrow(Imps.Contacts.AVATAR_DATA),ImApp.DEFAULT_AVATAR_WIDTH*2,ImApp.DEFAULT_AVATAR_HEIGHT*2);
+            }
+            catch (Exception e)
+            {
+                Log.e(ImApp.LOG_TAG,"error decoding avatar",e);
+            }
             
             if (avatar == null)
             {

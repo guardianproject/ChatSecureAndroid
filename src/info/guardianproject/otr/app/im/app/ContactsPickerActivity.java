@@ -170,6 +170,10 @@ public class ContactsPickerActivity extends ActionBarActivity  {
 
     public void doFilterAsync (final String query)
     {
+
+        if (mCursor != null)
+            mCursor.close();
+        
         new Thread(new Runnable () { public void run () {
             doFilter(query);
         }}).start();
@@ -204,7 +208,6 @@ public class ContactsPickerActivity extends ActionBarActivity  {
             buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
            
         }
-        
         
         mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
