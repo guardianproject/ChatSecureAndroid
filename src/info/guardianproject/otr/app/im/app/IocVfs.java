@@ -11,6 +11,8 @@ import info.guardianproject.iocipher.VirtualFileSystem;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -207,13 +209,8 @@ public class IocVfs {
         java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(sourcePath));
         FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
         
-        byte[] b = new byte[8*1024];
-        int length;
-
-        while ((length = fis.read(b)) != -1) {
-            fos.write(b, 0, length);
-        }
-
+        IOUtils.copyLarge(fis, fos);
+        
         fos.close();
         fis.close();
     }
@@ -223,13 +220,8 @@ public class IocVfs {
         FileInputStream fis = new FileInputStream(new File(sourcePath));
         java.io.FileOutputStream fos = new java.io.FileOutputStream(new java.io.File(targetPath), false);
         
-        byte[] b = new byte[8*1024];
-        int length;
-
-        while ((length = fis.read(b)) != -1) {
-            fos.write(b, 0, length);
-        }
-
+        IOUtils.copyLarge(fis, fos);
+        
         fos.close();
         fis.close();
     }
