@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -172,11 +173,8 @@ public class ChatView extends LinearLayout {
     
     private boolean mIsSelected = false;
     
-
     private SessionStatus mLastSessionStatus = null;
     private boolean mIsVerified = false;
-    
-    
     
     public void setSelected (boolean isSelected)
     {
@@ -189,6 +187,25 @@ public class ChatView extends LinearLayout {
             mComposeMessage.requestFocus();
             
             setTitle();
+            
+            try
+            {
+                boolean isConnected = (mConn == null) ? false : mConn.getState() != ImConnection.SUSPENDED;
+                
+                if (mLastSessionStatus == SessionStatus.PLAINTEXT && isConnected) {
+    
+                    if (this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
+                                || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC)
+                    {
+                           //automatically attempt to turn on OTR after 1 second
+                            mHandler.postAtTime(new Runnable (){
+                                public void run (){  setOTRState(true);}
+                             },1000);
+                    }    
+                       
+                }
+            }
+            catch (RemoteException re){}
         }
         
         
@@ -231,6 +248,7 @@ public class ChatView extends LinearLayout {
                     {
                             
                         if (otrEnabled) {
+
                             otrChatSession.startChatEncryption();
                             
 
@@ -1737,9 +1755,9 @@ public class ChatView extends LinearLayout {
             
             if (mLastSessionStatus == SessionStatus.PLAINTEXT) {
 
+                mSendButton.setImageResource(R.drawable.ic_send_holo_light);
+                mComposeMessage.setHint(R.string.compose_hint);
                 
-                    mSendButton.setImageResource(R.drawable.ic_send_holo_light);
-                    mComposeMessage.setHint(R.string.compose_hint);
                     
             }
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
