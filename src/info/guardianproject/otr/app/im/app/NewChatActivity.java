@@ -16,6 +16,7 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -33,6 +34,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.SecureCameraActivity;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.XmppUriHelper;
 import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.io.File;
@@ -44,6 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -316,7 +319,13 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
     @Override
     protected void onDestroy() {
-        unregisterSubListeners ();
+      //  unregisterSubListeners ();
+        
+        if (mGlobalSettings != null)
+        {
+            mGlobalSettings.close();
+            mGlobalSettings = null;
+        }
         
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
@@ -419,12 +428,16 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     &&  getCurrentChatSession().getOtrChatSession() != null)
             {
                 
-            
-                String localFingerprint = getCurrentChatSession().getOtrChatSession().getLocalFingerprint();
+                IOtrChatSession iOtr = getCurrentChatSession().getOtrChatSession();                
+                
+                String localUser = iOtr.getLocalUserId();
+                String localFingerprint = iOtr.getLocalFingerprint();
                 
                 if (localFingerprint != null)
                  {
-                    new IntentIntegrator(this).shareText(localFingerprint);
+                    String otrKeyURI = XmppUriHelper.getUri(localUser, localFingerprint);
+                    
+                    new IntentIntegrator(this).shareText(otrKeyURI);
                     return;
                  }
                 
@@ -589,7 +602,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                                     if (cursor.getCount() > 0)
                                     { 
                                         cursor.moveToFirst();                            
-                                        startChat(cursor);
+                                        openExistingChat(cursor);
                                     }
                                 } finally {
                                     cursor.close();
@@ -1289,7 +1302,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
                     } else {
-                        startChat(providerId, username);
+                        startChat(providerId, username,true);
                         
                     //    chatSession.convertToGroupChat();
                      //   new ContactInvitor(chatSession, username).start();
@@ -1307,9 +1320,19 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             if (scanResult != null) {
 
                 
-                String otherFingerprint = scanResult.getContents();
-                if (getCurrentChatView()!=null)
-                    getCurrentChatView().verifyScannedFingerprint(otherFingerprint);
+                String xmppUri = scanResult.getContents();
+                
+                String result = null;
+                
+                if (xmppUri.startsWith("xmpp"))
+                {
+                    Uri uriXmpp = Uri.parse(xmppUri);
+                    result = uriXmpp.getQueryParameter("otr-fingerprint");
+                    
+                }
+                
+                if (getCurrentChatView()!=null && result != null)
+                    getCurrentChatView().verifyScannedFingerprint(result);
                 else
                 {
                     //add new contact?
@@ -1803,6 +1826,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         }        
     }
     
+    /**
     public void unregisterSubListeners ()
     {
         if (mAccountIds != null)
@@ -1820,7 +1844,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     
                 }
             }
-    }
+    }*/
     
     public IImConnection initConnection (long accountId, long providerId)
     {
@@ -1993,10 +2017,10 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
 
         @Override
-        public void startChat(Cursor c) {
+        public void openChat(Cursor c) {
             
             NewChatActivity activity = (NewChatActivity)getActivity();            
-            activity.startChat(c);
+            activity.openExistingChat(c);
             
         }
         
@@ -2025,19 +2049,19 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
    
     
     
-    private void startChat(Cursor c) {
+    private void openExistingChat(Cursor c) {
         
         if (c != null && (!  c.isAfterLast())) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));            
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
             
-            startChat(providerId,username);
+            startChat(providerId,username, false);
         }
         else
             updateChatList();
     }
     
-    private void startChat (long providerId, String username)
+    private void startChat (long providerId, String username, boolean isNewChat)
     {
         IImConnection conn = mApp.getConnection(providerId);            
         
@@ -2048,7 +2072,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                 IChatSession session = manager.getChatSession(username);
                 if (session == null && manager != null) {
                     // Create session.  Stash requested contact ID for when we get called back.                     
-                    session = manager.createChatSession(username, true);
+                    session = manager.createChatSession(username, isNewChat);
                     if (session != null)
                         mRequestedChatId = session.getId();
                     else
@@ -2492,5 +2516,42 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         }
 
     };
+    
+    private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
+    
+    private synchronized Imps.ProviderSettings.QueryMap getGlobalSettings() {
+        if (mGlobalSettings == null) {
+            
+            ContentResolver contentResolver = getContentResolver();
+            
+            Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
+
+            if (cursor == null)
+                return null;
+            
+            mGlobalSettings = new Imps.ProviderSettings.QueryMap(cursor, contentResolver, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, mHandler);
+        }
+        
+        return mGlobalSettings;
+    }
+    
+    public int getOtrPolicy() {
+        int otrPolicy = OtrPolicy.OPPORTUNISTIC;
+
+        String otrModeSelect = getGlobalSettings().getOtrMode();
+
+        if (otrModeSelect.equals("auto")) {
+            otrPolicy = OtrPolicy.OPPORTUNISTIC;
+        } else if (otrModeSelect.equals("disabled")) {
+            otrPolicy = OtrPolicy.NEVER;
+
+        } else if (otrModeSelect.equals("force")) {
+            otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+
+        } else if (otrModeSelect.equals("requested")) {
+            otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL; 
+        }
+        return otrPolicy;
+    }
     
 }
