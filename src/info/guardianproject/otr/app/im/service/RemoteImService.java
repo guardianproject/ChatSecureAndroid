@@ -173,19 +173,23 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private int convertPolicy() {
         int otrPolicy = OtrPolicy.OPPORTUNISTIC;
         QueryMap gSettings = getGlobalSettings();
-        String otrModeSelect = gSettings.getOtrMode();
-        
-        if (otrModeSelect.equals("auto")) {
-            otrPolicy = OtrPolicy.OPPORTUNISTIC;
-        } else if (otrModeSelect.equals("disabled")) {
-            otrPolicy = OtrPolicy.NEVER;
-
-        } else if (otrModeSelect.equals("force")) {
-            otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
-
-        } else if (otrModeSelect.equals("requested")) {
-            otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL; 
+        if (gSettings != null)
+        {
+            String otrModeSelect = gSettings.getOtrMode();
+            
+            if (otrModeSelect.equals("auto")) {
+                otrPolicy = OtrPolicy.OPPORTUNISTIC;
+            } else if (otrModeSelect.equals("disabled")) {
+                otrPolicy = OtrPolicy.NEVER;
+    
+            } else if (otrModeSelect.equals("force")) {
+                otrPolicy = OtrPolicy.OTRL_POLICY_ALWAYS;
+    
+            } else if (otrModeSelect.equals("requested")) {
+                otrPolicy = OtrPolicy.OTRL_POLICY_MANUAL; 
+            }
         }
+        
         return otrPolicy;
     }
 
