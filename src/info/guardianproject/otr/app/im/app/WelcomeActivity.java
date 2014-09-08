@@ -239,7 +239,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             
         Intent intent = getIntent();
         
-        if (intent != null && (!intent.getAction().equals(Intent.ACTION_MAIN)))
+        if (intent != null && intent.getAction() != null && (!intent.getAction().equals(Intent.ACTION_MAIN)))
         {
             handleIntentAPILaunch(intent);
         }
