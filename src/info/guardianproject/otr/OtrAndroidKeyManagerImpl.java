@@ -536,9 +536,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         try {
             String fingerprint = cryptoEngine.getFingerprint(pubKey);
-
-            OtrDebugLogger.log("got fingerprint for: " + userId + "=" + fingerprint);
-
+          //  OtrDebugLogger.log("got fingerprint for: " + userId + "=" + fingerprint);
             return fingerprint;
 
         } catch (OtrCryptoException e) {
