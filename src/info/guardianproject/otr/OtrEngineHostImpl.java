@@ -162,8 +162,10 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
-        if (mImService != null)
-            mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),error);
+        sendMessage(sessionID, error);
+
+      //  if (mImService != null)
+        //    mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),error);
      
     }
 
