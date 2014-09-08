@@ -975,6 +975,8 @@ public class AccountActivity extends Activity {
       
         //need to delete 
         ((ImApp)getApplication()).deleteAccount(mAccountId, mProviderId);
+        
+        finish();
     }
     
     private void showAdvanced() {

@@ -30,8 +30,10 @@ import java.util.UUID;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -40,11 +42,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,6 +57,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +65,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 
-public class AccountWizardActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
+public class AccountWizardActivity extends ActionBarActivity implements View.OnCreateContextMenuListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -89,6 +92,9 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getSupportActionBar().hide();
         
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
@@ -266,18 +272,13 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
         
         mGoogleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
                 
-        mAccountList = new String[listProviders.size()+mGoogleAccounts.length+2][2]; //potentialProviders + google + create account + burner
+        mAccountList = new String[listProviders.size()+3][2]; //potentialProviders + google + create account + burner
         
         int i = 0;
         
-        
-        for (Account account : mGoogleAccounts)
-        {
-            mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
-            mAccountList[i++][1] = getString(R.string.account_google_full) + "\n\nAccount: " + account.name; 
-            
-        }
-       
+        mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
+        mAccountList[i++][1] = getString(R.string.account_google_full); 
+   
         mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);       
         mAccountList[i++][1] = getString(R.string.account_existing_full);       
        
@@ -348,24 +349,57 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
             
     };
 
-    private void addGoogleAccount (String newUser)
+    private void addGoogleAccount ()
     {
-        mNewUser = newUser;
+       // mNewUser = newUser;
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(
+                this);
+      //  builderSingle.setTitle("Select One Name:-");
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.select_dialog_singlechoice);
+    
+        for (Account gAccount : mGoogleAccounts)
+            arrayAdapter.add(gAccount.name);
         
-        Thread thread = new Thread ()
-        {
-            public void run ()
-            {
-                //get the oauth token
-                
-              //don't store anything just make sure it works!
-               String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountWizardActivity.this,mHandlerGoogleAuth);
-       
-               //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
-                showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
-            }
-        };
-        thread.start();
+        builderSingle.setNegativeButton(R.string.cancel,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(arrayAdapter,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        
+                        mNewUser = arrayAdapter.getItem(which);
+                        
+                        Thread thread = new Thread ()
+                        {
+                            public void run ()
+                            {
+                                //get the oauth token
+                                
+                              //don't store anything just make sure it works!
+                               String password = GTalkOAuth2.NAME + ':' + GTalkOAuth2.getGoogleAuthTokenAllow(mNewUser, getApplicationContext(), AccountWizardActivity.this,mHandlerGoogleAuth);
+                       
+                               //use the XMPP type plugin for google accounts, and the .NAME "X-GOOGLE-TOKEN" as the password
+                                showSetupAccountForm(helper.getProviderNames().get(0), mNewUser,password, false, getString(R.string.google_account),false);
+                            }
+                        };
+                        thread.start();
+                       
+                    }
+                });
+        builderSingle.show();
+
+        
+      
     }
     
     
@@ -724,7 +758,7 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
                     }
                     else
                     {
-                        addGoogleAccount(mGoogleAccounts[pos].name);
+                        addGoogleAccount();
                     }
                 }
                 

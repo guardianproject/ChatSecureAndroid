@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="the detailed body test describing the app will go here and weill apll prima"
          android:fontFamily="sans-serif-light"
-                android:minHeight="200dp"
+                android:minHeight="150dp"
         
          />
     
