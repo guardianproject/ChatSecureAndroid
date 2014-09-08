@@ -317,10 +317,10 @@ public class AddContactActivity extends Activity {
     
                     if (xmppUri.startsWith("xmpp"))
                     {
-                        Uri uriXmpp = Uri.parse(xmppUri.substring(5)); //strip thte scheme so we can parse it properly
+                        Uri uriXmpp = Uri.parse(xmppUri); //strip thte scheme so we can parse it properly
                         String otrFingerprint = uriXmpp.getQueryParameter("otr-fingerprint");
                      
-                        String address = uriXmpp.getPath();              
+                        String address = uriXmpp.getUserInfo() + '@' + uriXmpp.getHost(); 
                         
                         this.mAddressList.setText(address);
                         
