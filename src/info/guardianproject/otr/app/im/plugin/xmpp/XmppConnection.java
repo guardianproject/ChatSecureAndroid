@@ -305,7 +305,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void run() {
                 if (conn == null) {
-                    Log.w(TAG, "postponed packet to " + packet.getTo()
+                    debug(TAG, "postponed packet to " + packet.getTo()
                             + " because we are not connected");
                     postpone(packet);
                     return;
@@ -314,7 +314,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     conn.sendPacket(packet);
                 } catch (IllegalStateException ex) {
                     postpone(packet);
-                    Log.w(TAG, "postponed packet to " + packet.getTo()
+                   debug(TAG, "postponed packet to " + packet.getTo()
                             + " because socket is disconnected");
                 }
             }
@@ -2231,7 +2231,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             reconnect();
         } else if (!mConnection.isConnected() && getState() == LOGGED_IN) {
             // Smack failed to tell us about a disconnect
-            Log.w(TAG, "reconnect on unreported state change");
+            debug(TAG, "reconnect on unreported state change");
             setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network disconnected"));
             force_reconnect();
         } else if (getState() == LOGGED_IN) {
