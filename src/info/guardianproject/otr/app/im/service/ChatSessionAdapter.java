@@ -890,6 +890,23 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                                 filePath, System.currentTimeMillis(), type,
                                 0, offerId, mimeType);
                         
+                        int percent = (int)(100);
+                        
+                        String[] path = url.split("/"); 
+                        String sanitizedPath = SystemServices.sanitize(path[path.length - 1]);
+                   
+                        final int N = mRemoteListeners.beginBroadcast();
+                        for (int i = 0; i < N; i++) {
+                            IChatListener listener = mRemoteListeners.getBroadcastItem(i);
+                            try {
+                                listener.onIncomingFileTransferProgress(sanitizedPath, percent);
+                            } catch (RemoteException e) {
+                                // The RemoteCallbackList will take care of removing the
+                                // dead listeners.
+                            }
+                        }
+                        mRemoteListeners.finishBroadcast();
+                        
                     }
                     catch (Exception e)
                     {

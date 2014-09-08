@@ -28,7 +28,6 @@
  >
 
     
-
     <ListView android:id="@+id/history"
         android:layout_width="match_parent"
         android:layout_height="0dip"
@@ -42,6 +41,16 @@
         android:transcriptMode="normal"
          />
 
+    
+      <ProgressBar
+         android:id="@+id/progressTransfer"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         style="?android:attr/progressBarStyleHorizontal"
+         android:visibility="gone"
+         android:padding="0dp"
+          />
+      
   <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -99,7 +108,7 @@
         android:src="@drawable/ic_send_holo_light" />
 
       </LinearLayout>
-       
+  
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"

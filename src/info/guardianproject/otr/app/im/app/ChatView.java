@@ -87,6 +87,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -101,6 +102,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -161,6 +163,7 @@ public class ChatView extends LinearLayout {
     private View mStatusWarningView;
     private ImageView mWarningIcon;
     private TextView mWarningText;
+    private ProgressBar mProgressTransfer;
     
     private ViewPager mEmojiPager;
    // private View mActionBox;
@@ -450,13 +453,11 @@ public class ChatView extends LinearLayout {
         @Override
         public void onIncomingFileTransferProgress(String file, float percent)
                 throws RemoteException {
-            
-            int percentInt = (int)(100*percent);
           
             android.os.Message message = android.os.Message.obtain(null, SHOW_DATA_PROGRESS, (int) (mProviderId >> 32),
                     (int) mProviderId, -1);
             message.getData().putString("file", file);
-            message.getData().putInt("progress", percentInt);
+            message.getData().putInt("progress", (int)percent);
             
             mHandler.sendMessage(message);
             
@@ -605,6 +606,7 @@ public class ChatView extends LinearLayout {
         mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
      
+        mProgressTransfer = (ProgressBar)findViewById(R.id.progressTransfer);
        // mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
        
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
@@ -1908,19 +1910,19 @@ public class ChatView extends LinearLayout {
                 showPromptForData(msg.getData().getString("from"),msg.getData().getString("file"));
                 break;
             case SHOW_DATA_PROGRESS:
-                
 
-                /**
-                int progress = (Window.PROGRESS_END - Window.PROGRESS_START) / 100 * msg.getData().getInt("progress");
-      
-                mNewChatActivity.setSupportProgressBarVisibility(true);
-                mNewChatActivity.setSupportProgress(progress);
+                int progress = msg.getData().getInt("progress");
+                String fileName = msg.getData().getString("file");
                 
-                if (progress == 100)
+                mProgressTransfer.setVisibility(View.VISIBLE);                
+                mProgressTransfer.setProgress(progress);
+                mProgressTransfer.setMax(100);
+                
+                if (progress >= 100)
                 {
-                    mNewChatActivity.setSupportProgressBarVisibility(false);
+                    
+                    mProgressTransfer.setVisibility(View.GONE);
                 }
-                **/
                 
                 break;
              default:
