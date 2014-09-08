@@ -844,7 +844,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             if (mConnection != null && mConnection.isConnected() && (!mConnection.isAuthenticated())) {
 
-                if (mIsGoogleAuth && password.contains(GTalkOAuth2.NAME))
+                if (mIsGoogleAuth)
                 {
                     debug (TAG, "google failed; may need to refresh");
 
@@ -895,8 +895,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private String refreshGoogleToken (String userName, String oldPassword, String domain)
     {
+        String expiredToken = oldPassword;
+        
+        if (expiredToken.startsWith(IS_GOOGLE))
+        {
+            expiredToken = expiredToken.split(":")[1];
+        }
+        
         //invalidate our old one, that is locally cached
-        AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", oldPassword.split(":")[1]);
+        AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", expiredToken);
 
         //request a new one
         String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
