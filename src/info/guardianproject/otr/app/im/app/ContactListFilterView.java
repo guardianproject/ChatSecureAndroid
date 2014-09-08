@@ -100,7 +100,7 @@ public class ContactListFilterView extends LinearLayout {
                 Cursor c = (Cursor) mFilterList.getItemAtPosition(position);
                 
                 if (mListener != null)
-                    mListener.startChat(c);
+                    mListener.openChat(c);
 
             }
         });
@@ -285,7 +285,7 @@ public class ContactListFilterView extends LinearLayout {
 
     public interface ContactListListener {
      
-        public void startChat (Cursor c);
+        public void openChat (Cursor c);
         public void showProfile (Cursor c);
     }
     

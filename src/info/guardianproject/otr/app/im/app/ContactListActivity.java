@@ -651,7 +651,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
 
 
     @Override
-    public void startChat(Cursor c) {
+    public void openChat(Cursor c) {
 
         if (c != null) {
             long id = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
