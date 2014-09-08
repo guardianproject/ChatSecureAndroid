@@ -33,6 +33,7 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,6 +54,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -645,6 +647,7 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
         private Button mButtonAddAccount = null;
         private String mAccountInfoText = null;
         private String mAccountDetailText = null;
+        private String mButtonText = null;
         private OnClickListener mOcl = null;
         
         @Override
@@ -658,6 +661,9 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
             
             mButtonAddAccount = (Button)rootView.findViewById(R.id.btnAddAccount);
             
+            if (mButtonText != null)
+                mButtonAddAccount.setText(mButtonText);
+            
             mAccountInfo.setText(mAccountInfoText);
             mAccountDetail.setText(mAccountDetailText);
             mButtonAddAccount.setOnClickListener(mOcl);
@@ -665,7 +671,7 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
             return rootView;
         }
         
-        public void setAccountInfo (String accountInfoText, String accountDetailText)
+        public void setAccountInfo (String accountInfoText, String accountDetailText, String mButtonText)
         {
             mAccountInfoText = accountInfoText;
             mAccountDetailText = accountDetailText;
@@ -690,7 +696,7 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
         @Override
         public Fragment getItem(final int pos) {
             WizardPageFragment wpf = new WizardPageFragment();
-            wpf.setAccountInfo(mAccountList[pos][0],mAccountList[pos][1]);
+            wpf.setAccountInfo(mAccountList[pos][0],mAccountList[pos][1],null);
             wpf.setOnClickListener(new OnClickListener()
             {
 
@@ -731,5 +737,12 @@ public class AccountWizardActivity extends FragmentActivity implements View.OnCr
         public int getCount() {
             return mAccountList.length;
         }
+    }
+    
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
     }
 }
