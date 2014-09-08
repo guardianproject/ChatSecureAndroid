@@ -397,7 +397,9 @@ public class ChatView extends LinearLayout {
     };
     
     private final static int PROMPT_FOR_DATA_TRANSFER = 9999;
-    private final static int SHOW_DATA_PROGRESS = 99998;
+    private final static int SHOW_DATA_PROGRESS = 9998;
+    private final static int SHOW_DATA_ERROR = 9997;
+    
 
     private IChatListener mChatListener = new ChatListenerAdapter() {
         @Override
@@ -464,9 +466,15 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onIncomingFileTransferError(String file, String message) throws RemoteException {
+        public void onIncomingFileTransferError(String file, String err) throws RemoteException {
            
-            mHandler.showAlert(mNewChatActivity.getString(R.string.error_chat_file_transfer_title), message);
+            
+            android.os.Message message = android.os.Message.obtain(null, SHOW_DATA_ERROR, (int) (mProviderId >> 32),
+                    (int) mProviderId, -1);
+            message.getData().putString("file", file);
+            message.getData().putString("err", err);
+            
+            mHandler.sendMessage(message);
         }
         
         
@@ -1909,10 +1917,18 @@ public class ChatView extends LinearLayout {
             case PROMPT_FOR_DATA_TRANSFER:
                 showPromptForData(msg.getData().getString("from"),msg.getData().getString("file"));
                 break;
+            case SHOW_DATA_ERROR:
+                
+                String fileName = msg.getData().getString("file");
+                String error = msg.getData().getString("err");
+                
+                Toast.makeText(mContext, "Error transferring file: " + error, Toast.LENGTH_LONG).show();
+                mProgressTransfer.setVisibility(View.GONE);
+                break;
             case SHOW_DATA_PROGRESS:
 
                 int progress = msg.getData().getInt("progress");
-                String fileName = msg.getData().getString("file");
+          //      String  = msg.getData().getString("file");
                 
                 mProgressTransfer.setVisibility(View.VISIBLE);                
                 mProgressTransfer.setProgress(progress);
