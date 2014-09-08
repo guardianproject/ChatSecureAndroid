@@ -286,7 +286,6 @@ android:anyDensity="true"
         <activity android:name=".app.AddContactActivity"
             android:label="@string/add_contact_title"
                           android:exported="false"
-                          android:theme="@android:style/Theme.Dialog"
             
             />
 
