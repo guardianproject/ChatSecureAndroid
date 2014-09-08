@@ -119,7 +119,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                     .getChatSessionManager();
             ChatSessionAdapter chatSessionAdapter = (ChatSessionAdapter) chatSessionManagerAdapter
                     .getChatSession(Address.stripResource(sessionID.getRemoteUserId()));
-           
+            
             if (chatSessionAdapter != null)
             {
                 
@@ -133,7 +133,6 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 
                 // msg ID is set by plugin
               //  msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
-                
                 chatSessionManagerAdapter.getChatSessionManager().sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
                 
                 return true;
@@ -162,7 +161,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
 
-        sendMessage(sessionID, error);
+//        sendMessage(sessionID, error);
 
       //  if (mImService != null)
         //    mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),error);
