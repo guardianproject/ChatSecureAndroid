@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.otr.app.im" 
     android:sharedUserLabel="@string/perm_label"
-     android:versionName="14.0.0-alpha-4"
-     android:versionCode="1400004"
+     android:versionName="14.0.0-beta-1"
+     android:versionCode="1400005"
      android:installLocation="auto"    
     
      >     
