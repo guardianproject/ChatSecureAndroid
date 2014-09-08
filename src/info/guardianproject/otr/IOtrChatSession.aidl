@@ -64,5 +64,14 @@ interface IOtrChatSession {
      */
     void generateLocalKeyPair();   
     
+    /**
+     * Returns the user id (jabberid) for the local user
+     */
+    String getLocalUserId();
+   
+    /**
+     * Returns the user id (jabberid) for the remote user
+     */
+    String getRemoteUserId();
    
 }

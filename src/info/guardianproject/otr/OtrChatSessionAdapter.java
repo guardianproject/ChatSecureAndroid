@@ -123,4 +123,15 @@ public class OtrChatSessionAdapter extends Stub {
         _chatManager.getKeyManager().generateLocalKeyPair(_chatManager.getSessionId(_localUser, _remoteUser));
     }
 
+    @Override
+    public String getLocalUserId() throws RemoteException {
+        return _localUser;
+    }
+
+    @Override
+    public String getRemoteUserId() throws RemoteException {
+        return _remoteUser;
+    }
+
+    
 }
