@@ -806,8 +806,20 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), true);
 
         store.save();
-        //for (OtrKeyManagerListener l : listeners)
-        //l.verificationStatusChanged(userId);
+
+    }
+    
+    public void verifyUser(String userId, String fingerprint) {
+        if (userId == null)
+            return;
+
+        if (this.isVerifiedUser(userId))
+            return;
+
+        this.store
+                .setProperty(buildPublicKeyVerifiedId(userId, fingerprint), true);
+
+        store.save();
 
     }
 
