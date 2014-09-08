@@ -485,6 +485,9 @@ public class AccountActivity extends Activity {
                                 }
                             });
                         } else {
+                            
+                            boolean hasKey = checkForKey (mUserName + '@' + mDomain);
+                            
                             mSignInHelper.signIn(pass, mProviderId, mAccountId, isActive);
                         }
                       
@@ -534,6 +537,31 @@ public class AccountActivity extends Activity {
         if (i.getBooleanExtra("hideTor", false))
         {
             mUseTor.setVisibility(View.GONE);
+        }
+        
+    }
+    
+    private boolean checkForKey (String userid)
+    {
+
+        try
+        {
+            OtrAndroidKeyManagerImpl otrKeyMan = OtrAndroidKeyManagerImpl.getInstance(AccountActivity.this);
+            String fp = otrKeyMan.getLocalFingerprint(userid);
+        
+            if (fp == null)
+            {
+                otrKeyMan.generateLocalKeyPair(userid);
+                fp = otrKeyMan.getLocalFingerprint(userid);
+                return true;
+            }
+            else
+                return true;
+        }
+        catch (Exception e)
+        {
+            Log.e(ImApp.LOG_TAG,"error checking for key",e);
+            return false;
         }
         
     }
@@ -927,7 +955,7 @@ public class AccountActivity extends Activity {
             }
         }
     }
-
+    
     void updateWidgetState() {
         boolean goodUsername = mEditUserAccount.getText().length() > 0;
         boolean goodPassword = mEditPass.getText().length() > 0;
