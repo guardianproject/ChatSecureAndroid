@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+
+     >
     
 <LinearLayout
     android:layout_width="match_parent"
@@ -12,28 +14,40 @@
 
     <TextView style="?android:textAppearanceLarge"
         android:id="@+id/lblAccountTypeInfo"
-        android:padding="16dp"
+        android:padding="8dp"
         android:lineSpacingMultiplier="1.2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/holo_blue_light"
         android:text="title text goes here"
+        android:textStyle="bold" 
+                            android:fontFamily="sans-serif"
+        
          />
     
      <TextView style="?android:textAppearanceLarge"
         android:id="@+id/lblAccountTypeDetail"
-        android:padding="16dp"
+        android:padding="8dp"
+        android:paddingTop="0dp"
         android:lineSpacingMultiplier="1.2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="the detailed body test describing the app will go here and weill apll prima"
+         android:fontFamily="sans-serif-light"
+                android:minHeight="200dp"
+        
          />
     
-    <Button style="?android:textAppearanceLarge"
+    <Button 
  		android:id="@+id/btnAddAccount"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/menu_add_account"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+			android:background="@drawable/btn_green"
+				style="@style/btn_white"
          />
 </LinearLayout>
     

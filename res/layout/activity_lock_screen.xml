@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     android:orientation="vertical" 
-     android:background="@drawable/csbackground"
+     android:background="@drawable/radial_back"
     >
 
     
@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"        
+        android:orientation="vertical"     
        	android:background="#aaffffff"
         >
 
