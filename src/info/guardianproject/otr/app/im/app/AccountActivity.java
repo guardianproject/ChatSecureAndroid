@@ -17,6 +17,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -29,8 +30,12 @@ import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
 import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.XmppUriHelper;
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -102,7 +107,7 @@ public class AccountActivity extends Activity {
     CheckBox mRememberPass;
     CheckBox mUseTor;
     Button mBtnSignIn;
-    Button mBtnDelete;
+    Button mBtnQrDisplay;
     AutoCompleteTextView mSpinnerDomains;
     
     Button mBtnAdvanced;
@@ -281,7 +286,7 @@ public class AccountActivity extends Activity {
                 mEditPass.setText(cursor.getString(ACCOUNT_PASSWORD_COLUMN));
                 mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
                 mUseTor.setChecked(settings.getUseTor());
-                mBtnDelete.setVisibility(View.VISIBLE);
+                mBtnQrDisplay.setVisibility(View.VISIBLE);
             } finally {
                 settings.close();
                 cursor.close();
@@ -340,7 +345,7 @@ public class AccountActivity extends Activity {
             mBtnSignIn.setText(R.string.btn_create_new_account);
         
         mBtnAdvanced = (Button) findViewById(R.id.btnAdvanced);
-        mBtnDelete = (Button) findViewById(R.id.btnDelete);
+        mBtnQrDisplay = (Button) findViewById(R.id.btnQR);
         
         mRememberPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -357,7 +362,7 @@ public class AccountActivity extends Activity {
         
         if (isSignedIn) {
             mBtnSignIn.setText(getString(R.string.menu_sign_out));
-            mBtnSignIn.setBackgroundResource(R.drawable.btn_red);
+            mBtnSignIn.setBackgroundResource(R.drawable.btn_gray);
         }
 
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
@@ -373,19 +378,20 @@ public class AccountActivity extends Activity {
             }
         });
         
-        mBtnDelete.setOnClickListener(new OnClickListener()
+
+        mBtnQrDisplay.setOnClickListener(new OnClickListener()
         {
 
             @Override
             public void onClick(View v) {
                
-                deleteAccount();
-                finish();
+               showQR();
                 
             }
             
         });
 
+                
         mBtnSignIn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -999,6 +1005,10 @@ public class AccountActivity extends Activity {
         case android.R.id.home:
             finish();
             return true;
+            
+        case R.id.menu_account_delete:
+            deleteAccount();
+            return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -1097,6 +1107,23 @@ public class AccountActivity extends Activity {
         
     }
    
+    public void showQR ()
+    {
+
+        try {
+           String localFingerprint = OtrAndroidKeyManagerImpl.getInstance(this).getLocalFingerprint(mOriginalUserAccount);
+           
+           String uri = XmppUriHelper.getUri(mOriginalUserAccount, localFingerprint);
+           
+           new IntentIntegrator(this).shareText(uri);
+
+           
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
 
     private void setAccountKeepSignedIn(final boolean rememberPass) {
         ContentValues values = new ContentValues();

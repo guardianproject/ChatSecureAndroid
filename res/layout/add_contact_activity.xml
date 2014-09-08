@@ -50,16 +50,21 @@
         android:inputType="textEmailAddress" />
     
 
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right">
-
          <Button android:id="@+id/invite"
               android:layout_marginTop="20dip"
               android:textSize="24sp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:text="@string/invite_label" />
-    </LinearLayout>
+
+         
+         <Button android:id="@+id/scan"
+              android:layout_marginTop="20dip"
+              android:textSize="24sp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/menu_scan" />
+         
+         
     
 </LinearLayout>

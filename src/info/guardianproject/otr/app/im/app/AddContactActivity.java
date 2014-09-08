@@ -18,6 +18,8 @@
 package info.guardianproject.otr.app.im.app;
 
 import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -25,8 +27,13 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.SecureCameraActivity;
 
+import java.io.File;
 import java.util.List;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -34,8 +41,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Contacts.ContactMethods;
@@ -54,6 +63,7 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddContactActivity extends Activity {
 
@@ -64,6 +74,7 @@ public class AddContactActivity extends Activity {
     private MultiAutoCompleteTextView mAddressList;
     private Spinner mListSpinner;
     Button mInviteButton;
+    Button mScanButton;
     ImApp mApp;
     SimpleAlertHandler mHandler;
 
@@ -128,6 +139,9 @@ public class AddContactActivity extends Activity {
         mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
         mInviteButton.setOnClickListener(mButtonHandler);
         mInviteButton.setEnabled(false);
+        
+        mScanButton = (Button) findViewById(R.id.scan);        
+        mScanButton.setOnClickListener(mScanHandler);
     }
 
     private Cursor queryContactLists() {
@@ -259,6 +273,14 @@ public class AddContactActivity extends Activity {
             });
         }
     };
+    
+
+    private View.OnClickListener mScanHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            new IntentIntegrator(AddContactActivity.this).initiateScan();
+
+        }
+    };
 
     private TextWatcher mTextWatcher = new TextWatcher() {
         public void afterTextChanged(Editable s) {
@@ -278,6 +300,44 @@ public class AddContactActivity extends Activity {
         Log.d(ImApp.LOG_TAG, "<AddContactActivity> " + msg);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
+        if (resultCode == RESULT_OK) {
+            
+
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
+                    resultIntent);
+            String xmppUri = scanResult.getContents();
+
+            try
+            {
+    
+                if (scanResult != null) {
+    
+                    if (xmppUri.startsWith("xmpp"))
+                    {
+                        Uri uriXmpp = Uri.parse(xmppUri.substring(5)); //strip thte scheme so we can parse it properly
+                        String otrFingerprint = uriXmpp.getQueryParameter("otr-fingerprint");
+                     
+                        String address = uriXmpp.getPath();              
+                        
+                        this.mAddressList.setText(address);
+                        
+                        //store this for future use... ideally the user comes up as verified the first time!
+                        OtrAndroidKeyManagerImpl.getInstance(this).verifyUser(address, otrFingerprint);
+                        
+                    }
+                    
+                  
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this, "error parsing address: " + xmppUri,Toast.LENGTH_LONG).show();
+            }
+        }
+    }
  
     
     private static final String[] PROVIDER_PROJECTION = {
