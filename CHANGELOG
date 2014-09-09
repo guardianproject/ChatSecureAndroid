@@ -1,6 +1,17 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+14.0.0-beta-2 / 2014-09-09 / d22207bae8ddc3f94ede1b9b9568592641cf7306
+* OTR data sharing improved with progress display and export capability
+* Add contacts can now be done via QR code and new xmpp://foo@bar.com?otr-fingerprint=blat "auto verify" URI
+* Account info screen enables display of xmpp:// URI
+* auto-start OTR chat when opened if auto/force is set
+* fix for handling expiration of Google OAuth token
+* update new tls 1.2 ciphers for API 20+ (4.4.4) only
+* Update XMPPCertPins.java
+* Updates to latet SQLCipher, IOCipher and Cacheword libraries
+* 20% reducation in appsize, removal of unneeded dependencies (ActionBarSherlock)
+
 14.0.0-alpha-1 / 2014-08-27 / 12c39dab38fb5458f01829bce2f9b659f7395647
 * fixes for network suspend / resume
 * fixes for sharing of files/media from external apps
