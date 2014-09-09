@@ -201,8 +201,10 @@ public class AddContactActivity extends Activity {
                 finish();
             } else {
                 boolean fail = false;
+                String username = null;
+                
                 for (Rfc822Token recipient : recipients) {
-                    String username = recipient.getAddress();
+                    username = recipient.getAddress();
                     if (username.indexOf('@') == -1) {
                         username = username + "@" + getDefaultDomain();
                     }
@@ -215,9 +217,18 @@ public class AddContactActivity extends Activity {
                         mHandler.showAlert(R.string.error,
                                 ErrorResUtils.getErrorRes(getResources(), res, username));
                     }
+                    
                 }
                 // close the screen if there's no error.
                 if (!fail) {
+                    
+                    if (username != null)
+                    {
+                        Intent intent=new Intent();
+                        intent.putExtra("contact", username);
+                        setResult(RESULT_OK, intent);
+                    }
+                    
                     finish();
                 }
             }

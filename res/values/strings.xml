@@ -214,7 +214,7 @@
 		<string name="menu_show_grid">Show Grid</string>
 		<string name="menu_start_chat">Start chat</string>
 		<string name="menu_view_profile">View Profile</string>
-		<string name="menu_verify">Verify Key</string>
+		<string name="menu_verify">Verify Contact</string>
 		
 		<string name="ongoing_conversation">Ongoing chats (<xliff:g id="number">%1$d</xliff:g>)</string>
 		<string name="online_count"><xliff:g id="number">%1$d</xliff:g> online</string>

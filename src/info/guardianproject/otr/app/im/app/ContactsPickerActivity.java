@@ -52,6 +52,8 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     public final static String EXTRA_RESULT_PROVIDER = "provider";
     public final static String EXTRA_RESULT_ACCOUNT = "account";    
 
+    private int REQUEST_CODE_ADD_CONTACT = 9999;
+    
     private ContactAdapter mAdapter;
     private String mExcludeClause;
     Uri mData;
@@ -114,6 +116,56 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     
 
     @Override
+    protected void onActivityResult(int request, int response, Intent data) {
+        super.onActivityResult(request, response, data);
+
+        if (response == RESULT_OK)
+            if (request == REQUEST_CODE_ADD_CONTACT)
+            {
+                String newContact = data.getExtras().getString("contact");
+                
+                if (newContact != null)
+                {
+                    
+                    StringBuilder buf = new StringBuilder();
+
+                    if (mSearchString != null) {
+                        
+                        buf.append(Imps.Contacts.USERNAME);
+                        buf.append(" LIKE ");
+                        android.database.DatabaseUtils.appendValueToSql(buf, newContact);                        
+                    }
+                    
+                    Cursor cursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
+                                buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
+                   
+                    Intent dataNew = new Intent();
+                    
+                    if (cursor.moveToFirst())
+                    {
+                     
+                        dataNew.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
+                        dataNew.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
+                        dataNew.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
+                        
+                        setResult(RESULT_OK, dataNew);
+                    }
+                    
+                    if (!cursor.isClosed())
+                        cursor.close();
+                        
+                    
+                    finish();
+                    
+                }
+            }
+        
+        
+    }
+
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
@@ -159,7 +211,7 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         case R.id.menu_invite_user:
             Intent i = new Intent(ContactsPickerActivity.this, AddContactActivity.class);
          
-            startActivity(i);
+            this.startActivityForResult(i, REQUEST_CODE_ADD_CONTACT);
             return true;
 
        

@@ -1585,7 +1585,7 @@ public class ChatView extends LinearLayout {
             
         } catch (Exception e) {
             
-            //mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+            //mHandler.showServiceErrorAlert(e.getLocalizedMessage());            
             LogCleaner.error(ImApp.LOG_TAG, "error getting chat session",e); 
         }
         
