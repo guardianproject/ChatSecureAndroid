@@ -183,23 +183,22 @@ public class IocVfs {
     public static void exportAll(String sessionId ) throws IOException {
     }
     
-    public static void exportContent(String mimeType, Uri mediaUri) throws IOException {
-        String targetPath = exportPath(mimeType, mediaUri);
+    public static void exportContent(String mimeType, Uri mediaUri, java.io.File exportPath) throws IOException {
         String sourcePath = mediaUri.getPath();
-        copyToExternal( sourcePath, targetPath);
+        copyToExternal( sourcePath, exportPath);
     }
     
-    public static String exportPath(String mimeType, Uri mediaUri) {
-        String targetFilename;
+    public static java.io.File exportPath(String mimeType, Uri mediaUri) {
+        java.io.File targetFilename;
         if (mimeType.startsWith("image")) {
-            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +"/" + mediaUri.getLastPathSegment();
+            targetFilename = new java.io.File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),mediaUri.getLastPathSegment());
         } else if (mimeType.startsWith("audio")) {
-            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) +"/" + mediaUri.getLastPathSegment();
+            targetFilename = new java.io.File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),mediaUri.getLastPathSegment());
         } else {
-            targetFilename = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +"/" + mediaUri.getLastPathSegment();
+            targetFilename = new java.io.File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),mediaUri.getLastPathSegment());
         }
-        String targetUniqueFilename = createUniqueFilenameExternal(targetFilename);
-        return targetUniqueFilename;
+        java.io.File targetUniqueFilename = createUniqueFilenameExternal(targetFilename);
+        return targetFilename;
     }
     
     public static void copyToVfs(String sourcePath, String targetPath) throws IOException {
@@ -215,10 +214,10 @@ public class IocVfs {
         fis.close();
     }
     
-    public static void copyToExternal(String sourcePath, String targetPath) throws IOException {
+    public static void copyToExternal(String sourcePath, java.io.File targetPath) throws IOException {
         // copy
         FileInputStream fis = new FileInputStream(new File(sourcePath));
-        java.io.FileOutputStream fos = new java.io.FileOutputStream(new java.io.File(targetPath), false);
+        java.io.FileOutputStream fos = new java.io.FileOutputStream(targetPath, false);
         
         IOUtils.copyLarge(fis, fos);
         
@@ -275,19 +274,19 @@ public class IocVfs {
         return uniqueFilename;
     }
     
-    private static String createUniqueFilenameExternal( String filename ) {
-        if (!(new java.io.File(filename)).exists()) {
+    private static java.io.File createUniqueFilenameExternal(java.io.File filename ) {
+        if (!filename.exists()) {
             return filename;
         }
         int count = 1;
         String uniqueName;
         java.io.File file;
         do {
-            uniqueName = formatUnique(filename, count++);
-            file = new java.io.File(uniqueName);
+            uniqueName = formatUnique(filename.getName(), count++);
+            file = new java.io.File(filename.getParentFile(),uniqueName);
         } while(file.exists());
         
-        return uniqueName;
+        return file;
     }
     
     

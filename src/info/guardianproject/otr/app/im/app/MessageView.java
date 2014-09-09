@@ -274,7 +274,7 @@ public class MessageView extends FrameLayout {
            // holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
             
         }
-        else if (mimeType.startsWith("audio") || mimeType.startsWith("video"))
+        else if (mimeType.startsWith("audio"))
         {
             holder.mMediaThumbnail.setImageResource(R.drawable.media_audio_play);
             holder.mMediaThumbnail.setBackgroundColor(Color.TRANSPARENT);
@@ -400,13 +400,20 @@ public class MessageView extends FrameLayout {
     
     protected void onLongClickMediaIcon(final String mimeType, final Uri mediaUri) {
         
+        final java.io.File exportPath = IocVfs.exportPath(mimeType, mediaUri);
+        
         new AlertDialog.Builder(context)            
         .setTitle(context.getString(R.string.export_media))
-        .setMessage(context.getString(R.string.export_media_file_to, IocVfs.exportPath(mimeType, mediaUri)))
+        .setMessage(context.getString(R.string.export_media_file_to, exportPath.getAbsolutePath()))
         .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
-                    IocVfs.exportContent(mimeType, mediaUri);
+                    IocVfs.exportContent(mimeType, mediaUri, exportPath);
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportPath));
+                    shareIntent.setType(mimeType);
+                    context.startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.export_media)));
                 } catch (IOException e) {
                     Toast.makeText(getContext(), "Export Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
