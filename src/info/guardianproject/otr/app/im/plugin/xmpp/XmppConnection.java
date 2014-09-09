@@ -875,18 +875,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
 
 
-        } catch (KeyManagementException e) {
-            // TODO Auto-generated catch block
-            debug(TAG, "login failed: key management",e);
+        } catch (Exception e) {
+
+            debug(TAG, "login failed",e);
             mRetryLogin = true;
             debug(TAG, "will retry");
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "keymanagement exception");
             setState(LOGGING_IN, info);
             
-        } catch (NoSuchAlgorithmException e) {
-            debug(TAG, "login failed: no such algo",e);
-
-        } finally {
+        } 
+        finally {
             mNeedReconnect = false;
             providerSettings.close();
         }
@@ -952,7 +950,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         setState(state, null);
     }
 
-    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException, IllegalStateException
+    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException, IllegalStateException, RuntimeException
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
 
@@ -977,6 +975,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         if (mConnection.isConnected())
         {
+            
             mConnection.login(mUsername, mPassword, mResource);
     
             mStreamHandler.notifyInitialLogin();
@@ -988,6 +987,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mRoster.setSubscriptionMode(Roster.SubscriptionMode.manual);
     
             getContactListManager().listenToRoster(mRoster);
+        
         }
         else
         {
