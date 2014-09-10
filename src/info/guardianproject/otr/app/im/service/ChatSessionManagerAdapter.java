@@ -96,14 +96,14 @@ public class ChatSessionManagerAdapter extends
         return getChatSessionAdapter(session, isNewSession);
     }
     
-    public IChatSession createMultiUserChatSession(String roomAddress) 
+    public IChatSession createMultiUserChatSession(String roomAddress, String nickname) 
     {
         
         ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
         
         try
         {
-            groupMan.createChatGroupAsync(roomAddress);
+            groupMan.createChatGroupAsync(roomAddress, nickname);
     
             Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
             

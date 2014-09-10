@@ -702,5 +702,8 @@
 		
 		<string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot doesn\'t appear to be running. Would you like to start it up and connect to Tor?</string>
 		
+		<string name="muc_dialog_nickname">nickname to use in room</string>
+		<string name="muc_dialog_room">name of room to create or join"</string>
+		<string name="muc_dialog_server">groupchat server (conference.foo.com)</string>
 	</resources>
 

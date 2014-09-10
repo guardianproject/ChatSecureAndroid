@@ -548,7 +548,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         if (connMUC != null)
                         {
 
-                            startGroupChat (path, host, connMUC);                        
+                            startGroupChat (path, host, user, connMUC);                        
                             setResult(RESULT_OK);
                         }
                         else
@@ -2244,14 +2244,16 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     
                     String chatRoom = null;
                     String chatServer = null;
+                    String nickname = null;
                     
                     TextView tv = (TextView)textEntryView.findViewById(R.id.chat_room);
-                    
                     chatRoom = tv.getText().toString();
                     
                     tv = (TextView) textEntryView.findViewById(R.id.chat_server);
-                    
                     chatServer = tv.getText().toString();
+                    
+                    tv = (TextView) textEntryView.findViewById(R.id.nickname);
+                    nickname = tv.getText().toString();
                     
                     for (IImConnection conn : mApp.getActiveConnections())
                     {
@@ -2259,7 +2261,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         try
                         {                            
                             if (conn.getState() == ImConnection.LOGGED_IN)
-                                startGroupChat (chatRoom, chatServer, conn);
+                                startGroupChat (chatRoom, chatServer, nickname, conn);
                             else
                             {
                                 //can't start group chat
@@ -2289,7 +2291,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     
     private IImConnection mLastConnGroup = null;
     
-    public void startGroupChat (String room, String server, IImConnection conn)
+    public void startGroupChat (String room, String server, String nickname, IImConnection conn)
     {
         mLastConnGroup = conn;
         
@@ -2311,12 +2313,13 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             protected String doInBackground(String... params) {
               
                 String roomAddress = (params[0] + '@' + params[1]).toLowerCase().replace(' ', '_');
+                String nickname = params[2];
                 
                 try {
                     IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
                     IChatSession session = manager.getChatSession(roomAddress);
                     if (session == null) {
-                        session = manager.createMultiUserChatSession(roomAddress);
+                        session = manager.createMultiUserChatSession(roomAddress, nickname);
                         if (session != null)
                         {
                             mRequestedChatId = session.getId(); 
@@ -2359,7 +2362,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                
                
             }
-        }.execute(room, server);
+        }.execute(room, server, nickname);
         
        
        

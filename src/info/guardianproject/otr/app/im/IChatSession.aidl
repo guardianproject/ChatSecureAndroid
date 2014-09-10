@@ -60,7 +60,7 @@ interface IChatSession {
      * Convert a single chat to a group chat. If the chat session is already a
      * group chat or it's converting to group chat.
      */
-    void convertToGroupChat();
+    void convertToGroupChat(String nickname);
 
     /**
      * Invites a contact to join this ChatSession. The user can only invite

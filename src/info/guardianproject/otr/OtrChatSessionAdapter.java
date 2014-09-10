@@ -60,10 +60,18 @@ public class OtrChatSessionAdapter extends Stub {
 
     @Override
     public int getChatStatus() throws RemoteException {
-        SessionStatus sessionStatus = _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser));
-        if (sessionStatus == null)
-            sessionStatus = SessionStatus.PLAINTEXT;
-        return sessionStatus.ordinal();
+        
+        if (_chatManager != null)
+        {
+            SessionStatus sessionStatus = _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser));
+            if (sessionStatus == null)
+                sessionStatus = SessionStatus.PLAINTEXT;
+            return sessionStatus.ordinal();
+        }
+        else
+        {
+            return SessionStatus.PLAINTEXT.ordinal();
+        }
     }
 
     @Override

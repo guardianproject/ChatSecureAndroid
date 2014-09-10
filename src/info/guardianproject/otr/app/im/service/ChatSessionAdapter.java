@@ -235,13 +235,13 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
      * Note that the method is not thread-safe since it's always called from the
      * UI and Android uses single thread mode for UI.
      */
-    public void convertToGroupChat() {
+    public void convertToGroupChat(String nickname) {
         if (mIsGroupChat || mConvertingToGroupChat) {
             return;
         }
 
         mConvertingToGroupChat = true;
-        new ChatConvertor().convertToGroupChat();
+        new ChatConvertor().convertToGroupChat(nickname);
     }
 
     public boolean isGroupChatSession() {
@@ -798,12 +798,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             mGroupMgr = mConnection.mGroupManager;
         }
 
-        public void convertToGroupChat() {
+        public void convertToGroupChat(String nickname) {
             mGroupMgr.addGroupListener(this);
             mGroupName = "G" + System.currentTimeMillis();
             try
             {
-                mGroupMgr.createChatGroupAsync(mGroupName);
+                mGroupMgr.createChatGroupAsync(mGroupName, nickname);
             }
             catch (Exception e){
                 e.printStackTrace();
