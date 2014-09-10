@@ -1,6 +1,11 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+14.0.0
+* small changes to lockscreen layout and graphic; small layout tweaks for wizard slider
+* add nickname support to groupchat/MUC dialog and methods
+* fix bug with OAuth prioritization over PLAIN/MD5 Auth if Googel OAuth is not used, it should be marked unsupported
+
 14.0.0-beta-2 / 2014-09-09 / d22207bae8ddc3f94ede1b9b9568592641cf7306
 * OTR data sharing improved with progress display and export capability
 * Add contacts can now be done via QR code and new xmpp://foo@bar.com?otr-fingerprint=blat "auto verify" URI
