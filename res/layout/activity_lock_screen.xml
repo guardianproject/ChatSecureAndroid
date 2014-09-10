@@ -37,13 +37,19 @@
                         android:orientation="vertical"
                          >
 
+                        <TextView
+                               android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                         	android:fontFamily="sans-serif"
+                            android:text="@string/lock_screen_passphrase_not_set_enter"
+                            />
                         <EditText
                             android:id="@+id/editNewPassphrase"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:hint="@string/lock_screen_passphrase_not_set_enter"
+                            android:hint="@string/lock_screen_passphrase_hint"
                             android:inputType="textPassword" 
                             />
                         
@@ -96,6 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/lock_screen_skip" />
 
             </LinearLayout>
