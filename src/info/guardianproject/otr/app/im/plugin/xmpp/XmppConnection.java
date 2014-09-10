@@ -515,7 +515,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public boolean createChatGroupAsync(String chatRoomJid) throws Exception {
+        public boolean createChatGroupAsync(String chatRoomJid, String nickname) throws Exception {
 
             RoomInfo roomInfo = null;
 
@@ -539,7 +539,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String[] parts = chatRoomJid.split("@");
                 String room = parts[0];
                 String server = parts[1];
-                String nickname = mUser.getName().split("@")[0];
 
                 try {
 
@@ -1109,16 +1108,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
-        //add gtalk auth in
-
-
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
+        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+
+        if (mIsGoogleAuth)
+            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
+        else
+            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
         
-          SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-          SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
-
-
         if (requireTls) { 
 
             MemorizingTrustManager trustManager = ImApp.sImApp.getTrustManager();
@@ -1569,7 +1567,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
             else {
                 try {
-                    mChatGroupManager.createChatGroupAsync(address);
+                    mChatGroupManager.createChatGroupAsync(address, mUser.getName());
 
                     Address xmppAddress = new XmppAddress(address);
 
