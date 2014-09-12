@@ -227,9 +227,10 @@ public class AddContactActivity extends Activity {
                         Intent intent=new Intent();
                         intent.putExtra("contact", username);
                         setResult(RESULT_OK, intent);
+                        finish();
                     }
                     
-                    finish();
+                    
                 }
             }
         } catch (RemoteException ex) {

@@ -161,9 +161,10 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
     {
 
         Intent intent = new Intent(this, NewChatActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);       
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);   
+        intent.putExtra("showaccounts", true);
         startActivity(intent);
-    
+        finish();
     }
 
     private void doHardShutdown() {

@@ -526,8 +526,11 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                 showSubscriptionDialog (providerId, from);
                 
             }
-        } else {
+        } else if (intent != null) {
             Uri data = intent.getData();
+            
+            if (intent.getBooleanExtra("showaccounts", false))
+                mDrawer.showMenu();
             
             if (data != null)
             {
