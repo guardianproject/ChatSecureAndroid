@@ -35,7 +35,12 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.startSession(_chatManager.getSessionId(_localUser, _remoteUser));
+                if (_chatManager != null)
+                {
+                    SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
+                    if (sid != null)
+                        _chatManager.startSession(sid);
+                }
             }
         });
     }
@@ -45,7 +50,12 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.endSession(_chatManager.getSessionId(_localUser, _remoteUser));
+                if (_chatManager != null)
+                {
+                    SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
+                    if (sid != null)
+                        _chatManager.endSession(sid);
+                }
             }
         });
     }
@@ -53,8 +63,12 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public boolean isChatEncrypted() throws RemoteException {
 
-        return _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser)) == SessionStatus.ENCRYPTED;
-
+        SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
+        
+        if (sid != null)
+            return _chatManager.getSessionStatus(sid) == SessionStatus.ENCRYPTED;
+        else
+            return false;
     }
 
 
