@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.cacheword.PRNGFixes;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.app.Broadcaster;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -246,7 +247,7 @@ public class ImApp extends Application {
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
         
         SQLiteDatabase.loadLibs(getApplicationContext());
-        IocVfs.init(this);
+        VirtualFileSystem.get().isMounted(); //use this to trigger loadLibs
         
         mConnections = new HashMap<Long, IImConnection>();        
         mApplicationContext = this;
