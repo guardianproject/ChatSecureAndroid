@@ -185,6 +185,7 @@ public class ChatSessionManagerAdapter extends
     }
 
     public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session, boolean isNewSession) {
+        
         Address participantAddress = session.getParticipant().getAddress();
         String key = Address.stripResource(participantAddress.getAddress());
         ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
@@ -193,6 +194,7 @@ public class ChatSessionManagerAdapter extends
             adapter = new ChatSessionAdapter(session, mConnection, isNewSession);
             mActiveChatSessionAdapters.put(key, adapter);
         }
+        
         return adapter;        
     }
 
