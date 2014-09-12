@@ -772,6 +772,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mProviderId = providerId;
         mRetryLogin = retry;
 
+        mIsGoogleAuth = mPasswordTemp.startsWith(GTalkOAuth2.NAME);
+
+        if (mIsGoogleAuth)
+        {            
+            mPasswordTemp = mPasswordTemp.split(":")[1];            
+        }
+
         ContentResolver contentResolver = mContext.getContentResolver();
 
         Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
@@ -956,13 +963,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mPasswordTemp != null)
             password = mPasswordTemp;
 
-        mIsGoogleAuth = password.startsWith(GTalkOAuth2.NAME);
-
-        if (mIsGoogleAuth)
-        {            
-
-            password = password.split(":")[1];            
-        }
 
         initConnection(providerSettings, userName);
 
