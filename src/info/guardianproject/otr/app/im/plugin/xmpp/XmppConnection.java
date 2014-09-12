@@ -2076,7 +2076,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 boolean isDefault) {
             // TODO create contact list
             debug(TAG, "create contact list " + name + " default " + isDefault);
-            mRoster.crea
         }
 
         @Override
