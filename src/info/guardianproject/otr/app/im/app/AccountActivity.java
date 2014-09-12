@@ -1140,18 +1140,14 @@ public class AccountActivity extends Activity {
     public void showQR ()
     {
 
-        try {
            String localFingerprint = OtrAndroidKeyManagerImpl.getInstance(this).getLocalFingerprint(mOriginalUserAccount);
            
            String uri = XmppUriHelper.getUri(mOriginalUserAccount, localFingerprint);
            
            new IntentIntegrator(this).shareText(uri);
-
+    
            
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+     
         
     }
 
