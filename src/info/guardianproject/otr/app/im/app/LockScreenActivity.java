@@ -263,9 +263,11 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                         return;
                     // Check passphrase
                     try {
-                        mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
+                        char[] passphrase = mEnterPassphrase.getText().toString().toCharArray();
+                        
+                        mCacheWord.setPassphrase(passphrase);
                         ImApp.mUsingCacheword = true;
-                    } catch (GeneralSecurityException e) {
+                    } catch (Exception e) {
                         mEnterPassphrase.setText("");
                         // TODO implement try again and wipe if fail
                         Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
