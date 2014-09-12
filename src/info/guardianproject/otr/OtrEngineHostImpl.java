@@ -122,7 +122,9 @@ public class OtrEngineHostImpl implements OtrEngineHost {
             
             if (chatSessionAdapter != null)
             {
-                
+                if (body == null)
+                    body = ""; //don't allow null messages, only empty ones!
+                        
                 Message msg = new Message(body);
                 
                 msg.setFrom(connection.getLoginUser().getAddress());
