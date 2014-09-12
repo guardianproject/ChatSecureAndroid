@@ -201,22 +201,29 @@ public class ContactView extends FrameLayout {
                     Log.e(ImApp.LOG_TAG,"error decoding avatar",e);
                 }
                 
-                if (avatar != null)
+                try
                 {
-                    setAvatarBorder(presence,avatar);
-                    holder.mAvatar.setImageDrawable(avatar);
-                }
-                else 
-                {
-                    avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.avatar_unknown));
-
-                    setAvatarBorder(presence,avatar);
-                    holder.mAvatar.setImageDrawable(avatar);
+                    if (avatar != null)
+                    {
+                        setAvatarBorder(presence,avatar);
+                        holder.mAvatar.setImageDrawable(avatar);
+                    }
+                    else 
+                    {                    
+                        avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.avatar_unknown));
+    
+                        setAvatarBorder(presence,avatar);
+                        holder.mAvatar.setImageDrawable(avatar);
+                        
+                    }
                     
+                    holder.mAvatar.setVisibility(View.VISIBLE);
                 }
-                
-                holder.mAvatar.setVisibility(View.VISIBLE);
+                catch (OutOfMemoryError ome)
+                {
+                    //this seems to happen now and then even on tiny images; let's catch it and just not set an avatar                    
+                }
 
             }
             else
