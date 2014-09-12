@@ -41,7 +41,7 @@ public class ChatSession {
 
     private OtrChatManager mOtrChatManager;
 
-    private CopyOnWriteArrayList<MessageListener> mListeners;
+    private MessageListener mListener = null;
     private Vector<Message> mHistoryMessages;
 
     /**
@@ -53,7 +53,6 @@ public class ChatSession {
     ChatSession(ImEntity participant, ChatSessionManager manager) {
         mParticipant = participant;
         mManager = manager;
-        mListeners = new CopyOnWriteArrayList<MessageListener>();
         mHistoryMessages = new Vector<Message>();
     }
 
@@ -79,19 +78,8 @@ public class ChatSession {
      * 
      * @param listener
      */
-    public void addMessageListener(MessageListener listener) {
-        if ((listener != null) && !mListeners.contains(listener)) {
-            mListeners.add(listener);
-        }
-    }
-
-    /**
-     * Removes a listener from this session.
-     * 
-     * @param listener
-     */
-    public void removeMessageListener(MessageListener listener) {
-        mListeners.remove(listener);
+    public void setMessageListener(MessageListener listener) {
+        mListener = listener;
     }
 
     /**
@@ -210,32 +198,23 @@ public class ChatSession {
         
         }
         
-        //  BUG it only seems to find the most recently added listener.
-        boolean good = true;
         
-        for (MessageListener listener : mListeners) {
-            good = good && listener.onIncomingMessage(this, message);
-        }
+        mListener.onIncomingMessage(this, message);
         
-        return good;
+        return true;
     }
 
     public void onMessageReceipt(String id) {
-        for (MessageListener listener : mListeners) {
-            listener.onIncomingReceipt(this, id);
-        }
+        mListener.onIncomingReceipt(this, id);
+
     }
 
     public void onMessagePostponed(String id) {
-        for (MessageListener listener : mListeners) {
-            listener.onMessagePostponed(this, id);
-        }
+        mListener.onMessagePostponed(this, id);        
     }
 
     public void onReceiptsExpected() {
-        for (MessageListener listener : mListeners) {
-            listener.onReceiptsExpected(this);
-        }
+        mListener.onReceiptsExpected(this);        
     }
 
     /**
@@ -246,9 +225,8 @@ public class ChatSession {
      * @param error the error information.
      */
     public void onSendMessageError(Message message, ImErrorInfo error) {
-        for (MessageListener listener : mListeners) {
-            listener.onSendMessageError(this, message, error);
-        }
+        mListener.onSendMessageError(this, message, error);
+
     }
 
     public void onSendMessageError(String messageId, ImErrorInfo error) {

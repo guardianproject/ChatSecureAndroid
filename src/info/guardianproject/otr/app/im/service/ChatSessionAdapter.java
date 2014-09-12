@@ -148,7 +148,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, service.getOtrChatManager());
     
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
-        mChatSession.addMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
+        mChatSession.setMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
         mChatSession.setOtrChatManager(service.getOtrChatManager());
     }
 
