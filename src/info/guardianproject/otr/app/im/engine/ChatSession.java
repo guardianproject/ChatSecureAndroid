@@ -79,7 +79,7 @@ public class ChatSession {
      * 
      * @param listener
      */
-    public synchronized void addMessageListener(MessageListener listener) {
+    public void addMessageListener(MessageListener listener) {
         if ((listener != null) && !mListeners.contains(listener)) {
             mListeners.add(listener);
         }
@@ -90,7 +90,7 @@ public class ChatSession {
      * 
      * @param listener
      */
-    public synchronized void removeMessageListener(MessageListener listener) {
+    public void removeMessageListener(MessageListener listener) {
         mListeners.remove(listener);
     }
 
@@ -126,7 +126,6 @@ public class ChatSession {
         {
             SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),message.getTo().getAddress());            
             boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
-            
             
             if (verified)
             {
