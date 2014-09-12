@@ -7,6 +7,7 @@ import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
+import info.guardianproject.util.LogCleaner;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -119,7 +120,6 @@ public class IocVfs {
         options.inInputShareable = true;
         options.inPurgeable = true;
         
-//        BitmapFactory.decodeFile(image.getPath(), options);
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
             BitmapFactory.decodeStream(fis, null, options);
@@ -137,13 +137,18 @@ public class IocVfs {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / MessageView.THUMBNAIL_SIZE;
 
-//        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
             Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
             return scaledBitmap;     
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogCleaner.error(ImApp.LOG_TAG, "can't find IOcipher file: " + image.getPath(), e);
+            return null;
+        }
+        catch (OutOfMemoryError oe)
+        {
+            LogCleaner.error(ImApp.LOG_TAG, "out of memory loading thumbnail: " + image.getPath(), oe);
+
             return null;
         }
     }

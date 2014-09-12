@@ -496,7 +496,7 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
-    public final static int THUMBNAIL_SIZE = 800;
+    public final static int THUMBNAIL_SIZE = 400;
     
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
