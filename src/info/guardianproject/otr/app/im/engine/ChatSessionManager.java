@@ -79,7 +79,7 @@ public abstract class ChatSessionManager {
      */
     public ChatSession createChatSession(ImEntity participant, boolean isNewSession) {
         
-        String sessionKey = participant.getAddress().getAddress();
+        String sessionKey = Address.stripResource(participant.getAddress().getAddress());
         ChatSession session = mSessions.get(sessionKey);
 
         if (session == null)
