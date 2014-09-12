@@ -67,7 +67,7 @@ public class ContactListManagerAdapter extends
     final RemoteCallbackList<IContactListListener> mRemoteContactListeners = new RemoteCallbackList<IContactListListener>();
     final RemoteCallbackList<ISubscriptionListener> mRemoteSubscriptionListeners = new RemoteCallbackList<ISubscriptionListener>();
 
-    HashMap<Address, ContactListAdapter> mContactLists;
+    HashMap<String, ContactListAdapter> mContactLists;
     // Temporary contacts are created when a peer is encountered, and that peer
     // is not yet on any contact list.
     HashMap<String, Contact> mTemporaryContacts;
@@ -103,7 +103,7 @@ public class ContactListManagerAdapter extends
     {
         mContactListListenerAdapter = new ContactListListenerAdapter();
         mSubscriptionListenerAdapter = new SubscriptionRequestListenerAdapter();
-        mContactLists = new HashMap<Address, ContactListAdapter>();
+        mContactLists = new HashMap<String, ContactListAdapter>();
         mTemporaryContacts = new HashMap<String, Contact>();
         mOfflineContacts = new HashMap<String, Contact>();
         mValidatedContacts = new HashSet<String>();
@@ -172,9 +172,7 @@ public class ContactListManagerAdapter extends
     }
 
     public List<ContactListAdapter> getContactLists() {
-        synchronized (mContactLists) {
-            return new ArrayList<ContactListAdapter>(mContactLists.values());
-        }
+        return new ArrayList<ContactListAdapter>(mContactLists.values());
     }
 
     public int removeContact(String address) {
@@ -512,8 +510,10 @@ public class ContactListManagerAdapter extends
             String notificationText = null;
 
             switch (type) {
-            case LIST_LOADED:
-            case LIST_CREATED:
+            case LIST_CREATED:                
+                break;
+                
+            case LIST_LOADED:            
                 addContactListContent(list);
                 break;
 
@@ -976,10 +976,8 @@ public class ContactListManagerAdapter extends
         }
 
         mValidatedContactLists.add(list.getName());
-
-        synchronized (mContactLists) {
-            mContactLists.put(list.getAddress(), new ContactListAdapter(list, listId));
-        }
+        
+        mContactLists.put(list.getAddress().getAddress(), new ContactListAdapter(list, listId));
 
         Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
                 Imps.Contacts.CONTACTLIST + "=?", new String[] { "" + listId }, null);

@@ -2076,6 +2076,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 boolean isDefault) {
             // TODO create contact list
             debug(TAG, "create contact list " + name + " default " + isDefault);
+            mRoster.crea
         }
 
         @Override
@@ -2114,10 +2115,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
                     
                 // If contact exists locally, don't create another copy
-                if (!list.containsContact(contact))
+             //   if (!list.containsContact(contact))
                     notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
-                else
-                    debug(TAG, "skip adding existing contact locally " + contact.getName());
+               // else
+                 //   debug(TAG, "skip adding existing contact locally " + contact.getName());
             } catch (XMPPException e) {
              
                 debug(TAG,"error updating remote roster",e);
