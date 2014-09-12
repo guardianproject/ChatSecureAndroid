@@ -2430,14 +2430,17 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     void approveSubscription(long providerId, String userName) {
         IImConnection conn = mApp.getConnection(providerId);
 
-        try {
-            IContactListManager manager = conn.getContactListManager();
-            
-            manager.approveSubscription(new Contact(new XmppAddress(userName),userName));
-        } catch (RemoteException e) {
-
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "approve sub error",e);
+        if (conn != null)
+        {
+            try {
+                IContactListManager manager = conn.getContactListManager();
+                
+                manager.approveSubscription(new Contact(new XmppAddress(userName),userName));
+            } catch (RemoteException e) {
+    
+                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
+                LogCleaner.error(ImApp.LOG_TAG, "approve sub error",e);
+            }
         }
     }
 
