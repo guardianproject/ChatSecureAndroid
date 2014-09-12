@@ -90,24 +90,31 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
     }
     
     public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
-            throws IOException {
-        
-        if (_instance == null && mKeyStorePassword != null) {
-            File fKeyStore;
-            
-            fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_UNENCRYPTED);
-            if (fKeyStore.exists())
-            {
-                _instance = new OtrAndroidKeyManagerImpl(fKeyStore,null);
+    {
+     
+        try
+        {
+            if (_instance == null && mKeyStorePassword != null) {
+                File fKeyStore;
+                
+                fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_UNENCRYPTED);
+                if (fKeyStore.exists())
+                {
+                    _instance = new OtrAndroidKeyManagerImpl(fKeyStore,null);
+                }
+                else
+                {
+                    fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_ENCRYPTED);
+                    _instance = new OtrAndroidKeyManagerImpl(fKeyStore,mKeyStorePassword);
+                }
             }
-            else
-            {
-                fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_ENCRYPTED);
-                _instance = new OtrAndroidKeyManagerImpl(fKeyStore,mKeyStorePassword);
-            }
+    
+            return _instance;
         }
-
-        return _instance;
+        catch (IOException ioe)
+        {
+            throw new RuntimeException("Could not open keystore",ioe);
+        }
     }
 
     private OtrAndroidKeyManagerImpl(File filepath, String password) throws IOException {
@@ -117,6 +124,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         else
             store = new SimplePropertiesStore(filepath, password, false);
 
+        store.save();
+        
         cryptoEngine = new OtrCryptoEngineImpl();
         
     }
@@ -189,13 +198,12 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         private Properties mProperties = new Properties();
         private File mStoreFile;
         private String mPassword;
-
         
         public SimplePropertiesStore(File storeFile) throws IOException {
             mStoreFile = storeFile;
-            mProperties.clear();
-
-            mProperties.load(new FileInputStream(mStoreFile));
+            
+            if (storeFile.exists())
+                mProperties.load(new FileInputStream(mStoreFile));
             
         }
 
@@ -203,17 +211,17 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             
             OtrDebugLogger.log("Loading store from encrypted file");
             mStoreFile = storeFile;
-            mProperties.clear();
             
             if (password == null)
                 throw new IOException ("invalid password");
              
             mPassword = password;
 
-            if (isImportFromKeySync)
-                loadAES(mPassword);
-            else
-                loadOpenSSL(mPassword);
+            if (mStoreFile.exists())
+                if (isImportFromKeySync)
+                    loadAES(mPassword);
+                else
+                    loadOpenSSL(mPassword);
         }
 
         private void loadAES(final String password) throws IOException 
@@ -419,10 +427,12 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         PublicKey pubKey;
         try {
             pubKey = factory.generatePublic(keySpec);
-        } catch (InvalidKeySpecException e) {
+            storeLocalPublicKey(userId, pubKey);
+            
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        storeLocalPublicKey(userId, pubKey);
+       
     }
     
     public void generateLocalKeyPair(String fullUserId) {
@@ -451,32 +461,37 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         this.store.setProperty(userId + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
 
-        // Store Public Key.
-        PublicKey pubKey = keyPair.getPublic();
-        storeLocalPublicKey(userId, pubKey);
-        
-
-        store.save();
+        try
+        {
+            // Store Public Key.
+            PublicKey pubKey = keyPair.getPublic();
+            storeLocalPublicKey(userId, pubKey); //this will do saving
+            
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException ("Error init local keypair");
+        }
     }
 
-    private void storeLocalPublicKey(String fullUserId, PublicKey pubKey) {
+    private void storeLocalPublicKey(String fullUserId, PublicKey pubKey) throws OtrCryptoException {
         
         String userId = Address.stripResource(fullUserId);
 
-        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
-
-        this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
-
-        // Stash fingerprint for consistency.
-        try {
-            String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            this.store.setProperty(userId + ".fingerprint", fingerprintString);
-        } catch (OtrCryptoException e) {
-            e.printStackTrace();
-        }
+        String fingerprintString = cryptoEngine.getFingerprint(pubKey);
+        String fingerprintKey = userId + ".fingerprint";
         
+        //check if we already have this
+        if ((!store.hasProperty(fingerprintKey)) || 
+                (!store.getProperty(fingerprintKey).equals(fingerprintString)))
+        {
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
+            this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
+            this.store.setProperty(fingerprintKey, fingerprintString);
 
-        store.save();
+            store.save();
+        }
+
     }
     
     public boolean importKeyStore(String filePath, String password, boolean overWriteExisting, boolean deleteImportedFile) throws IOException
@@ -571,8 +586,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             store.save();
             return fingerprintString;
         } catch (OtrCryptoException e) {
-            OtrDebugLogger.log("OtrCryptoException getting remote fingerprint",e);
-            return null;
+            throw new RuntimeException("OtrCryptoException getting remote fingerprint",e);
+        
         }
     }
 
@@ -673,12 +688,8 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
             X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
             publicKey = keyFactory.generatePublic(publicKeySpec);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+           throw new RuntimeException(e);
         }
 
         return new KeyPair(publicKey, privateKey);
@@ -726,7 +737,9 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         if (!Address.hasResource(sessionID.getRemoteUserId()))
             return;
         
-        this.store.setProperty(sessionID.getRemoteUserId() + ".publicKey", x509EncodedKeySpec.getEncoded());
+        String fullUserId = sessionID.getRemoteUserId();
+
+        this.store.setProperty(fullUserId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
         // and is useful for transferring rosters to other apps.
         try {
@@ -735,7 +748,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             if (!this.store.hasProperty(verifiedToken))
                 this.store.setProperty(verifiedToken, false);
             
-            this.store.setProperty(sessionID.getRemoteUserId() + ".fingerprint", fingerprintString);
+            this.store.setProperty(fullUserId + ".fingerprint", fingerprintString);
             store.save();
         } catch (OtrCryptoException e) {
             e.printStackTrace();
