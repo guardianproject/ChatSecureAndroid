@@ -477,8 +477,15 @@ public class ImpsProvider extends ContentProvider {
                
                 try {
                     db.beginTransaction();                    
-                    db.execSQL("ALTER TABLE " + TABLE_MESSAGES
-                               + " ADD COLUMN mime_type TEXT;");
+                                        
+                    Cursor c = db.query(TABLE_MESSAGES, null, null, null, null, null, null);
+                    if (c.getColumnIndex("mime_type")==-1)
+                    {
+                        db.execSQL("ALTER TABLE " + TABLE_MESSAGES
+                                + " ADD COLUMN mime_type TEXT;");
+                    }
+                    c.close();
+                    
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
                     LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
