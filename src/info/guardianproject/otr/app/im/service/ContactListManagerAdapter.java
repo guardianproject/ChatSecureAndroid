@@ -531,25 +531,30 @@ public class ContactListManagerAdapter extends
                 break;
 
             case LIST_CONTACT_ADDED:
-                long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-                if (isTemporary(mAdaptee.normalizeAddress(contact.getAddress().getAddress()))) {
-                    moveTemporaryContactToList(mAdaptee.normalizeAddress(contact.getAddress().getAddress()), listId);
-                } else {
-                    
-                    boolean exists = updateContact(contact, listId);
-                    
-                    //if (!exists)
-                      //     insertContactContent(contact, listId);
-                }
-                notificationText = mContext.getResources().getString(R.string.add_contact_success,
-                        contact.getName());
-                // handle case where a contact is added before mAllContactsLoaded
-                if (!mAllContactsLoaded) {
-                    // if a contact is added to a cached contact list before the actual contact
-                    // list is downloaded from the server, we will have to add the contact to
-                    // the contact list once mAllContactsLoaded is true
-                    if (!mValidatedContactLists.contains(list.getName())) {
-                        mDelayedContactChanges.add(new StoredContactChange(type, list, contact));
+                
+                ContactListAdapter cla = getContactListAdapter(list.getAddress());
+                if (cla != null)
+                {
+                    long listId = cla.getDataBaseId();
+                    if (isTemporary(mAdaptee.normalizeAddress(contact.getAddress().getAddress()))) {
+                        moveTemporaryContactToList(mAdaptee.normalizeAddress(contact.getAddress().getAddress()), listId);
+                    } else {
+                        
+                        boolean exists = updateContact(contact, listId);
+                        
+                        //if (!exists)
+                          //     insertContactContent(contact, listId);
+                    }
+                    notificationText = mContext.getResources().getString(R.string.add_contact_success,
+                            contact.getName());
+                    // handle case where a contact is added before mAllContactsLoaded
+                    if (!mAllContactsLoaded) {
+                        // if a contact is added to a cached contact list before the actual contact
+                        // list is downloaded from the server, we will have to add the contact to
+                        // the contact list once mAllContactsLoaded is true
+                        if (!mValidatedContactLists.contains(list.getName())) {
+                            mDelayedContactChanges.add(new StoredContactChange(type, list, contact));
+                        }
                     }
                 }
                 break;
