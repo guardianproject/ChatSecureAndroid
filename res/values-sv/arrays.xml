@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Force / Kräv</item>
-    <item>Automatiskt att försöka</item>
-    <item>Som begärts</item>
-    <item>Funktionshindrade / aldrig</item>
+    <item>Tvinga / kräv</item>
+    <item>Försök automatiskt</item>
+    <item>Som begärt</item>
+    <item>Avaktiverad / aldrig</item>
   </string-array>
   <string-array name="otr_options_values">
     <item>kräv</item>
@@ -19,6 +19,9 @@
     <item>中文(简体)</item>
     <item>日本語</item>
     <item>한국어</item>
+    <item>မြန်မာဘာသာ</item>
+    <item>Tibetan བོད་སྐད།</item>
+    <item>Tiếng Việt</item>
     <item>Dansk</item>
     <item>Deutsch</item>
     <item>English</item>
@@ -32,9 +35,7 @@
     <item>Português</item>
     <item>Pyccĸий</item>
     <item>Slovenčina</item>
-    <item>Swedish</item>
-    <item>Tibetan བོད་སྐད།</item>
-    <item>Tiếng Việt</item>
+    <item>Svenska</item>
     <item>Tϋrkçe</item>
     <item>Čeština</item>
     <item>ελληνικά</item>
@@ -46,6 +47,9 @@
     <item>zh-rCN</item>
     <item>ja</item>
     <item>ko</item>
+    <item>my</item>
+    <item>bo</item>
+    <item>vi</item>
     <item>da</item>
     <item>de</item>
     <item>en</item>
@@ -60,8 +64,6 @@
     <item>ru</item>
     <item>sk</item>
     <item>sv</item>
-    <item>bo</item>
-    <item>vi</item>
     <item>tr</item>
     <item>cs</item>
     <item>el</item>

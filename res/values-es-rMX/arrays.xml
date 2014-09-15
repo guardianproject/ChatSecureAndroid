@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>Forzar / Requerir</item>
+    <item>Intentar Automáticamente</item>
+    <item>Como solicitado</item>
+    <item>Desactivado / Nunca</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>forzar</item>
+    <item>automáticamente</item>
+    <item>solicitado</item>
+    <item>desactivado</item>
+  </string-array>
+</resources>

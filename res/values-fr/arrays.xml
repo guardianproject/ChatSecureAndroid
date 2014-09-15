@@ -19,6 +19,9 @@
     <item>中文(简体)</item>
     <item>日本語</item>
     <item>한국어</item>
+    <item>မြန်မာဘာသာ</item>
+    <item>Tibetan བོད་སྐད།</item>
+    <item>Tiếng Việt</item>
     <item>Dansk</item>
     <item>Deutsch</item>
     <item>English</item>
@@ -33,8 +36,6 @@
     <item>Pyccĸий</item>
     <item>Slovenčina</item>
     <item>Swedish</item>
-    <item>Tibetan བོད་སྐད།</item>
-    <item>Tiếng Việt</item>
     <item>Tϋrkçe</item>
     <item>Čeština</item>
     <item>ελληνικά</item>
@@ -46,6 +47,9 @@
     <item>zh-rCN</item>
     <item>ja</item>
     <item>ko</item>
+    <item>my</item>
+    <item>bo</item>
+    <item>vi</item>
     <item>da</item>
     <item>de</item>
     <item>en</item>
@@ -60,10 +64,17 @@
     <item>ru</item>
     <item>sk</item>
     <item>sv</item>
-    <item>bo</item>
-    <item>vi</item>
     <item>tr</item>
     <item>cs</item>
     <item>el</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>rkquery.de</item>
+    <item>bam.yt</item>
   </string-array>
 </resources>

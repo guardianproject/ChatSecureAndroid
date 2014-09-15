@@ -1,9 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
-  <string name="ro_perm_label">đọc tin nhắn nhanh</string>
-  <string name="ro_perm_desc">\nCho phép ứng dụng đọc dữ liệu từ dịch vụ tin nhắn nhanh </string>
-  <string name="wo_perm_label">viết tin nhắn nhanh</string>
-  <string name="wo_perm_desc">\nCho phép ứng dụng viết/thêm dữ liệu vào dịch vụ tin nhắn nhanh </string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="ro_perm_label">đọc nội dung chat</string>
+  <string name="ro_perm_desc">
+Cho phép ứng dụng đọc dữ liệu từ dịch vụ chat.</string>
+  <string name="wo_perm_label">gõ vào nội dung chat</string>
+  <string name="wo_perm_desc">
+Cho phép ứng dụng viết/thêm dữ liệu vào dịch vụ chat.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <string name="im_label">ChatSecure</string>
@@ -11,7 +13,7 @@
   <!--The title of the landing page.-->
   <string name="landing_page_title">Chọn một tài khoản</string>
   <!--Landing page screen menu and context menu items.-->
-  <string name="menu_about">Về chúng tôi</string>
+  <string name="menu_about">Thông tin</string>
   <!--Conext menu item: add a new account.-->
   <string name="menu_add_account">Thêm tài khoản</string>
   <!--Conext menu item: edit an account.-->
@@ -19,41 +21,43 @@
   <!--Conext menu item: remove an account.-->
   <string name="menu_remove_account">Xóa tài khoản</string>
   <!--Screen menu item: sign out all service.-->
-  <string name="menu_sign_out_all">Đăng xuất ra hết</string>
+  <string name="menu_sign_out_all">Đăng xuất toàn bộ tài khoản</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
   <string name="choose_account_title">Chọn một tài khoản</string>
   <!--Displays the number of ongoing chats on the landing page.-->
-  <string name="conversations"></string>
+  <string name="conversations">(<xliff id="number" example="27">%1$d</xliff>)</string>
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
   <string name="menu_cancel_signin">Hủy bỏ đăng nhập </string>
   <!--Contact list screen menu and context menu items.-->
   <!--This is a screen menu item for the Contact List Screen. It lets the
     user to add a friend to the friend list. May be overrided by the plugin.-->
-  <string name="menu_add_contact">Thêm tên liên lạc</string>
+  <string name="menu_add_contact">Thêm bạn chat</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     remove a contact from the list. May be overrided by the plugin.-->
-  <string name="menu_remove_contact">Xoá tên liên lạc</string>
+  <string name="menu_remove_contact">Xóa bạn chat</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     block a contact. May be overrided by the plugin.-->
-  <string name="menu_block_contact">Chặn tên liên lạc</string>
+  <string name="menu_block_contact">Chặn bạn chat</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <string name="menu_contact_nickname">Tên liên lạc</string>
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">Đã chặn</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
   <string name="menu_view_accounts">Các tài khoản</string>
   <!--Screen menu item on active chat list to start new chat-->
-  <string name="menu_new_chat">Chat mới</string>
+  <string name="menu_new_chat">Tạo phần chat mới</string>
   <!--Screen menu item on accounts list to create new account-->
-  <string name="menu_new_account">Tài khoản mới</string>
+  <string name="menu_new_account">Tạo tài khoản mới</string>
   <!--Screen menu item on the contact list to go to the setting page.-->
-  <string name="menu_settings">Cấu hình</string>
+  <string name="menu_settings">Điều chỉnh</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
-  <string name="menu_search_contacts">Tìm kiếm tên liên lạc</string>
+  <string name="menu_search_contacts">Tìm kiếm bạn chat</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
@@ -63,34 +67,37 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Xác minh </string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <string name="menu_view_profile">Hồ Sơ Cá Nhân</string>
+  <string name="menu_verify">Xác Nhận Khóa</string>
+  <!--Context/drop-down menu item for picking an image to send.-->
+  <string name="menu_send_image">Gửi hình</string>
+  <string name="menu_send_file">Gửi tập tin</string>
+  <string name="menu_send_audio">Gửi tập tin âm thanh</string>
+  <string name="menu_take_picture">Chụp Ảnh</string>
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">Bắt đầu mã hoá</string>
   <string name="menu_otr_stop">Ngừng mã hoá</string>
-  <string name="menu_clear_chat">Xoá chat</string>
+  <string name="menu_clear_chat">Xoá nội dung chat</string>
   <string name="menu_end_conversation">Kết thúc chat</string>
   <string name="menu_voip_title">Cuộc gọi an toàn</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
-  <string name="menu_view_contact_list">Danh sách liên lạc</string>
+  <string name="menu_view_contact_list">Danh sách bạn chat</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Mời...</string>
+  <string name="menu_invite_contact">Mời\u2026</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">chuyển qua chat khác</string>
+  <string name="menu_switch_chats">Chuyển người chat</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Thêm biểu hiện cười</string>
   <string name="menu_resend">Gửi lại</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Scan vân tay</string>
+  <string name="menu_scan">Quét mã QR</string>
   <string name="menu_fingerprint">Vân tay của bạn</string>
-  <string name="menu_verify_fingerprint">Xác nhận vân tay</string>
-  <string name="menu_verify_secret">Xác nhận bí mật</string>
+  <string name="menu_verify_fingerprint">Tự điều chỉnh</string>
+  <string name="menu_verify_secret">Thắc mắc</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -103,298 +110,312 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">Bạn muốn đăng xuất ra khỏi tất cả các dịch vụ?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
+  <string name="confirm_delete_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ bị xóa.</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
+  <string name="confirm_block_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ bị chặn.</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
+  <string name="confirm_unblock_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ không còn bị chặn.</string>
   <!--The "OK" button label for the error message dialog.-->
-  <string name="ok">Ok</string>
+  <string name="ok">Đồng Ý</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="cancel">Hủy bỏ</string>
+  <string name="cancel">Hủy Bỏ</string>
   <!--The "OK" button label for the confirm dialogs.-->
-  <string name="yes">Ok</string>
+  <string name="yes">Đồng Ý</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="no">Hủy bỏ</string>
+  <string name="no">Hủy Bỏ</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
+  <string name="signed_out_prompt">Bạn đã đăng xuất ra khỏi <xliff id="account">%1$s</xliff>.</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
+  <string name="signed_out_prompt_with_error">Bạn đã đăng xuất ra khỏi <xliff id="account">%1$s</xliff> vì <xliff id="reason">%2$s</xliff></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
+  <string name="add_account">Thêm <xliff id="account">%1$s</xliff> tài khoản</string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">Người dùng@Máy chủ</string>
   <!--The password label.-->
   <string name="label_password">Mật khẩu:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
-  <string name="remember_password">Nhớ mật khẩu của tôi</string>
+  <string name="remember_password">Nhớ mật khẩu của tôi.</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Tự động đăng nhập</string>
+  <string name="keep_me_signed_in">Tự động đăng nhập.</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
   <string name="sign_up">Bạn không có tài khoản?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">Vì lý do an ninh, nếu điện thoại của bạn bị đánh cắp hoặc mất, hãy vào trang mạng qua máy vi tính để thay đổi mật khẩu.</string>
-  <string name="check_auto_sign_in">Chọn lựa này tự động đăng nhập mỗi khi bạn cho chạy ứng dụng này. Để bỏ chức năng này, bạn đăng xuất, rồi xóa sạch ô \"Đăng nhập tự động\".</string>
+  <string name="check_save_password">Vì lý do an ninh, nếu điện thoại của bạn bị đánh cắp hoặc mất, hãy vào website của chúng tôi bằng máy vi tính để thay đổi mật khẩu.</string>
+  <string name="check_auto_sign_in">Khi chọn phần này, chương trình sẽ tự động đăng nhập thông tin đăng nhập mà bạn đã chọn. Để bỏ chức năng này, bạn hãy đăng xuất, rồi bỏ chọn phần \"Đăng nhập tự động\".</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Đăng nhập</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <string name="signing_in_to">đang khởi động ChatSecure...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Đang đăng nhập</string>
+  <string name="signing_in_wait">Đang đăng nhập\u2026</string>
+  <string name="signing_out_wait">Đang đăng xuất\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Dữ liệu trong hậu cảnh đã được vô hiệu hoá</string>
+  <string name="bg_data_prompt_title">Đã vô hiệu hóa phần dữ liệu mạng</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
+  <string name="bg_data_prompt_message">
+         Phần kết nối dữ liệu mạng (bao gồm cả dữ liệu nền) đều cần thiết để cho phép ứng dụng đăng nhập vào.
+    </string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
-  <string name="bg_data_prompt_ok">Kích hoạt</string>
+  <string name="bg_data_prompt_ok">Cho phép</string>
   <!--Cancel button for the prompt dialog-->
   <string name="bg_data_prompt_cancel">Thoát</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
+  <string name="ongoing_conversation">Các phần chat đang diễn ra (<xliff id="number">%1$d</xliff>)</string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
+  <string name="online_count"><xliff id="number">%1$d</xliff> đang online</string>
   <!--The title of the subscription request group if there is any.-->
-  <string name="subscriptions">Mời bạn</string>
+  <string name="subscriptions">Gửi lời mời chat</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
   <string name="unknown_contact">(<i>Không rõ</i>)</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
-  <string name="empty_contact_group">Trống rỗng</string>
+  <string name="empty_contact_group">Hiện còn trống</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">Không có cuộc đối thoại nào</string>
+  <string name="empty_conversation_group">Hiện không có phần chat nào</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
-  <string name="contacts_picker_title">Chọn liên lạc để mời</string>
-  <string name="contact_filter_hint">Đánh vào để tìm tên liên lạc</string>
-  <string name="empty_contact_list">Không tìm thấy tên liên lạc </string>
+  <string name="contacts_picker_title">Chọn (các)bạn chat để gửi lời mời</string>
+  <string name="contact_filter_hint">Gõ vào thông tin để tìm bạn chat</string>
+  <string name="empty_contact_list">Không tìm thấy liên lạc nào.
+
+Chạm vào để mời kết nối.</string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
+  <string name="blocked_list_title">Những bạn chat đã bị chặn - <xliff id="user">%1$s</xliff></string>
   <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">Không có liên lạc bị chặn</string>
+  <string name="no_blocked_contact">Hiện không có bạn chat nào bị chặn.</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">Hồ sơ về liên lạc</string>
+  <string name="contact_profile_title">Hồ sơ về bạn chat</string>
   <!--The label of the status on the contact profile dialog.-->
-  <string name="label_status">Trạng thái</string>
+  <string name="label_status">Trạng thái:</string>
   <!--The label of the client type on the contact profile dialog.-->
-  <string name="label_client_type">Loại ứng dụng:</string>
+  <string name="label_client_type">Loại máy trạm:</string>
   <!--The client type which indicates the contact is sign in with a PC client.-->
-  <string name="client_type_computer">Máy vi tính</string>
+  <string name="client_type_computer">Máy tính PC</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
   <string name="client_type_mobile">Di động</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_available">Online </string>
+  <string name="presence_available">Online</string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_busy">Bận</string>
+  <string name="presence_busy">Đang bận việc</string>
   <!--This is an adjective describing the "away" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_away">Vắng</string>
+  <string name="presence_away">Hiện không rảnh</string>
   <!--This is an adjective describing the "idle" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_idle">Không làm gì</string>
+  <string name="presence_idle">Ở trạng thái chờ</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
   <string name="presence_offline">Offline </string>
   <!--This is an adjective describing the "invisible" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
-  <string name="presence_invisible">Có vẻ offline </string>
+  <string name="presence_invisible">Hiển thị dưới dạng offline</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
+  <string name="chat_with">Chat với <xliff id="user">%1$s</xliff></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Tôi</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Đánh chữ vào</string>
+  <string name="compose_hint">Gửi một tin nhắn</string>
+  <string name="compose_hint_secure">Gửi tin nhắn mã hóa</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
+  <string name="contact_online"><xliff id="user">%1$s</xliff> đang online</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
+  <string name="contact_away"><xliff id="user">%1$s</xliff> hiện không rảnh</string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
+  <string name="contact_busy"><xliff id="user">%1$s</xliff> đang bận việc</string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
+  <string name="contact_offline"><xliff id="user">%1$s</xliff> offline</string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
+  <string name="contact_joined"><xliff id="user">%1$s</xliff> đã tham gia kết nối</string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
+  <string name="contact_left"><xliff id="user">%1$s</xliff> đã rời khỏi phần chat</string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
-  <string name="time_stamp" format="date"></string>
+  <string name="time_stamp" format="date">\'Được gửi vào lúc\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'bằng\' <xliff:g id="date">EEEE</xliff:g></string>
   <!--The send button on the chat screen.-->
   <string name="send">Gửi đi</string>
   <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Tin nhắn này không gửi đi được</string>
+  <string name="msg_sent_failed">Không thể gửi được tin nhắn này.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Mất liên lạc với máy chủ. Các tin nhắn sẽ được gửi đi khi nối mạng lại.</string>
+  <string name="disconnected_warning">Các tin nhắn sẽ được gửi khi được kết nối lại</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
+  <string name="contact_offline_warning"><xliff id="user">%1$s</xliff> hiện đang offline. Phần nội dung chat mà bạn gửi đi sẽ được <xliff id="user">%1$s</xliff> đọc khi online trở lại.</string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
+  <string name="contact_not_in_list_warning"><xliff id="user">%1$s</xliff> không nằm trong  Danh Sách Bạn Chat của bạn.</string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
-  <string name="select_link_title">Chọn đường dẫn</string>
+  <string name="select_link_title">Chọn đường dẫn liên kết</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">Không có chat nào đang diễn ra.</string>
+  <string name="empty_chat_list">Hiện không có phần chat nào đang hoạt động.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Đang bắt đầu mã hoá cuộc trò chuyện này...</string>
-  <string name="stopping_otr_chat">Ngưng mã hoá cuộc trò chuyện...</string>
+  <string name="starting_otr_chat">Đang bắt đầu mã hoá nội dung chat này...</string>
+  <string name="stopping_otr_chat">Ngưng lại thao tác mã hóa nội dung chat...</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
-  <string name="add_contact_title">Thêm vào liên lạc</string>
+  <string name="add_contact_title">Thêm bạn chat</string>
   <!--The label of the email input box on the Add Contact Screen.-->
-  <string name="input_contact_label">Địa chỉ email bạn muốn mời vào:</string>
+  <string name="input_contact_label">Địa chỉ email của bạn chat mà bạn muốn thêm vào:</string>
   <!--The label of the list spinner on the Add Contact Screen.-->
   <string name="choose_list_label">Chọn một danh sách:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Đánh vào tên để thêm vào Danh Bạ</string>
+  <string name="invite_instruction">Gõ vào tên bạn chat từ phần Danh Bạ trên điện thoại</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
-  <string name="invite_label">Gửi thư mời</string>
+  <string name="invite_label">Gửi lời mời kết nối</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
-  <string name="provider_full_name_llxmpp">Chào Bạn (ZeroConf)</string>
+  <string name="provider_full_name_llxmpp">Khu vực địa phương (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="account_setup_title">Thiết lập tài khoản</string>
+  <string name="account_setup_title">Chỉnh sửa tài khoản</string>
   <string name="encryption_and_anonymity_title">Mã hoá và Ẩn Danh</string>
-  <string name="hide_offline_contacts">Dấu liên lạc không trực tuyến</string>
+  <string name="hide_offline_contacts">Ẩn bạn chat không online</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
-  <string name="notification_group_title">Cấu hình thông báo</string>
+  <string name="notification_group_title">Chỉnh sửa phần thông báo</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_enabled_title">Thông báo cho Tin Nhắn Nhanh</string>
+  <string name="notification_enabled_title">Thông báo khi có phần chat mới</string>
   <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Thông báo trong thanh trạng thái khi nhận tin nhắn</string>
+  <string name="notification_enabled_summary">Thông báo ở thanh trạng thái khi nhận nội dung chat mới</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
   <string name="foreground_service_title">Dùng tiền cảnh ưu tiên</string>
   <string name="foreground_service_summary">Giảm xác suất mà Android có thể khởi động lại dịch vụ kết nối của chúng ta. Sẽ để thông báo vào trong khu vực thông báo. </string>
   <string name="heartbeat_interval_title">Cường độ nhịp tim</string>
   <string name="heartbeat_interval_summary">Dùng chỉ số cao hơn (theo phút) để tiết kiệm pin. Chỉ số cao sẽ làm cho nhà cung cấp dịch vụ đóng kết nối lại vì lầm tưởng là không có hoạt động.</string>
-  <string name="notification_vibrate_title">Rung</string>
+  <string name="notification_vibrate_title">Sử dụng chế độ rung</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Và rung khi nhận tin nhắn</string>
+  <string name="notification_vibrate_summary">Sử dụng chế độ rung khi có phần chat mới</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
-  <string name="notification_sound_title">Âm Thanh</string>
+  <string name="notification_sound_title">Âm Báo</string>
   <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Và có tiếng reng khi tin nhận tin nhắn</string>
+  <string name="notification_sound_summary">Phát nhạc chuông trên điện thoại khi có nội dung chat mới</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Chọn tiếng reng</string>
+  <string name="notification_ringtone_title">Sử dụng nhạc chuông tự chọn cho phần trò chuyện bảo mật</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
+  <string name="invitation_prompt"><xliff id="user">%1$s</xliff> đã mời bạn tham gia vào phần chat nhóm</string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
+  <string name="invitation_sent_prompt">Thư mời kết nối đã được gửi đến <xliff id="user">%1$s</xliff></string>
   <!--The button for accepting an invitation.-->
-  <string name="accept_invitation">Nhận </string>
+  <string name="accept_invitation">Chấp thuận</string>
   <!--The button for decline an invitation.-->
   <string name="decline_invitation">Từ chối</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
+  <string name="subscription_prompt"><xliff id="user">%1$s</xliff> đã gửi đến bạn lời mời liên kết trong danh sách chat của người đó.</string>
   <!--The button for approving a subscription request.-->
-  <string name="approve_subscription">Nhận</string>
+  <string name="approve_subscription">Chấp thuận</string>
   <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">Từ Chối</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
+  <string name="approve_subscription_error">Hiện không thể đăng ký  ở <xliff id="user">%1$s</xliff>. Xin vui lòng thử lại sau.</string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
+  <string name="decline_subscription_error">Không thể từ chối phần đăng ký từ <xliff id="user">%1$s</xliff>. Xin vui lòng thử lại sau.</string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
+  <string name="newMessages_label"><xliff id="provider">%1$s</xliff> nội dung chat mới</string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
+  <string name="num_unread_chats">
+<xliff id="number">%1$d</xliff> phần nội dung chat chưa xem</string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
+  <string name="subscription_notify_text">
+Lời mời kết bạn từ <xliff id="user">%1$s</xliff>.</string>
+  <string name="file_notify_text">
+        Tập tin mới <xliff:g id="filename">%s</xliff:g> từ <xliff:g id="user">%s</xliff:g>
+    </string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
-  <string name="notify_groupchat_label">Thư mời chat nguyên nhóm</string>
+  <string name="notify_groupchat_label">Gửi lời mời chat theo nhóm</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
+  <string name="group_chat_invite_notify_text">
+Lời mời chat theo nhóm từ <xliff id="user">%1$s</xliff>.</string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
+  <string name="add_contact_success">Đã thêm <xliff id="user">%1$s</xliff> vào Danh Sách Bạn Chat.</string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
+  <string name="delete_contact_success">Đã xoá bạn chat <xliff id="user">%1$s</xliff>.</string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
+  <string name="block_contact_success">Đã chặn bạn chat <xliff id="user">%1$s</xliff>.</string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
+  <string name="unblock_contact_success">Không còn chặn bạn chat <xliff id="user">%1$s</xliff></string>
   <!--IM service permission-->
-  <string name="perm_label">Bắt đầu dịch vụ tin nhắn nhanh</string>
-  <string name="perm_desc">Cho phép các ứng dụng bắt đầu dịch vụ tin nhắn nhanh qua \"intent\".</string>
+  <string name="perm_label">Bắt đầu thao tác chat</string>
+  <string name="perm_desc">Cho phép các ứng dụng bắt đầu sử dụng dịch vụ chat thông qua Internet.</string>
   <!--Errors-->
   <!--The title of the error dialog-->
-  <string name="error">Chú ý</string>
+  <string name="error">Lưu Ý</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
+  <string name="login_service_failed">Không đăng nhập được vào dịch vụ <xliff id="service">%1$s</xliff>. Xin hãy vui lòng thử lại sau.
+
+(Chi Tiết: <xliff id="description">%2$s</xliff>)</string>
   <!--Error message for creating contact list failed.-->
-  <string name="add_list_failed">Danh sách không được thêm</string>
+  <string name="add_list_failed">Không thêm vào được danh sách.</string>
   <!--Error message for blocking contact failed.-->
-  <string name="block_contact_failed">Liên lạc không bị chận.</string>
+  <string name="block_contact_failed">Bạn chat chưa bị chặn.</string>
   <!--Error message for unblocking contact failed.-->
-  <string name="unblock_contact_failed">Liên lạc vẫn chưa được hết chận.</string>
+  <string name="unblock_contact_failed">Bạn chat vẫn chưa được bỏ chặn.</string>
   <!--Error message for when the user didn't select a contact as required.-->
-  <string name="select_contact">Xin hãy chọn liên lạc trước.</string>
+  <string name="select_contact">Trước tiên xin vui lòng chọn một bạn chat.</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">Ngắt kết nối!</string>
+  <string name="disconnected">Kết nối đã bị ngắt!
+</string>
   <!--Error message for when the IM service has died.-->
-  <string name="service_error">Máy chủ bị lỗi!</string>
+  <string name="service_error">Lỗi dịch vụ chat!</string>
   <!--Error message for loading contact list failed.-->
-  <string name="load_contact_list_failed">Danh sách liên lạc không tải được.</string>
+  <string name="load_contact_list_failed">Chưa tải được danh sách bạn chat.</string>
   <!--Error message for failed to connect to the server.-->
-  <string name="cant_connect_to_server">Không kết nối với máy chủ được. Xin hãy xem lại mạng của bạn.</string>
+  <string name="cant_connect_to_server">Hiện không thể kết nối đến phía máy chủ. Xin bạn hãy vui lòng kiểm tra lại kết nối của mình.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
+  <string name="contact_already_exist"><xliff id="user">%1$s</xliff> hiện đã có trong Danh Sách Bạn Chat.</string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
+  <string name="contact_blocked">Bạn chat <xliff id="user">%1$s</xliff> đã bị chặn.</string>
   <!--Error message for when the contact list is not compeletely loaded.-->
-  <string name="contact_not_loaded">Xin hãy đợi trong giây lát khi danh sách liên lạc của bạn đang khởi động.</string>
+  <string name="contact_not_loaded">Xin vui lòng đợi trong giây lát, chương trình đang tải Danh Sách Bạn Chat của bạn.</string>
   <!--Error message for when a network error occurred.-->
-  <string name="network_error">Có lỗi mạng.</string>
+  <string name="network_error">Xảy ra lỗi về mạng.</string>
   <string name="wifi_not_connected_error">Cần mạng WIFI để kết nối. </string>
   <!--Error message for lack of server support error.-->
-  <string name="service_not_support">Máy chủ không hỗ trợ chức năng này</string>
+  <string name="service_not_support">Máy chủ không hỗ trợ chức năng này.</string>
   <!--Erorr message for bad password error.-->
-  <string name="invalid_password">Mật khẩu đánh vào không đúng.</string>
+  <string name="invalid_password">Mật khẩu bạn vừa điền vào không hợp lệ.</string>
   <!--Error message for server internal error.-->
-  <string name="internal_server_error">Máy chủ đang gặp trở ngại</string>
+  <string name="internal_server_error">Phía máy chủ gặp lỗi.</string>
   <!--Error message for when the server does not implement the feature.-->
-  <string name="not_implemented">Máy chủ không hỗ trợ chức năng này</string>
+  <string name="not_implemented">Máy chủ không hỗ trợ chức năng này.</string>
   <!--Error message for server not available error.-->
-  <string name="service_unavaiable">Máy chủ hiện thời không hoạt động</string>
+  <string name="service_unavaiable">Máy chủ hiện thời không hoạt động.</string>
   <!--Error message for timeout error.-->
-  <string name="timeout">Thời gian kết nối với máy chủ đã hết hạn. </string>
+  <string name="timeout">Đã quá thời hạn cho phép dành cho kết nối đến phía máy chủ.</string>
   <!--Error message for when the server does not support the current protocol version.-->
-  <string name="version_not_supported">Máy chủ không hỗ trợ cho phiên bản hiện thời</string>
+  <string name="version_not_supported">Phía máy chủ hiện không hỗ trợ phiên bản ứng dụng hiện tại.</string>
   <!--Error message for when the message queue on the server is full.-->
-  <string name="message_queue_full">Hàng đợi tin nhắn đã đầy</string>
+  <string name="message_queue_full">Hàng đợi nội dung chat đã đầy</string>
   <!--Error message for when the domain is not supported by the server.-->
   <string name="domain_not_supported">Máy chủ không hỗ trợ chuyển tiếp đến tên miền.</string>
   <!--Error message for a bad username error.-->
-  <string name="unknown_user">Không nhận diện được tên người dùng mà bạn điền vào.</string>
+  <string name="unknown_user">Không nhận diện được tên tài khoản mà bạn điền vào.</string>
   <!--Error message for when the user is blocked by the recipient.-->
-  <string name="recipient_blocked_the_user">Xin lỗi, bạn bị người dùng này chận lại.</string>
+  <string name="recipient_blocked_the_user">Xin lỗi, bạn bị chặn bởi phía người dùng.</string>
   <!--Error message for session expired error.-->
-  <string name="session_expired">Phiên thời gian đã hết, xin bạn đăng nhập vào lại.</string>
+  <string name="session_expired">Phiên đăng nhập của bạn đã hết hạn, xin hãy vui lòng đăng nhập trở lại.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
-  <string name="forced_logout">bạn đã đăng nhập vào từ một ứng dụng khác.</string>
-  <string name="already_logged_in">bạn đã đăng nhập vào từ một ứng dụng khác.</string>
+  <string name="forced_logout">bạn đã đăng nhập vào dịch vụ từ một ứng dụng khác.</string>
+  <string name="already_logged_in">bạn đã đăng nhập vào dịch vụ từ một ứng dụng khác.</string>
   <!--Error message for msisdn error.-->
-  <string name="msisdn_error">Xin lỗi, không thể đọc được số điện thoại từ SIM của bạn. Xin liên lạc với tổng đài để nhận giúp đỡ.</string>
+  <string name="msisdn_error">Xin thứ lỗi, chúng tôi không thể đọc được số điện thoại từ SIM của bạn. Xin liên lạc với tổng đài để nhận giúp đỡ.</string>
   <!--Error message for when the user is not signed in.-->
-  <string name="not_signed_in">Bạn chưa đăng nhập vào.</string>
+  <string name="not_signed_in">Bạn hiện vẫn chưa đăng nhập vào.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
+  <string name="general_error">Mã số lỗi <xliff id="code">%1$d</xliff></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>Vui</item>
@@ -454,139 +475,150 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="buddy_list_title"></string>
-  <string name="menu_contact_list">Danh sách liên lạc</string>
-  <string name="menu_view_encrypt_chat">Mã hoá tắt/mở</string>
-  <string name="use_tor">Kết nối qua mạng Tor (Cần ứng dụng Orbot )</string>
+  <string name="buddy_list_title">Danh Sách Bạn Chat -  <xliff id="username">%1$s</xliff></string>
+  <string name="menu_contact_list">Danh Sách Bạn Chat</string>
+  <string name="menu_view_encrypt_chat">Mã hoá Tắt/Mở</string>
+  <string name="use_tor">Kết nối qua mạng dạng Tor (Cần kết nối với ứng dụng Orbot )</string>
   <!--Welcome Splash Screen-->
   <string name="app_name">ChatSecure</string>
   <string name="welcome_first">Lần đầu dùng ChatSecure?</string>
-  <string name="welcome_skip">Nôn nóng muốn bắt đầu ngay?</string>
+  <string name="welcome_skip">Bạn muốn bắt đầu ngay bây giờ ư?</string>
   <string name="welcome_about">Bắt đầu</string>
-  <string name="welcome_account">Cài đặt tài khoản</string>
+  <string name="welcome_account">Điều chỉnh tài khoản</string>
   <!--About: Welcome-->
   <string name="about_welcome_title">Thông tin về ChatSecure</string>
-  <string name="about_welcome">ChatSecure là một dịch vụ tin nhắn nhanh di động với những chức năng ngăn chận những kẻ muốn rình mò những cuộc chuyện trò hoặc trao đổi thông tin của bạn.\n\nDịch vụ này hỗ trợ các dịch vụ tin nhắn dùng giao thức Jabber hoặc XMPP, như Google Gtalk hoặc Jabber.org. </string>
+  <string name="about_welcome">ChatSecure là một dịch vụ tin nhắn nhanh di động với những chức năng ngăn chận những kẻ muốn rình mò những cuộc chuyện trò hoặc trao đổi thông tin của bạn.
+
+Dịch vụ này hỗ trợ các dịch vụ tin nhắn dùng giao thức Jabber hoặc XMPP, như Google Gtalk hoặc Jabber.org. </string>
   <!--About: OTR-->
-  <string name="about_otr_title">Ứng dụng này an toàn như thế nào?</string>
-  <string name="about_otr">\'Off-the-Record Messaging\' là một hệ thống an ninh để bảo đảm quyền riêng tư bằng cách mô phỏng những đặc tính của một cuộc đối thoại riêng tư ở ngoài đời bao gồm Mã hóa, Xác thực, Phủ nhận, Bí mật Chuyển tiếp.\n\nGiao thức OTR tương hợp với các ứng dụng chat của máy vi tính như Adium hoặc Pidgin.</string>
+  <string name="about_otr_title">Ứng dụng này liệu chăng có an toàn hay không?</string>
+  <string name="about_otr">\'Off-the-Record Messaging\' là một hệ thống bảo mật nhằm để bảo đảm quyền riêng tư bằng cách mô phỏng những đặc tính của một cuộc đối thoại riêng tư ở ngoài đời bao gồm Mã hóa, Xác thực, Phủ nhận, Bí mật Chuyển tiếp.
+
+Giao thức OTR tương thích với các ứng dụng chat của máy vi tính như Adium hoặc Pidgin.</string>
   <!--About: Security-->
-  <string name="about_security_title">Chat của tôi có được an toàn không?</string>
-  <string name="about_security">Tính năng mã hóa nội dung chat hoặc còn gọi là tán gẫu trên ChatSecure chỉ có thể được thực hiện khi đối tượng mà bạn gửi cũng đồng thời sử dụng ChatSecure nếu dùng di động hoặc Adium hay Pidgin khi dùng trên máy tính. Bạn có thể tự mình chỉnh sửa loại, mức độ mã hóa thông tin của ChatSecure trong phần Thiết Lập Tài Khoản.\n\nHãy bắt đầu trải nghiệm đi nào!</string>
+  <string name="about_security_title">Nội dung các đoạn hội thoại chat của tôi có an toàn hay không?</string>
+  <string name="about_security">Tính năng mã hóa nội dung chat hoặc còn gọi là tán gẫu trên ChatSecure chỉ có thể được thực hiện khi đối tượng mà bạn gửi cũng đồng thời sử dụng ChatSecure nếu dùng di động hoặc Adium hay Pidgin khi dùng trên máy tính. Bạn có thể tự mình chỉnh sửa loại, mức độ mã hóa thông tin của ChatSecure trong phần Thiết Lập Tài Khoản.
+
+Hãy bắt đầu trải nghiệm đi nào!</string>
   <!--Setup: Passphrase-->
-  <string name="setup_passphrase_title">Cài đặt cụm từ mật khẩu</string>
+  <string name="setup_passphrase_title">Chỉnh sửa cụm từ mật khẩu</string>
   <string name="setup_passphrase">Trước khi bạn bắt đầu xin vui lòng chọn một cụm từ an toàn để bảo vệ dữ liệu ChatSecure.</string>
   <string name="setup_passphrase_label1">Cụm từ mật khẩu:</string>
-  <string name="setup_passphrase_label2">Cụm từ mật khẩu (đánh lại):</string>
+  <string name="setup_passphrase_label2">Cụm từ mật khẩu (gõ lại):</string>
   <!--Account Setup: Account-->
   <string name="account_setup_example_email_address">user@domain.com</string>
   <string name="account_setup_new_username">tên người dùng mới</string>
   <string name="account_setup_service_provider">dịch vụ cung cấp (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">mật khẩu</string>
   <string name="account_setup_password_confirm">xác nhận mật khẩu</string>
-  <string name="account_setup_advanced_button">Cấu hình cao cấp tài khoản </string>
+  <string name="account_setup_advanced_button">Điều chỉnh tài khoản nâng cao</string>
   <string name="account_select_type">Loại tài khoản</string>
   <string name="btn_create_new_account">Đăng ký Tài Khoản</string>
   <!--Account Setup: Persistence-->
-  <string name="account_setup_pers_sub">Kiên trì</string>
-  <string name="account_setup_pers_pw_title">Nhớ mật khẩu</string>
-  <string name="account_setup_pers_pw_on">Nhớ mật khẩu trong bộ đệm</string>
-  <string name="account_setup_pers_pw_off">Mật khẩu không được nhớ trong bộ đệm</string>
+  <string name="account_setup_pers_sub">Luôn giữ kết nối</string>
+  <string name="account_setup_pers_pw_title">Ghi nhớ mật khẩu</string>
+  <string name="account_setup_pers_pw_on">Ghi nhớ mật khẩu trong bộ nhớ đệm</string>
+  <string name="account_setup_pers_pw_off">Mật khẩu không được lưu trong bộ nhớ đệm</string>
   <string name="account_setup_pers_auto_title">Tự động đăng nhập </string>
   <string name="account_setup_pers_auto_on">Kết nối vào ChatSecure khi bắt đầu</string>
   <string name="account_setup_pers_auto_off">Đừng kết nối vào ChatSecure khi bắt đầu</string>
-  <string name="account_setup_pers_now_title">Đăng nhập vào ngay</string>
+  <string name="account_setup_pers_now_title">Đăng nhập ngay</string>
   <string name="account_setup_pers_now_on">Kết nối vào sau khi cài đặt tài khoản xong</string>
   <string name="account_setup_pers_now_off">Đừng kết nối vào sau khi cài đặt tài khoản xong</string>
   <!--Account Setup: Personal-->
-  <string name="account_setup_personal_sub">Cá nhân (tuỳ chọn)</string>
-  <string name="account_setup_personal_alias_title">Biệt hiệu của tài khoản( tên của bạn )</string>
-  <string name="account_setup_personal_alias_sub">Tài khoản của bạn sẽ hiện ra như vầy</string>
+  <string name="account_setup_personal_sub">Cá nhân hóa (có hoặc không)</string>
+  <string name="account_setup_personal_alias_title">Nickname (biệt danh của bạn)</string>
+  <string name="account_setup_personal_alias_sub">Cách hiển thị tài khoản của bạn khi đang online</string>
   <string name="account_setup_personal_profile_title">Hồ sơ</string>
-  <string name="account_setup_personal_profile_sub">Vài dòng về bạn</string>
+  <string name="account_setup_personal_profile_sub">Đôi chút thông tin về bản thân bạn</string>
   <!--Account Setup: Advanced-->
-  <string name="account_setup_advanced_enc_force">Bắt buộc dùng hệ thống mã hoá / không dùng dạng văn bản bình thường</string>
-  <string name="account_setup_advanced_enc_auto">Khi có thể, hãy tự động mã hoá</string>
-  <string name="account_setup_advanced_enc_req">Mã hoá chat theo yêu cầu</string>
-  <string name="account_setup_advanced_enc_off">Tắt đi mã hoá cho cuộc trò chuyện</string>
+  <string name="account_setup_advanced_enc_force">Bắt buộc dùng hệ thống mã hoá / không dùng dạng văn bản thông thường</string>
+  <string name="account_setup_advanced_enc_auto">Tự động mã hóa khi có thể</string>
+  <string name="account_setup_advanced_enc_req">Buộc phải mã hóa nội dung chat</string>
+  <string name="account_setup_advanced_enc_off">Vô hiệu hóa tính năng mã hóa khi chat</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Đang xác nhận lý lịch</string>
-  <string name="account_setup_signin_b">Đang tạo ra bộ chìa khoá mã hoá</string>
-  <string name="account_setup_signin_c">Đang đăng nhập vào</string>
+  <string name="account_setup_signin_a">Đang xác nhận thông tin cá nhân...</string>
+  <string name="account_setup_signin_b">Đang tạo ra bộ khoá mã hoá</string>
+  <string name="account_setup_signin_c">Đang đăng nhập vào...</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure đã gặp lỗi khi đang xác nhận tên dùng và mật khẩu của bạn, xin hay xem và thử lại.</string>
   <string name="account_setup_error_keypair">ChatSecure đã gặp lỗi khi đang tạo ra chì khoá mã hoá</string>
   <string name="account_setup_error_server">ChatSecure đã gặp lỗi khi đang kết nối và máy chủ - xin vui lòng xem lại cấu hình của bạn và thử lại.</string>
   <string name="account_setup_error_connectivity">ChatSecure đã gặp lỗi khi đang kết nối và máy chủ - xin hãy xem lại mạng kết nối của bạn và thử lại.</string>
-  <string name="label_fingerprint_remote">Vân tay của họ</string>
-  <string name="label_fingerprint_local">Vân tay của bạn</string>
+  <string name="label_fingerprint_remote">Bảo mật vân tay</string>
   <string name="menu_sign_in">Đăng nhập</string>
-  <string name="menu_gen_key">Tạo ra chìa khoá</string>
+  <string name="menu_gen_key">Tạo Khóa</string>
   <string name="error_suspended_connection">ChatSecure đã bị mất kết nối vào mạng lưới</string>
   <string name="error_reestablish_connection">ChatSecure đang thử kết nối lại </string>
-  <string name="otr_session_status_plaintext">Cảnh Báo: Cuộc chuyện trò này không được mã hoá</string>
-  <string name="otr_session_status_encrypted">Cuộc chuyện trò này an toàn nhưng căn cước của người tham gia CHƯA ĐƯỢC xác nhận</string>
-  <string name="otr_session_status_finished">Cảnh Báo: mã hoá cho cuộc chuyện trò đã ngưng</string>
-  <string name="otr_session_status_verified">Cuộc trò chuyện này đã được xác nhận và xem là an toàn</string>
-  <string name="account_wizard_setup_title">Cài đặt tài khoản theo từng bước</string>
+  <string name="otr_session_status_plaintext">Đã tắt phần mã hóa</string>
+  <string name="otr_session_status_encrypted">Đã mở phần mã hóa (Chạm để xác nhận)</string>
+  <string name="otr_session_status_finished">Người đang chat với bạn đã dừng chế độ mã hóa trong chat</string>
+  <string name="otr_session_status_verified">Đã mã hóa và xác nhận!</string>
+  <string name="account_wizard_setup_title">Hướng dẫn điều chỉnh tài khoản</string>
   <string name="account_wizard_account_title">Tên tài khoản bạn</string>
   <string name="account_wizard_host_title">Cấu hình máy chủ</string>
-  <string name="account_wizard_ready_title">Bạn sẵn sàng chưa?</string>
+  <string name="account_wizard_ready_title">Bạn đã sẵn sàng chưa?</string>
   <string name="account_wizard_setup_body">Hãy đánh vào tên tài khoản của bạn để cấu hình ChatSecure cho dịch vụ tin nhắn XMPP. Tên tài khoản nhìn giống như địa chỉ email:</string>
-  <string name="account_wizard_account_body">Hãy đánh vào tên tài khoản (user@hostname):</string>
-  <string name="account_wizard_host_body">Hãy đánh vào hoặc điều chỉnh tên máy chủ và số cổng ( số mặc định là 5222 ) cho dịch vụ jabber/xmpp của bạn. </string>
+  <string name="account_wizard_account_body">Hãy gõ vào tên tài khoản (user@hostname):</string>
+  <string name="account_wizard_host_body">Hãy gõ vào hoặc điều chỉnh tên máy chủ và mã số cổng ( mã số cổng mặc định là 5222 ) cho dịch vụ jabber/xmpp của bạn. </string>
   <string name="account_wizard_ready_body">ChatSecure đã cấu hình xong, bây giờ bạn có thể sử dụng và bắt đầu chat một cách an toàn trong riêng tư.</string>
-  <string name="account_wizard_no_domain_warning">Bạn chưa đánh vào phần @máy chủ của tên tài khoản của bạn. Xin hãy thử lại.</string>
-  <string name="account_wizard_no_root_domain_warning">Tên máy chủ của bạn thiếu phần .com,.net hoặc những đuôi tên miền khác. Xin hãy thử lại.</string>
-  <string name="signin_password_prompt">Đánh vào mật khẩu:</string>
+  <string name="account_wizard_no_domain_warning">Bạn chưa gõ vào phần @hostname.com của tài khoản. Xin hãy thử lại!</string>
+  <string name="account_wizard_no_root_domain_warning">Tên máy chủ của bạn thiếu phần .com,.net hoặc những đuôi tên miền khác. Xin hãy thử lại!</string>
+  <string name="signin_password_prompt">Gõ vào mật khẩu:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
-  <string name="account_settings_title">Cấu hình tài khoản</string>
+  <string name="account_settings_title">Thiết lập tài khoản</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">Cảnh Báo: Đây là phiên bản cũ của ChatSecure và có thể có những lổ hỗng an ninh hoặc lỗi.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Nhóm</string>
   <string name="otr_gen_key">Tạo ra cặp chìa khoá mã hoá OTR mới</string>
-  <string name="search_label">Liên lạc</string>
-  <string name="search_hint">đánh vào tên liên lạc để trò chuyện</string>
-  <string name="search_button_text">Đi</string>
+  <string name="search_label">Bạn chat</string>
+  <string name="search_hint">gõ vào tên bạn chat muốn chat</string>
+  <string name="search_button_text">Thực hiện</string>
   <string name="menu_locale">Ngôn Ngữ</string>
-  <string name="KEY_PREF_LANGUAGE_TITLE">Ngôn ngữ</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Ngôn ngữ nào nên hiển thị trong InTheClear?</string>
-  <string name="do_srv_lookup">Tìm trong SRV</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Các ngôn ngữ</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Ngôn ngữ nào nên được hiển thị trong InTheClear?</string>
+  <string name="do_srv_lookup">Thực hiện việc dò tìm dạng SRV</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Dùng DNS SRV để tìm máy chủ XMPP từ tên miền</string>
-  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Cho phép tên dùng và mật khẩu được gửi đi theo dạng văn bản thường khi dùng cách chuyển không mã hoá.</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Cho phép tên tài khoản và mật khẩu được gửi đi theo dạng văn bản thường khi sử dụng kết nối chưa được mã hoá</string>
   <string name="allow_plain_text_auth">Cho phép xác thực bằng văn bản thường</string>
-  <string name="verify_that_the_certificate_is_trusted">Xác nhận là những chứng nhận này tin tưởng được</string>
+  <string name="verify_that_the_certificate_is_trusted">Xác nhận chứng chỉ bảo mật này là an toàn</string>
   <string name="tls_verification">Xác nhận dạng TLS </string>
-  <string name="require_tls_ssl_connection">Cần kết nối theo dạng TLS/SSL</string>
-  <string name="transport_encryption">Cách Chuyển Mã Hoá</string>
-  <string name="how_encrypted_chats_are_started">cách chat mã hoá được bắt đầu</string>
+  <string name="require_tls_ssl_connection">Yêu cầu cần có kết nối dạng TLS</string>
+  <string name="transport_encryption">Quy Tắc Truyền Thông Tin Mã Hoá</string>
+  <string name="how_encrypted_chats_are_started">cách thức mã hóa nội dung chat lúc ban đầu</string>
   <string name="the_server_to_connect_to_if_needed">Máy chủ kết nối vào, khi cần</string>
   <string name="connect_server">Kết nối máy chủ</string>
   <string name="tcp_port_for_xmpp_server">Cổng TCP cho máy chủ XMPP</string>
   <string name="server_port">Cổng máy chủ</string>
-  <string name="xmpp_resource">Tài nguyên XMPP</string>
+  <string name="xmpp_resource">Nguồn dịch vụ XMPP</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">để phân biệt những kết nối từ nhiều ứng dụng khác cũng đã được đăng nhập vào</string>
   <string name="xmpp_resource_prio_title">Tài nguyên ưu tiên cho XMPP</string>
   <string name="xmpp_resource_prio_summary">Những tin gửi cho ứng dụng khách mà có nhiều tài nguyên đang hoạt động sẽ được ưu tiên khi gửi đi</string>
-  <string name="btn_next">Tới</string>
-  <string name="btn_back">Lui</string>
-  <string name="title_chats">Cuộc trò chuyện</string>
-  <string name="new_messages_notify">Tin nhắn mới từ</string>
-  <string name="smp_question_title">Xác thực</string>
+  <string name="btn_next">Tiếp Theo</string>
+  <string name="btn_back">Quay Lại</string>
+  <string name="title_chats">Nội dung chat</string>
+  <string name="new_messages_notify">(Các) phần chat mới từ</string>
+  <string name="smp_question_title">Xác nhận</string>
   <string name="smp_question_summary">Đánh vào một câu hỏi để gửi đi đến liên lạc của bạn, và câu trả lời bạn mong đợi, để xác nhận họ có phải là người bạn muốn trao đổi hay không</string>
-  <string name="smp_question_hint">câu hỏi được hỏi</string>
-  <string name="qmp_answer_hint">câu trả lời mong đợi</string>
+  <string name="smp_question_hint">câu hỏi để hỏi</string>
+  <string name="qmp_answer_hint">câu trả lời cần có</string>
   <string name="remote_verified_us">Liên lạc của bạn đã xác thực bạn thành công. Bây giờ hãy xác thực họ bằng cách đặt câu hỏi của bạn.</string>
-  <string name="no_messages">Không có cuộc trò chuyện nào\n\nHãy gõ vào đây để bắt đầu</string>
+  <string name="no_messages">Không có cuộc trò chuyện nào
+
+Hãy gõ vào đây để bắt đầu</string>
   <string name="pref_theme_dark">Dùng định dạng nền tối</string>
+  <string name="pref_theme_dark_summary">Thay đổi giao diện sang màu tối</string>
   <string name="warning_tor_connect">Vì bạn đang xài Tor, bạn phải đánh vào tên máy chủ của XMPP \'Connect Server\' thẳng vào trong phần Cấu Hình Cao Cấp Tài Khoản.</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <string name="start_on_boot">Để ChatSEcure tự động chạy</string>
   <string name="start_on_boot_summary">Tự động chạy và đăng nhập vào tài khoản từng dùng trước đó</string>
-  <string name="empty_account_message">Bạn chưa cấu hình tài khoản nào cả.\n\nBấm vào đây để thêm vào!</string>
+  <string name="empty_account_message">Bạn vẫn chưa
+cấu hình tài khoản nào.
+
+Hãy chạm vào đây để thêm vào!</string>
   <string name="google_account">Tài khoản Google</string>
   <string name="pref_in_memory_db_title">Lưu Trữ Tin Nhắn Trong Bộ Nhớ Mà Thôi</string>
   <string name="pref_in_memory_db_summary">Chỉ giữ tin nhắn trong bộ nhớ, không giữ trên bộ nhớ flash để tránh tin bị chép ra. (Tin có thể bị mất)</string>
@@ -610,18 +642,62 @@
   <string name="pass_err_num">Cụm từ bảo mật không chứa bất kỳ ký tự là chữ số nào</string>
   <string name="lock_screen_open">Mở</string>
   <string name="title_activity_lock_screen">Đã khóa ChatSecure</string>
-  <string name="lock_screen_create_passphrase">Tạo cụm từ bảo mật</string>
-  <string name="lock_screen_passphrase_hint">Đánh vào cụm từ mật khẩu:</string>
-  <string name="lock_screen_passphrase_not_set_enter">Đánh vào cụm từ mật khẩu mới:</string>
-  <string name="lock_screen_passphrase_not_set_confirm">Xác nhận cụm từ bảo mật mới</string>
-  <string name="lock_screen_passphrases_not_matching">Cụm từ bảo mật không khớp, xin thử lại lần nữa</string>
+  <string name="lock_screen_create_passphrase">Đặt mật khẩu</string>
+  <string name="lock_screen_confirm_passphrase">Xác nhận mật khẩu</string>
+  <string name="lock_screen_passphrase_hint">Mật khẩu</string>
+  <string name="lock_screen_passphrase_not_set_enter">Tạo mật khẩu mới</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Xác nhận mật khẩu mới</string>
+  <string name="lock_screen_passphrases_not_matching">Mật khẩu không khớp, xin vui lòng thử lại lần nữa</string>
+  <string name="lock_screen_skip">Tôi không muốn dùng mật khẩu (không cần điền mật khẩu!)</string>
   <string name="pref_sip_account_title">Bảo mật giọng nói</string>
   <string name="pref_sip_account_summary">Điền vào OStel.co hoặc các dịch vụ tài khoản bảo mật SIP để tích hợp với cuộc gọi</string>
   <string name="default_service_provider">dukgo.com</string>
   <string name="detected_Otr_keystore_import">Chương trình nhận diện một khóa OTR được nhập vào. Bạn có muốn quét mật khẩu cho QR bây giờ không?</string>
-  <string name="menu_import_keys">Nhập phần lưu OTR</string>
+  <string name="menu_import_keys">Kích hoạt Đồng bộ khóa</string>
   <string name="successfully_imported_otr_keyring">Đã nhập thành công khóa OTR</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTP vẫn chưa được nhập vào; Vui lòng kiểm tra tập tin có thẻ được tồn tại trong hệ thống ở một định dạng và địa điểm khác</string>
   <string name="pref_cacheword_timeout_title">Thời hạn cho mật khẩu</string>
   <string name="pref_cacheword_timeout_summary">Thời hạn mà ứng dụng mã hóa bị khóa lại</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_group_chat">Trò chuyện theo nhóm</string>
+  <string name="create_or_join_group_chat">Tạo hoặc tham gia vào trò chuyện nhóm</string>
+  <string name="connect">Kết nối</string>
+  <string name="their_fingerprint_verified_">Bảo mật vân tay (đã được xác nhận)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Bạn có chắc muốn xác nhận vân tay này?</string>
+  <string name="verify_key_">Xác nhận vân tay?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Đã xác nhận vân tay từ xa thành công!</string>
+  <string name="menu_panic">Nghiêm trọng</string>
+  <string name="unable_to_create_or_join_group_chat">Không thể tạo hoặc tham gia trò chuyện theo nhóm</string>
+  <string name="buddies">Bạn bè</string>
+  <string name="contacts">Danh bạ</string>
+  <string name="select_domain_new_account">Chọn một tên miền</string>
+  <string name="otr_keysync_warning_message">Xin vui lòng sao chép tập tin \'otr_keystore.ofcaes\' từ desktop OtrFileConverter tool đến thư mục gốc trong thẻ nhớ của bạn</string>
+  <string name="mtm_accept_cert">Chấp nhận chứng chỉ từ phía máy chủ?</string>
+  <string name="sorry_we_cannot_share_that_file_type">Rất tiếc chúng tôi không thể chia sẻ loại tập tin đó</string>
+  <string name="err_otr_share_no_encryption">Bạn phải bật tính năng mã hóa để chia sẻ tập tin</string>
+  <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure...</string>
+  <string name="menu_sidebar_qr">Vân tay</string>
+  <string name="fingerprint_for_you">Vân tay dành cho bạn</string>
+  <string name="fingerprint_for_">Vân tay dành cho</string>
+  <string name="please_enable_chat_encryption_to_share_files">Cho phép mã hóa phần trò chuyện khi chia sẻ tập tin</string>
+  <string name="swipe_alert">ChatSecure đã nhận ra một yeu cầu được gỡ bỏ khỏi phần tác vụ. ChatSecure sẽ có thể bị dừng hoạt động bất chợt. Xin vui lòng đăng xuất ra khỏi các tài khoản.</string>
+  <string name="file_transfer">Truyền tải tập tin</string>
+  <string name="transfer_complete">Tiến trình truyền tải đã hoàn tất</string>
+  <string name="transfer_in_progress">Tiến trình truyền tải dữ liệu đang được tiến hành</string>
+  <string name="accept_transfer_">Chấp nhận việc truyền tải dữ liệu?</string>
+  <string name="wants_to_send_you_the_file">muốn gửi đến bạn một số tập tin</string>
+  <string name="menu_show_grid">Hiển thị ô lưới</string>
+  <string name="pref_show_grid">Hiển thị danh sách theo ô</string>
+  <string name="pref_show_grid_summary">Hiển thị danh sách lliên lạc dưới dạng các hình đại diện theo từng ô</string>
+  <string name="button_yes_accept_all">Đồng ý, chấp nhận tất cả</string>
+  <string name="app_unlocked">Đã kích hoạt&amp; mở khóa</string>
+  <string name="prompt_create_new_account_">Tạo Tài Khoản Mới</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Tạo một tài khoản chat mới cho \'%1$s\'?</string>
+  <string name="registering_new_account_">Đăng ký tài khoản mới</string>
+  <string name="connecting_to_group_chat_">Đang kết nối tới nhóm chat ...</string>
+  <string name="btn_create_account">Tạo Tài Khoản</string>
+  <string name="pref_debug_title">Cho Phép Ghi Thông Tin Gỡ Rối</string>
+  <string name="pref_debug_summary">Hiển thị thông tin này trên thiết bị chuẩn hoặc trên thiết bị chuyên dụng cho việc gỡ rối</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Không tồn tại chương trình có thể đọc định dạng file này</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Hãy bắt đầu mã hóa đoạn hội thoại trước khi scan mã</string>
 </resources>

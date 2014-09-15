@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">hızlı iletiler oku</string>
   <string name="ro_perm_desc">Uygulamaların IM (anlık mesajlaşma) sağlayıcısından bilgi almasına izin verin.</string>
   <string name="wo_perm_label">hızlı iletiler yaz</string>
@@ -42,6 +42,8 @@
   <string name="menu_block_contact">Kişiyi engelle</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <string name="menu_contact_nickname">Kişi takma adı</string>
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">Engellenenler</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
@@ -64,9 +66,12 @@
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
   <string name="menu_view_profile">Profili görüntüle</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <string name="menu_verify">Anahtarı Doğrula</string>
+  <!--Context/drop-down menu item for picking an image to send.-->
+  <string name="menu_send_image">Fotoğraf Gönder</string>
+  <string name="menu_send_file">Dosya Gönder</string>
+  <string name="menu_send_audio">Ses Gönder</string>
+  <string name="menu_take_picture">Fotoğraf Çek</string>
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">Şifrelemeyi Başlat</string>
   <string name="menu_otr_stop">Şifrelemeyi Durdur</string>
@@ -87,10 +92,10 @@
   <string name="menu_insert_smiley">İfade ekle</string>
   <string name="menu_resend">Tekrar gönder</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Parmak İzi Tara</string>
+  <string name="menu_scan">QR Tara</string>
   <string name="menu_fingerprint">Parmak iziniz</string>
-  <string name="menu_verify_fingerprint">Parmak İzini Doğrula</string>
-  <string name="menu_verify_secret">Gizliliği Doğrula</string>
+  <string name="menu_verify_fingerprint">El ile</string>
+  <string name="menu_verify_secret">Soru</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -103,11 +108,11 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">Tüm servislerden çıkış yapmak istiyor musunuz?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
+  <string name="confirm_delete_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silinecek.</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
+  <string name="confirm_block_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenecek.</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
+  <string name="confirm_unblock_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırılacak.</string>
   <!--The "OK" button label for the error message dialog.-->
   <string name="ok">Tamam</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
@@ -117,12 +122,12 @@
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">İptal</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
+  <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g> oturumunuz  kapatıldı.</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
+  <string name="signed_out_prompt_with_error"><xliff:g id="ACCOUNT">%1$s</xliff:g> oturumunuz <xliff:g id="REASON">%2$s</xliff:g> nedeniyle kapatıldı.</string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
+  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g> hesabını ekle</string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">Kullanıcı adı:</string>
@@ -136,7 +141,7 @@
   <string name="sign_up">Hesabınız yok mu?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
   <string name="check_save_password">Güvenliğiniz için, eğer telefonunuz kaybolur veya çalınırsa, bilgisayarınızdan web sayfasına gidip şifrenizi değiştirin.</string>
-  <string name="check_auto_sign_in">Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \"Oturumumu otomatik olarak aç\" onay kutusunun işaretini kaldırın.</string>
+  <string name="check_auto_sign_in">Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \\"Oturumumu otomatik olarak aç\\" onay kutusunun işaretini kaldırın.</string>
   <!--The button label which lets the user to sign into the IM service.-->
   <string name="sign_in">Oturum aç</string>
   <!--These strings are displayed the sign in progress screen.-->
@@ -144,6 +149,7 @@
   <string name="signing_in_to">ChatSecure açılıyor...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Oturum açılıyor...</string>
+  <string name="signing_out_wait">Oturum kapatılıyor\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -151,7 +157,7 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> arka plan verilerinin etkinleştirilmesine gereksinim duyuyor.</string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">Etkinleştir</string>
@@ -159,9 +165,9 @@
   <string name="bg_data_prompt_cancel">Çık</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
+  <string name="ongoing_conversation">Devam eden sohbetler (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> çevrimiçi</string>
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">Arkadaş davetiyeleri</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
@@ -173,9 +179,11 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">Davet edilecek kişileri seç</string>
   <string name="contact_filter_hint">Kişiyi bulmak üzere yazın</string>
-  <string name="empty_contact_list">Hiçbir kişi bulunamadı.</string>
+  <string name="empty_contact_list">Hiçbir kişi bulunamadı.
+
+Davet etmek için buraya basın.</string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
+  <string name="blocked_list_title">Engellenmiş kişiler - <xliff:g id="USER">%1$s</xliff:g></string>
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">Engellenmiş kişi yok.</string>
   <!--These strings are displayed in the contact info dialog.-->
@@ -211,37 +219,37 @@
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
+  <string name="chat_with"><xliff:g id="USER">%1$s</xliff:g> ile sohbet et</string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Ben</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Oluşturmak için yazın</string>
+  <string name="compose_hint">Bir ileti gönder</string>
+  <string name="compose_hint_secure">Güvenli ileti gönder</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> çevrimiçi</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> dışarıda</string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> meşgul</string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> çevrimdışı</string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> katıldı</string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> ayrıldı</string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
-  <string name="time_stamp" format="date"></string>
+  <string name="time_stamp" format="date">\'Şu tarih ve saatte gönderildi: \'<xliff:g id="DATE">EEEE</xliff:g>\' \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g></string>
   <!--The send button on the chat screen.-->
   <string name="send">Gönder</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">Bu ileti gönderilemedi.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Sunucu bağlantısı kesildi. İletiler çevrimiçi olunduğunda gönderilecek.</string>
+  <string name="disconnected_warning">Yeniden bağlantı kurulduğunda iletiler gönderilecek</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> çevrimdışı. Gönderdiğiniz iletiler <xliff:g id="USER_1">%1$s</xliff:g> çevrimiçi olduğunda teslim edilecek.</string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> Kişi listenizde yok.</string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">Bağlantıyı seç</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
@@ -290,45 +298,48 @@
   <string name="notification_sound_summary">IM geldiğinde aynı zamanda zil sesi çal</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Zil sesini seç</string>
+  <string name="notification_ringtone_title">ChatSecure özel zil sesi kullan</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> sizi bir grup sohbetine katılmaya davet etti.</string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
+  <string name="invitation_sent_prompt"><xliff:g id="USER">%1$s</xliff:g> kullanıcısına davetiye gönderildi.</string>
   <!--The button for accepting an invitation.-->
   <string name="accept_invitation">Kabul Et</string>
   <!--The button for decline an invitation.-->
   <string name="decline_invitation">Reddet</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> sizi kendi Kişi listesinde olmaya davet etti.</string>
   <!--The button for approving a subscription request.-->
   <string name="approve_subscription">Kabul Et</string>
   <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">Reddet</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
+  <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik onaylanamıyor. Lütfen daha sonra tekrar deneyin.</string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
+  <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik reddedilemiyor. Lütfen daha sonra tekrar deneyin.</string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
+  <string name="newMessages_label">Yeni <xliff:g id="PROVIDER">%1$s</xliff:g> iletileri</string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
+  <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> okunmamış sohbet</string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
+  <string name="subscription_notify_text"><xliff:g id="USER">%s</xliff:g> kullanıcısından yeni arkadaş davetiyesi</string>
+  <string name="file_notify_text">
+        <xliff:g id="user">%s</xliff:g> kullanıcısından yeni dosya <xliff:g id="filename">%s</xliff:g>
+    </string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">Grup sohbeti davetiyeleri</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
+  <string name="group_chat_invite_notify_text"><xliff:g id="USER">%s</xliff:g> kullanıcısından gelen yeni grup sohbeti daveti</string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
+  <string name="add_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi eklendi.</string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
+  <string name="delete_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silindi.</string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
+  <string name="block_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellendi.</string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
+  <string name="unblock_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırıldı.</string>
   <!--IM service permission-->
   <string name="perm_label">IM hizmetini başlat</string>
   <string name="perm_desc">Amacını bildirerek uygulamaların IM hizmetini başlatmasına izin verir.</string>
@@ -336,7 +347,7 @@
   <!--The title of the error dialog-->
   <string name="error">Dikkat</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
+  <string name="login_service_failed"><xliff:g id="SERVICE">%1$s</xliff:g> hizmetinde oturum açılamıyor. Lütfen daha sonra tekrar deneyin."\n"(Ayrıntılı bilgi: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">Liste eklenmedi.</string>
   <!--Error message for blocking contact failed.-->
@@ -354,9 +365,9 @@
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">Sunucuya bağlanılamıyor. Lütfen bağlantınızı kontrol edin.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> zaten Kişi listenizde var.</string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
+  <string name="contact_blocked">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenmiş.</string>
   <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">Kişi listeniz yüklenirken lütfen bekleyin.</string>
   <!--Error message for when a network error occurred.-->
@@ -394,7 +405,7 @@
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">Şu anda oturumunuz açık değil.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
+  <string name="general_error">Hata kodu <xliff:g id="CODE">%1$d</xliff:g></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>Mutlu</item>
@@ -448,7 +459,7 @@
     <item>:-!</item>
     <item>:-[</item>
     <item>O:-)</item>
-    <item>:-\</item>
+    <item>:-\\</item>
     <item>:\'(</item>
     <item>:-X</item>
     <item>:-D</item>
@@ -518,16 +529,15 @@
   <string name="account_setup_error_keypair">ChatSecure anahtar eşi oluştururken bir sorunla karşılaştı.</string>
   <string name="account_setup_error_server">ChatSecure sohbet sunucusuyla bağlanırken bir sorunla karşılaştı - lütfen ayarlarınızı gözden geçirip tekrar deneyin.</string>
   <string name="account_setup_error_connectivity">ChatSecure bağlanırken bir sorunla karşılaştı - lütfen internet bağlantınızı kontrol edip tekrar deneyin.</string>
-  <string name="label_fingerprint_remote">Karşı tarafın parmak izi</string>
-  <string name="label_fingerprint_local">Parmak iziniz</string>
+  <string name="label_fingerprint_remote">Parmak İzi Güvenliği</string>
   <string name="menu_sign_in">Giriş Yap</string>
-  <string name="menu_gen_key">Şifreyi yenile</string>
+  <string name="menu_gen_key">Anahtarı yenile</string>
   <string name="error_suspended_connection">ChatSecure ağdaki bir bağlantıyı kaybetti</string>
   <string name="error_reestablish_connection">ChatSecure yeniden bağlantı kurmaya çalışıyor</string>
-  <string name="otr_session_status_plaintext">Uyarı: Bu sohbet şifrelenmedi</string>
-  <string name="otr_session_status_encrypted">Bu sohbet güvenli fakat katılımcıların kimlikleri doğrulanmadı</string>
-  <string name="otr_session_status_finished">Uyarı: sohbet şifrelemesi durduruldu.</string>
-  <string name="otr_session_status_verified">Bu sohbet güvenli ve doğrulandı.</string>
+  <string name="otr_session_status_plaintext">Şifreleme Kapalı</string>
+  <string name="otr_session_status_encrypted">Şifreleme Açık (Kontrol etmek için basın)</string>
+  <string name="otr_session_status_finished">Karşı taraf şifreli görüşmeyi durdurdu.</string>
+  <string name="otr_session_status_verified">Şifrelendi ve doğrulandı!</string>
   <string name="account_wizard_setup_title">Hesap Sihirbazı</string>
   <string name="account_wizard_account_title">Hesabınızın ID\'si</string>
   <string name="account_wizard_host_title">Sunucu Yapılandır</string>
@@ -558,7 +568,7 @@
   <string name="allow_plain_text_auth">Açık metin ile onaylamaya izin ver</string>
   <string name="verify_that_the_certificate_is_trusted">Sertifikanın güvenilir olduğunu doğrula</string>
   <string name="tls_verification">TLS Doğrulaması</string>
-  <string name="require_tls_ssl_connection">TLS/SSL bağlantısını zorunlu kıl</string>
+  <string name="require_tls_ssl_connection">TLS bağlantısı gerekli</string>
   <string name="transport_encryption">İletişim şifrelemesi</string>
   <string name="how_encrypted_chats_are_started">Şifreli sohbet nasıl başlatılır</string>
   <string name="the_server_to_connect_to_if_needed">Gerektiğinde bağlanılacak sunucu</string>
@@ -568,11 +578,11 @@
   <string name="xmpp_resource">XMPP Kaynağı</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">Bağlanan diğer kullanıcılardan bu bağlantıyı ayırmak için</string>
   <string name="xmpp_resource_prio_title">XMPP Kaynak Önceliği</string>
-  <string name="xmpp_resource_prio_summary">Birden çok aktif kaynağı olan kullanıcılara gönderilecen mesajlar en öncelikli kaynağa gönderilecek</string>
+  <string name="xmpp_resource_prio_summary">Birden çok aktif kaynağı olan kullanıcılara gönderilecen iletiler en öncelikli kaynağa gönderilecek</string>
   <string name="btn_next">İleri</string>
   <string name="btn_back">Geri</string>
   <string name="title_chats">Görüşmeler</string>
-  <string name="new_messages_notify">Gelen yeni mesaj(lar)</string>
+  <string name="new_messages_notify">Gelen yeni ileti(ler)</string>
   <string name="smp_question_title">Onaylama</string>
   <string name="smp_question_summary">Karşı tarafın iddia ettiği kişi olduğunu kanıtlaması için soracağınız soruyu ve beklediğiniz cevabı yazın.</string>
   <string name="smp_question_hint">sorulacak soru</string>
@@ -580,16 +590,20 @@
   <string name="remote_verified_us">Bağlantınız sizi onayladı. | Şimdi de siz ona sorunuzu sorarak onaylayın.</string>
   <string name="no_messages">Görüşme yok.\n \n Başlatmak için buraya basın!</string>
   <string name="pref_theme_dark">Koyu Temayı Kullan</string>
+  <string name="pref_theme_dark_summary">Koyu renkli uygulama teması olarak değiştir</string>
   <string name="warning_tor_connect">Tor ağını kullandığınız için, XMPP \'Bağlantı Sunucusu\' ismini Gelişmiş Hesap Ayarları menüsünden kendiniz girmelisiniz</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <string name="start_on_boot">CharSecure\'ü otomatik olarak başlat</string>
   <string name="start_on_boot_summary">Önceden girilen hesaplara otomatik olarak bağlan</string>
-  <string name="empty_account_message">Yapılandırılacak bir hesabınız yoktur. Eklemek için tıklayın!</string>
+  <string name="empty_account_message">Yapılandırılacak bir
+hesabınız yoktur.
+
+Eklemek için basın!</string>
   <string name="google_account">Google hesabı</string>
-  <string name="pref_in_memory_db_title">Mesajları sadece hafızaya al</string>
-  <string name="pref_in_memory_db_summary">Mesajların alınmasını engellemek için onları çıkarılabilir diskte değil sadece hafızada tut. (Mesajların kaybolmasına yol açabilir.)</string>
+  <string name="pref_in_memory_db_title">İletileri sadece hafızaya al</string>
+  <string name="pref_in_memory_db_summary">İletilerin alınmasını engellemek için onları çıkarılabilir diskte değil sadece hafızada tut. (İletilerin kaybolmasına yol açabilir.)</string>
   <string name="pref_background_title">Arkaplan görüntüsü</string>
   <string name="pref_background_summary">Bu dosya yolunu uygulamanın arkaplan görüntüsü olarak seç (\"/sdcard/foo.jpg\")</string>
   <string name="pref_group_security_title">Güvenlik ve Gizlilik</string>
@@ -611,17 +625,61 @@
   <string name="lock_screen_open">Aç</string>
   <string name="title_activity_lock_screen">ChatSecure kilitlendi</string>
   <string name="lock_screen_create_passphrase">Parola oluştur</string>
-  <string name="lock_screen_passphrase_hint">Parola gir</string>
-  <string name="lock_screen_passphrase_not_set_enter">Yeni parola gir</string>
-  <string name="lock_screen_passphrase_not_set_confirm">Yeni parolayı onayla</string>
-  <string name="lock_screen_passphrases_not_matching">Parolalar uyumlu değil, lütfen yeniden deneyin</string>
+  <string name="lock_screen_confirm_passphrase">Parola Onayla</string>
+  <string name="lock_screen_passphrase_hint">Parola</string>
+  <string name="lock_screen_passphrase_not_set_enter">Yeni Parola</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Yeni Parola Onayla</string>
+  <string name="lock_screen_passphrases_not_matching">Parola uyumlu değil, lütfen yeniden deneyin</string>
+  <string name="lock_screen_skip">Tembelin tekiyim (Ne Parolası!)</string>
   <string name="pref_sip_account_title">Secure Voice</string>
   <string name="pref_sip_account_summary">Arama bütünleşmesi için OStel.co veya başka güvenli SIP servis hesabınızı buraya girin</string>
   <string name="default_service_provider">dukgo.com</string>
   <string name="detected_Otr_keystore_import">Bir OTR anahtarı algılandı. QR parolasını şimdi taramak ister misiniz?</string>
-  <string name="menu_import_keys">OTR anahtarı aktar</string>
+  <string name="menu_import_keys">KeySync Etkinleştir</string>
   <string name="successfully_imported_otr_keyring">OTR anahtar demeti başarıyla aktarıldı</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR anahtar demeti aktarılmadı; lütfen dosyanın var olduğunu, doğru formatta ve klasörde olduğunu kontrol edin</string>
   <string name="pref_cacheword_timeout_title">Parola zamanaşımına uğradı</string>
   <string name="pref_cacheword_timeout_summary">Uygulamanın şifreleme dışı sayılma zaman sınırı</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_group_chat">Grup Sohbet</string>
+  <string name="create_or_join_group_chat">Grup Sohbet Oluştur ya da Katıl</string>
+  <string name="connect">Bağlan</string>
+  <string name="their_fingerprint_verified_">Güvenli Parmak İzi (Doğrulandı)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Bu parmak izini onaylamak istediğinizden emin misiniz?</string>
+  <string name="verify_key_">Parmak İzini Doğrula?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Uzak parmak izi doğrulandı!</string>
+  <string name="menu_panic">Panik</string>
+  <string name="unable_to_create_or_join_group_chat">Grup sohbet oluştur ya da katıl devre dışı bırak</string>
+  <string name="buddies">Arkadaşlar</string>
+  <string name="contacts">Kişiler</string>
+  <string name="select_domain_new_account">Alan adı seçin</string>
+  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü OtrFileConverter aracından cihazınızın kök dizinine kopyalayın </string>
+  <string name="mtm_accept_cert">Sunucu Sertifikası Kabul Et?</string>
+  <string name="sorry_we_cannot_share_that_file_type">Üzgünüz, bu dosya türü paylaşılamaz</string>
+  <string name="err_otr_share_no_encryption">Dosyaları paylaşmak için şifreleme etkinleştirmeniz gerekir</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor...</string>
+  <string name="menu_sidebar_qr">Parmak İzi</string>
+  <string name="fingerprint_for_you">Senin için parmak izi</string>
+  <string name="fingerprint_for_">Parmak izi için</string>
+  <string name="please_enable_chat_encryption_to_share_files">Dosyaları paylaşmak için sohbet şifrelemeyi etkinleştirmeniz gerekir</string>
+  <string name="swipe_alert">ChatSecure kendi görevini kaldırmak için yapılmış bir istek algıladı. ChatSecure muhtemelen çökecek. Bunun yerine lütfen hesap listesi ekranından Hepsinden çıkış yap menü öğresini kullanın.</string>
+  <string name="file_transfer">Dosya Aktarımı</string>
+  <string name="transfer_complete">Aktarım Tamamla</string>
+  <string name="transfer_in_progress">Aktarım devam eden</string>
+  <string name="accept_transfer_">Aktarımı kabul?</string>
+  <string name="wants_to_send_you_the_file">size dosyayı göndermek istiyor</string>
+  <string name="menu_show_grid">Izgarayı Göster</string>
+  <string name="pref_show_grid">Bağlantı Izgarasını Göster</string>
+  <string name="pref_show_grid_summary">Bağlantı listesini avatar ızgarası olarak göster</string>
+  <string name="button_yes_accept_all">Evet, Hepsi Kabul Et</string>
+  <string name="app_unlocked">Etkinleştirildi &amp; kilidi açıldı</string>
+  <string name="prompt_create_new_account_">Yeni hesap oluştur?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">\'%1$s\' kullanıcısı için yeni bir sohbet hesabı oluşturulsun mu?</string>
+  <string name="registering_new_account_">Yeni hesap kaydediliyor...</string>
+  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor...</string>
+  <string name="btn_create_account">Hesap Oluştur</string>
+  <string name="pref_debug_title">Hata Ayıklama günlüğünü etkinleştir</string>
+  <string name="pref_debug_summary">Uygulama çıkış kayıt verisini hata ayıklama için standart çıkışa / logcat\'e</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Bu dosya türü için hiçbir görüntüleyici bulunmuyor</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Lütfen kodlarını taramadan önce güvenli bir konuşma başlat</string>
 </resources>

@@ -386,8 +386,8 @@
 		<string name="pref_show_grid">Show Contact Grid</string>
 		<string name="pref_show_grid_summary">Display contact list as avatar grid</string>
 		<string name="button_yes_accept_all">Yes, Accept All</string>
-        <string name="pref_delete_unsecured_media_title">Delete Unsecured Media</string>
-        <string name="pref_delete_unsecured_media_summary">All unsecured media files are imported into the secured storgae before transmission. The unsecured file can be automatically deleted after transmission when this option is checked.</string>
+        <string name="pref_delete_unsecured_media_title">Delete Insecure Media</string>
+        <string name="pref_delete_unsecured_media_summary">After sharing a photo or file, automatically delete it from the original, insecure storage after import</string>
 				
 		<!-- Actions: Settings: General: Other Tuning -->
 		<string name="pref_group_tuning_title">Other Tuning</string>

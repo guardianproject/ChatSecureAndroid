@@ -1,9 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">خواندن پیام های فوری</string>
-  <string name="ro_perm_desc">\nبه برنامه ها اجازه  خواندن اطلاعات از ارایه دهنده محتوا در مسنجر را میدهد\n</string>
+  <string name="ro_perm_desc">
+به برنامه ها اجازه  خواندن اطلاعات از ارایه دهنده محتوا در مسنجر را میدهد
+</string>
   <string name="wo_perm_label">نوشتن پیام های فوری</string>
-  <string name="wo_perm_desc">\nبه برنامه ها اجازه میدهد به ارایه دهنده محتوا در مسنجر اطلاعات وارد کنند \n</string>
+  <string name="wo_perm_desc">
+به برنامه ها اجازه میدهد به ارایه دهنده محتوا در مسنجر اطلاعات وارد کنند 
+</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <!--These strings displayed on the landing page.-->
@@ -40,6 +44,7 @@
   <string name="menu_block_contact">انسداد تماس</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">مسدود شده</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
@@ -61,10 +66,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">تایید</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--Context/drop-down menu item for picking an image to send.-->
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">شروع رمزگذاری</string>
   <string name="menu_otr_stop">توقف رمزگذاری</string>
@@ -84,10 +86,7 @@
   <string name="menu_insert_smiley">درج صورتک</string>
   <string name="menu_resend">ارسال دوباره</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">اسکن اثر انگشت</string>
   <string name="menu_fingerprint">اثر انگشت شما</string>
-  <string name="menu_verify_fingerprint">نگارش دوباره اثر انگشت</string>
-  <string name="menu_verify_secret">تایید راز</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -100,11 +99,11 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">آیا میخواهید از همه خدمات خارج شوید؟</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact"></string>
+  <string name="confirm_delete_contact">تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" حذف شد.</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact"></string>
+  <string name="confirm_block_contact">تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" مسدود شد.</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact"></string>
+  <string name="confirm_unblock_contact">تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" دیگر مسدود نیست.</string>
   <!--The "OK" button label for the error message dialog.-->
   <string name="ok">باشه</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
@@ -114,12 +113,12 @@
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">انصراف</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt"></string>
+  <string name="signed_out_prompt">شما با حساب کاربری &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; از سیستم خارج شدید</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error"></string>
+  <string name="signed_out_prompt_with_error">شما شده اند از امضا&lt;xliff:g id="account"&gt;٪ 1 $ ثانیه&lt;/xliff:g&gt;چون&lt;xliff:g id="reason"&gt;٪ 2 $ ثانیه&lt;/xliff:g&gt;.</string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account"></string>
+  <string name="add_account">اضافه کردن &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; حساب کاربری</string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">کاربر@میزبان</string>
@@ -138,7 +137,8 @@
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">امضا\u2026\n</string>
+  <string name="signing_in_wait">امضا\u2026
+</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -146,7 +146,7 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message"></string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; احتیاج دارد که داده های پس زمینه فعال باشد.</string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">فعال</string>
@@ -154,9 +154,9 @@
   <string name="bg_data_prompt_cancel">خارج شو</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation"></string>
+  <string name="ongoing_conversation">گفتگوهای درحال انجام (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
   <!--Displays the number of online contacts in a list.-->
-  <string name="online_count"></string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; روی خط</string>
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">دعوتنامه های دوستی</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
@@ -168,9 +168,8 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">انتخاب تماس(ها) برای دعوت</string>
   <string name="contact_filter_hint">برای پیدا کردن تماس، تایپ کنید</string>
-  <string name="empty_contact_list">تماسی پیدا نشد.</string>
   <!--The title of blocked contact list.-->
-  <string name="blocked_list_title"></string>
+  <string name="blocked_list_title">تماس های مسدود شده - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">تماس مسدودشده ای وجود ندارد.</string>
   <!--These strings are displayed in the contact info dialog.-->
@@ -206,37 +205,33 @@
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with"></string>
+  <string name="chat_with">گفتگو با &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">من</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">برای نوشتن پیام شروع به تایپ کنید</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online"></string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; روی خط است</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away"></string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; دور است</string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"></string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; مشغول است</string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline"></string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; روی خط نیست</string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined"></string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; پیوست</string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left"></string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ترک کرد</string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
-  <string name="time_stamp" format="date"></string>
   <!--The send button on the chat screen.-->
   <string name="send">ارسال</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">این پیام نتوانست ارسال شود.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">ارتباط با سرور از دست رفت. پیام شما وقتی ارسال میشود که روی خط باشید.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"></string>
+  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;روی خط نیست. پیامی که شما ارسال کرده اید هنگامی به مقصد میرسد که &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; روی خط بیاید.</string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"></string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; در لیست تماس شما نیست.</string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
   <string name="select_link_title">لینک را انتخاب کنید</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
@@ -257,7 +252,6 @@
   <string name="invite_label">ارسال دعوت نامه</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber/XMPP</string>
-  <string name="provider_full_name_llxmpp">بنجور (زیروکانف)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">راه اندازی حساب کاربری</string>
   <string name="encryption_and_anonymity_title">رمزگذاری و گمنامی</string>
@@ -284,45 +278,45 @@
   <string name="notification_sound_summary">وقتی یک پیام فوری میرسد زنگ بزن</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">انتخاب آهنگ زنگ</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt"></string>
+  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; از شما برای پیوستن به یک گفتگوی گروهی دعوت کرده است.</string>
   <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt"></string>
+  <string name="invitation_sent_prompt">دعوت نامه فرستاده شده است&lt;xliff:g id="user"&gt;٪ 1 $ ثانیه&lt;/xliff:g&gt;.</string>
   <!--The button for accepting an invitation.-->
   <string name="accept_invitation">بپذیر</string>
   <!--The button for decline an invitation.-->
   <string name="decline_invitation">رد کن</string>
   <!--Friend subscription screen-->
-  <string name="subscription_prompt"></string>
+  <string name="subscription_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; از شما برای پیوستن به لیست تماس ایشان دعوت کرده است.</string>
   <!--The button for approving a subscription request.-->
   <string name="approve_subscription">بپذیر</string>
   <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">رد کن</string>
   <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error"></string>
+  <string name="approve_subscription_error">ناتوان در تصویب اشتراک از &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;لطفن بعد از مدتی دوباره تلاش کنید.</string>
   <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error"></string>
+  <string name="decline_subscription_error">ناتوان در رد اشتراک از &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;لطفن بعد از مدتی دوباره تلاش کنید.</string>
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label"></string>
+  <string name="newMessages_label">پیام &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; جدید</string>
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats"></string>
+  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; گفتگوهای خوانده نشده</string>
   <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text"></string>
+  <string name="subscription_notify_text">درخواست دوستی تازه از &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <string name="notify_groupchat_label">دعوتنامه گفتگوی گروهی</string>
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text"></string>
+  <string name="group_chat_invite_notify_text">گروه جدید چت دعوت از&lt;xliff:g id="user"&gt;٪ ثانیه&lt;/xliff:g&gt;
+    </string>
   <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success"></string>
+  <string name="add_contact_success">تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" اضافه شد.</string>
   <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success"></string>
+  <string name="delete_contact_success">این تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" حذف خواهد شد.</string>
   <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success"></string>
+  <string name="block_contact_success">این تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" مسدود خواهد شد.</string>
   <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success"></string>
+  <string name="unblock_contact_success">این تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" دیگر مسدود نخواهد بود.</string>
   <!--IM service permission-->
   <string name="perm_label">شروع سرویس مسنجر</string>
   <string name="perm_desc">به برنامه ها اجازه میدهد که از طریق intent سرویس پیام فوری را شروع کنند.</string>
@@ -330,7 +324,8 @@
   <!--The title of the error dialog-->
   <string name="error">توجه</string>
   <!--Error message for sign in failed.-->
-  <string name="login_service_failed"></string>
+  <string name="login_service_failed">ناتوان در وارد شدن به سرویس &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt;  لطفن بعد از مدتی دوباره تلاش کنید.⏎ (Detail: &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;)
+</string>
   <!--Error message for creating contact list failed.-->
   <string name="add_list_failed">لیست اضافه نشد.</string>
   <!--Error message for blocking contact failed.-->
@@ -340,7 +335,8 @@
   <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">لطفا ابتدا یک تماس انتخاب کنید</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">قطع شد!\n</string>
+  <string name="disconnected">قطع شد!
+</string>
   <!--Error message for when the IM service has died.-->
   <string name="service_error">خطای سرویس!</string>
   <!--Error message for loading contact list failed.-->
@@ -348,9 +344,9 @@
   <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">نمیتواند به سرور متصل شود. لطفا ارتباط خود را بررسی کنید.</string>
   <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"></string>
+  <string name="contact_already_exist">"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" هم اکنون در لیست تماس شما موجود است.</string>
   <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked"></string>
+  <string name="contact_blocked">تماس "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" مسدود شد.</string>
   <!--Error message for when the contact list is not compeletely loaded.-->
   <string name="contact_not_loaded">لطفا تا زمان بارگیری لیست تماس صبر کنید</string>
   <!--Error message for when a network error occurred.-->
@@ -388,7 +384,7 @@
   <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">شما درحال حاضر وارد سیستم نشده اید.</string>
   <!--Generic error.-->
-  <string name="general_error"></string>
+  <string name="general_error">خطای شماره &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
   <!--Smiley names. May be overrided by the plugin.-->
   <string-array name="default_smiley_names">
     <item>خوشحال</item>
@@ -448,7 +444,7 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="buddy_list_title"></string>
+  <string name="buddy_list_title">لیست تماس - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_contact_list">لیست تماس</string>
   <string name="menu_view_encrypt_chat">رمزگذاری روشن/خاموش</string>
   <string name="use_tor">اتصال به واسطه تور (به برنامه رباط پیازی احتیاج دارد)</string>
@@ -496,14 +492,8 @@
   <string name="account_setup_signin_b">درحال تولید یک جفت کلید...</string>
   <string name="account_setup_signin_c">درحال ورود...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="label_fingerprint_remote">اثر انگشت آنها</string>
-  <string name="label_fingerprint_local">اثر انگشت شما</string>
   <string name="menu_sign_in">ورود</string>
   <string name="menu_gen_key">تولید دوباره کلید</string>
-  <string name="otr_session_status_plaintext">هشدار: این گفتگو رمزگذاری نشده</string>
-  <string name="otr_session_status_encrypted">این گفتگو امن است اما هویت شرکت کنندگان تایید نشده</string>
-  <string name="otr_session_status_finished">هشدار: رمزگذاری گفتگو متوقف شده است.</string>
-  <string name="otr_session_status_verified">این گفتگو امن و تایید شده است</string>
   <string name="account_wizard_setup_title">ویزارد حساب کاربری</string>
   <string name="account_wizard_account_title">شناسه حساب کاربری شما</string>
   <string name="account_wizard_host_title">پیکربندی سرور</string>
@@ -515,7 +505,8 @@
   <string name="signin_password_prompt">رمز عبور خود را وارد کنید:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">تنظیمات حساب کاربری</string>
-  <string name="pref_default_locale">defLoc\n</string>
+  <string name="pref_default_locale">defLoc
+</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">گروه ها</string>
   <string name="otr_gen_key">درحال تولید یک جفت کلید OTR...</string>
@@ -531,7 +522,6 @@
   <string name="allow_plain_text_auth">اجازه احراز هویت با متن ساده</string>
   <string name="verify_that_the_certificate_is_trusted">تایید کن که گواهی مورد اطمینان است</string>
   <string name="tls_verification">تایید TLS</string>
-  <string name="require_tls_ssl_connection">نیاز به ارتباط TLS/SSL</string>
   <string name="transport_encryption">رمزگذاری حمل و نقل</string>
   <string name="how_encrypted_chats_are_started">گفتگوهای رمزگذاری شده چطور شروع شده اند</string>
   <string name="the_server_to_connect_to_if_needed">سرور برای برقراری ارتباط، در شرایط نیاز</string>
@@ -551,9 +541,12 @@
   <string name="smp_question_hint">سوال برای پرسیدن</string>
   <string name="qmp_answer_hint">پاسخ مورد انتظار</string>
   <string name="remote_verified_us">دوست شما، هویت شما را تایید کرده. حالا شما برای تایید هویت دوستتان سوال خود را بپرسید</string>
-  <string name="no_messages">گفتگویی وجود ندارد\n\nاینجا را کلیک کنید تا شروع کنید</string>
+  <string name="no_messages">گفتگویی وجود ندارد
+
+اینجا را کلیک کنید تا شروع کنید</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <!--Screen menu item on active chat list to start new chat-->
 </resources>

@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">baca pesan instan</string>
+  <string name="ro_perm_desc">
+Izinkan aplikasi untuk membaca data dari penyedia konten IM.
+</string>
   <string name="wo_perm_label">tulis pesan instan</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
@@ -27,6 +30,7 @@
     block a contact. May be overrided by the plugin.-->
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">Terblokir</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
@@ -46,10 +50,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Periksa Ulang</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--Context/drop-down menu item for picking an image to send.-->
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">Mulai Enkripsi</string>
   <string name="menu_otr_stop">Hentikan Enkripsi</string>
@@ -68,7 +69,6 @@
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
   <string name="menu_insert_smiley">Masukkan smiley</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Pindai Sidik Jari</string>
   <string name="menu_fingerprint">Sidik Jari Anda</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
@@ -139,7 +139,6 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">Pilih kontak yang akan diundang</string>
   <string name="contact_filter_hint">Ketik untuk mencari kontak</string>
-  <string name="empty_contact_list">Kontak tidak ditemukan.</string>
   <!--The title of blocked contact list.-->
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">Tidak ada kontak yang diblokir.</string>
@@ -180,7 +179,6 @@
   <string name="me">Saya</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Ketik untuk bercakap</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
@@ -188,13 +186,11 @@
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
   <!--The send button on the chat screen.-->
   <string name="send">Kirim</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">Pesan ini tidak dapat terkirim.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Koneksi ke server terputus. Pesan akan dikirim jika tersambung.</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
@@ -237,7 +233,6 @@
   <string name="notification_sound_summary">Juga mainkan nada dering jika menerima pesan instan</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Pilih nada dering</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
   <!--Toast when group chat invitation has been sent to the contact.-->
@@ -313,4 +308,5 @@
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <!--Screen menu item on active chat list to start new chat-->
 </resources>

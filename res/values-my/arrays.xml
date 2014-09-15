@@ -12,42 +12,4 @@
     <item>တောင်းဆိုထားသော</item>
     <item>ပိတ်ထားသော</item>
   </string-array>
-  <string-array name="languages">
-    <item>နဂိုအတိုင်း</item>
-    <item>العربية</item>
-    <item>فارسی</item>
-    <item>中文(简体)</item>
-    <item>日本語</item>
-    <item>한국어</item>
-    <item>ဒတ်ချ်</item>
-    <item>အင်္ဂလိပ်</item>
-    <item>စပိန်</item>
-    <item>ပြင်သစ်</item>
-    <item>အီတာလျံ</item>
-    <item>နယ်သာလန်</item>
-    <item>Pyccĸий</item>
-    <item>တိဘက်</item>
-    <item>ဗီယက်နမ်</item>
-    <item>Tϋrkçe</item>
-    <item>Čeština</item>
-  </string-array>
-  <string-array name="languages_values">
-    <item>xx</item>
-    <item>ar</item>
-    <item>fa</item>
-    <item>zh-rCN</item>
-    <item>ja</item>
-    <item>ko</item>
-    <item>de</item>
-    <item>en</item>
-    <item>es_ES</item>
-    <item>fr</item>
-    <item>it</item>
-    <item>nl</item>
-    <item>ru</item>
-    <item>bo</item>
-    <item>vi</item>
-    <item> tr</item>
-    <item>cs</item>
-  </string-array>
 </resources>

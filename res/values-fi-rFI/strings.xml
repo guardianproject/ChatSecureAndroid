@@ -1,180 +1,318 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="ro_perm_label">lue pikaviestejä</string>
+  <string name="ro_perm_desc">
+Sallii tietojen lukemisen pikaviestisovelluksista.</string>
+  <string name="wo_perm_label">kirjoita pikaviestejä</string>
+  <string name="wo_perm_desc">
+Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
+  <string name="im_label">ChatSecure</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="landing_page_title">Valitse tili</string>
   <!--Landing page screen menu and context menu items.-->
+  <string name="menu_about">Tietoa</string>
   <!--Conext menu item: add a new account.-->
+  <string name="menu_add_account">Lisää tili</string>
   <!--Conext menu item: edit an account.-->
+  <string name="menu_edit_account">Muokkaa tiliä</string>
   <!--Conext menu item: remove an account.-->
+  <string name="menu_remove_account">Poista tili</string>
   <!--Screen menu item: sign out all service.-->
+  <string name="menu_sign_out_all">Kirjaudu ulos kaikista</string>
   <!--These strings displayed on the landing page.-->
   <!--The title of the landing page.-->
+  <string name="choose_account_title">Valitse tili</string>
   <!--Displays the number of ongoing chats on the landing page.-->
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
+  <string name="menu_cancel_signin">Peruuta sisäänkirjautuminen</string>
   <!--Contact list screen menu and context menu items.-->
   <!--This is a screen menu item for the Contact List Screen. It lets the
     user to add a friend to the friend list. May be overrided by the plugin.-->
+  <string name="menu_add_contact">Lisää yhteystieto</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     remove a contact from the list. May be overrided by the plugin.-->
+  <string name="menu_remove_contact">Poista yhteystieto</string>
   <!--Context/drop-down menu item for the Contact List Screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     block a contact. May be overrided by the plugin.-->
+  <string name="menu_block_contact">Estä yhteystieto</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <string name="menu_contact_nickname">Kontaktin lempinimi</string>
+  <!--Screen menu item on the contact to edit nickname.-->
+  <string name="menu_view_blocked">Estetty</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
+  <string name="menu_view_accounts">Tilit</string>
   <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_chat">Uusi keskustelu</string>
   <!--Screen menu item on accounts list to create new account-->
   <!--Screen menu item on the contact list to go to the setting page.-->
+  <string name="menu_settings">Asetukset</string>
   <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_search_contacts">Etsi yhteystietoja</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the user to
     start a chat with a friend. May be overried by the plugin.-->
+  <string name="menu_start_chat">Aloita keskustelu</string>
   <!--Screen menu item on the contact list to sign out the service.-->
+  <string name="menu_sign_out">Kirjaudu ulos</string>
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <string name="menu_view_profile">Näytä profiili</string>
+  <string name="menu_verify">Varmista avain</string>
+  <!--Context/drop-down menu item for picking an image to send.-->
+  <string name="menu_send_image">Lähetä kuva</string>
+  <string name="menu_send_file">Lähetä tiedosto</string>
+  <string name="menu_send_audio">Lähetä ääntä</string>
+  <string name="menu_take_picture">Ota kuva</string>
   <!--OTRCHAT Adding in new menu options-->
+  <string name="menu_otr_start">Aloita salaaminen</string>
+  <string name="menu_otr_stop">Lopeta salaaminen</string>
+  <string name="menu_clear_chat">Tyhjennä keskustelu</string>
+  <string name="menu_end_conversation">Lopeta keskustelu</string>
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
     May be overrided by the plugin.-->
+  <string name="menu_view_contact_list">Yhteystietoluettelo</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
+  <string name="menu_invite_contact">Kutsu\u2026</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
+  <string name="menu_switch_chats">Vaihda keskustelua</string>
   <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
+  <string name="menu_insert_smiley">Lisää hymiö</string>
   <!--Strings for the contact info screen-->
+  <string name="menu_scan">Lue QR-koodi</string>
+  <string name="menu_fingerprint">Oma sormenjälkesi</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
      be appended to the end of this.-->
+  <string name="menu_plus">Menu+</string>
   <!--The title of a simple input dialog. Currently not used.-->
   <!--Strings for the confirm dialogs-->
   <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
+  <string name="confirm">Vahvista</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="signout_all_confirm_message">Haluatko kirjautua ulos kaikista palveluista?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" poistetaan.</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" blokataan.</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" poistetaan blokattujen listalta.</string>
   <!--The "OK" button label for the error message dialog.-->
+  <string name="ok">OK</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="cancel">Peruuta</string>
   <!--The "OK" button label for the confirm dialogs.-->
+  <string name="yes">OK</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
+  <string name="no">Peruuta</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt">Olet kirjautunut ulos palvelusta <xliff:g id="account">%1$s</xliff:g>.</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <string name="signed_out_prompt_with_error">Olet kirjautunut ulos palvelusta <xliff:g id="account">%1$s</xliff:g>, koska <xliff:g id="reason">%2$s</xliff:g></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account">Lisää <xliff:g id="account">%1$s</xliff:g> tili</string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
+  <string name="label_username">Käyttäjä@Isäntä</string>
   <!--The password label.-->
+  <string name="label_password">Salasana:</string>
   <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
+  <string name="remember_password">Muista salasanani.</string>
   <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
+  <string name="keep_me_signed_in">Kirjaudu sisään automaattisesti.</string>
   <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
+  <string name="sign_up">Eikö sinulla ole vielä tiliä?</string>
   <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
+  <string name="check_save_password">Turvallisuussyistä, jos puhelimesi katoaa tai varastetaan, mene verkkosivulle tietokoneellasi ja vaihda salasanasi.</string>
+  <string name="check_auto_sign_in">Tämä asetus kirjaa sinut sisään automaattisesti aina kun avaat sovelluksen. Poistaaksesi asetuksen käytöstä, kirjaudu ulos ja poista valinta \"Kirjaudu sisään automaattisesti.\"</string>
   <!--The button label which lets the user to sign into the IM service.-->
+  <string name="sign_in">Kirjaudu sisään</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
+  <string name="signing_in_to">alustetaan ChatSecure toimintakuntoon...</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
+  <string name="signing_in_wait">Kirjaudutaan sisään\u2026</string>
+  <string name="signing_out_wait">Kirjautuu ulos\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
+  <string name="bg_data_prompt_title">Taustadata poissa käytöstä</string>
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
+  <string name="bg_data_prompt_message">
+         Kirjautumiseen tarvitaan verkkoyhteys (sisältäen taustadatan).
+    </string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
+  <string name="bg_data_prompt_ok">Ota käyttöön</string>
   <!--Cancel button for the prompt dialog-->
+  <string name="bg_data_prompt_cancel">Lopeta</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation">Aktiiviset keskustelut (<xliff:g id="number">%1$d</xliff:g>)</string>
   <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> online</string>
   <!--The title of the subscription request group if there is any.-->
+  <string name="subscriptions">Kaverikutsut</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
+  <string name="unknown_contact">(<i>Tuntematon</i>)</string>
   <!--Displayed as a child item of the contact list if it's empty.-->
+  <string name="empty_contact_group">Tyhjä</string>
   <!--Displayed as a child item of the ongoing chat group if it's empty.-->
+  <string name="empty_conversation_group">Ei keskusteluita</string>
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
+  <string name="contacts_picker_title">Valitse kutsuttava(t) henkilöt</string>
+  <string name="contact_filter_hint">Kirjoita etsiäksesi henkilöitä</string>
+  <string name="empty_contact_list">Kontakteja ei löytynyt.
+
+Klikkaa kutsuaksesi.</string>
   <!--The title of blocked contact list.-->
+  <string name="blocked_list_title">Blokatut kontaktit - <xliff:g id="user">%1$s</xliff:g></string>
   <!--Displayed if there isn't any blocked contact.-->
+  <string name="no_blocked_contact">Ei estettyjä henkilöitä.</string>
   <!--These strings are displayed in the contact info dialog.-->
   <!--The title of the contact profile dialog.-->
+  <string name="contact_profile_title">Yhteystietoprofiili</string>
   <!--The label of the status on the contact profile dialog.-->
+  <string name="label_status">Tila:</string>
   <!--The label of the client type on the contact profile dialog.-->
+  <string name="label_client_type">Päätelaitteen tyyppi:</string>
   <!--The client type which indicates the contact is sign in with a PC client.-->
+  <string name="client_type_computer">Tietokone</string>
   <!--The client type which indicates the contact is sign in with a mobile client.-->
+  <string name="client_type_mobile">Mobiili</string>
   <!--The contact presence status. May be overrided by the plugin.-->
   <!--This is an adjective describing the "online" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_available">Paikalla</string>
   <!--This is an adjective describing the "busy" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_busy">Varattu</string>
   <!--This is an adjective describing the "away" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_away">Poissa</string>
   <!--This is an adjective describing the "idle" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_idle">Tyhjäkäynti</string>
   <!--This is an adjective describing the "offline" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_offline">Poissa linjoilta</string>
   <!--This is an adjective describing the "invisible" status for the user. It appears in the
     drop-down status menu on the Contact List screen-->
+  <string name="presence_invisible">Esitä poissaolevaa</string>
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with">Keskustele käyttäjän <xliff:g id="user">%1$s</xliff:g> kanssa</string>
   <!--In the chat history list, this label is added before the chats the user typed-->
+  <string name="me">Minä</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
+  <string name="compose_hint_secure">Lähetä turvallinen viesti</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> on online</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> on poissa</string>
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> on kiireinen</string>
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> on offline</string>
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> on liittynyt</string>
   <!--Inline status message in the chat history list, when a friend left the chat.-->
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> on poistunut</string>
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
+  <string name="time_stamp" format="date">\'Lähetetty\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> <xliff:g id="date">EEEE</xliff:g></string>
   <!--The send button on the chat screen.-->
+  <string name="send">Lähetä</string>
   <!--Error message when a chat failed to be sent.-->
+  <string name="msg_sent_failed">Viestiä ei voitu lähettää.</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
+  <string name="disconnected_warning">Viestit lähetetään kun yhteys palautuu</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> on offline. Viestit toimitetaan, kun <xliff:g id="user">%1$s</xliff:g> tulee takaisin linjalle.</string>
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ei ole kontaktilistallasi.</string>
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
+  <string name="select_link_title">Valitse linkki</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
+  <string name="empty_chat_list">Ei aktiivisia keskusteluita</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
+  <string name="add_contact_title">Lisää yhteystieto</string>
   <!--The label of the email input box on the Add Contact Screen.-->
+  <string name="input_contact_label">Kutsuttavan henkilön sähköpostiosoite:</string>
   <!--The label of the list spinner on the Add Contact Screen.-->
+  <string name="choose_list_label">Valitse luettelo:</string>
   <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
+  <string name="invite_instruction">Kirjoita lisättävän kontaktin nimi</string>
   <!--The label of the button on the Add Contact Screen to send the invitation.-->
+  <string name="invite_label">Lähetä kutsu</string>
   <!--provider plugin names-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
+  <string name="account_setup_title">Tiliasetukset</string>
+  <string name="encryption_and_anonymity_title">Salaus ja anonymiteetti</string>
+  <string name="hide_offline_contacts">Piilota poissaolevat käyttäjät</string>
   <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
+  <string name="notification_group_title">Ilmoitusasetukset</string>
   <!--This is the text label of the setting for IM notifications; a summary is displayed in
     smaller text below this label-->
+  <string name="notification_enabled_title">Pikaviesti-ilmoitukset</string>
   <!--This is the summary of the setting for IM notifications-->
+  <string name="notification_enabled_summary">Ilmoita tilapalkissa kun pikaviesti saapuu</string>
   <!--This is the text label of the vibrate notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="notification_vibrate_title">Värinähälytys</string>
   <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_vibrate_summary">Värise pikaviestin saapuessa</string>
   <!--This is the text label of the sound notification setting; a summary is displayed in
     smaller text below this label-->
+  <string name="notification_sound_title">Ääni</string>
   <!--This is the summary of the vibrate notification setting-->
+  <string name="notification_sound_summary">Soita viestiääni pikaviestin saapuessa</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
+  <string name="notification_ringtone_title">Käytä muokattua soittoääntä ChatSecurelle</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> on kutsunut sinut ryhmäkeskusteluun.</string>
   <!--Toast when group chat invitation has been sent to the contact.-->
+  <string name="invitation_sent_prompt"> Kutsu on lähetetty käyttäjälle <xliff:g id="user">%1$s</xliff:g>.</string>
   <!--The button for accepting an invitation.-->
+  <string name="accept_invitation">Hyväksy</string>
   <!--The button for decline an invitation.-->
+  <string name="decline_invitation">Hylkää</string>
   <!--Friend subscription screen-->
   <!--The button for approving a subscription request.-->
+  <string name="approve_subscription">Hyväksy</string>
   <!--The button for delecling a subscription request.-->
+  <string name="decline_subscription">Hylkää</string>
   <!--Toast when approve a subscription request failed.-->
   <!--Toast when decline a subscription request failed.-->
   <!--Notification bar messages-->
   <!--This is the notification bar message when a new IM arrives.-->
   <!--This is the notification bar message when new IMs comes from more than one contact.-->
   <!--This is the notification bar message when an invitation from someone arrived.-->
+  <string name="file_notify_text">
+        Uusi tiedosto <xliff:g id="filename">%s</xliff:g> käyttäjältä <xliff:g id="user">%s</xliff:g>
+    </string>
   <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
   <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
   <!--Toast when a contact is added into a list.-->
@@ -186,50 +324,168 @@
   <!--The title of the error dialog-->
   <!--Error message for sign in failed.-->
   <!--Error message for creating contact list failed.-->
+  <string name="add_list_failed">Listaa ei lisätty.</string>
   <!--Error message for blocking contact failed.-->
+  <string name="block_contact_failed">Kontaktia ei blokattu.</string>
   <!--Error message for unblocking contact failed.-->
+  <string name="unblock_contact_failed">Kontaktia ei poistettu blokattujen listalta.</string>
   <!--Error message for when the user didn't select a contact as required.-->
+  <string name="select_contact">Valitse ensin kontakti</string>
   <!--Error message for when the current connection disconnected.-->
+  <string name="disconnected">Yhteys katkaistu!
+</string>
   <!--Error message for when the IM service has died.-->
+  <string name="service_error">Palveluvirhe!</string>
   <!--Error message for loading contact list failed.-->
+  <string name="load_contact_list_failed">Kontaktilistaa ei ladattu.</string>
   <!--Error message for failed to connect to the server.-->
+  <string name="cant_connect_to_server">Palvelimeen ei voitu yhdistää. Tarkista yhteytesi.</string>
   <!--Error message for when the contact is already in the list.-->
+  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" on jo kontaktilistallasi.</string>
   <!--Error message for when the contact is blocked.-->
+  <string name="contact_blocked">"<xliff:g id="user">%1$s</xliff:g>" on blokattu.</string>
   <!--Error message for when the contact list is not compeletely loaded.-->
+  <string name="contact_not_loaded">Odota, kontaktilistaasi ladataan.</string>
   <!--Error message for when a network error occurred.-->
+  <string name="network_error">Verkkovirhe.</string>
   <!--Error message for lack of server support error.-->
+  <string name="service_not_support">Palvelin ei tue tätä toimintoa.</string>
   <!--Erorr message for bad password error.-->
+  <string name="invalid_password">Antamasi salasana ei kelvannut.</string>
   <!--Error message for server internal error.-->
+  <string name="internal_server_error">Palvelimella tapahtui virhe.</string>
   <!--Error message for when the server does not implement the feature.-->
+  <string name="not_implemented">Palvelin ei tue tätä toimintoa.</string>
   <!--Error message for server not available error.-->
+  <string name="service_unavaiable">Palvelimeen ei saatu yhteyttä.</string>
   <!--Error message for timeout error.-->
+  <string name="timeout">Palvelinyhteys aikakatkaistiin.</string>
   <!--Error message for when the server does not support the current protocol version.-->
+  <string name="version_not_supported">Palvelin ei tue tätä versiota.</string>
   <!--Error message for when the message queue on the server is full.-->
+  <string name="message_queue_full">Viestijono on täynnä.</string>
   <!--Error message for when the domain is not supported by the server.-->
+  <string name="domain_not_supported">Palvelin ei tue edelleenlähettämistä tähän osoitteeseen.</string>
   <!--Error message for a bad username error.-->
+  <string name="unknown_user">Antamaasi käyttäjänimeä ei tunnistettu.</string>
   <!--Error message for when the user is blocked by the recipient.-->
+  <string name="recipient_blocked_the_user">Pahoittelut, käyttäjä on blokannut sinut.</string>
   <!--Error message for session expired error.-->
+  <string name="session_expired">Istunto on vanhennut, kirjaudu uudelleen.</string>
   <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
+  <string name="forced_logout">olet kirjautunut sisään toisella ohjelmalla.</string>
+  <string name="already_logged_in">olet kirjautunut sisään toisella ohjelmalla.</string>
   <!--Error message for msisdn error.-->
+  <string name="msisdn_error">Pahoittelut, puhelinnumeroa ei voitu lukea SIM-kortiltasi. Ota yhteyttä operaattoriisi avun saamiseksi.</string>
   <!--Error message for when the user is not signed in.-->
+  <string name="not_signed_in">Et ole kirjautunut sisään tällä hetkellä.</string>
   <!--Generic error.-->
+  <string name="general_error">Virhekoodi <xliff:g id="code">%1$d</xliff:g></string>
   <!--Smiley names. May be overrided by the plugin.-->
   <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <string name="buddy_list_title">Kontaktilista - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_contact_list">Kontaktilista</string>
+  <string name="menu_view_encrypt_chat">Salaus päällä/pois</string>
+  <string name="use_tor">Yhdistä Tor:n kautta (Vaatii Orbot-ohjelman)</string>
   <!--Welcome Splash Screen-->
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">Käytätkö ChatSecurea ensimmäistä kertaa?</string>
+  <string name="welcome_skip">Olet innokas aloittamaan?</string>
+  <string name="welcome_about">Aloita</string>
+  <string name="welcome_account">Tilin luominen</string>
   <!--About: Welcome-->
+  <string name="about_welcome_title">Tietoja ChatSecuresta</string>
   <!--About: OTR-->
+  <string name="about_otr_title">Miten se on turvallinen?</string>
   <!--About: Security-->
   <!--Setup: Passphrase-->
   <!--Account Setup: Account-->
   <!--Account Setup: Persistence-->
   <!--Account Setup: Personal-->
+  <string name="account_setup_personal_alias_title">Tilin alias (nimesi)</string>
+  <string name="account_setup_personal_alias_sub">Kuinka tilisi näkyy onlinena</string>
+  <string name="account_setup_personal_profile_title">Profiili</string>
+  <string name="account_setup_personal_profile_sub">Pieni kuvaus itsestäsi</string>
   <!--Account Setup: Advanced-->
+  <string name="account_setup_advanced_enc_force">Pakota salaus / kieltäydy selkotekstistä</string>
+  <string name="account_setup_advanced_enc_auto">Kun mahdollista, salaa keskustelut automaattisesti</string>
+  <string name="account_setup_advanced_enc_req">Salaa keskustelut pyyntöjen mukaisesti</string>
+  <string name="account_setup_advanced_enc_off">Poista keskustelun salaus</string>
   <!--Account Setup: First Sign In-->
+  <string name="account_setup_signin_a">Tietoja tarkistetaan...</string>
+  <string name="account_setup_signin_b">Luodaan avainparia...</string>
+  <string name="account_setup_signin_c">Kirjaudutaan sisään...</string>
   <!--Account Setup: Sign In Errors-->
+  <string name="account_setup_error_validating">ChatSecure kohtasi virheen varmistaessaan käyttäjänimeäsi tai salasanaasi. Tarkista ne ja yritä uudelleen.</string>
+  <string name="account_setup_error_keypair">ChatSecure kohtasi virheen luodessaan avainparia.</string>
+  <string name="menu_sign_in">Kirjaudu sisään</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <!--added 2011/09/01-->
+  <string name="menu_locale">Kieli</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Kielet</string>
+  <string name="pref_theme_dark_summary">Vaihda ohjelman teema tummaksi</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <string name="lock_screen_open">Avaa</string>
+  <string name="title_activity_lock_screen">ChatSecure lukittu</string>
+  <string name="lock_screen_create_passphrase">Aseta salasana</string>
+  <string name="lock_screen_confirm_passphrase">Vahvista salasana</string>
+  <string name="lock_screen_passphrase_hint">Salasana</string>
+  <string name="lock_screen_passphrase_not_set_enter">Uusi salasana</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Vahvista uusi salasana</string>
+  <string name="lock_screen_passphrases_not_matching">Salasanat eivät täsmänneet, yritä uudelleen</string>
+  <string name="lock_screen_skip">Olen laiska (Ei salasanaa)</string>
+  <string name="pref_sip_account_title">Turvallinen ääni</string>
+  <string name="pref_sip_account_summary">Anna OStel.co tai muun turvallisen SIP-palvelutilin tiedot puheluintegrointia varten</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <string name="detected_Otr_keystore_import">OTR-avaintalletuksen tuonti havaittu. Haluatko skannata QR-salasanan nyt?</string>
+  <string name="menu_import_keys">Aktivoi KeySync</string>
+  <string name="successfully_imported_otr_keyring">OTR-avainnippu tuotu onnistuneesti.</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-avainnippua ei tuotu; Vahvista, että tiedosto on olemassa, oikeassa muodossa ja oikeassa sijainnissa.</string>
+  <string name="pref_cacheword_timeout_title">Salasanan aikakatkaisu</string>
+  <string name="pref_cacheword_timeout_summary">Aika, jonka ohjelman salauksen pitäisi pysyä lukitsematta</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_group_chat">Ryhmäkeskustelu</string>
+  <string name="create_or_join_group_chat">Luo tai liity ryhmäkeskusteluu</string>
+  <string name="connect">Liity</string>
+  <string name="their_fingerprint_verified_">Sormenjälkitunnistus (Vahvistettu)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Oletko varma, että haluat vahvistaa tämän sormenjäljen?</string>
+  <string name="verify_key_">Vahvista sormenjälki?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Etäsormenjälki on vahvistettu!</string>
+  <string name="menu_panic">Paniikki</string>
+  <string name="unable_to_create_or_join_group_chat">Ryhmäkeskustelua ei voitu luoda tai siihen ei voitu liittyä</string>
+  <string name="buddies">Kaverit</string>
+  <string name="contacts">Kontaktit</string>
+  <string name="select_domain_new_account">Valitse domain</string>
+  <string name="otr_keysync_warning_message">Kopioi \'otr_keystore.ofcaes\' tiedosto työpöydän OtrFileConverter-työkalusta laitteesi muistin juureen.</string>
+  <string name="mtm_accept_cert">Hyväksy palvelinsertifikaatti?</string>
+  <string name="sorry_we_cannot_share_that_file_type">Valitan, kyseistä tiedostotyyppiä ei voi jakaa</string>
+  <string name="err_otr_share_no_encryption">Salauksen on oltava päällä tiedostoja jaettaessa</string>
+  <string name="starting_the_chatsecure_service_">Käynnistetään ChatSecure-palvelua...</string>
+  <string name="menu_sidebar_qr">Sormenjälki</string>
+  <string name="fingerprint_for_you">Sormenjälkesi</string>
+  <string name="fingerprint_for_">Sormenjälki käyttäjälle</string>
+  <string name="please_enable_chat_encryption_to_share_files">Laita keskustelun salaus päälle siirtääksesi tiedostoja</string>
+  <string name="swipe_alert">ChatSecure on havainnut pyynnön prosessinsa sulkemiseen. ChatSecure kaatuu todennäköisesti. Käytä Kirjaudu ulos kaikista -toimintoa tililistalta.</string>
+  <string name="file_transfer">Tiedostojen siirto</string>
+  <string name="transfer_complete">Siirto valmis</string>
+  <string name="transfer_in_progress">Siirron edistyminen</string>
+  <string name="accept_transfer_">Hyväksy tiedostonsiirto?</string>
+  <string name="wants_to_send_you_the_file">haluaa lähettää sinulle tiedoston</string>
+  <string name="menu_show_grid">Näytä ruudukko</string>
+  <string name="pref_show_grid">Näytä kontaktiruudukko</string>
+  <string name="pref_show_grid_summary">Näytä kontaktilista kuvaruudukkona</string>
+  <string name="button_yes_accept_all">Kyllä, hyväksy kaikki</string>
+  <string name="app_unlocked">Aktivoitu &amp; lukitsematon</string>
+  <string name="prompt_create_new_account_">Luo uusi tili?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Luo uusi keskustelutili käyttäjänimellä \'%1$s\'?</string>
+  <string name="registering_new_account_">Rekisteröidään uutta tiliä...</string>
+  <string name="connecting_to_group_chat_">Yhdistetään ryhmäkeskusteluun...</string>
+  <string name="btn_create_account">Luo tili</string>
+  <string name="pref_debug_title">Laita Debug-log päälle</string>
+  <string name="pref_debug_summary">Tulosta ohjelman logitiedot oletuskohteeseen/logcatiin debuggausta varten</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Kyseiselle tiedostotyypille ei ole katseluohjelmaa</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Aloita turvallinen keskustelu ennen koodien skannaamista</string>
 </resources>

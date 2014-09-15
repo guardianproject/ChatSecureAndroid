@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <!--These strings displayed on the landing page.-->
@@ -27,6 +27,7 @@
     block a contact. May be overrided by the plugin.-->
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <!--Screen menu item on the contact to edit nickname.-->
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
   <!--Screen menu item on active chat list to start new chat-->
@@ -42,9 +43,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--Context/drop-down menu item for picking an image to send.-->
   <!--OTRCHAT Adding in new menu options-->
   <!--Chat screen menu and context menu items.-->
   <!--Screen menu item on the chat screen to go back the contact list screen.
@@ -138,7 +137,6 @@
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
   <!--The send button on the chat screen.-->
   <!--Error message when a chat failed to be sent.-->
   <!--Warning message displayed in the chat screen when connection is lost.-->
@@ -244,4 +242,5 @@
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
+  <!--Screen menu item on active chat list to start new chat-->
 </resources>

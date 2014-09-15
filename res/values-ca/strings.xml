@@ -1,9 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">llegiu missatges instantanis</string>
-  <string name="ro_perm_desc">\nPermet als programes llegir dades del proveïdor de contingut de missatgeria instantània.\n</string>
+  <string name="ro_perm_desc">
+Permet als programes llegir dades del proveïdor de contingut de missatgeria instantània.
+</string>
   <string name="wo_perm_label">escriviu missatges instantanis</string>
-  <string name="wo_perm_desc">\nPermet a les aplicacions escriure dades al proveïdor de contingut de missatgeria instantània.\n</string>
+  <string name="wo_perm_desc">
+Permet a les aplicacions escriure dades al proveïdor de contingut de missatgeria instantània.
+</string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <string name="im_label">ChatSecure</string>
@@ -24,6 +28,7 @@
   <!--The title of the landing page.-->
   <string name="choose_account_title">Trieu un compte</string>
   <!--Displays the number of ongoing chats on the landing page.-->
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <!--Sign in progress screen menu items.-->
   <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
   <string name="menu_cancel_signin">Cancel·la l\'autenticació</string>
@@ -41,6 +46,7 @@
   <string name="menu_block_contact">Bloqueja un contacte</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">Bloquejat</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
@@ -62,10 +68,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">Verifica</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--Context/drop-down menu item for picking an image to send.-->
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">Inicia el xifrat</string>
   <string name="menu_otr_stop">Atura el xifrat</string>
@@ -86,10 +89,7 @@
   <string name="menu_insert_smiley">Insereix una emoticona</string>
   <string name="menu_resend">Torna a enviar</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">Escaneja l\'empremta dactilar</string>
   <string name="menu_fingerprint">La vostra empremta dactilar</string>
-  <string name="menu_verify_fingerprint">Verifica l\'empremta digital</string>
-  <string name="menu_verify_secret">Verifica el secret</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -102,8 +102,11 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_all_confirm_message">Voleu sortir de tots els serveis?</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
+  <string name="confirm_delete_contact">S\eliminarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
+  <string name="confirm_block_contact">Es blocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
+  <string name="confirm_unblock_contact">Es desblocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <!--The "OK" button label for the error message dialog.-->
   <string name="ok">D\'acord</string>
   <!--The "Cancel" button label for the confirm dialogs.-->
@@ -113,9 +116,12 @@
   <!--The "Cancel" button label for the confirm dialogs.-->
   <string name="no">Cancel·la</string>
   <!--This is the toast message displayed when the user has been signed out of the service.-->
+  <string name="signed_out_prompt">Heu tancat la sessió <xliff:g id="account">%1$s</xliff:g>.</string>
   <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
+  <string name="signed_out_prompt_with_error">S\ha tancat la vostra sessió <xliff:g id="account">%1$s</xliff:g> per <xliff:g id="reason">%2$s</xliff:g></string>
   <!--These strings displayed on the landing page.-->
   <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
+  <string name="add_account">Afegeix el compte <xliff:g id="account">%1$s</xliff:g></string>
   <!--These strings are displayed on the account setup page.-->
   <!--The username label. May be overrided by the plugin.-->
   <string name="label_username">User@Host</string>
@@ -144,7 +150,9 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message">\nEs necessita connectivitat de dades de xarxa (incloent dades en rerefons) per a que l\'aplicació pugui accedir.\n</string>
+  <string name="bg_data_prompt_message">
+Es necessita connectivitat de dades de xarxa (incloent dades en rerefons) per a que l\'aplicació pugui accedir.
+</string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">Habilita</string>
@@ -152,7 +160,9 @@
   <string name="bg_data_prompt_cancel">Tanca</string>
   <!--These strings are displayed on the contact list page.-->
   <!--The title of the ongoing chat group. May be overrided by the plugin.-->
+  <string name="ongoing_conversation">Xats actius (<xliff:g id="number">%1$d</xliff:g>)</string>
   <!--Displays the number of online contacts in a list.-->
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> en línia</string>
   <!--The title of the subscription request group if there is any.-->
   <string name="subscriptions">Invitacions d\'amics</string>
   <!--Prefix of the contact if he/she is not in the user's list.-->
@@ -164,8 +174,11 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">Seleccioneu els contactes que voleu convidar</string>
   <string name="contact_filter_hint">Escriviu per cercar un contacte</string>
-  <string name="empty_contact_list">No s\'ha trobat cap contacte.</string>
+  <string name="empty_contact_list">No s\'ha trobat cap contacte.
+
+Toqueu per a convidar.</string>
   <!--The title of blocked contact list.-->
+  <string name="blocked_list_title">Contactes blocats - <xliff:g id="user">%1$s</xliff:g></string>
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">No teniu bloquejat cap contacte.</string>
   <!--These strings are displayed in the contact info dialog.-->
@@ -201,25 +214,25 @@
   <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
   <!--These strings are displayed on the chat screen-->
   <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
+  <string name="chat_with">Xategeu amb <xliff:g id="user">%1$s</xliff:g></string>
   <!--In the chat history list, this label is added before the chats the user typed-->
   <string name="me">Jo</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Escriviu per redactar</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> és en línia</string>
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
   <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
   <!--The send button on the chat screen.-->
   <string name="send">Envia</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">No s\'ha pogut enviar el missatge</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">S\'ha perdut la connexió amb el servidor. Els missatges s\'enviaran quan es torni a ser en línia.</string>
+  <string name="disconnected_warning">Els missatges s\'enviaran quan torneu a connectar</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
@@ -242,7 +255,6 @@
   <string name="invite_label">Envia la invitació</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
-  <string name="provider_full_name_llxmpp">Xat de xarxa local (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">Paràmetres del compte</string>
   <string name="encryption_and_anonymity_title">Xifrat i anonimat</string>
@@ -270,7 +282,6 @@
   <string name="notification_sound_summary">També toca un to quan arribi un MI</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">Trieu el to</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
   <!--Toast when group chat invitation has been sent to the contact.-->
@@ -312,7 +323,8 @@
   <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">Primer trieu un contacte.</string>
   <!--Error message for when the current connection disconnected.-->
-  <string name="disconnected">S\'ha desconnectat!\n</string>
+  <string name="disconnected">S\'ha desconnectat!
+</string>
   <!--Error message for when the IM service has died.-->
   <string name="service_error">S\'ha produït un error en el servei!</string>
   <!--Error message for loading contact list failed.-->
@@ -428,13 +440,16 @@
   <string name="welcome_account">Paràmetres dels comptes</string>
   <!--About: Welcome-->
   <string name="about_welcome_title">Quant al ChatSecure</string>
-  <string name="about_welcome">ChatSecure és una aplicació mòbil de missatgeria instantània que proporciona funcionalitats extres de seguretat que eviten que d\'altres puguin xafardejar les vostres converses i comunicacions.\nLa aplicació dóna suport a qualsevol servei de xat que empri els protocols Jabber o XMPP, com Google GTalk o Jabber.org.</string>
+  <string name="about_welcome">ChatSecure és una aplicació mòbil de missatgeria instantània que proporciona funcionalitats extres de seguretat que eviten que d\'altres puguin xafardejar les vostres converses i comunicacions.
+La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jabber o XMPP, com Google GTalk o Jabber.org.</string>
   <!--About: OTR-->
   <string name="about_otr_title">Quant n\'és de segur?</string>
-  <string name="about_otr">La \"missatgeria Off-the-Record\" és un sistema de seguretat dissenyat per permetre privacitat mimetitzant les característiques d\'una conversa privada al món real, incloent xifrat, autenticació, rebuig i Forward Secrecy.\n</string>
+  <string name="about_otr">La \"missatgeria Off-the-Record\" és un sistema de seguretat dissenyat per permetre privacitat mimetitzant les característiques d\'una conversa privada al món real, incloent xifrat, autenticació, rebuig i Forward Secrecy.
+</string>
   <!--About: Security-->
   <string name="about_security_title">Els meus xats són segurs?</string>
-  <string name="about_security">La funcionalitat de xifrat de xat de ChatSecure només funciona quan s\'està xatejant amb altres que emprin programes compatibles, així que us hauríeu d\'assegurar que els vostres contactes empren ChatSecure per a mòbil i Adium o Pidgin a l\'ordinador. Podeu afinar la configuració de com i quan prova el ChatSecure de xifrar els xats a \'Paràmetres del compte\'.\n</string>
+  <string name="about_security">La funcionalitat de xifrat de xat de ChatSecure només funciona quan s\'està xatejant amb altres que emprin programes compatibles, així que us hauríeu d\'assegurar que els vostres contactes empren ChatSecure per a mòbil i Adium o Pidgin a l\'ordinador. Podeu afinar la configuració de com i quan prova el ChatSecure de xifrar els xats a \'Paràmetres del compte\'.
+</string>
   <!--Setup: Passphrase-->
   <string name="setup_passphrase_title">Paràmetres de contrasenya</string>
   <string name="setup_passphrase">Abans de començar, trieu una contrasenya segura per a protegir les vostres dades del ChatSecure d\'un accés fraudulent.</string>
@@ -480,16 +495,13 @@
   <string name="account_setup_error_keypair">ChatSecure ha tingut un problema en generar un parell de claus.</string>
   <string name="account_setup_error_server">S\'ha produït un error al ChatSecure mentre connectava amb el servidor de xat - repasseu la configuració i torneu-ho a provar.</string>
   <string name="account_setup_error_connectivity">S\'ha produït un error al ChatSecure mentre connectava - verifiqueu que teniu connexió de dades i torneu-ho a provar.</string>
-  <string name="label_fingerprint_remote">La seva empremta digital</string>
-  <string name="label_fingerprint_local">La vostra empremta digital</string>
   <string name="menu_sign_in">Accediu</string>
   <string name="menu_gen_key">Regenera la clau</string>
   <string name="error_suspended_connection">El ChatSecure ha perdut la connexió </string>
   <string name="error_reestablish_connection">El ChatSecure està intentant restablir la connexió</string>
-  <string name="otr_session_status_plaintext">Advertiment: aquest xat NO és xifrat</string>
-  <string name="otr_session_status_encrypted">Aquest xat és segur però alguna de les identitats dels participants no ha estat verificada</string>
-  <string name="otr_session_status_finished">Advertència: s\'ha aturat el xifrat del xat</string>
-  <string name="otr_session_status_verified">Aquest xat és segur i verificat</string>
+  <string name="otr_session_status_plaintext">El xifratge està desactivat</string>
+  <string name="otr_session_status_encrypted">El xifratge està activat (toqueu per a verificar)</string>
+  <string name="otr_session_status_verified">Xifrat i verificat</string>
   <string name="account_wizard_setup_title">Assistent de comptes</string>
   <string name="account_wizard_account_title">La ID del vostre compte</string>
   <string name="account_wizard_host_title">Configureu el servidor</string>
@@ -520,7 +532,7 @@
   <string name="allow_plain_text_auth">Permet l\'autenticació en text pla</string>
   <string name="verify_that_the_certificate_is_trusted">Verifica que el certificat és confiable</string>
   <string name="tls_verification">Verificació TLS</string>
-  <string name="require_tls_ssl_connection">Requereix una connexió TLS/SSL</string>
+  <string name="require_tls_ssl_connection">Requereix una connexió TLS</string>
   <string name="transport_encryption">Xifrat del transport</string>
   <string name="how_encrypted_chats_are_started">com s\'inicien els xats xifrats</string>
   <string name="the_server_to_connect_to_if_needed">El servidor al que connectar, si s\'escau</string>
@@ -540,7 +552,9 @@
   <string name="smp_question_hint">la pregunta a fer</string>
   <string name="qmp_answer_hint">la resposta esperada</string>
   <string name="remote_verified_us">El vostre contacte us ha autentificat correctament. Ara autentifiqueu el vostre contacte fent la vostra pregunta.</string>
-  <string name="no_messages">No hi ha converses.\n\nToqueu per a començar-ne una!</string>
+  <string name="no_messages">No hi ha converses.
+
+Toqueu per a començar-ne una!</string>
   <string name="pref_theme_dark">Empra el tema fosc</string>
   <string name="warning_tor_connect">Com que esteu emprant Tor, heu d\'entrar el nom de màquina del servidor de connexió XMPP directament a \'Paràmetres avançats del compte\'</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
@@ -548,7 +562,10 @@
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <string name="start_on_boot">Comença ChatSecure automàticament</string>
   <string name="start_on_boot_summary">Arrenca i entra automàticament sempre a comptes als que hagi entrat abans</string>
-  <string name="empty_account_message">No teniu cap configurat cap compte.\n\nToqueu per afegir-ne un!</string>
+  <string name="empty_account_message">No teniu cap⏎
+compte configurat.⏎
+⏎
+Toqueu ací per a afegir-ne un!</string>
   <string name="google_account">Compte de Google</string>
   <string name="pref_in_memory_db_title">Desa els missatges només a la memòria</string>
   <string name="pref_in_memory_db_summary">Només desa els missatges a la memòria, no a l\'emmagatzematge flash, per evitar que puguin accedir-hi. (Pot causar pèrdua de missatges)</string>
@@ -572,18 +589,19 @@
   <string name="pass_err_num">La vostra contrasenya no té cap nombre</string>
   <string name="lock_screen_open">Obre</string>
   <string name="title_activity_lock_screen">ChatSecure és bloquejat</string>
-  <string name="lock_screen_create_passphrase">Crea una contrasenya</string>
-  <string name="lock_screen_passphrase_hint">Introduïu la contrasenya</string>
-  <string name="lock_screen_passphrase_not_set_enter">Introduïu la nova contrasenya</string>
-  <string name="lock_screen_passphrase_not_set_confirm">Confirmeu la nova contrasenya</string>
-  <string name="lock_screen_passphrases_not_matching">Les contrasenyes no coincideixen. Torneu-ho a provar</string>
   <string name="pref_sip_account_title">Secure Voice</string>
   <string name="pref_sip_account_summary">Introduïu aquí el vostre compte OStel.co o d\'un altre servei SIP segur per integració de trucades</string>
   <string name="default_service_provider">dukgo.com</string>
-  <string name="detected_Otr_keystore_import">S\'ha detectat un magatzem de claus OTR per importar. Voleu escanejar la contrasenya QR ara?</string>
-  <string name="menu_import_keys">Importa el magatzem de claus OTR</string>
   <string name="successfully_imported_otr_keyring">S\'ha importat correctament el magatzem de claus OTR</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">No s\'ha importat el magatzem de claus OTR. Verifiqueu que el fitxer existeix i que és al lloc i en el format adient</string>
   <string name="pref_cacheword_timeout_title">Temps d\'espera excedit per contrasenya</string>
   <string name="pref_cacheword_timeout_summary">Estona que el xifrat de l\'aplicació ha de dir desbloquejat</string>
+  <!--Screen menu item on active chat list to start new chat-->
+  <string name="menu_new_group_chat">Xat de grup</string>
+  <string name="create_or_join_group_chat">Creeu o afegiu-vos a un xat de grup</string>
+  <string name="connect">Connecta</string>
+  <string name="menu_panic">Pànic</string>
+  <string name="unable_to_create_or_join_group_chat">No ha estat possible crear o afegir-se al xat de grup</string>
+  <string name="buddies">Amics</string>
+  <string name="select_domain_new_account">Trieu un domini</string>
 </resources>

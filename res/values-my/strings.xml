@@ -1,9 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="ro_perm_label">စာတိုများ ဖတ်ရန်</string>
-  <string name="ro_perm_desc">\n        Allows applications to read data from the IM content provider.\n    </string>
+  <string name="ro_perm_desc">
+        Allows applications to read data from the IM content provider.
+    </string>
   <string name="wo_perm_label">စာတိုများ ရေးရန်</string>
-  <string name="wo_perm_desc">\n        Allows applications to write data to the IM content provider.\n    </string>
+  <string name="wo_perm_desc">
+        Allows applications to write data to the IM content provider.
+    </string>
   <!--The application label. This appears in the application launcher on the
     Home screen. This is a noun.-->
   <!--These strings displayed on the landing page.-->
@@ -40,6 +44,7 @@
   <string name="menu_block_contact">အဆက်အသွယ်အားပိတ်ထား</string>
   <!--Screen menu item on the contact list screen to go to the blocked list
     screen.-->
+  <!--Screen menu item on the contact to edit nickname.-->
   <string name="menu_view_blocked">ပိတ်ထားသော</string>
   <!--Screen menu item on the contact list to go back to the landing page,
     where you can choose which IM service you want to use-->
@@ -61,10 +66,7 @@
   <!--Context/drop-down menu item for the contact list screen. The context menu is
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
-  <string name="menu_view_profile">အတည်ပြု</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+  <!--Context/drop-down menu item for picking an image to send.-->
   <!--OTRCHAT Adding in new menu options-->
   <string name="menu_otr_start">စာဝှက်စနစ်စတင်</string>
   <string name="menu_otr_stop">စာဝှက်စနစ်ရပ်ဆိုင်း</string>
@@ -84,10 +86,7 @@
   <string name="menu_insert_smiley">မျက်နှာပြောင် ထည့်မည်</string>
   <string name="menu_resend">ထပ်ပို့</string>
   <!--Strings for the contact info screen-->
-  <string name="menu_scan">လက်ဗွေအားစိစစ်</string>
   <string name="menu_fingerprint">သင့်လက်ဗွေ</string>
-  <string name="menu_verify_fingerprint">လက်ဗွေအားအတည်ပြု</string>
-  <string name="menu_verify_secret">လျို့ဝှက်ချက်အတည်ပြု</string>
   <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
      it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
      menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
@@ -141,7 +140,9 @@
   <!--Dialog messages:-->
   <!--This is the message displayed in the prompt dialog when we launch IM but found
     the background data is disabled-->
-  <string name="bg_data_prompt_message">\n အက်ပလီကေးရှင်မှ ဝင်သုံးရန် ကွန်ရက်ဒေတာ ချိတ်ဆက်မှု (နောက်ကွယ် ဒေတာများ အပါအဝင်) ကို လိုအပ်ပါတယ်။ \n</string>
+  <string name="bg_data_prompt_message">
+ အက်ပလီကေးရှင်မှ ဝင်သုံးရန် ကွန်ရက်ဒေတာ ချိတ်ဆက်မှု (နောက်ကွယ် ဒေတာများ အပါအဝင်) ကို လိုအပ်ပါတယ်။ 
+</string>
   <!--Dialog buttons:-->
   <!--OK button for the prompt dialog-->
   <string name="bg_data_prompt_ok">ခွင့်ပြု</string>
@@ -161,7 +162,6 @@
   <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
   <string name="contacts_picker_title">ဖိတ်ခေါ်ရမည့် အဆက်အသွယ်များ ရွေးပါ</string>
   <string name="contact_filter_hint">အဆက်အသွယ်အားရှာရန်ရိုက်ပါ</string>
-  <string name="empty_contact_list">အဆက်အသွယ်တစ်ခုမှမတွေ့</string>
   <!--The title of blocked contact list.-->
   <!--Displayed if there isn't any blocked contact.-->
   <string name="no_blocked_contact">ပိတ်ထားသော အဆက်အသွယ် မရှိ</string>
@@ -202,7 +202,6 @@
   <string name="me">ကျွန်ုပ်</string>
   <!--On the chat screen, this is the hint text in the input field where the user enters the
     chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">ရေးဖွဲ့ရန်ရိုက်ပါ</string>
   <!--Inline status message in the chat history list, when receiving a "online" status update.-->
   <!--Inline status message in the chat history list, when receiving an "away" status update.-->
   <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
@@ -210,13 +209,11 @@
   <!--Inline status message in the chat history list, when a friend joined the chat.-->
   <!--Inline status message in the chat history list, when a friend left the chat.-->
   <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <!--<string name="time_stamp" format="date">\'Sent at\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>-->
   <!--The send button on the chat screen.-->
   <string name="send">ပို့</string>
   <!--Error message when a chat failed to be sent.-->
   <string name="msg_sent_failed">ဤအကြောင်းကြားချက်အားမပို့နိုင်</string>
   <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">ဆာဗာနှင့်ချိတ်ဆက်မှုပြတ်တောက်၊　လိုင်းပေါ်ရောက်ပါက　အကြောင်းကြားချက်အား　ပို့မည်</string>
   <!--Warning message displayed in the chat screen when the contact is offline.-->
   <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
   <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
@@ -239,7 +236,6 @@
   <string name="invite_label">ဖိတ်ခေါ်ချက်ပို့</string>
   <!--provider plugin names-->
   <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
-  <string name="provider_full_name_llxmpp">လိုကယ်ကွန်ရန် စကားဝိုင်း (Bonjour/ZeroConf)</string>
   <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
   <string name="account_setup_title">အကောင့်ပြင်ဆင်မှု</string>
   <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
@@ -267,7 +263,6 @@
   <string name="notification_sound_summary">စာရောက်လာလျှင် ringtone ဖွင့်ပါ</string>
   <!--This is the text label selecting the ringtone. Clicking on this will take the user to
     the ringtone picker-->
-  <string name="notification_ringtone_title">ringtone ရွေးရန်</string>
   <!--Group chat invitation screen (Currently not used.)-->
   <!--The prompt message displayed on the group chat invitation screen.-->
   <!--Toast when group chat invitation has been sent to the contact.-->
@@ -424,7 +419,9 @@
   <!--About: Welcome-->
   <!--About: OTR-->
   <string name="about_otr_title">ဘယ်လို လုံခြုံတာလဲ?</string>
-  <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.\n\nThe OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
+  <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.
+
+The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">ကျွန်တော့်စကားဝိုင်းတွေ လုံခြုံရဲ့လား?</string>
   <!--Setup: Passphrase-->
@@ -461,14 +458,8 @@
   <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်...</string>
   <string name="account_setup_signin_c">ဝင်နေသည်...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="label_fingerprint_remote">၎င်းတို့ လက်ဗွေရာ</string>
-  <string name="label_fingerprint_local">သင့်လက်ဗွေ</string>
   <string name="menu_sign_in">ဝင်</string>
   <string name="menu_gen_key">ကီး ပြန်ဖန်တီးရန်</string>
-  <string name="otr_session_status_plaintext">သတိပေးချက်၊ ဤစကားဝိုင်းကို ဝှက်ထားခြင်းမရှိပါ</string>
-  <string name="otr_session_status_encrypted">ဤစကားဝိုင်းသည် လုံခြုံစိတ်ချရသော်လည်း စကားဝိုင်းတွင် ပါဝင်သောသူများကို အတည်ပြုပြီး မဟုတ်ပါ။</string>
-  <string name="otr_session_status_finished">သတိပေးချက် - စကားဝိုင်းဝှက်ခြင်း ရပ်လိုက်ပါပြီ</string>
-  <string name="otr_session_status_verified">ဤစကားဝိုင်းသည် အတည်ပြုပြီး လုံခြုံစိတ်ချရသည်။</string>
   <string name="account_wizard_setup_title">အကောင့်ဆိုင်ရာ </string>
   <string name="account_wizard_account_title">အသင့် အကောင့် အိုင်ဒီ</string>
   <string name="account_wizard_host_title">ဆာဗာ သတ်မှတ်ရန်</string>
@@ -496,7 +487,6 @@
   <string name="allow_plain_text_auth">Plain Text စိစစ်စစ်ဆေးမှု ခွင့်ပြုပါ</string>
   <string name="verify_that_the_certificate_is_trusted">ဤ certificate သည် ယုံကြည်စိတ်ချရကြောင်း အတည်ပြုပါ</string>
   <string name="tls_verification">TLS စစ်ဆေးခြင်း</string>
-  <string name="require_tls_ssl_connection">TLS/SSL ကော်နက်ရှင် သုံးမည်</string>
   <string name="transport_encryption">Transport Encryption</string>
   <string name="how_encrypted_chats_are_started">ဝှက်ထားသည့် စကားဝိုင်းများ စတင်ပုံ</string>
   <string name="the_server_to_connect_to_if_needed">လိုအပ်လျှင် ချိတ်ဆက်ရမည့် ဆာဗာ</string>
@@ -516,14 +506,15 @@
   <string name="smp_question_hint">မေးရမည့် မေးခွန်း</string>
   <string name="qmp_answer_hint">မျှော်လင့်ထားသော အဖြေ</string>
   <string name="remote_verified_us">အသင့် အဆက်အသွယကို အောင်မြင်စွာ စစ်ဆေးပြီးပါပြီ။ ယခု ၎င်းကို အတည်ပြုရန် မေးခွန်းမေးပါ။</string>
-  <string name="no_messages">စကားဝိုင်း မရှိပါ။ \n\nအသစ်စရန် ဒီမှာ ထိနှိပ်ပါ။</string>
+  <string name="no_messages">စကားဝိုင်း မရှိပါ။ 
+
+အသစ်စရန် ဒီမှာ ထိနှိပ်ပါ။</string>
   <string name="pref_theme_dark">အရောင်ရင့်ရင့် အဆင်အယင်သုံးပါ</string>
   <string name="warning_tor_connect">Tor ကို အသုံးပြုမည် ဖြစ်၍ XMPP \'ဆာဗာ ချိတ်ဆက်မှု\' အိမ်ရှင်စက်အမည်ကို အကောင့်ဆက်တင်ထဲတွင် တိုက်ရိုက် ရိုက်ထည့်ရမည်</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
   <string name="start_on_boot_summary">နဂိုဝင်သုံးဖူးသည့် အကောင့်များသို့ အလိုအလျှောက် ဝင်ရန်</string>
-  <string name="empty_account_message">ပြင်ဆင်ထားသည့် အကောင့်များ မရှိပါ။ အကောင့်သစ်တစ်ခုထည့် ဤနေရာကို ထိနှိပ်ပါ။</string>
   <string name="google_account">ဂူးဂဲ အကောင့်</string>
   <string name="pref_in_memory_db_title">စာများကို မမ်မိုရီအတွင်းသာ သိမ်းရန်</string>
   <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>
@@ -537,4 +528,5 @@
   <string name="menu_exit">ထွက်ရန်</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">ဆားဗစ်အားလုံးမှ ထွက်၍ ပရောဆက်များအားလုံးကို ပိတ်မည်လား?</string>
+  <!--Screen menu item on active chat list to start new chat-->
 </resources>

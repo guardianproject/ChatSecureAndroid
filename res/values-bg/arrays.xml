@@ -1,9 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string-array name="otr_options">
-        <item>Необходима сили /</item>
-        <item>Автоматично Опит</item>
-        <item>Както се изисква</item>
-        <item>Никога увреждания /</item>
-    </string-array>
+  <string-array name="otr_options">
+    <item>Накарай / Изискай</item>
+    <item>Опитай Автоматично</item>
+    <item>Както е поискано</item>
+    <item>Изключено / Никога</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>накарай</item>
+    <item>автоматично</item>
+    <item>както е изискано</item>
+    <item>изключено</item>
+  </string-array>
+  <string-array name="languages">
+    <item>Default</item>
+    <item>العربية</item>
+    <item>فارسی</item>
+    <item>中文(简体)</item>
+    <item>日本語</item>
+    <item>한국어</item>
+    <item>မြန်မာဘာသာ</item>
+    <item>Български</item>
+    <item>Tibetan བོད་སྐད།</item>
+    <item>Tiếng Việt</item>
+    <item>Dansk</item>
+    <item>Deutsch</item>
+    <item>English</item>
+    <item>Español</item>
+    <item>Esperanto</item>
+    <item>Français</item>
+    <item>Italiano</item>
+    <item>Magyar</item>
+    <item>Nederlands</item>
+    <item>Norwegian Bokmål</item>
+    <item>Português</item>
+    <item>Pyccĸий</item>
+    <item>Slovenčina</item>
+    <item>Swedish</item>
+    <item>Tϋrkçe</item>
+    <item>Čeština</item>
+    <item>ελληνικά</item>
+  </string-array>
+  <string-array name="languages_values">
+    <item>xx</item>
+    <item>ar</item>
+    <item>fa</item>
+    <item>zh-rCN</item>
+    <item>ja</item>
+    <item>ko</item>
+    <item>my</item>
+    <item>bg</item>
+    <item>bo</item>
+    <item>vi</item>
+    <item>da</item>
+    <item>de</item>
+    <item>en</item>
+    <item>es_ES</item>
+    <item>eo</item>
+    <item>fr</item>
+    <item>it</item>
+    <item>hu</item>
+    <item>nl</item>
+    <item>nb_NO</item>
+    <item>pt</item>
+    <item>ru</item>
+    <item>sk</item>
+    <item>sv</item>
+    <item>tr</item>
+    <item>cs</item>
+    <item>el</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>rkquery.de</item>
+    <item>bam.yt</item>
+  </string-array>
 </resources>
