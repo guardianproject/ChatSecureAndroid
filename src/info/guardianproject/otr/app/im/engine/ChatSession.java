@@ -198,23 +198,26 @@ public class ChatSession {
         
         }
         
-        
-        mListener.onIncomingMessage(this, message);
+        if (mListener != null)
+            mListener.onIncomingMessage(this, message);
         
         return true;
     }
 
     public void onMessageReceipt(String id) {
-        mListener.onIncomingReceipt(this, id);
+        if (mListener != null)
+            mListener.onIncomingReceipt(this, id);
 
     }
 
     public void onMessagePostponed(String id) {
-        mListener.onMessagePostponed(this, id);        
+        if (mListener != null)
+            mListener.onMessagePostponed(this, id);        
     }
 
     public void onReceiptsExpected() {
-        mListener.onReceiptsExpected(this);        
+        if (mListener != null)
+            mListener.onReceiptsExpected(this);        
     }
 
     /**
@@ -225,7 +228,8 @@ public class ChatSession {
      * @param error the error information.
      */
     public void onSendMessageError(Message message, ImErrorInfo error) {
-        mListener.onSendMessageError(this, message, error);
+        if (mListener != null)
+            mListener.onSendMessageError(this, message, error);
 
     }
 
