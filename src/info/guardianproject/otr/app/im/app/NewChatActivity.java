@@ -1287,9 +1287,17 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             }
             else if (requestCode == REQUEST_SETTINGS)
             {
+                
+                try {
+                    mApp.getRemoteImService().updateStateFromSettings();
+                } catch (Exception e) {
+                    Log.e(ImApp.LOG_TAG,"unable to update service settings",e);
+                }
+                
                 finish();
                 Intent intent = new Intent(getApplicationContext(), NewChatActivity.class);                
                 startActivity(intent);
+                
             }
             
             if (requestCode == REQUEST_PICK_CONTACTS) {

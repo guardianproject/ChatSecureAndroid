@@ -81,4 +81,8 @@ interface IRemoteImService {
     **/
     void enableDebugLogging (boolean debugOn);
     
+    /**
+    * update settings from OTR
+    **/
+    void updateStateFromSettings ();
 }

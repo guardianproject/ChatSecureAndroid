@@ -1266,10 +1266,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     if (isGroupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
                         rec.setType(Imps.MessageType.OUTGOING);
                     }
-
+                                            
                     boolean good = session.onReceiveMessage(rec);
 
-                    qPresence.push(mConnection.getRoster().getPresence(smackMessage.getFrom()));
+                    //qPresence.push(mConnection.getRoster().getPresence(smackMessage.getFrom()));
 
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {

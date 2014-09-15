@@ -126,6 +126,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         LogCleaner.error(TAG, msg, e);
     }
 
+    private void updateOtrPolicy ()
+    {
+        int otrPolicy = convertPolicy();
+        mOtrChatManager.setPolicy(otrPolicy);
+
+    }
+    
     private synchronized void initOtr() {
         int otrPolicy = convertPolicy();
 
@@ -761,6 +768,13 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         public void enableDebugLogging (boolean debug)
         {
             Debug.DEBUG_ENABLED = debug;
+        }
+
+        @Override
+        public void updateStateFromSettings() throws RemoteException {
+
+            updateOtrPolicy ();
+            
         }
     };
     
