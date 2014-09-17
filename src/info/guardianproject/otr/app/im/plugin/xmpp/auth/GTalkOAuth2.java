@@ -44,7 +44,7 @@ protected String getName() {
 
 static void enable() {
 
-        Log.d(NAME,"Google OAuth2 enabled");
+      //  Log.d(NAME,"Google OAuth2 enabled");
 }
 
 @Override

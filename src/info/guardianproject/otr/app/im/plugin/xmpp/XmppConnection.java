@@ -155,16 +155,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private long mAccountId = -1;
     private long mProviderId = -1;
-    private String mPasswordTemp;
 
     private boolean mIsGoogleAuth = false;
-
-    /*
-    private final static String TRUSTSTORE_TYPE = "BKS";
-    private final static String TRUSTSTORE_PATH = "debiancacerts.bks";
-    private final static String TRUSTSTORE_PASS = "changeit";
-    private final static String KEYMANAGER_TYPE = "X509";
-     */
+    
     private final static String SSLCONTEXT_TYPE = "TLS";
 
 
@@ -767,19 +760,24 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
+
         mAccountId = accountId;
-        mPasswordTemp = passwordTemp;
+        mPassword = passwordTemp;
         mProviderId = providerId;
         mRetryLogin = retry;
 
-        mIsGoogleAuth = mPasswordTemp.startsWith(GTalkOAuth2.NAME);
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        if (mPassword == null)
+            mPassword = Imps.Account.getPassword(contentResolver, mAccountId);
+
+        mIsGoogleAuth = mPassword.startsWith(GTalkOAuth2.NAME);
 
         if (mIsGoogleAuth)
         {            
-            mPasswordTemp = mPasswordTemp.split(":")[1];            
+            mPassword = mPassword.split(":")[1];            
         }
 
-        ContentResolver contentResolver = mContext.getContentResolver();
 
         Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
 
@@ -823,7 +821,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         // providerSettings is closed in initConnection();
         String userName = Imps.Account.getUserName(contentResolver, mAccountId);
-        String password = Imps.Account.getPassword(contentResolver, mAccountId);
 
         String defaultStatus = null;
 
@@ -835,8 +832,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         try {
             if (userName == null || userName.length() == 0)
                 throw new XMPPException("empty username not allowed");
-            initConnectionAndLogin(providerSettings, userName, password);
-
+            
+            initConnectionAndLogin(providerSettings, userName);
 
             // TODO should we really be using the same name for both address and name?
             setState(LOGGED_IN, null);
@@ -854,10 +851,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     debug (TAG, "google failed; may need to refresh");
 
-                    String newPassword = refreshGoogleToken (userName, password,providerSettings.getDomain());
+                    String newPassword = refreshGoogleToken (userName, mPassword,providerSettings.getDomain());
 
                     if (newPassword != null)
-                        password = newPassword;
+                        mPassword = newPassword;
                     
                     mRetryLogin = true;
 
@@ -913,11 +910,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
         
         if (password != null)
-        {
-            password = GTalkOAuth2.NAME + ':' + password;
+        {            
             //now store the new one, for future use until it expires
-            final long accountId = ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                    password );
+            ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
+                    GTalkOAuth2.NAME + ':' + password );
         }
         
         return password;
@@ -956,17 +952,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         setState(state, null);
     }
 
-    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName, String password) throws XMPPException, KeyManagementException, NoSuchAlgorithmException, IllegalStateException, RuntimeException
+    private void initConnectionAndLogin (Imps.ProviderSettings.QueryMap providerSettings,String userName) throws XMPPException, KeyManagementException, NoSuchAlgorithmException, IllegalStateException, RuntimeException
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
 
-        if (mPasswordTemp != null)
-            password = mPasswordTemp;
-
-
         initConnection(providerSettings, userName);
 
-        mPassword = password;
         mResource = providerSettings.getXmppResource();
 
         //disable compression based on statement by Ge0rg
@@ -1110,12 +1101,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
-        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
 
         if (mIsGoogleAuth)
+        {
             SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
+            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+        }
         else
-            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);     
+        {
+            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);  
+            SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME );
+
+        }
         
         if (requireTls) { 
 
