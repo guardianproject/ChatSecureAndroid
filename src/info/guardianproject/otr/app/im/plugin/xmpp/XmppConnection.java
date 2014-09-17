@@ -68,6 +68,7 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.SASLAuthentication;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.AndFilter;
@@ -160,13 +161,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-
     private SSLContext sslContext;
     private Context aContext;
 
     private final static String IS_GOOGLE = "google";
 
-    //private final static int SOTIMEOUT = 60000;
+    private final static int SOTIMEOUT = 60000;
 
     private PacketCollector mPingCollector;
     private String mUsername;
@@ -198,7 +198,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Debug.onConnectionStart();
 
         //setup SSL managers
-       // SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
+        SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
         // Create a single threaded executor.  This will serialize actions on the underlying connection.
         createExecutor();
@@ -2235,7 +2235,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 if (!checkPing()) {
                     Log.w(TAG, "reconnect on ping failed");
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
-                    force_reconnect();
+                    maybe_reconnect();
                 } else {
                     // Send pings only at intervals configured by the user
                     if (heartbeatSequence >= heartbeatInterval) {
