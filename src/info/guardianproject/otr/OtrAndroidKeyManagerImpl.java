@@ -29,7 +29,6 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -40,7 +39,6 @@ import net.java.otr4j.OtrKeyManagerStore;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -113,6 +111,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         }
         catch (IOException ioe)
         {
+            Toast.makeText(context, R.string.your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app, Toast.LENGTH_LONG).show();
             throw new RuntimeException("Could not open keystore",ioe);
         }
     }
