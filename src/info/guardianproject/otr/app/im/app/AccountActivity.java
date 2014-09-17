@@ -32,10 +32,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.XmppUriHelper;
 
-import java.io.IOException;
 import java.util.HashMap;
-
-import com.google.zxing.integration.android.IntentIntegrator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,6 +49,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -74,7 +72,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AccountActivity extends Activity {
+import com.google.zxing.integration.android.IntentIntegrator;
+
+public class AccountActivity extends ActionBarActivity {
 
     public static final String TAG = "AccountActivity";
     private static final String ACCOUNT_URI_KEY = "accountUri";
@@ -144,7 +144,7 @@ public class AccountActivity extends Activity {
         if (i.hasExtra("isSignedIn"))
             isSignedIn = i.getBooleanExtra("isSignedIn", false);
         
-
+        
         final ProviderDef provider;
         
         mSignInHelper = new SignInHelper(this);
@@ -299,6 +299,8 @@ public class AccountActivity extends Activity {
             return;
         }
 
+       getSupportActionBar().setHomeButtonEnabled(true);
+        
        setupUIPost();
 
     }
@@ -492,10 +494,12 @@ public class AccountActivity extends Activity {
                         }
                       
                         isSignedIn = true;
+                        setResult(RESULT_OK);    
+                        finish();
                     }
                     updateWidgetState();
-                    setResult(RESULT_OK);
-                    finish();
+                    
+                    
                 }
                 
             }
