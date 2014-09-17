@@ -26,7 +26,12 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                _chatManager.removeSession(_chatManager.getSessionId(_localUser, _remoteUser));
+                try {
+                    _chatManager.removeSession(getSessionId ());
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -37,9 +42,16 @@ public class OtrChatSessionAdapter extends Stub {
             public void run() {
                 if (_chatManager != null)
                 {
-                    SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
-                    if (sid != null)
-                        _chatManager.startSession(sid);
+                    SessionID sid;
+                    try {
+                        sid = getSessionId ();
+
+                        if (sid != null)
+                            _chatManager.startSession(sid);
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -52,9 +64,17 @@ public class OtrChatSessionAdapter extends Stub {
             public void run() {
                 if (_chatManager != null)
                 {
-                    SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
-                    if (sid != null)
-                        _chatManager.endSession(sid);
+                    SessionID sid;
+                    try {
+                        sid = getSessionId ();
+
+                        if (sid != null)
+                            _chatManager.endSession(sid);
+                        
+                    } catch (RemoteException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -63,7 +83,7 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public boolean isChatEncrypted() throws RemoteException {
 
-        SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
+        SessionID sid = getSessionId ();
         
         if (sid != null)
             return _chatManager.getSessionStatus(sid) == SessionStatus.ENCRYPTED;
@@ -77,7 +97,7 @@ public class OtrChatSessionAdapter extends Stub {
         
         if (_chatManager != null)
         {
-            SessionStatus sessionStatus = _chatManager.getSessionStatus(_chatManager.getSessionId(_localUser, _remoteUser));
+            SessionStatus sessionStatus = _chatManager.getSessionStatus(getSessionId ());
             if (sessionStatus == null)
                 sessionStatus = SessionStatus.PLAINTEXT;
             return sessionStatus.ordinal();
@@ -92,7 +112,7 @@ public class OtrChatSessionAdapter extends Stub {
     public void initSmpVerification(String question, String secret) throws RemoteException {
 
         try {
-            _chatManager.initSmp(_chatManager.getSessionId(_localUser, _remoteUser), question,
+            _chatManager.initSmp(getSessionId (), question,
                     secret);
         } catch (OtrException e) {
             OtrDebugLogger.log("initSmp", e);
@@ -104,7 +124,7 @@ public class OtrChatSessionAdapter extends Stub {
     public void respondSmpVerification(String answer) throws RemoteException {
 
         try {
-            _chatManager.respondSmp(_chatManager.getSessionId(_localUser, _remoteUser), answer);
+            _chatManager.respondSmp(getSessionId (), answer);
             
         } catch (OtrException e) {
             OtrDebugLogger.log("respondSmp", e);
@@ -115,34 +135,40 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public void verifyKey(String address) throws RemoteException {
         
-        _chatManager.getKeyManager().verify(_chatManager.getSessionId(_localUser, _remoteUser));
+        _chatManager.getKeyManager().verify(getSessionId ());
         
     }
 
     @Override
     public void unverifyKey(String address) throws RemoteException {
-        _chatManager.getKeyManager().unverify(_chatManager.getSessionId(_localUser, _remoteUser));
+        _chatManager.getKeyManager().unverify(getSessionId ());
     }
 
     @Override
     public boolean isKeyVerified(String address) throws RemoteException {
-        return _chatManager.getKeyManager().isVerified(_chatManager.getSessionId(_localUser, _remoteUser));
+        return _chatManager.getKeyManager().isVerified(getSessionId ());
     }
 
     @Override
     public String getLocalFingerprint() throws RemoteException {
-        return _chatManager.getKeyManager().getLocalFingerprint(_chatManager.getSessionId(_localUser, _remoteUser));
+        
+         SessionID sid = getSessionId ();
+         
+         if (sid != null)
+             return _chatManager.getKeyManager().getLocalFingerprint(sid);
+         else
+             return null;
         
     }
 
     @Override
     public String getRemoteFingerprint() throws RemoteException {
-        return _chatManager.getKeyManager().getRemoteFingerprint(_chatManager.getSessionId(_localUser, _remoteUser));
+        return _chatManager.getKeyManager().getRemoteFingerprint(getSessionId ());
     }
 
     @Override
     public void generateLocalKeyPair() throws RemoteException {
-        _chatManager.getKeyManager().generateLocalKeyPair(_chatManager.getSessionId(_localUser, _remoteUser));
+        _chatManager.getKeyManager().generateLocalKeyPair(getSessionId ());
     }
 
     @Override
@@ -155,5 +181,14 @@ public class OtrChatSessionAdapter extends Stub {
         return _remoteUser;
     }
 
+    private SessionID getSessionId () throws RemoteException
+    {
+        SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
+        
+        if (sid == null)
+            throw new RemoteException();
+        
+        return sid;
+    }
     
 }
