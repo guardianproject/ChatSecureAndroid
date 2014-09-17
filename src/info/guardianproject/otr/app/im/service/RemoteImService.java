@@ -578,18 +578,26 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             mConnections.put(userName + '@' + domain,imConnectionAdapter);
             Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "" + mConnections.size());
 
-            final int N = mRemoteListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IConnectionCreationListener listener = mRemoteListeners.getBroadcastItem(i);
-                try {
-                    listener.onConnectionCreated(imConnectionAdapter);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
+            synchronized (mRemoteListeners)
+            {
+                try
+                {
+                    final int N = mRemoteListeners.beginBroadcast();
+                    for (int i = 0; i < N; i++) {
+                        IConnectionCreationListener listener = mRemoteListeners.getBroadcastItem(i);
+                        try {
+                            listener.onConnectionCreated(imConnectionAdapter);
+                        } catch (RemoteException e) {
+                            // The RemoteCallbackList will take care of removing the
+                            // dead listeners.
+                        }
+                    }
+                }
+                finally
+                {
+                    mRemoteListeners.finishBroadcast();
                 }
             }
-
-            mRemoteListeners.finishBroadcast();
 
             return imConnectionAdapter;
         } catch (ImException e) {
