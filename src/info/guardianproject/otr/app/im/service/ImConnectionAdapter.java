@@ -113,7 +113,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         mConnection.networkTypeChanged();
     }
 
-    void reestablishSession() {
+    boolean reestablishSession() {
         mConnectionState = ImConnection.LOGGING_IN;
 
         ContentResolver cr = mService.getContentResolver();
@@ -123,12 +123,15 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 RemoteImService.debug("re-establish session");
                 try {
                     mConnection.reestablishSessionAsync(cookie);
+                    return true;
                 } catch (IllegalArgumentException e) {
                     RemoteImService.debug("Invalid session cookie, probably modified by others.");
                     clearSessionCookie(cr);
                 }
             }
         }
+        
+        return false;
     }
 
     private Uri getSessionCookiesUri() {
@@ -140,12 +143,12 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     public void login(final String passwordTemp, final boolean autoLoadContacts, final boolean retry) {
-        Debug.wrapExceptions(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 do_login(passwordTemp, autoLoadContacts, retry);
             }
-        });
+        }).start();
     }
     
     public void do_login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
@@ -180,7 +183,10 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     @Override
     public void sendHeartbeat() throws RemoteException {
-        mConnection.sendHeartbeat(mService.getHeartbeatInterval());
+        
+        if (mConnection != null && mConnection.getState() == ImConnection.LOGGED_IN)
+            mConnection.sendHeartbeat(mService.getHeartbeatInterval());
+        
     }
 
     @Override
