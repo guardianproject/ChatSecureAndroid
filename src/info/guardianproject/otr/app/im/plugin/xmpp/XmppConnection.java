@@ -52,6 +52,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -161,7 +162,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     
     private final static String SSLCONTEXT_TYPE = "TLS";
 
-    private SSLContext sslContext;
+    private static SSLContext sslContext;
     private Context aContext;
 
     private final static String IS_GOOGLE = "google";
@@ -778,7 +779,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mPassword = mPassword.split(":")[1];            
         }
 
-
         Cursor cursor = contentResolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
 
         if (cursor == null)
@@ -835,9 +835,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             initConnectionAndLogin(providerSettings, userName);
 
-            // TODO should we really be using the same name for both address and name?
             setState(LOGGED_IN, null);
             debug(TAG, "logged in");
+            mNeedReconnect = false;
+
 
         } catch (XMPPException e) {
             debug(TAG, "exception thrown on connection",e);
@@ -857,6 +858,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         mPassword = newPassword;
                     
                     mRetryLogin = true;
+                   
 
                 }
                 else
@@ -871,6 +873,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (mRetryLogin && getState() != SUSPENDED) {
                 debug(TAG, "will retry");
                 setState(LOGGING_IN, info);
+                maybe_reconnect();
+                
             } else {
                 debug(TAG, "will not retry");
                 disconnect();                               
@@ -888,7 +892,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
         } 
         finally {
-            mNeedReconnect = false;
             providerSettings.close();
         }
 
@@ -962,12 +965,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
-
+        
         if (mConnection.isConnected())
         {
             
             mConnection.login(mUsername, mPassword, mResource);
-    
+            
             mStreamHandler.notifyInitialLogin();
             initServiceDiscovery();
     
@@ -1091,7 +1094,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
 
-        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+      //  mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
         
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
@@ -1099,20 +1102,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         SASLAuthentication.unregisterSASLMechanism("KERBEROS_V4");
         SASLAuthentication.unregisterSASLMechanism("GSSAPI");
 
+        SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
+        
+        if (mIsGoogleAuth) //if using google auth enable sasl
+            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);   
+        else if (domain.contains("google.com")||domain.contains("gmail.com")) //if not google auth, disable if doing direct google auth
+            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME); 
+        
         SASLAuthentication.supportSASLMechanism("PLAIN", 1);
         SASLAuthentication.supportSASLMechanism("DIGEST-MD5", 2);
-
-        if (mIsGoogleAuth)
-        {
-            SASLAuthentication.supportSASLMechanism( GTalkOAuth2.NAME, 0);     
-            SASLAuthentication.registerSASLMechanism( GTalkOAuth2.NAME, GTalkOAuth2.class );
-        }
-        else
-        {
-            SASLAuthentication.unsupportSASLMechanism( GTalkOAuth2.NAME);  
-            SASLAuthentication.unregisterSASLMechanism( GTalkOAuth2.NAME );
-
-        }
+        
         
         if (requireTls) { 
 
@@ -1137,12 +1136,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     sslContext.getDefaultSSLParameters().setCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);
                 }
+
                 
             }
-
             
-            mConfig.setHostnameVerifier(trustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+            HostnameVerifier hv = trustManager.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier());
             
+            mConfig.setHostnameVerifier(hv);
             mConfig.setCustomSSLContext(sslContext);
             
             mConfig.setSecurityMode(SecurityMode.required);
@@ -1150,7 +1150,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setVerifyChainEnabled(true);
             mConfig.setVerifyRootCAEnabled(true);
             mConfig.setExpiredCertificatesCheckEnabled(true);
+            
             mConfig.setNotMatchingDomainCheckEnabled(true);
+            
             mConfig.setSelfSignedCertificateEnabled(false);
             
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
@@ -1349,19 +1351,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         }
                     });
                 } else if (!mNeedReconnect) {
-                    
+                   
                     execute(new Runnable() {
                         
                         public void run() {
                             if (getState() == LOGGED_IN)
                             {
-                                //was logged in, so let's try again
-                             //   try { Thread.sleep(1000);}catch(Exception e){}//after a few seconds
+                                //Thread.sleep(1000);
+                                mNeedReconnect = true;
                                 setState(LOGGING_IN,
-                                        new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network error"));
-                                force_reconnect();
-                               // setState(SUSPENDED,
-                                 //           new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+                                      new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network error"));
+                                reconnect();
                             }
                         }
                         
@@ -1395,8 +1395,24 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         mStreamHandler = new XmppStreamHandler(mConnection, connectionListener);
 
-        mConnection.connect(); 
-
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                mConnection.connect(); 
+                break;
+            }
+            catch (Exception uhe)
+            {
+                //sometimes DNS fails.. let's wait and try again a few times
+                try { Thread.sleep(500);} catch (Exception e){}
+                
+            }
+                
+        }
+        
+        if (!mConnection.isConnected())
+            throw new XMPPException("Unable to connect to host");
 
 
     }
@@ -1448,18 +1464,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //if a device sends something other than available, check if there is a higher priority one available on the server
         if (rmode != Mode.available)
         {
-
-            org.jivesoftware.smack.packet.Presence npresence = mRoster.getPresence(XmppAddress.stripResource(presence.getFrom()));
-            rmode = npresence.getMode();
-            rtype = npresence.getType();
-
-            if (rmode == Mode.away || rmode == Mode.xa)
-                type = Presence.AWAY;
-            else if (rmode == Mode.dnd)
-                type = Presence.DO_NOT_DISTURB;
-            else if (rtype == Type.unavailable || rtype == Type.error)
-                type = Presence.OFFLINE;
-
+            if (mRoster != null)
+            {
+                org.jivesoftware.smack.packet.Presence npresence = mRoster.getPresence(XmppAddress.stripResource(presence.getFrom()));
+                rmode = npresence.getMode();
+                rtype = npresence.getType();
+    
+                if (rmode == Mode.away || rmode == Mode.xa)
+                    type = Presence.AWAY;
+                else if (rmode == Mode.dnd)
+                    type = Presence.DO_NOT_DISTURB;
+                else if (rtype == Type.unavailable || rtype == Type.error)
+                    type = Presence.OFFLINE;
+            }
         }
 
         return type;
@@ -1514,17 +1531,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     @Override
     public void reestablishSessionAsync(Map<String, String> sessionContext) {
-        new Thread(new Runnable() {
+        execute(new Runnable() {
             @Override
             public void run() {
-                //if (getState() == SUSPENDED) {
+                if (getState() == SUSPENDED) {
                     debug(TAG, "reestablish");
+                    mNeedReconnect = false;
                     setState(LOGGING_IN, null);
-                    //maybe_reconnect();
-                    force_reconnect();
-                //}
+                    maybe_reconnect();
+                }
             }
-        }).start();
+        });
     }
 
     @Override
@@ -1540,6 +1557,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 if (mStreamHandler != null)
                     mStreamHandler.quickShutdown();
+                
             }
         });
     }
@@ -1641,6 +1659,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
                 msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
 
+       //         msg.setFrom(message.getFrom().getAddress());
                 msg.setBody(message.getBody());
 
                 //debug(TAG, "sending packet ID " + msg.getPacketID());
@@ -1956,21 +1975,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
-                /*
+                
                 qPresence.push(presence);
                 
-                if (mTimerPresence == null)
-                {
-
-                    
-                }*/
                 
             }
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
-                /*
+                
                 Collection<Contact> contacts = new ArrayList<Contact>();
 
                 for (String address :addresses)
@@ -1984,7 +1998,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
 
                 mContactListManager.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
-              */
+              
             }
 
             @Override
@@ -2010,7 +2024,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-             //   loadContactListsAsync();
+                loadContactListsAsync();
             }
         };
 
@@ -2084,41 +2098,46 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         protected void doAddContactToListAsync(Contact contact, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
-            org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                    org.jivesoftware.smack.packet.Presence.Type.subscribe);
-            response.setTo(contact.getAddress().getBareAddress());
-            sendPacket(response, mConnection);
-
-            Roster roster = mConnection.getRoster();
-            String[] groups = new String[] { list.getName() };
-            try {
-                RosterEntry rEntry = roster.getEntry(contact.getAddress().getBareAddress());            
-                RosterGroup rGroup = roster.getGroup(list.getName());                
-                
-                if (rGroup == null)
-                {
-                    if (rEntry == null)
-                        roster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
-                
-                }
-                else
-                {
-                
-                    if (rEntry == null)
-                        roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
-                    else
-                        rGroup.addEntry(rEntry);
-                }
+            
+            // If contact exists locally, don't create another copy
+          //  if (!list.containsContact(contact))
+                notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
+           // else
+            //  debug(TAG, "skip adding existing contact locally " + contact.getName());
+            
+            if (mConnection.isConnected())
+            {
+                org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
+                        org.jivesoftware.smack.packet.Presence.Type.subscribe);
+                response.setTo(contact.getAddress().getBareAddress());
+                sendPacket(response, mConnection);
+    
+                Roster roster = mConnection.getRoster();
+                String[] groups = new String[] { list.getName() };
+                try {
+                    RosterEntry rEntry = roster.getEntry(contact.getAddress().getBareAddress());            
+                    RosterGroup rGroup = roster.getGroup(list.getName());                
                     
-                // If contact exists locally, don't create another copy
-             //   if (!list.containsContact(contact))
-                    notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
-               // else
-                 //   debug(TAG, "skip adding existing contact locally " + contact.getName());
-            } catch (XMPPException e) {
-             
-                debug(TAG,"error updating remote roster",e);
-                throw new ImException("error updating remote roster");
+                    if (rGroup == null)
+                    {
+                        if (rEntry == null)
+                            roster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
+                    
+                    }
+                    else
+                    {
+                    
+                        if (rEntry == null)
+                            roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
+                        else
+                            rGroup.addEntry(rEntry);
+                    }
+                    
+                } catch (XMPPException e) {
+                 
+                    debug(TAG,"error updating remote roster",e);
+                    throw new ImException("error updating remote roster");
+                }
             }
         }
 
@@ -2139,7 +2158,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public void approveSubscriptionRequest(Contact contact) {
-            debug(TAG, "approve subscription");
+            debug(TAG, "approve subscription: " + contact.getAddress().getAddress());
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribed);
             response.setTo(contact.getAddress().getBareAddress());
@@ -2201,7 +2220,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         });
 
         if (!success) {
-          //  debug(TAG, "failed to schedule heartbeat state = " + getState());
+            debug(TAG, "failed to schedule heartbeat state = " + getState());
         }
     }
 
@@ -2217,6 +2236,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mConnection == null && mRetryLogin) {
             debug(TAG, "reconnect with login");
             do_login();
+            return;
         }
 
         if (mConnection == null)
@@ -2233,7 +2253,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (PING_ENABLED) {
                 // Check ping on every heartbeat.  checkPing() will return true immediately if we already checked.
                 if (!checkPing()) {
-                    Log.w(TAG, "reconnect on ping failed");
+                    debug(TAG, "reconnect on ping failed: " + mUser.getAddress().getAddress());
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, "network timeout"));
                     maybe_reconnect();
                 } else {
@@ -2319,25 +2339,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void networkTypeChanged() {
         
-        suspend();
-        
-        /*
         super.networkTypeChanged();
         
         execute(new Runnable() {
             @Override
             public void run() {
         
-                if (getState() == LOGGED_IN)
-                {
-                    debug(TAG, "reestablish");
-                    setState(LOGGING_IN, null);
-                    force_reconnect();
-                }
+                debug(TAG, "network type changed");
+                mNeedReconnect = false;
+                setState(LOGGING_IN, null);
+                reconnect();
         
             }
         });
-        */
         
     }
 
@@ -2347,7 +2361,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
      * Runs in executor thread
      */
     private void force_reconnect() {
-        debug(TAG, "force_reconnect need=" + mNeedReconnect);
+        debug(TAG, "force_reconnect mNeedReconnect=" + mNeedReconnect + " state=" + getState()
+                + " connection?=" + (mConnection != null));
+        
         if (mConnection == null)
             return;
         if (mNeedReconnect)
@@ -2414,7 +2430,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // by checking ping responses.
             clearPing();
             if (mConnection.isConnected()) {
-                debug(TAG,"reconnect while already connected, assuming good");
+                debug(TAG,"reconnect while already connected, assuming good: " + mConnection);
                 mNeedReconnect = false;
                 setState(LOGGED_IN, null);
                 return;
@@ -2424,59 +2440,38 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             try {
                 if (mStreamHandler.isResumePossible()) {
                     // Connect without binding, will automatically trigger a resume
-                    debug(TAG, "resume");                    
+                    debug(TAG, "mStreamHandler resume");                    
                     mConnection.connect(false);
                     initServiceDiscovery();
                 } else {
+                    debug(TAG, "reconnection on network change failed: " + mUser.getAddress().getAddress());
 
                     mConnection = null;
                     mNeedReconnect = true;
-
-                    debug(TAG, "reconnection on network change failed");
-                    setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
-                            "reconnection on network change failed"));
-                   
-                    /*
+                    setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, null));
+                    do_login();
                     
-                    mConnection.connect();
-
-                    if (!mConnection.isAuthenticated()) {
-                        // This can happen if a reconnect failed and the smack connection now has wasAuthenticated = false.
-                        // It can also happen if auth exception was swallowed by smack.
-                        // Try to login manually.
-
-      //                  Log.e(TAG, "authentication did not happen in connect() - login manually");
-    //                    mConnection.login(mUsername, mPassword, mResource);
-
-                        // Make sure
-                        if (!mConnection.isAuthenticated())
-                            throw new XMPPException("manual auth failed");
-
-                        // Manually set the state since manual auth doesn't notify listeners
-                        mNeedReconnect = false;
-                        setState(LOGGED_IN, null);
-                    }
-                    mStreamHandler.notifyInitialLogin();
-                    initServiceDiscovery();
-                    sendPresencePacket();
-                     */
                 }
             } catch (Exception e) {
                 if (mStreamHandler != null)
                     mStreamHandler.quickShutdown();
                 
+                mConnection = null;
                 debug(TAG, "reconnection attempt failed", e);
                 // Smack incorrectly notified us that reconnection was successful, reset in case it fails
                 mNeedReconnect = true;
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
+                do_login();
+                
             }
         } else {
             mNeedReconnect = true;
-
+            mConnection = null;
             debug(TAG, "reconnection on network change failed");
 
             setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
                     "reconnection on network change failed"));
+            do_login();
             
         }
     }
@@ -2495,7 +2490,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
     
     public void debug(String tag, String msg, Exception e) {
-        //  if (Log.isLoggable(TAG, Log.DEBUG)) {
         if (Debug.DEBUG_ENABLED) {
             Log.e(tag, "" + mGlobalId + " : " + msg,e);
         }

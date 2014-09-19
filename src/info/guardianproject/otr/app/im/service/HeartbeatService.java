@@ -35,11 +35,12 @@ public class HeartbeatService extends Service {
     private NetworkConnectivityListener mNetworkConnectivityListener;
     private static final int EVENT_NETWORK_STATE_CHANGED = 200;
 
-
+    
     // Our heartbeat interval in seconds.
     // The user controlled preference heartbeat interval is in these units (i.e. minutes).
     private static final long HEARTBEAT_INTERVAL = 1000 * 60;
-
+    private long mHeartbeatInterval = HEARTBEAT_INTERVAL;
+    
 
     @Override
     public void onCreate() {
@@ -50,15 +51,13 @@ public class HeartbeatService extends Service {
         
         Imps.ProviderSettings.QueryMap settings = getGlobalSettings();
         
-        long heartBeatInterval = HEARTBEAT_INTERVAL;
-        
         if (settings != null)
         {
-            heartBeatInterval = settings.getHeartbeatInterval();
+            mHeartbeatInterval = settings.getHeartbeatInterval() * HEARTBEAT_INTERVAL;
             settings.close();
         }
         
-        startHeartbeat(heartBeatInterval);
+        startHeartbeat(mHeartbeatInterval);
 
         mServiceHandler = new ServiceHandler();
 
@@ -90,7 +89,7 @@ public class HeartbeatService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && HEARTBEAT_ACTION.equals(intent.getAction())) {
-            startHeartbeat(HEARTBEAT_INTERVAL);
+            startHeartbeat(mHeartbeatInterval);
             startService(mRelayIntent);
         }
         return START_STICKY;

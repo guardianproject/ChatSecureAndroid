@@ -117,8 +117,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     public static void debug(String msg) {
-        //LogCleaner.debug(TAG, msg);
-        Log.d(TAG, msg);
+       LogCleaner.debug(TAG, msg);
+       // Log.d(TAG, msg);
         
     }
 
@@ -285,6 +285,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             }
 
             mHeartbeatInterval = getGlobalSettings().getHeartbeatInterval();
+            debug("heartbeat interval: " + mHeartbeatInterval);
             
             for (ImConnectionAdapter conn : mConnections.values())
             {
@@ -632,21 +633,22 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         debug("networkStateChanged: type=" + mNetworkType + " state=" + mNetworkState);
         
-        // Notify the connection that network type has changed. Note that this
-        // only work for connected connections, we need to reestablish if it's
-        // suspended.
-        if (mNetworkType != oldType) {
-            
-            for (ImConnectionAdapter conn : mConnections.values()) {
-                if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN) {
-                 
-               //     conn.networkTypeChanged();
-                }
-            }               
-        }
-        
         switch (mNetworkState) {
             case CONNECTED:
+
+                // Notify the connection that network type has changed. Note that this
+                // only work for connected connections, we need to reestablish if it's
+                // suspended.
+                if (mNetworkType != oldType) {
+                    
+                    for (ImConnectionAdapter conn : mConnections.values()) {
+                        if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN) {
+                         
+                            conn.networkTypeChanged();
+                        }
+                    }               
+                }
+                
                 boolean reConnd = reestablishConnections();
                 
                 if (!reConnd)
@@ -656,6 +658,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         autoLogin();             
                     }
                 }
+                
                 
                 break;
     
