@@ -1015,7 +1015,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             {
                 mAcceptTransfer = true;
                 mWaitingForResponse = false;
-                
+                mLastTransferFrom = from;
+                mLastTransferUrl = transferUrl;
+
+                mDataHandler.acceptTransfer(mLastFileUrl);
             }
             else
             {
