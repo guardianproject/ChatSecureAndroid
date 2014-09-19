@@ -185,6 +185,7 @@ public class ChatView extends LinearLayout {
         if (mIsSelected)
         {
             bindChat(mLastChatId);
+            setTitle();
             updateWarningView();
             mComposeMessage.requestFocus();
             
@@ -284,6 +285,8 @@ public class ChatView extends LinearLayout {
     long mLastChatId=-1;
     String mRemoteNickname;
     String mRemoteAddress;
+    RoundedAvatarDrawable mRemoteAvatar = null;
+    
     
     long mProviderId;
     long mAccountId;
@@ -1003,27 +1006,13 @@ public class ChatView extends LinearLayout {
        
     }
     
-    public void setTitle (Cursor c)
+    public void setTitle ()
     {
         if (mIsSelected)
         {
             mNewChatActivity.setTitle(mRemoteNickname);
-            
-            RoundedAvatarDrawable avatar = null;
-            
-            try {avatar =DatabaseUtils.getAvatarFromCursor(c, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
-            catch (Exception e){}
-            
-            if (avatar == null)
-            {
-                avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.avatar_unknown));
-    
-            }
-            
-            setAvatarBorder(mPresenceStatus, avatar);
-            
-            mNewChatActivity.getSupportActionBar().setIcon(avatar);
+        
+            mNewChatActivity.getSupportActionBar().setIcon(mRemoteAvatar);
         }
     }
     
@@ -1154,8 +1143,25 @@ public class ChatView extends LinearLayout {
         } else {
         
             updateSessionInfo(c);
-
-            setTitle(c);
+            
+    
+            
+            if (mRemoteAvatar == null)
+            {
+                try {mRemoteAvatar =DatabaseUtils.getAvatarFromCursor(c, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+                catch (Exception e){}
+                
+                if (mRemoteAvatar == null)
+                {
+                    mRemoteAvatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                            R.drawable.avatar_unknown));
+        
+                }
+                
+                setAvatarBorder(mPresenceStatus, mRemoteAvatar);
+                
+            }
+            
             
             c.close();
             
