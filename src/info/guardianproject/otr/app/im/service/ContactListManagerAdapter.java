@@ -306,7 +306,10 @@ public class ContactListManagerAdapter extends
 
     public Contact getContactByAddress(String address) {
         if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
-            return mOfflineContacts.get(address);
+            if (mOfflineContacts != null)
+                return mOfflineContacts.get(address);
+            else
+                return null;
         }
         
         Contact c = mAdaptee.getContact(address);
@@ -542,8 +545,8 @@ public class ContactListManagerAdapter extends
                         
                         boolean exists = updateContact(contact, listId);
                         
-                        //if (!exists)
-                          //     insertContactContent(contact, listId);
+                        if (!exists)
+                             insertContactContent(contact, listId, Imps.Contacts.TYPE_NORMAL);
                     }
                     notificationText = mContext.getResources().getString(R.string.add_contact_success,
                             contact.getName());
