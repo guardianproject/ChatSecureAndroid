@@ -70,9 +70,9 @@ import com.google.common.collect.Sets;
 
 public class OtrDataHandler implements DataHandler {
     public static final String URI_PREFIX_OTR_IN_BAND = "otr-in-band:/storage/";
-    private static final int MAX_OUTSTANDING = 3;
+    private static final int MAX_OUTSTANDING = 5;
     
-    private static final int MAX_CHUNK_LENGTH = 32768;
+    private static final int MAX_CHUNK_LENGTH = 32768/2;
 
     private static final int MAX_TRANSFER_LENGTH = 1024*1024*64;
 
