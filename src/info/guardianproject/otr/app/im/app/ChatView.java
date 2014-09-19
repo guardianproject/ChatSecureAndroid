@@ -152,7 +152,6 @@ public class ChatView extends LinearLayout {
     NewChatActivity mNewChatActivity;
     ImApp mApp;
     SimpleAlertHandler mHandler;
-    Cursor mCursor;
     IImConnection mConn;
     
     //private ImageView mStatusIcon;
@@ -188,8 +187,6 @@ public class ChatView extends LinearLayout {
             bindChat(mLastChatId);
             updateWarningView();
             mComposeMessage.requestFocus();
-            
-            setTitle();
             
             try
             {
@@ -544,9 +541,9 @@ public class ChatView extends LinearLayout {
 
     private Runnable mUpdateChatCallback = new Runnable() {
         public void run() {
-            if (mCursor != null && mCursor.requery() && mCursor.moveToFirst()) {
+           // if (mCursor != null && mCursor.requery() && mCursor.moveToFirst()) {
                 updateChat();
-            }
+           // }
         }
     };
     
@@ -566,13 +563,14 @@ public class ChatView extends LinearLayout {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onContactsPresenceUpdate()");
             }
+            /*
             for (Contact c : contacts) {
                 if (c.getAddress().getBareAddress().equals(Address.stripResource(mRemoteAddress))) {
                     mHandler.post(mUpdateChatCallback);
                     scheduleRequery(DEFAULT_QUERY_INTERVAL);
                     break;
                 }
-            }
+            }*/
         }
     };
 
@@ -730,7 +728,7 @@ public class ChatView extends LinearLayout {
             public void onClick(View v) {
                 
                 mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
-                updateContactInfo();
+            //    updateSessionInfo();
                 
             }
             
@@ -744,7 +742,7 @@ public class ChatView extends LinearLayout {
             public void onClick(View v) {
                 
                 mNewChatActivity.declineSubscription(mProviderId, mRemoteAddress);
-                updateContactInfo();
+              //  updateSessionInfo();
                 
                 
             }
@@ -941,19 +939,15 @@ public class ChatView extends LinearLayout {
     }
 
     public void unbind() {
-        if (mCursor != null)
-        {
-            mCursor.close();
-            mCursor = null;
-        }
-        mMessageAdapter.changeCursor(null);
+        
+        
     }
     
     
     void updateChat() {
         setViewType(VIEW_TYPE_CHAT);
 
-        updateContactInfo();
+//        updateSessionInfo();
 
         setStatusIcon();
         
@@ -984,30 +978,32 @@ public class ChatView extends LinearLayout {
 
     int mContactType = -1;
     
-    private void updateContactInfo() {
+    private void updateSessionInfo(Cursor c) {
        
-        mProviderId = mCursor.getLong(PROVIDER_COLUMN);
-        mAccountId = mCursor.getLong(ACCOUNT_COLUMN);
-        mPresenceStatus = mCursor.getInt(PRESENCE_STATUS_COLUMN);
-        mContactType = mCursor.getInt(TYPE_COLUMN);
-        
-        mRemoteNickname = mCursor.getString(NICKNAME_COLUMN);
-        mRemoteAddress = mCursor.getString(USERNAME_COLUMN);
-        
-        int subscriptionType = mCursor.getInt(SUBSCRIPTION_TYPE_COLUMN);
-        
-        int subscriptionStatus = mCursor.getInt(SUBSCRIPTION_STATUS_COLUMN);
-        if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
-            && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
-         
-
-            bindSubscription(mProviderId, mRemoteAddress);
+        if (c != null && (!c.isClosed()))
+        {
+            mProviderId = c.getLong(PROVIDER_COLUMN);
+            mAccountId = c.getLong(ACCOUNT_COLUMN);
+            mPresenceStatus = c.getInt(PRESENCE_STATUS_COLUMN);
+            mContactType = c.getInt(TYPE_COLUMN);
+            
+            mRemoteNickname = c.getString(NICKNAME_COLUMN);
+            mRemoteAddress = c.getString(USERNAME_COLUMN);
+            
+            int subscriptionType = c.getInt(SUBSCRIPTION_TYPE_COLUMN);
+            
+            int subscriptionStatus = c.getInt(SUBSCRIPTION_STATUS_COLUMN);
+            if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
+                && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
+             
+    
+                bindSubscription(mProviderId, mRemoteAddress);
+            }
         }
-        
        
     }
     
-    public void setTitle ()
+    public void setTitle (Cursor c)
     {
         if (mIsSelected)
         {
@@ -1015,7 +1011,7 @@ public class ChatView extends LinearLayout {
             
             RoundedAvatarDrawable avatar = null;
             
-            try {avatar =DatabaseUtils.getAvatarFromCursor(mCursor, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+            try {avatar =DatabaseUtils.getAvatarFromCursor(c, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
             catch (Exception e){}
             
             if (avatar == null)
@@ -1141,23 +1137,27 @@ public class ChatView extends LinearLayout {
         log("bind " + this + " " + chatId);
         mLastChatId = chatId;
         
-        if (mCursor != null && !mCursor.isClosed())
-            mCursor.close();
-        
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
-        mCursor = mNewChatActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
+        Cursor c = mNewChatActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
         
-        if (mCursor == null)
+        if (c == null)
             return;
         
-        if (!mCursor.moveToFirst()) {
+        if (!c.moveToFirst()) {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("Failed to query chat: " + chatId);
             }
             mLastChatId = -1;
+
+            c.close();
+
         } else {
         
-            updateContactInfo();
+            updateSessionInfo(c);
+
+            setTitle(c);
+            
+            c.close();
             
             mCurrentChatSession = getChatSession();
             
@@ -1928,13 +1928,12 @@ public class ChatView extends LinearLayout {
             case SHOW_DATA_PROGRESS:
 
                 int progress = msg.getData().getInt("progress");
-          //      String  = msg.getData().getString("file");
                 
                 mProgressTransfer.setVisibility(View.VISIBLE);                
                 mProgressTransfer.setProgress(progress);
                 mProgressTransfer.setMax(100);
                 
-                if (progress >= 100)
+                if (progress >= 95)
                 {
                     
                     mProgressTransfer.setVisibility(View.GONE);
@@ -2293,9 +2292,6 @@ public class ChatView extends LinearLayout {
 
         @Override
         public void changeCursor(Cursor cursor) {
-            
-            if (getCursor() != null && (!getCursor().isClosed()))
-                getCursor().close();
             
             super.changeCursor(cursor);
             if (cursor != null) {
