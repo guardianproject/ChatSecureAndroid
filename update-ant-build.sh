@@ -19,4 +19,4 @@ cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-supp
 cp libs/android-support-v4.jar external/ViewPagerIndicator/library/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/AndroidEmojiInput/library/libs/android-support-v4.jar
 
-cp libs/sqlcipher.jar external/cacheword/cachewordlib/libs/sqlcipher.jar
+rm external/cacheword/cachewordlib/custom_rules.xml
