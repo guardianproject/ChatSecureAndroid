@@ -2,9 +2,8 @@ package info.guardianproject.otr;
 
 // Originally: package com.zadov.beem;
 
-import info.guardianproject.otr.app.im.ImService;
+import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
-import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -29,6 +28,7 @@ import net.java.otr4j.session.SessionStatus;
 import net.java.otr4j.session.TLV;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /*
  * OtrChatManager keeps track of the status of chats and their OTR stuff
@@ -112,6 +112,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             
             sessionId = sIdTemp;
             mSessions.put(sessionId.getSessionId(), sessionId);
+            
+            Log.d(ImApp.LOG_TAG,"getting new otr session id: " + sessionId);
+            
         }
         return sessionId;
     }
@@ -293,7 +296,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             if (data != null && sessionStatus != SessionStatus.ENCRYPTED) {
                 // Cannot send data without OTR, so start a session and drop message.
                 // Message will be resent by caller when session is encrypted.
-                startSession(localUserId, remoteUserId);
+                startSession(sessionId);
                 OtrDebugLogger.log("auto-start OTR on data send request");
                 return;
             }
