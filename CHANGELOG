@@ -1,6 +1,37 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+14.0.1-14.0.3 / 2014-09-19 / 3fb5a43336f7fcc040de8157c070320381d731e0
+
+* Ensured when you add a new contact it is updated in local list state
+	e743f4a avoid NPE for uninit'd state and make sure to insert new contact
+	cd2454e fix management of contactlist instances and adding new
+	3e2d604 streamline add contact and add account user interface workflow
+
+* Fixes for XMPP SASL Authentication
+	dda8937 fixes in password management and Google OAuth Logic also improvements in reconnect logic to make it actually work
+	4b544d9 fix a timeout issue on first login that was happening with Google Talk servers also if ping() fails, we should only maybe() re
+	2a6b6c0 fix NPE bug with checking null password value ensure Google OAuth refresh all persists correctly
+
+* Improvements to OTR session management
+	ff0b645 another fix for otrdata handling
+	364bb7e if a user accepts all transfers for session, make that work
+	60fcae2 use the JID in the SessionID and don't append session resouce here it was causing addressing problems, and OTR was not init'in
+	194d31f use the SessionID variable here since we have it
+	8dd6b93 make the chunks smaller and the tolerance larger
+	acb7b43 update the OTR policy setting
+	dab9804 sessions are not tied to full jid, only username
+
+* Fixed inability to login to app due to CacheWord library bug
+	dc19140 update to cacheword with fix for parse() NPE
+
+* Updated localizations / translation strings
+	54568c7 big update to localizations from transifex
+
+* Update SQLCipher and added back in x86 support
+	2f74372 update binaries from SQLCipher v3.1 release
+	9418d19 updated iocipher and added back in x86 support
+
 14.0.0
 * small changes to lockscreen layout and graphic; small layout tweaks for wizard slider
 * add nickname support to groupchat/MUC dialog and methods
