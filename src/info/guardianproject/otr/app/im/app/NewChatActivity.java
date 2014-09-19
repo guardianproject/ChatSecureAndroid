@@ -1824,6 +1824,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
     }
    
+
     
     public void refreshConnections ()
     {
@@ -1837,7 +1838,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         }        
     }
     
-    /**
+    /** 
     public void unregisterSubListeners ()
     {
         if (mAccountIds != null)
