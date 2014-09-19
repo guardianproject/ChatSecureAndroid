@@ -129,8 +129,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 
                 msg.setFrom(connection.getLoginUser().getAddress());
                 final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
-                msg.setTo(appendSessionResource(sessionID, to));
-               // msg.setTo(to);
+              //  msg.setTo(appendSessionResource(sessionID, to));
+                msg.setTo(to);
                 msg.setDateTime(new Date());
                 
                 // msg ID is set by plugin
