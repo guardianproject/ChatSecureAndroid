@@ -523,8 +523,7 @@
 	 
 	<string name="_open_conversations">" open conversation(s)"</string>
 	 
-	 
-	<string name="menu_exit">Shutdown &amp; Exit</string>
+	<string name="menu_exit">Shutdown &amp; Lock</string>
 			    
 	<string name="menu_panic">Panic</string>
 	<string name="buddies">Buddies</string>
