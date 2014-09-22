@@ -197,7 +197,12 @@
      
         </group>
         
- 
+   
+      <item android:id="@+id/menu_view_accounts"
+        android:title="@string/menu_add_account"
+                app:showAsAction="never"
+        />
+      
      
   <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
@@ -205,18 +210,10 @@
          app:showAsAction="never"
          />
      
-        
-      <item android:id="@+id/menu_view_accounts"
-        android:title="@string/menu_add_account"
-                app:showAsAction="never"
-        />
-      
-      
       
       <item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
                 app:showAsAction="never"
         />
-  
   
 </menu>
