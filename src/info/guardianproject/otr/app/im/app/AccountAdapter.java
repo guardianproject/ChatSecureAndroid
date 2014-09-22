@@ -54,8 +54,8 @@ public class AccountAdapter extends CursorAdapter {
         
         if (mStashCursor != null) {
             // Delay swapping in the cursor until we get the extra info
-            List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
-            runBindTask((Activity)mContext, accountInfoList);
+           // List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
+           // runBindTask((Activity)mContext, accountInfoList);
         }
         return super.swapCursor(mStashCursor);
     };

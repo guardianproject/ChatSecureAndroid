@@ -85,6 +85,7 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
                             Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
                             new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                             Imps.Provider.DEFAULT_SORT_ORDER);
+                    loader.setUpdateThrottle(100l);
 
                     return loader;
                 }

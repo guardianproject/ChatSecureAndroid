@@ -207,7 +207,15 @@ public class ProviderListItem extends LinearLayout {
             
             final int connectionStatus = cursor.getInt(mAccountConnectionStatusColumn);
             final String presenceString = getPresenceString(cursor, getContext());
-            runBindTask(r, providerId, activeUserName, connectionStatus, presenceString);
+            
+            mHandler.postDelayed(new Runnable () {
+                public void run ()
+                {
+                    runBindTask(r, providerId, activeUserName, connectionStatus, presenceString);
+                }
+            }
+                    , 200l);
+
         } 
     }
     
