@@ -10,14 +10,13 @@ import android.os.RemoteException;
 public class OtrChatSessionAdapter extends Stub {
 
     private OtrChatManager _chatManager;
-    private String _localUser;
-    private String _remoteUser;
+    private SessionID _sid = null;
     
     public OtrChatSessionAdapter(String localUser, String remoteUser, OtrChatManager chatManager) {
 
         _chatManager = chatManager;
-        _localUser = localUser;
-        _remoteUser = remoteUser;
+        _sid = _chatManager.getSessionId(localUser, remoteUser);
+        
     }
     
     public void end () throws RemoteException 
@@ -26,12 +25,8 @@ public class OtrChatSessionAdapter extends Stub {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
-                try {
-                    _chatManager.removeSession(getSessionId ());
-                } catch (RemoteException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                _chatManager.removeSession(_sid);
+               
             }
         });
     }
@@ -42,16 +37,7 @@ public class OtrChatSessionAdapter extends Stub {
             public void run() {
                 if (_chatManager != null)
                 {
-                    SessionID sid;
-                    try {
-                        sid = getSessionId ();
-
-                        if (sid != null)
-                            _chatManager.startSession(sid);
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                     _chatManager.startSession(_sid);                 
                 }
             }
         });
@@ -64,17 +50,10 @@ public class OtrChatSessionAdapter extends Stub {
             public void run() {
                 if (_chatManager != null)
                 {
-                    SessionID sid;
-                    try {
-                        sid = getSessionId ();
-
-                        if (sid != null)
-                            _chatManager.endSession(sid);
+                 
+                            _chatManager.endSession(_sid);
                         
-                    } catch (RemoteException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                  
                 }
             }
         });
@@ -83,10 +62,8 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public boolean isChatEncrypted() throws RemoteException {
 
-        SessionID sid = getSessionId ();
-        
-        if (sid != null)
-            return _chatManager.getSessionStatus(sid) == SessionStatus.ENCRYPTED;
+        if (_sid != null)
+            return _chatManager.getSessionStatus(_sid) == SessionStatus.ENCRYPTED;
         else
             return false;
     }
@@ -97,7 +74,7 @@ public class OtrChatSessionAdapter extends Stub {
         
         if (_chatManager != null)
         {
-            SessionStatus sessionStatus = _chatManager.getSessionStatus(getSessionId ());
+            SessionStatus sessionStatus = _chatManager.getSessionStatus(_sid);
             if (sessionStatus == null)
                 sessionStatus = SessionStatus.PLAINTEXT;
             return sessionStatus.ordinal();
@@ -112,7 +89,7 @@ public class OtrChatSessionAdapter extends Stub {
     public void initSmpVerification(String question, String secret) throws RemoteException {
 
         try {
-            _chatManager.initSmp(getSessionId (), question,
+            _chatManager.initSmp(_sid, question,
                     secret);
         } catch (OtrException e) {
             OtrDebugLogger.log("initSmp", e);
@@ -124,7 +101,7 @@ public class OtrChatSessionAdapter extends Stub {
     public void respondSmpVerification(String answer) throws RemoteException {
 
         try {
-            _chatManager.respondSmp(getSessionId (), answer);
+            _chatManager.respondSmp(_sid, answer);
             
         } catch (OtrException e) {
             OtrDebugLogger.log("respondSmp", e);
@@ -135,24 +112,24 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public void verifyKey(String address) throws RemoteException {
         
-        _chatManager.getKeyManager().verify(getSessionId ());
+        _chatManager.getKeyManager().verify(_sid);
         
     }
 
     @Override
     public void unverifyKey(String address) throws RemoteException {
-        _chatManager.getKeyManager().unverify(getSessionId ());
+        _chatManager.getKeyManager().unverify(_sid);
     }
 
     @Override
     public boolean isKeyVerified(String address) throws RemoteException {
-        return _chatManager.getKeyManager().isVerified(getSessionId ());
+        return _chatManager.getKeyManager().isVerified(_sid);
     }
 
     @Override
     public String getLocalFingerprint() throws RemoteException {
         
-         SessionID sid = getSessionId ();
+         SessionID sid = _sid;
          
          if (sid != null)
              return _chatManager.getKeyManager().getLocalFingerprint(sid);
@@ -163,32 +140,22 @@ public class OtrChatSessionAdapter extends Stub {
 
     @Override
     public String getRemoteFingerprint() throws RemoteException {
-        return _chatManager.getKeyManager().getRemoteFingerprint(getSessionId ());
+        return _chatManager.getKeyManager().getRemoteFingerprint(_sid);
     }
 
     @Override
     public void generateLocalKeyPair() throws RemoteException {
-        _chatManager.getKeyManager().generateLocalKeyPair(getSessionId ());
+        _chatManager.getKeyManager().generateLocalKeyPair(_sid);
     }
 
     @Override
     public String getLocalUserId() throws RemoteException {
-        return _localUser;
+        return _sid.getLocalUserId();
     }
 
     @Override
     public String getRemoteUserId() throws RemoteException {
-        return _remoteUser;
+        return _sid.getRemoteUserId();
     }
 
-    private SessionID getSessionId () throws RemoteException
-    {
-        SessionID sid = _chatManager.getSessionId(_localUser, _remoteUser);
-        
-        if (sid == null)
-            throw new RemoteException();
-        
-        return sid;
-    }
-    
 }

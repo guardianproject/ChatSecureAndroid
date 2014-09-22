@@ -60,11 +60,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     }
 
     public Address appendSessionResource(SessionID session, Address to) {
+        /*
         String resource = mSessionResources.get(session);
         if (resource != null)
             return new XmppAddress(to.getBareAddress() + '/' + resource);
         else
             return to;
+            */        
+        return new XmppAddress(session.getRemoteUserId());
     }
 
     public ImConnectionAdapter findConnection(SessionID session) {
@@ -111,7 +114,9 @@ public class OtrEngineHostImpl implements OtrEngineHost {
         mPolicy = policy;
     }
 
-    private boolean sendMessage(SessionID sessionID, String body) {
+    public void injectMessage(SessionID sessionID, String text) {
+        OtrDebugLogger.log(sessionID.toString() + ": injecting message: " + text);
+
         ImConnectionAdapter connection = findConnection(sessionID);
         if (connection != null)
         {
@@ -122,6 +127,8 @@ public class OtrEngineHostImpl implements OtrEngineHost {
             
             if (chatSessionAdapter != null)
             {
+                String body = text;
+            
                 if (body == null)
                     body = ""; //don't allow null messages, only empty ones!
                         
@@ -129,16 +136,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                 
                 msg.setFrom(connection.getLoginUser().getAddress());
                 final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
-              //  msg.setTo(appendSessionResource(sessionID, to));
-                msg.setTo(to);
+                msg.setTo(appendSessionResource(sessionID, to));
+                //msg.setTo(to);
                 msg.setDateTime(new Date());
                 
-                // msg ID is set by plugin
-              //  msg.setID(msg.getFrom().getBareAddress() + ":" + msg.getDateTime().getTime());
+                // msg ID is set by plugin            
                 chatSessionManagerAdapter.getChatSessionManager().sendMessageAsync(chatSessionAdapter.getAdaptee(), msg);
                 
-                return true;
-            }
+            }   
             else
             {
                 OtrDebugLogger.log(sessionID.toString() + ": could not find chatSession");
@@ -151,31 +156,19 @@ public class OtrEngineHostImpl implements OtrEngineHost {
             
         }
         
-        return false;
-    }
-
-    public void injectMessage(SessionID sessionID, String text) {
-        OtrDebugLogger.log(sessionID.toString() + ": injecting message: " + text);
-
-        sendMessage(sessionID, text);
+        
     }
 
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
+        
+        Toast.makeText(mContext, "ERROR: " + error, Toast.LENGTH_SHORT).show();
 
-//        sendMessage(sessionID, error);
-
-      //  if (mImService != null)
-        //    mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),error);
-     
     }
 
     public void showWarning(SessionID sessionID, String warning) {
         OtrDebugLogger.log(sessionID.toString() + ": WARNING=" + warning);
-        
-      //  if (mImService != null)
-        //    mImService.getStatusBarNotifier().notifyError(sessionID.getRemoteUserId(),warning);
-        
+                
     }
 
     

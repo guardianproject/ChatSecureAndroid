@@ -8,6 +8,7 @@ import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.service.RemoteImService;
+import info.guardianproject.util.Debug;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -103,17 +104,21 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         SessionID sIdTemp = new SessionID(localUserId, remoteUserId, "XMPP");
         SessionID sessionId = mSessions.get(sIdTemp.getSessionId());
         
-        if (sessionId == null ||
-                ((!sessionId.getRemoteUserId().equals(remoteUserId)) &&
-                        remoteUserId.contains("/"))) {
-            // Remote has changed (either different presence, or from generic JID to specific presence),
-            // or we didn't have a session yet.
-            // Create or replace sessionId with one that is specific to the new presence.
-            
+        if (sessionId == null)
+        {
+         // or we didn't have a session yet.
             sessionId = sIdTemp;
             mSessions.put(sessionId.getSessionId(), sessionId);
+        }
+        else if ((!sessionId.getRemoteUserId().equals(remoteUserId)) &&
+                        remoteUserId.contains("/")) {
+            // Remote has changed (either different presence, or from generic JID to specific presence),            
+            // Create or replace sessionId with one that is specific to the new presence.
             
-            Log.d(ImApp.LOG_TAG,"getting new otr session id: " + sessionId);
+            sessionId.updateRemoteUserId(remoteUserId);
+            
+            if (Debug.DEBUG_ENABLED)
+                Log.d(ImApp.LOG_TAG,"getting new otr session id: " + sessionId);
             
         }
         return sessionId;
@@ -245,6 +250,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
 
             mOtrEngine.endSession(sessionId);
 
+            removeSession(localUserId, remoteUserId);
+            
         } catch (OtrException e) {
             OtrDebugLogger.log("endSession", e);
         }
@@ -261,6 +268,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
        // OtrDebugLogger.log("session status: " + mOtrEngine.getSessionStatus(sessionId));
 
         if (mOtrEngine != null && sessionId != null) {
+            
             mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
             plain = mOtrEngine.transformReceiving(sessionId, msg, tlvs);
             OtrSm otrSm = mOtrSms.get(sessionId);
@@ -270,7 +278,6 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 if (smTlvs != null) {
                     String encrypted = mOtrEngine.transformSending(sessionId, "", smTlvs);
                     mOtrEngineHost.injectMessage(sessionId, encrypted);
-
                 }
             }
 
