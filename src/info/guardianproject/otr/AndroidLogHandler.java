@@ -139,10 +139,9 @@ public class AndroidLogHandler extends Handler {
         // TODO: avoid ducking into native 2x; we aren't saving any formatter calls
         int priority = getAndroidLevel(level);
         
-        /**
         if (!Debug.DEBUG_ENABLED) {
             return;
-        }*/
+        }
 
         try {
             Log.println(priority, tag, message);
