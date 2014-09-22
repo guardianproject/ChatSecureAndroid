@@ -6,7 +6,8 @@
 
 package net.java.otr4j.session;
 
-import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.AndroidLogHandler;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class SessionImpl implements Session {
     private SessionKeys[][] sessionKeys;
     private Vector<byte[]> oldMacKeys;
     private static Logger logger = Logger.getLogger(SessionImpl.class.getName());
+  
     private List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
     private BigInteger ess;
     private String lastSentMessage;
@@ -67,7 +69,8 @@ public class SessionImpl implements Session {
 
         this.setSessionID(sessionID);
         this.setHost(listener);
-
+        
+        logger.addHandler(new AndroidLogHandler());
         // client application calls OtrEngine.getSessionStatus()
         // -> create new session if it does not exist, end up here
         // -> setSessionStatus() fires statusChangedEvent
@@ -550,8 +553,8 @@ public class SessionImpl implements Session {
             case FINISHED:
                 // Display the message to the user, but warn him that the
                 // message was received unencrypted.
-                showError("The message was received unencrypted.");
-                return plainTextMessage.cleanText;
+                //showError("The message was received unencrypted.");
+                return "[The message was received unencrypted: " + plainTextMessage.cleanText + "]";
             case PLAINTEXT:
                 // Simply display the message to the user. If
                 // REQUIRE_ENCRYPTION
@@ -563,7 +566,7 @@ public class SessionImpl implements Session {
                 return plainTextMessage.cleanText;
             }
         } else {
-            logger.finest("Received plaintext message with the whitespace tag.");
+          //  logger.finest("Received plaintext message with the whitespace tag.");
             switch (this.getSessionStatus()) {
             case ENCRYPTED:
             case FINISHED:
@@ -706,7 +709,7 @@ public class SessionImpl implements Session {
      * 
      * @see net.java.otr4j.session.ISession#startSession()
      */
-    public synchronized void startSession() throws OtrException {
+    public void startSession() throws OtrException {
         // Throttle session starts
         long now = System.currentTimeMillis();
         if (now - lastStart < MIN_SESSION_START_INTERVAL) {

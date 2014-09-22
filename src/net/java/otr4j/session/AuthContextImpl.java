@@ -5,6 +5,8 @@
  */
 package net.java.otr4j.session;
 
+import info.guardianproject.otr.AndroidLogHandler;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -37,6 +39,8 @@ class AuthContextImpl implements AuthContext {
     public AuthContextImpl(Session session) {
         this.setSession(session);
         this.reset();
+        logger.addHandler(new AndroidLogHandler());
+
     }
 
     private Session session;
@@ -65,6 +69,8 @@ class AuthContextImpl implements AuthContext {
     private KeyPair localLongTermKeyPair;
     private Boolean isSecure = false;
     private int protocolVersion;
+    
+    private static Logger logger = Logger.getLogger(AuthContextImpl.class.getName());
 
     private int getProtocolVersion() {
         return this.protocolVersion;
@@ -73,8 +79,6 @@ class AuthContextImpl implements AuthContext {
     private void setProtocolVersion(int protoVersion) {
         this.protocolVersion = protoVersion;
     }
-
-    private static Logger logger = Logger.getLogger(AuthContextImpl.class.getName());
 
     class MessageFactory {
 

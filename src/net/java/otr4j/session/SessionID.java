@@ -37,7 +37,12 @@ public final class SessionID {
     {
         return mRemoteUserId;
     }
-   
+    
+    //this is only used for resource changes
+    public void updateRemoteUserId (String remoteUserId)
+    {        
+        mRemoteUserId = remoteUserId;
+    }   
     
     public String getSessionId ()
     {

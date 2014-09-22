@@ -5,6 +5,8 @@
  */
 package net.java.otr4j.session;
 
+import info.guardianproject.otr.AndroidLogHandler;
+
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
@@ -34,6 +36,8 @@ class SessionKeysImpl implements SessionKeys {
             keyDescription += "Previous remote)";
         else
             keyDescription += "Most recent remote)";
+
+        logger.addHandler(new AndroidLogHandler());
 
     }
 

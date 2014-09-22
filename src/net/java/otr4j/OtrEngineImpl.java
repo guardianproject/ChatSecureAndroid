@@ -99,7 +99,7 @@ public class OtrEngineImpl implements OtrEngine {
     }
 
     public void startSession(SessionID sessionID) throws OtrException {
-        this.getSession(sessionID).startSession();
+        this.getSession(sessionID).refreshSession();
     }
 
     private void setHost(OtrEngineHost host) {
