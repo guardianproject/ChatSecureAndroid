@@ -269,7 +269,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 CursorLoader loader = new CursorLoader(NewChatActivity.this, Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);                
-              //  loader.setUpdateThrottle(1000L);            
+                loader.setUpdateThrottle(100L);            
                 
                 return loader;
             }
@@ -350,10 +350,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
       //  if (menu.isMenuShowing())
         //    menu.toggle();
-
-        mApp.setAppTheme(this);
-        ThemeableActivity.setBackgroundImage(this);
-        
+ 
         mApp.getTrustManager().bindDisplayActivity(this);
         
         //View vg = findViewById (R.id.chatpager);
@@ -636,7 +633,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             }
             else
             {
-                refreshConnections();
+              //  refreshConnections();
             }
         }
         
@@ -935,7 +932,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             
         case R.id.menu_exit:
             doHardShutdown();
-            return true;
+            return true;            
             
         case R.id.menu_add_contact:
             showInviteContactDialog();
@@ -1793,14 +1790,12 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         
                     }
                     
-                    IImConnection conn = initConnection(mAccountIds[0][0],mAccountIds[0][1]);
+                    for (int i = 0; i < mAccountIds.length; i++)
+                        initConnection(mAccountIds[i][0],mAccountIds[i][1]);
+            
+                    mLastAccountId = mAccountIds[0][0];
+                    mLastProviderId = mAccountIds[0][1];
 
-                    if (mContactList != null)
-                    {
-                        mContactList.setConnection(conn);
-                        
-                    }
-                    
                     newCursor.moveToFirst();
                    
                     
@@ -1825,18 +1820,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     }
    
 
-    
-    public void refreshConnections ()
-    {
-        if (mAccountIds != null)
-        {
-            for (int i = 0; i < mAccountIds.length; i++)
-                initConnection(mAccountIds[i][0],mAccountIds[i][1]);
-    
-            mLastAccountId = mAccountIds[0][0];
-            mLastProviderId = mAccountIds[0][1];
-        }        
-    }
     
     /** 
     public void unregisterSubListeners ()
@@ -1936,18 +1919,9 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         static final int ACCOUNT_PRESENCE_STATUS = 9;
         static final int ACCOUNT_CONNECTION_STATUS = 10;
 
-
-
         ContactListFilterView mFilterView = null;
         
         ImApp mApp = null;
-        IImConnection mConn = null;
-        
-        public void setConnection (IImConnection conn)
-        {
-            mConn = conn;
-            
-        }
 
         private Handler mPresenceHandler = new Handler()
         {

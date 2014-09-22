@@ -239,7 +239,7 @@ public class ChatView extends LinearLayout {
             if (isConnected)
             {
                 if (mCurrentChatSession == null)
-                    mCurrentChatSession = mConn.getChatSessionManager().getChatSession(mRemoteAddress);
+                    mCurrentChatSession = mConn.getChatSessionManager().getChatSession(Address.stripResource(mRemoteAddress));
                 
                 if (mCurrentChatSession != null)
                 {
@@ -1398,7 +1398,7 @@ public class ChatView extends LinearLayout {
             {
                 StringBuffer message = new StringBuffer();      
                 message.append(mContext.getString(R.string.fingerprint_for_you)).append("\n").append(prettyPrintFingerprint(localFingerprint)).append("\n\n");
-                message.append(mContext.getString(R.string.fingerprint_for_)).append(mRemoteAddress).append("\n").append(prettyPrintFingerprint(otrChatSession.getRemoteFingerprint())).append("\n\n");
+                message.append(mContext.getString(R.string.fingerprint_for_)).append(otrChatSession.getRemoteUserId()).append("\n").append(prettyPrintFingerprint(otrChatSession.getRemoteFingerprint())).append("\n\n");
                 
                 message.append(mContext.getString(R.string.are_you_sure_you_want_to_confirm_this_key_));
                 
@@ -1472,9 +1472,8 @@ public class ChatView extends LinearLayout {
         try {
             
             IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
-            otrChatSession.verifyKey(mRemoteAddress);
+            otrChatSession.verifyKey(otrChatSession.getRemoteUserId());
 
-           
             
         } catch (RemoteException e) {
             Log.e(ImApp.LOG_TAG, "error init otr", e);

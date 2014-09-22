@@ -143,12 +143,12 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     public void login(final String passwordTemp, final boolean autoLoadContacts, final boolean retry) {
-        new Thread(new Runnable() {
+        Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
                 do_login(passwordTemp, autoLoadContacts, retry);
             }
-        }).start();
+        });
     }
     
     public void do_login(String passwordTemp, boolean autoLoadContacts, boolean retry) {

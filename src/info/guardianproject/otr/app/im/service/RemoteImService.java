@@ -133,39 +133,37 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     }
     
-    private synchronized void initOtr() {
+    private synchronized OtrChatManager initOtrChatManager() {
         int otrPolicy = convertPolicy();
 
         if (mOtrChatManager == null) {
 
-            try
+            try 
             {
                 OtrKeyManager otrKeyManager = OtrAndroidKeyManagerImpl.getInstance(this);
                 
-                if (otrKeyManager != null)
-                {
-                    mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this, otrKeyManager);
-                    mOtrChatManager.addOtrEngineListener(this);
-                    
-                    otrKeyManager.addListener(new OtrKeyManagerListener() {
-                        public void verificationStatusChanged(SessionID session) {
-                            boolean isVerified = mOtrChatManager.getKeyManager().isVerified(session);
-                            String msg = session + ": verification status=" + isVerified;
-        
-                            OtrDebugLogger.log(msg);
+                mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this, otrKeyManager);
+                mOtrChatManager.addOtrEngineListener(this);
+                
+                otrKeyManager.addListener(new OtrKeyManagerListener() {
+                    public void verificationStatusChanged(SessionID session) {
+                        boolean isVerified = mOtrChatManager.getKeyManager().isVerified(session);
+                        String msg = session + ": verification status=" + isVerified;
+    
+                        OtrDebugLogger.log(msg);
 
-                        }
+                    }
 
-                        public void remoteVerifiedUs(SessionID session) {
-                            String msg = session + ": remote verified us";
-                            OtrDebugLogger.log(msg);
-                            
-                            showToast(getString(R.string.remote_verified_us),Toast.LENGTH_SHORT);
-                         //   if (!isRemoteKeyVerified(session))
-                           //     showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
-                        }
-                    });
-                }
+                    public void remoteVerifiedUs(SessionID session) {
+                        String msg = session + ": remote verified us";
+                        OtrDebugLogger.log(msg);
+                        
+                        showToast(getString(R.string.remote_verified_us),Toast.LENGTH_SHORT);
+                     //   if (!isRemoteKeyVerified(session))
+                       //     showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
+                    }
+                });
+                
             }
             catch (Exception e)
             {
@@ -175,6 +173,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         } else {
             mOtrChatManager.setPolicy(otrPolicy);
         }
+        
+        return mOtrChatManager;
     }
 
     private int convertPolicy() {
@@ -504,8 +504,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     }
 
     public OtrChatManager getOtrChatManager() {
-        initOtr(); //this will reset policy if it has changed
-        return mOtrChatManager;
+        return initOtrChatManager();
     }
 
     public void scheduleReconnect(long delay) {
@@ -539,7 +538,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     IImConnection do_createConnection(long providerId, long accountId) {
         
         //make sure OTR is init'd before you create your first connection
-        initOtr();
+        initOtrChatManager();
         
         QueryMap gSettings = getGlobalSettings();
         
@@ -827,7 +826,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void sessionStatusChanged(SessionID sessionID) {
 
         //this method does nothing!
-        Log.d(TAG,"OTR session status changed: " + sessionID.getRemoteUserId());
+       // Log.d(TAG,"OTR session status changed: " + sessionID.getRemoteUserId());
     }
     
     public void onTaskRemoved(Intent rootIntent) {

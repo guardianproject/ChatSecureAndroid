@@ -1996,7 +1996,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
                 }
-
+                                
                 mContactListManager.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
               
             }
@@ -2024,7 +2024,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-                loadContactListsAsync();
+                //if (mContactListManager.getState() != ContactListManager.LISTS_LOADED)
+                //loadContactListsAsync();
             }
         };
 

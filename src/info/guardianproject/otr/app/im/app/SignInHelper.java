@@ -198,20 +198,14 @@ public class SignInHelper {
 
     private void signInAccount(final String password, final long providerId, final String providerName, final long accountId) {
         
-        Runnable runnable = new Runnable ()
-        {
-            public void run ()
-            {
-                try {
-                    signInAccountAsync(password, providerId, providerName, accountId);
-                } catch (RemoteException e) {
-                    Log.d(ImApp.LOG_TAG,"error signing in",e);
-                }
-                
-             
-            }
-        };
-        new Thread(runnable).start();
+        
+        try {
+            signInAccountAsync(password, providerId, providerName, accountId);
+        } catch (RemoteException e) {
+            Log.d(ImApp.LOG_TAG,"error signing in",e);
+        }
+        
+        
         
     }
     
