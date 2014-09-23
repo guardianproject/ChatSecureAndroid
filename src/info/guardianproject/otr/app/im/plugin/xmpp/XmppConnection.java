@@ -971,6 +971,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             mConnection.login(mUsername, mPassword, mResource);
             
+            String fullJid = mConnection.getUser();
+            XmppAddress xa = new XmppAddress(fullJid);
+            mUser = new Contact(xa, xa.getUser());
+            
             mStreamHandler.notifyInitialLogin();
             initServiceDiscovery();
     
