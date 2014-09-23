@@ -29,6 +29,10 @@ public class OtrEngineImpl implements OtrEngine {
             throw new IllegalArgumentException("OtrEgineHost is required.");
 
         this.setHost(host);
+
+        if (sessions == null)
+            sessions = new Hashtable<String, Session>();
+
     }
 
     private OtrEngineHost host;
@@ -38,9 +42,6 @@ public class OtrEngineImpl implements OtrEngine {
 
         if (sessionID == null || sessionID.equals(SessionID.Empty))
             throw new IllegalArgumentException();
-
-        if (sessions == null)
-            sessions = new Hashtable<String, Session>();
 
         if (!sessions.containsKey(sessionID.getSessionId())) {
             Session session = new SessionImpl(sessionID, getHost());
@@ -95,7 +96,8 @@ public class OtrEngineImpl implements OtrEngine {
 
     
     public void endSession(SessionID sessionID) throws OtrException {
-        this.getSession(sessionID).endSession();
+        getSession(sessionID).endSession();
+        sessions.remove(sessionID.getSessionId());
     }
 
     public void startSession(SessionID sessionID) throws OtrException {
