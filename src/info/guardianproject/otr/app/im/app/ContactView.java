@@ -54,17 +54,6 @@ public class ContactView extends FrameLayout {
                                                 
     };
     
-    static final String[] CONTACT_PROJECTION_LIGHT = { Imps.Contacts._ID, Imps.Contacts.PROVIDER,
-                                                 Imps.Contacts.ACCOUNT, Imps.Contacts.USERNAME,
-                                                 Imps.Contacts.NICKNAME, Imps.Contacts.TYPE,
-                                                 Imps.Contacts.SUBSCRIPTION_TYPE,
-                                                 Imps.Contacts.SUBSCRIPTION_STATUS,
-                                                 Imps.Presence.PRESENCE_STATUS,
-                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
-                                                 Imps.Chats.LAST_MESSAGE_DATE,
-                                                 Imps.Chats.LAST_UNREAD_MESSAGE
-                                                 
-     };
 
     static final int COLUMN_CONTACT_ID = 0;
     static final int COLUMN_CONTACT_PROVIDER = 1;
@@ -115,7 +104,9 @@ public class ContactView extends FrameLayout {
         
         final long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         final String address = cursor.getString(COLUMN_CONTACT_USERNAME);
+        
         final String displayName = cursor.getString(COLUMN_CONTACT_NICKNAME);
+                
         final int type = cursor.getInt(COLUMN_CONTACT_TYPE);
         final String lastMsg = cursor.getString(COLUMN_LAST_MESSAGE);
 
