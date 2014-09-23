@@ -19,18 +19,6 @@ public class OtrChatSessionAdapter extends Stub {
         
     }
     
-    public void end () throws RemoteException 
-    {
-        
-        Debug.wrapExceptions(new Runnable() {
-            @Override
-            public void run() {
-                _chatManager.removeSession(_sid);
-               
-            }
-        });
-    }
-
     public void startChatEncryption() throws RemoteException {
         Debug.wrapExceptions(new Runnable() {
             @Override
