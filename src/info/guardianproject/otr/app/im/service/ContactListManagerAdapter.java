@@ -865,10 +865,27 @@ public class ContactListManagerAdapter extends
 
     boolean updateContact(Contact contact, long listId)
     {
-        ContentValues values = getContactContentValues(contact, listId);
-        return updateContact(mAdaptee.normalizeAddress(contact.getAddress().getAddress()),values);
+        Cursor cursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts._ID },
+                Imps.Contacts.USERNAME + "=?", new String[] { contact.getAddress().getBareAddress() }, null);
+        if (cursor == null) {
+            RemoteImService.debug("query contact " +  contact.getAddress().getBareAddress() + " failed");
+            return false;
+        }
+
+        boolean contactExists = cursor.moveToFirst();
+        cursor.close();
         
+        if (!contactExists)
+            return false;
+        else
+        {
+            ContentValues values = getContactContentValues(contact, listId);
+            updateContact(mAdaptee.normalizeAddress(contact.getAddress().getAddress()),values);
+            
+            return true;
+        }
     }
+    
     boolean updateContact(String username, ContentValues values) {
         String selection = Imps.Contacts.USERNAME + "=?";
         String[] selectionArgs = { username };
