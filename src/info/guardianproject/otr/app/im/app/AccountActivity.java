@@ -364,7 +364,7 @@ public class AccountActivity extends ActionBarActivity {
         
         if (isSignedIn) {
             mBtnSignIn.setText(getString(R.string.menu_sign_out));
-            mBtnSignIn.setBackgroundResource(R.drawable.btn_gray);
+            mBtnSignIn.setBackgroundResource(R.drawable.btn_red);
         }
 
         final BrandingResources brandingRes = mApp.getBrandingResource(mProviderId);
