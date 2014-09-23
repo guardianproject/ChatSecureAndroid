@@ -42,7 +42,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     private OtrEngineHostImpl mOtrEngineHost;
     private OtrEngineImpl mOtrEngine;
     private Hashtable<String, SessionID> mSessions;
-    private Hashtable<SessionID, OtrSm> mOtrSms;
+    private Hashtable<String, OtrSm> mOtrSms;
 
     private Context mContext;
     
@@ -57,7 +57,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         mOtrEngine.addOtrEngineListener(this);
 
         mSessions = new Hashtable<String, SessionID>();
-        mOtrSms = new Hashtable<SessionID, OtrSm>();
+        mOtrSms = new Hashtable<String, OtrSm>();
 
         
         
@@ -211,33 +211,16 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return null;
     }
     
-    public void removeSession(SessionID sessionId) {
-
-        try {
-            mOtrEngine.endSession(sessionId);
-
-        } catch (OtrException e) {
-            OtrDebugLogger.log("endSession", e);
-        }
-    }
-    public void removeSession(String localUserId, String remoteUserId) {
-
-        try {
-            SessionID sessionId = getSessionId(localUserId, remoteUserId);
-
-            mOtrEngine.endSession(sessionId);
-
-        } catch (OtrException e) {
-            OtrDebugLogger.log("endSession", e);
-        }
-    }
+    
+    
     
     public void endSession(SessionID sessionId) {
 
         try {
 
             mOtrEngine.endSession(sessionId);
-
+            mSessions.remove(sessionId.toString());
+            
         } catch (OtrException e) {
             OtrDebugLogger.log("endSession", e);
         }
@@ -245,16 +228,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     
     public void endSession(String localUserId, String remoteUserId) {
 
-        try {
-            SessionID sessionId = getSessionId(localUserId, remoteUserId);
-
-            mOtrEngine.endSession(sessionId);
-
-            removeSession(localUserId, remoteUserId);
-            
-        } catch (OtrException e) {
-            OtrDebugLogger.log("endSession", e);
-        }
+        SessionID sessionId = getSessionId(localUserId, remoteUserId);
+        endSession(sessionId);
+  
     }
 
     public void status(String localUserId, String remoteUserId) {
@@ -349,7 +325,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                         sessionID, OtrChatManager.this);
                 session.addTlvHandler(otrSm);
 
-                mOtrSms.put(sessionID, otrSm);
+                mOtrSms.put(sessionID.getSessionId(), otrSm);
             }
         } else if (sStatus == SessionStatus.PLAINTEXT) {
             if (otrSm != null) {
