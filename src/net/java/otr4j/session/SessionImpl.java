@@ -554,7 +554,7 @@ public class SessionImpl implements Session {
                 // Display the message to the user, but warn him that the
                 // message was received unencrypted.
                 //showError("The message was received unencrypted.");
-                return "[The message was received unencrypted: " + plainTextMessage.cleanText + "]";
+                return "[WARNING UNENCRYPTED: " + plainTextMessage.cleanText + "]";
             case PLAINTEXT:
                 // Simply display the message to the user. If
                 // REQUIRE_ENCRYPTION
