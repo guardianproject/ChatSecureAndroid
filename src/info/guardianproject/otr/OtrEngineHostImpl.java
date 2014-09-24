@@ -162,7 +162,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     public void showError(SessionID sessionID, String error) {
         OtrDebugLogger.log(sessionID.toString() + ": ERROR=" + error);
         
-        Toast.makeText(mContext, "ERROR: " + error, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(mContext, "ERROR: " + error, Toast.LENGTH_SHORT).show();
 
     }
 

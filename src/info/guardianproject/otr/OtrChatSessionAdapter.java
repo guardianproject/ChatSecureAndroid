@@ -12,10 +12,10 @@ public class OtrChatSessionAdapter extends Stub {
     private OtrChatManager _chatManager;
     private SessionID _sid = null;
     
-    public OtrChatSessionAdapter(String localUser, String remoteUser, OtrChatManager chatManager) {
+    public OtrChatSessionAdapter(SessionID sid, OtrChatManager chatManager) {
 
         _chatManager = chatManager;
-        _sid = _chatManager.getSessionId(localUser, remoteUser);
+        _sid = sid;
         
     }
     
@@ -60,7 +60,7 @@ public class OtrChatSessionAdapter extends Stub {
     @Override
     public int getChatStatus() throws RemoteException {
         
-        if (_chatManager != null)
+        if (_chatManager != null && _sid != null)
         {
             SessionStatus sessionStatus = _chatManager.getSessionStatus(_sid);
             if (sessionStatus == null)

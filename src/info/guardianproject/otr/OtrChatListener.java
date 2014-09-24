@@ -1,6 +1,7 @@
 package info.guardianproject.otr;
 
 import info.guardianproject.otr.OtrDataHandler.Transfer;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
@@ -39,9 +40,7 @@ public class OtrChatListener implements MessageListener {
         body = Debug.injectErrors(body);
 
         SessionID sessionID = mOtrChatManager.getSessionId(to, from);
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(to, from);
-
-//        OtrDebugLogger.log("session status: " + otrStatus.name());
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(sessionID);
 
         List<TLV> tlvs = new ArrayList<TLV>();
 
@@ -58,10 +57,12 @@ public class OtrChatListener implements MessageListener {
         
         } catch (OtrException e) {
             
-            OtrDebugLogger.log("error decrypting message");            
-            //msg.setBody("[You received an unreadable encrypted message]");
-            //mMessageListener.onIncomingMessage(session, msg);            
-          //  mOtrChatManager.injectMessage(sessionID, "I could not decrypt the message you sent");
+            OtrDebugLogger.log("error decrypting message",e);
+            
+            msg.setBody("[" + "You received an unreadable encrypted message" + "]");
+            mMessageListener.onIncomingMessage(session, msg);            
+            mOtrChatManager.injectMessage(sessionID, "I could not decrypt the message you sent");
+            
         }
         
         for (TLV tlv : tlvs) {

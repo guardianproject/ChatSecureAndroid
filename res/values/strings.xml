@@ -705,5 +705,7 @@
 		<string name="muc_dialog_room">name of room to create or join"</string>
 		<string name="muc_dialog_server">groupchat server (conference.foo.com)</string>
 		<string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Your keystore is corrupted. Please re-install ChatSecure or \'clear data\' for the app</string>
+		<string name="you_received_an_unreadable_encrypted_message">You received an unreadable encrypted message</string>
+		<string name="i_could_not_decrypt_the_message_you_sent">I could not decrypt the message you sent</string>
 	</resources>
 
