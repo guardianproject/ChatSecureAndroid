@@ -1,6 +1,23 @@
 Track the source commits here:
 https://github.com/guardianproject/Gibberbot/commits/master#
 
+14.0.4 / 2014-09-24 / 0eccf0213403c74243056730d432b8d0b217b432
+    update to 14.0.4
+
+* Multiple fixes and improvements to OTR encryption session management
+	commit a9053a91e1f751aab4a70a3131e8d618bf58d1c9 fixes for OTR sessionID handling
+	commit 7b038a6fd3e1ab84c40989b2c280cacb256a2880 addt'l fixes for OTR error handling
+	commit 40826a7c0ff86c52410c9e9af8e0743c7f38bff0 fix issues with OTR session error messages and refresh
+    		as reported here: https://github.com/guardianproject/ChatSecureAndroid/issues/531
+	commit cea0b82b3c473a661780ff2cc806e0aa0860d771 more tuning of OTR session management and instantiating
+	commit 3783b4ecf26b49ef992827eb8b08beea4ea020af allow updating of remote user id, if resource changes modify OTR session handling logging
+
+* Solved an issue with using the wrong jabberid for local user (when servers appends random ID to it)
+	commit cb87b14660e738f2ccd92febbca95207a38deed4 get the actual full JID from the server some servers append info to the resource
+
+* Worked on problem related to resuming and maintaining network connections
+	commit 66c1fb67ad6a3d8fa1aba97aedaaa806f9ee208b improving connectivity management and performance
+
 14.0.1-14.0.3 / 2014-09-19 / 3fb5a43336f7fcc040de8157c070320381d731e0
 
 * Ensured when you add a new contact it is updated in local list state
