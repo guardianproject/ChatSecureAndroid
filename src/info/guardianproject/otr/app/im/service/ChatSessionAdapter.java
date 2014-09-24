@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrChatListener;
+import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.OtrChatSessionAdapter;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.OtrDataHandler.Transfer;
@@ -40,12 +41,12 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.util.SystemServices;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 
 import org.jivesoftware.smack.packet.Packet;
@@ -54,7 +55,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
@@ -144,8 +144,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         
         String localUser = mConnection.getLoginUser().getAddress().getAddress();
         String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
+
+        OtrChatManager cm = service.getOtrChatManager();
         
-        mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, service.getOtrChatManager());
+        SessionID sid = cm.getSessionId(localUser, remoteUser);
+        
+        mOtrChatSession = new OtrChatSessionAdapter(sid, service.getOtrChatManager());
     
         // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
         mChatSession.setMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
@@ -304,7 +308,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         info.guardianproject.otr.app.im.engine.Message msg = new info.guardianproject.otr.app.im.engine.Message(text);
-        // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
+       
         msg.setFrom(mConnection.getLoginUser().getAddress());
         
         msg.setType(Imps.MessageType.OUTGOING);

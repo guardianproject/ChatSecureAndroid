@@ -18,13 +18,12 @@
 package info.guardianproject.otr.app.im.engine;
 
 import info.guardianproject.otr.OtrChatManager;
-import info.guardianproject.otr.OtrDataHandler;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
@@ -104,15 +103,14 @@ public class ChatSession {
      */
     public int sendMessageAsync(Message message) {
 
-        if (message.getTo() == null)
-          message.setTo(mParticipant.getAddress());
 
-     // TODO OTRCHAT setFrom here, therefore add the mConnection in ChatSession - ??? NF 8/2013 still needs to be done?       
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getFrom().getAddress(),message.getTo().getAddress());
+        SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),mParticipant.getAddress().getAddress());            
+        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(sId);
+        
+        message.setTo(new XmppAddress(sId.getRemoteUserId()));
 
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
-            SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),message.getTo().getAddress());            
             boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
             
             if (verified)
