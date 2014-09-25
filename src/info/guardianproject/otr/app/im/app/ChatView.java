@@ -309,6 +309,9 @@ public class ChatView extends LinearLayout {
 
     // Async QueryHandler
     private final class QueryHandler extends AsyncQueryHandler {
+        
+        private Cursor mLastCursor = null;
+        
         public QueryHandler(Context context) {
             super(context.getContentResolver());
         }
@@ -320,15 +323,20 @@ public class ChatView extends LinearLayout {
             
             if (c != null)
             {
-                Cursor cursor = new DeltaCursor(c);
+                mLastCursor = new DeltaCursor(c);
     
                 if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
-                    log("onQueryComplete: cursor.count=" + cursor.getCount());
+                    log("onQueryComplete: cursor.count=" + mLastCursor.getCount());
                 }
     
-                if (mMessageAdapter != null && cursor != null)
-                    mMessageAdapter.changeCursor(cursor);
+                if (mMessageAdapter != null)
+                    mMessageAdapter.changeCursor(mLastCursor);
             }
+        }
+        
+        public void closeCursor ()
+        {
+            mLastCursor.close();
         }
     }
 
@@ -943,7 +951,8 @@ public class ChatView extends LinearLayout {
 
     public void unbind() {
         
-        
+        mQueryHandler.closeCursor();
+       
     }
     
     
@@ -1129,6 +1138,7 @@ public class ChatView extends LinearLayout {
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         Cursor c = mNewChatActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
         
+        
         if (c == null)
             return;
         
@@ -1260,7 +1270,7 @@ public class ChatView extends LinearLayout {
         return mHistory;
     }
 
-    private void startQuery(long chatId) {
+    private synchronized void startQuery(long chatId) {
         if (mQueryHandler == null) {
             mQueryHandler = new QueryHandler(mContext);
         } else {
