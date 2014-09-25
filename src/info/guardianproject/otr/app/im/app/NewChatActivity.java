@@ -96,7 +96,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -715,7 +718,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     mMenu.setGroupVisible(R.id.menu_group_otr_verified,false);
                     mMenu.setGroupVisible(R.id.menu_group_otr_off,false);
    
-
                 }
                 else
                 {
@@ -1738,6 +1740,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
         @Override
         public void destroyItem(ViewGroup container, int pos, Object object) {
+            
             super.destroyItem(container, pos, object);
         }
         
@@ -2215,14 +2218,17 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
      // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.alert_dialog_group_chat, null);
-        final TextView tvServer = (TextView) textEntryView.findViewById(R.id.chat_server);
         
-        tvServer.setText("conference.");// need to make this a list
+        final View dialogGroup = factory.inflate(R.layout.alert_dialog_group_chat, null);
+        TextView tvServer = (TextView) dialogGroup.findViewById(R.id.chat_server);        
+        tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
+        
+        final Spinner listAccounts = (Spinner) dialogGroup.findViewById(R.id.choose_list);
+        setupAccountSpinner(listAccounts);
         
         new AlertDialog.Builder(this)            
             .setTitle(R.string.create_or_join_group_chat)
-            .setView(textEntryView)
+            .setView(dialogGroup)
             .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
@@ -2232,32 +2238,29 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     String chatServer = null;
                     String nickname = null;
                     
-                    TextView tv = (TextView)textEntryView.findViewById(R.id.chat_room);
+                    TextView tv = (TextView)dialogGroup.findViewById(R.id.chat_room);
                     chatRoom = tv.getText().toString();
                     
-                    tv = (TextView) textEntryView.findViewById(R.id.chat_server);
+                    tv = (TextView) dialogGroup.findViewById(R.id.chat_server);
                     chatServer = tv.getText().toString();
                     
-                    tv = (TextView) textEntryView.findViewById(R.id.nickname);
+                    tv = (TextView) dialogGroup.findViewById(R.id.nickname);
                     nickname = tv.getText().toString();
                     
-                    for (IImConnection conn : mApp.getActiveConnections())
+                    try
                     {
-                                            
-                        try
-                        {                            
-                            if (conn.getState() == ImConnection.LOGGED_IN)
-                                startGroupChat (chatRoom, chatServer, nickname, conn);
-                            else
-                            {
-                                //can't start group chat
-                                mHandler.showAlert("Group Chat","Please enable your account to join a group chat");
-                            }
-                        } catch (RemoteException re) {
-                          
+                        IImConnection conn = mApp.getConnection(mLastProviderId);
+                        if (conn.getState() == ImConnection.LOGGED_IN)
+                            startGroupChat (chatRoom, chatServer, nickname, conn);
+                        else
+                        {
+                            //can't start group chat
+                            mHandler.showAlert("Group Chat","Please enable your account to join a group chat");
                         }
+                    } catch (RemoteException re) {
+                      
                     }
-                    
+                   
                     dialog.dismiss();
                     
                 }
@@ -2274,6 +2277,50 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
         
     }
+    
+    private void setupAccountSpinner (Spinner spinner)
+    {
+        final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+
+        final Cursor cursorProviders = managedQuery(uri,  PROVIDER_PROJECTION,
+        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+        Imps.Provider.DEFAULT_SORT_ORDER);
+        
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_spinner_item, cursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
+                new int[] { android.R.id.text1 });
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        if (cursorProviders.getCount() > 0)
+        {   
+            cursorProviders.moveToFirst();
+            mLastProviderId = cursorProviders.getLong(PROVIDER_ID_COLUMN);
+            mLastAccountId = cursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+        
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+    
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1,
+                        int arg2, long arg3) {
+                    cursorProviders.moveToPosition(arg2);
+                    
+                    mLastProviderId = cursorProviders.getLong(PROVIDER_ID_COLUMN);
+                    mLastAccountId = cursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                 }
+    
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+                    // TODO Auto-generated method stub
+    
+                }
+            });
+        }
+        
+    }
+    
+    
     
     private IImConnection mLastConnGroup = null;
     
@@ -2545,5 +2592,31 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         }
         return otrPolicy;
     }
+    
+    private static final String[] PROVIDER_PROJECTION = {
+                                                         Imps.Provider._ID,
+                                                         Imps.Provider.NAME,
+                                                         Imps.Provider.FULLNAME,
+                                                         Imps.Provider.CATEGORY,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_ID,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_USERNAME,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_PW,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_LOCKED,
+                                                         Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
+                                                         Imps.Provider.ACCOUNT_PRESENCE_STATUS,
+                                                         Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                        };
+
+    static final int PROVIDER_ID_COLUMN = 0;
+    static final int PROVIDER_NAME_COLUMN = 1;
+    static final int PROVIDER_FULLNAME_COLUMN = 2;
+    static final int PROVIDER_CATEGORY_COLUMN = 3;
+    static final int ACTIVE_ACCOUNT_ID_COLUMN = 4;
+    static final int ACTIVE_ACCOUNT_USERNAME_COLUMN = 5;
+    static final int ACTIVE_ACCOUNT_PW_COLUMN = 6;
+    static final int ACTIVE_ACCOUNT_LOCKED = 7;
+    static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
+    static final int ACCOUNT_PRESENCE_STATUS = 9;
+    static final int ACCOUNT_CONNECTION_STATUS = 10;
     
 }

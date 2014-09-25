@@ -103,7 +103,26 @@ public class AddContactActivity extends Activity {
         
         mListSpinner = (Spinner) findViewById(R.id.choose_list);
 
-        mCursorProviders = queryContactLists();
+        setupAccountSpinner();
+        
+        mInviteButton = (Button) findViewById(R.id.invite);
+        mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
+        mInviteButton.setOnClickListener(mButtonHandler);
+        mInviteButton.setEnabled(false);
+        
+        mScanButton = (Button) findViewById(R.id.scan);        
+        mScanButton.setOnClickListener(mScanHandler);
+    }
+
+    private void setupAccountSpinner ()
+    {
+        final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+
+        mCursorProviders = managedQuery(uri,  PROVIDER_PROJECTION,
+        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
+        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+        Imps.Provider.DEFAULT_SORT_ORDER);
+        
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_item, mCursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
                 new int[] { android.R.id.text1 });
@@ -134,25 +153,6 @@ public class AddContactActivity extends Activity {
             }
         });
         
-        
-        mInviteButton = (Button) findViewById(R.id.invite);
-        mInviteButton.setText(brandingRes.getString(BrandingResourceIDs.STRING_BUTTON_ADD_CONTACT));
-        mInviteButton.setOnClickListener(mButtonHandler);
-        mInviteButton.setEnabled(false);
-        
-        mScanButton = (Button) findViewById(R.id.scan);        
-        mScanButton.setOnClickListener(mScanHandler);
-    }
-
-    private Cursor queryContactLists() {
-        final Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-
-        Cursor c = managedQuery(uri,  PROVIDER_PROJECTION,
-        Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
-        new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
-        Imps.Provider.DEFAULT_SORT_ORDER);
-        
-        return c;
     }
 
     private int searchInitListPos(Cursor c, String listName) {

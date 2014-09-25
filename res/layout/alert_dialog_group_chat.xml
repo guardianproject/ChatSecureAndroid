@@ -19,6 +19,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <Spinner android:id="@+id/choose_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/choose_list_label" />
+
     <EditText
         android:id="@+id/nickname"
         android:hint="@string/muc_dialog_nickname"

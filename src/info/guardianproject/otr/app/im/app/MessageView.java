@@ -185,13 +185,14 @@ public class MessageView extends FrameLayout {
             String[] nickParts = nickname.split("/");
             
             lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
-            
+            showAvatar(address,true,presenceStatus);
+
         }
         else
         {
             lastMessage = formatMessage(body);
             showAvatar(address,true,presenceStatus);
-        
+
             mHolder.resetOnClickListenerMediaThumbnail();     
             if( mimeType != null ) {
     
