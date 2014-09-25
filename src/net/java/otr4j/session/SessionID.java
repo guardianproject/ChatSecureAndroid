@@ -25,6 +25,7 @@ public final class SessionID {
        
        if (mLocalUserId != null)
            mSessionId = Address.stripResource(mLocalUserId) + '_' + mProtocolName + '_' + Address.stripResource(mRemoteUserId);
+       //mSessionId = mLocalUserId + '_' + mProtocolName + '_' + mRemoteUserId;
        
     }
 
@@ -37,12 +38,6 @@ public final class SessionID {
     {
         return mRemoteUserId;
     }
-    
-    //this is only used for resource changes
-    public void updateRemoteUserId (String remoteUserId)
-    {        
-        mRemoteUserId = remoteUserId;
-    }   
     
     public String getSessionId ()
     {
