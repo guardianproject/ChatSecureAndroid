@@ -115,6 +115,8 @@ import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 
+import de.duenndns.ssl.MemorizingTrustManager;
+
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -124,7 +126,6 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.RemoteException;
 import android.util.Log;
-import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
@@ -1247,15 +1248,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     boolean isGroupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
 
-                    ImEntity rContact = null;
-
-                    if (isGroupMessage) {
-                        rContact = getChatGroupManager().getChatGroup(aFrom);
-                    }
-                    else {
-                        rContact = mContactListManager.getContact(aFrom);
-                    }
-
                     ChatSession session = findOrCreateSession(address, isGroupMessage);
 
                     Message rec = new Message(body);
@@ -1931,6 +1923,72 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             //notifyContactsPresenceUpdated(cl.getContacts().toArray(new Contact[cl.getContacts().size()]));
 
         }
+        
+     // Runs in executor thread
+        public void addContactsToList(Collection<String> addresses) {
+
+            debug(TAG, "add contacts to lists");
+
+            if (mConnection == null)
+                return;
+
+            Roster roster = mConnection.getRoster();
+
+            ContactList cl;
+
+            try {
+                cl = mContactListManager.getDefaultContactList();
+            } catch (ImException e1) {
+                debug(TAG,"couldn't read default list");
+                cl = null;
+            }
+
+            if (cl == null)
+            {    
+                String generalGroupName = mContext.getString(R.string.buddies);
+
+                Collection<Contact> contacts = new ArrayList<Contact>();
+                XmppAddress groupAddress = new XmppAddress(generalGroupName); 
+
+                cl = new ContactList(groupAddress,generalGroupName, true, contacts, this);
+
+                notifyContactListCreated(cl);
+            }
+
+            for (String address : addresses)
+            {
+
+                if (mUser.getAddress().getBareAddress().equals(address)) //don't load a roster for yourself
+                    continue;
+
+                Contact contact = getContact(address);
+
+                if (contact == null)
+                {
+                    XmppAddress xAddr = new XmppAddress(address);
+
+                    contact = new Contact(xAddr,xAddr.getUser());
+
+                }
+
+                org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());                
+                contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
+
+                if (!cl.containsContact(contact))
+                {
+                    try {
+                        cl.addExistingContact(contact);
+                    } catch (ImException e) {
+                        debug(TAG,"could not add contact to list: " + e.getLocalizedMessage());
+                    }
+                }
+
+            }
+
+            notifyContactListLoaded(cl);            
+            notifyContactListsLoaded();
+
+        }
 
         /*
          * iterators through a list of contacts to see if there were any Presence
@@ -2028,8 +2086,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-                //if (mContactListManager.getState() != ContactListManager.LISTS_LOADED)
-                //loadContactListsAsync();
+                loadContactListsAsync();
             }
         };
 
