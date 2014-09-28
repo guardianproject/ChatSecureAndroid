@@ -46,7 +46,7 @@ public class SystemServices {
             long when = System.currentTimeMillis();
 
             Notification notification = new Notification(icon, tickerText, when);
-            CharSequence contentTitle = "Gibberbot notification";  // TODO string
+            CharSequence contentTitle = "ChatSecure notification";  // TODO string
             CharSequence contentText = "A secured file was successfuly downloaded.";  // TODO string
             Intent notificationIntent = new Intent(aContext, aTargetActivityClass);
             notificationIntent.setData(aUri); // when the target activity is invoked, extract this uri and call viewImage()
