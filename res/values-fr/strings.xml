@@ -474,7 +474,7 @@ Nouveau fichier <xliff:g id="filename">%s</xliff:g> de <xliff:g id="user">%s</xl
   <string name="app_name">ChatSecure</string>
   <string name="welcome_first">Première utilisation de ChatSecure ?</string>
   <string name="welcome_skip">Prêt à commencer ?</string>
-  <string name="welcome_about">A propos de Gibberbot</string>
+  <string name="welcome_about">A propos de ChatSecure</string>
   <string name="welcome_account">Configuration du compte</string>
   <!--About: Welcome-->
   <string name="about_welcome_title">A propos de ChatSecure</string>
@@ -488,7 +488,7 @@ L\'application supporte tous les services fonctionnant avec les protocoles Jabbe
 Le protocole OTR est compatible avec les clients de messagerie comme Adium ou Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">Mes conversations sont-elles sécurisées ?</string>
-  <string name="about_security">La fonctionnalité de chiffrement de Gibberbot ne fonctionne que lorsque la personne avec laquelle vous discutez utilise un programme compatible. Vous devriez donc vous assurer que vos contacts utilisent soit Gibberbot sur un appareil mobile, soit Adium ou Pidgin sur un ordinateur. Vous pouvez par ailleurs configurer comment et quand Gibberbot essaye de chiffrer vos conversations dans les Paramètres du compte.
+  <string name="about_security">La fonctionnalité de chiffrement de ChatSecure ne fonctionne que lorsque la personne avec laquelle vous discutez utilise un programme compatible. Vous devriez donc vous assurer que vos contacts utilisent soit ChatSecure sur un appareil mobile, soit Adium ou Pidgin sur un ordinateur. Vous pouvez par ailleurs configurer comment et quand ChatSecure essaye de chiffrer vos conversations dans les Paramètres du compte.
 
 Allons-y !</string>
   <!--Setup: Passphrase-->
