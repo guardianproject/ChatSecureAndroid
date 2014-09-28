@@ -15,7 +15,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <!--The title of the landing page.-->
   <string name="landing_page_title">Wybierz konto</string>
   <!--Landing page screen menu and context menu items.-->
-  <string name="menu_about">O Gibberbot</string>
+  <string name="menu_about">O ChatSecure</string>
   <!--Conext menu item: add a new account.-->
   <string name="menu_add_account">Dodaj konto</string>
   <!--Conext menu item: edit an account.-->
