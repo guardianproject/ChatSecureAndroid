@@ -490,7 +490,7 @@ De applicatie ondersteund alle chat diensten die het Jabber of XMPP protocol geb
 Het OTR-protocol is compatibel met desktop chatcliënten als Adium of Pidgin.</string>
   <!--About: Security-->
   <string name="about_security_title">Zijn mijn chats veilig?</string>
-  <string name="about_security">Gibberbot\'s chat versleuteling werkt alleen wanneer de ander een compatibele app of programma gebruik. Zorg er dus voor dat je zeker weet dat contacten Gibberbot op hun mobiel of Adium of Pidgin op hun desktop gebruiken. Je kunt veranderen hoe Gibberbot verbindingen probeert te versleutelen bij Account Instellingen.⏎
+  <string name="about_security">ChatSecure\'s chat versleuteling werkt alleen wanneer de ander een compatibele app of programma gebruik. Zorg er dus voor dat je zeker weet dat contacten ChatSecure op hun mobiel of Adium of Pidgin op hun desktop gebruiken. Je kunt veranderen hoe ChatSecure verbindingen probeert te versleutelen bij Account Instellingen.⏎
 ⏎
 Aan de slag!</string>
   <!--Setup: Passphrase-->
@@ -513,8 +513,8 @@ Aan de slag!</string>
   <string name="account_setup_pers_pw_on">Wachtwoord in cache</string>
   <string name="account_setup_pers_pw_off">Wachtwoord niet in cache</string>
   <string name="account_setup_pers_auto_title">Automatisch Inloggen</string>
-  <string name="account_setup_pers_auto_on">Verbinden bij opstarten Gibberbot</string>
-  <string name="account_setup_pers_auto_off">Niet verbinden bij opstarten Gibberbot</string>
+  <string name="account_setup_pers_auto_on">Verbinden bij opstarten ChatSecure</string>
+  <string name="account_setup_pers_auto_off">Niet verbinden bij opstarten ChatSecure</string>
   <string name="account_setup_pers_now_title">Nu inloggen</string>
   <string name="account_setup_pers_now_on">Verbind deze ingestelde account</string>
   <string name="account_setup_pers_now_off">Verbind niet deze ingestelde account</string>
@@ -534,15 +534,15 @@ Aan de slag!</string>
   <string name="account_setup_signin_b">Sleutelpaar aan het genereren...</string>
   <string name="account_setup_signin_c">In aan het loggen...</string>
   <!--Account Setup: Sign In Errors-->
-  <string name="account_setup_error_validating">Gibberbot trof een fout aan bij het valideren van uw gebruikersnaam en wachtwoord - controleert u ze alstublieft en probeer opnieuw.</string>
-  <string name="account_setup_error_keypair">Gibberbot trof een fout aan tijdens het genereren van een sleutelpaar.</string>
-  <string name="account_setup_error_server">Gibberbot trof een fout aan tijdens het verbinding maken met de chatserver - controleer alstublieft uw instellingen en probeer opnieuw.</string>
-  <string name="account_setup_error_connectivity">Gibberbot trof een fout aan tijdens het verbinding maken - controleert u alstublieft uw netwerkverbinding en probeer opnieuw.</string>
+  <string name="account_setup_error_validating">ChatSecure trof een fout aan bij het valideren van uw gebruikersnaam en wachtwoord - controleert u ze alstublieft en probeer opnieuw.</string>
+  <string name="account_setup_error_keypair">ChatSecure trof een fout aan tijdens het genereren van een sleutelpaar.</string>
+  <string name="account_setup_error_server">ChatSecure trof een fout aan tijdens het verbinding maken met de chatserver - controleer alstublieft uw instellingen en probeer opnieuw.</string>
+  <string name="account_setup_error_connectivity">ChatSecure trof een fout aan tijdens het verbinding maken - controleert u alstublieft uw netwerkverbinding en probeer opnieuw.</string>
   <string name="label_fingerprint_remote">Beveiligingsvingerafdruk.</string>
   <string name="menu_sign_in">Log In</string>
   <string name="menu_gen_key">Hergen Sleutel</string>
-  <string name="error_suspended_connection">Gibberbot heeft de verbinding met het netwerk verloren</string>
-  <string name="error_reestablish_connection">Gibberbot is aan het proberen de verbinding te herstellen</string>
+  <string name="error_suspended_connection">ChatSecure heeft de verbinding met het netwerk verloren</string>
+  <string name="error_reestablish_connection">ChatSecure is aan het proberen de verbinding te herstellen</string>
   <string name="otr_session_status_plaintext">Encryptie staat uit</string>
   <string name="otr_session_status_encrypted">Encryptie staat aan (klik om te bevestigen)</string>
   <string name="otr_session_status_finished">Je contact heeft de beveiligde chat beëindigd.</string>
@@ -551,17 +551,17 @@ Aan de slag!</string>
   <string name="account_wizard_account_title">Uw Gebruikersnaam</string>
   <string name="account_wizard_host_title">Server Instellen</string>
   <string name="account_wizard_ready_title">Bent u klaar?</string>
-  <string name="account_wizard_setup_body">Voer uw gebruikersnaam in om Gibberbot in te stellen voor uw XMPP chatservice. Het lijkt op een e-mail adres:</string>
+  <string name="account_wizard_setup_body">Voer uw gebruikersnaam in om ChatSecure in te stellen voor uw XMPP chatservice. Het lijkt op een e-mail adres:</string>
   <string name="account_wizard_account_body">Voer alstublieft uw gebruikersnaam in (gebruiker@domein):</string>
   <string name="account_wizard_host_body">Voer in of bewerk alstublieft uw jabber/xmpp chatserver hostnaam en poortnummer (standaard is dit 5222).</string>
-  <string name="account_wizard_ready_body">Gibberbot is nu ingesteld. Het is tijd om verbinding te maken met uw chatservice om versleuteld, veilig en privé te chatten!</string>
+  <string name="account_wizard_ready_body">ChatSecure is nu ingesteld. Het is tijd om verbinding te maken met uw chatservice om versleuteld, veilig en privé te chatten!</string>
   <string name="account_wizard_no_domain_warning">U voerde geen @hostnaam.com gedeelte in bij uw gebruikersnaam. Probeer opnieuw!</string>
   <string name="account_wizard_no_root_domain_warning">Uw server hostnaam bevatte geen .com, .net of een vergelijkbare appendix. Probeer opnieuw!</string>
   <string name="signin_password_prompt">Voer uw wachtwoord in:</string>
   <!--Do not localize! Symbols for looking up preferences in Java code.-->
   <string name="account_settings_title">Account Instellingen</string>
   <string name="pref_default_locale">defLoc</string>
-  <string name="warning_alpha">LET OP: Dit is een prille versie van Gibberbot die beveiligingslekken of fouten kan bevatten.</string>
+  <string name="warning_alpha">LET OP: Dit is een prille versie van ChatSecure die beveiligingslekken of fouten kan bevatten.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groepen</string>
   <string name="otr_gen_key">Nieuw OTR sleutelpaar aan het genereren...</string>
@@ -606,7 +606,7 @@ Klik hier om te beginnen!</string>
   <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
 	
 	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
-  <string name="start_on_boot">Start Gibberbot Automatisch</string>
+  <string name="start_on_boot">Start ChatSecure Automatisch</string>
   <string name="start_on_boot_summary">Altijd starten en automatisch inloggen op eerder ingelogde accounts</string>
   <string name="empty_account_message">Je hebt geen
 accounten ingesteld.
