@@ -23,7 +23,7 @@ public class AssetUtil {
             properties.load(inputStream);
             return properties;
         } catch (IOException e) {
-            Log.i("Gibberbot", "no gibberbot.properties available");
+            Log.i("ChatSecure", "no chatsecure.properties available");
             return null;
         }
     }
