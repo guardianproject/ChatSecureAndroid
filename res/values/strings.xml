@@ -542,7 +542,7 @@
 	<string name="loading">loading...</string>
 		<!-- Other -->
 		
-		<string name="about_link">About Gibberbot\nhttps://guardianproject.info/apps/chatsecure/</string>
+		<string name="about_link">About ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
 		
 		<!-- Other: Slide Menu -->
 		<string name="menu_contact_list">Contact List</string>
