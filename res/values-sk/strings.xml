@@ -381,7 +381,7 @@
   <string name="use_tor">Pripojenie cez Tor (vyžaduje Orbot app)</string>
   <!--Welcome Splash Screen-->
   <string name="welcome_skip">Can\'t čakať začať?</string>
-  <string name="welcome_about">O Gibberbot</string>
+  <string name="welcome_about">O ChatSecure</string>
   <string name="welcome_account">Nastavenie účtu</string>
   <!--About: Welcome-->
   <!--About: OTR-->
