@@ -60,7 +60,7 @@ import android.util.Log;
 
 public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
-    final static String TAG = "Gibberbot.LLXmppConnection";
+    final static String TAG = "ChatSecure.LLXmppConnection";
 
     private XmppContactListManager mContactListManager;
     private Contact mUser;
