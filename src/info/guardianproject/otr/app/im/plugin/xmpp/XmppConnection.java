@@ -1161,6 +1161,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mConfig.setSelfSignedCertificateEnabled(false);
             
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= 16){
+                // Enable TLS1.2 and TLS1.1 on supported versions of android 
+                // http://stackoverflow.com/questions/16531807/android-client-server-on-tls-v1-2
+                mConfig.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" });
+            }
             if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH){
                 mConfig.setEnabledCipherSuites(XMPPCertPins.SSL_IDEAL_CIPHER_SUITES);   
             }              
