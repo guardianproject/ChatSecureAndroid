@@ -60,14 +60,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
     }
 
     public Address appendSessionResource(SessionID session, Address to) {
-        /*
+        
         String resource = mSessionResources.get(session);
         if (resource != null)
             return new XmppAddress(to.getBareAddress() + '/' + resource);
         else
             return to;
-            */        
-        return new XmppAddress(session.getRemoteUserId());
+                   
+        //return new XmppAddress(session.getRemoteUserId());
     }
 
     public ImConnectionAdapter findConnection(SessionID session) {
@@ -134,7 +134,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
                         
                 Message msg = new Message(body);
                 
-              //  msg.setFrom(connection.getLoginUser().getAddress());
+                msg.setFrom(connection.getLoginUser().getAddress());
                 final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
                 msg.setTo(appendSessionResource(sessionID, to));
                 //msg.setTo(to);

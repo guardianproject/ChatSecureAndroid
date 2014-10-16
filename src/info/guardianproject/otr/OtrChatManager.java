@@ -115,7 +115,9 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             // Remote has changed (either different presence, or from generic JID to specific presence),            
             // Create or replace sessionId with one that is specific to the new presence.
             
-            sessionId.updateRemoteUserId(remoteUserId);
+            //sessionId.updateRemoteUserId(remoteUserId);
+            sessionId = sIdTemp;
+            mSessions.put(sessionId.getSessionId(), sessionId);
             
             if (Debug.DEBUG_ENABLED)
                 Log.d(ImApp.LOG_TAG,"getting new otr session id: " + sessionId);
