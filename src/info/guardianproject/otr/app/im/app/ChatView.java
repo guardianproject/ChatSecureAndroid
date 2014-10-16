@@ -336,7 +336,9 @@ public class ChatView extends LinearLayout {
         
         public void closeCursor ()
         {
-            mLastCursor.close();
+            if (mLastCursor != null)
+                mLastCursor.close();
+            
         }
     }
 
@@ -951,7 +953,8 @@ public class ChatView extends LinearLayout {
 
     public void unbind() {
         
-        mQueryHandler.closeCursor();
+        if (mQueryHandler != null)
+            mQueryHandler.closeCursor();
        
     }
     
