@@ -472,7 +472,7 @@ Nuovo file <xliff:g id="filename">%s</xliff:g> da <xliff:g id="user">%s</xliff:g
   <string name="app_name">ChatSecure</string>
   <string name="welcome_first">Prima volta con ChatSecure?</string>
   <string name="welcome_skip">Can\'t l\'ora di cominciare?</string>
-  <string name="welcome_about">A proposito di Gibberbot</string>
+  <string name="welcome_about">A proposito di ChatSecure</string>
   <string name="welcome_account">Impostazione account</string>
   <!--About: Welcome-->
   <string name="about_welcome_title">A proposito di ChatSecure</string>

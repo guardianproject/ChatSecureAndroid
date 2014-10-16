@@ -2,7 +2,7 @@ bin/
 gen/
 local.properties
 proguard.cfg
-assets/gibberbot.properties
+assets/chatsecure.properties
 releases
 docs
 doc

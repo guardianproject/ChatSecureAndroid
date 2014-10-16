@@ -1,5 +1,5 @@
 ---
-name: "Gibberbot"
+name: "Chatsecure"
 suites:
 - "lucid"
 architectures:
@@ -9,17 +9,17 @@ packages:
 - "zip"
 - "openjdk-6-jdk"
 - "ant1.8"
-reference_datetime: "2012-01-30 00:00:00"
+reference_datetime: "2014-09-27 00:00:00"
 remotes:
-- "url": "https://github.com/guardianproject/Gibberbot.git"
-  "dir": "Gibberbot"
+- "url": "https://github.com/guardianproject/ChatSecureAndroid.git"
+  "dir": "ChatSecureAndroid"
 files:
 - "android-sdk-linux.tgz"
 script: |
   SDK=../android-sdk-linux
   tar xzf android-sdk-linux.tgz
-  cd Gibberbot
+  cd ChatSecureAndroid
   $SDK/tools/android update project --path .
   ant release
   # Copy and canonicalize
-  canon-zip $REFERENCE_DATE bin/WelcomeActivity-release-unsigned.apk $OUTDIR/Gibberbot-unsigned.apk
+  canon-zip $REFERENCE_DATE bin/WelcomeActivity-release-unsigned.apk $OUTDIR/ChatSecureAndroid-unsigned.apk

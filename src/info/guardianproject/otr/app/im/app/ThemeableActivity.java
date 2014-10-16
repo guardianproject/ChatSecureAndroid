@@ -34,7 +34,6 @@ public class ThemeableActivity extends ActionBarActivity {
     public static void setBackgroundImage (Activity activity)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity);
-        //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
         boolean themeDark = settings.getBoolean("themeDark", false);
         String themebg = settings.getString("pref_background", "");
         
@@ -95,7 +94,6 @@ public class ThemeableActivity extends ActionBarActivity {
     public static void setBackgroundImage (View view, Activity activity)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity);
-        //int themeId = settings.getInt("theme", R.style.Theme_Gibberbot_Light);
         boolean themeDark = settings.getBoolean("themeDark", false);
         String themebg = settings.getString("pref_background", "");
         

@@ -1,5 +1,5 @@
-Gitian instructions for Gibberbot
-=================================
+Gitian instructions for ChatSecure
+==================================
 
 Setup:
 
@@ -11,7 +11,7 @@ Setup:
   `%lxc ALL=NOPASSWD: /usr/bin/lxc-start`
   and add yourself to the lxc group.
 * `git clone https://github.com/devrandom/gitian-builder`
-* `git clone https://github.com/guardianproject/Gibberbot`
+* `git clone https://github.com/guardianproject/ChatSecureAndroid`
 * `bin/make-base-vm --arch i386 --lxc`
   (requires sudo to extract a partition from resulting image)
 * `cd gitian-builder`
@@ -31,7 +31,7 @@ Every time you boot:
 and then:
 
 * `export USE_LXC=1`
-* `bin/gbuild -i --commit Gibberbot=COMMIT ../Gibberbot/gitian/gibberbot.yml`
+* `bin/gbuild -i --commit ChatSecure=COMMIT ../ChatSecure/gitian/chatsecure.yml`
   where COMMIT is a tag, branch or commit (latter recommended for repeatability)
 
 Optional - poke around the target environment:

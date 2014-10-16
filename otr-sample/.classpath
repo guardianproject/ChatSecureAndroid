@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Gibberbot"/>
-	<classpathentry kind="lib" path="/Gibberbot/libs/asmack-android-4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ChatSecure"/>
+	<classpathentry kind="lib" path="/ChatSecure/libs/asmack-android-4.jar"/>
 	<classpathentry kind="lib" path="lib/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3-1.1.4c.jar"/>
 	<classpathentry kind="output" path="bin"/>
