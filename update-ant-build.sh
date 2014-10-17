@@ -11,6 +11,7 @@ android update lib-project --path external/SlidingMenu/library
 android update lib-project --path external/AndroidEmojiInput/library
 android update lib-project --path external/ViewPagerIndicator/library
 android update lib-project --path external/appcompat
+android update lib-project --path external/bho/TibetanTextLibrary
 
 android update project --path . --name $projectname --target $target --subprojects
 
@@ -19,4 +20,4 @@ cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-supp
 cp libs/android-support-v4.jar external/ViewPagerIndicator/library/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/AndroidEmojiInput/library/libs/android-support-v4.jar
 
-rm external/cacheword/cachewordlib/custom_rules.xml
+##rm external/cacheword/cachewordlib/custom_rules.xml
