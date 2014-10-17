@@ -115,8 +115,6 @@ import org.jivesoftware.smackx.provider.VCardProvider;
 import org.jivesoftware.smackx.provider.XHTMLExtensionProvider;
 import org.jivesoftware.smackx.search.UserSearch;
 
-import de.duenndns.ssl.MemorizingTrustManager;
-
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -126,6 +124,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.RemoteException;
 import android.util.Log;
+import de.duenndns.ssl.MemorizingTrustManager;
 
 public class XmppConnection extends ImConnection implements CallbackHandler {
 
@@ -2829,15 +2828,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
 
-    private void handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
+    private Contact handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
         if (presence == null)
-            return;
+            return null;
         
         XmppAddress xaddress = new XmppAddress(presence.getFrom());
 
         if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself
-            return;
+            return null;
 
         String status = presence.getStatus();
 
@@ -2887,7 +2886,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         else if (contact == null)
         {
-            return; //do nothing if we don't have a contact
+            return null; //do nothing if we don't have a contact
         }
 
         if (presence.getType() == Type.subscribe) {                    
@@ -2937,10 +2936,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         else {
 
             contact.setPresence(p);
-            mContactListManager.notifyContactsPresenceUpdated(new Contact[] { contact });
 
         }
 
+        return contact;
     }
 
     private void initPresenceProcessor ()
@@ -2954,14 +2953,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 try
                 {
                     org.jivesoftware.smack.packet.Presence p = null;
+                    Contact contact = null;
+                    ArrayList<Contact> alUpdate = new ArrayList<Contact>();
                     
                     if (qPresence.size() > 0)
                         while ((p = qPresence.poll())!=null)
                         {
-                            handlePresenceChanged(p);
+                            contact = handlePresenceChanged(p);
+                            if (contact != null)
+                                alUpdate.add(contact);
                         }
 
                 
+                    mContactListManager.notifyContactsPresenceUpdated(alUpdate.toArray(new Contact[alUpdate.size()]));
+                    
                 }
                 catch (NoSuchElementException e)
                 {
@@ -2976,7 +2981,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
              }
 
-          }, 1000, 3000);
+          }, 1000, 5000);
     }
 
 }
