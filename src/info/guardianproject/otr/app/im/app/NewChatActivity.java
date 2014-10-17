@@ -1770,7 +1770,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                         
                         new String[] { ImApp.IMPS_CATEGORY } ,
                         Imps.Provider.DEFAULT_SORT_ORDER);
-
+                loader.setUpdateThrottle(50L);
                 return loader;
             }
 
