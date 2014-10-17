@@ -2064,10 +2064,12 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     session = manager.createChatSession(username, isNewChat);
                     if (session != null)
                         mRequestedChatId = session.getId();
-                    else
-                    {
-                        //could not create session
-                    }
+                    
+                    if (!showChat(session.getId())) {
+                        // We have a session, but it's not in the cursor yet
+                        mRequestedChatId = session.getId(); 
+                        session.reInit();
+                    } 
                     
                 } else {
                     // Already have session
